@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:inbox_clients/network/api/model/auth.dart';
 
 class AuthHelper {

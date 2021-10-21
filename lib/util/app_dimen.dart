@@ -96,3 +96,4 @@ final double? padding16 = 16;
 final double? padding14 = 14;
 final double? padding18 = 18;
 final double? paddingW28 = 28.w;
+final double? padding20 = 20;

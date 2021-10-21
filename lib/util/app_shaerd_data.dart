@@ -16,7 +16,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'app_color.dart';
-import 'sh_util.dart';
 import 'string.dart';
 
 String? urlPlacholder =

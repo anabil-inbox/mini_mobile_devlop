@@ -2,9 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 //todo this for theme
-var colorPrimary = Color(0xFF50133A);
-var colorPrimaryDark = Color(0xFF50133A);
-var colorAccent = Color(0xFF000000);
+var colorPrimary = const Color(0xFFE63331);
+var colorPrimaryDark = const Color(0xFF50133A);
+
+Color seconderyColor = const Color(0xffE63331);
+
 
 //todo this for textField
 var colorBorderTextFiled = Color(0xFF707070);
@@ -30,3 +32,5 @@ var colorContainerGray = Color(0xFFF5F5F5);
 var colorContainerGrayLight = Color(0xFFBDBDBD).withOpacity(0.1);
 var scaffoldColor = Color(0xFFFFFFFF);
 
+//todo trasparent color
+var transparent = Color(0x00000000);

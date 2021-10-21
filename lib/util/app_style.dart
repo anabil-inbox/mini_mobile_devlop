@@ -131,6 +131,22 @@ TextStyle? textStyleCardTitlePrice() {
     color: colorPrimaryDark,
   );
 }
+TextStyle? textPrimaryButton(){
+  return TextStyle(
+    color: colorTextWhite , 
+    fontSize: fontSize15,
+    fontWeight: FontWeight.bold
+  );
+}
+
+TextStyle? textStyleIntroTitle(){
+  return TextStyle(
+    color: Colors.black, 
+    fontSize: fontSize21,
+    fontWeight: FontWeight.normal
+  );
+}
+
 
 BoxShadow? boxShadow() {
   return BoxShadow(
@@ -158,6 +174,13 @@ ButtonStyle? get buttonStyle => ButtonStyle(
     padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 12)) ,
     backgroundColor: MaterialStateProperty.all(colorPrimaryDark),
     shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+
+ButtonStyle? get primaryButtonStyle => ButtonStyle(
+    textStyle: MaterialStateProperty.all(textPrimaryButton()),
+    padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 12)) ,
+    backgroundColor: MaterialStateProperty.all(colorPrimary),
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+
 
 ScrollPhysics? customScrollViewIOS() =>
     BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
