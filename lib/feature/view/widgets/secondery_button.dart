@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
-import 'package:inbox_clients/util/app_style.dart';
 
 class SeconderyButtom extends StatelessWidget {
   const SeconderyButtom({ Key? key , required this.textButton,required this.onClicked}) : super(key: key);
@@ -9,10 +9,11 @@ class SeconderyButtom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
+     width: sizeW165,
       height: sizeH50,
-      child: ElevatedButton(
-        style: primaryButtonStyle,
+      child: MaterialButton(
+        color: colorBackground,
+        textColor: colorPrimary,
         onPressed: (){
             onClicked();
         },

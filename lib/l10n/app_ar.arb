@@ -1,4 +1,7 @@
 {
     "sign_in": "تسجيل الدخول",
-     "no_mininus": "افتراضي"
+    "sign_up": "التسجيل",
+     "no_mininus": "افتراضي",
+     "save_time":"وفر الوقت",
+     "inbox_third_partey":"لوجستيات الطرف الثالث"
 }

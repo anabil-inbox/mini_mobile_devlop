@@ -97,3 +97,9 @@ final double? padding14 = 14;
 final double? padding18 = 18;
 final double? paddingW28 = 28.w;
 final double? padding20 = 20;
+final double? padding60 = 60;
+
+
+//todo Stack values 
+final double stack0 = 0;
+

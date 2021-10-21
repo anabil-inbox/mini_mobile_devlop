@@ -139,6 +139,15 @@ TextStyle? textPrimaryButton(){
   );
 }
 
+TextStyle? textSeconderyButton(){
+  return TextStyle(
+    color: colorPrimary , 
+    fontSize: fontSize15,
+    fontWeight: FontWeight.bold
+  );
+}
+
+
 TextStyle? textStyleIntroTitle(){
   return TextStyle(
     color: Colors.black, 
@@ -146,6 +155,15 @@ TextStyle? textStyleIntroTitle(){
     fontWeight: FontWeight.normal
   );
 }
+
+TextStyle? textStyleIntroBody(){
+  return TextStyle(
+    color: Colors.black, 
+    fontSize: fontSize14,
+    fontWeight: FontWeight.normal
+  );
+}
+
 
 
 BoxShadow? boxShadow() {
@@ -181,6 +199,11 @@ ButtonStyle? get primaryButtonStyle => ButtonStyle(
     backgroundColor: MaterialStateProperty.all(colorPrimary),
     shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
 
+ButtonStyle? get seconderyButtonStyle => ButtonStyle(
+    textStyle: MaterialStateProperty.all(textSeconderyButton()!.copyWith(color: Colors.black)),
+    padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 12)) ,
+
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
 
 ScrollPhysics? customScrollViewIOS() =>
     BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());

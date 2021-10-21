@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/intro_screens/intro_screen.dart';
 
@@ -12,14 +13,11 @@ class SplashScreen extends StatelessWidget {
     }); 
      return Scaffold(
        body: Center(
-      child: CircleAvatar(
-        radius: 50,
-      )
+       child: SvgPicture.asset("assets/svgs/logo.svg")
     ));
   }
 }
-// 
 
 moveToIntro(){
-Get.to(IntroScreen());
+Get.off(() => IntroScreen());
 }

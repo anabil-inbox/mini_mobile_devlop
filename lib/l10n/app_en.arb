@@ -1,4 +1,7 @@
 {
      "sign_in": "Sign In",
-    "no_mininus": "NO MINIMUMS"
+     "sign_up": "Sign Up",
+    "no_mininus": "NO MINIMUMS",
+    "save_time": "SAVE TIME",
+    "inbox_third_partey":"INBOX Third Party Logistics"
 }

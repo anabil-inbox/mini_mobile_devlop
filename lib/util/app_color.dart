@@ -6,7 +6,7 @@ var colorPrimary = const Color(0xFFE63331);
 var colorPrimaryDark = const Color(0xFF50133A);
 
 Color seconderyColor = const Color(0xffE63331);
-
+Color colorUnSelectedWidget = const Color(0xffCCCCCC);
 
 //todo this for textField
 var colorBorderTextFiled = Color(0xFF707070);
