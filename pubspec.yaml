@@ -45,7 +45,6 @@ dependencies:
   intl: ^0.17.0
   url_launcher: ^6.0.7
   dio: ^4.0.0
-  #introduction_screen: ^2.1.0
 
 dev_dependencies:
   flutter_test:
