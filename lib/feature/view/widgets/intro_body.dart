@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class IntroBody extends StatelessWidget {
-  const IntroBody({ Key? key , required this.imagePath , required this.title}) : super(key: key);
+  const IntroBody({ Key? key , required this.imagePath , required this.title , required this.description}) : super(key: key);
   final String imagePath;
   final String title;
+  final String description;
   @override
   Widget build(BuildContext context) {
+    print("msg_title $title");
+    screenUtil(context);
     return Stack(
               children: [
           Positioned(
-              right: 0,
-              left: 0,
-              bottom: 0,
-              child: SvgPicture.asset(
-                imagePath,
-                fit: BoxFit.fill,
-              )),
+              top: padding160,
+              left: padding0,
+              right: padding0,
+              child: imageNetwork(
+                height:sizeH300,
+                url:"${ConstanceNetwork.imageUrl}$imagePath")),
           Positioned.fill(
             child: Align(
                 alignment: Alignment.bottomCenter,
@@ -40,10 +42,9 @@ class IntroBody extends StatelessWidget {
                       height: sizeH7,
                     ),
                     Padding(
-                      
                       padding: EdgeInsets.symmetric(horizontal: sizeW12!),
                       child: CustomTextView(
-                        txt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+                        txt: "$description",
                         textAlign: TextAlign.center,
                         textStyle: textStyleIntroBody()!.copyWith(height:1.5),
                       ),
@@ -52,7 +53,7 @@ class IntroBody extends StatelessWidget {
                   ],
                 )),
           ),
-        
+             
               ],
             );
   }

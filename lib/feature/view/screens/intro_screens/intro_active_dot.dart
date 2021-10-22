@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:inbox_clients/feature/view/screens/intro_screens/intro_unactive_dot.dart';
 import 'package:inbox_clients/util/app_color.dart';
 
+// ignore: must_be_immutable
 class IntroActiveDot extends StatelessWidget {
-  const IntroActiveDot({ Key? key}) : super(key: key);
+  IntroActiveDot({Key? key, required this.index, required this.numberOfDots})
+      : super(key: key);
+
+  int numberOfDots = 0;
+  int index;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(seconds: 2),
-      child: Container(
-      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color:  colorPrimary
-                        ),
-                        child: SizedBox(
-                                width: 28,
-                                height: 3,
-                              )  
-                      ),
+
+    return  Container(
+      height: 3,
+      width: 28,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: numberOfDots,
+        itemBuilder: (context, index) => 
+        numberOfDots == index + 1? 
+        Container(
+          alignment: Alignment.center,
+          color: colorPrimary,  
+          width: 100/3,
+          height: 3,
+        ) : IntroUnActiveDot(),
+      ),
     );
   }
 }

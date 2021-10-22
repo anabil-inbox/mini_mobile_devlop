@@ -3,5 +3,9 @@
      "sign_up": "Sign Up",
     "no_mininus": "NO MINIMUMS",
     "save_time": "SAVE TIME",
-    "inbox_third_partey":"INBOX Third Party Logistics"
+    "inbox_third_partey":"INBOX Third Party Logistics",
+    "skip":"skip >>",
+    "choose_language":"choose language",
+    "english":"English",
+    "arabic" : "Arabic"
 }

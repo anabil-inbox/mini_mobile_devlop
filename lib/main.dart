@@ -13,7 +13,7 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPref.instance.init();
   portraitOrientation();
- DioManagerClass.getInstance.init();
+  DioManagerClass.getInstance.init();
   runApp(const AppWidget());
 }
 

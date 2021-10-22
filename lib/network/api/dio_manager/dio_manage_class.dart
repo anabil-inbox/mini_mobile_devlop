@@ -13,7 +13,7 @@ class DioManagerClass {
   Dio init() {
      _dio =  Dio(
       BaseOptions(
-        baseUrl: "http://example.com/api",
+        baseUrl: "https://inbox.ahdtech.com/api/method/",
         connectTimeout: 2000 * 60,
         receiveTimeout: 2000 * 60,
         sendTimeout: 2000 * 60,
@@ -46,7 +46,7 @@ class ApiInterceptors extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    // TODO: implement onRequest
+    
     super.onRequest(options, handler);
       Logger().d("onRequest : ${options.path}");
   }

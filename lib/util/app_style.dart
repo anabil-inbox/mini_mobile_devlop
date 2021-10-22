@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:inbox_clients/util/app_dimen.dart';
 
 import 'app_color.dart';
 import 'constance.dart';
@@ -164,6 +165,14 @@ TextStyle? textStyleIntroBody(){
   );
 }
 
+TextStyle? textStyleSkipButton(){
+  return TextStyle(
+    color: Colors.black, 
+    fontSize: fontSize15,
+    fontWeight: FontWeight.normal
+  );
+}
+
 
 
 BoxShadow? boxShadow() {
@@ -195,15 +204,22 @@ ButtonStyle? get buttonStyle => ButtonStyle(
 
 ButtonStyle? get primaryButtonStyle => ButtonStyle(
     textStyle: MaterialStateProperty.all(textPrimaryButton()),
-    padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 12)) ,
+    padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
     backgroundColor: MaterialStateProperty.all(colorPrimary),
     shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
 
 ButtonStyle? get seconderyButtonStyle => ButtonStyle(
     textStyle: MaterialStateProperty.all(textSeconderyButton()!.copyWith(color: Colors.black)),
-    padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 12)) ,
-
+    padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
     shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+
+
+ButtonStyle? get textButtonStyle => ButtonStyle(
+    textStyle: MaterialStateProperty.all(textSeconderyButton()),
+    overlayColor: MaterialStateProperty.all(seconderyColor),
+    padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+
 
 ScrollPhysics? customScrollViewIOS() =>
     BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());

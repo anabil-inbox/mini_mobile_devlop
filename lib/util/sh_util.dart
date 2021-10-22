@@ -1,29 +1,37 @@
+
 import 'dart:convert';
-import 'dart:io';
 
-
-import 'package:get/get.dart';
-import 'package:intl/locale.dart';
 import 'package:logger/logger.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../main.dart';
 
 class SharedPref {
-
   static SharedPref instance = SharedPref._();
+  final String appSettingKey = "settings";
+  var log = Logger();
 
   SharedPref._();
 
   static late SharedPreferences? _prefs;
 
-  static Future<SharedPreferences> get _instances async =>
-      _prefs = await SharedPreferences.getInstance();
+  setAppSetting(var json)
+  async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+      String prfApiSettings = jsonEncode(json);
+      pref.setString('$appSettingKey', prfApiSettings);
+      print("${pref.get("$appSettingKey")}");
+  }
+  getAppSetting(){
+    try {
+       Object appSetting = _prefs!.get("$appSettingKey")!;
+        print("$appSetting");
+    } catch (e) {
+      log.d("$e");
+    }
+  }
 
   init() async {
     _prefs = await SharedPreferences?.getInstance();
-    _prefs = await _instances;
   }
 
 

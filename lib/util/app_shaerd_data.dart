@@ -174,7 +174,7 @@ Widget imageNetwork({double? width, double? height, String? url}) {
           // border: Border.all(color: colorBorderLight),
           image: DecorationImage(
             image: CachedNetworkImageProvider(url ?? urlUserPlacholder!),
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
           ),
         ),
       );
@@ -183,7 +183,7 @@ Widget imageNetwork({double? width, double? height, String? url}) {
     errorWidget: (context, url, error) {
       return CachedNetworkImage(
         imageUrl: urlUserPlacholder!,
-        fit: BoxFit.cover,
+        fit: BoxFit.contain
       );
     },
     width: width ?? 74,
@@ -193,7 +193,7 @@ Widget imageNetwork({double? width, double? height, String? url}) {
       return Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image:AssetImage("assets/images/loading_shimmer.gif")/* CachedNetworkImageProvider(url ?? urlUserPlacholder!)*/,
+            image:AssetImage("assets/gif/loading_shimmer.gif")/* CachedNetworkImageProvider(url ?? urlUserPlacholder!)*/,
             fit: BoxFit.cover,
           ),
         ),
