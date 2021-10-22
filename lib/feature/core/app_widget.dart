@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:inbox_clients/feature/view/screens/splash.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 import '../../main.dart';
 
@@ -13,6 +14,9 @@ class AppWidget extends StatelessWidget {
   const AppWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    
+    print("msg_On_Main: ${SharedPref.instance.getAppLanguage()}");
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: transparent,
       statusBarIconBrightness: Brightness.dark,
@@ -22,7 +26,7 @@ class AppWidget extends StatelessWidget {
       designSize: Size(392.72727272727275, 803.6363636363636),
       builder: () => GetMaterialApp(
         title: 'Inbox Clients',
-        locale: Get.deviceLocale,
+        locale: Locale(SharedPref.instance.getAppLanguage().split("_")[0]),
         localizationsDelegates: [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

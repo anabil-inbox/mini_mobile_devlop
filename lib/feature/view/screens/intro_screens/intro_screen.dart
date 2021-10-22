@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 // ignore: must_be_immutable
 class IntroScreen extends GetWidget<IntroViewModle> {
@@ -126,16 +127,17 @@ class IntroScreen extends GetWidget<IntroViewModle> {
             ListTile(
               title: Text("${AppLocalizations.of(Get.context!)!.english}"),
               onTap: () {
-                print(locale[0]['name']);
                 updateLanguage(locale[0]['locale']);
+                SharedPref.instance.setAppLanguage(locale[0]['locale']);
                 Navigator.pop(Get.context!);
               },
             ),
             ListTile(
               title: Text("${AppLocalizations.of(Get.context!)!.arabic}"),
               onTap: () {
-                print(locale[1]['name']);
+                
                 updateLanguage(locale[1]['locale']);
+                SharedPref.instance.setAppLanguage(locale[1]['locale']);
                 Navigator.pop(Get.context!);
               },
             )
