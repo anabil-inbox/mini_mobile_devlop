@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/intro_screens/intro_active_dot.dart';
+import 'package:inbox_clients/feature/view/screens/register_company/register_company.dart';
 import 'package:inbox_clients/feature/view/widgets/intro_body.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
@@ -11,12 +12,15 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
-// ignore: must_be_immutable
+
 class IntroScreen extends GetWidget<IntroViewModle> {
-  IntroScreen({Key? key}) : super(key: key);
+  const IntroScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+      Future.delayed(Duration(seconds: 1),(){
+      Get.to(RegisterCompanyScreen());
+    });
     return Scaffold(
         body: SingleChildScrollView(
       physics: customScrollViewIOS(),
@@ -35,6 +39,7 @@ class IntroScreen extends GetWidget<IntroViewModle> {
                     children: controller.features != null
                         ? controller.features!
                             .map((e) => IntroBody(
+                                  index: controller.indexdPage,
                                   imagePath: e.image.toString(),
                                   title: e.title.toString(),
                                   description: e.description.toString(),

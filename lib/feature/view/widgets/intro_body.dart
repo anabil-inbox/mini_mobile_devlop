@@ -8,16 +8,29 @@ import 'package:inbox_clients/util/app_style.dart';
 
 
 class IntroBody extends StatelessWidget {
-  const IntroBody({ Key? key , required this.imagePath , required this.title , required this.description}) : super(key: key);
+  const IntroBody({ Key? key ,
+   required this.imagePath ,
+   required this.title ,
+   required this.description,
+    required this.index
+   }) : super(key: key);
   final String imagePath;
   final String title;
   final String description;
+  final int index; 
   @override
   Widget build(BuildContext context) {
     print("msg_title $title");
     screenUtil(context);
     return Stack(
               children: [
+          Positioned(
+              top: index == 0 ? padding315 : padding222,
+              left: padding0,
+              right: padding0,
+              bottom: paddingM_25,
+            child: index == 0 ? 
+            SvgPicture.asset("assets/svgs/intro_background.svg",fit: BoxFit.cover,):SvgPicture.asset("assets/svgs/intro_background2.svg",fit: BoxFit.cover,)) ,      
           Positioned(
               top: padding160,
               left: padding0,

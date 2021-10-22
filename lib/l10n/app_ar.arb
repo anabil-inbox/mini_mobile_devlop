@@ -7,5 +7,6 @@
      "skip":"تخطي >>",
      "choose_language":"اختر اللغة",
      "english":"الانجليزية",
-     "arabic" : "العربية"
+     "arabic" : "العربية",
+     "company_registration" :  "تسجيل شركة" 
 }
