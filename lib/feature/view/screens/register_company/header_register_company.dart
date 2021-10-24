@@ -11,7 +11,7 @@ class HeaderRegisterCompany extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: sizeH114,
+      height: sizeH174,
       child: Stack(
         children: [
           PositionedDirectional(
@@ -21,16 +21,17 @@ class HeaderRegisterCompany extends StatelessWidget {
             end: padding0,
             child: SvgPicture.asset(
               "assets/svgs/header_background.svg",
+               fit: BoxFit.cover
             ),
           ),
           PositionedDirectional(
             end: padding20,
-            bottom: padding22,
+            bottom: padding80,
             child: IconButton(
               onPressed: (){
                 changeLanguageDialog();
               },
-              icon: SvgPicture.asset("assets/svgs/language_.svg")),
+              icon: SvgPicture.asset("assets/svgs/language_.svg" ,)),
           ),
           PositionedDirectional(
               top: padding40,
@@ -42,8 +43,9 @@ class HeaderRegisterCompany extends StatelessWidget {
           PositionedDirectional(
             start: padding0,
             end: padding0,
-            bottom: padding20,
-            child: SvgPicture.asset("assets/svgs/logo_horizantal.svg"),
+            top: padding63,
+            bottom: padding32,
+            child: SvgPicture.asset("assets/svgs/logo_horizantal.svg",),
           ),
           
         ],

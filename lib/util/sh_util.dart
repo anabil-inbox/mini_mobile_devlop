@@ -21,12 +21,11 @@ class SharedPref {
     SharedPreferences pref = await SharedPreferences.getInstance();
       String prfApiSettings = jsonEncode(json);
       pref.setString('$appSettingKey', prfApiSettings);
-      
   }
   getAppSetting(){
     try {
        Object appSetting = _prefs!.get("$appSettingKey")!;
-        print("$appSetting");
+       return appSetting;
     } catch (e) {
       log.d("$e");
     }

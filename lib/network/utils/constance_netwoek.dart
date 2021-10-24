@@ -9,7 +9,9 @@ abstract class ConstanceNetwork {
   ///todo here insert end Point
   static String settingeEndPoint = "inbox_app.api.settings.api_settings";
 
-    static String featureEndPoint = "inbox_app.api.settings.features";
+  static String featureEndPoint = "inbox_app.api.settings.features";
+
+  static String countryEndPoint = "inbox_app.api.settings.countries";
 
 
   static Map<String, String> header(int typeToken) {

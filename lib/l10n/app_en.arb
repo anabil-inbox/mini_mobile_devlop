@@ -8,5 +8,18 @@
     "choose_language":"choose language",
     "english":"English",
     "arabic" : "Arabic",
-    "company_registration" : "Company Registration" 
+    "company_registration" : "Company Registration",
+    "cr_number" : "CR Number",
+    "company_name": "Company Name",
+    "your_email_address" : "Your Email Address",
+    "name_of_application" : "Name Of Application",
+    "applicant_department" : "Applicant Department",
+    "terms_and_conditions":"Accept our Terms and Conditions",
+    "fill_this_field" : "Please enter some text",
+    "user_registration":"User Registration",
+    "full_name":"Full Name",
+    "dont_have_an_account" : "Don't have an account?",
+    "sign_up_here" : "Sign Up Here",
+    "terms_and_conditions": "Terms And Conditions",
+    "accept_our": "Accept Our"
 }

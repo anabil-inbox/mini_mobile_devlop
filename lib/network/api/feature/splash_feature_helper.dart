@@ -14,7 +14,7 @@ class SplashHelper {
     try {
       var response = await SplashApi.getInstance.getAppSettings(url: "${ConstanceNetwork.settingeEndPoint}", header: ConstanceNetwork.header(0));
       if (response.status?.success == true) {
-        await SharedPref.instance.setAppSetting(response.data["api_settings"]);     
+        await SharedPref.instance.setAppSetting(response.data["api_settings"]); 
         return ApiSettings.fromJson(response.data["api_settings"]);
       } else {
         return ApiSettings.fromJson({});

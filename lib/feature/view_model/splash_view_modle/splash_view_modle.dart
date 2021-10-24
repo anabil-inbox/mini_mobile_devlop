@@ -10,8 +10,8 @@ class SplashViewModle extends GetxController{
     var log = Logger();
     ApiSettings? apiSettings;  
     var pref = SharedPref.instance.init();
-    
-    
+    List<CompanySector> arrCompanySector = [];
+    List<String> arrSecName = []; 
   getAppSetting()async{
    await SplashHelper.getInstance.getAppSettings().then((value) =>{
       if(!GetUtils.isNull(value)){
@@ -19,6 +19,7 @@ class SplashViewModle extends GetxController{
       update()
     }
    });
+   
   }
 
   @override

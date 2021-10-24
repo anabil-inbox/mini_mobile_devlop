@@ -14,7 +14,6 @@ class CustomTextView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText(
       IsUpperCase!?txt!.toUpperCase():txt!,
-      textDirection: TextDirection.ltr,
       overflow: textOverflow,
       textAlign: textAlign,
       style: textStyle,

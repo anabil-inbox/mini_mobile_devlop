@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/intro_screens/intro_active_dot.dart';
-import 'package:inbox_clients/feature/view/screens/register_company/register_company.dart';
+import 'package:inbox_clients/feature/view/screens/user_auth/user_register_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/intro_body.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
@@ -19,7 +19,7 @@ class IntroScreen extends GetWidget<IntroViewModle> {
   @override
   Widget build(BuildContext context) {
       Future.delayed(Duration(seconds: 1),(){
-      Get.to(RegisterCompanyScreen());
+      Get.to(UserRegisterScreen());
     });
     return Scaffold(
         body: SingleChildScrollView(
@@ -56,6 +56,7 @@ class IntroScreen extends GetWidget<IntroViewModle> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   PrimaryButton(
+                    isExpanded: false,
                     textButton: "${AppLocalizations.of(Get.context!)!.sign_in}",
                     onClicked: () {},
                   ),

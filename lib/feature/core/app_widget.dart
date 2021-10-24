@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:inbox_clients/feature/view/screens/splash.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
 import '../../main.dart';
@@ -15,8 +18,6 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    print("msg_On_Main: ${SharedPref.instance.getAppLanguage()}");
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: transparent,
       statusBarIconBrightness: Brightness.dark,
@@ -43,8 +44,33 @@ class AppWidget extends StatelessWidget {
         enableLog: true,
         themeMode: ThemeMode.system,
         theme: ThemeData(
+            
+          cupertinoOverrideTheme: CupertinoThemeData(
+            primaryColor: colorPrimary,
+          ),
+          
+          textSelectionTheme: TextSelectionThemeData(
+              cursorColor: colorPrimary,
+              selectionColor: colorPrimary,
+              selectionHandleColor: colorPrimary,
+          ),
+
           inputDecorationTheme: InputDecorationTheme(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20)),
+              hintStyle: textStyleHints(),
+              filled: true,
+               enabledBorder: UnderlineInputBorder(      
+                      borderSide: BorderSide(color: colorTrans),   
+                      ),  
+              focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: colorPrimary),
+                   ),
+              fillColor: colorTextWhite,
+              contentPadding: EdgeInsets.symmetric(horizontal: padding18! , 
+              vertical: padding16!),
+              border: UnderlineInputBorder(
+                borderRadius:BorderRadius.circular(padding4!)),
+                ),
+
           primaryColor: colorPrimary,
           secondaryHeaderColor: seconderyColor,
           scaffoldBackgroundColor: scaffoldColor,

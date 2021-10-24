@@ -9,7 +9,7 @@ class ApiSettings {
     });
 
     String? customerType;
-    dynamic? aboutUs;
+    String? aboutUs;
     String? termOfConditions;
     ContactInfo? contactInfo;
     List<CompanySector>? companySectors;
@@ -17,7 +17,7 @@ class ApiSettings {
 
     factory ApiSettings.fromJson(Map<String, dynamic> json) => ApiSettings(
         customerType: json["customer_type"],
-        aboutUs: json["about_us"],
+        aboutUs: json["about_us"] == null ? "" : json["about_us"],
         termOfConditions: json["term_of_conditions"],
         contactInfo: ContactInfo.fromJson(json["contact_info"]),
         companySectors: List<CompanySector>.from(json["company_sectors"].map((x) => CompanySector.fromJson(x))),

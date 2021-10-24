@@ -165,6 +165,31 @@ TextStyle? textStyleIntroBody(){
   );
 }
 
+TextStyle? textStyleUnderLinePrimary(){
+  return TextStyle(
+    color: colorPrimary, 
+    fontSize: fontSize16,
+    decoration: TextDecoration.underline,
+    fontWeight: FontWeight.normal
+  );
+}
+
+TextStyle? textStylePrimary(){
+  return TextStyle(
+    color: colorPrimary, 
+    fontSize: fontSize16,
+    fontWeight: FontWeight.normal
+  );
+}
+
+TextStyle? textStyleHints(){
+  return TextStyle(
+    color: colorHint, 
+    fontSize: fontSize15,
+    fontWeight: FontWeight.normal
+  );
+}
+
 TextStyle? textStyleSkipButton(){
   return TextStyle(
     color: Colors.black, 
