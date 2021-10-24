@@ -1,12 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/user_auth/terms_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
 class RegisterUserForm extends GetWidget<AuthViewModle> {
@@ -27,24 +27,29 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 child: GetBuilder<AuthViewModle>(
                   init: AuthViewModle(),
                   builder: (_) {
-                    return DropdownButton(
-                      isExpanded: true,
-                      itemHeight: sizeH60,
-                      icon: Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onChanged: (e) {
-                        controller.onChangeDropDownList(e.toString());
-                      },
-                      value: controller.dropDown,
-                      items: controller.countres
-                          .map(
-                            (map) => DropdownMenuItem(
-                                child: Text(map.name!), value: map.name),
-                          )
-                          .toList(),
-                    );
+                    try {
+                      return DropdownButton(
+                        isExpanded: true,
+                        itemHeight: sizeH60,
+                        icon: Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.black,
+                        ),
+                        onChanged: (e) {
+                          controller.onChangeDropDownList(e.toString());
+                        },
+                        value: controller.dropDown,
+                        items: controller.countres
+                            .map(
+                              (map) => DropdownMenuItem(
+                                  child: Text(map.name!), value: map.name),
+                            )
+                            .toList(),
+                      );
+                    } catch (e) {
+                      print(e);
+                      return const SizedBox.shrink();
+                    }
                   },
                 ),
               ),
@@ -105,13 +110,11 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                             text:
                                 "${AppLocalizations.of(Get.context!)!.accept_our} "),
                         TextSpan(
-                          
                           style: textStyleUnderLinePrimary(),
                           text:
                               "${AppLocalizations.of(Get.context!)!.terms_and_conditions}",
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => {
-                              Get.to(() => TermsScreen())},
+                            ..onTap = () => {Get.to(() => TermsScreen())},
                         ),
                       ]),
                     ),
