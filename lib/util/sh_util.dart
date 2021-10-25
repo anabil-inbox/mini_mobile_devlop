@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:logger/logger.dart';
@@ -19,20 +18,21 @@ class SharedPref {
 
   static late SharedPreferences? _prefs;
 
-  setAppSetting(var json)
-  async{
+  setAppSetting(var json) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-      String prfApiSettings = jsonEncode(json);
-      pref.setString('$appSettingKey', prfApiSettings);
+    String prfApiSettings = jsonEncode(json);
+    pref.setString('$appSettingKey', prfApiSettings);
   }
-  getAppSetting(){
+
+  getAppSetting() {
     try {
-       Object appSetting = _prefs!.get("$appSettingKey")!;
-       return appSetting;
+      Object appSetting = _prefs!.get("$appSettingKey")!;
+      return appSetting;
     } catch (e) {
       log.d("$e");
     }
   }
+
 
 isShowProgress(bool? isShow) {
     // ignore: unnecessary_statements
@@ -47,28 +47,27 @@ isShowProgress(bool? isShow) {
     }
   }
 
-  setAppLanguage(var local)
-  async{
-    SharedPreferences pref = await SharedPreferences.getInstance();
-     pref.setString('$languageKey', local.toString());
 
+
+  setAppLanguage(var local) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('$languageKey', local.toString());
   }
 
 
-  String getAppLanguage(){
+  String getAppLanguage() {
     try {
-        Object appLanguage = _prefs!.get("$languageKey")!;
-        print("msg_On_get $appLanguage");
-        return appLanguage.toString();
+      Object appLanguage = _prefs!.get("$languageKey")!;
+      print("msg_On_get $appLanguage");
+      return appLanguage.toString();
     } catch (e) {
-     print("msg_error in get $e");
-      return "";
+    print("msg_error in get $e");
+    return "en";
     }
   }
 
   init() async {
     _prefs = await SharedPreferences?.getInstance();
   }
-
 
 }
