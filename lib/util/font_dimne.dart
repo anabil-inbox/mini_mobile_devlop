@@ -9,3 +9,4 @@ double? fontSize24 = 24;
 double? fontSize20 = 20;
 double? fontSize21 = 21;
 double? fontSize30 = 20;
+double? fontSize17 = 17;

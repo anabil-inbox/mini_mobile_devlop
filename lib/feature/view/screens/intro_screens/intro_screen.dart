@@ -2,25 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/intro_screens/intro_active_dot.dart';
+import 'package:inbox_clients/feature/view/screens/intro_screens/language_item.dart';
 import 'package:inbox_clients/feature/view/screens/user_auth/user_register_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/intro_body.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
+import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
 
 class IntroScreen extends GetWidget<IntroViewModle> {
-  const IntroScreen({Key? key}) : super(key: key);
+   IntroScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-      Future.delayed(Duration(seconds: 1),(){
-      Get.to(UserRegisterScreen());
-    });
     return Scaffold(
         body: SingleChildScrollView(
       physics: customScrollViewIOS(),
@@ -66,7 +65,9 @@ class IntroScreen extends GetWidget<IntroViewModle> {
                   SeconderyButtom(
                       textButton:
                           "${AppLocalizations.of(Get.context!)!.sign_up}",
-                      onClicked: () {})
+                      onClicked: () {
+                        Get.to(()=> UserRegisterScreen());
+                      })
                 ],
               ),
             ),
@@ -107,7 +108,8 @@ class IntroScreen extends GetWidget<IntroViewModle> {
                 child: IconButton(
                   icon: SvgPicture.asset("assets/svgs/language_.svg"),
                   onPressed: () {
-                    changeLanguageDialog();
+                   // changeLanguageDialog();
+                      changeLanguageBottomSheet();
                   },
                 )),
           ],
@@ -116,16 +118,18 @@ class IntroScreen extends GetWidget<IntroViewModle> {
     ));
   }
 
-
-  void changeLanguageDialog() {
-    final List locale = [
-      {'name': 'ENGLISH', 'locale': Locale('en', 'US')},
-      {'name': 'العربية', 'locale': Locale('ar', 'SA')},
-    ];
-    updateLanguage(Locale locale) {
+updateLanguage(Locale locale) {
       Get.updateLocale(locale);
     }
 
+     final List locale = [
+      {'name': 'ENGLISH', 'locale': Locale('en', 'US')},
+      {'name': 'العربية', 'locale': Locale('ar', 'SA')},
+    ];
+    
+
+  void changeLanguageDialog() {
+   
     Get.defaultDialog(
         title: "${AppLocalizations.of(Get.context!)!.choose_language}",
         content: Column(
@@ -150,6 +154,37 @@ class IntroScreen extends GetWidget<IntroViewModle> {
           ],
         ));
   }
-
+  
+  void changeLanguageBottomSheet(){
+    Get.bottomSheet(
+      
+      Container(
+        decoration: BoxDecoration(
+          color: colorTextWhite,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))
+        ),
+        padding: EdgeInsets.symmetric(horizontal: sizeH20!),
+        
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height:sizeH40),
+              Text("${AppLocalizations.of(Get.context!)!.language}" , style: textStyleTitle(),),
+              SizedBox(height:sizeH22),
+              LanguageItem(textLanguage: "${AppLocalizations.of(Get.context!)!.english_us}",),
+              SizedBox(height: sizeH12,),
+              LanguageItem(textLanguage: "${AppLocalizations.of(Get.context!)!.arabic_ar}",),
+              SizedBox(height: sizeH18,),
+              PrimaryButton(textButton: "${AppLocalizations.of(Get.context!)!.select}",
+               onClicked: (){
+                 
+              },
+              isExpanded: true),
+              SizedBox(height: sizeH34,)
+            ],
+        ),
+      )
+    );
+  }
 
 }

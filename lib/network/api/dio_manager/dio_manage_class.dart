@@ -25,12 +25,12 @@ class DioManagerClass {
   }
 
   Future<Response> dioGetMethod({var url, Map<String, dynamic>? header})async{
-    return await _dio!.get(url , options:Options(headers: header) );
+    return await _dio!.get(url , options:Options(headers: header));
   }
 
 
   Future<Response> dioPostMethod({var url, Map<String, dynamic>? header ,Map<String, dynamic>? body  })async{
-    return await _dio!.post(url , options:Options(headers: header),data: body );
+    return await _dio!.post(url , options:Options(headers: header),data: body);
   }
 
   Future<Response> dioUpdateMethod({var url, Map<String, dynamic>? header ,Map<String, dynamic>? body  })async{
@@ -48,7 +48,7 @@ class ApiInterceptors extends Interceptor {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     
     super.onRequest(options, handler);
-      Logger().d("onRequest : ${options.path}");
+      Logger().d("onRequest : ${options.path} \n ${options.data} \n ${options.method}");
   }
 
   @override

@@ -1,3 +1,4 @@
+
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/network/api/model/country_api.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -9,19 +10,18 @@ class CountryHelper {
   var log = Logger();
 
   //todo get Feature From Api 
-    Future<List<Country>> getCountryApi() async{
+    Future<Set<Country>> getCountryApi(var body) async{
       try {
-      var response = await CountryApi.getInstance.getAppCountreis(url: "${ConstanceNetwork.countryEndPoint}", header: ConstanceNetwork.header(0));
+      var response = await CountryApi.getInstance.getAppCountreis(url: "${ConstanceNetwork.countryEndPoint}", header: ConstanceNetwork.header(0),body: body);
       if (response.status?.success == true) {
-        print("msg_res_ ${response.data["Countries"]}");
         List data = response.data["Countries"];
-        return data.map((e) => Country.fromJson(e)).toList();
+        return data.map((e) => Country.fromJson(e)).toSet();
       } else {
-        return [];
+        return {};
       }
     } catch (e) {
       log.d(e.toString());
-      return [];
+      return {};
     }
     }
 }

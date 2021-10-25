@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:inbox_clients/network/api/dio_manager/dio_manage_class.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:logger/logger.dart';
 
 import 'app_response.dart';
@@ -19,11 +20,13 @@ class AuthApi {
     }
   }
 
-  Future<AppResponse> signUpRequest(Map<String, dynamic> map) async {
+  Future<AppResponse> signUpRequest({var url , var header , var body}) async {
     try {
-      var response = await DioManagerClass.getInstance.dioPostMethod(url: "", body: map, header: {});
+      showProgress();
+      var response = await DioManagerClass.getInstance.dioPostMethod(url: url, body: body, header: {});
       return AppResponse.fromJson(json.decode(response.toString()));
     } catch (e) {
+      hideProgress();
       Logger().d(e);
       return AppResponse.fromJson({});
     }

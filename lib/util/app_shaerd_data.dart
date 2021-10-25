@@ -10,6 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as Img;
+import 'package:inbox_clients/feature/core/dialog_loading.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
@@ -298,21 +300,23 @@ hideFocus(context) {
   }
 }
 
-// showProgress() async {
-//   await SharedPref.instance.isShowProgress(true);
-//   Future.delayed(Duration(seconds: 0)).then((value) {
-//     showDialog(
-//       context: Get.context!,
-//       builder: (context) => DialogLoading(),
-//     );
-//   });
-// }
+showProgress() async {
+  await SharedPref.instance.isShowProgress(true);
+  Future.delayed(Duration(seconds: 0)).then((value) {
+    showDialog(
+      context: Get.context!,
+      builder: (context) => DialogLoading(),
+    );
+  });
+}
 
-// hideProgress() async {
-//   if (await SharedPref.instance.getShowProgress()) {
-//     Get.back();
-//   }
-// }
+hideProgress() async {
+  if (await SharedPref.instance.getShowProgress()) {
+    Future.delayed(Duration.zero).then((value) => 
+    Get.back()
+);
+  }
+}
 
 //todo this is second
 Future<String>? convertToBase64(File file) async {

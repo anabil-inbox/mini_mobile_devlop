@@ -13,6 +13,8 @@ abstract class ConstanceNetwork {
 
   static String countryEndPoint = "inbox_app.api.settings.countries";
 
+  static String registerUser = "inbox_app.api.auth.register";
+
 
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};

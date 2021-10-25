@@ -174,6 +174,14 @@ TextStyle? textStyleUnderLinePrimary(){
   );
 }
 
+TextStyle? textStyleAppBarTitle(){
+  return TextStyle(
+    color: colorBlack, 
+    fontSize: fontSize17,
+    fontWeight: FontWeight.normal
+  );
+}
+
 TextStyle? textStylePrimary(){
   return TextStyle(
     color: colorPrimary, 

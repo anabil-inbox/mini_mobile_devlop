@@ -20,6 +20,14 @@
      "full_name":"الاسم",
      "dont_have_an_account" : "لا تمتلك حساب؟",
      "sign_up_here" : "سجل من هنا",
-     "accept_our":"وافق على"
-
+     "accept_our":"وافق على",
+     "choose_country": "اختر الدولة",
+     "ok":"موافق",
+     "search_for_country":"ابحث عن الدولة",
+     "language":"اللغة",
+     "arabic_ar" :"العربية",
+     "english_us" :"الانجليزية",
+     "select": "اختيار",
+     "please_enter_valid_email":"ادخل بريد الكتروني صالح"     
+ 
 }

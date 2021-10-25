@@ -136,7 +136,6 @@ class RegisterCompanyForm extends GetWidget<RegisterCompanyViewModle> {
                   );
                 },
               ),
-
               PrimaryButton(
                   isExpanded: true,
                   textButton: "${AppLocalizations.of(Get.context!)!.sign_up}",

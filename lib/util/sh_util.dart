@@ -9,8 +9,11 @@ class SharedPref {
   static SharedPref instance = SharedPref._();
   final String appSettingKey = "settings";
   final String languageKey = "language";
+  final String isShowKey = "loading";
 
   var log = Logger();
+
+  
 
   SharedPref._();
 
@@ -31,7 +34,18 @@ class SharedPref {
     }
   }
 
-
+isShowProgress(bool? isShow) {
+    // ignore: unnecessary_statements
+    isShow == null ? isShow = false : isShow;
+    _prefs?.setBool("$isShowKey", isShow);
+  }
+  getShowProgress() {
+    try {
+      return _prefs?.getBool("$isShowKey") ?? false;
+    } catch (e) {
+      print(e);
+    }
+  }
 
   setAppLanguage(var local)
   async{
