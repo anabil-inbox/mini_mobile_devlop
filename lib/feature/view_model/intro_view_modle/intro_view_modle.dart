@@ -7,7 +7,10 @@ class IntroViewModle extends GetxController{
   var indexdPage = 0;
   var log = Logger();
   List<Feature>? features = [];
-
+  int selectedIndex = -1;
+  String? selectedLang;
+  String? temproreySelectedLang;
+  
 
 
   getIntroData()async{

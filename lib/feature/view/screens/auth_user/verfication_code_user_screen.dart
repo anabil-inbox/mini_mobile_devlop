@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inbox_clients/feature/view/screens/user_auth/header_verfication_code.dart';
+import 'package:inbox_clients/feature/view/screens/auth_user/header_verfication_code.dart';
 
 class VerficationCodeUserScreen extends StatelessWidget {
   const VerficationCodeUserScreen({ Key? key }) : super(key: key);
@@ -10,6 +10,7 @@ class VerficationCodeUserScreen extends StatelessWidget {
       body: Column(
         children: [
           HeaderVervication(),
+          
         ],
       ),
     );

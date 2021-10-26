@@ -13,6 +13,7 @@ class AppResponse {
         data: map["data"],
       );
     } catch (e) {
+      
       Logger().e(e);
       return AppResponse.fromJson({});
     }
@@ -40,9 +41,9 @@ class Status {
     bool? success;
 
     factory Status.fromJson(Map<String, dynamic> json) => Status(
-        message: json["message"],
-        code: json["code"],
-        success: json["success"],
+        message: json["message"] ?? "",
+        code: json["code"] ?? "",
+        success: json["success"] ?? "",
     );
 
     Map<String, dynamic> toJson() => {

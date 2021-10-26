@@ -29,8 +29,13 @@
     "arabic_ar" :"Arabic - ar",
     "english_us" :"English - us",
     "select": "Select",
-    "please_enter_valid_email":"Please Enter Valid Email"     
-     
+    "please_enter_valid_email":"Please Enter Valid Email",
+    "enter_your_passcode":"Enter Your Passcode",
+    "resend_code_in":"Resend code in",
+    "resend":"Resend",
+    "verify_by":"Verify by",       
+     "email_address" : "Email Address",
+     "company_sector":"Company Sector"  
    
 
 }

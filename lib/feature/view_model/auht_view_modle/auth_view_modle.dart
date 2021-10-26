@@ -8,7 +8,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/user_modle.dart';
-import 'package:inbox_clients/feature/view/screens/user_auth/verfication_code_user_screen.dart';
+import 'package:inbox_clients/feature/view/screens/auth_user/verfication_code_user_screen.dart';
 import 'package:inbox_clients/network/api/feature/auth_helper.dart';
 import 'package:inbox_clients/network/api/feature/country_helper.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';

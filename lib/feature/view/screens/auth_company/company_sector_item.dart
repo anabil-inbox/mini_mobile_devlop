@@ -4,13 +4,13 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
 
-class LanguageItem extends StatelessWidget {
-  const LanguageItem({ Key? key , required this.name , required this.cellIndex,required this.selectedIndex}) : super(key: key);
+class CompanySectorItem extends StatelessWidget {
+  const CompanySectorItem({ Key? key , required this.sectorText , required this.cellIndex,required this.selectedIndex}) : super(key: key);
 
   final int cellIndex;
   final int selectedIndex;
 
-  final String name;
+  final String sectorText;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,10 +20,9 @@ class LanguageItem extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(width: sizeW13,),
-          selectedIndex == cellIndex ?  SvgPicture.asset("assets/svgs/check.svg") :
-           SvgPicture.asset("assets/svgs/uncheck.svg"),
+          selectedIndex == cellIndex ?  SvgPicture.asset("assets/svgs/check.svg") : SvgPicture.asset("assets/svgs/uncheck.svg"),
           SizedBox(width: sizeW15,),
-          Text("$name")
+          Text("$sectorText")
         ],
       ),
       

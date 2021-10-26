@@ -28,6 +28,12 @@
      "arabic_ar" :"العربية",
      "english_us" :"الانجليزية",
      "select": "اختيار",
-     "please_enter_valid_email":"ادخل بريد الكتروني صالح"     
+     "please_enter_valid_email":"ادخل بريد الكتروني صالح",
+     "enter_your_passcode":"ادخل رمز التحقق",     
+     "resend_code_in":"اعادة ارسال رمز التحقق",
+     "resend":"اعادة ارسال",
+     "verify_by":"التأكيد بواسطة",
+     "email_address" : "البريد الالكتروني",
+     "company_sector":"قطاع الشركة"     
  
 }

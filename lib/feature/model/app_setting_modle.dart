@@ -1,3 +1,5 @@
+import 'package:inbox_clients/feature/model/language.dart';
+
 class ApiSettings {
     ApiSettings({
         this.customerType,
@@ -6,6 +8,7 @@ class ApiSettings {
         this.contactInfo,
         this.companySectors,
         this.notAllowed,
+        this.languges
     });
 
     String? customerType;
@@ -14,7 +17,7 @@ class ApiSettings {
     ContactInfo? contactInfo;
     List<CompanySector>? companySectors;
     List<dynamic>? notAllowed;
-
+    List<Language>? languges;
     factory ApiSettings.fromJson(Map<String, dynamic> json) => ApiSettings(
         customerType: json["customer_type"],
         aboutUs: json["about_us"] == null ? "" : json["about_us"],
@@ -22,6 +25,7 @@ class ApiSettings {
         contactInfo: ContactInfo.fromJson(json["contact_info"]),
         companySectors: List<CompanySector>.from(json["company_sectors"].map((x) => CompanySector.fromJson(x))),
         notAllowed: List<dynamic>.from(json["not_allowed"].map((x) => x)),
+        languges: List<Language>.from(json["languages"].map((x) => Language.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -31,6 +35,7 @@ class ApiSettings {
         "contact_info": contactInfo!.toJson(),
         "company_sectors": List<dynamic>.from(companySectors!.map((x) => x.toJson())),
         "not_allowed": List<dynamic>.from(notAllowed!.map((x) => x)),
+        "languages" : List<dynamic>.from(languges!.map((x) => x.toJson())),
     };
 }
 

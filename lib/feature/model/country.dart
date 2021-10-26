@@ -16,7 +16,7 @@ class Country {
       return Country(
         name: json["name"] ?? "",
         flag: json["flag"] ?? "",
-        prefix: json["prefix"],
+        prefix: json["prefix"] ?? "",
     );
       } catch(e){
       Logger().d(e);

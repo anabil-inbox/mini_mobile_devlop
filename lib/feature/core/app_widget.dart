@@ -27,7 +27,7 @@ class AppWidget extends StatelessWidget {
       designSize: Size(392.72727272727275, 803.6363636363636),
       builder: () => GetMaterialApp(
         title: 'Inbox Clients',
-        locale: Locale(SharedPref.instance.getAppLanguage().split("_")[0]),
+        locale: Locale(SharedPref.instance.getAppLanguageMain().split("_")[0]),
         localizationsDelegates: [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -85,7 +85,7 @@ class AppWidget extends StatelessWidget {
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
           }),
         ),
-        home: const SplashScreen(),
+        home: SplashScreen(),
       ),
     );
   }

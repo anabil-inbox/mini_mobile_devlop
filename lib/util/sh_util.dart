@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:inbox_clients/feature/model/app_setting_modle.dart';
+import 'package:inbox_clients/feature/model/language.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,6 +35,22 @@ class SharedPref {
     }
   }
 
+  List<CompanySector>? getAppSectors(){
+    try{
+      return ApiSettings.fromJson(json.decode(_prefs!.get("$appSettingKey").toString())).companySectors;
+    }catch(e){
+      print("e");
+    }
+  }
+
+   List<Language>? getAppLanguage(){
+    try{
+      return ApiSettings.fromJson(json.decode(_prefs!.get("$appSettingKey").toString())).languges;
+    }catch(e){
+      print("e");
+    }
+  }
+
 
 isShowProgress(bool? isShow) {
     // ignore: unnecessary_statements
@@ -55,13 +73,11 @@ isShowProgress(bool? isShow) {
   }
 
 
-  String getAppLanguage() {
+  String getAppLanguageMain() {
     try {
       Object appLanguage = _prefs!.get("$languageKey")!;
-      print("msg_On_get $appLanguage");
       return appLanguage.toString();
     } catch (e) {
-    print("msg_error in get $e");
     return "en";
     }
   }

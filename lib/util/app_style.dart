@@ -126,6 +126,12 @@ TextStyle? textStyleCardTitle() {
     color: colorBlack,
   );
 }
+TextStyle? textStyleHint() {
+  return TextStyle(
+    fontSize: fontSize14,
+    color: colorUnSelectedWidget,
+  );
+}
 
 TextStyle? textStyleCardTitlePrice() {
   return textStyleBtnBlue()?.copyWith(
