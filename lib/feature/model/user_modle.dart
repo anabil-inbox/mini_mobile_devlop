@@ -26,14 +26,15 @@ class User {
         deviceType: json["device_type"],
         fcm: json["fcm"],
     );
+    
 
     Map<String, dynamic> toJson() => {
-        "mobile": mobile,
-        "country_code": countryCode,
-        "email": email,
-        "full_name": fullName,
-        "udid": udid,
-        "device_type": deviceType,
-        "fcm": fcm,
+        "country_code": "$countryCode",
+        "mobile": "$mobile",
+         "udid": "$udid",
+        "device_type": "$deviceType",
+        "fcm": "$fcm",
+        "email": "$email",
+        "full_name": "$fullName",
     };
 }

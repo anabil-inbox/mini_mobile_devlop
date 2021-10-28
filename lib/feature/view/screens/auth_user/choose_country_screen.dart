@@ -107,6 +107,7 @@ class ChooseCountryScreen extends StatelessWidget {
                 color: colorScaffoldRegistrationBody,
                 padding: EdgeInsets.all(10),
                 child: PrimaryButton(
+                    isLoading: false,
                     textButton: "${AppLocalizations.of(Get.context!)!.ok}",
                     onClicked: () {
                       logic.defCountry = selctedCountry;

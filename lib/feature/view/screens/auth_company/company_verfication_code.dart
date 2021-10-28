@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/auth_company/header_code_verfication.dart';
-import 'package:inbox_clients/feature/view_model/auht_view_modle/register_company_view_modle.dart';
+import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
+import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-class CompanyVerficationCodeScreen extends GetWidget<RegisterCompanyViewModle> {
+class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
   const CompanyVerficationCodeScreen({Key? key , required this.type}) : super(key: key);
 
   final String type;
@@ -16,7 +17,8 @@ class CompanyVerficationCodeScreen extends GetWidget<RegisterCompanyViewModle> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
-      body: Column(
+      body: ListView(
+        padding:const EdgeInsets.all(0),
         children: [
           HeaderCodeVerfication(),
           Column(
@@ -31,7 +33,7 @@ class CompanyVerficationCodeScreen extends GetWidget<RegisterCompanyViewModle> {
               SizedBox(
                 height: sizeH16,
               ),
-              BildeTextActiveCode(),
+              bildeTextActiveCode(),
              type == "user" ? SizedBox(height: sizeH38,) : const SizedBox(),
              type == "user" ? RichText(
                text: TextSpan(
@@ -51,8 +53,8 @@ class CompanyVerficationCodeScreen extends GetWidget<RegisterCompanyViewModle> {
                 height: sizeH190,
               ),
              
-              GetBuilder<RegisterCompanyViewModle>(
-                init: RegisterCompanyViewModle(),
+              GetBuilder<AuthViewModle>(
+                init: AuthViewModle(),
                 initState: (_) {
                   controller.startTimer();
                 },
@@ -82,7 +84,7 @@ class CompanyVerficationCodeScreen extends GetWidget<RegisterCompanyViewModle> {
     );
   }
 
-  Widget BildeTextActiveCode() {
+  Widget bildeTextActiveCode() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: sizeW80!),
       child: PinCodeTextField(
@@ -115,7 +117,11 @@ class CompanyVerficationCodeScreen extends GetWidget<RegisterCompanyViewModle> {
         onCompleted: (v) {
           print("Completed");
           print(v);
-        },
+          if (v == "1234") {
+            Get.offAll(()=> HomeScreen());
+          }
+          
+          },
         onChanged: (value) {
           print(value);
         },

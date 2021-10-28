@@ -35,7 +35,22 @@
     "resend":"Resend",
     "verify_by":"Verify by",       
      "email_address" : "Email Address",
-     "company_sector":"Company Sector"  
-   
+     "company_sector":"Company Sector",
+     "success":"Success",
+     "what_is_your_phone_number":"What is your Phone Number?" ,
+     "user_login":"User Login",
+     "continue_form":"Continue",
+     "what_is_your_cr_number":"what is your CR Number ?",
+     "company_log_in" :  "Company Log in",
+     "you_cant_register_without_accept_our_terms":"you can't login without accept our terms",
+     "error_occurred":"Error Occurred",
+     "phone_number_invalid":"Invalid_phone_number" ,
+     "login_as_company":"Login as Company",
+     "login_as_user":"Login as User",
+     "company":"company",
+     "user":"user",
+     "have_an_account":"Have an Account ? ",
+     "you_have_to_choose_sector_name":"you have To Choose Sector Name",
+     "phone_number_not_register":"Phoe Number Not Registered" 
 
 }

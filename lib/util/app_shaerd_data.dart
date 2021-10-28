@@ -11,13 +11,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as Img;
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
+import 'package:inbox_clients/feature/view/screens/intro_screens/language_item.dart';
+import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
+import 'package:inbox_clients/feature/view_model/splash_view_modle/splash_view_modle.dart';
+import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 import 'app_color.dart';
+import 'app_style.dart';
 import 'string.dart';
 
 String? urlPlacholder =
@@ -304,10 +312,17 @@ showProgress() async {
   await SharedPref.instance.isShowProgress(true);
   Future.delayed(Duration(seconds: 0)).then((value) {
     showDialog(
+      
       context: Get.context!,
       builder: (context) => DialogLoading(),
     );
   });
+}
+mainShowProgress(){
+  showDialog(
+      context: Get.context!,
+      builder: (context) => DialogLoading(),
+    );
 }
 
 hideProgress() async {
@@ -316,6 +331,10 @@ hideProgress() async {
     Get.back()
 );
   }
+}
+
+mainHideProgress(){
+  Get.back();
 }
 
 //todo this is second
@@ -364,6 +383,73 @@ double sumStringVal(String? valOne, String? valTwo) {
   return (convertStringToDouble("${valOne.toString()}") +
       convertStringToDouble("${valTwo.toString()}"));
 }
+
+ updateLanguage(Locale locale) {
+    Get.updateLocale(locale);
+  }
+
+void changeLanguageBottomSheet() {
+    Get.bottomSheet(
+      Container(
+      height: sizeH240,
+      decoration: BoxDecoration(
+          color: colorTextWhite,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      padding: EdgeInsets.symmetric(horizontal: sizeH20!),
+      child: GetBuilder<IntroViewModle>(
+        init: IntroViewModle(),
+        builder: (controller) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: sizeH40),
+              Text(
+                "${AppLocalizations.of(Get.context!)!.language}",
+                style: textStyleTitle(),
+              ),
+              SizedBox(height: sizeH22),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: SharedPref.instance.getAppLanguage()!.length,
+                  itemBuilder: (context, index) => InkWell(
+                    onTap: () {
+                      controller.selectedIndex = index;
+                      controller.temproreySelectedLang = SharedPref.instance.getAppLanguage()![index].name;
+                      controller.update();
+                    },
+                    child: LanguageItem(
+                        selectedIndex: controller.selectedIndex,
+                        cellIndex: index,
+                        name: "${SharedPref.instance.getAppLanguage()![index].languageName}"),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: sizeH18,
+              ),
+              PrimaryButton(
+                isLoading: false,
+                  textButton: "${AppLocalizations.of(Get.context!)!.select}",
+                  onClicked: () {
+                    controller.selectedLang = controller.temproreySelectedLang;
+                    updateLanguage(Locale(controller.selectedLang!));
+                    SharedPref.instance.setAppLanguage(Locale(controller.selectedLang!));
+                    Get.back();
+                    SplashViewModle().getAppSetting();
+                    controller.update();
+
+                  },
+                  isExpanded: true),
+              SizedBox(
+                height: sizeH34,
+              )
+            ],
+          );
+        },
+      ),
+    ));
+  }
+
 
 
 class CustomMaterialPageRoute extends MaterialPageRoute {

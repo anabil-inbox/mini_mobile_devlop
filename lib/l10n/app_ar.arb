@@ -9,6 +9,7 @@
      "english":"الانجليزية",
      "arabic" : "العربية",
      "company_registration" :  "تسجيل شركة",
+     "company_log_in" :  "تسجيل الدخول شركة",
      "cr_number" : "رقم الترخيص",
      "company_name":"اسم الشركة",
      "your_email_address" : "بريدك الالكتروني", 
@@ -17,6 +18,7 @@
      "terms_and_conditions": "الشروط والأحكام الخاصة بنا",
      "fill_this_field" : "هذا الحقل مطلوب",
      "user_registration":"تسجيل مستخدم",
+     "user_login":"تسجيل دخول مستخدم",
      "full_name":"الاسم",
      "dont_have_an_account" : "لا تمتلك حساب؟",
      "sign_up_here" : "سجل من هنا",
@@ -34,6 +36,19 @@
      "resend":"اعادة ارسال",
      "verify_by":"التأكيد بواسطة",
      "email_address" : "البريد الالكتروني",
-     "company_sector":"قطاع الشركة"     
- 
+     "company_sector":"قطاع الشركة",
+     "success":"تمت العملية بنجاح",
+     "what_is_your_phone_number":"ما هو رقم هاتفك؟",
+     "continue_form":"استمرار",
+     "what_is_your_cr_number":"ما هو رقم الترخيص؟ ",
+     "you_cant_register_without_accept_our_terms":"لا تستطيع تسجيل الدخول دون الموافقة على سياسة الخصوصية",
+     "error_occurred":"حدث خطأ",
+     "phone_number_invalid":"رقم الهاتف غير صالح",
+     "login_as_company":"تسجيل الدخول ك شركة",
+     "login_as_user":"تسجيل الدخول ك مستخدم" ,     
+     "company":"شركة",
+     "user":"مستخدم",
+     "have_an_account":"لديك حساب بالفعل ؟ ",
+     "you_have_to_choose_sector_name":"يجب عليك ان تحدد اسم القطاع", 
+    "phone_number_not_register":"لا يوجد حساب مرتبط برقم الهاتف"
 }

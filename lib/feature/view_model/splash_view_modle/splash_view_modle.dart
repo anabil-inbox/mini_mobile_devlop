@@ -23,9 +23,11 @@ class SplashViewModle extends GetxController{
    
   }
 
+
   @override
   void onInit() async{
     getAppSetting();
+    SharedPref.instance.getUserType();
     super.onInit();
   }
 

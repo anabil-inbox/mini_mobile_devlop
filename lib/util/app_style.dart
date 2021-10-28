@@ -247,6 +247,20 @@ ButtonStyle? get primaryButtonStyle => ButtonStyle(
     backgroundColor: MaterialStateProperty.all(colorPrimary),
     shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
 
+ButtonStyle? get seconderyCustomButtonStyle => ButtonStyle(
+    textStyle: MaterialStateProperty.all(textPrimaryButton()),
+    padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
+    backgroundColor: MaterialStateProperty.all(colorPrimary),
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+
+ButtonStyle? get seconderyButtonBothFormStyle => ButtonStyle(
+    textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black)),
+    padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
+        backgroundColor: MaterialStateProperty.all(colorUnSelectedWidget),
+
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+
+
 ButtonStyle? get seconderyButtonStyle => ButtonStyle(
     textStyle: MaterialStateProperty.all(textSeconderyButton()!.copyWith(color: Colors.black)),
     padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,

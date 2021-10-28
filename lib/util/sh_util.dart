@@ -11,6 +11,7 @@ class SharedPref {
   final String appSettingKey = "settings";
   final String languageKey = "language";
   final String isShowKey = "loading";
+  final String currentUser = "currentUser";
 
   var log = Logger();
 
@@ -24,6 +25,24 @@ class SharedPref {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String prfApiSettings = jsonEncode(json);
     pref.setString('$appSettingKey', prfApiSettings);
+  }
+
+  setCurrentUserDate(var currentUser) async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String prfCurrentUser = currentUser.toString();
+    pref.setString('$currentUser', prfCurrentUser);
+  }
+
+
+
+  getCurrentUser(){
+   try {
+    Object currentUserObject = _prefs!.getString('$currentUser')!;
+    return currentUserObject;
+   }catch(e){
+     print('$e');
+   }
+
   }
 
   getAppSetting() {
@@ -52,11 +71,12 @@ class SharedPref {
   }
 
 
-isShowProgress(bool? isShow) {
+  isShowProgress(bool? isShow) {
     // ignore: unnecessary_statements
     isShow == null ? isShow = false : isShow;
     _prefs?.setBool("$isShowKey", isShow);
   }
+
   getShowProgress() {
     try {
       return _prefs?.getBool("$isShowKey") ?? false;
@@ -64,8 +84,6 @@ isShowProgress(bool? isShow) {
       print(e);
     }
   }
-
-
 
   setAppLanguage(var local) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -81,6 +99,13 @@ isShowProgress(bool? isShow) {
     return "en";
     }
   }
+
+    getUserType(){
+    //  return ApiSettings.fromJson(json.decode(_prefs!.get("$appSettingKey").toString())).customerType.toString();
+    // return "company";
+    // return "both";
+       return "user";
+    }
 
   init() async {
     _prefs = await SharedPreferences?.getInstance();

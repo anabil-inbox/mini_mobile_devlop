@@ -1,4 +1,8 @@
+
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/utils.dart';
 import 'package:logger/logger.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppResponse {
   Status? status;
@@ -6,16 +10,26 @@ class AppResponse {
 
   AppResponse({this.status, this.data});
 
-  factory AppResponse.fromJson(Map<String, dynamic> map) {
+  factory AppResponse.fromJson(var map) {
     try {
-      return AppResponse(
-       status: Status.fromJson(map["status"]),
-        data: map["data"],
-      );
+      print("msg_ $map");
+      if (GetUtils.isNull(map["data"])) {
+        return AppResponse(
+          status: Status.fromJson(map["status"]),
+        );
+      } else {
+        return AppResponse(
+          status: Status.fromJson(map["status"]),
+          data: map["data"] == null ? null : map["data"],
+        );
+      }
     } catch (e) {
       
-      Logger().e(e);
-      return AppResponse.fromJson({});
+      return AppResponse(status: Status(
+        message: "$e",
+        code: 403,
+        success: false,
+      ));
     }
   }
 
@@ -24,32 +38,31 @@ class AppResponse {
       return {"status": status?.toJson(), "data": data};
     } catch (e) {
       Logger().e(e);
-      return {};
+      return {"": ""};
     }
   }
 }
 
 class Status {
-    Status({
-        this.message,
-        this.code,
-        this.success,
-    });
+  Status({
+    this.message,
+    this.code,
+    this.success,
+  });
 
-    String? message;
-    int? code;
-    bool? success;
+  String? message;
+  int? code;
+  bool? success;
 
-    factory Status.fromJson(Map<String, dynamic> json) => Status(
+  factory Status.fromJson(Map<String, dynamic> json) => Status(
         message: json["message"] ?? "",
         code: json["code"] ?? "",
         success: json["success"] ?? "",
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
-        "message": message,
-        "code": code,
-        "success": success,
-    };
+  Map<String, dynamic> toJson() => {
+        "message": message ?? "",
+        "code": code ?? "",
+        "success": success ?? "",
+      };
 }
-

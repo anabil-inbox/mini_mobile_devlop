@@ -4,31 +4,27 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
 // ignore: must_be_immutable
-class PrimaryButton extends StatelessWidget {
-   PrimaryButton({ Key? key ,
+class PrimaryButtonFingerPinter extends StatelessWidget {
+   PrimaryButtonFingerPinter({ Key? key ,
    required this.textButton,
    required this.isLoading,
    required this.onClicked,
-   required this.isExpanded,
    }) : super(key: key);
   final String textButton;
   final Function onClicked;
-  final bool isExpanded;
-  bool isLoading = false;
+  bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: isExpanded ? double.infinity : sizeW165,
+      width: sizeW290,
       height: sizeH50,
       child: ElevatedButton(
-        
-        style: primaryButtonStyle,
+        style: seconderyCustomButtonStyle,
         onPressed: !isLoading ? (){
+            
             onClicked();
-        } : (){
-          print("msg Blocked Button");
-        },
+        } : (){},
         child: isLoading ? ThreeSizeDot() : Text("$textButton"),
       ),
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
 class HeaderCodeVerfication extends StatelessWidget {
@@ -25,10 +27,18 @@ class HeaderCodeVerfication extends StatelessWidget {
               top: padding40,
               start:padding20,
               child: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.back();
+            },
             icon: SvgPicture.asset("assets/svgs/back_arrow.svg"),
           )),
-          
+          PositionedDirectional(
+            start: padding0,
+            end: padding0,
+            top: padding63,
+            bottom: padding32,
+            child: SvgPicture.asset("assets/svgs/logo_horizantal.svg",),
+          ),
           
         ],
       ),

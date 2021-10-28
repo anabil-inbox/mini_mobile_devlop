@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:inbox_clients/network/api/dio_manager/dio_manage_class.dart';
 import 'package:logger/logger.dart';
 
@@ -14,8 +15,10 @@ class CountryApi {
       var response = await DioManagerClass.getInstance.dioPostMethod(url: url, header: header , body: body);
       log.d(AppResponse.fromJson(json.decode(response.toString())));
       return AppResponse.fromJson(json.decode(response.toString()));
-    } catch (e) {
-      return AppResponse.fromJson({});  
+    }  on DioError catch (ex) {
+      var message = json.decode(ex.response.toString());
+      Logger().e(message);
+      return AppResponse.fromJson(message);
     }
    
   } 
