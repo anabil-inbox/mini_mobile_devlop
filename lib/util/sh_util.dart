@@ -102,9 +102,9 @@ class SharedPref {
 
     getUserType(){
     //  return ApiSettings.fromJson(json.decode(_prefs!.get("$appSettingKey").toString())).customerType.toString();
-    // return "company";
+     // return "company";
     // return "both";
-       return "user";
+      return "user";
     }
 
   init() async {

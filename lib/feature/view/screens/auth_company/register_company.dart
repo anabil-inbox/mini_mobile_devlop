@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/auth_company/header_register_company.dart';
 import 'package:inbox_clients/feature/view/screens/auth_company/widget/register_company_form.dart';
+import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
-class RegisterCompanyScreen extends StatelessWidget {
+class RegisterCompanyScreen extends GetWidget<AuthViewModle> {
   const RegisterCompanyScreen({Key? key}) : super(key: key);
-
+  //AuthViewModle get viewModel => Get.find<AuthViewModle>();
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
