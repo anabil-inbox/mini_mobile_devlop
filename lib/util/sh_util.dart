@@ -5,7 +5,6 @@ import 'package:inbox_clients/feature/model/language.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class SharedPref {
   static SharedPref instance = SharedPref._();
   final String appSettingKey = "settings";
@@ -14,8 +13,6 @@ class SharedPref {
   final String currentUser = "currentUser";
 
   var log = Logger();
-
-  
 
   SharedPref._();
 
@@ -27,22 +24,19 @@ class SharedPref {
     pref.setString('$appSettingKey', prfApiSettings);
   }
 
-  setCurrentUserDate(var currentUser) async{
+  setCurrentUserDate(var currentUser) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String prfCurrentUser = currentUser.toString();
     pref.setString('$currentUser', prfCurrentUser);
   }
 
-
-
-  getCurrentUser(){
-   try {
-    Object currentUserObject = _prefs!.getString('$currentUser')!;
-    return currentUserObject;
-   }catch(e){
-     print('$e');
-   }
-
+  getCurrentUser() {
+    try {
+      Object currentUserObject = _prefs!.getString('$currentUser')!;
+      return currentUserObject;
+    } catch (e) {
+      print('$e');
+    }
   }
 
   getAppSetting() {
@@ -54,22 +48,25 @@ class SharedPref {
     }
   }
 
-  List<CompanySector>? getAppSectors(){
-    try{
-      return ApiSettings.fromJson(json.decode(_prefs!.get("$appSettingKey").toString())).companySectors;
-    }catch(e){
+  List<CompanySector>? getAppSectors() {
+    try {
+      return ApiSettings.fromJson(
+              json.decode(_prefs!.get("$appSettingKey").toString()))
+          .companySectors;
+    } catch (e) {
       print("e");
     }
   }
 
-   List<Language>? getAppLanguage(){
-    try{
-      return ApiSettings.fromJson(json.decode(_prefs!.get("$appSettingKey").toString())).languges;
-    }catch(e){
+  List<Language>? getAppLanguage() {
+    try {
+      return ApiSettings.fromJson(
+              json.decode(_prefs!.get("$appSettingKey").toString()))
+          .languges;
+    } catch (e) {
       print("e");
     }
   }
-
 
   isShowProgress(bool? isShow) {
     // ignore: unnecessary_statements
@@ -90,25 +87,26 @@ class SharedPref {
     pref.setString('$languageKey', local.toString());
   }
 
-
   String getAppLanguageMain() {
     try {
       Object appLanguage = _prefs!.get("$languageKey")!;
       return appLanguage.toString();
     } catch (e) {
-    return "en";
+      return "en";
     }
   }
 
-    getUserType(){
-    //  return ApiSettings.fromJson(json.decode(_prefs!.get("$appSettingKey").toString())).customerType.toString();
-     // return "company";
+  getUserType() {
+    return ApiSettings.fromJson(
+            json.decode(_prefs!.get("$appSettingKey").toString()))
+        .customerType
+        .toString();
+    // return "company";
     // return "both";
-      return "user";
-    }
+    //return "user";
+  }
 
   init() async {
     _prefs = await SharedPreferences?.getInstance();
   }
-
 }

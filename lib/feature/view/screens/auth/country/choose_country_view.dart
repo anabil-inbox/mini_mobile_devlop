@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/country.dart';
-import 'package:inbox_clients/feature/view/screens/auth_user/country_item.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -11,6 +10,8 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../auth_user/widget/country_item_widget.dart';
 
 // ignore: must_be_immutable
 class ChooseCountryScreen extends StatelessWidget {

@@ -50,5 +50,7 @@
      "user":"مستخدم",
      "have_an_account":"لديك حساب بالفعل ؟ ",
      "you_have_to_choose_sector_name":"يجب عليك ان تحدد اسم القطاع", 
-    "phone_number_not_register":"لا يوجد حساب مرتبط برقم الهاتف"
+    "phone_number_not_register":"لا يوجد حساب مرتبط برقم الهاتف",
+    "what_is_your_phone_number":"ما هو رقم هاتفك؟",
+    "what_is_your_cr_number":"ما هو ال 'CR' الخاص بك"
 }

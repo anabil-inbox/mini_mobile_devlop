@@ -5,11 +5,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/user_model.dart';
-import 'package:inbox_clients/feature/view/screens/auth_user/choose_country_screen.dart';
-import 'package:inbox_clients/feature/view/screens/auth_user/terms_screen.dart';
-import 'package:inbox_clients/feature/view/screens/user&&company_auth/user_company_auth_screen.dart';
+import 'package:inbox_clients/feature/view/screens/auth/country/choose_country_view.dart';
+import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
+import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -17,7 +18,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
-import '../company_sector_item.dart';
+import 'company_sector_item_widget.dart';
 
 class RegisterCompanyForm extends GetWidget<AuthViewModle> {
   RegisterCompanyForm({Key? key}) : super(key: key);
@@ -284,7 +285,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
               InkWell(
                 onTap: () {
                   Get.to(() => UserCompanyLoginScreen(
-                        type: "company",
+                        type: "${ConstanceNetwork.companyType}",
                       ));
                 },
                 child: RichText(

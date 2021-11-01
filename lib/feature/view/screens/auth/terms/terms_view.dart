@@ -21,6 +21,7 @@ class TermsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       appBar: AppBar(
+        automaticallyImplyLeading: true,
         elevation: 1,
         title: Text("${AppLocalizations.of(Get.context!)!.terms_and_conditions}" , style: textStyleAppBarTitle(),),
         leading: IconButton(
@@ -40,6 +41,7 @@ class TermsScreen extends StatelessWidget {
           child: CustomTextView(
             textAlign: TextAlign.start,
             txt: settings.termOfConditions,
+            textStyle: textStyle(),
           ),
         ),
       ),

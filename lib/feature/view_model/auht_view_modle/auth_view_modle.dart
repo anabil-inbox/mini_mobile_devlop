@@ -11,10 +11,11 @@ import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/model/user_model.dart';
 import 'package:inbox_clients/feature/model/user_modle.dart';
-import 'package:inbox_clients/feature/view/screens/auth_company/company_verfication_code.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_company/verfication/company_verfication_code_view.dart';
 import 'package:inbox_clients/network/api/feature/auth_helper.dart';
 import 'package:inbox_clients/network/api/feature/country_helper.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
@@ -96,7 +97,7 @@ class AuthViewModle extends GetxController {
               update(),
               snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
                   "${value.status!.message}"),
-              Get.to(CompanyVerficationCodeScreen(type: "user")),
+              Get.to(CompanyVerficationCodeScreen(type: "${ConstanceNetwork.userType}")),
             }
           else
             {
@@ -125,7 +126,7 @@ class AuthViewModle extends GetxController {
       update();
       snackSuccess(
           "${AppLocalizations.of(Get.context!)!.success}", "${status.message}");
-      Get.to(CompanyVerficationCodeScreen(type: "company"));
+      Get.to(CompanyVerficationCodeScreen(type: "${ConstanceNetwork.companyType}"));
     } else {
       isLoading = false;
       update();
@@ -143,13 +144,14 @@ class AuthViewModle extends GetxController {
     await AuthHelper.getInstance.loginUser(user!.toJson()).then((value) => {
 
           if (value.status!.success!)
-            { 
+            {
+              Logger().d(value.data["Customer"]),
               SharedPref.instance.setCurrentUserDate(value.data["Customer"],),
               isLoading = false,
               update(),
               snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
                   "${value.status!.message}"),
-              Get.to(CompanyVerficationCodeScreen(type: "user")),
+              Get.to(CompanyVerficationCodeScreen(type: "${ConstanceNetwork.userType}")),
             }
           else
             {

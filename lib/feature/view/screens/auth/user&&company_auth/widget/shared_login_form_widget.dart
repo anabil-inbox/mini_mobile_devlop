@@ -7,9 +7,10 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:inbox_clients/feature/model/user_model.dart';
 import 'package:inbox_clients/feature/model/user_modle.dart';
-import 'package:inbox_clients/feature/view/screens/auth_user/choose_country_screen.dart';
+import 'package:inbox_clients/feature/view/screens/auth/country/choose_country_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button_fingerPinter.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
@@ -27,7 +28,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
         key: _formKey,
         child: Column(
           children: [
-            type == "user"
+            type == "${ConstanceNetwork.userType}"
                 ? Container(
                     color: colorTextWhite,
                     child: InkWell(
@@ -74,7 +75,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                       ),
                     ),
                   )
-                : type == "company"
+                : type == "${ConstanceNetwork.companyType}"
                     ? Container(
                         child: TextFormField(
                           controller: controller.tdcrNumber,
@@ -90,12 +91,11 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                           },
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                              hintText:
-                                  "${AppLocalizations.of(Get.context!)!.cr_number}"),
+                              hintText: "${AppLocalizations.of(Get.context!)!.cr_number}"),
                         ),
                       )
                     : const SizedBox(),
-            SizedBox(height: sizeH27),
+            SizedBox(height: sizeH28),
             Row(
               children: [
                 GetBuilder<AuthViewModle>(
@@ -108,7 +108,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                       isLoading: controller.isLoading,
                       onClicked: () {
                         if (_formKey.currentState!.validate()) {
-                          if (type == "user") {
+                          if (type == "${ConstanceNetwork.userType}") {
                             controller.signInUser(
                                 user: User(
                                     countryCode: "970",
@@ -116,7 +116,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                                     udid: controller.identifier,
                                     deviceType: controller.deviceType,
                                     fcm: "fcm_1"));
-                          } else if (type == "company") {
+                          } else if (type == "${ConstanceNetwork.companyType}") {
                             controller.signInCompany(
                               Company(
                               crNumber: logic.tdcrNumber.text,
@@ -134,7 +134,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                 SvgPicture.asset("assets/svgs/fingerprint.svg")
               ],
             ),
-            SizedBox(height: sizeH100),
+            //SizedBox(height: sizeH100),
           ],
         ),
       ),

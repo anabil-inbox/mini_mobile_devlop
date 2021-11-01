@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/view/screens/auth_company/register_company.dart';
-import 'package:inbox_clients/feature/view/screens/auth_user/user_register_screen.dart';
-import 'package:inbox_clients/feature/view/screens/intro_screens/intro_active_dot.dart';
-import 'package:inbox_clients/feature/view/screens/user&&company_auth/user_company_auth_screen.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_company/register/register_company.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_register_view.dart';
+import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/intro_active_dot_widget.dart';
+import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
 import 'package:inbox_clients/feature/view/widgets/intro_body.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
@@ -71,9 +72,9 @@ final String type;
                       textButton:
                           "${AppLocalizations.of(Get.context!)!.sign_up}",
                       onClicked: () {
-                        if(type == "user" || type == "both"){
+                        if(type == "${ConstanceNetwork.userType}" || type == "${ConstanceNetwork.bothType}"){
                           Get.to(() => UserRegisterScreen());
-                        }else if(type == "company"){
+                        }else if(type == "${ConstanceNetwork.companyType}"){
                           Get.to(() => RegisterCompanyScreen());  
                         }
                        

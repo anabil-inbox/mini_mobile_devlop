@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:inbox_clients/feature/view/screens/intro_screens/intro_unactive_dot.dart';
 import 'package:inbox_clients/util/app_color.dart';
+
+import 'intro_unactive_dot_widget.dart';
 
 // ignore: must_be_immutable
 class IntroActiveDot extends StatelessWidget {

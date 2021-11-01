@@ -38,6 +38,11 @@ abstract class ConstanceNetwork {
 
 
 
+  //todo this for constance type of user
+  static String userType = "user";
+  static String companyType = "company";
+  static String bothType = "both";
+
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};
     if (typeToken == 0) {
@@ -68,4 +73,7 @@ abstract class ConstanceNetwork {
 
     return headers;
   }
+
+
+
 }

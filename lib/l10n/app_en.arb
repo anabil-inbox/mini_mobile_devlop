@@ -38,7 +38,7 @@
      "company_sector":"Company Sector",
      "success":"Success",
      "what_is_your_phone_number":"What is your Phone Number?" ,
-     "user_login":"User Login",
+     "user_login":"User Log in",
      "continue_form":"Continue",
      "what_is_your_cr_number":"what is your CR Number ?",
      "company_log_in" :  "Company Log in",
@@ -51,6 +51,8 @@
      "user":"user",
      "have_an_account":"Have an Account ? ",
      "you_have_to_choose_sector_name":"you have To Choose Sector Name",
-     "phone_number_not_register":"Phoe Number Not Registered" 
+     "phone_number_not_register":"Phoe Number Not Registered",
+     "what_is_your_phone_number":"What is your Phone Number?",
+     "what_is_your_cr_number":"What is your CR  number?"
 
 }

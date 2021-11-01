@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
-import 'package:inbox_clients/feature/view/screens/auth_company/register_company.dart';
-import 'package:inbox_clients/feature/view/screens/auth_user/user_register_screen.dart';
-import 'package:inbox_clients/feature/view/screens/user&&company_auth/header_login.dart';
-import 'package:inbox_clients/feature/view/screens/user&&company_auth/shared_login_form.dart';
-import 'package:inbox_clients/feature/view/screens/user&&company_auth/user_both_login_screen.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_company/register/register_company.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_register_view.dart';
+import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
+import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/widget/header_login_widget.dart';
+import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/widget/shared_login_form_widget.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -23,7 +24,7 @@ class UserCompanyLoginScreen extends GetWidget<IntroViewModle> {
   @override
   Widget build(BuildContext context) {
     Get.put(AuthViewModle());
-    return type != "both" ? Scaffold(
+    return type != "${ConstanceNetwork.bothType}" ? Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       body: ListView(
         padding: const EdgeInsets.all(0),
@@ -32,7 +33,7 @@ class UserCompanyLoginScreen extends GetWidget<IntroViewModle> {
           SizedBox(
             height: sizeH22,
           ),
-          type == "user"
+          type == "${ConstanceNetwork.userType}"
               ? Text("${AppLocalizations.of(Get.context!)!.user_login}",
                   style: textStyleHints() ,textAlign: TextAlign.center)
               : Text("${AppLocalizations.of(Get.context!)!.company_log_in}",
@@ -40,7 +41,7 @@ class UserCompanyLoginScreen extends GetWidget<IntroViewModle> {
           SizedBox(
             height: sizeH10,
           ),
-          type == "user"
+          type == "${ConstanceNetwork.userType}"
               ? Text(
                   "${AppLocalizations.of(Get.context!)!.what_is_your_phone_number}",
                   style: textStyleHints(),textAlign: TextAlign.center,) : const SizedBox(),
@@ -49,8 +50,8 @@ class UserCompanyLoginScreen extends GetWidget<IntroViewModle> {
             height: sizeH18,
           ),
          
-         type == "user" ||
-         type == "company" ? 
+         type == "${ConstanceNetwork.userType}" ||
+         type == "${ConstanceNetwork.companyType}" ?
          SharedLoginForm(
             type: type,
           ): 
@@ -59,9 +60,9 @@ class UserCompanyLoginScreen extends GetWidget<IntroViewModle> {
            splashColor: colorTrans,
            highlightColor: colorTrans,
               onTap: () {
-                if (type == "user") {
+                if (type == "${ConstanceNetwork.userType}") {
                   Get.off(() => UserRegisterScreen());
-                } else if (type == "company") {
+                } else if (type == "${ConstanceNetwork.companyType}") {
                   Get.off(() => RegisterCompanyScreen());
                 } else {
 

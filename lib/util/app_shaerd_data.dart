@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as Img;
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
-import 'package:inbox_clients/feature/view/screens/intro_screens/language_item.dart';
+import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/language_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/splash_view_modle/splash_view_modle.dart';

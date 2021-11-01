@@ -15,8 +15,8 @@ SystemUiOverlayStyle? systemUiOverLayLight() {
 
 TextStyle? textStyle() {
   return TextStyle(
-      color: colorTextBlack,
-      height: 1,
+      color: colorTextDark,
+      height: 1.5,
       fontFamily: Constance.Font_regular,
       fontSize: fontSize14);
 }

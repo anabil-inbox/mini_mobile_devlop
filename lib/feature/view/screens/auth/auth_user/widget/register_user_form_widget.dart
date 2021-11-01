@@ -3,19 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/user_modle.dart';
-import 'package:inbox_clients/feature/view/screens/auth_user/choose_country_screen.dart';
-import 'package:inbox_clients/feature/view/screens/auth_user/terms_screen.dart';
-import 'package:inbox_clients/feature/view/screens/auth_user/user_register_screen.dart';
-import 'package:inbox_clients/feature/view/screens/user&&company_auth/shared_login_form.dart';
-import 'package:inbox_clients/feature/view/screens/user&&company_auth/user_both_login_screen.dart';
-import 'package:inbox_clients/feature/view/screens/user&&company_auth/user_company_auth_screen.dart';
+import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
+import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
+import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/font_dimne.dart';
+
+import '../../country/choose_country_view.dart';
 
 class RegisterUserForm extends GetWidget<AuthViewModle> {
   RegisterUserForm({Key? key}) : super(key: key);
@@ -56,7 +57,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                       Expanded(
                         child: TextFormField(
                           maxLength: 9,
-                          
+
                           onSaved: (newValue) {
                             controller.tdMobileNumber.text =
                             newValue.toString();
@@ -123,7 +124,42 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
               ),
               SizedBox(
                 height: padding16,
-              ), 
+              ),
+              GetBuilder<AuthViewModle>(
+                builder: (value) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: (){
+                          value.isAccepte = !value.isAccepte;
+                          value.update();
+                        },
+                        child: Row(
+
+                          children: [
+                            value.isAccepte ? SvgPicture.asset("assets/svgs/check.svg") :
+                            SvgPicture.asset("assets/svgs/uncheck.svg"),
+                            SizedBox(width: 10,),
+                            CustomTextView(txt:"${AppLocalizations.of(Get.context!)!.accept_our} ",textStyle: textStyle(),)
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                          onTap: (){
+                            Get.to(() => TermsScreen());
+                          },
+                          child: CustomTextView(txt:"${AppLocalizations.of(Get.context!)!.terms_and_conditions}" ,
+                            textAlign:TextAlign.start,
+                            textStyle: textStyleUnderLinePrimary()!.copyWith(color: colorBlack , fontSize: fontSize14),)),
+                    ],
+                  );
+                },
+              ),
+              SizedBox(
+                height: sizeH22,
+              ),
               GetBuilder<AuthViewModle>(
                 init: AuthViewModle(),
                 initState: (_) {},
@@ -132,12 +168,12 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                       isLoading: controller.isLoading,
                       isExpanded: true,
                       textButton:
-                          "${AppLocalizations.of(Get.context!)!.sign_up}",
+                      "${AppLocalizations.of(Get.context!)!.sign_up}",
                       onClicked: () {
-                       
+
                         if(!controller.isAccepte){
                           snackError("${AppLocalizations.of(Get.context!)!.error_occurred}",
-                          "${AppLocalizations.of(Get.context!)!.you_cant_register_without_accept_our_terms}");
+                              "${AppLocalizations.of(Get.context!)!.you_cant_register_without_accept_our_terms}");
                         }
 
                         if (_formKey.currentState!.validate() && controller.isAccepte) {
@@ -152,39 +188,8 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                                   fcm: "fcm1",
                                   countryCode: "972"));
                         }
-                        
+
                       });
-                },
-              ),
-              SizedBox(
-                height: sizeH22,
-              ),
-              GetBuilder<AuthViewModle>(
-                builder: (value) {
-                  return Row(
-                    children: [
-                      InkWell(
-                        onTap: (){
-                          value.isAccepte = !value.isAccepte;
-                          value.update();
-                        },
-                        child: Row(
-                          children: [
-                           value.isAccepte ? SvgPicture.asset("assets/svgs/check.svg") :
-                           SvgPicture.asset("assets/svgs/uncheck.svg"),
-                           SizedBox(width: 10,),
-                           Text("${AppLocalizations.of(Get.context!)!.accept_our} ",) 
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: (){
-                          Get.to(() => TermsScreen());
-                        },
-                        child: Text("${AppLocalizations.of(Get.context!)!.terms_and_conditions}" , 
-                        style: textStyleUnderLinePrimary()!.copyWith(color: colorBlack),)),
-                    ],
-                  );
                 },
               ),
               SizedBox(
@@ -193,7 +198,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
               InkWell(
                 onTap: (){
                   print("Cliked");
-                  Get.to(() => UserCompanyLoginScreen(type: "user",));
+                  Get.to(() => UserCompanyLoginScreen(type: "${ConstanceNetwork.userType}",));
                 },
                 child: RichText(
                   text: TextSpan(
@@ -211,7 +216,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 ),
               ),
               SizedBox(
-                height: sizeH100,
+                height: sizeH48,
               ),
             ],
           )),

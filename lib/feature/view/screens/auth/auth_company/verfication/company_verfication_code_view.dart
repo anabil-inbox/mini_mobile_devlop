@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/view/screens/auth_company/header_code_verfication.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+
+import '../widget/header_code_verfication_widget.dart';
 
 class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
   const CompanyVerficationCodeScreen({Key? key , required this.type}) : super(key: key);
@@ -34,8 +36,8 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
                 height: sizeH16,
               ),
               bildeTextActiveCode(),
-             type == "user" ? SizedBox(height: sizeH38,) : const SizedBox(),
-             type == "user" ? RichText(
+             type == ConstanceNetwork.userType ? SizedBox(height: sizeH38,) : const SizedBox(),
+             type == ConstanceNetwork.userType ? RichText(
                text: TextSpan(
                  children: [
                   TextSpan(

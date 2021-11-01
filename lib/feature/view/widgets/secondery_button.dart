@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/view/screens/user&&company_auth/user_company_auth_screen.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
