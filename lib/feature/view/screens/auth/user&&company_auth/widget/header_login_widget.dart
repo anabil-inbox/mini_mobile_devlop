@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -33,7 +35,7 @@ class HeaderLogin extends GetWidget<IntroViewModle> {
               onPressed: (){
                 changeLanguageBottomSheet();
               },
-              icon: SvgPicture.asset("assets/svgs/language_.svg" ,)),
+              icon: SvgPicture.asset("assets/svgs/language_eye.svg" ,)),
           ),
           PositionedDirectional(
             start: padding0,
@@ -48,7 +50,7 @@ class HeaderLogin extends GetWidget<IntroViewModle> {
               start:padding20,
               child: IconButton(
             onPressed: () {
-              Get.back();
+              exit(0);
             },
             icon: SvgPicture.asset("assets/svgs/back.svg"),
           )),

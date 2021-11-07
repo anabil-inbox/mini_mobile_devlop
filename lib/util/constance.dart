@@ -1,6 +1,6 @@
 abstract class Constance {
   static const Font_regular = "regular";
-  static const Font_extraBold = "semi_bold";
+  static const Font_simiaBold = "semi_bold";
   static const Font_bold = "bold";
 
   static const DateFormatSlash = "yyyy-MM-dd";

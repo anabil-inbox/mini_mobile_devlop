@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/features_modle.dart';
 import 'package:inbox_clients/network/api/feature/feature_helper.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
 class IntroViewModle extends GetxController{
@@ -22,9 +24,10 @@ class IntroViewModle extends GetxController{
     }
    });
   }
-  
+    
   @override
   void onInit() {
+    SharedPref.instance.setUserLoginState("${ConstanceNetwork.userEnterd}");
     getIntroData();
     super.onInit();
   }

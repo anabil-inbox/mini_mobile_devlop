@@ -23,7 +23,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 import 'app_color.dart';
 import 'app_style.dart';
 import 'string.dart';
@@ -43,7 +42,7 @@ screenUtil(BuildContext context) {
 }
 
 var safeAreaLight =
-SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
   systemNavigationBarColor: colorBackground,
   statusBarColor: scaffoldColor,
   statusBarIconBrightness: Brightness.dark,
@@ -51,7 +50,7 @@ SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
 ));
 
 var safeAreaDark =
-SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
   systemNavigationBarColor: colorBackground,
   statusBarColor: colorTrans,
   statusBarIconBrightness: Brightness.light,
@@ -59,17 +58,18 @@ SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
 ));
 
 var bottomNavDark =
-SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
   systemNavigationBarColor: colorPrimary,
   statusBarColor: colorPrimary,
   statusBarIconBrightness: Brightness.dark,
   systemNavigationBarIconBrightness: Brightness.light,
 ));
 
-
-var hideStatusBar = SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
-var hideBottomBar = SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-var hideAllBar = SystemChrome.setEnabledSystemUIOverlays([]);
+// var hideStatusBar =
+//     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
+// var hideBottomBar =
+//     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+// var hideAllBar = SystemChrome.setEnabledSystemUIOverlays([]);
 
 void portraitOrientation() {
   SystemChrome.setPreferredOrientations(
@@ -93,18 +93,18 @@ emailValid(String val) {
 }
 
 Widget simplePopup() => PopupMenuButton<int>(
-  initialValue: 1,
-  itemBuilder: (context) => [
-    PopupMenuItem(
-      value: 1,
-      child: Text("First"),
-    ),
-    PopupMenuItem(
-      value: 2,
-      child: Text("Second"),
-    ),
-  ],
-);
+      initialValue: 1,
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 1,
+          child: Text("First"),
+        ),
+        PopupMenuItem(
+          value: 2,
+          child: Text("Second"),
+        ),
+      ],
+    );
 
 String getDeviceLang() {
   Locale myLocale = Localizations.localeOf(Get.context!);
@@ -150,8 +150,6 @@ snackConnection() {
   });
 }
 
-
-
 showAnimatedDialog(dialog) {
   showGeneralDialog(
     barrierLabel: "Label",
@@ -167,15 +165,15 @@ showAnimatedDialog(dialog) {
     },
     transitionBuilder: (context, anim1, anim2, child) {
       return SlideTransition(
-        position:
-        Tween(begin: Offset(0, 1), end: Offset(0, 0)).animate(anim1),
+        position: Tween(begin: Offset(0, 1), end: Offset(0, 0)).animate(anim1),
         child: child,
       );
     },
   );
 }
 
-var urlProduct = "https://images.unsplash.com/photo-1613177794106-be20802b11d3?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xvY2slMjBoYW5kc3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80";
+var urlProduct =
+    "https://images.unsplash.com/photo-1613177794106-be20802b11d3?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xvY2slMjBoYW5kc3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80";
 Widget imageNetwork({double? width, double? height, String? url}) {
   return CachedNetworkImage(
     imageBuilder: (context, imageProvider) {
@@ -192,9 +190,7 @@ Widget imageNetwork({double? width, double? height, String? url}) {
     imageUrl: urlUserPlacholder!,
     errorWidget: (context, url, error) {
       return CachedNetworkImage(
-        imageUrl: urlUserPlacholder!,
-        fit: BoxFit.contain
-      );
+          imageUrl: urlUserPlacholder!, fit: BoxFit.contain);
     },
     width: width ?? 74,
     height: height ?? 74,
@@ -203,7 +199,8 @@ Widget imageNetwork({double? width, double? height, String? url}) {
       return Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image:AssetImage("assets/gif/loading_shimmer.gif")/* CachedNetworkImageProvider(url ?? urlUserPlacholder!)*/,
+            image: AssetImage(
+                "assets/gif/loading_shimmer.gif") /* CachedNetworkImageProvider(url ?? urlUserPlacholder!)*/,
             fit: BoxFit.cover,
           ),
         ),
@@ -273,7 +270,7 @@ void launchWaze(double lat, double lng) async {
       'https://waze.com/ul?ll=${lat.toString()},${lng.toString()}&navigate=yes';
   try {
     bool launched =
-    await launch(url, forceSafariVC: false, forceWebView: false);
+        await launch(url, forceSafariVC: false, forceWebView: false);
     if (!launched) {
       await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
     } else {
@@ -291,7 +288,7 @@ launchGoogleMaps(var lat, var lng) async {
       'https://www.google.com/maps/search/?api=1&query=${lat.toString()},${lng.toString()}';
   try {
     bool launched =
-    await launch(url, forceSafariVC: false, forceWebView: false);
+        await launch(url, forceSafariVC: false, forceWebView: false);
     if (!launched) {
       await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
     }
@@ -312,28 +309,26 @@ showProgress() async {
   await SharedPref.instance.isShowProgress(true);
   Future.delayed(Duration(seconds: 0)).then((value) {
     showDialog(
-      
       context: Get.context!,
       builder: (context) => DialogLoading(),
     );
   });
 }
-mainShowProgress(){
+
+mainShowProgress() {
   showDialog(
-      context: Get.context!,
-      builder: (context) => DialogLoading(),
-    );
+    context: Get.context!,
+    builder: (context) => DialogLoading(),
+  );
 }
 
 hideProgress() async {
   if (await SharedPref.instance.getShowProgress()) {
-    Future.delayed(Duration.zero).then((value) => 
-    Get.back()
-);
+    Future.delayed(Duration.zero).then((value) => Get.back());
   }
 }
 
-mainHideProgress(){
+mainHideProgress() {
   Get.back();
 }
 
@@ -363,8 +358,8 @@ Future<File>? compressImage(File file) async {
 
 DateTime convertStringToDate(DateTime? date) {
   Logger().d("date befor ${date.toString()}");
-  var stringDate = date.toString() ;
-  Logger().d("date after ${stringDate}");
+  var stringDate = date.toString();
+  Logger().d("date after $stringDate");
   return DateFormat("yyyy-MM-dd T hh:mm a").parse(stringDate);
 }
 
@@ -384,73 +379,81 @@ double sumStringVal(String? valOne, String? valTwo) {
       convertStringToDouble("${valTwo.toString()}"));
 }
 
- updateLanguage(Locale locale) {
-    Get.updateLocale(locale);
-  }
+updateLanguage(Locale locale) {
+  Get.updateLocale(locale);
+}
 
 void changeLanguageBottomSheet() {
-    Get.bottomSheet(
-      Container(
-      height: sizeH240,
-      decoration: BoxDecoration(
-          color: colorTextWhite,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      padding: EdgeInsets.symmetric(horizontal: sizeH20!),
-      child: GetBuilder<IntroViewModle>(
-        init: IntroViewModle(),
-        builder: (controller) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: sizeH40),
-              Text(
-                "${AppLocalizations.of(Get.context!)!.language}",
-                style: textStyleTitle(),
-              ),
-              SizedBox(height: sizeH22),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: SharedPref.instance.getAppLanguage()!.length,
-                  itemBuilder: (context, index) => InkWell(
-                    onTap: () {
-                      controller.selectedIndex = index;
-                      controller.temproreySelectedLang = SharedPref.instance.getAppLanguage()![index].name;
-                      controller.update();
-                    },
-                    child: LanguageItem(
-                        selectedIndex: controller.selectedIndex,
-                        cellIndex: index,
-                        name: "${SharedPref.instance.getAppLanguage()![index].languageName}"),
-                  ),
+  Get.bottomSheet(Container(
+    height: sizeH300,
+    decoration: BoxDecoration(
+        color: colorTextWhite,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+    padding: EdgeInsets.symmetric(horizontal: sizeH20!),
+    child: GetBuilder<IntroViewModle>(
+      init: IntroViewModle(),
+      builder: (controller) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: sizeH42),
+            Text(
+              "${AppLocalizations.of(Get.context!)!.language}",
+              style: textStyleTitle(),
+            ),
+            SizedBox(height: sizeH25),
+            Expanded(
+              child: ListView.builder(
+                itemCount: SharedPref.instance.getAppLanguage()!.length,
+                itemBuilder: (context, index) => Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        controller.selectedIndex = index;
+                        controller.temproreySelectedLang =
+                            SharedPref.instance.getAppLanguage()![index].name;
+                        controller.update();
+                      },
+                      child: LanguageItem(
+                          selectedIndex: controller.selectedIndex,
+                          cellIndex: index,
+                          name:
+                              "${SharedPref.instance.getAppLanguage()![index].languageName}"),
+                    ),
+                    SizedBox(
+                      height: sizeH12,
+                    )
+                  ],
                 ),
               ),
-              SizedBox(
-                height: sizeH18,
-              ),
-              PrimaryButton(
+            ),
+            SizedBox(
+              height: sizeH18,
+            ),
+            PrimaryButton(
                 isLoading: false,
-                  textButton: "${AppLocalizations.of(Get.context!)!.select}",
-                  onClicked: () {
+                textButton: "${AppLocalizations.of(Get.context!)!.select}",
+                onClicked: () {
+                  try {
                     controller.selectedLang = controller.temproreySelectedLang;
                     updateLanguage(Locale(controller.selectedLang!));
-                    SharedPref.instance.setAppLanguage(Locale(controller.selectedLang!));
+                    SharedPref.instance
+                        .setAppLanguage(Locale(controller.selectedLang!));
                     Get.back();
                     SplashViewModle().getAppSetting();
                     controller.update();
-
-                  },
-                  isExpanded: true),
-              SizedBox(
-                height: sizeH34,
-              )
-            ],
-          );
-        },
-      ),
-    ));
-  }
-
-
+                  } catch (e) {}
+                },
+                isExpanded: true),
+            SizedBox(
+              height: sizeH34,
+            )
+          ],
+        );
+      },
+    ),
+  ));
+}
 
 class CustomMaterialPageRoute extends MaterialPageRoute {
   @protected
@@ -464,9 +467,9 @@ class CustomMaterialPageRoute extends MaterialPageRoute {
     bool maintainState = true,
     bool fullscreenDialog = false,
   }) : super(
-    builder: builder!,
-    settings: settings,
-    maintainState: maintainState,
-    fullscreenDialog: fullscreenDialog,
-  );
+          builder: builder!,
+          settings: settings,
+          maintainState: maintainState,
+          fullscreenDialog: fullscreenDialog,
+        );
 }

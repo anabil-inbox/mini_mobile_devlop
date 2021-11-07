@@ -88,6 +88,9 @@ flutter:
     - family: regular
       fonts:
         - asset: assets/fonts/oriya_mn_regular.ttc
+    - family: simi_bold
+      fonts:
+        - asset: assets/fonts/oriya_mn_regular.ttc
 
   # fonts:
   #   - family: Schyler

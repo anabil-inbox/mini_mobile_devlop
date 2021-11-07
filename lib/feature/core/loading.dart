@@ -17,6 +17,7 @@ class Loading extends StatelessWidget {
 
   Widget loading() {
     return Center(
+      
       child: SvgPicture.asset(
         'assets/svgs/qatar_flag.svg',
         width: sizeW40,

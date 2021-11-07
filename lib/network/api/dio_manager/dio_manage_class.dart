@@ -24,8 +24,9 @@ class DioManagerClass {
     return _dio!;
   }
 
-  Future<Response> dioGetMethod({var url, Map<String, dynamic>? header})async{
-    return await _dio!.get(url , options:Options(headers: header));
+  Future<Response> dioGetMethod({var url, Map<String, dynamic>? header , var queryParameters})async{
+    print("msg_queryParameters ${queryParameters}");
+    return await _dio!.get(url , options:Options(headers: header) , queryParameters: queryParameters);
   }
 
 
@@ -53,14 +54,12 @@ class ApiInterceptors extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    // TODO: implement onResponse
     super.onResponse(response, handler);
     Logger().d("onResponse : ${response.statusCode}");
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    // TODO: implement onError
     super.onError(err, handler);
     Logger().d("onError : ${err.message}");
   }

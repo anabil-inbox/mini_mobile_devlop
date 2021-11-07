@@ -70,10 +70,16 @@ class AuthViewModle extends GetxController {
     update();
   }
 
-  Future<Set<Country>> getCountries({int? page}) async {
-    print("msg_Iam_In_getCountries");
+  Future<Set<Country>> getCountries(int page , int pageSize) async {
+    log.d("msg_page $page");
+    log.d("msg_pageSize $pageSize");
+
     await CountryHelper.getInstance
-        .getCountryApi({"page": page}).then((value) => {
+        .getCountryApi(
+          {"page" : page,
+          "page_size" : pageSize.toString()
+          }
+        ).then((value) => {
               if (!GetUtils.isNull(value))
                 {
                   countres = value,

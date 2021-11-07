@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inbox_clients/feature/view/widgets/three_size_dot.dart';
+import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
@@ -29,7 +30,7 @@ class PrimaryButton extends StatelessWidget {
         } : (){
           print("msg Blocked Button");
         },
-        child: isLoading ? ThreeSizeDot() : Text("$textButton"),
+        child: isLoading ? ThreeSizeDot() : Text("$textButton" , style: textStylePrimary()!.copyWith(fontWeight: FontWeight.bold , fontSize: 16 , color: colorTextWhite),),
       ),
     );
   }

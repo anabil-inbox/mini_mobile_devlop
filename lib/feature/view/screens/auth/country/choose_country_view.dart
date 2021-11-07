@@ -16,9 +16,7 @@ import '../auth_user/widget/country_item_widget.dart';
 // ignore: must_be_immutable
 class ChooseCountryScreen extends StatelessWidget {
   ChooseCountryScreen({Key? key}) : super(key: key);
-
-  List<Country> counters = [];
-
+  
   final controller = PagingController<int, Country>(firstPageKey: 1);
   final repo = AuthViewModle();
   Logger log = Logger();
@@ -26,8 +24,9 @@ class ChooseCountryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     controller.addPageRequestListener((pageKey) async {
-      final data = await repo.getCountries(page: 1 + (pageKey ~/ 10));
+      final data = await repo.getCountries(1 + (pageKey ~/ 10) , 10);
       controller.appendPage(data.toList(), pageKey + data.length);
     });
 
@@ -83,7 +82,6 @@ class ChooseCountryScreen extends StatelessWidget {
                     return InkWell(
                       onTap: () {
                         logic.selectedIndex = -1;
-                        logic.update();
                         logic.selectedIndex = index;
                         selctedCountry = item;
                         logic.update();

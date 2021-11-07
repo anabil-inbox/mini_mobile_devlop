@@ -1,8 +1,6 @@
 
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/utils.dart';
 import 'package:logger/logger.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppResponse {
   Status? status;

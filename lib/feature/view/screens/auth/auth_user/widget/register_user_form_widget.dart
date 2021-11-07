@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -57,7 +56,6 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                       Expanded(
                         child: TextFormField(
                           maxLength: 9,
-
                           onSaved: (newValue) {
                             controller.tdMobileNumber.text =
                             newValue.toString();
@@ -113,8 +111,10 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                   if (value == null || value.isEmpty) {
                     return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
                   } else if (!(value.contains("@") && value.length > 10)) {
-                    return "${AppLocalizations.of(Get.context!)!.please_enter_valid_email}";
+                    return "";
                   }
+                  // you have to use email validation from getX. 
+                  // you have an getx , methods for this validation.
                   return null;
                 },
                 keyboardType: TextInputType.emailAddress,
@@ -161,8 +161,6 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 height: sizeH22,
               ),
               GetBuilder<AuthViewModle>(
-                init: AuthViewModle(),
-                initState: (_) {},
                 builder: (_) {
                   return PrimaryButton(
                       isLoading: controller.isLoading,
@@ -170,14 +168,12 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                       textButton:
                       "${AppLocalizations.of(Get.context!)!.sign_up}",
                       onClicked: () {
-
                         if(!controller.isAccepte){
                           snackError("${AppLocalizations.of(Get.context!)!.error_occurred}",
                               "${AppLocalizations.of(Get.context!)!.you_cant_register_without_accept_our_terms}");
                         }
 
                         if (_formKey.currentState!.validate() && controller.isAccepte) {
-                          print("here");
                           controller.signUpUser(
                               user: User(
                                   deviceType: controller.deviceType,
@@ -197,7 +193,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
               ),
               InkWell(
                 onTap: (){
-                  print("Cliked");
+                  
                   Get.to(() => UserCompanyLoginScreen(type: "${ConstanceNetwork.userType}",));
                 },
                 child: RichText(
@@ -218,6 +214,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
               SizedBox(
                 height: sizeH48,
               ),
+
             ],
           )),
     );

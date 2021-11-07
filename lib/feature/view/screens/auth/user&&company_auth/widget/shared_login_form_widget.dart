@@ -131,10 +131,10 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                   },
                 ),
                 SizedBox(width: sizeW10),
-                SvgPicture.asset("assets/svgs/fingerprint.svg")
+                SvgPicture.asset("assets/svgs/finger_pinter.svg")
               ],
             ),
-            //SizedBox(height: sizeH100),
+            
           ],
         ),
       ),

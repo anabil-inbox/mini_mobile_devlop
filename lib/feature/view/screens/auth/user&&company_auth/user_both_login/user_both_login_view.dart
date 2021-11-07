@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_register_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/widget/header_login_widget.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/widget/shared_login_form_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
@@ -48,7 +49,30 @@ class UserBothLoginScreen extends StatelessWidget {
             child: SeconderyFormButton(
               buttonText: "${AppLocalizations.of(context)!.login_as_company}",
             ),
-          )
+          ),
+          SizedBox(height: 200,),
+          InkWell(
+            onTap: (){
+              Get.to(() => UserRegisterScreen());
+            },
+            child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                          text:
+                              "${AppLocalizations.of(Get.context!)!.dont_have_an_account}",
+                          style: textStylePrimary()!.copyWith(color: colorBlack),
+                          
+                          ),
+                      TextSpan(
+                          text:
+                              "${AppLocalizations.of(Get.context!)!.sign_up_here}",
+                          style: textStylePrimary()),
+                    ],
+                  ),
+                ),
+          ),
         ],
       ),
     );

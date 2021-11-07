@@ -15,15 +15,15 @@ class Customer {
 
     String? id;
     String? customerName;
-    dynamic? crNumber;
+    dynamic crNumber;
     String? email;
-    dynamic? companySector;
-    dynamic? applicantName;
-    dynamic? applicantDepartment;
+    dynamic companySector;
+    dynamic applicantName;
+    dynamic applicantDepartment;
     String? mobile;
     String? countryCode;
-    dynamic? image;
-    List<dynamic?>? contactNumber;
+    dynamic image;
+    List<dynamic>? contactNumber;
 
     factory Customer.fromJson(Map<String, dynamic> json) => Customer(
         id: json["id"] ?? "",

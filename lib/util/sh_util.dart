@@ -11,7 +11,7 @@ class SharedPref {
   final String languageKey = "language";
   final String isShowKey = "loading";
   final String currentUser = "currentUser";
-
+  final String loginKey = "login";
   var log = Logger();
 
   SharedPref._();
@@ -103,7 +103,25 @@ class SharedPref {
         .toString();
     // return "company";
     // return "both";
-    //return "user";
+    // return "user";
+  }
+
+  setUserLoginState(String state) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setString('$loginKey', '$state');
+    } catch (e) {
+      return "not Logined";
+    }
+  }
+
+  getUserLoginState() {
+    try {
+      return SharedPref._prefs!.getString('$loginKey');
+    } catch (e) {
+      print(e);
+      return "";
+    }
   }
 
   init() async {

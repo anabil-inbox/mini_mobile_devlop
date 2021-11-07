@@ -10,9 +10,9 @@ class CountryApi {
   CountryApi._();
   static final CountryApi getInstance = CountryApi._();
   var log =  Logger();
-  Future<AppResponse> getAppCountreis({var url , var header , var body})async{
+  Future<AppResponse> getAppCountreis({var url , var header , var queryParameters })async{
     try {
-      var response = await DioManagerClass.getInstance.dioPostMethod(url: url, header: header , body: body);
+      var response = await DioManagerClass.getInstance.dioGetMethod(url: url, header: header , queryParameters: queryParameters);
       log.d(AppResponse.fromJson(json.decode(response.toString())));
       return AppResponse.fromJson(json.decode(response.toString()));
     }  on DioError catch (ex) {

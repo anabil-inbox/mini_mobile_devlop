@@ -9,7 +9,6 @@ import 'package:inbox_clients/feature/view/widgets/intro_body.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -101,23 +100,23 @@ final String type;
               },
             ),
             PositionedDirectional(
-                top: padding52,
+                top: padding57,
                 start: padding306,
                 child: TextButton(
                     style: textButtonStyle,
                     onPressed: () {
-                      print("Skip >>");
+                     
                     },
                     child: Text(
                       "${AppLocalizations.of(Get.context!)!.skip}",
                       style: textStyleIntroBody(),
                     ))),
             PositionedDirectional(
-                top: padding52,
+                top: padding60,
                 start: padding20,
                 end: padding315,
                 child: IconButton(
-                  icon: SvgPicture.asset("assets/svgs/language_.svg"),
+                  icon: SvgPicture.asset("assets/svgs/language_eye.svg"),
                   onPressed: () {
                     changeLanguageBottomSheet();
                   },
