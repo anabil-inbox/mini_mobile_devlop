@@ -33,7 +33,7 @@ class HeaderRegisterCompany extends    GetWidget<IntroViewModle> {
               onPressed: (){
                 changeLanguageBottomSheet();
               },
-              icon: SvgPicture.asset("assets/svgs/language_.svg" ,)),
+              icon: SvgPicture.asset("assets/svgs/language_eye.svg" ,)),
           ),
           PositionedDirectional(
               top: padding40,

@@ -21,7 +21,7 @@ class RegisterCompanyScreen extends GetWidget<AuthViewModle> {
           children: [
             HeaderRegisterCompany(),
             Container(
-              color: colorUnSelectedWidget,
+              color: colorScaffoldRegistrationBody,
               child: Column(
                 children: [
                   SizedBox(

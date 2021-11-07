@@ -5,6 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/user_model.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_register_view.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_user/widget/un_selected_button.dart';
 import 'package:inbox_clients/feature/view/screens/auth/country/choose_country_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
@@ -80,6 +82,8 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
+                  }else if(!GetUtils.isEmail(value)){
+                    return '${AppLocalizations.of(Get.context!)!.please_enter_valid_email}';
                   }
                   return null;
                 },
@@ -158,10 +162,12 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 },
                 child: Container(
                   height: sizeH60,
+                  
                   decoration: BoxDecoration(
                     color: colorTextWhite,
                   ),
                   child: Row(
+                    textDirection: TextDirection.ltr,
                     children: [
                       SizedBox(
                         width: sizeW18,
@@ -178,8 +184,8 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          textDirection: TextDirection.ltr,
                           maxLength: 9,
-                          
                           onSaved: (newValue) {
                             controller.tdMobileNumber.text =
                             newValue.toString();
@@ -262,7 +268,8 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                         }
                         if (_formKey.currentState!.validate() &&
                             logic.companySector != null && logic.isAccepte) {
-                              logic.signUpCompany(company: Company(
+                              logic.signUpCompany(
+                                company: Company(
                                 crNumber: logic.tdcrNumber.text,
                                 countryCode: logic.defCountry.prefix,
                                 companyName: logic.tdCompanyName.text,
@@ -280,7 +287,17 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 },
               ),
               SizedBox(
-                height: sizeH27,
+                height: sizeH20,
+              ),
+              SharedPref.instance.getUserType().toString().toLowerCase() == "${ConstanceNetwork.bothType}" ?
+              UnSelectedButton(
+                textButton: "${AppLocalizations.of(Get.context!)!.register_as_user}",
+                onClicked: (){
+                 Get.to(() => UserRegisterScreen());
+                },
+              ) : const SizedBox(), 
+              SizedBox(
+                height: sizeH20,
               ),
               InkWell(
                 onTap: () {
@@ -307,6 +324,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
               SizedBox(
                 height: sizeH32,
               ),
+            
             ],
           )),
     );

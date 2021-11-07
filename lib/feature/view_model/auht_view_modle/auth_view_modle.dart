@@ -117,29 +117,36 @@ class AuthViewModle extends GetxController {
     return customer;
   }
 
-  Future<Status> signUpCompany({Company? company}) async {
+
+  Future<Customer> signUpCompany({Company? company}) async {
+    Customer customer = Customer();
     isLoading = true;
     update();
     FocusScope.of(Get.context!).unfocus();
-    Status status = Status();
 
     await AuthHelper.getInstance
         .registerCompany(company!.toJson())
-        .then((value) => {print("${value.toString()}"), status = value.data});
+        .then((value) => {
+          if (value.status!.success!)
+            {
+              SharedPref.instance.setCurrentUserDate(value.data["Customer"],),
+              isLoading = false,
+              update(),
+              snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+                  "${value.status!.message}"),
+              Get.to(CompanyVerficationCodeScreen(type: "${ConstanceNetwork.companyType}")),
+            }
+          else
+            {
+              log.e(value.status!.toJson()),
+              isLoading = false,
+              update(),
+              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}", "${value.status!.message}")
+            }
 
-    if (status.success!) {
-      isLoading = false;
-      update();
-      snackSuccess(
-          "${AppLocalizations.of(Get.context!)!.success}", "${status.message}");
-      Get.to(CompanyVerficationCodeScreen(type: "${ConstanceNetwork.companyType}"));
-    } else {
-      isLoading = false;
-      update();
-      snackError("${status.success}", "${status.message}");
-    }
+          });
 
-    return status;
+    return customer;
   }
 
   Future<Customer> signInUser({User? user}) async {
@@ -148,7 +155,6 @@ class AuthViewModle extends GetxController {
     update();
     FocusScope.of(Get.context!).unfocus();
     await AuthHelper.getInstance.loginUser(user!.toJson()).then((value) => {
-
           if (value.status!.success!)
             {
               Logger().d(value.data["Customer"]),
@@ -170,23 +176,34 @@ class AuthViewModle extends GetxController {
     return customer;
   }
 
-  Future<Company> signInCompany(Company company) async {
+  Future<Customer> signInCompany(Company company) async {
+    Customer customer = Customer();
     isLoading = true;
+    update();
     FocusScope.of(Get.context!).unfocus();
-    Company company = Company();
-    AuthHelper.getInstance.loginCompany({
-      "cr_number": "${company.crNumber}",
-      "udid": "${company.udid}",
-      "device_type": "${company.deviceType}",
-      "fcm": "${company.fcm}"
-    }).then((value) => {
-          company = value.data,
-          SharedPref.instance.setCurrentUserDate(value.data),
-          update()
+
+    AuthHelper.getInstance.loginCompany(company.toJson()).then((value) => {
+        if (value.status!.success!)
+            {
+              Logger().d(value.data["Customer"]),
+              SharedPref.instance.setCurrentUserDate(value.data["Customer"],),
+              isLoading = false,
+              update(),
+              snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+                  "${value.status!.message}"),
+              Get.to(CompanyVerficationCodeScreen(type: "${ConstanceNetwork.companyType}")),
+            }
+          else
+            {
+              isLoading = false,
+              update(),
+              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}", "${value.status!.message}")
+            }
         });
 
-    return company;
+    return customer;
   }
+
 
   Future<List<String>> getDeviceDetails() async {
     String? deviceVersion;

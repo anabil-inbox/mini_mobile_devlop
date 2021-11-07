@@ -133,6 +133,14 @@ TextStyle? textStyleHint() {
   );
 }
 
+TextStyle? textStyleUnSelectedButton() {
+  return TextStyle(
+    fontSize: fontSize16,
+    color: Color(0xff676771),
+    fontWeight: FontWeight.bold
+  );
+}
+
 TextStyle? textStyleCardTitlePrice() {
   return textStyleBtnBlue()?.copyWith(
     color: colorPrimaryDark,

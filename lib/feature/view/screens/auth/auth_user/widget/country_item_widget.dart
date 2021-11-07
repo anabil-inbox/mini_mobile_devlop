@@ -22,7 +22,7 @@ class CountryItem extends StatelessWidget {
               Container(
                 color: colorTextWhite,
                 child: ListTile(
-                  trailing: Text("+972"),
+                  trailing: Text("${item.prefix}"),
                   leading: selectedIndex == cellIndex ?  SvgPicture.asset("assets/svgs/check.svg") : SvgPicture.asset("assets/svgs/uncheck.svg"),
                   title: Text(item.name!),
                 ),

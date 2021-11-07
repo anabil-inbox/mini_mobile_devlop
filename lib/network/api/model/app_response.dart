@@ -10,7 +10,7 @@ class AppResponse {
 
   factory AppResponse.fromJson(var map) {
     try {
-      print("msg_ $map");
+      
       if (GetUtils.isNull(map["data"])) {
         return AppResponse(
           status: Status.fromJson(map["status"]),

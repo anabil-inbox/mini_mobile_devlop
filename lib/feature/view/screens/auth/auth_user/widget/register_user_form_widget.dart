@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/user_modle.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_company/register/register_company.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_user/widget/un_selected_button.dart';
 import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -14,6 +17,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 import '../../country/choose_country_view.dart';
 
@@ -39,6 +43,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                     color: colorTextWhite,
                   ),
                   child: Row(
+                    textDirection: TextDirection.ltr,
                     children: [
                       SizedBox(
                         width: sizeW18,
@@ -110,11 +115,10 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
-                  } else if (!(value.contains("@") && value.length > 10)) {
-                    return "";
+                  } else if (!GetUtils.isEmail(value)) {
+                    return "${AppLocalizations.of(Get.context!)!.please_enter_valid_email}";
                   }
-                  // you have to use email validation from getX. 
-                  // you have an getx , methods for this validation.
+                  emailValid(value);
                   return null;
                 },
                 keyboardType: TextInputType.emailAddress,
@@ -123,7 +127,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                         "${AppLocalizations.of(Get.context!)!.your_email_address}"),
               ),
               SizedBox(
-                height: padding16,
+                height: padding32,
               ),
               GetBuilder<AuthViewModle>(
                 builder: (value) {
@@ -158,7 +162,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 },
               ),
               SizedBox(
-                height: sizeH22,
+                height: padding32,
               ),
               GetBuilder<AuthViewModle>(
                 builder: (_) {
@@ -188,12 +192,17 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                       });
                 },
               ),
-              SizedBox(
-                height: sizeH120,
-              ),
+              SizedBox(height: sizeH20,),
+              SharedPref.instance.getUserType().toString().toLowerCase() == "${ConstanceNetwork.bothType}" ?
+              UnSelectedButton(
+                textButton: "${AppLocalizations.of(Get.context!)!.register_as_company}",
+                onClicked: (){
+                  Get.to(RegisterCompanyScreen());
+                },
+              ) : const SizedBox(),             
+              SizedBox(height : sizeH114),
               InkWell(
                 onTap: (){
-                  
                   Get.to(() => UserCompanyLoginScreen(type: "${ConstanceNetwork.userType}",));
                 },
                 child: RichText(
@@ -210,9 +219,6 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                     ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: sizeH48,
               ),
 
             ],

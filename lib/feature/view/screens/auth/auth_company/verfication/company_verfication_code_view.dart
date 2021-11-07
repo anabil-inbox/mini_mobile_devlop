@@ -23,64 +23,64 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
         padding:const EdgeInsets.all(0),
         children: [
           HeaderCodeVerfication(),
-          Column(
-            children: [
-              SizedBox(
-                height: sizeH16,
-              ),
-              Text(
-                "${AppLocalizations.of(Get.context!)!.enter_your_passcode}",
-                style: textStyleHints(),
-              ),
-              SizedBox(
-                height: sizeH16,
-              ),
-              bildeTextActiveCode(),
-             type == ConstanceNetwork.userType ? SizedBox(height: sizeH38,) : const SizedBox(),
-             type == ConstanceNetwork.userType ? RichText(
-               text: TextSpan(
-                 children: [
-                  TextSpan(
-                    text: "${AppLocalizations.of(context)!.verify_by} ",
-                    style: textStyleHint()
-                    ),
-                  TextSpan(
-                    text: "${AppLocalizations.of(context)!.email_address}",
-                    style: textStyleUnderLinePrimary()
-                    
-                    )
-                  ]),): const SizedBox()
-              ]),
-              SizedBox(
-                height: sizeH190,
-              ),
-             
-              GetBuilder<AuthViewModle>(
-                init: AuthViewModle(),
-                initState: (_) {
-                  controller.startTimer();
-                },
-                builder: (logic) {
-                  return Column(
-                    children: [
-                      Text(
-                        "${AppLocalizations.of(context)!.resend_code_in} : ${logic.startTimerCounter}",
-                        style: textStyleHint(),
-                        ),
-                      logic.startTimerCounter == 0 ? 
-                      InkWell(
-                        onTap: (){
-                          logic.startTimerCounter = 60;
-                          logic.startTimer();
-                          logic.update();
-                        },
-                        child: Text("${AppLocalizations.of(context)!.resend}" , style: textStyleUnderLinePrimary(),)) :
-                      const SizedBox()
-                    ],
-                  );
-                },
-              )
+          // Column(
+          //   children: [
+          //   SizedBox(
+          //       height: sizeH16,
+          //     ),
+          //     Text(
+          //       "${AppLocalizations.of(Get.context!)!.enter_your_passcode}",
+          //       style: textStyleHints(),
+          //     ),
+          //     SizedBox(
+          //       height: sizeH16,
+          //     ),
+          //     bildeTextActiveCode(),
+          //    type == ConstanceNetwork.userType ? SizedBox(height: sizeH38,) : const SizedBox(),
+          //    type == ConstanceNetwork.userType ? RichText(
+          //      text: TextSpan(
+          //        children: [
+          //         TextSpan(
+          //           text: "${AppLocalizations.of(context)!.verify_by} ",
+          //           style: textStyleHint()
+          //           ),
+          //         TextSpan(
+          //           text: "${AppLocalizations.of(context)!.email_address}",
+          //           style: textStyleUnderLinePrimary()
+          //           )
+          //         ]),): const SizedBox()
+          //     ]),
+          //     SizedBox(
+          //       height: sizeH190,
+          //     ),
+          //     GetBuilder<AuthViewModle>(
+          //       init: AuthViewModle(),
+          //       initState: (_) {
+          //         controller.startTimer();
+          //       },
+          //       builder: (logic) {
+          //         return Column(
+          //           children: [
+          //             Text(
+          //               "${AppLocalizations.of(context)!.resend_code_in} : ${logic.startTimerCounter}",
+          //               style: textStyleHint(),
+          //               ),
+          //             logic.startTimerCounter == 0 ? 
+          //             InkWell(
+          //               onTap: (){
+          //                 logic.startTimerCounter = 60;
+          //                 logic.startTimer();
+          //                 logic.update();
+          //               },
+          //               child: Text("${AppLocalizations.of(context)!.resend}" , style: textStyleUnderLinePrimary(),)) :
+          //             const SizedBox()
+          //           ],
+          //         );
+          //       },
+          //     )
+         
             ],
+         
           ),
        
     );

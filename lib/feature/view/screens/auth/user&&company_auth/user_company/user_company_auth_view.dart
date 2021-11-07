@@ -54,8 +54,9 @@ class UserCompanyLoginScreen extends GetWidget<IntroViewModle> {
          type == "${ConstanceNetwork.companyType}" ?
          SharedLoginForm(
             type: type,
-          ): 
+          ):
          SizedBox(height: sizeH100,),
+         SizedBox(height: sizeH240,),
          InkWell(
            splashColor: colorTrans,
            highlightColor: colorTrans,

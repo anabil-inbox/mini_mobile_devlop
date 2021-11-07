@@ -22,7 +22,7 @@ class UserBothLoginScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(0),
         children: [
-          HeaderLogin(),         
+          HeaderLogin(),
           SizedBox(
             height: sizeH16,
           ),
@@ -44,6 +44,7 @@ class UserBothLoginScreen extends StatelessWidget {
           ),
           SharedLoginForm(type: "${ConstanceNetwork.userType}"),
           SizedBox(height: sizeH20,),
+          
           Padding(
             padding: EdgeInsets.symmetric(horizontal: sizeW20!),
             child: SeconderyFormButton(

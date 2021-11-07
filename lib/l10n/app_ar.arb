@@ -52,5 +52,8 @@
      "you_have_to_choose_sector_name":"يجب عليك ان تحدد اسم القطاع", 
     "phone_number_not_register":"لا يوجد حساب مرتبط برقم الهاتف",
     "what_is_your_phone_number":"ما هو رقم هاتفك؟",
-    "what_is_your_cr_number":"ما هو ال 'CR' الخاص بك"
+    "what_is_your_cr_number":"ما هو ال 'CR' الخاص بك",
+    "register_as_company":"التسجيل ك شركة",
+     "register_as_user":"التسجيل ك مستخدم"
+
 }

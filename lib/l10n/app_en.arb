@@ -53,6 +53,8 @@
      "you_have_to_choose_sector_name":"you have To Choose Sector Name",
      "phone_number_not_register":"Phoe Number Not Registered",
      "what_is_your_phone_number":"What is your Phone Number?",
-     "what_is_your_cr_number":"What is your CR  number?"
+     "what_is_your_cr_number":"What is your CR  number?",
+     "register_as_company":"Sign Up As Company",
+     "register_as_user":"Sign Up As User"
 
 }
