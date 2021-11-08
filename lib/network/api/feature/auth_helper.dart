@@ -49,5 +49,24 @@ class AuthHelper {
     }
   }
 
+  Future<AppResponse> checkVerficationCode(Map<String, dynamic> body) async {
+    var appResponse = await AuthApi.getInstance.checkVerficationCodeRequset(body: body, url: "${ConstanceNetwork.verfiyCodeEndPoint}",header: ConstanceNetwork.header(0));
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+  
+
+  Future<AppResponse> reSendVerficationCode(Map<String, dynamic> body) async {
+    var appResponse = await AuthApi.getInstance.reSendVerficationCodeRequset(body: body, url: "${ConstanceNetwork.recendVerficationCodeEndPoint}",header: ConstanceNetwork.header(0));
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+  
 }
 

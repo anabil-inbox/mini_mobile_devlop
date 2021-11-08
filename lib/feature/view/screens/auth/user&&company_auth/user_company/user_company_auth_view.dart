@@ -64,7 +64,7 @@ class UserCompanyLoginScreen extends GetWidget<IntroViewModle> {
                 if (type == "${ConstanceNetwork.userType}") {
                   Get.off(() => UserRegisterScreen());
                 } else if (type == "${ConstanceNetwork.companyType}") {
-                  Get.off(() => RegisterCompanyScreen());
+                  Get.to(() => RegisterCompanyScreen());
                 } else {
 
                 }

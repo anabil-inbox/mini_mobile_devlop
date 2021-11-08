@@ -128,7 +128,7 @@ TextStyle? textStyleCardTitle() {
 }
 TextStyle? textStyleHint() {
   return TextStyle(
-    fontSize: fontSize15,
+    fontSize: fontSize16,
     fontWeight: FontWeight.bold,
     color: colorUnSelectedWidget,
   );

@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../widget/header_code_verfication_widget.dart';
 
 class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
-  const CompanyVerficationCodeScreen({Key? key, required this.type})
+  const CompanyVerficationCodeScreen(
+      {Key? key,
+      required this.type,
+      required this.countryCode,
+      required this.mobileNumber})
       : super(key: key);
 
   final String type;
+  final String mobileNumber;
+  final String countryCode;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,8 +30,7 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
         padding: const EdgeInsets.all(0),
         children: [
           HeaderCodeVerfication(),
-          Column(
-            children: [
+          Column(children: [
             SizedBox(
               height: sizeH16,
             ),
@@ -43,18 +48,37 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
                   )
                 : const SizedBox(),
             type == ConstanceNetwork.userType
-                ? RichText(
-                    text: TextSpan(
-                      children: [
-                      TextSpan(
-                          text: "${AppLocalizations.of(context)!.verify_by} ",
-                          style: textStyleHint()),
-                      TextSpan(
-                          text:
-                              "${AppLocalizations.of(context)!.email_address}",
-                          style: textStyleUnderLinePrimary())
-                    ]),
-                  )
+                ? InkWell(
+                    splashColor: colorTrans,
+                    highlightColor: colorTrans,
+                    onTap:(){
+                    
+                    
+                    // controller.reSendVerficationCode(
+                    // udid: controller.identifier,
+                    // countryCode: countryCode,
+                    // mobileNumber: mobileNumber,
+                    // target: "email"
+                    // );
+                   
+                  },
+                  child: RichText(
+                      text: TextSpan(children: [
+                        TextSpan(
+                            text: "${AppLocalizations.of(context)!.verify_by} ",
+                            style: textStyleHint()!.copyWith(
+                              fontWeight: FontWeight.normal,fontSize: fontSize14
+                            )),
+                        TextSpan(
+                            text:
+                                "${AppLocalizations.of(context)!.email_address}",
+                            style: textStyleUnderLinePrimary()!.copyWith(
+                              decoration: TextDecoration.none,
+                              fontWeight: FontWeight.normal,fontSize: fontSize14
+                            ))
+                      ]),
+                    ),
+                )
                 : const SizedBox()
           ]),
           SizedBox(
@@ -62,39 +86,48 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
           ),
           GetBuilder<AuthViewModle>(
             init: AuthViewModle(),
-            initState: (_){
+            initState: (_) {
               controller.startTimer();
             },
             builder: (value) {
               return Column(
                 children: [
-                  Text(
+                 value.startTimerCounter != 0 ? Text(
                     "${AppLocalizations.of(context)!.resend_code_in} : ${value.startTimerCounter}",
-                    style: textStyleHint(),
-                  ),
+                    style: textStyleHint()!.copyWith(decoration: TextDecoration.none,fontWeight: FontWeight.normal,fontSize: fontSize14),
+                  ) : const SizedBox(),
                   value.startTimerCounter == 0
                       ? InkWell(
+                          splashColor: colorTrans,
+                          highlightColor: colorTrans,
                           onTap: () {
+                            value.reSendVerficationCode(
+                              countryCode: countryCode,
+                              target: type == "user" ? "sms" : "eamil",
+                              mobileNumber: mobileNumber,
+                              udid: value.identifier,
+                            );
                             value.startTimerCounter = 60;
                             value.startTimer();
                             value.update();
                           },
                           child: Text(
                             "${AppLocalizations.of(context)!.resend}",
-                            style: textStyleUnderLinePrimary(),
+                            style: textStyleUnderLinePrimary()!.copyWith(decoration: TextDecoration.none,fontWeight: FontWeight.normal,fontSize: fontSize14),
                           ))
                       : const SizedBox()
                 ],
               );
             },
           )
-       
         ],
       ),
     );
   }
 
-  Widget bildeTextActiveCode(BuildContext context) {
+  Widget bildeTextActiveCode(
+    BuildContext context,
+  ) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: sizeW80!),
       child: PinCodeTextField(
@@ -118,19 +151,19 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
           inactiveColor: Color(0xFFCECECE),
         ),
         cursorColor: Colors.black,
-
         animationDuration: Duration(milliseconds: 300),
         backgroundColor: colorScaffoldRegistrationBody,
         enableActiveFill: true,
-        //  errorAnimationController: errorController,
         keyboardType: TextInputType.number,
         onCompleted: (v) {
-          if (v == "1234") {
-            Get.offAll(() => HomeScreen());
-          }
+          controller.checkVerficationCode(
+            countryCode: countryCode,
+            mobileNumber: mobileNumber,
+            code: v.toString(),
+            udid: controller.identifier,
+          );
         },
-        onChanged: (value) {
-        },
+        onChanged: (value) {},
         /*validator: (value) {
           if(value.isEmpty) {
             return kPleaseActiveCode.tr;

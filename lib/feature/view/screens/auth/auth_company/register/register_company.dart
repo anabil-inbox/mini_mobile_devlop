@@ -19,7 +19,11 @@ class RegisterCompanyScreen extends GetWidget<AuthViewModle> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            HeaderRegisterCompany(),
+            HeaderRegisterCompany(
+              onBackPressed: (){
+                Get.back();
+              },
+            ),
             Container(
               color: colorScaffoldRegistrationBody,
               child: Column(

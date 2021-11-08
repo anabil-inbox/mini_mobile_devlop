@@ -34,7 +34,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                     color: colorTextWhite,
                     child: InkWell(
                       onTap: () {
-                        Get.off(ChooseCountryScreen());
+                        Get.to(() => ChooseCountryScreen());
                       },
                       child: Row(
                         textDirection: TextDirection.ltr,
@@ -55,6 +55,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                           ),
                           Expanded(
                             child: TextFormField(
+                              textDirection: TextDirection.ltr,
                               maxLength: 9,
                               decoration: InputDecoration(counterText: ""),
                               onSaved: (newValue) {

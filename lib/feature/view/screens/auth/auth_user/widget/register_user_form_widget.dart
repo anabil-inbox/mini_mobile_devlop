@@ -59,7 +59,8 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                       ),
                       Expanded(
                         child: TextFormField(
-                          maxLength: 9,
+                          textDirection: TextDirection.ltr,
+                              maxLength: 9,
                           onSaved: (newValue) {
                             controller.tdMobileNumber.text =
                             newValue.toString();
@@ -197,7 +198,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
               UnSelectedButton(
                 textButton: "${AppLocalizations.of(Get.context!)!.register_as_company}",
                 onClicked: (){
-                  Get.off(() => RegisterCompanyScreen());
+                  Get.to(() => RegisterCompanyScreen());
                 },
               ) : const SizedBox(),             
               SizedBox(height : sizeH80),

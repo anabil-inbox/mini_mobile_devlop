@@ -52,12 +52,12 @@ class AppFcm {
       requestSoundPermission: false,
     );
 
-    final MacOSInitializationSettings initializationSettingsMacOS =
-    MacOSInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-    );
+    // final MacOSInitializationSettings initializationSettingsMacOS =
+    // MacOSInitializationSettings(
+    //   requestAlertPermission: false,
+    //   requestBadgePermission: false,
+    //   requestSoundPermission: false,
+    // );
 
     final InitializationSettings initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid,
@@ -75,7 +75,7 @@ class AppFcm {
 
   Future selectNotification(String? payload) async {
     try {
-      RemoteMessage message = messages;
+   //   RemoteMessage message = messages;
    //   goToOrderPage(messages.data);
     } catch (e) {
       print(e);
@@ -85,7 +85,7 @@ class AppFcm {
 
 
   void registerNotification() async {
-    NotificationSettings settings = await _firebaseMessaging.requestPermission(
+   await _firebaseMessaging.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
@@ -138,8 +138,6 @@ class AppFcm {
                   autoCancel: true,
                   importance: Importance.max,
                   priority:Priority.high ,
-                  // TODO add a proper drawable resource to android, for now using
-                  //      one that already exists in example app.
                   color: colorPrimaryDark),
             ),
             payload: "${message.data}");

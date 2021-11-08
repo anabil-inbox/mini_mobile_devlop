@@ -18,7 +18,6 @@ class AppWidget extends StatelessWidget {
   const AppWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: transparent,
       statusBarIconBrightness: Brightness.dark,
@@ -29,7 +28,6 @@ class AppWidget extends StatelessWidget {
       builder: () => GetMaterialApp(
         title: 'Inbox Clients',
         locale: Locale(SharedPref.instance.getAppLanguageMain().split("_")[0]),
-
         localizationsDelegates: [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -51,25 +49,25 @@ class AppWidget extends StatelessWidget {
             primaryColor: colorPrimary,
           ),
           textSelectionTheme: TextSelectionThemeData(
-              cursorColor: colorPrimary,
-              selectionColor: colorPrimary,
-              selectionHandleColor: colorPrimary,
+            cursorColor: colorPrimary,
+            selectionColor: colorPrimary,
+            selectionHandleColor: colorPrimary,
           ),
           inputDecorationTheme: InputDecorationTheme(
-              hintStyle: textStyleHints(),
-              filled: true,
-               enabledBorder: UnderlineInputBorder(      
-                      borderSide: BorderSide(color: colorTrans),   
-                      ),  
-              focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: colorPrimary),
-                   ),
-              fillColor: colorTextWhite,
-              contentPadding: EdgeInsets.symmetric(horizontal: padding18! , 
-              vertical: padding16!),
-              border: UnderlineInputBorder(
-                borderRadius:BorderRadius.circular(padding4!)),
-                ),
+            hintStyle: textStyleHints(),
+            filled: true,
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: colorTrans),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: colorPrimary),
+            ),
+            fillColor: colorTextWhite,
+            contentPadding: EdgeInsets.symmetric(
+                horizontal: padding18!, vertical: padding16!),
+            border: UnderlineInputBorder(
+                borderRadius: BorderRadius.circular(padding4!)),
+          ),
           primaryColor: colorPrimary,
           secondaryHeaderColor: seconderyColor,
           scaffoldBackgroundColor: scaffoldColor,
@@ -84,7 +82,8 @@ class AppWidget extends StatelessWidget {
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
           }),
         ),
-        home: const SplashScreen(),
+         home: const SplashScreen(),
+
       ),
     );
   }

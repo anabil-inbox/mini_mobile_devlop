@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
@@ -12,6 +13,7 @@ import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/model/user_model.dart';
 import 'package:inbox_clients/feature/model/user_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/verfication/company_verfication_code_view.dart';
+import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
 import 'package:inbox_clients/network/api/feature/auth_helper.dart';
 import 'package:inbox_clients/network/api/feature/country_helper.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -42,6 +44,7 @@ class AuthViewModle extends GetxController {
   //timer For Verfication code
   Timer? timer;
   int startTimerCounter = 60;
+
   String? companySector;
   String? temproreySectorName;
   Set<String> arraySectors = {};
@@ -69,19 +72,16 @@ class AuthViewModle extends GetxController {
     update();
   }
 
-  Future<Set<Country>> getCountries(int page , int pageSize) async {
+  Future<Set<Country>> getCountries(int page, int pageSize) async {
     await CountryHelper.getInstance
-        .getCountryApi(
-          {"page" : page,
-          "page_size" : pageSize.toString()
-          }
-        ).then((value) => {
-              if (!GetUtils.isNull(value))
-                {
-                  countres = value,
-                  update(),
-                }
-            });
+        .getCountryApi({"page": page, "page_size": pageSize.toString()}).then(
+            (value) => {
+                  if (!GetUtils.isNull(value))
+                    {
+                      countres = value,
+                      update(),
+                    }
+                });
     return countres;
   }
 
@@ -94,25 +94,30 @@ class AuthViewModle extends GetxController {
           if (value.status!.success!)
             {
               log.e(value.status!.toJson()),
-              SharedPref.instance.setCurrentUserDate(value.data["Customer"],),
+              SharedPref.instance.setCurrentUserDate(
+                value.data["Customer"],
+              ),
               isLoading = false,
               update(),
               snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
                   "${value.status!.message}"),
-              Get.to(CompanyVerficationCodeScreen(type: "${ConstanceNetwork.userType}")),
+              Get.to(CompanyVerficationCodeScreen(
+                  mobileNumber: user.mobile!,
+                  countryCode: user.countryCode!,
+                  type: "${ConstanceNetwork.userType}")),
             }
           else
             {
               log.e(value.status!.toJson()),
               isLoading = false,
               update(),
-              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}", "${value.status!.message}")
+              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}",
+                  "${value.status!.message}")
             }
         });
 
     return customer;
   }
-
 
   Future<Customer> signUpCompany({Company? company}) async {
     Customer customer = Customer();
@@ -123,24 +128,30 @@ class AuthViewModle extends GetxController {
     await AuthHelper.getInstance
         .registerCompany(company!.toJson())
         .then((value) => {
-          if (value.status!.success!)
-            {
-              SharedPref.instance.setCurrentUserDate(value.data["Customer"],),
-              isLoading = false,
-              update(),
-              snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
-                  "${value.status!.message}"),
-              Get.to(CompanyVerficationCodeScreen(type: "${ConstanceNetwork.companyType}")),
-            }
-          else
-            {
-              log.e(value.status!.toJson()),
-              isLoading = false,
-              update(),
-              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}", "${value.status!.message}")
-            }
-
-          });
+              if (value.status!.success!)
+                {
+                  SharedPref.instance.setCurrentUserDate(
+                    value.data["Customer"],
+                  ),
+                  isLoading = false,
+                  update(),
+                  snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+                      "${value.status!.message}"),
+                  Get.to(CompanyVerficationCodeScreen(
+                      countryCode: company.countryCode!,
+                      mobileNumber: company.mobile!,
+                      type: "${ConstanceNetwork.companyType}")),
+                }
+              else
+                {
+                  log.e(value.status!.toJson()),
+                  isLoading = false,
+                  update(),
+                  snackError(
+                      "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                      "${value.status!.message}")
+                }
+            });
 
     return customer;
   }
@@ -154,19 +165,24 @@ class AuthViewModle extends GetxController {
           if (value.status!.success!)
             {
               Logger().d(value.data["Customer"]),
-              SharedPref.instance.setCurrentUserDate(value.data["Customer"],),
+              SharedPref.instance.setCurrentUserDate(
+                value.data["Customer"],
+              ),
               isLoading = false,
               update(),
               snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
                   "${value.status!.message}"),
-              Get.to(CompanyVerficationCodeScreen(type: "${ConstanceNetwork.userType}")),
-              
+              Get.to(CompanyVerficationCodeScreen(
+                  mobileNumber: user.mobile!,
+                  countryCode: user.countryCode!,
+                  type: "${ConstanceNetwork.userType}")),
             }
           else
             {
               isLoading = false,
               update(),
-              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}", "${value.status!.message}")
+              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}",
+                  "${value.status!.message}")
             }
         });
 
@@ -180,27 +196,32 @@ class AuthViewModle extends GetxController {
     FocusScope.of(Get.context!).unfocus();
 
     AuthHelper.getInstance.loginCompany(company.toJson()).then((value) => {
-        if (value.status!.success!)
+          if (value.status!.success!)
             {
               Logger().d(value.data["Customer"]),
-              SharedPref.instance.setCurrentUserDate(value.data["Customer"],),
+              SharedPref.instance.setCurrentUserDate(
+                value.data["Customer"],
+              ),
               isLoading = false,
               update(),
               snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
                   "${value.status!.message}"),
-              Get.to(CompanyVerficationCodeScreen(type: "${ConstanceNetwork.companyType}")),
+              Get.to(CompanyVerficationCodeScreen(
+                  mobileNumber: company.mobile!,
+                  countryCode: company.countryCode!,
+                  type: "${ConstanceNetwork.companyType}")),
             }
           else
             {
               isLoading = false,
               update(),
-              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}", "${value.status!.message}")
+              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}",
+                  "${value.status!.message}")
             }
         });
 
     return customer;
   }
-
 
   Future<List<String>> getDeviceDetails() async {
     String? deviceVersion;
@@ -219,37 +240,103 @@ class AuthViewModle extends GetxController {
         identifier = data.identifierForVendor; //UUID for iOS
       }
       update();
-    } on PlatformException {
-    }
+    } on PlatformException {}
     return [deviceName!, deviceVersion!, identifier!];
   }
 
-  @override
-  void onInit() {
-    startTimer();
-    getDeviceDetails();
-    if (Platform.isAndroid) {
-      deviceType = "android";
-    } else {
-      deviceType = "ios";
-    }
-    update();
-    super.onInit();
-  }
-
   void startTimer() {
-    
     const oneSec = const Duration(seconds: 1);
-    timer = new Timer.periodic(oneSec,
-    (Timer timer) {
+    timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
         if (startTimerCounter == 0) {
-           timer.cancel();
-           update();
+          timer.cancel();
+          update();
         } else {
           startTimerCounter--;
           update();
         }
       },
     );
+  }
+
+  void getPhonePlatform() {
+    if (Platform.isAndroid) {
+      deviceType = "android";
+    } else {
+      deviceType = "ios";
+    }
+  }
+
+  void clearAllControllers() {
+    tdSearch.clear();
+    tdMobileNumber.clear();
+    tdName.clear();
+    tdEmail.clear();
+    tdcrNumber.clear();
+    tdCompanyName.clear();
+    tdCompanyEmail.clear();
+    tdNameOfApplicant.clear();
+    tdApplicantDepartment.clear();
+  }
+
+  checkVerficationCode({String? code, String? udid,String? mobileNumber, String? countryCode}) async { 
+    await AuthHelper.getInstance.checkVerficationCode({
+      "id": "",
+      "udid": "$udid",
+      "code":"$code",
+      "mobile_number": "$mobileNumber",
+      "country_code": "$countryCode"
+    }).then((value) => {
+          if (value.status!.success!)
+            {
+              snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+                  "${value.status!.message}"),
+              SharedPref.instance.setUserLoginState("${ConstanceNetwork.userLoginedState}"),  
+              Get.off(() => HomeScreen()),
+            }
+          else
+            {
+              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}",
+                  "${value.status!.message}")
+            }
+        });
+  }
+
+  
+  reSendVerficationCode({ String? udid, String? target,String? mobileNumber, String? countryCode}) async { 
+    await AuthHelper.getInstance.checkVerficationCode({
+      "id": "${Customer.fromJson(json.decode(SharedPref.instance.getCurrentUser())).id}",
+      "udid": "$udid",
+      "target":"$target",
+      "mobile_number": "$mobileNumber",
+      "country_code": "$countryCode"
+    }).then((value) => {
+          if (value.status!.success!)
+            {
+              snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+                  "${value.status!.message}"),
+              SharedPref.instance.setUserLoginState("${ConstanceNetwork.userLoginedState}"),  
+              Get.off(() => HomeScreen()),
+            }
+          else
+            {
+              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}",
+                  "${value.status!.message}")
+            }
+        });
+  }
+
+
+
+
+  @override
+  void onInit() {
+    startTimer();
+    clearAllControllers();
+    getDeviceDetails();
+    getPhonePlatform();
+    update();
+    super.onInit();
   }
 }

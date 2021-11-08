@@ -44,7 +44,6 @@ class UserBothLoginScreen extends StatelessWidget {
           ),
           SharedLoginForm(type: "${ConstanceNetwork.userType}"),
           SizedBox(height: sizeH20,),
-          
           Padding(
             padding: EdgeInsets.symmetric(horizontal: sizeW20!),
             child: SeconderyFormButton(

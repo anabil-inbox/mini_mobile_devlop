@@ -294,7 +294,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
               UnSelectedButton(
                 textButton: "${AppLocalizations.of(Get.context!)!.register_as_user}",
                 onClicked: (){
-                 Get.off(() => UserRegisterScreen());
+                 Get.to(() => UserRegisterScreen());
                 },
               ) : const SizedBox(), 
               SizedBox(

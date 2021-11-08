@@ -2,25 +2,19 @@ import 'package:get/get.dart';
 
 abstract class ConstanceNetwork {
   ///todo here insert base_url
-  static String imageUrl ="".trim();
+  static String imageUrl = "".trim();
+
   ///todo here insert key Of Request
-  
+
   ///todo this for login request user
-  static var contryCodeKey ="country_code";
-  static var mobileKey ="mobile";
-  static var udidKey ="udid";
-  static var deviceTypeKey ="device_type";
-  static var fcmKey ="fcm";
-  static var emailKey ="email";
+  static var contryCodeKey = "country_code";
+  static var mobileKey = "mobile";
+  static var udidKey = "udid";
+  static var deviceTypeKey = "device_type";
+  static var fcmKey = "fcm";
+  static var emailKey = "email";
 
-  // "country_code": "",
-  //  "mobile": "4407177777",
-  //  "udid": "2222222222", 
-  //  "device_type": "android",
-  //  "fcm": "112222222546546545",
-  //  "email":""
 
-  
   ///todo here insert end Point
   static String settingeEndPoint = "inbox_app.api.settings.api_settings";
 
@@ -33,12 +27,18 @@ abstract class ConstanceNetwork {
   static String loginUser = "inbox_app.api.auth.login";
 
   static String registerCompany = "inbox_app.api.auth.company_register";
-                                  
+
   static String loginCompany = "inbox_app.api.auth.company_login";
 
-    static String userLoginedState = "logined";
-    static String userEnterd = "enterd";
+  static String userLoginedState = "logined";
 
+  static String userEnterd = "enterd";
+
+  static String verfiyCodeEndPoint = "inbox_app.api.auth.verfiy";
+
+  static String recendVerficationCodeEndPoint = "inbox_app.api.auth.resend_code";
+
+  static String logOutEndPoint = "inbox_app.api.auth.me";
 
   //todo this for constance type of user
   static String userType = "user";
@@ -75,7 +75,4 @@ abstract class ConstanceNetwork {
 
     return headers;
   }
-
-
-
 }

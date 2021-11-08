@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,8 +9,9 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 
 class HeaderRegisterCompany extends    GetWidget<IntroViewModle> {
-  const HeaderRegisterCompany({Key? key}) : super(key: key);
+  const HeaderRegisterCompany({Key? key , required this.onBackPressed}) : super(key: key);
 
+  final Function onBackPressed;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,7 +42,7 @@ class HeaderRegisterCompany extends    GetWidget<IntroViewModle> {
               start:padding20,
               child: IconButton(
               onPressed: () {
-              print("object");
+                onBackPressed();
             },
             icon: SvgPicture.asset("assets/svgs/cross.svg"),
           )),
