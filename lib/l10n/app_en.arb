@@ -16,6 +16,11 @@
     "applicant_department" : "Applicant Department",
     "terms_and_conditions":"Accept our Terms and Conditions",
     "fill_this_field" : "Please enter some text",
+    "fill_your_phone_number" : "Please Enter Your Phone Number",
+    "fill_your_email" : "Please Enter Your Email",
+    "fill_your_company_name" : "Please Enter Your Company Name",
+    "fill_your_company_email" : "Please Enter Your Company Email",
+    
     "user_registration":"User Registration",
     "full_name":"Full Name",
     "dont_have_an_account" : "Don't have an account?",
