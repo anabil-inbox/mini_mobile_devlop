@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/view/screens/intro_screens/intro_active_dot.dart';
-import 'package:inbox_clients/feature/view/screens/register_company/register_company.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_company/register/register_company.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_register_view.dart';
+import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/intro_active_dot_widget.dart';
+import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
 import 'package:inbox_clients/feature/view/widgets/intro_body.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
-
 class IntroScreen extends GetWidget<IntroViewModle> {
-  const IntroScreen({Key? key}) : super(key: key);
+  IntroScreen({Key? key , required this.type}) : super(key: key);
 
+final String type;
   @override
   Widget build(BuildContext context) {
-      Future.delayed(Duration(seconds: 1),(){
-      Get.to(RegisterCompanyScreen());
-    });
     return Scaffold(
         body: SingleChildScrollView(
       physics: customScrollViewIOS(),
@@ -56,8 +57,12 @@ class IntroScreen extends GetWidget<IntroViewModle> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   PrimaryButton(
+                    isLoading: false,
+                    isExpanded: false,
                     textButton: "${AppLocalizations.of(Get.context!)!.sign_in}",
-                    onClicked: () {},
+                    onClicked: () {
+                      Get.to(() => UserCompanyLoginScreen(type: SharedPref.instance.getUserType(),));
+                      },
                   ),
                   SizedBox(
                     width: sizeH7,
@@ -65,7 +70,14 @@ class IntroScreen extends GetWidget<IntroViewModle> {
                   SeconderyButtom(
                       textButton:
                           "${AppLocalizations.of(Get.context!)!.sign_up}",
-                      onClicked: () {})
+                      onClicked: () {
+                        if(type == "${ConstanceNetwork.userType}" || type == "${ConstanceNetwork.bothType}"){
+                          Get.to(() => UserRegisterScreen());
+                        }else if(type == "${ConstanceNetwork.companyType}"){
+                          Get.to(() => RegisterCompanyScreen());  
+                        }
+                       
+                      })
                 ],
               ),
             ),
@@ -88,25 +100,25 @@ class IntroScreen extends GetWidget<IntroViewModle> {
               },
             ),
             PositionedDirectional(
-                top: padding52,
+                top: padding57,
                 start: padding306,
                 child: TextButton(
                     style: textButtonStyle,
                     onPressed: () {
-                      print("Skip >>");
+                     
                     },
                     child: Text(
                       "${AppLocalizations.of(Get.context!)!.skip}",
                       style: textStyleIntroBody(),
                     ))),
             PositionedDirectional(
-                top: padding52,
+                top: padding60,
                 start: padding20,
                 end: padding315,
                 child: IconButton(
-                  icon: SvgPicture.asset("assets/svgs/language_.svg"),
+                  icon: SvgPicture.asset("assets/svgs/language_eye.svg"),
                   onPressed: () {
-                    changeLanguageDialog();
+                    changeLanguageBottomSheet();
                   },
                 )),
           ],
@@ -114,41 +126,5 @@ class IntroScreen extends GetWidget<IntroViewModle> {
       ),
     ));
   }
-
-
-  void changeLanguageDialog() {
-    final List locale = [
-      {'name': 'ENGLISH', 'locale': Locale('en', 'US')},
-      {'name': 'العربية', 'locale': Locale('ar', 'SA')},
-    ];
-    updateLanguage(Locale locale) {
-      Get.updateLocale(locale);
-    }
-
-    Get.defaultDialog(
-        title: "${AppLocalizations.of(Get.context!)!.choose_language}",
-        content: Column(
-          children: [
-            ListTile(
-              title: Text("${AppLocalizations.of(Get.context!)!.english}"),
-              onTap: () {
-                updateLanguage(locale[0]['locale']);
-                SharedPref.instance.setAppLanguage(locale[0]['locale']);
-                Navigator.pop(Get.context!);
-              },
-            ),
-            ListTile(
-              title: Text("${AppLocalizations.of(Get.context!)!.arabic}"),
-              onTap: () {
-                
-                updateLanguage(locale[1]['locale']);
-                SharedPref.instance.setAppLanguage(locale[1]['locale']);
-                Navigator.pop(Get.context!);
-              },
-            )
-          ],
-        ));
-  }
-
 
 }

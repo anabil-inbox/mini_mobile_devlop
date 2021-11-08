@@ -10,20 +10,24 @@ class SplashViewModle extends GetxController{
     var log = Logger();
     ApiSettings? apiSettings;  
     var pref = SharedPref.instance.init();
-    
-    
+    List<CompanySector> arrCompanySector = [];
+    List<String> arrSecName = [];
+     
   getAppSetting()async{
-   await SplashHelper.getInstance.getAppSettings().then((value) =>{
-      if(!GetUtils.isNull(value)){
-      apiSettings = value,
-      update()
+     await SplashHelper.getInstance.getAppSettings().then((value) =>{
+        if(!GetUtils.isNull(value)){
+          apiSettings = value,
+          update()
     }
    });
+   
   }
+
 
   @override
   void onInit() async{
     getAppSetting();
+    SharedPref.instance.getUserType();
     super.onInit();
   }
 

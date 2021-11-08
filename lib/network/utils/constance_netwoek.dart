@@ -2,15 +2,48 @@ import 'package:get/get.dart';
 
 abstract class ConstanceNetwork {
   ///todo here insert base_url
-  static String imageUrl ="https://inbox.ahdtech.com";
+  static String imageUrl ="".trim();
   ///todo here insert key Of Request
   
+  ///todo this for login request user
+  static var contryCodeKey ="country_code";
+  static var mobileKey ="mobile";
+  static var udidKey ="udid";
+  static var deviceTypeKey ="device_type";
+  static var fcmKey ="fcm";
+  static var emailKey ="email";
+
+  // "country_code": "",
+  //  "mobile": "4407177777",
+  //  "udid": "2222222222", 
+  //  "device_type": "android",
+  //  "fcm": "112222222546546545",
+  //  "email":""
+
   
   ///todo here insert end Point
   static String settingeEndPoint = "inbox_app.api.settings.api_settings";
 
-    static String featureEndPoint = "inbox_app.api.settings.features";
+  static String featureEndPoint = "inbox_app.api.settings.features";
 
+  static String countryEndPoint = "inbox_app.api.settings.countries?page=1&page_size=5";
+
+  static String registerUser = "inbox_app.api.auth.register";
+
+  static String loginUser = "inbox_app.api.auth.login";
+
+  static String registerCompany = "inbox_app.api.auth.company_register";
+                                  
+  static String loginCompany = "inbox_app.api.auth.company_login";
+
+    static String userLoginedState = "logined";
+    static String userEnterd = "enterd";
+
+
+  //todo this for constance type of user
+  static String userType = "user";
+  static String companyType = "company";
+  static String bothType = "both";
 
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};
@@ -42,4 +75,7 @@ abstract class ConstanceNetwork {
 
     return headers;
   }
+
+
+
 }

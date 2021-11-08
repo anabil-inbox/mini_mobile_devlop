@@ -15,8 +15,8 @@ SystemUiOverlayStyle? systemUiOverLayLight() {
 
 TextStyle? textStyle() {
   return TextStyle(
-      color: colorTextBlack,
-      height: 1,
+      color: colorTextDark,
+      height: 1.5,
       fontFamily: Constance.Font_regular,
       fontSize: fontSize14);
 }
@@ -126,6 +126,20 @@ TextStyle? textStyleCardTitle() {
     color: colorBlack,
   );
 }
+TextStyle? textStyleHint() {
+  return TextStyle(
+    fontSize: fontSize14,
+    color: colorUnSelectedWidget,
+  );
+}
+
+TextStyle? textStyleUnSelectedButton() {
+  return TextStyle(
+    fontSize: fontSize16,
+    color: Color(0xff676771),
+    fontWeight: FontWeight.bold
+  );
+}
 
 TextStyle? textStyleCardTitlePrice() {
   return textStyleBtnBlue()?.copyWith(
@@ -161,6 +175,39 @@ TextStyle? textStyleIntroBody(){
   return TextStyle(
     color: Colors.black, 
     fontSize: fontSize14,
+    fontWeight: FontWeight.normal
+  );
+}
+
+TextStyle? textStyleUnderLinePrimary(){
+  return TextStyle(
+    color: colorPrimary, 
+    fontSize: fontSize16,
+    decoration: TextDecoration.underline,
+    fontWeight: FontWeight.normal
+  );
+}
+
+TextStyle? textStyleAppBarTitle(){
+  return TextStyle(
+    color: colorBlack, 
+    fontSize: fontSize17,
+    fontWeight: FontWeight.normal
+  );
+}
+
+TextStyle? textStylePrimary(){
+  return TextStyle(
+    color: colorPrimary, 
+    fontSize: fontSize16,
+    fontWeight: FontWeight.normal
+  );
+}
+
+TextStyle? textStyleHints(){
+  return TextStyle(
+    color: colorHint, 
+    fontSize: fontSize15,
     fontWeight: FontWeight.normal
   );
 }
@@ -207,6 +254,20 @@ ButtonStyle? get primaryButtonStyle => ButtonStyle(
     padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
     backgroundColor: MaterialStateProperty.all(colorPrimary),
     shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+
+ButtonStyle? get seconderyCustomButtonStyle => ButtonStyle(
+    textStyle: MaterialStateProperty.all(textPrimaryButton()),
+    padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
+    backgroundColor: MaterialStateProperty.all(colorPrimary),
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+
+ButtonStyle? get seconderyButtonBothFormStyle => ButtonStyle(
+    textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black)),
+    padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
+        backgroundColor: MaterialStateProperty.all(colorUnSelectedWidget),
+
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+
 
 ButtonStyle? get seconderyButtonStyle => ButtonStyle(
     textStyle: MaterialStateProperty.all(textSeconderyButton()!.copyWith(color: Colors.black)),

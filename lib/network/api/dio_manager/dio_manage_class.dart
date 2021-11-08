@@ -24,13 +24,14 @@ class DioManagerClass {
     return _dio!;
   }
 
-  Future<Response> dioGetMethod({var url, Map<String, dynamic>? header})async{
-    return await _dio!.get(url , options:Options(headers: header) );
+  Future<Response> dioGetMethod({var url, Map<String, dynamic>? header , var queryParameters})async{
+    print("msg_queryParameters ${queryParameters}");
+    return await _dio!.get(url , options:Options(headers: header) , queryParameters: queryParameters);
   }
 
 
   Future<Response> dioPostMethod({var url, Map<String, dynamic>? header ,Map<String, dynamic>? body  })async{
-    return await _dio!.post(url , options:Options(headers: header),data: body );
+    return await _dio!.post(url , options:Options(headers: header),data: body);
   }
 
   Future<Response> dioUpdateMethod({var url, Map<String, dynamic>? header ,Map<String, dynamic>? body  })async{
@@ -48,19 +49,17 @@ class ApiInterceptors extends Interceptor {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     
     super.onRequest(options, handler);
-      Logger().d("onRequest : ${options.path}");
+      Logger().d("onRequest : ${options.path} \n ${options.data} \n ${options.method}");
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    // TODO: implement onResponse
     super.onResponse(response, handler);
     Logger().d("onResponse : ${response.statusCode}");
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    // TODO: implement onError
     super.onError(err, handler);
     Logger().d("onError : ${err.message}");
   }
