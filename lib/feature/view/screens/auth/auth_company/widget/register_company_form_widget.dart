@@ -127,7 +127,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
+                    return '${AppLocalizations.of(Get.context!)!.fill_name_of_applicant}';
                   }
                   return null;
                 },

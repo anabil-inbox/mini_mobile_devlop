@@ -84,10 +84,10 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                           controller: controller.tdcrNumber,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
- return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';      
-                       }
-                            return null;
-                          },
+                              return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';      
+                              }
+                              return null;
+                            },
                           onSaved: (val){
                               controller.tdcrNumber.text = val!;
                               controller.update(); 

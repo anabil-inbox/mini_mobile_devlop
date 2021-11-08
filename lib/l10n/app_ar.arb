@@ -21,7 +21,9 @@
      "fill_your_email" : "ادخل بريدك الالكتروني",
      "fill_your_company_name" : "ادخل اسم الشركة",
      "fill_your_company_email" : "ادخل البريد الالكتروني الخاص بالشركة",
-
+     "fill_your_name" : "ادخل اسمك",
+     "fill_name_of_applicant" : "ادخل اسم مقدم الطلب",
+     "fill_cr_number" : "ادخل رقم الترخيص",
      "user_registration":"تسجيل مستخدم",
      "user_login":"تسجيل دخول مستخدم",
      "full_name":"الاسم",

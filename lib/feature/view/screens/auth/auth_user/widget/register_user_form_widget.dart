@@ -97,7 +97,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 controller: controller.tdName,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
+                    return '${AppLocalizations.of(Get.context!)!.fill_your_name}';
                   }
                   return null;
                 },
@@ -115,7 +115,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 controller: controller.tdEmail,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
+                    return '${AppLocalizations.of(Get.context!)!.fill_your_email}';
                   } else if (!GetUtils.isEmail(value)) {
                     return "${AppLocalizations.of(Get.context!)!.please_enter_valid_email}";
                   }
