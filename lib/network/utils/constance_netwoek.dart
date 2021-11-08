@@ -26,7 +26,7 @@ abstract class ConstanceNetwork {
 
   static String featureEndPoint = "inbox_app.api.settings.features";
 
-  static String countryEndPoint = "inbox_app.api.settings.countries?page=1&page_size=5";
+  static String countryEndPoint = "inbox_app.api.settings.countries";
 
   static String registerUser = "inbox_app.api.auth.register";
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_company/register/register_company.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/widget/shared_login_form_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
@@ -47,7 +48,35 @@ class CompanyBothLoginScreen extends GetWidget<AuthViewModle> {
               buttonText: "${AppLocalizations.of(context)!.login_as_user}",
             ),
           ),
-        ],
+           SizedBox(height: 200,),
+          InkWell(
+            splashColor: colorTrans,
+            highlightColor: colorTrans,
+            onTap: (){
+              Get.put(AuthViewModle());
+              Get.to(() => RegisterCompanyScreen());
+            },
+            child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                          text:
+                              "${AppLocalizations.of(Get.context!)!.dont_have_an_account}",
+                          style: textStylePrimary()!.copyWith(color: colorBlack),
+                          
+                          ),
+                      TextSpan(
+                          text:
+                              "${AppLocalizations.of(Get.context!)!.sign_up_here}",
+                          style: textStylePrimary()),
+                    ],
+                  ),
+                ),
+          ),
+        
+        ]
+        ,
       ),
     );
   

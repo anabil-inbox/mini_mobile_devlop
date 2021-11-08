@@ -8,7 +8,9 @@ var colorHint = const Color(0xff676771);
 Color seconderyColor = const Color(0xffE63331);
 Color colorUnSelectedWidget = const Color(0xffCCCCCC);
 Color colorScaffoldRegistrationBody = const Color(0xffF7F9FB);
-Color seconderyButton = const Color(0xff676771);
+Color seconderyButton = const Color(0xffDFE1E5);
+Color seconderyButtonUnSelected = const Color(0xff676771);
+
 //todo this for textField
 var colorBorderTextFiled = Color(0xFF707070);
 var colorBorderContainer = Color(0xFFEBEBEB);

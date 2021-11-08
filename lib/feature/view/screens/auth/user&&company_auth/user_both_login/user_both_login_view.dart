@@ -53,6 +53,8 @@ class UserBothLoginScreen extends StatelessWidget {
           ),
           SizedBox(height: 200,),
           InkWell(
+            splashColor: colorTrans,
+            highlightColor: colorTrans,
             onTap: (){
               Get.to(() => UserRegisterScreen());
             },
