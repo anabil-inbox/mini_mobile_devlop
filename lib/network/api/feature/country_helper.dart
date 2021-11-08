@@ -12,7 +12,7 @@ class CountryHelper {
   //todo get Feature From Api 
     Future<Set<Country>> getCountryApi(var queryParameters) async{
       try {
-      var response = await CountryApi.getInstance.getAppCountreis(url: "${ConstanceNetwork.countryEndPoint}", header: ConstanceNetwork.header(0) , queryParameters: queryParameters);
+      var response = await CountryApi.getInstance.getAppCountreis(url: "${ConstanceNetwork.countryEndPoint}?page=${queryParameters["page"]}&page_size=${queryParameters["page_size"]}", header: ConstanceNetwork.header(0) , /* queryParameters: queryParameters */);
       if (response.status?.success == true) {
         List data = response.data["items"];
         return data.map((e) => Country.fromJson(e)).toSet();

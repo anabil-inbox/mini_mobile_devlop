@@ -36,6 +36,8 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                         Get.to(ChooseCountryScreen());
                       },
                       child: Row(
+                        textDirection: TextDirection.ltr,
+                       mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           SizedBox(
                             width: sizeW18,
@@ -134,7 +136,6 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                 SvgPicture.asset("assets/svgs/finger_pinter.svg")
               ],
             ),
-            
           ],
         ),
       ),

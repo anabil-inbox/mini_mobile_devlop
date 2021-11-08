@@ -101,9 +101,6 @@ class SharedPref {
             json.decode(_prefs!.get("$appSettingKey").toString()))
         .customerType
         .toString();
-    // return "company";
-    // return "both";
-    // return "user";
   }
 
   setUserLoginState(String state) async {

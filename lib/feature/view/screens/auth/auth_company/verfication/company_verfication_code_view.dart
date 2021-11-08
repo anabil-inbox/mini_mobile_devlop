@@ -12,81 +12,90 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import '../widget/header_code_verfication_widget.dart';
 
 class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
-  const CompanyVerficationCodeScreen({Key? key , required this.type}) : super(key: key);
+  const CompanyVerficationCodeScreen({Key? key, required this.type})
+      : super(key: key);
 
   final String type;
   @override
   Widget build(BuildContext context) {
+    print("msg_type $type");
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       body: ListView(
-        padding:const EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
         children: [
           HeaderCodeVerfication(),
-          // Column(
-          //   children: [
-          //   SizedBox(
-          //       height: sizeH16,
-          //     ),
-          //     Text(
-          //       "${AppLocalizations.of(Get.context!)!.enter_your_passcode}",
-          //       style: textStyleHints(),
-          //     ),
-          //     SizedBox(
-          //       height: sizeH16,
-          //     ),
-          //     bildeTextActiveCode(),
-          //    type == ConstanceNetwork.userType ? SizedBox(height: sizeH38,) : const SizedBox(),
-          //    type == ConstanceNetwork.userType ? RichText(
-          //      text: TextSpan(
-          //        children: [
-          //         TextSpan(
-          //           text: "${AppLocalizations.of(context)!.verify_by} ",
-          //           style: textStyleHint()
-          //           ),
-          //         TextSpan(
-          //           text: "${AppLocalizations.of(context)!.email_address}",
-          //           style: textStyleUnderLinePrimary()
-          //           )
-          //         ]),): const SizedBox()
-          //     ]),
-          //     SizedBox(
-          //       height: sizeH190,
-          //     ),
-          //     GetBuilder<AuthViewModle>(
-          //       init: AuthViewModle(),
-          //       initState: (_) {
-          //         controller.startTimer();
-          //       },
-          //       builder: (logic) {
-          //         return Column(
-          //           children: [
-          //             Text(
-          //               "${AppLocalizations.of(context)!.resend_code_in} : ${logic.startTimerCounter}",
-          //               style: textStyleHint(),
-          //               ),
-          //             logic.startTimerCounter == 0 ? 
-          //             InkWell(
-          //               onTap: (){
-          //                 logic.startTimerCounter = 60;
-          //                 logic.startTimer();
-          //                 logic.update();
-          //               },
-          //               child: Text("${AppLocalizations.of(context)!.resend}" , style: textStyleUnderLinePrimary(),)) :
-          //             const SizedBox()
-          //           ],
-          //         );
-          //       },
-          //     )
-         
-            ],
-         
+          Column(
+            children: [
+            SizedBox(
+              height: sizeH16,
+            ),
+            Text(
+              "${AppLocalizations.of(context)!.enter_your_passcode}",
+              style: textStyleHints(),
+            ),
+            SizedBox(
+              height: sizeH16,
+            ),
+            bildeTextActiveCode(context),
+            type == ConstanceNetwork.userType
+                ? SizedBox(
+                    height: sizeH38,
+                  )
+                : const SizedBox(),
+            type == ConstanceNetwork.userType
+                ? RichText(
+                    text: TextSpan(
+                      children: [
+                      TextSpan(
+                          text: "${AppLocalizations.of(context)!.verify_by} ",
+                          style: textStyleHint()),
+                      TextSpan(
+                          text:
+                              "${AppLocalizations.of(context)!.email_address}",
+                          style: textStyleUnderLinePrimary())
+                    ]),
+                  )
+                : const SizedBox()
+          ]),
+          SizedBox(
+            height: sizeH190,
           ),
+          GetBuilder<AuthViewModle>(
+            init: AuthViewModle(),
+            initState: (_){
+              controller.startTimer();
+            },
+            builder: (value) {
+              return Column(
+                children: [
+                  Text(
+                    "${AppLocalizations.of(context)!.resend_code_in} : ${value.startTimerCounter}",
+                    style: textStyleHint(),
+                  ),
+                  value.startTimerCounter == 0
+                      ? InkWell(
+                          onTap: () {
+                            value.startTimerCounter = 60;
+                            value.startTimer();
+                            value.update();
+                          },
+                          child: Text(
+                            "${AppLocalizations.of(context)!.resend}",
+                            style: textStyleUnderLinePrimary(),
+                          ))
+                      : const SizedBox()
+                ],
+              );
+            },
+          )
        
+        ],
+      ),
     );
   }
 
-  Widget bildeTextActiveCode() {
+  Widget bildeTextActiveCode(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: sizeW80!),
       child: PinCodeTextField(
@@ -120,10 +129,9 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
           print("Completed");
           print(v);
           if (v == "1234") {
-            Get.offAll(()=> HomeScreen());
+            Get.offAll(() => HomeScreen());
           }
-          
-          },
+        },
         onChanged: (value) {
           print(value);
         },
@@ -142,7 +150,7 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
           //but you can show anything you want here, like your pop up saying wrong paste format or etc
           return true;
         },
-        appContext: Get.context!,
+        appContext: context,
       ),
     );
   }

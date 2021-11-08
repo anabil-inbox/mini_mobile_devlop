@@ -164,6 +164,7 @@ class AuthViewModle extends GetxController {
               snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
                   "${value.status!.message}"),
               Get.to(CompanyVerficationCodeScreen(type: "${ConstanceNetwork.userType}")),
+              
             }
           else
             {
@@ -230,6 +231,7 @@ class AuthViewModle extends GetxController {
 
   @override
   void onInit() {
+    startTimer();
     getDeviceDetails();
     if (Platform.isAndroid) {
       deviceType = "android";
@@ -241,13 +243,13 @@ class AuthViewModle extends GetxController {
   }
 
   void startTimer() {
+    
     const oneSec = const Duration(seconds: 1);
-    timer = new Timer.periodic(
-      oneSec,
-      (Timer timer) {
+    timer = new Timer.periodic(oneSec,
+    (Timer timer) {
         if (startTimerCounter == 0) {
-          timer.cancel();
-          update();
+           timer.cancel();
+           update();
         } else {
           startTimerCounter--;
           update();
