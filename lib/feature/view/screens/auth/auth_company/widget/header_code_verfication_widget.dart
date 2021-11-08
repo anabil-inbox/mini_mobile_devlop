@@ -10,7 +10,7 @@ class HeaderCodeVerfication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: sizeH174,
+      height: sizeH200,
       child: Stack(
         children: [
           PositionedDirectional(

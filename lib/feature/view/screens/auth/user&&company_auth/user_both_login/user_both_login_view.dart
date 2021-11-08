@@ -56,7 +56,7 @@ class UserBothLoginScreen extends StatelessWidget {
             splashColor: colorTrans,
             highlightColor: colorTrans,
             onTap: (){
-              Get.to(() => UserRegisterScreen());
+              Get.off(() => UserRegisterScreen());
             },
             child: RichText(
                   textAlign: TextAlign.center,
@@ -76,6 +76,8 @@ class UserBothLoginScreen extends StatelessWidget {
                   ),
                 ),
           ),
+          SizedBox(height: 16,),
+          
         ],
       ),
     );

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -28,7 +30,7 @@ class HeaderRegisterCompany extends    GetWidget<IntroViewModle> {
           ),
           PositionedDirectional(
             end: padding20,
-            bottom: padding80,
+            top: padding40,
             child: IconButton(
               onPressed: (){
                 changeLanguageBottomSheet();
@@ -39,8 +41,8 @@ class HeaderRegisterCompany extends    GetWidget<IntroViewModle> {
               top: padding40,
               start:padding20,
               child: IconButton(
-            onPressed: () {
-              Get.back();
+              onPressed: () {
+              print("object");
             },
             icon: SvgPicture.asset("assets/svgs/cross.svg"),
           )),

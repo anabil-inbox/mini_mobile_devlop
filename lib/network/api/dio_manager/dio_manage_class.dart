@@ -25,7 +25,6 @@ class DioManagerClass {
   }
 
   Future<Response> dioGetMethod({var url, Map<String, dynamic>? header , var queryParameters})async{
-    print("msg_queryParameters ${queryParameters}");
     return await _dio!.get(url , options:Options(headers: header) , queryParameters: queryParameters);
   }
 

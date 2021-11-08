@@ -18,7 +18,6 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
   final String type;
   @override
   Widget build(BuildContext context) {
-    print("msg_type $type");
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       body: ListView(
@@ -126,14 +125,11 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
         //  errorAnimationController: errorController,
         keyboardType: TextInputType.number,
         onCompleted: (v) {
-          print("Completed");
-          print(v);
           if (v == "1234") {
             Get.offAll(() => HomeScreen());
           }
         },
         onChanged: (value) {
-          print(value);
         },
         /*validator: (value) {
           if(value.isEmpty) {
@@ -145,7 +141,6 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
           }
         },*/
         beforeTextPaste: (text) {
-          print("Allowing to paste $text");
           //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
           //but you can show anything you want here, like your pop up saying wrong paste format or etc
           return true;

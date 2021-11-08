@@ -13,7 +13,7 @@ class HeaderLogin extends GetWidget<IntroViewModle> {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      height: sizeH174,
+      height: sizeH200,
       child: Stack(
         children: [
           PositionedDirectional(
@@ -28,7 +28,7 @@ class HeaderLogin extends GetWidget<IntroViewModle> {
           ),
           PositionedDirectional(
             end: padding20,
-            bottom: padding80,
+            top: padding45,
             child: IconButton(
               onPressed: (){
                 changeLanguageBottomSheet();
@@ -38,7 +38,7 @@ class HeaderLogin extends GetWidget<IntroViewModle> {
           PositionedDirectional(
             start: padding0,
             end: padding0,
-            top: padding63,
+            top: padding69,
             bottom: padding32,
             child: SvgPicture.asset("assets/svgs/logo_horizantal.svg",),
           ),

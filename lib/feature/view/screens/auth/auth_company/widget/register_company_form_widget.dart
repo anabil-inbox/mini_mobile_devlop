@@ -278,7 +278,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                                 applicantName: logic.tdNameOfApplicant.text,
                                 udid: logic.identifier,
                                 deviceType: logic.deviceType,
-                                fcm: "fcmTest",
+                                fcm: "${SharedPref.instance.getFCMToken()}",
                                 email: logic.tdCompanyEmail.text,
                                 mobile: logic.tdMobileNumber.text,
                                 applicantDepartment: logic.tdApplicantDepartment.text,
@@ -294,7 +294,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
               UnSelectedButton(
                 textButton: "${AppLocalizations.of(Get.context!)!.register_as_user}",
                 onClicked: (){
-                 Get.to(() => UserRegisterScreen());
+                 Get.off(() => UserRegisterScreen());
                 },
               ) : const SizedBox(), 
               SizedBox(
@@ -325,7 +325,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
               SizedBox(
                 height: sizeH32,
               ),
-            
+              
             ],
           )),
     );
@@ -399,7 +399,6 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 controller.companySector = controller.temproreySectorName;
                 controller.update();
                 Get.back();
-                print("msg_sector_name ${controller.companySector}");
               },
               isExpanded: true),
           SizedBox(

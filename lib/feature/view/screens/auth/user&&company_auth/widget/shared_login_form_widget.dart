@@ -13,6 +13,7 @@ import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 class SharedLoginForm extends GetWidget<AuthViewModle> {
   SharedLoginForm({Key? key, required this.type}) : super(key: key);
@@ -33,7 +34,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                     color: colorTextWhite,
                     child: InkWell(
                       onTap: () {
-                        Get.to(ChooseCountryScreen());
+                        Get.off(ChooseCountryScreen());
                       },
                       child: Row(
                         textDirection: TextDirection.ltr,
@@ -114,11 +115,11 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                           if (type == "${ConstanceNetwork.userType}") {
                             controller.signInUser(
                                 user: User(
-                                    countryCode: "970",
+                                    countryCode: "${controller.defCountry.prefix}",
                                     mobile: controller.tdMobileNumber.text,
                                     udid: controller.identifier,
                                     deviceType: controller.deviceType,
-                                    fcm: "fcm_1"));
+                                   fcm: "${SharedPref.instance.getFCMToken()}",));
                           } else if (type == "${ConstanceNetwork.companyType}") {
                             controller.signInCompany(
                               Company(

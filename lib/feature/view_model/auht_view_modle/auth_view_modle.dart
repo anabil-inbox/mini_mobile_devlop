@@ -14,7 +14,6 @@ import 'package:inbox_clients/feature/model/user_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/verfication/company_verfication_code_view.dart';
 import 'package:inbox_clients/network/api/feature/auth_helper.dart';
 import 'package:inbox_clients/network/api/feature/country_helper.dart';
-import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/sh_util.dart';
@@ -71,9 +70,6 @@ class AuthViewModle extends GetxController {
   }
 
   Future<Set<Country>> getCountries(int page , int pageSize) async {
-    log.d("msg_page $page");
-    log.d("msg_pageSize $pageSize");
-
     await CountryHelper.getInstance
         .getCountryApi(
           {"page" : page,
@@ -224,7 +220,6 @@ class AuthViewModle extends GetxController {
       }
       update();
     } on PlatformException {
-      print('Failed to get platform version');
     }
     return [deviceName!, deviceVersion!, identifier!];
   }

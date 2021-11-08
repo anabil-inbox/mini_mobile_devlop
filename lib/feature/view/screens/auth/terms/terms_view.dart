@@ -17,7 +17,6 @@ class TermsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ApiSettings settings = ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
-    print("${settings.termOfConditions}");
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       appBar: AppBar(

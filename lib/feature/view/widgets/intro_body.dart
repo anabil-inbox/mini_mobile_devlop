@@ -20,7 +20,6 @@ class IntroBody extends StatelessWidget {
   final int index; 
   @override
   Widget build(BuildContext context) {
-    print("msg_title $title");
     screenUtil(context);
     return Stack(
               children: [

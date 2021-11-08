@@ -12,6 +12,8 @@ class SharedPref {
   final String isShowKey = "loading";
   final String currentUser = "currentUser";
   final String loginKey = "login";
+  final String fcmKey = "fcm";
+
   var log = Logger();
 
   SharedPref._();
@@ -97,10 +99,13 @@ class SharedPref {
   }
 
   getUserType() {
-    return ApiSettings.fromJson(
-            json.decode(_prefs!.get("$appSettingKey").toString()))
-        .customerType
-        .toString();
+    // return ApiSettings.fromJson(
+    //         json.decode(_prefs!.get("$appSettingKey").toString()))
+    //     .customerType
+    //     .toString();
+    return "user";
+    // return "company";
+    // return "both";
   }
 
   setUserLoginState(String state) async {
@@ -124,4 +129,19 @@ class SharedPref {
   init() async {
     _prefs = await SharedPreferences?.getInstance();
   }
+
+   setFCMToken(String fcmToken) async {
+     try{
+     SharedPreferences pref = await SharedPreferences.getInstance();
+     pref.setString("$fcmKey", fcmToken);
+     }catch(e){
+
+     }
+ 
+    
+  }
+
+     String getFCMToken() {
+    return _prefs!.getString("$fcmKey") ?? "";
+   }
 }

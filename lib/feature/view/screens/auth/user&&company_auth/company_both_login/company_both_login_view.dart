@@ -54,7 +54,7 @@ class CompanyBothLoginScreen extends GetWidget<AuthViewModle> {
             highlightColor: colorTrans,
             onTap: (){
               Get.put(AuthViewModle());
-              Get.to(() => RegisterCompanyScreen());
+              Get.off(() => RegisterCompanyScreen());
             },
             child: RichText(
                   textAlign: TextAlign.center,
@@ -73,7 +73,9 @@ class CompanyBothLoginScreen extends GetWidget<AuthViewModle> {
                     ],
                   ),
                 ),
+            
           ),
+          SizedBox(height: sizeH16,),
         
         ]
         ,

@@ -61,7 +61,7 @@ final String type;
                     isExpanded: false,
                     textButton: "${AppLocalizations.of(Get.context!)!.sign_in}",
                     onClicked: () {
-                      Get.to(() => UserCompanyLoginScreen(type: SharedPref.instance.getUserType(),));
+                      Get.off(() => UserCompanyLoginScreen(type: SharedPref.instance.getUserType(),));
                       },
                   ),
                   SizedBox(
@@ -72,9 +72,9 @@ final String type;
                           "${AppLocalizations.of(Get.context!)!.sign_up}",
                       onClicked: () {
                         if(type == "${ConstanceNetwork.userType}" || type == "${ConstanceNetwork.bothType}"){
-                          Get.to(() => UserRegisterScreen());
+                          Get.off(() => UserRegisterScreen());
                         }else if(type == "${ConstanceNetwork.companyType}"){
-                          Get.to(() => RegisterCompanyScreen());  
+                          Get.off(() => RegisterCompanyScreen());  
                         }
                        
                       })

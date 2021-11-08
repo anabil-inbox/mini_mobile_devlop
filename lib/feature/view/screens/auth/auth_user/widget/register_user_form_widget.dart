@@ -8,7 +8,6 @@ import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
-import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -186,8 +185,8 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                                   email: controller.tdEmail.text,
                                   fullName: controller.tdName.text,
                                   udid: controller.identifier,
-                                  fcm: "fcm1",
-                                  countryCode: "972"));
+                                  fcm: "${SharedPref.instance.getFCMToken()}",
+                                  countryCode: "${controller.defCountry.prefix}"));
                         }
 
                       });
@@ -198,10 +197,10 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
               UnSelectedButton(
                 textButton: "${AppLocalizations.of(Get.context!)!.register_as_company}",
                 onClicked: (){
-                  Get.to(RegisterCompanyScreen());
+                  Get.off(() => RegisterCompanyScreen());
                 },
               ) : const SizedBox(),             
-              SizedBox(height : sizeH114),
+              SizedBox(height : sizeH80),
               InkWell(
                 onTap: (){
                   Get.to(() => UserCompanyLoginScreen(type: "${ConstanceNetwork.userType}",));

@@ -28,7 +28,6 @@ class PrimaryButton extends StatelessWidget {
         onPressed: !isLoading ? (){
             onClicked();
         } : (){
-          print("msg Blocked Button");
         },
         child: isLoading ? ThreeSizeDot() : Text("$textButton" , style: textStylePrimary()!.copyWith(fontWeight: FontWeight.bold , fontSize: 16 , color: colorTextWhite),),
       ),

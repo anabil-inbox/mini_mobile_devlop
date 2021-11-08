@@ -13,6 +13,10 @@ class UnSelectedButton extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: sizeH50,
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4)
+      ),
       child: MaterialButton(
       textColor: textStyleUnSelectedButton()!.color,
       color: colorUnSelectedWidget,
