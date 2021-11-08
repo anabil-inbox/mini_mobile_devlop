@@ -59,7 +59,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 controller: controller.tdCompanyName,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
+                    return '${AppLocalizations.of(Get.context!)!.fill_your_company_name}';
                   }
                   return null;
                 },
@@ -82,7 +82,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
+                    return '${AppLocalizations.of(Get.context!)!.fill_your_company_email}';
                   }else if(!GetUtils.isEmail(value)){
                     return '${AppLocalizations.of(Get.context!)!.please_enter_valid_email}';
                   }
@@ -198,7 +198,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                           controller: controller.tdMobileNumber,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
+                              return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';
                             }else if(value.length != 9 ){
                               return "${AppLocalizations.of(Get.context!)!.phone_number_invalid}";
                             }

@@ -64,7 +64,8 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                               controller: controller.tdMobileNumber,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
+                                   return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';      
+
                                 } else if (value.length != 9) {
                                   return "${AppLocalizations.of(Get.context!)!.phone_number_invalid}";
                                 }
@@ -83,8 +84,8 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                           controller: controller.tdcrNumber,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
-                            }
+ return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';      
+                       }
                             return null;
                           },
                           onSaved: (val){

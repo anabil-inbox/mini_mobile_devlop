@@ -17,6 +17,11 @@
      "applicant_department" : "قسم المتقدمين",
      "terms_and_conditions": "الشروط والأحكام الخاصة بنا",
      "fill_this_field" : "هذا الحقل مطلوب",
+     "fill_your_phone_number" : "ادخل رقم هاتفك",
+     "fill_your_email" : "ادخل بريدك الالكتروني",
+     "fill_your_company_name" : "ادخل اسم الشركة",
+     "fill_your_company_email" : "ادخل البريد الالكتروني الخاص بالشركة",
+
      "user_registration":"تسجيل مستخدم",
      "user_login":"تسجيل دخول مستخدم",
      "full_name":"الاسم",
