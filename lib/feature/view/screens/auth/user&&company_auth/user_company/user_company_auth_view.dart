@@ -72,17 +72,18 @@ class UserCompanyLoginScreen extends GetWidget<IntroViewModle> {
               child: RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
+                  style: textStyleTitle(),
                   children: [
                     TextSpan(
                         text:
                             "${AppLocalizations.of(Get.context!)!.dont_have_an_account}",
-                        style: textStylePrimary()!.copyWith(color: colorBlack),
+                        style: textStylePrimary()!.copyWith(color: colorTextHint,fontSize: 13),
                         
                         ),
                     TextSpan(
                         text:
                             "${AppLocalizations.of(Get.context!)!.sign_up_here}",
-                        style: textStylePrimary()),
+                        style: textStylePrimary()!.copyWith(fontSize: 13)),
                   ],
                 ),
               ),

@@ -98,6 +98,8 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '${AppLocalizations.of(Get.context!)!.fill_your_name}';
+                  }else if (value.length <= 2){
+                    
                   }
                   return null;
                 },
@@ -208,15 +210,16 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 },
                 child: RichText(
                   text: TextSpan(
+                    style: textStyleTitle(),
                     children: [
                       TextSpan(
                           text:
                               "${AppLocalizations.of(Get.context!)!.have_an_account}",
-                          style: textStylePrimary()!.copyWith(color: colorBlack)),
+                          style: textStylePrimary()!.copyWith(color: colorBlack,fontSize: 13)),
                       TextSpan(
                           text:
-                              "${AppLocalizations.of(Get.context!)!.sign_up_here}",
-                          style: textStylePrimary()),
+                              "${AppLocalizations.of(Get.context!)!.sign_in}",
+                          style: textStylePrimary()!.copyWith(fontSize: 13)),
                     ],
                   ),
                 ),

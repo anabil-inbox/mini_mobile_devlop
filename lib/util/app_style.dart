@@ -251,10 +251,10 @@ ButtonStyle? get buttonStyle => ButtonStyle(
     shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
 
 ButtonStyle? get primaryButtonStyle => ButtonStyle(
-    textStyle: MaterialStateProperty.all(textPrimaryButton()),
     padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
     backgroundColor: MaterialStateProperty.all(colorPrimary),
-    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)))
+    );
 
 ButtonStyle? get seconderyCustomButtonStyle => ButtonStyle(
     textStyle: MaterialStateProperty.all(textPrimaryButton()),

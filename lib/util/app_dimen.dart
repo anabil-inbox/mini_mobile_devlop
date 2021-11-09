@@ -112,6 +112,7 @@ final double? padding57 = 57;
 final double? padding160 = 160;
 final double? padding0 = 0;
 final double padding69 = 69;
+final double? padding104 = 104;
 final double? paddingM_20 = -20;
 final double? paddingM_25 = -25;
 final double? padding306 = 306;

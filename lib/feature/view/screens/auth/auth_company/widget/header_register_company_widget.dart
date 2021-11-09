@@ -47,9 +47,9 @@ class HeaderRegisterCompany extends    GetWidget<IntroViewModle> {
             icon: SvgPicture.asset("assets/svgs/cross.svg"),
           )),
           PositionedDirectional(
-            start: padding0,
-            end: padding0,
-            top: padding63,
+            start: padding104,
+            end: padding104,
+            top: padding69,
             bottom: padding32,
             child: SvgPicture.asset("assets/svgs/logo_horizantal.svg",),
           ),

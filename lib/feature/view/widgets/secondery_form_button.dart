@@ -30,7 +30,7 @@ class SeconderyFormButton extends StatelessWidget {
              
            }
         },
-        child: Text("$buttonText" , style: textStyleHint()!.copyWith(color: colorHint , fontWeight: FontWeight.bold),),
+        child: Text("$buttonText" , style: textStyleHint()!.copyWith(color: colorHint , fontWeight: FontWeight.bold,fontSize: 15),),
       ),
     );
   }

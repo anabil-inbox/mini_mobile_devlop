@@ -18,12 +18,13 @@ class UnSelectedButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(4)
       ),
       child: MaterialButton(
+      focusColor: Colors.black,  
       textColor: textStyleUnSelectedButton()!.color,
       color: colorUnSelectedWidget,
       onPressed: () {
         onClicked();
       },
-      child: Text("$textButton")
+      child: Text("$textButton" , style: textStyleUnSelectedButton()!.copyWith(fontSize: 15),)
       ));
   }
 }

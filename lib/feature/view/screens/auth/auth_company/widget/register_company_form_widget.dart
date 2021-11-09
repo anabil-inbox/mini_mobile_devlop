@@ -212,7 +212,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 ),
               ),
               SizedBox(
-                height: padding16,
+                height: sizeH31,
               ),
               GetBuilder<AuthViewModle>(
                 builder: (value) {
@@ -233,6 +233,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                             ),
                             Text(
                               "${AppLocalizations.of(Get.context!)!.accept_our} ",
+                              style: textStyleHint()!.copyWith(fontSize: 14,fontWeight: FontWeight.normal),
                             )
                           ],
                         ),
@@ -244,14 +245,14 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                           child: Text(
                             "${AppLocalizations.of(Get.context!)!.terms_and_conditions}",
                             style: textStyleUnderLinePrimary()!
-                                .copyWith(color: colorBlack),
+                                .copyWith(color: colorBlack, fontSize: 14),
                           )),
                     ],
                   );
                 },
               ),
               SizedBox(
-                height: sizeH20,
+                height: sizeH27,
               ),
               GetBuilder<AuthViewModle>(
                 builder: (logic) {
@@ -308,16 +309,17 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 },
                 child: RichText(
                   text: TextSpan(
+                    style: textStyleTitle(),
                     children: [
                       TextSpan(
                           text:
                               "${AppLocalizations.of(Get.context!)!.have_an_account}",
                           style:
-                              textStylePrimary()!.copyWith(color: colorBlack)),
+                             textStylePrimary()!.copyWith(color: colorTextHint,fontSize: 13)),
                       TextSpan(
                           text:
-                              "${AppLocalizations.of(Get.context!)!.sign_up_here}",
-                          style: textStylePrimary()),
+                              "${AppLocalizations.of(Get.context!)!.sign_in}",
+                          style: textStylePrimary()!.copyWith(fontSize: 13)),
                     ],
                   ),
                 ),

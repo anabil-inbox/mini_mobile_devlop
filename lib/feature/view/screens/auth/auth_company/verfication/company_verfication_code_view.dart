@@ -51,17 +51,22 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
                 ? InkWell(
                     splashColor: colorTrans,
                     highlightColor: colorTrans,
-                    onTap:(){
-                    
-                    
-                    // controller.reSendVerficationCode(
-                    // udid: controller.identifier,
-                    // countryCode: countryCode,
-                    // mobileNumber: mobileNumber,
-                    // target: "email"
-                    // );
-                   
-                  },
+                    onTap: (){
+                    if(controller.startTimerCounter == 0) {
+                        print("msg_controller_timer ${controller.startTimerCounter}");
+                        controller.startTimerCounter = 60;
+                        controller.startTimer();
+                        controller.update();
+                        // controller.reSendVerficationCode(
+                        // udid: controller.identifier,
+                        // countryCode: countryCode,
+                        // mobileNumber: mobileNumber,
+                        // target: "email"
+                        // );
+                    }  else {
+                        print("msg_Blocked ${controller.startTimerCounter}");
+                    }                   
+                  } ,
                   child: RichText(
                       text: TextSpan(children: [
                         TextSpan(
@@ -101,12 +106,12 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
                           splashColor: colorTrans,
                           highlightColor: colorTrans,
                           onTap: () {
-                            value.reSendVerficationCode(
-                              countryCode: countryCode,
-                              target: type == "user" ? "sms" : "eamil",
-                              mobileNumber: mobileNumber,
-                              udid: value.identifier,
-                            );
+                            //   value.reSendVerficationCode(
+                            //   countryCode: countryCode,
+                            //   target: type == "user" ? "sms" : "eamil",
+                            //   mobileNumber: mobileNumber,
+                            //   udid: value.identifier,
+                            // );
                             value.startTimerCounter = 60;
                             value.startTimer();
                             value.update();

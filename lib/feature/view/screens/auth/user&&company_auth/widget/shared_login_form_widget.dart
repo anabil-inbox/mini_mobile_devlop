@@ -38,7 +38,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                       },
                       child: Row(
                         textDirection: TextDirection.ltr,
-                       mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           SizedBox(
                             width: sizeW18,

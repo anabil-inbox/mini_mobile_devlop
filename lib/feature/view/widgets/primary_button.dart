@@ -6,12 +6,13 @@ import 'package:inbox_clients/util/app_style.dart';
 
 // ignore: must_be_immutable
 class PrimaryButton extends StatelessWidget {
-   PrimaryButton({ Key? key ,
-   required this.textButton,
-   required this.isLoading,
-   required this.onClicked,
-   required this.isExpanded,
-   }) : super(key: key);
+  PrimaryButton({
+    Key? key,
+    required this.textButton,
+    required this.isLoading,
+    required this.onClicked,
+    required this.isExpanded,
+  }) : super(key: key);
   final String textButton;
   final Function onClicked;
   final bool isExpanded;
@@ -23,13 +24,21 @@ class PrimaryButton extends StatelessWidget {
       width: isExpanded ? double.infinity : sizeW165,
       height: sizeH50,
       child: ElevatedButton(
-        
         style: primaryButtonStyle,
-        onPressed: !isLoading ? (){
-            onClicked();
-        } : (){
-        },
-        child: isLoading ? ThreeSizeDot() : Text("$textButton" , style: textStylePrimary()!.copyWith(fontWeight: FontWeight.bold , fontSize: 16 , color: colorTextWhite),),
+        onPressed: !isLoading
+            ? () {
+                onClicked();
+              }
+            : () {},
+        child: isLoading
+            ? ThreeSizeDot()
+            : Text(
+                "$textButton",
+                style: textStylePrimary()!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: colorTextWhite),
+              ),
       ),
     );
   }

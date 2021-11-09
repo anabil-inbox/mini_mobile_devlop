@@ -28,5 +28,6 @@ class BindingsController extends Bindings{
    Get.lazyPut(() => IntroViewModle());
    Get.lazyPut(() => AuthViewModle());
   }
+  
 }
 

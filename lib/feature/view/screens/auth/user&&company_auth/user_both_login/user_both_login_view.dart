@@ -20,8 +20,8 @@ class UserBothLoginScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       body: ListView(
-        padding: const EdgeInsets.all(0),
-        children: [
+      padding: const EdgeInsets.all(0),
+      children: [
           HeaderLogin(),
           SizedBox(
             height: sizeH16,
@@ -50,7 +50,7 @@ class UserBothLoginScreen extends StatelessWidget {
               buttonText: "${AppLocalizations.of(context)!.login_as_company}",
             ),
           ),
-          SizedBox(height: 200,),
+          SizedBox(height: sizeH200,),
           InkWell(
             splashColor: colorTrans,
             highlightColor: colorTrans,
@@ -60,17 +60,17 @@ class UserBothLoginScreen extends StatelessWidget {
             child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
+                    style: textStyleTitle(),
                     children: [
                       TextSpan(
                           text:
-                              "${AppLocalizations.of(Get.context!)!.dont_have_an_account}",
-                          style: textStylePrimary()!.copyWith(color: colorBlack),
-                          
+                              "${AppLocalizations.of(Get.context!)!.dont_have_an_account} ",
+                          style: textStylePrimary()!.copyWith(color: colorTextHint,fontSize: 13),
                           ),
                       TextSpan(
                           text:
                               "${AppLocalizations.of(Get.context!)!.sign_up_here}",
-                          style: textStylePrimary()),
+                          style: textStylePrimary()!.copyWith(fontSize: 13)),
                     ],
                   ),
                 ),

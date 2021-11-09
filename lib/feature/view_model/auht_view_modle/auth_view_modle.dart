@@ -302,7 +302,6 @@ class AuthViewModle extends GetxController {
             }
         });
   }
-
   
   reSendVerficationCode({ String? udid, String? target,String? mobileNumber, String? countryCode}) async { 
     await AuthHelper.getInstance.checkVerficationCode({
@@ -326,8 +325,8 @@ class AuthViewModle extends GetxController {
             }
         });
   }
-
-
+  
+  
 
 
   @override
