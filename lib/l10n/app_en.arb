@@ -94,5 +94,6 @@
     "helpCenter":"Help Center",
     "about_inbox":"About Inbox",
     "change_mobile_number":"Change Mobile Number",
-    "what_is_your_new_phone_number":"What is your new Phone Number?"
+    "what_is_your_new_phone_number":"What is your new Phone Number?",
+    "scan_your_fingerprint_to_authenticate":"Scan your fingerprint to authenticate"
 }

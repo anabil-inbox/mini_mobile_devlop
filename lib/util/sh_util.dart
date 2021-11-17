@@ -51,28 +51,27 @@ class SharedPref {
 //       }
 //   }
 
-  setCurrentUserDate(Customer profileData) async {
+  setCurrentUserDate(String profileData) async {
   try {
-    print("msg_get_in_setCurrentUserDate ${profileData.toJson().toString()}");
     bool? isSaved =
-          await _prefs?.setString("$userDataKey", profileData.toJson().toString());
+          await _prefs?.setString("$userDataKey", profileData.toString());
     print(isSaved);
   } catch (e) {
     return "$e";
   }
 }
 
- getCurrentUserData(){
+  Customer getCurrentUserData(){
     try {
     var string = _prefs?.getString("$userDataKey");
-    var decode = json.decode(string!);
+    var decode = json.decode(string!)["data"]["Customer"];
     Customer profileData = Customer.fromJson(decode);
-    return profileData;
-    /// return string;
+     return profileData;
     } catch (e) {
-    print("error_get $e");
-    return ;
+      return Customer();
     }
+   
+    
   }
 
 

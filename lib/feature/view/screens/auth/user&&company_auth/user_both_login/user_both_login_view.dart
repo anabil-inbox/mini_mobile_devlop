@@ -17,6 +17,8 @@ class UserBothLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        print("msg_check ${GetUtils.isNull(SharedPref.instance.getCurrentUserData().id)}");
+
     Get.put(AuthViewModle());
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
+import 'package:inbox_clients/feature/view/widgets/three_size_dot.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -16,14 +17,16 @@ import '../widget/header_code_verfication_widget.dart';
 class CompanyVerficationCodeScreen extends StatefulWidget {
    CompanyVerficationCodeScreen(
       {Key? key,
+      required this.id,
       required this.type,
       required this.countryCode,
       required this.mobileNumber})
       : super(key: key);
-
+  final String id;
   final String type;
   final String mobileNumber;
   final String countryCode;
+  
 
   @override
   State<CompanyVerficationCodeScreen> createState() => _CompanyVerficationCodeScreenState();
@@ -40,6 +43,10 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
     super.initState();
     authViewModle.startTimerCounter = 60;
     authViewModle.startTimer();
+    Future.delayed(Duration(seconds: 2)).then((value) => {
+      authViewModle.tdPinCode.text = "1234",
+    
+    });
   }
 
 
@@ -62,7 +69,7 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
             SizedBox(
               height: sizeH16,
             ),
-            bildeTextActiveCode(context),
+            bildeTextActiveCode(context,authViewModle.tdPinCode),
             widget.type == ConstanceNetwork.userType
                 ? SizedBox(
                     height: sizeH38,
@@ -74,16 +81,15 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
                     highlightColor: colorTrans,
                     onTap: (){
                     if(authViewModle.startTimerCounter == 0) {
-                        print("msg_authViewModle_timer ${authViewModle.startTimerCounter}");
                         authViewModle.startTimerCounter = 60;
                         authViewModle.startTimer();
                         authViewModle.update();
-                        // authViewModle.reSendVerficationCode(
-                        // udid: authViewModle.identifier,
+                        authViewModle.reSendVerficationCode(
+                        udid: authViewModle.identifier,
                         // countryCode: countryCode,
                         // mobileNumber: mobileNumber,
-                        // target: "email"
-                        // );
+                        target: "email"
+                        );
                     }  else {
                         print("msg_Blocked ${authViewModle.startTimerCounter}");
                     }                   
@@ -112,7 +118,7 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
           SizedBox(
             height: sizeH190,
           ),
-          GetBuilder<AuthViewModle>(
+          authViewModle.isLoading ? ThreeSizeDot() : GetBuilder<AuthViewModle>(
             builder: (value) {
               return Column(
                 children: [
@@ -125,15 +131,14 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
                           splashColor: colorTrans,
                           highlightColor: colorTrans,
                           onTap: () {
-                            //   value.reSendVerficationCode(
-                            //   countryCode: countryCode,
-                            //   target: type == "user" ? "sms" : "eamil",
-                            //   mobileNumber: mobileNumber,
-                            //   udid: value.identifier,
-                            // );
-                            value.startTimerCounter = 60;
-                            value.startTimer();
-                            value.update();
+                              value.reSendVerficationCode(
+                              id: widget.id, 
+                              countryCode: widget.countryCode,
+                              target: ConstanceNetwork.userType == "${widget.type}" ? "sms" : "eamil",
+                              mobileNumber: widget.mobileNumber,
+                              udid: value.identifier,
+                            );
+                           
                           },
                           child: Text(
                             "${AppLocalizations.of(context)!.resend}",
@@ -144,6 +149,7 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
               );
             },
           )
+        
         ],
       ),
     );
@@ -151,10 +157,12 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
 
   Widget bildeTextActiveCode(
     BuildContext context,
+    TextEditingController controller
   ) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: sizeW80!),
       child: PinCodeTextField(
+        controller: controller,
         hintCharacter: "__",
         hintStyle: textStyleTitle(),
         length: 4,
@@ -180,28 +188,40 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
         enableActiveFill: true,
         keyboardType: TextInputType.number,
         onCompleted: (v) {
-          if(v=="1234"){
-            SharedPref.instance.setUserLoginState("${ConstanceNetwork.userLoginedState}");
-            Get.offAll(() => ProfileScreen());
-          }
-          // authViewModle.checkVerficationCode(
-          //   countryCode: countryCode,
-          //   mobileNumber: mobileNumber,
-          //   code: v.toString(),
-          //   udid: controller.identifier,
-          // );
+
+          authViewModle.checkVerficationCode(
+            countryCode: "",
+            id: widget.id,
+            mobileNumber: "",
+            code: v.toString(),
+          
+          );
         
         },
-        onChanged: (value) {},
-        /*validator: (value) {
-          if(value.isEmpty) {
-            return kPleaseActiveCode.tr;
-          }else if(value.length!=4) {
-           // return kPleaseActiveCode.tr;
-          }else{
-            return null;
-          }
-        },*/
+        onChanged: (value) {
+        //   if(value.isEmpty) {
+        //   //  return kPleaseActiveCode.tr;
+        //   }else if(value.length!=4) {
+        //  //   return kPleaseActiveCode.tr;
+        //   }else{
+        //     print("msg_in_else");
+        //     authViewModle.checkVerficationCode(
+        //     countryCode: "",
+        //     id: widget.id,
+        //     mobileNumber: "",
+        //     code: value.toString(),
+        //   );
+        //   }
+        },
+        // validator: (value) {
+        //   if(value.isEmpty) {
+        //     return kPleaseActiveCode.tr;
+        //   }else if(value.length!=4) {
+        //    // return kPleaseActiveCode.tr;
+        //   }else{
+        //     return null;
+        //   }
+        // },
         beforeTextPaste: (text) {
           //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
           //but you can show anything you want here, like your pop up saying wrong paste format or etc

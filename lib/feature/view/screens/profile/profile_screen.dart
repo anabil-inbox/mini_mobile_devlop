@@ -30,7 +30,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                   onTap: (){
                    
                   },
-                  trailingTitle: "500 QAR",
+                  trailingTitle: "0 QAR",
                   settingTitle: "${AppLocalizations.of(context)!.my_wallet}",
                   iconPath: "assets/svgs/wallet.svg",
                 ),
@@ -39,7 +39,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                   onTap: (){
                    
                   },
-                  trailingTitle: "500 point",
+                  trailingTitle: "0 point",
                   settingTitle: "${AppLocalizations.of(context)!.my_rewards}",
                   iconPath: "assets/svgs/rewareds.svg",
                 ),
@@ -55,7 +55,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                 SizedBox(height: sizeH12,), 
                 SettingItem(
                   onTap: (){
-                    Get.to(() => GetAddressScreen());
+                  //  Get.to(() => GetAddressScreen());
                   },
                   settingTitle: "${AppLocalizations.of(context)!.my_address}",
                   trailingTitle: "",
@@ -82,7 +82,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                 SizedBox(height: sizeH12,), 
                 SettingItem(
                   onTap: (){
-                    Get.to(() => SettingsScreen());
+                  //  Get.to(() => SettingsScreen());
                   },
                   settingTitle: "${AppLocalizations.of(context)!.setting}",
                   trailingTitle: "",

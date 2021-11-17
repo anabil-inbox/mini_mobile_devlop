@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 abstract class ConstanceNetwork {
   ///todo here insert base_url
-  static String imageUrl = "".trim();
+  static String imageUrl = "http://50.17.152.72/".trim();
 
   ///todo here insert key Of Request
 
@@ -31,6 +31,10 @@ abstract class ConstanceNetwork {
   static String loginCompany = "inbox_app.api.auth.company_login";
 
   static String userLoginedState = "logined";
+
+  static String userStillNotVerifyState = "stillNotVerify";
+
+  static String companyStillNotVerifyState = "CompanystillNotVerify";
 
   static String userEnterd = "enterd";
 

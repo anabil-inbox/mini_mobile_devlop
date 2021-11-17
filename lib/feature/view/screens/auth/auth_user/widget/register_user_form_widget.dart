@@ -49,14 +49,20 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                       SizedBox(
                         width: sizeW18,
                       ),
-                      SvgPicture.asset("assets/svgs/qatar_flag.svg"),
+                     controller.defCountry.name!.toLowerCase().contains("qatar") || controller.defCountry.name!.isEmpty
+                              ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
+                              : imageNetwork(
+                               url: "${ConstanceNetwork.imageUrl}${controller.defCountry.flag}" ,
+                                width: 36,
+                                height: 26
+                              ),
                       VerticalDivider(),
                       GetBuilder<AuthViewModle>(
                         init: AuthViewModle(),
                         initState: (_) {},
                         builder: (value) {
                           return Text(
-                              "${value.defCountry.prefix == null ? "+972" : value.defCountry.prefix}");
+                              "${value.defCountry.prefix == null ? "+974" : value.defCountry.prefix}");
                         },
                       ),
                       Expanded(

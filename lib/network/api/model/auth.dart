@@ -1,11 +1,10 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
 import 'package:inbox_clients/network/api/dio_manager/dio_manage_class.dart';
-import 'package:inbox_clients/util/app_shaerd_data.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'app_response.dart';
 
@@ -17,6 +16,9 @@ class AuthApi {
     try {
       var response = await DioManagerClass.getInstance
           .dioPostMethod(url: url, body: body, header: header);
+           await SharedPref.instance.setCurrentUserDate(
+                response.toString()
+              );
       return AppResponse.fromJson(json.decode(response.toString()));
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
@@ -31,6 +33,9 @@ class AuthApi {
     try {
       var response = await DioManagerClass.getInstance
           .dioPostMethod(url: url, body: body, header: header);
+          await SharedPref.instance.setCurrentUserDate(
+                response.toString()
+              );
       return AppResponse.fromJson(json.decode(response.toString()));
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
@@ -44,6 +49,12 @@ class AuthApi {
     try {
       var response = await DioManagerClass.getInstance
           .dioPostMethod(url: url, body: body, header: header);
+      SharedPref.instance.setCurrentUserDate(response.toString());
+      Logger().i(" 1 ${response.toString()}");
+      Logger().i(" 2 ${json.decode(response.toString())}");      
+      Logger().i(" 3 ${json.decode(response.toString())["data"]["access_token"]}");
+      SharedPref.instance.setUserToken(json.decode(response.toString())["data"]["access_token"]);
+      SharedPref.instance.setUserLoginState("${ConstanceNetwork.userLoginedState}");
       return AppResponse.fromJson(json.decode(response.toString()));
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
@@ -57,6 +68,12 @@ class AuthApi {
     try {
       var response = await DioManagerClass.getInstance
           .dioPostMethod(url: url, body: body, header: header);
+      // SharedPref.instance.setCurrentUserDate(response.toString());
+      // Logger().i(" 1 ${response.toString()}");
+      // Logger().i(" 2 ${json.decode(response.toString())}");      
+      // Logger().i(" 3 ${json.decode(response.toString())["data"]["access_token"]}");
+      // SharedPref.instance.setUserToken(json.decode(response.toString())["data"]["access_token"]);
+      // SharedPref.instance.setUserLoginState("${ConstanceNetwork.userLoginedState}");
       return AppResponse.fromJson(json.decode(response.toString()));
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());

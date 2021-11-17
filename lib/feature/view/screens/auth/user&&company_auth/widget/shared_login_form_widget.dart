@@ -14,6 +14,7 @@ import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
 class SharedLoginForm extends GetWidget<AuthViewModle> {
@@ -44,14 +45,22 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                           SizedBox(
                             width: sizeW18,
                           ),
-                          SvgPicture.asset("assets/svgs/qatar_flag.svg"),
+                          controller.defCountry.name!.toLowerCase().contains("qatar") || controller.defCountry.name!.isEmpty 
+                              ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
+                              : imageNetwork(
+                               url: "${ConstanceNetwork.imageUrl}${controller.defCountry.flag}" ,
+                                width: 36,
+                                height: 26
+                              ),
                           VerticalDivider(),
                           GetBuilder<AuthViewModle>(
                             init: AuthViewModle(),
                             initState: (_) {},
                             builder: (value) {
                               return Text(
-                                  "${value.defCountry.prefix == null ? "+972" : value.defCountry.prefix}");
+                                  "${value.defCountry.prefix == null ? "+974" : value.defCountry.prefix}",
+                                  textDirection: TextDirection.ltr,
+                                  );
                             },
                           ),
                           Expanded(
@@ -102,13 +111,10 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                       )
                     : const SizedBox(),
             SizedBox(height: sizeH28),
-            !(GetUtils.isNull(SharedPref.instance.getCurrentUserData()))
-                ? 
-                Row(
+            !(GetUtils.isNull(SharedPref.instance.getCurrentUserData().id))
+                ? Row(
                     children: [
                       GetBuilder<AuthViewModle>(
-                        init: AuthViewModle(),
-                        initState: (_) {},
                         builder: (logic) {
                           return PrimaryButtonFingerPinter(
                             isExpanded: false,
@@ -125,8 +131,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                                     mobile: controller.tdMobileNumber.text,
                                     udid: controller.identifier,
                                     deviceType: controller.deviceType,
-                                    fcm: "test",
-                                    //  fcm: "${SharedPref.instance.getFCMToken()}",
+                                    fcm: "${SharedPref.instance.getFCMToken()}",
                                   ));
                                 } else if (type ==
                                     "${ConstanceNetwork.companyType}") {
@@ -134,9 +139,8 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                                       crNumber: logic.tdcrNumber.text,
                                       udid: controller.identifier,
                                       deviceType: controller.deviceType,
-                                      fcm: "",
-                                     // fcm:"${SharedPref.instance.getFCMToken()}"
-                                      ));
+                                      fcm:
+                                          "${SharedPref.instance.getFCMToken()}"));
                                 }
                               }
                             },
@@ -147,15 +151,13 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                       IconButton(
                           padding: const EdgeInsets.all(0),
                           onPressed: () {
-                            controller.showFingerPrinterDiloag();
+                            controller.logInWithTouchId();
                           },
                           icon:
                               SvgPicture.asset("assets/svgs/finger_pinter.svg"))
                     ],
                   )
-                : 
-                
-                GetBuilder<AuthViewModle>(
+                : GetBuilder<AuthViewModle>(
                     init: AuthViewModle(),
                     initState: (_) {},
                     builder: (_) {
@@ -166,12 +168,12 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                             if (type == "${ConstanceNetwork.userType}") {
                               controller.signInUser(
                                   user: User(
-                                countryCode: "${controller.defCountry.prefix!.replaceAll("+", "")}",
+                                countryCode:
+                                    "${controller.defCountry.prefix!.replaceAll("+", "")}",
                                 mobile: controller.tdMobileNumber.text,
                                 udid: controller.identifier,
                                 deviceType: controller.deviceType,
-                                fcm: "test",
-                                // fcm: "${SharedPref.instance.getFCMToken()}",
+                                fcm: "${SharedPref.instance.getFCMToken()}",
                               ));
                             } else if (type ==
                                 "${ConstanceNetwork.companyType}") {
@@ -179,9 +181,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                                   crNumber: controller.tdcrNumber.text,
                                   udid: controller.identifier,
                                   deviceType: controller.deviceType,
-                                  fcm : ""
-                                 // fcm: "${SharedPref.instance.getFCMToken()}"
-                                  ));
+                                  fcm: "${SharedPref.instance.getFCMToken()}"));
                             }
                           }
                         },
@@ -191,8 +191,6 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                       );
                     },
                   ),
-     
-     
           ],
         ),
       ),

@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
@@ -41,6 +43,14 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdStreetEdit = TextEditingController();
   TextEditingController tdLocationEdit = TextEditingController();
   TextEditingController tdExtraDetailesEdit = TextEditingController();
+
+  //here for edit user profile controllers:
+  TextEditingController tdUserFullNameEdit = TextEditingController();
+  TextEditingController tdUserEmailEdit = TextEditingController();
+  TextEditingController tdUserMobileNumberEdit = TextEditingController();
+  final picker = ImagePicker();
+  File? img;
+  
 
   // for address (add , edit ,delete)
 
@@ -160,9 +170,9 @@ class ProfileViewModle extends BaseController {
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(colorPrimary)),
                   onPressed: () {
-                    //  logOut();
-                    // SharedPref.instance
-                    //     .setUserLoginState("${ConstanceNetwork.userEnterd}");
+                   //  logOut();
+                    SharedPref.instance
+                        .setUserLoginState("${ConstanceNetwork.userEnterd}");
                     Get.offAll(() => UserBothLoginScreen());
                   },
                   child: Text(
@@ -218,25 +228,33 @@ class ProfileViewModle extends BaseController {
 
   //-- for user Edit profile:
 
-  // editProfileUser() async {
-  //   try {
-  //     await ProfileHelper.getInstance.editProfile({
-  //       "email": "test11@mm.com",
-  //       "full_name": "khaled2",
-  //       "image": "image",
-  //       "contact_number":
-  //        [
-  //         {"mobile_number": 855555, "country_code": 970},
-  //         {"mobile_number": 85555555, "country_code": 972}
-  //        ]
-  //     }).then((value) => {Logger().e(value.toJson())});
-  //   } catch (e) {}
-  // }
+  editProfileUser() async {
+    try {
+      await ProfileHelper.getInstance.editProfile({
+        "email": "test11@mm.com",
+        "full_name": "khaled2",
+        "image": "image",
+        "contact_number":
+         [
+          {"mobile_number": 855555, "country_code": 970},
+          {"mobile_number": 85555555, "country_code": 972}
+         ]
+      }).then((value) => {Logger().e(value.toJson())});
+    } catch (e) {}
+  }
+
+
+  Future getImage() async {
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      img = File(pickedImage.path);
+      update();
+    }
+  }
 
  // fot timer on change number :
   Timer? timer;
   int startTimerCounter = 60;
-
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
@@ -254,13 +272,14 @@ class ProfileViewModle extends BaseController {
     );
   }
 
-
   @override
   void onInit() {
     super.onInit();
-    SharedPref.instance.setUserLoginState("${ConstanceNetwork.userLoginedState}");
-    getMyAddress();
-    SharedPref.instance.getCurrentUserData();
+
+   // getMyAddress();
+   // SharedPref.instance.getCurrentUserData();
+   // editProfileUser();
     
   }
+
 }

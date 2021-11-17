@@ -22,7 +22,6 @@ class ChooseCountryScreen extends StatefulWidget {
 }
 
 class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
-
   final controller = PagingController<int, Country>(firstPageKey: 1);
 
   final repo = AuthViewModle();
@@ -31,7 +30,7 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
 
   Country selctedCountry = Country();
 
-      @override
+  @override
   void initState() {
     super.initState();
     AuthViewModle authViewModle = Get.find<AuthViewModle>();
@@ -41,12 +40,13 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
   @override
   Widget build(BuildContext context) {
     controller.addPageRequestListener((pageKey) async {
-        final data = await repo.getCountries(1 + (pageKey ~/ 10), 10);
-        controller.appendPage(data.toList(), pageKey + data.length);
+      final data = await repo.getCountries(1 + (pageKey ~/ 10), 250);
+      controller.appendPage(data.toList(), pageKey + data.length);
     });
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 1,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(Get.context!);
@@ -61,13 +61,21 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
         backgroundColor: colorBackground,
       ),
       body: GetBuilder<AuthViewModle>(
-      init: AuthViewModle(),
-      builder: (logic) {
+        init: AuthViewModle(),
+        builder: (logic) {
           return Column(
             children: [
               Container(
+                height: sizeH10,
                 color: colorScaffoldRegistrationBody,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+              ),
+              Container(
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: colorScaffoldRegistrationBody,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: sizeH20!),
                 child: TextFormField(
                   decoration: InputDecoration(
                       prefixIcon: Padding(
@@ -84,26 +92,14 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
                   },
                 ),
               ),
-              Container(
-                height: sizeH10,
-                color: colorScaffoldRegistrationBody,
-              ),
+              SizedBox(height: sizeH16,),
               Expanded(
                 child: PagedListView(
                   pagingController: controller,
                   builderDelegate: PagedChildBuilderDelegate<Country>(
-                      // noMoreItemsIndicatorBuilder: (c){
-                      //   print("noMoreItemsIndicatorBuilder");
-                      //   return Text("data");
-                      // },
-                      // noItemsFoundIndicatorBuilder: (c){
-                      //   print("noItemsFoundIndicatorBuilder");
-                      //   return Text("data");
-                      // },
                       newPageProgressIndicatorBuilder: (ctx) {
                     return const SizedBox();
                   }, itemBuilder: (context, item, index) {
-                    
                     return InkWell(
                       onTap: () {
                         logic.selectedIndex = -1;
@@ -113,7 +109,7 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
                       },
                       child: Container(
                           color: colorScaffoldRegistrationBody,
-                          padding: EdgeInsets.symmetric(horizontal: sizeH20!),
+                          padding: EdgeInsets.symmetric(horizontal: sizeH20!,),
                           child: logic.tdSearch.text.isEmpty ||
                                   item.name.toString().toUpperCase().contains(
                                       logic.tdSearch.text.toUpperCase())

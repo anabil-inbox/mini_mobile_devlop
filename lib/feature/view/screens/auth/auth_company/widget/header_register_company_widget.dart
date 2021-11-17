@@ -9,13 +9,13 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 
 class HeaderRegisterCompany extends    GetWidget<IntroViewModle> {
-  const HeaderRegisterCompany({Key? key , required this.onBackPressed}) : super(key: key);
-
+  const HeaderRegisterCompany({Key? key , required this.onBackPressed, required this.height}) : super(key: key);
+  final double height;
   final Function onBackPressed;
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: sizeH200,
+      height: height,
       child: Stack(
         children: [
           PositionedDirectional(
@@ -47,14 +47,21 @@ class HeaderRegisterCompany extends    GetWidget<IntroViewModle> {
             },
             icon: SvgPicture.asset("assets/svgs/cross.svg"),
           )),
-          PositionedDirectional(
-            start: padding104,
+            height == 200 ?  PositionedDirectional(
             end: padding104,
+            start: padding104,
             top: padding69,
             bottom: padding32,
             child: SvgPicture.asset("assets/svgs/logo_horizantal.svg",),
-          ),
-          
+          ) : PositionedDirectional(
+            start: padding0,
+            end: padding0,
+            top: padding32,
+            bottom: padding0,
+            child: Padding(
+              padding:  EdgeInsets.all(sizeH20!),
+              child: SvgPicture.asset("assets/svgs/logo_horizantal.svg"),
+            )),
         ],
       ),
     );

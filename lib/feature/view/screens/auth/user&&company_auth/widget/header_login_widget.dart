@@ -44,15 +44,15 @@ class HeaderLogin extends GetWidget<IntroViewModle> {
             child: SvgPicture.asset("assets/svgs/logo_horizantal.svg",),
           ),
           
-          PositionedDirectional(
-              top: padding40,
-              start:padding20,
-              child: IconButton(
-            onPressed: () {
-            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-            },
-            icon: SvgPicture.asset("assets/svgs/back.svg"),
-          )),
+          // PositionedDirectional(
+          //     top: padding40,
+          //     start:padding20,
+          //     child: IconButton(
+          //   onPressed: () {
+          //   SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+          //   },
+          //   icon: SvgPicture.asset("assets/svgs/back.svg"),
+          // )),
         ],
       ),
     );

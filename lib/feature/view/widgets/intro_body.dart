@@ -36,7 +36,7 @@ class IntroBody extends StatelessWidget {
               right: padding0,
               child: imageNetwork(
                 height:sizeH300,
-                url:"${ConstanceNetwork.imageUrl}$imagePath")),
+                url:"${ConstanceNetwork.imageUrl}")),
           Positioned.fill(
             child: Align(
                 alignment: Alignment.bottomCenter,

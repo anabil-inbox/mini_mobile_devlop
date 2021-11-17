@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_auth_invisible/auth_strings.dart';
-import 'package:flutter_local_auth_invisible/flutter_local_auth_invisible.dart';
+import 'package:local_auth/auth_strings.dart';
+import 'package:local_auth/local_auth.dart';
 
 class FacePage extends StatelessWidget {
   @override
@@ -105,7 +105,6 @@ class FacePage extends StatelessWidget {
           ShaderMask(
             shaderCallback: (bounds) {
               final colors = [Colors.blueAccent, Colors.pink];
-
               return RadialGradient(colors: colors).createShader(bounds);
             },
             child: Icon(Icons.face_retouching_natural,
@@ -123,6 +122,7 @@ class LocalAuthApi {
     try {
       return await _auth.canCheckBiometrics;
     } on PlatformException catch (e) {
+      print("$e");
       return false;
     }
   }
@@ -132,7 +132,7 @@ class LocalAuthApi {
     if (!isAvailable) return false;
 
     try {
-      return await _auth.authenticateWithBiometrics(
+      return await _auth.authenticate(
         androidAuthStrings: AndroidAuthMessages(
           signInTitle: 'Face ID Required',
         ),
@@ -141,6 +141,7 @@ class LocalAuthApi {
         stickyAuth: false,
       );
     } on PlatformException catch (e) {
+      print("erroe Eccored $e");
       return false;
     }
   }
