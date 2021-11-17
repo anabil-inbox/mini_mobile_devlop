@@ -9,7 +9,7 @@ import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_
 import 'package:inbox_clients/feature/view/screens/auth/auth_user/widget/un_selected_button.dart';
 import 'package:inbox_clients/feature/view/screens/auth/country/choose_country_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
-import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
+import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/company_both_login/company_both_login_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -39,7 +39,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 controller: controller.tdcrNumber,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
+                    return '${AppLocalizations.of(Get.context!)!.fill_cr_number}';
                   }
                   return null;
                 },
@@ -146,7 +146,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
+                    return '${AppLocalizations.of(Get.context!)!.fill_the_applicant_department}';
                   }
                   return null;
                 },
@@ -273,7 +273,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                               logic.signUpCompany(
                                 company: Company(
                                 crNumber: logic.tdcrNumber.text,
-                                countryCode: logic.defCountry.prefix,
+                                countryCode: logic.defCountry.prefix!.replaceAll("+", ""),
                                 companyName: logic.tdCompanyName.text,
                                 companySector: logic.companySector,
                                 applicantName: logic.tdNameOfApplicant.text,
@@ -303,9 +303,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
               ),
               InkWell(
                 onTap: () {
-                  Get.to(() => UserCompanyLoginScreen(
-                        type: "${ConstanceNetwork.companyType}",
-                      ));
+                  Get.to(() => CompanyBothLoginScreen());
                 },
                 child: RichText(
                   text: TextSpan(
@@ -359,16 +357,15 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                       children: [
                         InkWell(
                           onTap: () {
-
                             logic.selectedIndex = -1;
                             logic.update();
-
                             logic.selectedIndex = index;
-                            logic.temproreySectorName = ApiSettings.fromJson(
+                            logic.temproreySectorName = 
+                            ApiSettings.fromJson(
                                     json.decode(SharedPref.instance
                                         .getAppSetting()!
                                         .toString()))
-                                .companySectors![index].name
+                                .companySectors![index].sectorName
                                 .toString();
                             logic.update();
                           },
@@ -398,6 +395,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
               isLoading: false,
               textButton: "${AppLocalizations.of(Get.context!)!.select}",
               onClicked: () {
+                print("${controller.companySector}");
                 controller.companySector = controller.temproreySectorName;
                 controller.update();
                 Get.back();

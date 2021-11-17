@@ -9,6 +9,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 import '../widget/header_login_widget.dart';
 
@@ -42,12 +43,12 @@ class CompanyBothLoginScreen extends GetWidget<AuthViewModle> {
           SizedBox(height: sizeH13,),
           SharedLoginForm(type: "${ConstanceNetwork.companyType}"),
           SizedBox(height: sizeH20,),
-          Padding(
+         SharedPref.instance.getUserType() == "${ConstanceNetwork.bothType}" ? Padding(
             padding: EdgeInsets.symmetric(horizontal: sizeW20!),
             child: SeconderyFormButton(
               buttonText: "${AppLocalizations.of(context)!.login_as_user}",
             ),
-          ),
+          ): const SizedBox(),
            SizedBox(height: 200,),
           InkWell(
             splashColor: colorTrans,

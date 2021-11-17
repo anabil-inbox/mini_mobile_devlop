@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
@@ -48,7 +49,7 @@ class HeaderLogin extends GetWidget<IntroViewModle> {
               start:padding20,
               child: IconButton(
             onPressed: () {
-              exit(0);
+            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
             },
             icon: SvgPicture.asset("assets/svgs/back.svg"),
           )),

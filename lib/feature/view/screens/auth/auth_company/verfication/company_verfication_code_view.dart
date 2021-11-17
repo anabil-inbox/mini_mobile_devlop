@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -7,12 +8,13 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../widget/header_code_verfication_widget.dart';
 
-class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
-  const CompanyVerficationCodeScreen(
+class CompanyVerficationCodeScreen extends StatefulWidget {
+   CompanyVerficationCodeScreen(
       {Key? key,
       required this.type,
       required this.countryCode,
@@ -22,6 +24,25 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
   final String type;
   final String mobileNumber;
   final String countryCode;
+
+  @override
+  State<CompanyVerficationCodeScreen> createState() => _CompanyVerficationCodeScreenState();
+}
+
+class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScreen> {
+
+  
+  final AuthViewModle authViewModle = Get.find<AuthViewModle>();
+  
+  @override
+  void initState() {
+    Get.lazyPut(() => AuthViewModle());
+    super.initState();
+    authViewModle.startTimerCounter = 60;
+    authViewModle.startTimer();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,33 +63,35 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
               height: sizeH16,
             ),
             bildeTextActiveCode(context),
-            type == ConstanceNetwork.userType
+            widget.type == ConstanceNetwork.userType
                 ? SizedBox(
                     height: sizeH38,
                   )
                 : const SizedBox(),
-            type == ConstanceNetwork.userType
+            widget.type == ConstanceNetwork.userType
                 ? InkWell(
                     splashColor: colorTrans,
                     highlightColor: colorTrans,
                     onTap: (){
-                    if(controller.startTimerCounter == 0) {
-                        print("msg_controller_timer ${controller.startTimerCounter}");
-                        controller.startTimerCounter = 60;
-                        controller.startTimer();
-                        controller.update();
-                        // controller.reSendVerficationCode(
-                        // udid: controller.identifier,
+                    if(authViewModle.startTimerCounter == 0) {
+                        print("msg_authViewModle_timer ${authViewModle.startTimerCounter}");
+                        authViewModle.startTimerCounter = 60;
+                        authViewModle.startTimer();
+                        authViewModle.update();
+                        // authViewModle.reSendVerficationCode(
+                        // udid: authViewModle.identifier,
                         // countryCode: countryCode,
                         // mobileNumber: mobileNumber,
                         // target: "email"
                         // );
                     }  else {
-                        print("msg_Blocked ${controller.startTimerCounter}");
+                        print("msg_Blocked ${authViewModle.startTimerCounter}");
                     }                   
                   } ,
                   child: RichText(
-                      text: TextSpan(children: [
+                      text: TextSpan(
+                         style: textStyleTitle(),
+                        children: [
                         TextSpan(
                             text: "${AppLocalizations.of(context)!.verify_by} ",
                             style: textStyleHint()!.copyWith(
@@ -90,10 +113,6 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
             height: sizeH190,
           ),
           GetBuilder<AuthViewModle>(
-            init: AuthViewModle(),
-            initState: (_) {
-              controller.startTimer();
-            },
             builder: (value) {
               return Column(
                 children: [
@@ -161,12 +180,17 @@ class CompanyVerficationCodeScreen extends GetWidget<AuthViewModle> {
         enableActiveFill: true,
         keyboardType: TextInputType.number,
         onCompleted: (v) {
-          controller.checkVerficationCode(
-            countryCode: countryCode,
-            mobileNumber: mobileNumber,
-            code: v.toString(),
-            udid: controller.identifier,
-          );
+          if(v=="1234"){
+            SharedPref.instance.setUserLoginState("${ConstanceNetwork.userLoginedState}");
+            Get.offAll(() => ProfileScreen());
+          }
+          // authViewModle.checkVerficationCode(
+          //   countryCode: countryCode,
+          //   mobileNumber: mobileNumber,
+          //   code: v.toString(),
+          //   udid: controller.identifier,
+          // );
+        
         },
         onChanged: (value) {},
         /*validator: (value) {

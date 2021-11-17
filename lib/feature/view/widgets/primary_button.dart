@@ -43,3 +43,44 @@ class PrimaryButton extends StatelessWidget {
     );
   }
 }
+
+
+// ignore: must_be_immutable
+class PrimaryButtonOpacityColor extends StatelessWidget {
+  PrimaryButtonOpacityColor({
+    Key? key,
+    required this.textButton,
+    required this.isLoading,
+    required this.onClicked,
+    required this.isExpanded,
+  }) : super(key: key);
+  final String textButton;
+  final Function onClicked;
+  final bool isExpanded;
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: isExpanded ? double.infinity : sizeW165,
+      height: sizeH50,
+      child: ElevatedButton(
+        style: primaryButtonOpacityStyle,
+        onPressed: !isLoading
+            ? () {
+                onClicked();
+              }
+            : () {},
+        child: isLoading
+            ? ThreeSizeDot()
+            : Text(
+                "$textButton",
+                style: textStylePrimary()!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: colorPrimary),
+              ),
+      ),
+    );
+  }
+}

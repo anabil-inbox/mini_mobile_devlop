@@ -39,7 +39,7 @@ class TermsScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: sizeH20! , vertical: sizeH13!),
           child: CustomTextView(
             textAlign: TextAlign.start,
-            txt: settings.termOfConditions,
+            txt: settings.termOfConditions == null ? "" : settings.termOfConditions,
             textStyle: textStyle(),
           ),
         ),

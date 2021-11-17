@@ -14,20 +14,35 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../auth_user/widget/country_item_widget.dart';
 
 // ignore: must_be_immutable
-class ChooseCountryScreen extends StatelessWidget {
+class ChooseCountryScreen extends StatefulWidget {
   ChooseCountryScreen({Key? key}) : super(key: key);
-  
+
+  @override
+  State<ChooseCountryScreen> createState() => _ChooseCountryScreenState();
+}
+
+class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
+
   final controller = PagingController<int, Country>(firstPageKey: 1);
+
   final repo = AuthViewModle();
+
   Logger log = Logger();
+
   Country selctedCountry = Country();
+
+      @override
+  void initState() {
+    super.initState();
+    AuthViewModle authViewModle = Get.find<AuthViewModle>();
+    authViewModle.tdSearch.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
-    
     controller.addPageRequestListener((pageKey) async {
-      final data = await repo.getCountries(1 + (pageKey ~/ 10) , 10);
-      controller.appendPage(data.toList(), pageKey + data.length);
+        final data = await repo.getCountries(1 + (pageKey ~/ 10), 10);
+        controller.appendPage(data.toList(), pageKey + data.length);
     });
 
     return Scaffold(
@@ -46,9 +61,8 @@ class ChooseCountryScreen extends StatelessWidget {
         backgroundColor: colorBackground,
       ),
       body: GetBuilder<AuthViewModle>(
-        init: AuthViewModle(),
-        initState: (_) {},
-        builder: (logic) {
+      init: AuthViewModle(),
+      builder: (logic) {
           return Column(
             children: [
               Container(
@@ -78,7 +92,18 @@ class ChooseCountryScreen extends StatelessWidget {
                 child: PagedListView(
                   pagingController: controller,
                   builderDelegate: PagedChildBuilderDelegate<Country>(
-                      itemBuilder: (context, item, index) {
+                      // noMoreItemsIndicatorBuilder: (c){
+                      //   print("noMoreItemsIndicatorBuilder");
+                      //   return Text("data");
+                      // },
+                      // noItemsFoundIndicatorBuilder: (c){
+                      //   print("noItemsFoundIndicatorBuilder");
+                      //   return Text("data");
+                      // },
+                      newPageProgressIndicatorBuilder: (ctx) {
+                    return const SizedBox();
+                  }, itemBuilder: (context, item, index) {
+                    
                     return InkWell(
                       onTap: () {
                         logic.selectedIndex = -1;

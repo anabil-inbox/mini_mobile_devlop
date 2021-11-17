@@ -255,6 +255,12 @@ ButtonStyle? get primaryButtonStyle => ButtonStyle(
     backgroundColor: MaterialStateProperty.all(colorPrimary),
     shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)))
     );
+ButtonStyle? get primaryButtonOpacityStyle => ButtonStyle(
+    padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
+    backgroundColor: MaterialStateProperty.all(colorPrimaryOpcaityColor),
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)))
+    );
+
 
 ButtonStyle? get seconderyCustomButtonStyle => ButtonStyle(
     textStyle: MaterialStateProperty.all(textPrimaryButton()),

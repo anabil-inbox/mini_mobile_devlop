@@ -38,8 +38,19 @@ abstract class ConstanceNetwork {
 
   static String recendVerficationCodeEndPoint = "inbox_app.api.auth.resend_code";
 
-  static String logOutEndPoint = "inbox_app.api.auth.me";
+  static String addAddressEndPoint = "inbox_app.api.address.add";
 
+  static String editAddressEndPoint = "inbox_app.api.address.edit";
+
+  static String getMyAddressEndPoint = "inbox_app.api.address.get";
+
+  static String deleteAdressEndPoint = "inbox_app.api.address.address_del"; 
+
+  static String logOutEndPoint = "inbox_app.api.auth.logout";
+
+  static String editProfilEndPoint = "inbox_app.api.auth.edit_profile";
+
+  
   //todo this for constance type of user
   static String userType = "user";
   static String companyType = "company";
@@ -68,8 +79,10 @@ abstract class ConstanceNetwork {
       };
     } else if (typeToken == 4) {
       headers = {
-        //  'Authorization': '${SharedPref.instance.getToken().toString()}',
-        'Content-Type': 'application/json'
+        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzcwNzA0MTIuNzUxNjUzNCwibmJmIjoxNjM3MDcwNDEyLjc1MTY1MzQsImV4cCI6MTYzODM2NjQxMi43NTE2NTM0LCJkYXRhIjp7ImZ1bGxfbmFtZSI6ImtoYWxlZDIyMiIsIm5hbWUiOiJ0ZXN0IHVzZXIgMDkifX0.-jE8gOZDDoQh1U_1Uy4QO56A34s9dxHtb3GFnD495vM',
+        'Content-Type': 'application/json',
+        'Language': Get.locale.toString().split("_")[0],
+        'Accept': 'application/json',
       };
     }
 

@@ -5,6 +5,7 @@ import 'package:inbox_clients/feature/model/user_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/register/register_company.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_user/widget/un_selected_button.dart';
 import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
+import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
@@ -32,6 +33,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
           key: _formKey,
           child: Column(
             children: [
+              
               InkWell(
                 onTap: () {
                   Get.to(() => ChooseCountryScreen());
@@ -189,7 +191,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                                   fullName: controller.tdName.text,
                                   udid: controller.identifier,
                                   fcm: "${SharedPref.instance.getFCMToken()}",
-                                  countryCode: "${controller.defCountry.prefix}"));
+                                  countryCode: "${controller.defCountry.prefix!.replaceAll("+", "")}"));
                         }
 
                       });
@@ -206,7 +208,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
               SizedBox(height : sizeH80),
               InkWell(
                 onTap: (){
-                  Get.to(() => UserCompanyLoginScreen(type: "${ConstanceNetwork.userType}",));
+                  Get.to(() => UserBothLoginScreen());
                 },
                 child: RichText(
                   text: TextSpan(

@@ -10,6 +10,7 @@ Color colorUnSelectedWidget = const Color(0xffCCCCCC);
 Color colorScaffoldRegistrationBody = const Color(0xffF7F9FB);
 Color seconderyButton = const Color(0xffDFE1E5);
 Color seconderyButtonUnSelected = const Color(0xff676771);
+Color colorPrimaryOpcaityColor = const Color(0xffFBDCDC);
 
 //todo this for textField
 var colorBorderTextFiled = Color(0xFF707070);

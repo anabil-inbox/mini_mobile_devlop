@@ -10,6 +10,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 class UserBothLoginScreen extends StatelessWidget {
   const UserBothLoginScreen({Key? key}) : super(key: key);
@@ -42,20 +43,22 @@ class UserBothLoginScreen extends StatelessWidget {
           SizedBox(
             height: sizeH16,
           ),
+          
           SharedLoginForm(type: "${ConstanceNetwork.userType}"),
+          
           SizedBox(height: sizeH20,),
-          Padding(
+          SharedPref.instance.getUserType() == "${ConstanceNetwork.bothType}" ? Padding(
             padding: EdgeInsets.symmetric(horizontal: sizeW20!),
             child: SeconderyFormButton(
               buttonText: "${AppLocalizations.of(context)!.login_as_company}",
             ),
-          ),
+          ) : const SizedBox(),
           SizedBox(height: sizeH200,),
           InkWell(
             splashColor: colorTrans,
             highlightColor: colorTrans,
             onTap: (){
-              Get.off(() => UserRegisterScreen());
+              Get.to(() => UserRegisterScreen());
             },
             child: RichText(
                   textAlign: TextAlign.center,

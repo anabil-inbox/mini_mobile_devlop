@@ -42,6 +42,7 @@ class HeaderRegisterCompany extends    GetWidget<IntroViewModle> {
               start:padding20,
               child: IconButton(
               onPressed: () {
+                print("object");
                 onBackPressed();
             },
             icon: SvgPicture.asset("assets/svgs/cross.svg"),
