@@ -6,6 +6,7 @@ import 'package:inbox_clients/feature/view/screens/profile/address/get_address.d
 import 'package:inbox_clients/feature/view/screens/profile/setting/setting_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/header_profile_card.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/setting_item.dart';
+import 'package:inbox_clients/feature/view/screens/storage/details_storage/details_storage_view.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -28,7 +29,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                 SizedBox(height: sizeH12,),  
                 SettingItem(
                   onTap: (){
-                   
+                   Get.to(StorageDetailsView());
                   },
                   trailingTitle: "500 QAR",
                   settingTitle: "${AppLocalizations.of(context)!.my_wallet}",

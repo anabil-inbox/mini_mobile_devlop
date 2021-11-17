@@ -48,7 +48,7 @@ TextStyle? textInputFiled() {
 TextStyle? textInputFiledHint() {
   return TextStyle(
       color: colorTextHint,
-      fontSize: fontSize16,
+      fontSize: fontSize14,
       letterSpacing: 0.23,
       fontFamily: Constance.Font_regular);
 }
@@ -193,6 +193,7 @@ TextStyle? textStyleAppBarTitle(){
   return TextStyle(
     color: colorBlack, 
     fontSize: fontSize17,
+    fontFamily: Constance.Font_regular,
     fontWeight: FontWeight.normal
   );
 }

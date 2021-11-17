@@ -48,6 +48,7 @@ class AppWidget extends StatelessWidget {
           cupertinoOverrideTheme: CupertinoThemeData(
             primaryColor: colorPrimary,
           ),
+          backgroundColor: scaffoldColor,
           textSelectionTheme: TextSelectionThemeData(
             cursorColor: colorPrimary,
             selectionColor: colorPrimary,

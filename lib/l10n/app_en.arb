@@ -94,5 +94,12 @@
     "helpCenter":"Help Center",
     "about_inbox":"About Inbox",
     "change_mobile_number":"Change Mobile Number",
-    "what_is_your_new_phone_number":"What is your new Phone Number?"
+    "what_is_your_new_phone_number":"What is your new Phone Number?",
+    "select":"Select",
+    "search":"Search Here…",
+    "recently_added":"Recently Added",
+    "items":"Items",
+    "name":"Name",
+    "recall":"Recall",
+    "giveaway":"Giveaway"
 }

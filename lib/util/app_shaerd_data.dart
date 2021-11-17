@@ -182,7 +182,7 @@ Widget imageNetwork({double? width, double? height, String? url}) {
           // border: Border.all(color: colorBorderLight),
           image: DecorationImage(
             image: CachedNetworkImageProvider(url ?? urlUserPlacholder!),
-            fit: BoxFit.contain,
+            fit: BoxFit.cover,
           ),
         ),
       );
@@ -474,3 +474,6 @@ class CustomMaterialPageRoute extends MaterialPageRoute {
           fullscreenDialog: fullscreenDialog,
         );
 }
+
+
+AppLocalizations get tr => AppLocalizations.of(Get.context!)!;
