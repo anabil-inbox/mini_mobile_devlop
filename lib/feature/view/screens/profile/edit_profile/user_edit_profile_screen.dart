@@ -82,7 +82,8 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                           ) : CircleAvatar(
                             radius: 50,
                             backgroundColor: colorPrimary.withOpacity(0.5),
-                        ));
+                        )
+                        );
                       },
                     ),
                     PositionedDirectional(
@@ -95,6 +96,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                   height: sizeH25,
                 ),
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
                   controller: profileViewModle.tdUserFullNameEdit,
                   onSaved: (e) {
                     profileViewModle.tdUserFullNameEdit.text = e!;
@@ -160,12 +162,12 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                               SizedBox(
                                 width: sizeW18,
                               ),
-                              // controller.defCountry.name!.toLowerCase().contains("qatar")
+                              // authViewModle.defCountry.name!.toLowerCase().contains("qatar")
                               // ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
                               // : imageNetwork(
-                              //  url: "${ConstanceNetwork.imageUrl}${controller.defCountry.flag}" ,
-                              //   width: 36,
-                              //   height: 26
+                              //  url: "${ConstanceNetwork.imageUrl}${authViewModle.defCountry.flag}" ,
+                              //  width: 36,
+                              //  height: 26
                               // ),
                               VerticalDivider(),
                               GetBuilder<ProfileViewModle>(
@@ -208,9 +210,14 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                     SizedBox(
                       width: sizeW4,
                     ),
-                    SvgPicture.asset(
-                      "assets/svgs/add.svg",
-                      fit: BoxFit.cover,
+                    InkWell(
+                      onTap: (){
+                        print("object");
+                      },
+                      child: SvgPicture.asset(
+                        "assets/svgs/add.svg",
+                        fit: BoxFit.cover,
+                      ),
                     )
                   ],
                 ),
@@ -223,8 +230,10 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                         textButton: "${AppLocalizations.of(context)!.save}",
                         isLoading: value.isLoading,
                         onClicked: () {
-                          if (!UserEditProfileScreen._formKey.currentState!
-                              .validate()) {}
+                          if (UserEditProfileScreen._formKey.currentState!
+                              .validate()) {
+                                value.editProfileUser();
+                              }
                         },
                         isExpanded: true);
                   },

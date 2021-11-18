@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:inbox_clients/feature/view/screens/profile/address/get_address.dart';
-import 'package:inbox_clients/feature/view/screens/profile/setting/setting_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/header_profile_card.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/setting_item.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ProfileScreen extends GetWidget<ProfileViewModle> {
   const ProfileScreen({ Key? key }) : super(key: key);

@@ -47,7 +47,7 @@ class SettingItem extends StatelessWidget {
                   ),
               )
               : Container(
-                  width: 95,
+                  width: sizeW95,
                   child: Row(
                     children: [
                       Text(

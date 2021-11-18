@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/view/screens/auth/country/choose_country_view.dart';
-import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class EditProfileCompany extends StatelessWidget {
-  const EditProfileCompany({ Key? key }) : super(key: key);
+// ignore: must_be_immutable
+class CompanyEditProfile extends StatelessWidget {
+   CompanyEditProfile({ Key? key }) : super(key: key);
+
+
+    ProfileViewModle profileViewModle = Get.find<ProfileViewModle>();
 
     static final _formKey = GlobalKey<FormState>();
 
@@ -46,17 +48,34 @@ class EditProfileCompany extends StatelessWidget {
                 SizedBox(
                   height: sizeH25,
                 ),
-                Stack(
+                 Stack(
                   children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundColor: colorPrimary.withOpacity(0.5),
+                    GetBuilder<ProfileViewModle>(
+                      builder: (_) {
+                        return InkWell(
+                          onTap: () async{
+                           await profileViewModle.getImage();
+                          },
+                          child: profileViewModle.img != null ? CircleAvatar(
+                            radius: 50,
+                           backgroundImage : Image.file(
+                              profileViewModle.img!,
+                              fit: BoxFit.cover,
+                            ).image,
+                            backgroundColor: colorPrimary.withOpacity(0.5),
+                          ) : CircleAvatar(
+                            radius: 50,
+                            backgroundColor: colorPrimary.withOpacity(0.5),
+                        )
+                        );
+                      },
                     ),
                     PositionedDirectional(
                       end: 0,
                       child: SvgPicture.asset("assets/svgs/update_red.svg"),
                     )
                   ],
+                
                 ),
                 SizedBox(
                   height: sizeH25,

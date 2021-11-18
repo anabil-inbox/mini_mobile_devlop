@@ -96,5 +96,7 @@
     "change_mobile_number":"Change Mobile Number",
     "what_is_your_new_phone_number":"What is your new Phone Number?",
     "scan_your_fingerprint_to_authenticate":"Scan your fingerprint to authenticate",
-    "cancle":"Cancle"
+    "cancle":"Cancle",
+    "are_you_sure_you_want_to_log_out":"Are You Sure You want to Log Out ?"
+
 }

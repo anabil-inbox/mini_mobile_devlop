@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
+import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -25,6 +26,8 @@ class ProfileViewModle extends BaseController {
   String? userLat;
   String? userLong;
   List<Address> userAddress = [];
+
+  Customer? currentCustomer;
 
 //to do fot address textEditting Controllers ;
   TextEditingController tdTitle = TextEditingController();
@@ -162,41 +165,45 @@ class ProfileViewModle extends BaseController {
     Get.defaultDialog(
         titlePadding: EdgeInsets.all(16),
         titleStyle: textStyleBtn()!.copyWith(color: colorBlack),
-        title: "Are You Sure You want to Log Out ?",
+        title:
+            "${AppLocalizations.of(Get.context!)!.are_you_sure_you_want_to_log_out}",
         content: Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(colorPrimary)),
-                  onPressed: () {
-                    logOut();
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: sizeH20!),
+              Container(
+                width: 140,
+                child: TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(colorPrimary)),
+                    onPressed: () {
+                      logOut();
+                    },
                     child: Text(
                       "${AppLocalizations.of(Get.context!)!.log_out}",
-                      style: TextStyle(color: colorTextWhite , fontWeight: FontWeight.bold),
-                    ),
-                  )),
+                      style: TextStyle(
+                          color: colorTextWhite, fontWeight: FontWeight.bold),
+                    )),
+              ),
               SizedBox(
                 width: sizeW10,
               ),
-              TextButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(colorUnSelectedWidget)),
-                  onPressed: () {
-                    Get.back();
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: sizeH20!),
+              Container(
+                width: 140,
+                child: TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(colorUnSelectedWidget)),
+                    onPressed: () {
+                      Get.back();
+                    },
                     child: Text(
                       "${AppLocalizations.of(Get.context!)!.cancle}",
-                      style: textStyleHints()!.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                  )),
+                      style: textStyleHints()!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    )),
+              ),
             ],
           ),
         ));
@@ -233,16 +240,39 @@ class ProfileViewModle extends BaseController {
   //-- for user Edit profile:
 
   editProfileUser() async {
+    isLoading = true;
+    update();
+    hideFocus(Get.context!);
+
     try {
       await ProfileHelper.getInstance.editProfile({
-        "email": "test11@mm.com",
-        "full_name": "khaled2",
+        "email": "${tdUserEmailEdit.text}",
+        "full_name": "${tdUserFullNameEdit.text}",
         "image": "image",
         "contact_number": [
           {"mobile_number": 855555, "country_code": 970},
           {"mobile_number": 85555555, "country_code": 972}
         ]
-      }).then((value) => {Logger().e(value.toJson())});
+      }).then((value) => {
+        
+       Logger().i("${value.status!.message}"),
+            if (value.status!.success!)
+              {
+                snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+                    "${value.status!.message}"),
+                isLoading = false,
+                update(),
+                Get.back()
+              }
+            else
+              {
+                isLoading = false,
+                update(),
+                snackError(
+                    "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                    "${value.status!.message}")
+              }
+        });
     } catch (e) {
 
     }
@@ -279,9 +309,9 @@ class ProfileViewModle extends BaseController {
   @override
   void onInit() {
     super.onInit();
-
     // getMyAddress();
-    // SharedPref.instance.getCurrentUserData();
-    // editProfileUser();
+    // currentCustomer = SharedPref.instance.getCurrentUserData();
+    //  update();
+    //  editProfileUser();
   }
 }

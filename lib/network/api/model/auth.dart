@@ -16,7 +16,7 @@ class AuthApi {
     try {
       var response = await DioManagerClass.getInstance
           .dioPostMethod(url: url, body: body, header: header);
-           await SharedPref.instance.setCurrentUserDate(
+           await SharedPref.instance.setCurrentUserData(
                 response.toString()
               );
       return AppResponse.fromJson(json.decode(response.toString()));
@@ -24,7 +24,6 @@ class AuthApi {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
 
-      //snackError("${AppLocalizations.of(Get.context!)!.error_occurred}", "${ex.error}");
       return AppResponse.fromJson(message);
     }
   }
@@ -33,7 +32,7 @@ class AuthApi {
     try {
       var response = await DioManagerClass.getInstance
           .dioPostMethod(url: url, body: body, header: header);
-          await SharedPref.instance.setCurrentUserDate(
+          await SharedPref.instance.setCurrentUserData(
                 response.toString()
               );
       return AppResponse.fromJson(json.decode(response.toString()));
@@ -49,7 +48,7 @@ class AuthApi {
     try {
       var response = await DioManagerClass.getInstance
           .dioPostMethod(url: url, body: body, header: header);
-      SharedPref.instance.setCurrentUserDate(response.toString());
+      SharedPref.instance.setCurrentUserData(response.toString());
       Logger().i(" 1 ${response.toString()}");
       Logger().i(" 2 ${json.decode(response.toString())}");      
       Logger().i(" 3 ${json.decode(response.toString())["data"]["access_token"]}");

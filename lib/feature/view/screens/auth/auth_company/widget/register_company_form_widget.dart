@@ -36,6 +36,8 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
           child: Column(
             children: [
               TextFormField(
+                                textCapitalization: TextCapitalization.sentences,
+
                 controller: controller.tdcrNumber,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -56,6 +58,8 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 height: padding16,
               ),
               TextFormField(
+                                textCapitalization: TextCapitalization.sentences,
+
                 controller: controller.tdCompanyName,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -120,6 +124,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 height: padding16,
               ),
               TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 controller: controller.tdNameOfApplicant,
                 onSaved: (newValue) {
                   controller.tdNameOfApplicant.text = newValue!;

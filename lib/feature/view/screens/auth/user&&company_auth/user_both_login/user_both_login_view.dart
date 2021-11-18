@@ -45,9 +45,7 @@ class UserBothLoginScreen extends StatelessWidget {
           SizedBox(
             height: sizeH16,
           ),
-          
           SharedLoginForm(type: "${ConstanceNetwork.userType}"),
-          
           SizedBox(height: sizeH20,),
           SharedPref.instance.getUserType() == "${ConstanceNetwork.bothType}" ? Padding(
             padding: EdgeInsets.symmetric(horizontal: sizeW20!),
@@ -81,7 +79,6 @@ class UserBothLoginScreen extends StatelessWidget {
                 ),
           ),
           SizedBox(height: 16,),
-          
         ],
       ),
     );

@@ -104,6 +104,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 height: padding16,
               ),
               TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 onSaved: (newValue) {
                   controller.tdName.text = newValue.toString();
                   controller.update();
