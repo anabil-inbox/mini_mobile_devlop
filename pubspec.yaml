@@ -53,7 +53,8 @@ dependencies:
   firebase_messaging: ^11.1.0
   flutter_local_notifications: ^9.0.3
  # flutter_local_auth_invisible: ^2.0.0
-  local_auth: ^1.1.8
+  #local_auth: ^1.1.8
+  local_auth: any
   google_maps_place_picker: ^2.1.0-nullsafety.3
   grouped_list: ^4.1.0
 

@@ -102,7 +102,7 @@
     "name":"Name",
     "recall":"Recall",
     "giveaway":"Giveaway",
-    "filter_by_name":"Filter By Name"
+    "filter_by_name":"Filter By Name",
     "what_is_your_new_phone_number":"What is your new Phone Number?",
     "scan_your_fingerprint_to_authenticate":"Scan your fingerprint to authenticate",
     "cancle":"Cancle",
