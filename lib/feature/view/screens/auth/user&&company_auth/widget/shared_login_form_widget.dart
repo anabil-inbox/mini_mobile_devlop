@@ -32,37 +32,41 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
         child: Column(
           children: [
             type == "${ConstanceNetwork.userType}"
-                ? Container(
-                    color: colorTextWhite,
-                    child: InkWell(
-                      onTap: () {
-                        Get.to(() => ChooseCountryScreen());
-                      },
-                      child: Row(
-                        textDirection: TextDirection.ltr,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SizedBox(
-                            width: sizeW18,
-                          ),
-                          controller.defCountry.name!.toLowerCase().contains("qatar") || controller.defCountry.name!.isEmpty 
-                              ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
-                              : imageNetwork(
-                               url: "${ConstanceNetwork.imageUrl}${controller.defCountry.flag}" ,
-                                width: 36,
-                                height: 26
-                              ),
-                          VerticalDivider(),
-                          GetBuilder<AuthViewModle>(
-                            init: AuthViewModle(),
-                            initState: (_) {},
-                            builder: (value) {
-                              return Text(
-                                  "${value.defCountry.prefix == null ? "+974" : value.defCountry.prefix}",
-                                  textDirection: TextDirection.ltr,
-                                  );
-                            },
-                          ),
+                ? GetBuilder<AuthViewModle>(
+                  init: AuthViewModle(),
+                  initState: (_) {},
+                  builder: (_) {
+                    return Container(
+                                    color: colorTextWhite,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Get.to(() => ChooseCountryScreen());
+                                      },
+                                      child: Row(
+                                        textDirection: TextDirection.ltr,
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          SizedBox(
+                                            width: sizeW18,
+                                          ),
+                                          controller.defCountry.name!.toLowerCase().contains("qatar") || controller.defCountry.name!.isEmpty 
+                                              ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
+                                              : imageNetwork(
+                                               url: "${ConstanceNetwork.imageUrl}${controller.defCountry.flag}" ,
+                                                width: 36,
+                                                height: 26
+                                              ),
+                                          VerticalDivider(),
+                                          GetBuilder<AuthViewModle>(
+                                            init: AuthViewModle(),
+                                            initState: (_) {},
+                                            builder: (value) {
+                                              return Text(
+                                                  "${value.defCountry.prefix == null ? "+974" : value.defCountry.prefix}",
+                                                  textDirection: TextDirection.ltr,
+                                                  );
+                                            },
+                                          ),
                           Expanded(
                             child: TextFormField(
                               textDirection: TextDirection.ltr,
@@ -87,8 +91,11 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                           )
                         ],
                       ),
+                   
                     ),
-                  )
+                  ); 
+                  },
+                )
                 : type == "${ConstanceNetwork.companyType}"
                     ? Container(
                         child: TextFormField(

@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
+import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/model/user_model.dart';
@@ -54,8 +55,8 @@ class AuthViewModle extends GetxController {
   Timer? timer;
   int startTimerCounter = 60;
 
-  String? companySector;
-  String? temproreySectorName;
+  CompanySector? companySector = CompanySector();
+  CompanySector? temproreySectorName;
   Set<String> arraySectors = {};
   int selectedIndex = -1;
 

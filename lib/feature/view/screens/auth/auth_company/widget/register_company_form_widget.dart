@@ -102,7 +102,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 builder: (logic) {
                   return TextFormField(
                       controller:
-                          TextEditingController(text: logic.companySector),
+                          TextEditingController(text: GetUtils.isNull(logic.companySector!.sectorName) ? "" : logic.companySector!.sectorName),
                       readOnly: true,
                       onTap: () {
                         chooseSectorCompany();
@@ -299,7 +299,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                             countryCode:
                                 logic.defCountry.prefix!.replaceAll("+", ""),
                             companyName: logic.tdCompanyName.text,
-                            companySector: logic.companySector,
+                            companySector: logic.companySector!.name,
                             applicantName: logic.tdNameOfApplicant.text,
                             udid: logic.identifier,
                             deviceType: logic.deviceType,
@@ -390,9 +390,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                                       json.decode(SharedPref.instance
                                           .getAppSetting()!
                                           .toString()))
-                                  .companySectors![index]
-                                  .sectorName
-                                  .toString();
+                                  .companySectors![index];
                               logic.update();
                             },
                             child: CompanySectorItem(

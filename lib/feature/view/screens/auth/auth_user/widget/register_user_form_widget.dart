@@ -38,49 +38,53 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 onTap: () {
                   Get.to(() => ChooseCountryScreen());
                 },
-                child: Container(
-                  height: sizeH60,
-                  decoration: BoxDecoration(
-                    color: colorTextWhite,
-                  ),
-                  child: Row(
-                    textDirection: TextDirection.ltr,
-                    children: [
-                      SizedBox(
-                        width: sizeW18,
-                      ),
-                     controller.defCountry.name!.toLowerCase().contains("qatar") || controller.defCountry.name!.isEmpty
-                              ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
-                              : imageNetwork(
-                               url: "${ConstanceNetwork.imageUrl}${controller.defCountry.flag}" ,
-                                width: 36,
-                                height: 26
-                              ),
-                      VerticalDivider(),
-                      GetBuilder<AuthViewModle>(
-                        init: AuthViewModle(),
-                        initState: (_) {},
-                        builder: (value) {
-                          return Text(
-                              "${value.defCountry.prefix == null ? "+974" : value.defCountry.prefix}");
-                        },
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          textDirection: TextDirection.ltr,
-                              maxLength: 9,
-                          onSaved: (newValue) {
-                            controller.tdMobileNumber.text =
-                            newValue.toString();
-                            controller.update();
-                          },
-                          decoration: InputDecoration(
-                            counterText: "",
-                          ),
-                          controller: controller.tdMobileNumber,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';      
+                child: GetBuilder<AuthViewModle>(
+                  init: AuthViewModle(),
+                  initState: (_) {},
+                  builder: (_) {
+                    return Container(
+                                  height: sizeH60,
+                                  decoration: BoxDecoration(
+                                    color: colorTextWhite,
+                                  ),
+                                  child: Row(
+                                    textDirection: TextDirection.ltr,
+                                    children: [
+                                      SizedBox(
+                                        width: sizeW18,
+                                      ),
+                                     controller.defCountry.name!.toLowerCase().contains("qatar") || controller.defCountry.name!.isEmpty
+                                              ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
+                                              : imageNetwork(
+                                               url: "${ConstanceNetwork.imageUrl}${controller.defCountry.flag}" ,
+                                                width: 36,
+                                                height: 26
+                                              ),
+                                      VerticalDivider(),
+                                      GetBuilder<AuthViewModle>(
+                                        init: AuthViewModle(),
+                                        initState: (_) {},
+                                        builder: (value) {
+                                          return Text(
+                                              "${value.defCountry.prefix == null ? "+974" : value.defCountry.prefix}");
+                                        },
+                                      ),
+                                      Expanded(
+                                        child: TextFormField(
+                                          textDirection: TextDirection.ltr,
+                                              maxLength: 9,
+                                          onSaved: (newValue) {
+                                            controller.tdMobileNumber.text =
+                                            newValue.toString();
+                                            controller.update();
+                                          },
+                                          decoration: InputDecoration(
+                                            counterText: "",
+                                          ),
+                                          controller: controller.tdMobileNumber,
+                                          validator: (value) {
+                                            if (value == null || value.isEmpty) {
+                                             return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';      
 
                             }else if(value.length != 9 ){
                               return "${AppLocalizations.of(Get.context!)!.phone_number_invalid}";
@@ -92,6 +96,8 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                       )
                     ],
                   ),
+                ) ; 
+                  },
                 ),
               ),
               SizedBox(
