@@ -7,6 +7,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
         automaticallyImplyLeading: true,
         elevation: 1,
         title: Text(
-          "${AppLocalizations.of(Get.context!)!.setting}",
+          "${tr.setting}",
           style: textStyleAppBarTitle(),
         ),
         leading: IconButton(

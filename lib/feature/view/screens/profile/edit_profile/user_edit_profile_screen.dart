@@ -9,6 +9,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:inbox_clients/util/sh_util.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class UserEditProfileScreen extends StatefulWidget {
   UserEditProfileScreen({Key? key}) : super(key: key);
@@ -40,7 +41,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
         automaticallyImplyLeading: true,
         elevation: 1,
         title: Text(
-          "${AppLocalizations.of(Get.context!)!.edit_profile}",
+          "${tr.edit_profile}",
           style: textStyleAppBarTitle(),
         ),
         leading: IconButton(
@@ -193,9 +194,9 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                       profileViewModle.tdUserMobileNumberEdit,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';
+                                      return '${tr.fill_your_phone_number}';
                                     } else if (value.length != 9) {
-                                      return "${AppLocalizations.of(Get.context!)!.phone_number_invalid}";
+                                      return "${tr.phone_number_invalid}";
                                     }
                                     return null;
                                   },

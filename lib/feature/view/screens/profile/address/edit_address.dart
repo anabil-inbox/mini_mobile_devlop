@@ -10,6 +10,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 
 class EditAddressScreen extends StatefulWidget {
@@ -79,7 +80,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                           controller: controller.tdTitleEdit,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return '${AppLocalizations.of(Get.context!)!.fill_the_title_correctly}';
+                              return '${tr.fill_the_title_correctly}';
                             }
                             return null;
                           },
@@ -97,7 +98,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return '${AppLocalizations.of(Get.context!)!.fill_the_building_no_correctly}';
+                              return '${tr.fill_the_building_no_correctly}';
                             }
                             return null;
                           },
@@ -115,7 +116,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '${AppLocalizations.of(Get.context!)!.fill_the_unit_no_correctly}';
+                      return '${tr.fill_the_unit_no_correctly}';
                     }
                     return null;
                   },
@@ -133,7 +134,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                   controller: controller.tdZoneEdit,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '${AppLocalizations.of(Get.context!)!.fill_the_zone_correctly}';
+                      return '${tr.fill_the_zone_correctly}';
                     }
                     return null;
                   },
@@ -151,7 +152,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                   controller: controller.tdStreetEdit,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '${AppLocalizations.of(Get.context!)!.fill_the_street_correctly}';
+                      return '${tr.fill_the_street_correctly}';
                     }
                     return null;
                   },
@@ -172,7 +173,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                   controller: controller.tdLocationEdit,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '${AppLocalizations.of(Get.context!)!.choose_your_location}';
+                      return '${tr.choose_your_location}';
                     }
                     return null;
                   },

@@ -90,7 +90,7 @@ class ProfileViewModle extends BaseController {
                     isLoading = false,
                     update(),
                     snackSuccess(
-                        "${AppLocalizations.of(Get.context!)!.success}",
+                        "${tr.success}",
                         "${value.status!.message}"),
                     getMyAddress(),
                     clearControllers(),
@@ -102,7 +102,7 @@ class ProfileViewModle extends BaseController {
                     isLoading = false,
                     update(),
                     snackError(
-                        "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                        "${tr.error_occurred}",
                         "${value.status!.message}")
                   }
               });
@@ -131,13 +131,13 @@ class ProfileViewModle extends BaseController {
                 if (value.status!.success!)
                   {
                     snackSuccess(
-                        "${AppLocalizations.of(Get.context!)!.success}",
+                        "${tr.success}",
                         "${value.status!.message}"),
                   }
                 else
                   {
                     snackError(
-                        "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                        "${tr.error_occurred}",
                         "${value.status!.message}")
                   }
               });
@@ -153,7 +153,7 @@ class ProfileViewModle extends BaseController {
                 if (value.status!.success!)
                   {
                     snackSuccess(
-                        "${AppLocalizations.of(Get.context!)!.success}",
+                        "${tr.success}",
                         "${value.status!.message}"),
                     getMyAddress(),
                     Get.back()
@@ -161,7 +161,7 @@ class ProfileViewModle extends BaseController {
                 else
                   {
                     snackError(
-                        "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                        "${tr.error_occurred}",
                         "${value.status!.message}")
                   }
               });
@@ -174,7 +174,7 @@ class ProfileViewModle extends BaseController {
         titlePadding: EdgeInsets.all(16),
         titleStyle: textStyleBtn()!.copyWith(color: colorBlack),
         title:
-            "${AppLocalizations.of(Get.context!)!.are_you_sure_you_want_to_log_out}",
+            "${tr.are_you_sure_you_want_to_log_out}",
         content: Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -189,7 +189,7 @@ class ProfileViewModle extends BaseController {
                       logOut();
                     },
                     child: Text(
-                      "${AppLocalizations.of(Get.context!)!.log_out}",
+                      "${tr.log_out}",
                       style: TextStyle(
                           color: colorTextWhite, fontWeight: FontWeight.bold),
                     )),
@@ -207,7 +207,7 @@ class ProfileViewModle extends BaseController {
                       Get.back();
                     },
                     child: Text(
-                      "${AppLocalizations.of(Get.context!)!.cancle}",
+                      "${tr.cancle}",
                       style: textStyleHints()!
                           .copyWith(fontWeight: FontWeight.bold),
                     )),
@@ -225,7 +225,7 @@ class ProfileViewModle extends BaseController {
             Logger().i("${value.status!.message}"),
             if (value.status!.success!)
               {
-                snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+                snackSuccess("${tr.success}",
                     "${value.status!.message}"),
                 isLoading = false,
                 update(),
@@ -238,7 +238,7 @@ class ProfileViewModle extends BaseController {
                 isLoading = false,
                 update(),
                 snackError(
-                    "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                    "${tr.error_occurred}",
                     "${value.status!.message}")
               }
           });
@@ -266,7 +266,7 @@ class ProfileViewModle extends BaseController {
        Logger().i("${value.status!.message}"),
             if (value.status!.success!)
               {
-                snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+                snackSuccess("${tr.success}",
                     "${value.status!.message}"),
                 isLoading = false,
                 update(),
@@ -277,7 +277,7 @@ class ProfileViewModle extends BaseController {
                 isLoading = false,
                 update(),
                 snackError(
-                    "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                    "${tr.error_occurred}",
                     "${value.status!.message}")
               }
         });

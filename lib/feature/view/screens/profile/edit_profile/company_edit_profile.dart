@@ -33,7 +33,7 @@ class CompanyEditProfile extends StatelessWidget {
         automaticallyImplyLeading: true,
         elevation: 1,
         title: Text(
-          "${AppLocalizations.of(Get.context!)!.edit_profile}",
+          "${tr.edit_profile}",
           style: textStyleAppBarTitle(),
         ),
         leading: IconButton(
@@ -96,7 +96,7 @@ class CompanyEditProfile extends StatelessWidget {
 
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_your_company_name}';
+                    return '${tr.fill_your_company_name}';
                   }
                   return null;
                 },
@@ -104,7 +104,7 @@ class CompanyEditProfile extends StatelessWidget {
                 },
                 decoration: InputDecoration(
                     hintText:
-                        "${AppLocalizations.of(Get.context!)!.company_name}"),
+                        "${tr.company_name}"),
               ),
               SizedBox(
                 height: sizeH16,
@@ -116,16 +116,16 @@ class CompanyEditProfile extends StatelessWidget {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_your_company_email}';
+                    return '${tr.fill_your_company_email}';
                   } else if (!GetUtils.isEmail(value)) {
-                    return '${AppLocalizations.of(Get.context!)!.please_enter_valid_email}';
+                    return '${tr.please_enter_valid_email}';
                   }
                   return null;
                 },
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                     hintText:
-                        "${AppLocalizations.of(Get.context!)!.your_email_address}"),
+                        "${tr.your_email_address}"),
               ),
               SizedBox(
                 height: sizeH16,
@@ -147,7 +147,7 @@ class CompanyEditProfile extends StatelessWidget {
                             child: SvgPicture.asset("assets/svgs/dropdown.svg"),
                           ),
                           hintText:
-                              "${AppLocalizations.of(Get.context!)!.company_sector}"));
+                              "${tr.company_sector}"));
                 },
               ),
               SizedBox(
@@ -170,7 +170,7 @@ class CompanyEditProfile extends StatelessWidget {
               //               child: SvgPicture.asset("assets/svgs/dropdown.svg"),
               //             ),
               //             hintText:
-              //                 "${AppLocalizations.of(Get.context!)!.company_sector}"));
+              //                 "${tr.company_sector}"));
               //   },
               // ),
               // SizedBox(
@@ -183,13 +183,13 @@ class CompanyEditProfile extends StatelessWidget {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_name_of_applicant}';
+                    return '${tr.fill_name_of_applicant}';
                   }
                   return null;
                 },
                 decoration: InputDecoration(
                     hintText:
-                        "${AppLocalizations.of(Get.context!)!.name_of_application}"),
+                        "${tr.name_of_application}"),
               ),
               SizedBox(
                 height: padding16,
@@ -201,13 +201,13 @@ class CompanyEditProfile extends StatelessWidget {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_the_applicant_department}';
+                    return '${tr.fill_the_applicant_department}';
                   }
                   return null;
                 },
                 decoration: InputDecoration(
                     hintText:
-                        "${AppLocalizations.of(Get.context!)!.applicant_department}"),
+                        "${tr.applicant_department}"),
               ),
               SizedBox(
                   height: sizeH16,
@@ -272,9 +272,9 @@ class CompanyEditProfile extends StatelessWidget {
                                       profileViewModle.tdUserMobileNumberEdit,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';
+                                      return '${tr.fill_your_phone_number}';
                                     } else if (value.length != 9) {
-                                      return "${AppLocalizations.of(Get.context!)!.phone_number_invalid}";
+                                      return "${tr.phone_number_invalid}";
                                     }
                                     return null;
                                   },
@@ -309,7 +309,7 @@ class CompanyEditProfile extends StatelessWidget {
                       isLoading: logic.isLoading,
                       isExpanded: true,
                       textButton:
-                          "${AppLocalizations.of(Get.context!)!.save}",
+                          "${tr.save}",
                       onClicked: () {
                         if (_formKey.currentState!.validate()) {
                           
@@ -338,7 +338,7 @@ class CompanyEditProfile extends StatelessWidget {
         children: [
           SizedBox(height: sizeH40),
           Text(
-            "${AppLocalizations.of(Get.context!)!.company_sector}",
+            "${tr.company_sector}",
             style: textStyleTitle(),
           ),
           SizedBox(height: sizeH22),
@@ -386,7 +386,7 @@ class CompanyEditProfile extends StatelessWidget {
           ),
           PrimaryButton(
               isLoading: false,
-              textButton: "${AppLocalizations.of(Get.context!)!.select}",
+              textButton: "${tr.select}",
               onClicked: () {
                 profileViewModle.companySector = profileViewModle.temproreySectorName;
                 profileViewModle.update();

@@ -80,9 +80,9 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                               controller: controller.tdMobileNumber,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';
+                                  return '${tr.fill_your_phone_number}';
                                 } else if (value.length != 9) {
-                                  return "${AppLocalizations.of(Get.context!)!.phone_number_invalid}";
+                                  return "${tr.phone_number_invalid}";
                                 }
                                 return null;
                               },
@@ -102,7 +102,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                           controller: controller.tdcrNumber,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return '${AppLocalizations.of(Get.context!)!.fill_cr_number}';
+                              return '${tr.fill_cr_number}';
                             }
                             return null;
                           },
@@ -113,7 +113,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               hintText:
-                                  "${AppLocalizations.of(Get.context!)!.cr_number}"),
+                                  "${tr.cr_number}"),
                         ),
                       )
                     : const SizedBox(),
@@ -126,7 +126,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                           return PrimaryButtonFingerPinter(
                             isExpanded: false,
                             textButton:
-                                "${AppLocalizations.of(Get.context!)!.continue_form}",
+                                "${tr.continue_form}",
                             isLoading: controller.isLoading,
                             onClicked: () {
                               if (_formKey.currentState!.validate()) {
@@ -194,7 +194,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                         },
                         isLoading: controller.isLoading,
                         textButton:
-                            "${AppLocalizations.of(Get.context!)!.continue_form}",
+                            "${tr.continue_form}",
                       );
                     },
                   ),

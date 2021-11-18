@@ -6,6 +6,7 @@ import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logger/logger.dart';
@@ -54,7 +55,7 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
           icon: SvgPicture.asset("assets/svgs/back_arrow.svg"),
         ),
         title: Text(
-          "${AppLocalizations.of(Get.context!)!.choose_country}",
+          "${tr.choose_country}",
           style: textStyleLargeText(),
         ),
         centerTitle: true,
@@ -85,7 +86,7 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
                         ),
                       ),
                       hintText:
-                          "${AppLocalizations.of(Get.context!)!.search_for_country}"),
+                          "${tr.search_for_country}"),
                   onChanged: (newVal) {
                     logic.tdSearch.text = newVal.toString();
                     logic.update();
@@ -128,7 +129,7 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
                 padding: EdgeInsets.all(10),
                 child: PrimaryButton(
                     isLoading: false,
-                    textButton: "${AppLocalizations.of(Get.context!)!.ok}",
+                    textButton: "${tr.ok}",
                     onClicked: () {
                       logic.defCountry = selctedCountry;
                       logic.update();

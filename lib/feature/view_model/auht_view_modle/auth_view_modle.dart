@@ -110,7 +110,7 @@ class AuthViewModle extends GetxController {
               // ),
               isLoading = false,
               update(),
-              snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+              snackSuccess("${tr.success}",
                   "${value.status!.message}"),
               Get.to(() => CompanyVerficationCodeScreen(
                   id: value.data["Customer"]["id"],
@@ -123,7 +123,7 @@ class AuthViewModle extends GetxController {
               log.e(value.status!.toJson()),
               isLoading = false,
               update(),
-              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}",
+              snackError("${tr.error_occurred}",
                   "${value.status!.message}")
             }
         });
@@ -144,7 +144,7 @@ class AuthViewModle extends GetxController {
                 {
                   isLoading = false,
                   update(),
-                  snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+                  snackSuccess("${tr.success}",
                       "${value.status!.message}"),
                   Get.to(() => CompanyVerficationCodeScreen(
                       id: value.data["Customer"]["id"],
@@ -158,7 +158,7 @@ class AuthViewModle extends GetxController {
                   isLoading = false,
                   update(),
                   snackError(
-                      "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                      "${tr.error_occurred}",
                       "${value.status!.message}")
                 }
             });
@@ -177,7 +177,7 @@ class AuthViewModle extends GetxController {
               Logger().d(value.data["Customer"]),
               isLoading = false,
               update(),
-              snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+              snackSuccess("${tr.success}",
                   "${value.status!.message}"),
               Get.to(() => CompanyVerficationCodeScreen(
                   id: value.data["Customer"]["id"],
@@ -189,7 +189,7 @@ class AuthViewModle extends GetxController {
             {
               isLoading = false,
               update(),
-              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}",
+              snackError("${tr.error_occurred}",
                   "${value.status!.message}")
             }
         });
@@ -215,7 +215,7 @@ class AuthViewModle extends GetxController {
               isLoading = false,
               update(),
 
-              snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+              snackSuccess("${tr.success}",
                   "${value.status!.message}"),
               Get.to(() => CompanyVerficationCodeScreen(
                   id: value.data["Customer"]["id"],
@@ -228,7 +228,7 @@ class AuthViewModle extends GetxController {
               print("msg_value ${value.toJson()}"),
               isLoading = false,
               update(),
-              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}",
+              snackError("${tr.error_occurred}",
                   "${value.status!.message}")
             }
         });
@@ -311,7 +311,7 @@ class AuthViewModle extends GetxController {
     await AuthHelper.getInstance.checkVerficationCode(params).then((value) => {
           if (value.status!.success!)
             {
-              snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+              snackSuccess("${tr.success}",
                   "${value.status!.message}"),
               Get.put(ProfileViewModle()),
               Get.off(() => ProfileScreen()),
@@ -319,7 +319,7 @@ class AuthViewModle extends GetxController {
             }
           else
             {
-              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}",
+              snackError("${tr.error_occurred}",
                   "${value.status!.message}")
             }
         });
@@ -346,14 +346,14 @@ class AuthViewModle extends GetxController {
               startTimerCounter = 60,
               startTimer(),
               update(),
-              snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+              snackSuccess("${tr.success}",
                   "${value.status!.message}"),
             }
           else
             {
               isLoading = false,
               update(),
-              snackError("${AppLocalizations.of(Get.context!)!.error_occurred}",
+              snackError("${tr.error_occurred}",
                   "${value.status!.message}")
             }
         });
@@ -398,7 +398,7 @@ class AuthViewModle extends GetxController {
   //             height: sizeH32,
   //           ),
   //           Text(
-  //             "${AppLocalizations.of(Get.context!)!.choose_way_to_sign_in}",
+  //             "${tr.choose_way_to_sign_in}",
   //             style: textStyleHint()!.copyWith(color: colorBlack),
   //           ),
   //           SizedBox(
@@ -412,7 +412,7 @@ class AuthViewModle extends GetxController {
   //                   isExpanded: true,
   //                   isLoading: isLoading,
   //                   textButton:
-  //                       "${AppLocalizations.of(Get.context!)!.touch_id}",
+  //                       "${tr.touch_id}",
   //                   onClicked: isLoading
   //                       ? () {}
   //                       : () async {
@@ -446,7 +446,7 @@ class AuthViewModle extends GetxController {
   //               return PrimaryButton(
   //                   isExpanded: true,
   //                   isLoading: isLoading,
-  //                   textButton: "${AppLocalizations.of(Get.context!)!.face_id}",
+  //                   textButton: "${tr.face_id}",
   //                   onClicked: () async {
   //                     isLoading = true;
   //                     // update();

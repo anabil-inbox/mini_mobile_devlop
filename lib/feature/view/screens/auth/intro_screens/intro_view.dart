@@ -60,7 +60,7 @@ final String type;
                   PrimaryButton(
                     isLoading: false,
                     isExpanded: false,
-                    textButton: "${AppLocalizations.of(Get.context!)!.sign_in}",
+                    textButton: "${tr.sign_in}",
                     onClicked: () {
                       Get.off(() => UserCompanyLoginScreen(type: SharedPref.instance.getUserType(),));
                       },
@@ -70,7 +70,7 @@ final String type;
                   ),
                   SeconderyButtom(
                       textButton:
-                          "${AppLocalizations.of(Get.context!)!.sign_up}",
+                          "${tr.sign_up}",
                       onClicked: () {
                         if(type == "${ConstanceNetwork.userType}" || type == "${ConstanceNetwork.bothType}"){
                           Get.off(() => UserRegisterScreen());
@@ -109,7 +109,7 @@ final String type;
                      moveToIntro();
                     },
                     child: Text(
-                      "${AppLocalizations.of(Get.context!)!.skip}",
+                      "${tr.skip}",
                       style: textStyleIntroBody(),
                     ))),
             PositionedDirectional(
