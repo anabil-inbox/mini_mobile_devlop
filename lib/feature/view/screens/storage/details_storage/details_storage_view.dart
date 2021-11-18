@@ -4,8 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/btn_action_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/items_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/recent_item_widget.dart';
+import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/text_with_contanier_widget.dart';
+import 'package:inbox_clients/feature/view/screens/storage/filter_storage/filter_storage_name_view.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
@@ -18,7 +21,6 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 class StorageDetailsView extends StatelessWidget {
@@ -36,7 +38,7 @@ class StorageDetailsView extends StatelessWidget {
           TextButton(
             onPressed: () {},
             child: CustomTextView(
-              txt: "${AppLocalizations.of(Get.context!)!.select}",
+              txt: "${tr.select}",
               textStyle: textStyleNormal()?.copyWith(color: colorRed),
               maxLine: Constance.maxLineOne,
             ),
@@ -54,12 +56,14 @@ class StorageDetailsView extends StatelessWidget {
         keyboardType: TextInputType.text,
         onSubmitted: (_) {},
         onChange: (_) {},
-        isSmallPadding: true,
+        fun:_goToFilterNameView ,
+        isReadOnly: true,
+        isSmallPadding: false,
         isSmallPaddingWidth: true,
         fillColor: colorBackground,
         isFill: true,
         isBorder: true,
-        label: AppLocalizations.of(Get.context!)!.search,
+        label: tr.search,
       );
 
   //todo this for item titles
@@ -71,54 +75,11 @@ class StorageDetailsView extends StatelessWidget {
             textStyle: textStyleNormal()?.copyWith(color: colorBlack),
             maxLine: Constance.maxLineOne,
           ),
-          Container(
-            height: sizeH20,
-            alignment: Alignment.center,
-            padding:
-                EdgeInsets.only(left: sizeW7!, right: sizeW7!, bottom: sizeH2!),
-            decoration: BoxDecoration(
-              color: colorRedTrans,
-              borderRadius: BorderRadius.circular(sizeRadius10!),
-            ),
-            child: CustomTextView(
-              txt: "${tr.name}",
-              textAlign: TextAlign.center,
-              textStyle: textStyleNormal()
-                  ?.copyWith(color: colorRed, fontSize: fontSize13!),
-              maxLine: Constance.maxLineOne,
-            ),
-          ),
+          TextContainerWidget(colorBackground: colorRedTrans,txt: tr.name,),
         ],
       );
 
-  Widget get btnActionsWidget => Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        PrimaryButton(
-            textButton: "${tr.recall}",
-            isLoading: false,
-            onClicked: () {},
-            width: sizeW135,
-            isExpanded: false),
-        SizedBox(
-          width: sizeW10,
-        ),
-        PrimaryButton(
-          textButton: "${tr.giveaway}",
-          isLoading: false,
-          onClicked: () {},
-          width: sizeW135,
-          isExpanded: false,
-          colorBtn: colorBtnGray,
-          colorText: colorTextDark,
-        ),
-        SizedBox(
-          width: sizeW10,
-        ),
-        IconBtn(),
-      ],
-    );
+  Widget get btnActionsWidget => BtnActionWidget();
 
 
   @override
@@ -172,6 +133,7 @@ class StorageDetailsView extends StatelessWidget {
                   ),
                   Expanded(
                     child: Container(
+                      clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(sizeRadius10!),
                       ),
@@ -205,4 +167,8 @@ class StorageDetailsView extends StatelessWidget {
   }
 
 
+
+  void _goToFilterNameView() {
+    Get.to(()=> FilterStorageNameView());
+  }
 }

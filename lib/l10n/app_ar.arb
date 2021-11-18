@@ -100,5 +100,6 @@
      "items":"العناصر",
      "name":"اسم",
      "recall":"اعد الاتصال",
-      "giveaway":"تبرع"
+      "giveaway":"تبرع",
+      "filter_by_name":"تصفية حسب الاسم"
 }
