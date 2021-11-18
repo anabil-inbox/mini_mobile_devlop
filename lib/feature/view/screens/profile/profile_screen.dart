@@ -84,7 +84,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                 SettingItem(
                   onTap: (){
                   //  Get.to(() => SettingsScreen());
-                  Get.to(() => Controller());
+
                   },
                   settingTitle: "${AppLocalizations.of(context)!.setting}",
                   trailingTitle: "",

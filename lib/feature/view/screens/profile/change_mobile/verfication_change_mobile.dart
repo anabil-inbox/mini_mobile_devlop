@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/widget/header_code_verfication_widget.dart';
+import 'package:inbox_clients/feature/view/screens/home/controller.dart';
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -120,7 +121,7 @@ class _ChangeMobilScreenState extends State<VerficationChangeMobilScreen> {
         onCompleted: (v) {
           if(v=="1234"){
             Get.put(ProfileViewModle());
-            Get.offAll(() => ProfileScreen());
+            Get.offAll(() => HomePageHolder());
           }
           // authViewModle.checkVerficationCode(
           //   countryCode: countryCode,

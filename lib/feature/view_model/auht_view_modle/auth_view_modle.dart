@@ -15,6 +15,7 @@ import 'package:inbox_clients/feature/model/user_model.dart';
 import 'package:inbox_clients/feature/model/user_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/verfication/company_verfication_code_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/face.dart';
+import 'package:inbox_clients/feature/view/screens/home/controller.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
@@ -314,8 +315,8 @@ class AuthViewModle extends GetxController {
               snackSuccess("${tr.success}",
                   "${value.status!.message}"),
               Get.put(ProfileViewModle()),
-              Get.off(() => ProfileScreen()),
-              //   Get.off(() => HomeScreen()),
+              //Get.off(() => ProfileScreen()),
+              Get.off(() => HomePageHolder()),
             }
           else
             {

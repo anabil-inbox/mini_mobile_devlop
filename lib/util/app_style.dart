@@ -292,3 +292,14 @@ ButtonStyle? get textButtonStyle => ButtonStyle(
 
 ScrollPhysics? customScrollViewIOS() =>
     BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
+
+BoxShadow? boxShadowAppTheme() {
+  return BoxShadow(
+      color: colorPrimary.withOpacity(.3),
+      blurRadius: 5.0, // soften the shadow
+      spreadRadius: 3.0, //extend the shadow
+      offset: Offset(
+        0.0, // Move to right 10  horizontally
+        0.10, // Move to bottom 10 Vertically
+      ));
+}
