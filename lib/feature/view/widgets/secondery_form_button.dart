@@ -16,18 +16,21 @@ class SeconderyFormButton extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: sizeH50,
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4)
+      ),
       child: MaterialButton(
         color: seconderyButton,
         onPressed:  (){
+          
            if (buttonText.toLowerCase().contains("${AppLocalizations.of(context)!.company.toString().toLowerCase()}")) {
-             
              Get.off(() => CompanyBothLoginScreen());
            }else if(buttonText.toLowerCase().contains("${AppLocalizations.of(context)!.user.toString().toLowerCase()}")){
              Get.off(() => UserBothLoginScreen());
-             
            }
         },
-        child: Text("$buttonText" , style: textStyleHint()!.copyWith(color: colorHint),),
+        child: Text("$buttonText" , style: textStyleHint()!.copyWith(color: colorHint , fontWeight: FontWeight.bold,fontSize: 15),),
       ),
     );
   }

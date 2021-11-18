@@ -1,6 +1,10 @@
+import 'dart:convert';
+
+import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/api/model/auth.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
 class AuthHelper {
@@ -49,5 +53,24 @@ class AuthHelper {
     }
   }
 
+  Future<AppResponse> checkVerficationCode(Map<String, dynamic> body) async {
+    var appResponse = await AuthApi.getInstance.checkVerficationCodeRequset(body: body, url: "${ConstanceNetwork.verfiyCodeEndPoint}",header: ConstanceNetwork.header(0));
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+  
+
+  Future<AppResponse> reSendVerficationCode(Map<String, dynamic> body) async {
+    var appResponse = await AuthApi.getInstance.reSendVerficationCodeRequset(body: body, url: "${ConstanceNetwork.recendVerficationCodeEndPoint}",header: ConstanceNetwork.header(0));
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+  
 }
 

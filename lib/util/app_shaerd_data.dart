@@ -182,7 +182,7 @@ Widget imageNetwork({double? width, double? height, String? url}) {
           // border: Border.all(color: colorBorderLight),
           image: DecorationImage(
             image: CachedNetworkImageProvider(url ?? urlUserPlacholder!),
-            fit: BoxFit.contain,
+            fit: BoxFit.cover,
           ),
         ),
       );
@@ -384,7 +384,8 @@ updateLanguage(Locale locale) {
 }
 
 void changeLanguageBottomSheet() {
-  Get.bottomSheet(Container(
+  Get.bottomSheet(
+    Container(
     height: sizeH300,
     decoration: BoxDecoration(
         color: colorTextWhite,
@@ -455,6 +456,7 @@ void changeLanguageBottomSheet() {
   ));
 }
 
+
 class CustomMaterialPageRoute extends MaterialPageRoute {
   @protected
   bool get hasScopedWillPopCallback {
@@ -473,3 +475,6 @@ class CustomMaterialPageRoute extends MaterialPageRoute {
           fullscreenDialog: fullscreenDialog,
         );
 }
+
+
+AppLocalizations get tr => AppLocalizations.of(Get.context!)!;

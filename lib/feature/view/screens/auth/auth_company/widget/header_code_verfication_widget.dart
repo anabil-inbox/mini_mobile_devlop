@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
 class HeaderCodeVerfication extends StatelessWidget {
@@ -10,7 +12,7 @@ class HeaderCodeVerfication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: sizeH174,
+      height: sizeH200,
       child: Stack(
         children: [
           PositionedDirectional(
@@ -33,8 +35,8 @@ class HeaderCodeVerfication extends StatelessWidget {
             icon: SvgPicture.asset("assets/svgs/back_arrow.svg"),
           )),
           PositionedDirectional(
-            start: padding0,
-            end: padding0,
+            start: padding104,
+            end: padding104,
             top: padding63,
             bottom: padding32,
             child: SvgPicture.asset("assets/svgs/logo_horizantal.svg",),

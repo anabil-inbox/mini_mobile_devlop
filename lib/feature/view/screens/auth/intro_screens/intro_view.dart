@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/register/register_company.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_register_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/intro_active_dot_widget.dart';
+import 'package:inbox_clients/feature/view/screens/auth/splash/splash.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
 import 'package:inbox_clients/feature/view/widgets/intro_body.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
@@ -61,7 +62,7 @@ final String type;
                     isExpanded: false,
                     textButton: "${AppLocalizations.of(Get.context!)!.sign_in}",
                     onClicked: () {
-                      Get.to(() => UserCompanyLoginScreen(type: SharedPref.instance.getUserType(),));
+                      Get.off(() => UserCompanyLoginScreen(type: SharedPref.instance.getUserType(),));
                       },
                   ),
                   SizedBox(
@@ -72,40 +73,40 @@ final String type;
                           "${AppLocalizations.of(Get.context!)!.sign_up}",
                       onClicked: () {
                         if(type == "${ConstanceNetwork.userType}" || type == "${ConstanceNetwork.bothType}"){
-                          Get.to(() => UserRegisterScreen());
+                          Get.off(() => UserRegisterScreen());
                         }else if(type == "${ConstanceNetwork.companyType}"){
-                          Get.to(() => RegisterCompanyScreen());  
+                          Get.off(() => RegisterCompanyScreen());  
                         }
                        
                       })
                 ],
               ),
             ),
-            GetBuilder<IntroViewModle>(
-              builder: (_) {
-                return Positioned(
-                    right: padding0,
-                    left: padding0,
-                    bottom: padding160,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        controller.features != null
-                            ? IntroActiveDot(
-                                index: controller.indexdPage,
-                                numberOfDots: controller.features!.length)
-                            : const SizedBox()
-                      ],
-                    ));
-              },
-            ),
+            // GetBuilder<IntroViewModle>(
+            //   builder: (_) {
+            //     return Positioned(
+            //         right: padding0,
+            //         left: padding0,
+            //         bottom: padding160,
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           children: [
+            //             controller.features != null
+            //                 ? IntroActiveDot(
+            //                     index: controller.indexdPage,
+            //                     numberOfDots: controller.features!.length)
+            //                 : const SizedBox()
+            //           ],
+            //         ));
+            //   },
+            // ),
             PositionedDirectional(
                 top: padding57,
                 start: padding306,
                 child: TextButton(
                     style: textButtonStyle,
                     onPressed: () {
-                     
+                     moveToIntro();
                     },
                     child: Text(
                       "${AppLocalizations.of(Get.context!)!.skip}",

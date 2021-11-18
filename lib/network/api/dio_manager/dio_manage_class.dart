@@ -13,7 +13,7 @@ class DioManagerClass {
   Dio init() {
      _dio =  Dio(
       BaseOptions(
-        baseUrl: "https://inbox.ahdtech.com/api/method/",
+        baseUrl: "http://50.17.152.72/api/method/",
         connectTimeout: 2000 * 60,
         receiveTimeout: 2000 * 60,
         sendTimeout: 2000 * 60,
@@ -25,14 +25,18 @@ class DioManagerClass {
   }
 
   Future<Response> dioGetMethod({var url, Map<String, dynamic>? header , var queryParameters})async{
-    print("msg_queryParameters ${queryParameters}");
     return await _dio!.get(url , options:Options(headers: header) , queryParameters: queryParameters);
   }
 
 
-  Future<Response> dioPostMethod({var url, Map<String, dynamic>? header ,Map<String, dynamic>? body  })async{
-    return await _dio!.post(url , options:Options(headers: header),data: body);
+  Future<Response> dioPostMethod({var url, Map<String, dynamic>? header ,Map<String, dynamic>? body })async{
+    return await _dio!.post(url , options:Options(headers: header),data: body,);
   }
+
+  Future<Response> dioPostFormMethod({var url, Map<String, dynamic>? header ,var body})async{
+    return await _dio!.post(url , options:Options(headers: header),data: FormData.fromMap(body),);
+  }
+
 
   Future<Response> dioUpdateMethod({var url, Map<String, dynamic>? header ,Map<String, dynamic>? body  })async{
     return await _dio!.put(url , options:Options(headers: header),data: body );

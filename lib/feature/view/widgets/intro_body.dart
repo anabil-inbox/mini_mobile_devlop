@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
-import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
@@ -20,7 +19,6 @@ class IntroBody extends StatelessWidget {
   final int index; 
   @override
   Widget build(BuildContext context) {
-    print("msg_title $title");
     screenUtil(context);
     return Stack(
               children: [
@@ -37,7 +35,7 @@ class IntroBody extends StatelessWidget {
               right: padding0,
               child: imageNetwork(
                 height:sizeH300,
-                url:"${ConstanceNetwork.imageUrl}$imagePath")),
+                url:"$imagePath")),
           Positioned.fill(
             child: Align(
                 alignment: Alignment.bottomCenter,

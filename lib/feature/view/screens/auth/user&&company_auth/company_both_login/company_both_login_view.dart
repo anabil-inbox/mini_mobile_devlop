@@ -9,6 +9,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 import '../widget/header_login_widget.dart';
 
@@ -42,12 +43,12 @@ class CompanyBothLoginScreen extends GetWidget<AuthViewModle> {
           SizedBox(height: sizeH13,),
           SharedLoginForm(type: "${ConstanceNetwork.companyType}"),
           SizedBox(height: sizeH20,),
-          Padding(
+         SharedPref.instance.getUserType() == "${ConstanceNetwork.bothType}" ? Padding(
             padding: EdgeInsets.symmetric(horizontal: sizeW20!),
             child: SeconderyFormButton(
               buttonText: "${AppLocalizations.of(context)!.login_as_user}",
             ),
-          ),
+          ): const SizedBox(),
            SizedBox(height: 200,),
           InkWell(
             splashColor: colorTrans,
@@ -57,23 +58,27 @@ class CompanyBothLoginScreen extends GetWidget<AuthViewModle> {
               Get.to(() => RegisterCompanyScreen());
             },
             child: RichText(
+                  
                   textAlign: TextAlign.center,
                   text: TextSpan(
+                    style: textStyleTitle(),
                     children: [
                       TextSpan(
                           text:
-                              "${AppLocalizations.of(Get.context!)!.dont_have_an_account}",
-                          style: textStylePrimary()!.copyWith(color: colorBlack),
+                              "${AppLocalizations.of(Get.context!)!.dont_have_an_account} ",
+                          style: textStylePrimary()!.copyWith(color: colorTextHint,fontSize: 13),
                           
                           ),
                       TextSpan(
                           text:
                               "${AppLocalizations.of(Get.context!)!.sign_up_here}",
-                          style: textStylePrimary()),
+                          style: textStylePrimary()!.copyWith(fontSize: 13)),
                     ],
                   ),
                 ),
+            
           ),
+          SizedBox(height: sizeH16,),
         
         ]
         ,

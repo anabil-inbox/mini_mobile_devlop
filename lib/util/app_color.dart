@@ -10,6 +10,8 @@ Color colorUnSelectedWidget = const Color(0xffCCCCCC);
 Color colorScaffoldRegistrationBody = const Color(0xffF7F9FB);
 Color seconderyButton = const Color(0xffDFE1E5);
 Color seconderyButtonUnSelected = const Color(0xff676771);
+Color colorPrimaryOpcaityColor = const Color(0xffFBDCDC);
+Color colorBtnGray = const Color(0xFFDADBDF);
 
 //todo this for textField
 var colorBorderTextFiled = Color(0xFF707070);
@@ -28,6 +30,8 @@ var colorTextDark = Color(0xFF676771);
 
 //todo this for btn
 var colorPink = Color(0xFFD84B71);
+var colorRed = Color(0xFFE63331);
+var colorRedTrans = Color(0x22E63331);
 var colorGreen = Color(0xFF27D39F);
 var colorOrangeLight = Color(0xFFF9B20C);
 

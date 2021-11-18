@@ -17,7 +17,6 @@ class TermsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ApiSettings settings = ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
-    print("${settings.termOfConditions}");
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       appBar: AppBar(
@@ -40,7 +39,7 @@ class TermsScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: sizeH20! , vertical: sizeH13!),
           child: CustomTextView(
             textAlign: TextAlign.start,
-            txt: settings.termOfConditions,
+            txt: settings.termOfConditions == null ? "" : settings.termOfConditions,
             textStyle: textStyle(),
           ),
         ),

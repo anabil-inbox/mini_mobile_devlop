@@ -48,7 +48,7 @@ TextStyle? textInputFiled() {
 TextStyle? textInputFiledHint() {
   return TextStyle(
       color: colorTextHint,
-      fontSize: fontSize16,
+      fontSize: fontSize14,
       letterSpacing: 0.23,
       fontFamily: Constance.Font_regular);
 }
@@ -128,7 +128,8 @@ TextStyle? textStyleCardTitle() {
 }
 TextStyle? textStyleHint() {
   return TextStyle(
-    fontSize: fontSize14,
+    fontSize: fontSize16,
+    fontWeight: FontWeight.bold,
     color: colorUnSelectedWidget,
   );
 }
@@ -192,6 +193,7 @@ TextStyle? textStyleAppBarTitle(){
   return TextStyle(
     color: colorBlack, 
     fontSize: fontSize17,
+    fontFamily: Constance.Font_regular,
     fontWeight: FontWeight.normal
   );
 }
@@ -250,10 +252,16 @@ ButtonStyle? get buttonStyle => ButtonStyle(
     shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
 
 ButtonStyle? get primaryButtonStyle => ButtonStyle(
-    textStyle: MaterialStateProperty.all(textPrimaryButton()),
     padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
     backgroundColor: MaterialStateProperty.all(colorPrimary),
-    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)))
+    );
+ButtonStyle? get primaryButtonOpacityStyle => ButtonStyle(
+    padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
+    backgroundColor: MaterialStateProperty.all(colorPrimaryOpcaityColor),
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)))
+    );
+
 
 ButtonStyle? get seconderyCustomButtonStyle => ButtonStyle(
     textStyle: MaterialStateProperty.all(textPrimaryButton()),

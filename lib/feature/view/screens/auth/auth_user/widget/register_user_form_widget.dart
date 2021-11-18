@@ -5,10 +5,10 @@ import 'package:inbox_clients/feature/model/user_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/register/register_company.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_user/widget/un_selected_button.dart';
 import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
+import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
-import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -33,46 +33,58 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
           key: _formKey,
           child: Column(
             children: [
+              
               InkWell(
                 onTap: () {
                   Get.to(() => ChooseCountryScreen());
                 },
-                child: Container(
-                  height: sizeH60,
-                  decoration: BoxDecoration(
-                    color: colorTextWhite,
-                  ),
-                  child: Row(
-                    textDirection: TextDirection.ltr,
-                    children: [
-                      SizedBox(
-                        width: sizeW18,
-                      ),
-                      SvgPicture.asset("assets/svgs/qatar_flag.svg"),
-                      VerticalDivider(),
-                      GetBuilder<AuthViewModle>(
-                        init: AuthViewModle(),
-                        initState: (_) {},
-                        builder: (value) {
-                          return Text(
-                              "${value.defCountry.prefix == null ? "+972" : value.defCountry.prefix}");
-                        },
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          maxLength: 9,
-                          onSaved: (newValue) {
-                            controller.tdMobileNumber.text =
-                            newValue.toString();
-                            controller.update();
-                          },
-                          decoration: InputDecoration(
-                            counterText: "",
-                          ),
-                          controller: controller.tdMobileNumber,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';      
+                child: GetBuilder<AuthViewModle>(
+                  init: AuthViewModle(),
+                  initState: (_) {},
+                  builder: (_) {
+                    return Container(
+                                  height: sizeH60,
+                                  decoration: BoxDecoration(
+                                    color: colorTextWhite,
+                                  ),
+                                  child: Row(
+                                    textDirection: TextDirection.ltr,
+                                    children: [
+                                      SizedBox(
+                                        width: sizeW18,
+                                      ),
+                                     controller.defCountry.name!.toLowerCase().contains("qatar") || controller.defCountry.name!.isEmpty
+                                              ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
+                                              : imageNetwork(
+                                               url: "${ConstanceNetwork.imageUrl}${controller.defCountry.flag}" ,
+                                                width: 36,
+                                                height: 26
+                                              ),
+                                      VerticalDivider(),
+                                      GetBuilder<AuthViewModle>(
+                                        init: AuthViewModle(),
+                                        initState: (_) {},
+                                        builder: (value) {
+                                          return Text(
+                                              "${value.defCountry.prefix == null ? "+974" : value.defCountry.prefix}");
+                                        },
+                                      ),
+                                      Expanded(
+                                        child: TextFormField(
+                                          textDirection: TextDirection.ltr,
+                                              maxLength: 9,
+                                          onSaved: (newValue) {
+                                            controller.tdMobileNumber.text =
+                                            newValue.toString();
+                                            controller.update();
+                                          },
+                                          decoration: InputDecoration(
+                                            counterText: "",
+                                          ),
+                                          controller: controller.tdMobileNumber,
+                                          validator: (value) {
+                                            if (value == null || value.isEmpty) {
+                                             return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';      
 
                             }else if(value.length != 9 ){
                               return "${AppLocalizations.of(Get.context!)!.phone_number_invalid}";
@@ -84,12 +96,15 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                       )
                     ],
                   ),
+                ) ; 
+                  },
                 ),
               ),
               SizedBox(
                 height: padding16,
               ),
               TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 onSaved: (newValue) {
                   controller.tdName.text = newValue.toString();
                   controller.update();
@@ -97,7 +112,9 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 controller: controller.tdName,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
+                    return '${AppLocalizations.of(Get.context!)!.fill_your_name}';
+                  }else if (value.length <= 2){
+                    
                   }
                   return null;
                 },
@@ -115,7 +132,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 controller: controller.tdEmail,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_this_field}';
+                    return '${AppLocalizations.of(Get.context!)!.fill_your_email}';
                   } else if (!GetUtils.isEmail(value)) {
                     return "${AppLocalizations.of(Get.context!)!.please_enter_valid_email}";
                   }
@@ -186,8 +203,8 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                                   email: controller.tdEmail.text,
                                   fullName: controller.tdName.text,
                                   udid: controller.identifier,
-                                  fcm: "fcm1",
-                                  countryCode: "972"));
+                                  fcm: "${SharedPref.instance.getFCMToken()}",
+                                  countryCode: "${controller.defCountry.prefix!.replaceAll("+", "")}"));
                         }
 
                       });
@@ -198,25 +215,26 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
               UnSelectedButton(
                 textButton: "${AppLocalizations.of(Get.context!)!.register_as_company}",
                 onClicked: (){
-                  Get.to(RegisterCompanyScreen());
+                  Get.to(() => RegisterCompanyScreen());
                 },
               ) : const SizedBox(),             
-              SizedBox(height : sizeH114),
+              SizedBox(height : sizeH80),
               InkWell(
                 onTap: (){
-                  Get.to(() => UserCompanyLoginScreen(type: "${ConstanceNetwork.userType}",));
+                  Get.to(() => UserBothLoginScreen());
                 },
                 child: RichText(
                   text: TextSpan(
+                    style: textStyleTitle(),
                     children: [
                       TextSpan(
                           text:
                               "${AppLocalizations.of(Get.context!)!.have_an_account}",
-                          style: textStylePrimary()!.copyWith(color: colorBlack)),
+                          style: textStylePrimary()!.copyWith(color: colorBlack,fontSize: 13)),
                       TextSpan(
                           text:
-                              "${AppLocalizations.of(Get.context!)!.sign_up_here}",
-                          style: textStylePrimary()),
+                              "${AppLocalizations.of(Get.context!)!.sign_in}",
+                          style: textStylePrimary()!.copyWith(fontSize: 13)),
                     ],
                   ),
                 ),
