@@ -43,6 +43,7 @@ final double? sizeH27 = 27.h;
 final double? sizeH270 = 270.h;
 final double? sizeH250 = 250.h;
 final double? sizeH240 = 240.h;
+final double? sizeH5 = 5.h;
 final double? sizeH50 = 50.h;
 final double? sizeH18 = 18.h;
 final double? sizeH28 = 28.h;

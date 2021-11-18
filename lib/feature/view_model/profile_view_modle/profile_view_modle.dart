@@ -9,6 +9,7 @@ import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -62,6 +63,7 @@ class ProfileViewModle extends BaseController {
   final picker = ImagePicker();
   File? img;
 
+  List<Map<String, dynamic>> contactMap = [];
   // for address (add , edit ,delete)
 
   clearControllers() {
@@ -170,51 +172,59 @@ class ProfileViewModle extends BaseController {
   //-- for log out
 
   logOutDiloag() {
-    Get.defaultDialog(
-        titlePadding: EdgeInsets.all(16),
-        titleStyle: textStyleBtn()!.copyWith(color: colorBlack),
-        title:
-            "${tr.are_you_sure_you_want_to_log_out}",
-        content: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 140,
-                child: TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(colorPrimary)),
-                    onPressed: () {
-                      logOut();
-                    },
-                    child: Text(
-                      "${tr.log_out}",
-                      style: TextStyle(
-                          color: colorTextWhite, fontWeight: FontWeight.bold),
-                    )),
-              ),
-              SizedBox(
-                width: sizeW10,
-              ),
-              Container(
-                width: 140,
-                child: TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(colorUnSelectedWidget)),
-                    onPressed: () {
-                      Get.back();
-                    },
-                    child: Text(
-                      "${tr.cancle}",
-                      style: textStyleHints()!
-                          .copyWith(fontWeight: FontWeight.bold),
-                    )),
-              ),
-            ],
-          ),
-        ));
+    Get.bottomSheet(GlobalBottomSheet(
+      title: "${tr.are_you_sure_you_want_to_log_out}",
+      onOkBtnClick:  (){
+        logOut();
+      },
+      onCancelBtnClick: (){
+        Get.back();
+      },
+    ));
+    // Get.defaultDialog(
+    //     titlePadding: EdgeInsets.all(16),
+    //     titleStyle: textStyleBtn()!.copyWith(color: colorBlack),
+    //     title: "${tr.are_you_sure_you_want_to_log_out}",
+    //     content: Container(
+    //       child: Row(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         children: [
+    //           Container(
+    //             width: 140,
+    //             child: TextButton(
+    //                 style: ButtonStyle(
+    //                     backgroundColor:
+    //                         MaterialStateProperty.all(colorPrimary)),
+    //                 onPressed: () {
+    //                   logOut();
+    //                 },
+    //                 child: Text(
+    //                   "${tr.log_out}",
+    //                   style: TextStyle(
+    //                       color: colorTextWhite, fontWeight: FontWeight.bold),
+    //                 )),
+    //           ),
+    //           SizedBox(
+    //             width: sizeW10,
+    //           ),
+    //           Container(
+    //             width: 140,
+    //             child: TextButton(
+    //                 style: ButtonStyle(
+    //                     backgroundColor:
+    //                         MaterialStateProperty.all(colorUnSelectedWidget)),
+    //                 onPressed: () {
+    //                   Get.back();
+    //                 },
+    //                 child: Text(
+    //                   "${tr.cancle}",
+    //                   style: textStyleHints()!
+    //                       .copyWith(fontWeight: FontWeight.bold),
+    //                 )),
+    //           ),
+    //         ],
+    //       ),
+    //     ));
   }
 
   logOut() async {
@@ -253,14 +263,15 @@ class ProfileViewModle extends BaseController {
     hideFocus(Get.context!);
 
     try {
+      Logger().d(contactMap);
       await ProfileHelper.getInstance.editProfile({
         "email": "${tdUserEmailEdit.text}",
         "full_name": "${tdUserFullNameEdit.text}",
         "image": "image",
-        "contact_number": [
+        "contact_number": contactMap/*[
           {"mobile_number": 855555, "country_code": 970},
           {"mobile_number": 85555555, "country_code": 972}
-        ]
+        ]*/
       }).then((value) => {
         
        Logger().i("${value.status!.message}"),

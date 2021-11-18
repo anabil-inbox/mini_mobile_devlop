@@ -91,8 +91,8 @@ class HeaderProfileCard extends StatelessWidget {
                   textButton: "${AppLocalizations.of(context)!.edit_profile}",
                   isLoading: false,
                   onClicked: () {
-                 //  Get.to(() => UserEditProfileScreen());
-                  Get.to(() => CompanyEditProfile());
+                   Get.to(() => UserEditProfileScreen());
+                  //Get.to(() => CompanyEditProfile());
                   },
                   isExpanded: true)),
                   SizedBox(

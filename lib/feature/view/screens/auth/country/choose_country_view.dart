@@ -30,11 +30,11 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
   Logger log = Logger();
 
   Country selctedCountry = Country();
-
+  AuthViewModle authViewModle = Get.put(AuthViewModle());
   @override
   void initState() {
     super.initState();
-    AuthViewModle authViewModle = Get.find<AuthViewModle>();
+
     authViewModle.tdSearch.clear();
   }
 
