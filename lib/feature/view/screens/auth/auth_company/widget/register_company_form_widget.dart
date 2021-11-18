@@ -75,6 +75,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                     hintText:
                         "${AppLocalizations.of(Get.context!)!.company_name}"),
               ),
+           
               SizedBox(
                 height: padding16,
               ),
@@ -162,6 +163,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
               SizedBox(
                 height: padding16,
               ),
+             
               InkWell(
                 onTap: () {
                   Get.to(() => ChooseCountryScreen());
@@ -363,7 +365,8 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
   }
 
   void chooseSectorCompany() {
-    Get.bottomSheet(Container(
+    Get.bottomSheet(
+      Container(
       decoration: BoxDecoration(
           color: colorTextWhite,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
@@ -436,4 +439,6 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
       ),
     ));
   }
+
+
 }

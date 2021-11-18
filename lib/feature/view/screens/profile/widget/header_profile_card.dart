@@ -92,7 +92,7 @@ class HeaderProfileCard extends StatelessWidget {
                   isLoading: false,
                   onClicked: () {
                  //  Get.to(() => UserEditProfileScreen());
-                 // Get.to(() => CompanyEditProfile());
+                  Get.to(() => CompanyEditProfile());
                   },
                   isExpanded: true)),
                   SizedBox(

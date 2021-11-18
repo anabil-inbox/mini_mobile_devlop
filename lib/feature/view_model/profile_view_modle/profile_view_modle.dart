@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
+import 'package:inbox_clients/feature/model/app_setting_modle.dart';
+import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
@@ -26,6 +28,11 @@ class ProfileViewModle extends BaseController {
   String? userLat;
   String? userLong;
   List<Address> userAddress = [];
+
+  CompanySector? companySector = CompanySector();
+  CompanySector? temproreySectorName;
+  Set<String> arraySectors = {};
+  int selectedIndex = -1;
 
   Customer? currentCustomer;
 
@@ -51,6 +58,7 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdUserFullNameEdit = TextEditingController();
   TextEditingController tdUserEmailEdit = TextEditingController();
   TextEditingController tdUserMobileNumberEdit = TextEditingController();
+  Country defCountry = Country(prefix: SharedPref.instance.getCurrentUserData().countryCode);
   final picker = ImagePicker();
   File? img;
 
