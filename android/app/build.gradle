@@ -41,7 +41,23 @@ android {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            minifyEnabled false
+                shrinkResources false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                signingConfig signingConfigs.debug
+                applicationVariants.all { variant ->
+                    variant.outputs.all {
+                        def appName = "InboxClient_"
+                        def buildType = variant.buildType.name
+                        def newName
+                        if (buildType == 'debug'){
+                            newName = "app-${variant.getFlavorName()}-debug.apk"
+                        } else {
+                            newName = "${appName}${defaultConfig.versionName}_${variant.getFlavorName()}.apk"
+                        }
+                        outputFileName = newName
+                    }
+                }
         }
     }
 }

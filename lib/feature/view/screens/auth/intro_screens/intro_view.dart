@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/register/register_company.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_register_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/intro_active_dot_widget.dart';
+import 'package:inbox_clients/feature/view/screens/auth/splash/splash.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
 import 'package:inbox_clients/feature/view/widgets/intro_body.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
@@ -81,31 +82,31 @@ final String type;
                 ],
               ),
             ),
-            GetBuilder<IntroViewModle>(
-              builder: (_) {
-                return Positioned(
-                    right: padding0,
-                    left: padding0,
-                    bottom: padding160,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        controller.features != null
-                            ? IntroActiveDot(
-                                index: controller.indexdPage,
-                                numberOfDots: controller.features!.length)
-                            : const SizedBox()
-                      ],
-                    ));
-              },
-            ),
+            // GetBuilder<IntroViewModle>(
+            //   builder: (_) {
+            //     return Positioned(
+            //         right: padding0,
+            //         left: padding0,
+            //         bottom: padding160,
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           children: [
+            //             controller.features != null
+            //                 ? IntroActiveDot(
+            //                     index: controller.indexdPage,
+            //                     numberOfDots: controller.features!.length)
+            //                 : const SizedBox()
+            //           ],
+            //         ));
+            //   },
+            // ),
             PositionedDirectional(
                 top: padding57,
                 start: padding306,
                 child: TextButton(
                     style: textButtonStyle,
                     onPressed: () {
-                     
+                     moveToIntro();
                     },
                     child: Text(
                       "${AppLocalizations.of(Get.context!)!.skip}",

@@ -119,7 +119,7 @@ class _ChangeMobilScreenState extends State<VerficationChangeMobilScreen> {
         keyboardType: TextInputType.number,
         onCompleted: (v) {
           if(v=="1234"){
-            SharedPref.instance.setUserLoginState("${ConstanceNetwork.userLoginedState}");
+            Get.put(ProfileViewModle());
             Get.offAll(() => ProfileScreen());
           }
           // authViewModle.checkVerficationCode(

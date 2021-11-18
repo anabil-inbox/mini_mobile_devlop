@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:inbox_clients/feature/view/screens/profile/change_mobile/change_mobild_screen.dart';
+import 'package:inbox_clients/feature/view/screens/profile/edit_profile/company_edit_profile.dart';
 import 'package:inbox_clients/feature/view/screens/profile/edit_profile/user_edit_profile_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -49,17 +50,23 @@ class HeaderProfileCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Ahmed Ali Abdullah"),
+                 // Text("${SharedPref.instance.getCurrentUserData().customerName}"),
+                 Text("Ahmed Ali Abdullah"),
                   SizedBox(
                     height: sizeH4,
                   ),
                   Row(
                     children: [
-                      Text(
+                      // Text(
+                      //   "${SharedPref.instance.getCurrentUserData().mobile}",
+                      //   style: textStyleHint()!
+                      //       .copyWith(fontWeight: FontWeight.normal),
+                      // ),
+                     Text(
                         "+974 2228 0808",
                         style: textStyleHint()!
                             .copyWith(fontWeight: FontWeight.normal),
-                      ),
+                      ), 
                       SizedBox(
                         width: sizeH9,
                       ),
@@ -84,12 +91,13 @@ class HeaderProfileCard extends StatelessWidget {
                   textButton: "${AppLocalizations.of(context)!.edit_profile}",
                   isLoading: false,
                   onClicked: () {
-                    Get.to(() => UserEditProfileScreen());
+                 //  Get.to(() => UserEditProfileScreen());
+                  Get.to(() => CompanyEditProfile());
                   },
                   isExpanded: true)),
-          SizedBox(
-            height: sizeH20,
-          ),
+                  SizedBox(
+                    height: sizeH20,
+                  ),
         ],
       ),
     );

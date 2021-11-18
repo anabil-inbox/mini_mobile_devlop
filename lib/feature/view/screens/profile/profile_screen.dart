@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:inbox_clients/feature/view/screens/profile/address/get_address.dart';
-import 'package:inbox_clients/feature/view/screens/profile/setting/setting_screen.dart';
+import 'package:inbox_clients/feature/view/screens/home/controller.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/header_profile_card.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/setting_item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/details_storage_view.dart';
@@ -11,6 +10,7 @@ import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ProfileScreen extends GetWidget<ProfileViewModle> {
   const ProfileScreen({ Key? key }) : super(key: key);
@@ -31,7 +31,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                   onTap: (){
                    Get.to(StorageDetailsView());
                   },
-                  trailingTitle: "500 QAR",
+                  trailingTitle: "0 QAR",
                   settingTitle: "${AppLocalizations.of(context)!.my_wallet}",
                   iconPath: "assets/svgs/wallet.svg",
                 ),
@@ -40,7 +40,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                   onTap: (){
                    
                   },
-                  trailingTitle: "500 point",
+                  trailingTitle: "0 point",
                   settingTitle: "${AppLocalizations.of(context)!.my_rewards}",
                   iconPath: "assets/svgs/rewareds.svg",
                 ),
@@ -56,7 +56,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                 SizedBox(height: sizeH12,), 
                 SettingItem(
                   onTap: (){
-                    Get.to(() => GetAddressScreen());
+                  //  Get.to(() => GetAddressScreen());
                   },
                   settingTitle: "${AppLocalizations.of(context)!.my_address}",
                   trailingTitle: "",
@@ -83,7 +83,8 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                 SizedBox(height: sizeH12,), 
                 SettingItem(
                   onTap: (){
-                    Get.to(() => SettingsScreen());
+                  //  Get.to(() => SettingsScreen());
+                  Get.to(() => Controller());
                   },
                   settingTitle: "${AppLocalizations.of(context)!.setting}",
                   trailingTitle: "",
@@ -98,10 +99,12 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                   trailingTitle: "",
                   iconPath: "assets/svgs/logout.svg",
                 ),
+                SizedBox(height: sizeH40,),
               ],
             ),
           )
         ],
+      
       ),
     );
   }

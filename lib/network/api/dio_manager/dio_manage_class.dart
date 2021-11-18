@@ -33,6 +33,11 @@ class DioManagerClass {
     return await _dio!.post(url , options:Options(headers: header),data: body,);
   }
 
+  Future<Response> dioPostFormMethod({var url, Map<String, dynamic>? header ,var body})async{
+    return await _dio!.post(url , options:Options(headers: header),data: FormData.fromMap(body),);
+  }
+
+
   Future<Response> dioUpdateMethod({var url, Map<String, dynamic>? header ,Map<String, dynamic>? body  })async{
     return await _dio!.put(url , options:Options(headers: header),data: body );
   }

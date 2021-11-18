@@ -5,18 +5,20 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_auth_invisible/auth_strings.dart';
-import 'package:flutter_local_auth_invisible/flutter_local_auth_invisible.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
+import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/model/user_model.dart';
 import 'package:inbox_clients/feature/model/user_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/verfication/company_verfication_code_view.dart';
+import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/face.dart';
+import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/network/api/feature/auth_helper.dart';
 import 'package:inbox_clients/network/api/feature/country_helper.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -25,6 +27,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/sh_util.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -36,6 +39,7 @@ class AuthViewModle extends GetxController {
   TextEditingController tdMobileNumber = TextEditingController();
   TextEditingController tdName = TextEditingController();
   TextEditingController tdEmail = TextEditingController();
+  TextEditingController tdPinCode = TextEditingController();
 
   //Company text Controllers
   TextEditingController tdcrNumber = TextEditingController();
@@ -51,8 +55,8 @@ class AuthViewModle extends GetxController {
   Timer? timer;
   int startTimerCounter = 60;
 
-  String? companySector;
-  String? temproreySectorName;
+  CompanySector? companySector = CompanySector();
+  CompanySector? temproreySectorName;
   Set<String> arraySectors = {};
   int selectedIndex = -1;
 
@@ -101,14 +105,15 @@ class AuthViewModle extends GetxController {
           if (value.status!.success!)
             {
               log.e(value.status!.toJson()),
-              SharedPref.instance.setCurrentUserDate(
-                value.data["Customer"],
-              ),
+              // SharedPref.instance.setCurrentUserDate(
+              //   value.data["Customer"],
+              // ),
               isLoading = false,
               update(),
               snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
                   "${value.status!.message}"),
               Get.to(() => CompanyVerficationCodeScreen(
+                  id: value.data["Customer"]["id"],
                   mobileNumber: user.mobile!,
                   countryCode: user.countryCode!,
                   type: "${ConstanceNetwork.userType}")),
@@ -137,14 +142,12 @@ class AuthViewModle extends GetxController {
         .then((value) => {
               if (value.status!.success!)
                 {
-                  SharedPref.instance.setCurrentUserDate(
-                    value.data["Customer"],
-                  ),
                   isLoading = false,
                   update(),
                   snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
                       "${value.status!.message}"),
-                  Get.to(() =>CompanyVerficationCodeScreen(
+                  Get.to(() => CompanyVerficationCodeScreen(
+                      id: value.data["Customer"]["id"],
                       countryCode: company.countryCode!,
                       mobileNumber: company.mobile!,
                       type: "${ConstanceNetwork.companyType}")),
@@ -172,19 +175,15 @@ class AuthViewModle extends GetxController {
           if (value.status!.success!)
             {
               Logger().d(value.data["Customer"]),
-
-              SharedPref.instance.setCurrentUserDate(
-                Customer.fromJson(value.data["Customer"])
-              ),
               isLoading = false,
               update(),
               snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
                   "${value.status!.message}"),
-              // Get.to(() =>CompanyVerficationCodeScreen(
-              //     mobileNumber: user.mobile!,
-              //     countryCode: user.countryCode!,
-              //     type: "${ConstanceNetwork.userType}")),
-              Get.offAll(() => ProfileScreen())
+              Get.to(() => CompanyVerficationCodeScreen(
+                  id: value.data["Customer"]["id"],
+                  mobileNumber: user.mobile!,
+                  countryCode: user.countryCode!,
+                  type: "${ConstanceNetwork.userType}")),
             }
           else
             {
@@ -199,7 +198,6 @@ class AuthViewModle extends GetxController {
   }
 
   Future<Customer> signInCompany(Company company) async {
-    
     Customer customer = Customer();
     isLoading = true;
     update();
@@ -210,21 +208,20 @@ class AuthViewModle extends GetxController {
             {
               Get.put(AuthViewModle()),
               Logger().d(value.data["Customer"]),
-              SharedPref.instance.setCurrentUserDate(
-                value.data["Customer"],
-              ),
-             // SharedPref.instance.setUserToken(value.data["access_token"]),
+              // SharedPref.instance.setCurrentUserDate(
+              //   value.data["Customer"],
+              // ),
+              // SharedPref.instance.setUserToken(value.data["access_token"]),
               isLoading = false,
               update(),
-              
+
               snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
                   "${value.status!.message}"),
-              // Get.to(() => CompanyVerficationCodeScreen(
-              //     mobileNumber: value.data["Customer"]["mobile"] ?? "",
-              //     countryCode: value.data["Customer"]["country_code"] ?? "",
-              //     type: "${ConstanceNetwork.companyType}")),
-                Get.offAll(() => ProfileScreen())
-
+              Get.to(() => CompanyVerficationCodeScreen(
+                  id: value.data["Customer"]["id"],
+                  mobileNumber: value.data["Customer"]["mobile"] ?? "",
+                  countryCode: value.data["Customer"]["country_code"] ?? "",
+                  type: "${ConstanceNetwork.companyType}")),
             }
           else
             {
@@ -298,24 +295,27 @@ class AuthViewModle extends GetxController {
 
   checkVerficationCode(
       {String? code,
-      String? udid,
+      String? id,
       String? mobileNumber,
       String? countryCode}) async {
-    await AuthHelper.getInstance.checkVerficationCode({
-      "id":
-          "${SharedPref.instance.getCurrentUserData().id}",
-      "udid": "$udid",
-      "code": "$code",
-      "mobile_number": "$mobileNumber",
-      "country_code": "$countryCode"
-    }).then((value) => {
+    Map<String, dynamic> params = Map<String, dynamic>();
+    params["id"] = id;
+    params["udid"] = identifier;
+    params["code"] = code;
+    if (mobileNumber.toString().isNotEmpty &&
+        countryCode.toString().isNotEmpty) {
+      params["mobile_number"] = mobileNumber;
+      params["country_code"] = countryCode;
+    }
+
+    await AuthHelper.getInstance.checkVerficationCode(params).then((value) => {
           if (value.status!.success!)
             {
               snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
                   "${value.status!.message}"),
-              SharedPref.instance
-                  .setUserLoginState("${ConstanceNetwork.userLoginedState}"),
+              Get.put(ProfileViewModle()),
               Get.off(() => ProfileScreen()),
+              //   Get.off(() => HomeScreen()),
             }
           else
             {
@@ -327,11 +327,14 @@ class AuthViewModle extends GetxController {
 
   reSendVerficationCode(
       {String? udid,
+      String? id,
       String? target,
       String? mobileNumber,
       String? countryCode}) async {
-    await AuthHelper.getInstance.checkVerficationCode({
-      "id":"${SharedPref.instance.getCurrentUserData().id}",
+    isLoading = true;
+    update();
+    await AuthHelper.getInstance.reSendVerficationCode({
+      "id": "$id",
       "udid": "$udid",
       "target": "$target",
       "mobile_number": "$mobileNumber",
@@ -339,14 +342,17 @@ class AuthViewModle extends GetxController {
     }).then((value) => {
           if (value.status!.success!)
             {
+              isLoading = false,
+              startTimerCounter = 60,
+              startTimer(),
+              update(),
               snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
                   "${value.status!.message}"),
-              SharedPref.instance
-                  .setUserLoginState("${ConstanceNetwork.userLoginedState}"),
-              Get.off(() => ProfileScreen()),
             }
           else
             {
+              isLoading = false,
+              update(),
               snackError("${AppLocalizations.of(Get.context!)!.error_occurred}",
                   "${value.status!.message}")
             }
@@ -354,91 +360,119 @@ class AuthViewModle extends GetxController {
   }
 
   //this for Touch/face (Id) Bottom Sheet :
-
-  void showFingerPrinterDiloag() {
-    Get.bottomSheet(Container(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(sizeH16!),
-          color: colorTextWhite,
-        ),
-        height: sizeH200,
-        child: Column(
-          children: [
-            SizedBox(
-              height: sizeH32,
-            ),
-            Text(
-              "${AppLocalizations.of(Get.context!)!.choose_way_to_sign_in}",
-              style: textStyleHint()!.copyWith(color: colorBlack),
-            ),
-            SizedBox(
-              height: sizeH16,
-            ),
-            GetBuilder<AuthViewModle>(
-              init: AuthViewModle(),
-              initState: (_) {},
-              builder: (_) {
-                return PrimaryButton(
-                    isExpanded: true,
-                    isLoading: isLoading,
-                    textButton:
-                        "${AppLocalizations.of(Get.context!)!.touch_id}",
-                    onClicked: isLoading
-                        ? () {}
-                        : () async {
-                            isLoading = true;
-                            update();
-                            await _checkBiometrics();
-                            await _getAvailableBiometrics();
-                            await _authenticate();
-                            if (isAuth!) {
-                              await signInUser(
-                                  user: User(
-                                      countryCode: "972",
-                                      mobile: "123456789",
-                                      udid: "2222222222",
-                                      deviceType: "android",
-                                      fcm: "112222222546546545"));
-                            }
-                            isLoading = false;
-                            update();
-                          });
-              },
-            ),
-            SizedBox(
-              height: sizeH16,
-            ),
-            GetBuilder<AuthViewModle>(
-              builder: (_) {
-                return PrimaryButton(
-                    isExpanded: true,
-                    isLoading: isLoading,
-                    textButton: "${AppLocalizations.of(Get.context!)!.face_id}",
-                    onClicked: () async {
-                     isLoading = true;
-                            update();
-                            await _checkBiometrics();
-                            await _getAvailableBiometrics();
-                            await _authenticate();
-                            if (isAuth!) {
-                              await signInUser(
-                                  user: User(
-                                      countryCode: "972",
-                                      mobile: "123456789",
-                                      udid: "2222222222",
-                                      deviceType: "android",
-                                      fcm: "112222222546546545"));
-                            }
-                            isLoading = false;
-                            update();
-                    //  Get.to(()=> FacePage());
-                    });
-              },
-            )
-          ],
-        )));
+  logInWithTouchId() async {
+    try {
+      isLoading = true;
+      update();
+      await _checkBiometrics();
+      await _getAvailableBiometrics();
+      await _authenticate();
+      if (isAuth!) {
+        await signInUser(
+            user: User(
+                countryCode: "${SharedPref.instance.getCurrentUserData().countryCode}",
+                mobile: "${SharedPref.instance.getCurrentUserData().mobile}",
+                udid: "$identifier",
+                deviceType: "$deviceType",
+                fcm: "${SharedPref.instance.getFCMToken()}"));
+      }
+      isLoading = false;
+      update();
+    } catch (e) {
+      isLoading = false;
+      update();
+    }
   }
+
+  // void showFingerPrinterDiloag() {
+  //   Get.bottomSheet(Container(
+  //       padding: EdgeInsets.symmetric(horizontal: 16),
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(sizeH16!),
+  //         color: colorTextWhite,
+  //       ),
+  //       height: sizeH200,
+  //       child: Column(
+  //         children: [
+  //           SizedBox(
+  //             height: sizeH32,
+  //           ),
+  //           Text(
+  //             "${AppLocalizations.of(Get.context!)!.choose_way_to_sign_in}",
+  //             style: textStyleHint()!.copyWith(color: colorBlack),
+  //           ),
+  //           SizedBox(
+  //             height: sizeH16,
+  //           ),
+  //           GetBuilder<AuthViewModle>(
+  //             init: AuthViewModle(),
+  //             initState: (_) {},
+  //             builder: (_) {
+  //               return PrimaryButton(
+  //                   isExpanded: true,
+  //                   isLoading: isLoading,
+  //                   textButton:
+  //                       "${AppLocalizations.of(Get.context!)!.touch_id}",
+  //                   onClicked: isLoading
+  //                       ? () {}
+  //                       : () async {
+  //                           isLoading = true;
+  //                           update();
+  //                           await _checkBiometrics();
+  //                           await _getAvailableBiometrics();
+  //                           await _authenticate();
+  //                           if (isAuth!) {
+  //                             await signInUser(
+  //                                 user: User(
+  //                                     countryCode:
+  //                                         "${SharedPref.instance.getCurrentUserData().countryCode}",
+  //                                     mobile:
+  //                                         "${SharedPref.instance.getCurrentUserData().mobile}",
+  //                                     udid: "$identifier",
+  //                                     deviceType: "$deviceType",
+  //                                     fcm:
+  //                                         "${SharedPref.instance.getFCMToken()}"));
+  //                           }
+  //                           isLoading = false;
+  //                           update();
+  //                         });
+  //             },
+  //           ),
+  //           SizedBox(
+  //             height: sizeH16,
+  //           ),
+  //           GetBuilder<AuthViewModle>(
+  //             builder: (_) {
+  //               return PrimaryButton(
+  //                   isExpanded: true,
+  //                   isLoading: isLoading,
+  //                   textButton: "${AppLocalizations.of(Get.context!)!.face_id}",
+  //                   onClicked: () async {
+  //                     isLoading = true;
+  //                     // update();
+  //                     // await _checkBiometrics();
+  //                     // await _getAvailableBiometrics();
+  //                     // await _authenticate();
+  //                     // if (isAuth!) {
+  //                     //   await signInUser(
+  //                     //       user: User(
+  //                     //           countryCode:
+  //                     //               "${SharedPref.instance.getCurrentUserData().countryCode}",
+  //                     //           mobile:
+  //                     //               "${SharedPref.instance.getCurrentUserData().mobile}",
+  //                     //           udid: "$identifier",
+  //                     //           deviceType: "$deviceType",
+  //                     //           fcm: "${SharedPref.instance.getFCMToken()}"));
+  //                     // }
+  //                     // isLoading = false;
+  //                     // update();
+  //                       Get.to(()=> FacePage());
+  //                   });
+  //             },
+  //           )
+  //         ],
+  //       )));
+  // }
 
   bool? isAuth = false;
   final LocalAuthentication auth = LocalAuthentication();
@@ -473,71 +507,24 @@ class AuthViewModle extends GetxController {
   Future<void> _authenticate() async {
     bool authenticated = false;
     try {
-      authenticated = await auth.authenticateWithBiometrics(
+      authenticated = await auth.authenticate(
         localizedReason: 'Scan your fingerprint to authenticate',
         useErrorDialogs: true,
+        biometricOnly: true,
         stickyAuth: false,
       );
-      
     } on PlatformException catch (e) {
       print(e);
     }
     _authorized = authenticated ? 'Authorized' : 'Not Authorized';
     isAuth = authenticated ? true : false;
-    update();
-  }
-
-
-  Future<void> _authenticateFaceId() async {
-    bool authenticated = false;
-    try {
-      authenticated = await auth.authenticateWithBiometrics(
-        androidAuthStrings:
-            AndroidAuthMessages(signInTitle: "Face Id Required"),
-        localizedReason: 'Scan your FaceId to authenticate',
-        useErrorDialogs: true,
-        stickyAuth: false,
-      );
-      var availableBiometrics = await auth.getAvailableBiometrics();
-      var availableBiometric = availableBiometrics[0];
-     
-    } on PlatformException catch (e) {
-      print(e);
-    }
-    _authorized = authenticated ? 'Authorized' : 'Not Authorized';
-    isAuth = authenticated ? true : false;
-    update();
-  }
-
-  Future<void> _checkBiometricsFaceId() async {
-    bool canCheckBiometrics = false;
-    try {
-      canCheckBiometrics = await auth.canCheckBiometrics;
-    } on PlatformException catch (e) {
-      print(e);
-    }
-
-    _canCheckBiometrics = canCheckBiometrics;
-    update();
-  }
-
-    Future<void> _getAvailableBiometricsFaceId() async {
-    List<BiometricType> availableBiometrics = <BiometricType>[];
-    try {
-      availableBiometrics = await auth.getAvailableBiometrics();
-      print("msg_avv ${availableBiometrics}");
-    } on PlatformException catch (e) {
-      print(e);
-    }
-
-    _availableBiometrics = availableBiometrics;
     update();
   }
 
   @override
   void onInit() {
     super.onInit();
-  //  startTimer();
+    //  startTimer();
     clearAllControllers();
     getDeviceDetails();
     getPhonePlatform();

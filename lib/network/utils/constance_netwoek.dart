@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 abstract class ConstanceNetwork {
   ///todo here insert base_url
-  static String imageUrl = "".trim();
+  static String imageUrl = "http://50.17.152.72/".trim();
 
   ///todo here insert key Of Request
 
@@ -31,6 +32,10 @@ abstract class ConstanceNetwork {
   static String loginCompany = "inbox_app.api.auth.company_login";
 
   static String userLoginedState = "logined";
+
+  static String userStillNotVerifyState = "stillNotVerify";
+
+  static String companyStillNotVerifyState = "CompanystillNotVerify";
 
   static String userEnterd = "enterd";
 
@@ -78,8 +83,9 @@ abstract class ConstanceNetwork {
         'Content-Type': 'application/x-www-form-urlencoded'
       };
     } else if (typeToken == 4) {
+      print("msg_get_user_token ${SharedPref.instance.getUserToken()}");
       headers = {
-        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzcwNzA0MTIuNzUxNjUzNCwibmJmIjoxNjM3MDcwNDEyLjc1MTY1MzQsImV4cCI6MTYzODM2NjQxMi43NTE2NTM0LCJkYXRhIjp7ImZ1bGxfbmFtZSI6ImtoYWxlZDIyMiIsIm5hbWUiOiJ0ZXN0IHVzZXIgMDkifX0.-jE8gOZDDoQh1U_1Uy4QO56A34s9dxHtb3GFnD495vM',
+        'Authorization': 'Bearer ${SharedPref.instance.getUserToken()}',
         'Content-Type': 'application/json',
         'Language': Get.locale.toString().split("_")[0],
         'Accept': 'application/json',

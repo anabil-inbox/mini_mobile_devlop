@@ -21,8 +21,10 @@ class RegisterCompanyScreen extends GetWidget<AuthViewModle> {
         child: Column(
           children: [
             HeaderRegisterCompany(
+              height: sizeH140!,
               onBackPressed: (){
-                Get.offAll(() => CompanyBothLoginScreen());
+             //   Get.offAll(() => CompanyBothLoginScreen());
+                  Get.back();
               },
             ),
             Container(

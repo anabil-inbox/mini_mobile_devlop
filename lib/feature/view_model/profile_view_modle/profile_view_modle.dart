@@ -1,8 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
+import 'package:inbox_clients/feature/model/app_setting_modle.dart';
+import 'package:inbox_clients/feature/model/country.dart';
+import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -24,6 +29,13 @@ class ProfileViewModle extends BaseController {
   String? userLong;
   List<Address> userAddress = [];
 
+  CompanySector? companySector = CompanySector();
+  CompanySector? temproreySectorName;
+  Set<String> arraySectors = {};
+  int selectedIndex = -1;
+
+  Customer? currentCustomer;
+
 //to do fot address textEditting Controllers ;
   TextEditingController tdTitle = TextEditingController();
   TextEditingController tdBuildingNo = TextEditingController();
@@ -41,6 +53,14 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdStreetEdit = TextEditingController();
   TextEditingController tdLocationEdit = TextEditingController();
   TextEditingController tdExtraDetailesEdit = TextEditingController();
+
+  //here for edit user profile controllers:
+  TextEditingController tdUserFullNameEdit = TextEditingController();
+  TextEditingController tdUserEmailEdit = TextEditingController();
+  TextEditingController tdUserMobileNumberEdit = TextEditingController();
+  Country defCountry = Country(prefix: SharedPref.instance.getCurrentUserData().countryCode);
+  final picker = ImagePicker();
+  File? img;
 
   // for address (add , edit ,delete)
 
@@ -151,92 +171,132 @@ class ProfileViewModle extends BaseController {
 
   logOutDiloag() {
     Get.defaultDialog(
-        title: "Are You Sure You want to Log Out ?",
+        titlePadding: EdgeInsets.all(16),
+        titleStyle: textStyleBtn()!.copyWith(color: colorBlack),
+        title:
+            "${AppLocalizations.of(Get.context!)!.are_you_sure_you_want_to_log_out}",
         content: Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(colorPrimary)),
-                  onPressed: () {
-                    //  logOut();
-                    // SharedPref.instance
-                    //     .setUserLoginState("${ConstanceNetwork.userEnterd}");
-                    Get.offAll(() => UserBothLoginScreen());
-                  },
-                  child: Text(
-                    "Log Out",
-                    style: TextStyle(color: colorTextWhite),
-                  )),
-              SizedBox(
-                width: sizeW30,
+              Container(
+                width: 140,
+                child: TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(colorPrimary)),
+                    onPressed: () {
+                      logOut();
+                    },
+                    child: Text(
+                      "${AppLocalizations.of(Get.context!)!.log_out}",
+                      style: TextStyle(
+                          color: colorTextWhite, fontWeight: FontWeight.bold),
+                    )),
               ),
-              TextButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(colorUnSelectedWidget)),
-                  onPressed: () {
-                    Get.back();
-                  },
-                  child: Text(
-                    "Cancle",
-                    style: textStyleHints(),
-                  )),
+              SizedBox(
+                width: sizeW10,
+              ),
+              Container(
+                width: 140,
+                child: TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(colorUnSelectedWidget)),
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: Text(
+                      "${AppLocalizations.of(Get.context!)!.cancle}",
+                      style: textStyleHints()!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    )),
+              ),
             ],
           ),
         ));
   }
 
-  // logOut() async {
-  //   isLoading = true;
-  //   update();
-  //   try {
-  //     await ProfileHelper.getInstance.logOut().then((value) => {
-  //       Logger().i("${value.status!.message}"),
-  //               if (value.status!.success!)
-  //                 {
-  //                   snackSuccess(
-  //                       "${AppLocalizations.of(Get.context!)!.success}",
-  //                       "${value.status!.message}"),
-  //                   isLoading = false,
-  //                    update(),
-  //                   Get.offAll(() => UserBothLoginScreen())
-  //                 }
-  //               else
-  //                 {
-  //                    isLoading = false,
-  //                    update(),
-  //                   snackError(
-  //                       "${AppLocalizations.of(Get.context!)!.error_occurred}",
-  //                       "${value.status!.message}")
-  //                 }
-  //     });
-  //   } catch (e) {
-  //   }
-  // }
+  logOut() async {
+    isLoading = true;
+    update();
+    try {
+      await ProfileHelper.getInstance.logOut().then((value) => {
+            Logger().i("${value.status!.message}"),
+            if (value.status!.success!)
+              {
+                snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+                    "${value.status!.message}"),
+                isLoading = false,
+                update(),
+                SharedPref.instance
+                    .setUserLoginState("${ConstanceNetwork.userEnterd}"),
+                Get.offAll(() => UserBothLoginScreen()),
+              }
+            else
+              {
+                isLoading = false,
+                update(),
+                snackError(
+                    "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                    "${value.status!.message}")
+              }
+          });
+    } catch (e) {}
+  }
 
   //-- for user Edit profile:
 
-  // editProfileUser() async {
-  //   try {
-  //     await ProfileHelper.getInstance.editProfile({
-  //       "email": "test11@mm.com",
-  //       "full_name": "khaled2",
-  //       "image": "image",
-  //       "contact_number":
-  //        [
-  //         {"mobile_number": 855555, "country_code": 970},
-  //         {"mobile_number": 85555555, "country_code": 972}
-  //        ]
-  //     }).then((value) => {Logger().e(value.toJson())});
-  //   } catch (e) {}
-  // }
+  editProfileUser() async {
+    isLoading = true;
+    update();
+    hideFocus(Get.context!);
 
- // fot timer on change number :
+    try {
+      await ProfileHelper.getInstance.editProfile({
+        "email": "${tdUserEmailEdit.text}",
+        "full_name": "${tdUserFullNameEdit.text}",
+        "image": "image",
+        "contact_number": [
+          {"mobile_number": 855555, "country_code": 970},
+          {"mobile_number": 85555555, "country_code": 972}
+        ]
+      }).then((value) => {
+        
+       Logger().i("${value.status!.message}"),
+            if (value.status!.success!)
+              {
+                snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+                    "${value.status!.message}"),
+                isLoading = false,
+                update(),
+                Get.back()
+              }
+            else
+              {
+                isLoading = false,
+                update(),
+                snackError(
+                    "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                    "${value.status!.message}")
+              }
+        });
+    } catch (e) {
+
+    }
+  }
+
+  Future getImage() async {
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      img = File(pickedImage.path);
+      update();
+    }
+  }
+
+  // fot timer on change number :
   Timer? timer;
   int startTimerCounter = 60;
-
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
@@ -254,13 +314,12 @@ class ProfileViewModle extends BaseController {
     );
   }
 
-
   @override
   void onInit() {
     super.onInit();
-    SharedPref.instance.setUserLoginState("${ConstanceNetwork.userLoginedState}");
-    getMyAddress();
-    SharedPref.instance.getCurrentUserData();
-    
+    // getMyAddress();
+    // currentCustomer = SharedPref.instance.getCurrentUserData();
+    //  update();
+    //  editProfileUser();
   }
 }

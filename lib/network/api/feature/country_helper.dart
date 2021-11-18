@@ -13,9 +13,6 @@ class CountryHelper {
     Future<Set<Country>> getCountryApi(var queryParameters) async{
       try {
       var response = await CountryApi.getInstance.getAppCountreis(url: "${ConstanceNetwork.countryEndPoint}?page=${queryParameters["page"]}&page_size=${queryParameters["page_size"]}", header: ConstanceNetwork.header(0) , /* queryParameters: queryParameters */);
-      print("response_code ${response.status!.code}");
-      print("response_message ${response.status!.message}");
-      print("response_successs ${response.status!.success}");
       if (response.status?.success == true) {
         List data = response.data["items"];
         return data.map((e) => Country.fromJson(e)).toSet();

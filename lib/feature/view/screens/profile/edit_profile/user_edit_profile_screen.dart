@@ -8,11 +8,29 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
-class UserEditProfileScreen extends StatelessWidget {
-  const UserEditProfileScreen({Key? key}) : super(key: key);
-
+class UserEditProfileScreen extends StatefulWidget {
+  UserEditProfileScreen({Key? key}) : super(key: key);
   static final _formKey = GlobalKey<FormState>();
+
+  @override
+  State<UserEditProfileScreen> createState() => _UserEditProfileScreenState();
+}
+
+class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
+  ProfileViewModle profileViewModle = Get.find<ProfileViewModle>();
+
+  @override
+  void initState() {
+    super.initState();
+    profileViewModle.tdUserFullNameEdit.text =
+        SharedPref.instance.getCurrentUserData().customerName ?? "";
+    profileViewModle.tdUserEmailEdit.text =
+        SharedPref.instance.getCurrentUserData().email ?? "";
+    profileViewModle.tdUserMobileNumberEdit.text =
+        SharedPref.instance.getCurrentUserData().mobile ?? "";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +57,7 @@ class UserEditProfileScreen extends StatelessWidget {
           width: double.infinity,
           margin: EdgeInsets.symmetric(horizontal: sizeH20!),
           child: Form(
-            key: _formKey,
+            key: UserEditProfileScreen._formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -48,9 +66,25 @@ class UserEditProfileScreen extends StatelessWidget {
                 ),
                 Stack(
                   children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundColor: colorPrimary.withOpacity(0.5),
+                    GetBuilder<ProfileViewModle>(
+                      builder: (_) {
+                        return InkWell(
+                          onTap: () async{
+                           await profileViewModle.getImage();
+                          },
+                          child: profileViewModle.img != null ? CircleAvatar(
+                            radius: 50,
+                           backgroundImage : Image.file(
+                              profileViewModle.img!,
+                              fit: BoxFit.cover,
+                            ).image,
+                            backgroundColor: colorPrimary.withOpacity(0.5),
+                          ) : CircleAvatar(
+                            radius: 50,
+                            backgroundColor: colorPrimary.withOpacity(0.5),
+                        )
+                        );
+                      },
                     ),
                     PositionedDirectional(
                       end: 0,
@@ -62,6 +96,12 @@ class UserEditProfileScreen extends StatelessWidget {
                   height: sizeH25,
                 ),
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  controller: profileViewModle.tdUserFullNameEdit,
+                  onSaved: (e) {
+                    profileViewModle.tdUserFullNameEdit.text = e!;
+                    profileViewModle.update();
+                  },
                   decoration: InputDecoration(
                       hintText: "${AppLocalizations.of(context)!.full_name}"),
                   validator: (e) {
@@ -75,6 +115,11 @@ class UserEditProfileScreen extends StatelessWidget {
                   height: sizeH16,
                 ),
                 TextFormField(
+                  controller: profileViewModle.tdUserEmailEdit,
+                  onSaved: (e) {
+                    profileViewModle.tdUserEmailEdit.text = e!;
+                    profileViewModle.update();
+                  },
                   decoration: InputDecoration(
                       hintText:
                           "${AppLocalizations.of(context)!.email_address}"),
@@ -117,7 +162,13 @@ class UserEditProfileScreen extends StatelessWidget {
                               SizedBox(
                                 width: sizeW18,
                               ),
-                              SvgPicture.asset("assets/svgs/qatar_flag.svg"),
+                              // authViewModle.defCountry.name!.toLowerCase().contains("qatar")
+                              // ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
+                              // : imageNetwork(
+                              //  url: "${ConstanceNetwork.imageUrl}${authViewModle.defCountry.flag}" ,
+                              //  width: 36,
+                              //  height: 26
+                              // ),
                               VerticalDivider(),
                               GetBuilder<ProfileViewModle>(
                                 init: ProfileViewModle(),
@@ -131,14 +182,15 @@ class UserEditProfileScreen extends StatelessWidget {
                                   textDirection: TextDirection.ltr,
                                   maxLength: 9,
                                   onSaved: (newValue) {
-                                    // controller.tdMobileNumber.text =
-                                    // newValue.toString();
-                                    // controller.update();
+                                    profileViewModle.tdUserMobileNumberEdit
+                                        .text = newValue.toString();
+                                    profileViewModle.update();
                                   },
                                   decoration: InputDecoration(
                                     counterText: "",
                                   ),
-                                  //   controller: controller.tdMobileNumber,
+                                  controller:
+                                      profileViewModle.tdUserMobileNumberEdit,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';
@@ -158,9 +210,14 @@ class UserEditProfileScreen extends StatelessWidget {
                     SizedBox(
                       width: sizeW4,
                     ),
-                    SvgPicture.asset(
-                      "assets/svgs/add.svg",
-                      fit: BoxFit.cover,
+                    InkWell(
+                      onTap: (){
+                        print("object");
+                      },
+                      child: SvgPicture.asset(
+                        "assets/svgs/add.svg",
+                        fit: BoxFit.cover,
+                      ),
                     )
                   ],
                 ),
@@ -172,10 +229,11 @@ class UserEditProfileScreen extends StatelessWidget {
                     return PrimaryButton(
                         textButton: "${AppLocalizations.of(context)!.save}",
                         isLoading: value.isLoading,
-                        onClicked: (){
-                          if(!_formKey.currentState!.validate()){
-                            
-                          }
+                        onClicked: () {
+                          if (UserEditProfileScreen._formKey.currentState!
+                              .validate()) {
+                                value.editProfileUser();
+                              }
                         },
                         isExpanded: true);
                   },

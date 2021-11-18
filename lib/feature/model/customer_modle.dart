@@ -53,3 +53,5 @@ class Customer {
         "contact_number": List<dynamic>.from(contactNumber!.map((x) => x)),
     };
 }
+
+
