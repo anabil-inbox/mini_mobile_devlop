@@ -8,12 +8,13 @@ class IconBtn extends StatelessWidget {
   final Color? backgroundColor, borderColor, iconColor;
   final double? width , height;
   final Function()? onPressed;
+  final String? icon;
 
   const IconBtn(
       {Key? key,
       this.backgroundColor,
       this.borderColor,
-      this.iconColor,this.width, this.height, this.onPressed})
+      this.iconColor,this.width, this.height, this.onPressed, this.icon})
       : super(key: key);
 
   @override
@@ -31,7 +32,7 @@ class IconBtn extends StatelessWidget {
         minWidth:width ?? sizeW50,
         onPressed: onPressed??() {},
         clipBehavior: Clip.hardEdge,
-        child: SvgPicture.asset("assets/svgs/delete_widget.svg" ,color: iconColor ?? colorRed,),
+        child: SvgPicture.asset(icon??"assets/svgs/delete_widget.svg" ,color: iconColor ?? colorRed,),
       ),
     );
   }
