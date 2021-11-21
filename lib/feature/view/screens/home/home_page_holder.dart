@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
+import 'package:inbox_clients/feature/view/widgets/empty_state/home_empty_statte.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -19,8 +20,8 @@ class _HomePageHolderState extends State<HomePageHolder> {
   int index = 1;
   List<Widget> bnbScreens = [
     const HomeScreen(),
-    const Center(child: const Text("Screen")),
-    const Center(child: const Text("Screen")),
+    const  EmptyHomeWidget(),
+    const EmptyHomeWidget(),
     const ProfileScreen(),
   ];
 
