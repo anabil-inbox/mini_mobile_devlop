@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:inbox_clients/feature/view/screens/home/controller.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/header_profile_card.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/setting_item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/details_storage_view.dart';
@@ -106,7 +105,6 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
             ),
           )
         ],
-      
       ),
     );
   }
