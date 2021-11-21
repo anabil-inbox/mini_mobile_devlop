@@ -6,8 +6,9 @@ import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -63,7 +64,7 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
               height: sizeH16,
             ),
             Text(
-              "${AppLocalizations.of(context)!.enter_your_passcode}",
+              "${tr.enter_your_passcode}",
               style: textStyleHints(),
             ),
             SizedBox(
@@ -99,13 +100,13 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
                          style: textStyleTitle(),
                         children: [
                         TextSpan(
-                            text: "${AppLocalizations.of(context)!.verify_by} ",
+                            text: "${tr.verify_by} ",
                             style: textStyleHint()!.copyWith(
                               fontWeight: FontWeight.normal,fontSize: fontSize14
                             )),
                         TextSpan(
                             text:
-                                "${AppLocalizations.of(context)!.email_address}",
+                                "${tr.email_address}",
                             style: textStyleUnderLinePrimary()!.copyWith(
                               decoration: TextDecoration.none,
                               fontWeight: FontWeight.normal,fontSize: fontSize14
@@ -123,7 +124,7 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
               return Column(
                 children: [
                  value.startTimerCounter != 0 ? Text(
-                    "${AppLocalizations.of(context)!.resend_code_in} : ${value.startTimerCounter}",
+                    "${tr.resend_code_in} : ${value.startTimerCounter}",
                     style: textStyleHint()!.copyWith(decoration: TextDecoration.none,fontWeight: FontWeight.normal,fontSize: fontSize14),
                   ) : const SizedBox(),
                   value.startTimerCounter == 0
@@ -141,7 +142,7 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
                            
                           },
                           child: Text(
-                            "${AppLocalizations.of(context)!.resend}",
+                            "${tr.resend}",
                             style: textStyleUnderLinePrimary()!.copyWith(decoration: TextDecoration.none,fontWeight: FontWeight.normal,fontSize: fontSize14),
                           ))
                       : const SizedBox()

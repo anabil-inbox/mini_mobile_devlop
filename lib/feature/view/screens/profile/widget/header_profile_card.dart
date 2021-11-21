@@ -8,8 +8,10 @@ import 'package:inbox_clients/feature/view/screens/profile/edit_profile/user_edi
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:inbox_clients/util/sh_util.dart';
+
 
 
 class HeaderProfileCard extends StatelessWidget {
@@ -50,23 +52,19 @@ class HeaderProfileCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 // Text("${SharedPref.instance.getCurrentUserData().customerName}"),
-                 Text("Ahmed Ali Abdullah"),
+                 Text("${SharedPref.instance.getCurrentUserData().customerName}"),
+                 // Text("Ahmed Ali Abdullah"),
                   SizedBox(
                     height: sizeH4,
                   ),
                   Row(
                     children: [
-                      // Text(
-                      //   "${SharedPref.instance.getCurrentUserData().mobile}",
-                      //   style: textStyleHint()!
-                      //       .copyWith(fontWeight: FontWeight.normal),
-                      // ),
-                     Text(
-                        "+974 2228 0808",
+                      Text(
+                        "${SharedPref.instance.getCurrentUserData().mobile}",
                         style: textStyleHint()!
                             .copyWith(fontWeight: FontWeight.normal),
-                      ), 
+                      ),
+
                       SizedBox(
                         width: sizeH9,
                       ),
@@ -88,11 +86,11 @@ class HeaderProfileCard extends StatelessWidget {
           Container(
               margin: EdgeInsets.symmetric(horizontal: sizeH20!),
               child: PrimaryButtonOpacityColor(
-                  textButton: "${AppLocalizations.of(context)!.edit_profile}",
+                  textButton: "${tr.edit_profile}",
                   isLoading: false,
                   onClicked: () {
-                 //  Get.to(() => UserEditProfileScreen());
-                  Get.to(() => CompanyEditProfile());
+                   Get.to(() => UserEditProfileScreen());
+                  //Get.to(() => CompanyEditProfile());
                   },
                   isExpanded: true)),
                   SizedBox(

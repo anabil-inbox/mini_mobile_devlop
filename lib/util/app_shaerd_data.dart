@@ -182,7 +182,7 @@ Widget imageNetwork({double? width, double? height, String? url}) {
           // border: Border.all(color: colorBorderLight),
           image: DecorationImage(
             image: CachedNetworkImageProvider(url ?? urlUserPlacholder!),
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
           ),
         ),
       );
@@ -399,7 +399,7 @@ void changeLanguageBottomSheet() {
           children: [
             SizedBox(height: sizeH42),
             Text(
-              "${AppLocalizations.of(Get.context!)!.language}",
+              "${tr.language}",
               style: textStyleTitle(),
             ),
             SizedBox(height: sizeH25),
@@ -433,7 +433,7 @@ void changeLanguageBottomSheet() {
             ),
             PrimaryButton(
                 isLoading: false,
-                textButton: "${AppLocalizations.of(Get.context!)!.select}",
+                textButton: "${tr.select}",
                 onClicked: () {
                   try {
                     controller.selectedLang = controller.temproreySelectedLang;

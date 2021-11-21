@@ -2,13 +2,17 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_place/google_place.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -18,11 +22,11 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileViewModle extends BaseController {
   bool isAccepteDefoltLocation = true;
   bool isLoading = false;
+  bool isDeleteting = false;
 
   Address address = Address();
   String? userLat;
@@ -62,6 +66,7 @@ class ProfileViewModle extends BaseController {
   final picker = ImagePicker();
   File? img;
 
+  List<Map<String, dynamic>> contactMap = [];
   // for address (add , edit ,delete)
 
   clearControllers() {
@@ -90,7 +95,7 @@ class ProfileViewModle extends BaseController {
                     isLoading = false,
                     update(),
                     snackSuccess(
-                        "${AppLocalizations.of(Get.context!)!.success}",
+                        "${tr.success}",
                         "${value.status!.message}"),
                     getMyAddress(),
                     clearControllers(),
@@ -102,7 +107,7 @@ class ProfileViewModle extends BaseController {
                     isLoading = false,
                     update(),
                     snackError(
-                        "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                        "${tr.error_occurred}",
                         "${value.status!.message}")
                   }
               });
@@ -112,17 +117,23 @@ class ProfileViewModle extends BaseController {
   }
 
   getMyAddress() async {
+    isLoading = true;
+    update();
     List data = [];
     try {
       await ProfileHelper.getInstance.getMyAddress().then((value) => {
+            isLoading = false,
             data = value.data,
             userAddress = data.map((e) => Address.fromJson(e)).toList(),
             update()
           });
     } catch (e) {}
+    isLoading = false;
+    update();
   }
 
   deleteAddress(String addressId) async {
+    isDeleteting = true;
     update();
     try {
       await ProfileHelper.getInstance
@@ -130,21 +141,27 @@ class ProfileViewModle extends BaseController {
                 Logger().i("${value.status!.message}"),
                 if (value.status!.success!)
                   {
+                    isDeleteting = false,
+                    update(),
                     snackSuccess(
-                        "${AppLocalizations.of(Get.context!)!.success}",
+                        "${tr.success}",
                         "${value.status!.message}"),
                   }
                 else
                   {
+                    isDeleteting = false,
+                    update(),
                     snackError(
-                        "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                        "${tr.error_occurred}",
                         "${value.status!.message}")
                   }
               });
     } catch (e) {}
   }
 
-  editAddress(Address address) async {
+  editAddress(Address address, bool isDefoltAddressUpdate) async {
+    isLoading = true;
+    update();
     try {
       await ProfileHelper.getInstance
           .editAddress(address.toJson())
@@ -152,69 +169,83 @@ class ProfileViewModle extends BaseController {
                 Logger().i("${value.status!.message}"),
                 if (value.status!.success!)
                   {
+                    Logger().i(value.toJson().toString()),
                     snackSuccess(
-                        "${AppLocalizations.of(Get.context!)!.success}",
+                        "${tr.success}",
                         "${value.status!.message}"),
                     getMyAddress(),
-                    Get.back()
+                    isDefoltAddressUpdate ? {} : Get.back(),
+                    isLoading = false,
+                    update()
                   }
                 else
                   {
                     snackError(
-                        "${AppLocalizations.of(Get.context!)!.error_occurred}",
-                        "${value.status!.message}")
+                        "${tr.error_occurred}",
+                        "${value.status!.message}"),
+                    isLoading = false,
+                    update(),
                   }
               });
     } catch (e) {}
   }
+
   //-- for log out
 
   logOutDiloag() {
-    Get.defaultDialog(
-        titlePadding: EdgeInsets.all(16),
-        titleStyle: textStyleBtn()!.copyWith(color: colorBlack),
-        title:
-            "${AppLocalizations.of(Get.context!)!.are_you_sure_you_want_to_log_out}",
-        content: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 140,
-                child: TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(colorPrimary)),
-                    onPressed: () {
-                      logOut();
-                    },
-                    child: Text(
-                      "${AppLocalizations.of(Get.context!)!.log_out}",
-                      style: TextStyle(
-                          color: colorTextWhite, fontWeight: FontWeight.bold),
-                    )),
-              ),
-              SizedBox(
-                width: sizeW10,
-              ),
-              Container(
-                width: 140,
-                child: TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(colorUnSelectedWidget)),
-                    onPressed: () {
-                      Get.back();
-                    },
-                    child: Text(
-                      "${AppLocalizations.of(Get.context!)!.cancle}",
-                      style: textStyleHints()!
-                          .copyWith(fontWeight: FontWeight.bold),
-                    )),
-              ),
-            ],
-          ),
-        ));
+    Get.bottomSheet(GlobalBottomSheet(
+      title: "${tr.are_you_sure_you_want_to_log_out}",
+      onOkBtnClick:  (){
+        logOut();
+      },
+      onCancelBtnClick: (){
+        Get.back();
+      },
+    ));
+    // Get.defaultDialog(
+    //     titlePadding: EdgeInsets.all(16),
+    //     titleStyle: textStyleBtn()!.copyWith(color: colorBlack),
+    //     title: "${tr.are_you_sure_you_want_to_log_out}",
+    //     content: Container(
+    //       child: Row(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         children: [
+    //           Container(
+    //             width: 140,
+    //             child: TextButton(
+    //                 style: ButtonStyle(
+    //                     backgroundColor:
+    //                         MaterialStateProperty.all(colorPrimary)),
+    //                 onPressed: () {
+    //                   logOut();
+    //                 },
+    //                 child: Text(
+    //                   "${tr.log_out}",
+    //                   style: TextStyle(
+    //                       color: colorTextWhite, fontWeight: FontWeight.bold),
+    //                 )),
+    //           ),
+    //           SizedBox(
+    //             width: sizeW10,
+    //           ),
+    //           Container(
+    //             width: 140,
+    //             child: TextButton(
+    //                 style: ButtonStyle(
+    //                     backgroundColor:
+    //                         MaterialStateProperty.all(colorUnSelectedWidget)),
+    //                 onPressed: () {
+    //                   Get.back();
+    //                 },
+    //                 child: Text(
+    //                   "${tr.cancle}",
+    //                   style: textStyleHints()!
+    //                       .copyWith(fontWeight: FontWeight.bold),
+    //                 )),
+    //           ),
+    //         ],
+    //       ),
+    //     ));
   }
 
   logOut() async {
@@ -225,7 +256,7 @@ class ProfileViewModle extends BaseController {
             Logger().i("${value.status!.message}"),
             if (value.status!.success!)
               {
-                snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+                snackSuccess("${tr.success}",
                     "${value.status!.message}"),
                 isLoading = false,
                 update(),
@@ -238,7 +269,7 @@ class ProfileViewModle extends BaseController {
                 isLoading = false,
                 update(),
                 snackError(
-                    "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                    "${tr.error_occurred}",
                     "${value.status!.message}")
               }
           });
@@ -253,20 +284,21 @@ class ProfileViewModle extends BaseController {
     hideFocus(Get.context!);
 
     try {
+      Logger().d(contactMap);
       await ProfileHelper.getInstance.editProfile({
         "email": "${tdUserEmailEdit.text}",
         "full_name": "${tdUserFullNameEdit.text}",
         "image": "image",
-        "contact_number": [
+        "contact_number": contactMap/*[
           {"mobile_number": 855555, "country_code": 970},
           {"mobile_number": 85555555, "country_code": 972}
-        ]
+        ]*/
       }).then((value) => {
-        
+
        Logger().i("${value.status!.message}"),
             if (value.status!.success!)
               {
-                snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
+                snackSuccess("${tr.success}",
                     "${value.status!.message}"),
                 isLoading = false,
                 update(),
@@ -277,7 +309,7 @@ class ProfileViewModle extends BaseController {
                 isLoading = false,
                 update(),
                 snackError(
-                    "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                    "${tr.error_occurred}",
                     "${value.status!.message}")
               }
         });
@@ -314,12 +346,82 @@ class ProfileViewModle extends BaseController {
     );
   }
 
+  // for maps functions && td Controller :
+  TextEditingController tdSearchMap = TextEditingController();
+  Completer<GoogleMapController> controllerCompleter = Completer();
+  double latitude = 25.36;
+  double longitude = 51.18;
+  String addressFromLocation = "";
+  AutocompletePrediction? selectAutocompletePrediction;
+  GooglePlace googlePlace =
+      GooglePlace("AIzaSyAozWyP-XVpiaIfqgKprWwwCce5ou46YZE");
+  Marker mark = Marker(markerId: MarkerId(LatLng(25.36, 51.18).toString()));
+  List<AutocompletePrediction> predictions = [];
+  CameraPosition kGooglePlex = CameraPosition(
+    target: LatLng(25.36, 51.18),
+    zoom: 10,
+  );
+
+  void autoCompleteSearch(String value) async {
+    var result = await googlePlace.queryAutocomplete.get(value);
+    if (result != null && result.predictions != null) {
+      predictions = result.predictions!;
+    } else {
+      predictions = [];
+    }
+    update();
+  }
+
+  onClickMap(LatLng point) {
+    try {
+      mark = Marker(
+        markerId: MarkerId(point.toString()),
+        position: point,
+        infoWindow: InfoWindow(
+          title: 'Marker',
+        ),
+      );
+    } catch (e) {
+      print("msg_error $e");
+    }
+    update();
+  }
+
+  getDetailsPlace(String placeName, String placeId) async {
+    googlePlace.details.get(placeId).then((value) {
+      DetailsResponse detailsResponse = value!;
+      latitude = detailsResponse.result!.geometry!.location!.lat!;
+      longitude = detailsResponse.result!.geometry!.location!.lng!;
+      addressFromLocation = placeName;
+      createCurrentMarker(LatLng(latitude, longitude), "$placeName");
+    });
+    update();
+  }
+
+  void createCurrentMarker(LatLng point, String title) async {
+    latitude = point.latitude;
+    longitude = point.longitude;
+    print("create current marker $point");
+    await getAddressFromLatLong(LatLng(latitude, longitude));
+    update();
+  }
+
+  Future<void> getAddressFromLatLong(LatLng position) async {
+    onClickMap(position);
+    kGooglePlex = CameraPosition(target: position);
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    Placemark place = placemarks[0];
+    String address =
+        '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+    tdLocation.text = address;
+    tdLocationEdit.text = address;
+    update();
+  }
+
   @override
   void onInit() {
     super.onInit();
-    // getMyAddress();
-    // currentCustomer = SharedPref.instance.getCurrentUserData();
-    //  update();
-    //  editProfileUser();
+    getMyAddress();
   }
 }

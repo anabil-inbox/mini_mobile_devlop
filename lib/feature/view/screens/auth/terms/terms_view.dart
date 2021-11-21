@@ -1,13 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
@@ -22,7 +23,7 @@ class TermsScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         elevation: 1,
-        title: Text("${AppLocalizations.of(Get.context!)!.terms_and_conditions}" , style: textStyleAppBarTitle(),),
+        title: Text("${tr.terms_and_conditions}" , style: textStyleAppBarTitle(),),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(Get.context!);

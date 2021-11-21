@@ -16,6 +16,12 @@ abstract class ConstanceNetwork {
   static var emailKey = "email";
 
 
+  ///todo this for add new contact key
+  static var mobileNumberKey = "mobile_number";
+  static var countryCodeKey = "country_code";
+  ///todo this for add new contact key
+
+
   ///todo here insert end Point
   static String settingeEndPoint = "inbox_app.api.settings.api_settings";
 

@@ -4,6 +4,7 @@ import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/font_dimne.dart';
 
 
 class IntroBody extends StatelessWidget {
@@ -31,8 +32,8 @@ class IntroBody extends StatelessWidget {
             SvgPicture.asset("assets/svgs/intro_background.svg",fit: BoxFit.cover,):SvgPicture.asset("assets/svgs/intro_background2.svg",fit: BoxFit.cover,)) ,      
           Positioned(
               top: padding160,
-              left: padding0,
-              right: padding0,
+              left: padding32,
+              right: padding32,
               child: imageNetwork(
                 height:sizeH300,
                 url:"$imagePath")),
@@ -47,7 +48,7 @@ class IntroBody extends StatelessWidget {
                     ),
                     Text(
                       "$title",
-                      style: textStyleIntroTitle(),
+                      style: textStyleIntroTitle()!.copyWith(fontSize: fontSize21),
                     ),
                      SizedBox(
                       height: sizeH7,
@@ -57,7 +58,7 @@ class IntroBody extends StatelessWidget {
                       child: CustomTextView(
                         txt: "$description",
                         textAlign: TextAlign.center,
-                        textStyle: textStyleIntroBody()!.copyWith(height:1.5),
+                        textStyle: textStyleIntroBody()!.copyWith(height:1.5,fontSize: fontSize14),
                       ),
                     ),
                     SizedBox(height: sizeH28,),

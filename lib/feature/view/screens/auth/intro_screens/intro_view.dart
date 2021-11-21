@@ -9,12 +9,13 @@ import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_
 import 'package:inbox_clients/feature/view/widgets/intro_body.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
 class IntroScreen extends GetWidget<IntroViewModle> {
@@ -53,14 +54,14 @@ final String type;
             Positioned(
               right: padding20,
               left: padding20,
-              bottom: padding60,
+              bottom: padding30,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   PrimaryButton(
                     isLoading: false,
                     isExpanded: false,
-                    textButton: "${AppLocalizations.of(Get.context!)!.sign_in}",
+                    textButton: "${tr.sign_in}",
                     onClicked: () {
                       Get.off(() => UserCompanyLoginScreen(type: SharedPref.instance.getUserType(),));
                       },
@@ -70,7 +71,7 @@ final String type;
                   ),
                   SeconderyButtom(
                       textButton:
-                          "${AppLocalizations.of(Get.context!)!.sign_up}",
+                          "${tr.sign_up}",
                       onClicked: () {
                         if(type == "${ConstanceNetwork.userType}" || type == "${ConstanceNetwork.bothType}"){
                           Get.off(() => UserRegisterScreen());
@@ -102,26 +103,30 @@ final String type;
             // ),
             PositionedDirectional(
                 top: padding57,
-                start: padding306,
-                child: TextButton(
-                    style: textButtonStyle,
-                    onPressed: () {
-                     moveToIntro();
-                    },
-                    child: Text(
-                      "${AppLocalizations.of(Get.context!)!.skip}",
-                      style: textStyleIntroBody(),
-                    ))),
-            PositionedDirectional(
-                top: padding60,
-                start: padding20,
-                end: padding315,
-                child: IconButton(
-                  icon: SvgPicture.asset("assets/svgs/language_eye.svg"),
-                  onPressed: () {
-                    changeLanguageBottomSheet();
-                  },
+                start: padding12,
+                end: padding12,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: SvgPicture.asset("assets/svgs/language_eye.svg"),
+                      onPressed: () {
+                        changeLanguageBottomSheet();
+                      },
+                    ),
+                    TextButton(
+                        style: textButtonStyle,
+                        onPressed: () {
+                         moveToIntro();
+                        },
+                        child: Text(
+                          "${tr.skip}",
+                          style: textStyleIntroBody()!.copyWith(fontSize: fontSize15),
+                        )),
+
+                  ],
                 )),
+
           ],
         ),
       ),

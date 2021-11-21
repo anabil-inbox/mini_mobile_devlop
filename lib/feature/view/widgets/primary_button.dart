@@ -3,6 +3,7 @@ import 'package:inbox_clients/feature/view/widgets/three_size_dot.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/font_dimne.dart';
 
 // ignore: must_be_immutable
 class PrimaryButton extends StatelessWidget {
@@ -38,7 +39,7 @@ class PrimaryButton extends StatelessWidget {
                 "$textButton",
                 style: textStylePrimary()!.copyWith(
                     fontWeight: FontWeight.bold,
-                    fontSize: 15,
+                    fontSize: fontSize16,
                     color: colorText??colorTextWhite),
               ),
       ),

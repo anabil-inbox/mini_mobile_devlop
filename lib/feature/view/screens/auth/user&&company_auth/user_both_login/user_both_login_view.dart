@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_register_view.dart';
+import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/company_both_login/company_both_login_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/widget/header_login_widget.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/widget/shared_login_form_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
@@ -8,8 +9,9 @@ import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:inbox_clients/util/sh_util.dart';
 
 class UserBothLoginScreen extends StatelessWidget {
@@ -30,7 +32,7 @@ class UserBothLoginScreen extends StatelessWidget {
             height: sizeH16,
           ),
           Text(
-            "${AppLocalizations.of(Get.context!)!.user_login}",
+            "${tr.user_login}",
             style: textStyleHints(),
             textAlign: TextAlign.center,
           ),
@@ -38,7 +40,7 @@ class UserBothLoginScreen extends StatelessWidget {
             height: sizeH7,
           ),
           Text(
-            "${AppLocalizations.of(Get.context!)!.what_is_your_phone_number}",
+            "${tr.what_is_your_phone_number}",
             style: textStyleHints(),
             textAlign: TextAlign.center,
           ),
@@ -50,10 +52,12 @@ class UserBothLoginScreen extends StatelessWidget {
           SharedPref.instance.getUserType() == "${ConstanceNetwork.bothType}" ? Padding(
             padding: EdgeInsets.symmetric(horizontal: sizeW20!),
             child: SeconderyFormButton(
-              buttonText: "${AppLocalizations.of(context)!.login_as_company}",
-            ),
+              buttonText: "${tr.login_as_company}",
+              onClicked: (){
+                Get.to(() => CompanyBothLoginScreen());
+              }, ),
           ) : const SizedBox(),
-          SizedBox(height: sizeH200,),
+          SizedBox(height: sizeH30,),
           InkWell(
             splashColor: colorTrans,
             highlightColor: colorTrans,
@@ -67,12 +71,12 @@ class UserBothLoginScreen extends StatelessWidget {
                     children: [
                       TextSpan(
                           text:
-                              "${AppLocalizations.of(Get.context!)!.dont_have_an_account} ",
+                              "${tr.dont_have_an_account} ",
                           style: textStylePrimary()!.copyWith(color: colorTextHint,fontSize: 13),
                           ),
                       TextSpan(
                           text:
-                              "${AppLocalizations.of(Get.context!)!.sign_up_here}",
+                              "${tr.sign_up_here}",
                           style: textStylePrimary()!.copyWith(fontSize: 13)),
                     ],
                   ),

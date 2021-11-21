@@ -9,11 +9,12 @@ import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
@@ -84,10 +85,10 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                                           controller: controller.tdMobileNumber,
                                           validator: (value) {
                                             if (value == null || value.isEmpty) {
-                                             return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';      
+                                             return '${tr.fill_your_phone_number}';
 
                             }else if(value.length != 9 ){
-                              return "${AppLocalizations.of(Get.context!)!.phone_number_invalid}";
+                              return "${tr.phone_number_invalid}";
                             }
                             return null;
                           },
@@ -112,7 +113,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 controller: controller.tdName,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_your_name}';
+                    return '${tr.fill_your_name}';
                   }else if (value.length <= 2){
                     
                   }
@@ -120,7 +121,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 },
                 decoration: InputDecoration(
                     hintText:
-                        "${AppLocalizations.of(Get.context!)!.full_name}"),
+                        "${tr.full_name}"),
               ),
               SizedBox(
                 height: padding16,
@@ -132,9 +133,9 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 controller: controller.tdEmail,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_your_email}';
+                    return '${tr.fill_your_email}';
                   } else if (!GetUtils.isEmail(value)) {
-                    return "${AppLocalizations.of(Get.context!)!.please_enter_valid_email}";
+                    return "${tr.please_enter_valid_email}";
                   }
                   emailValid(value);
                   return null;
@@ -142,7 +143,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                     hintText:
-                        "${AppLocalizations.of(Get.context!)!.your_email_address}"),
+                        "${tr.your_email_address}"),
               ),
               SizedBox(
                 height: padding32,
@@ -162,9 +163,9 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
 
                           children: [
                             value.isAccepte ? SvgPicture.asset("assets/svgs/check.svg") :
-                            SvgPicture.asset("assets/svgs/uncheck.svg"),
+                            SvgPicture.asset("assets/svgs/uncheck.svg",color: seconderyColor,),
                             SizedBox(width: 10,),
-                            CustomTextView(txt:"${AppLocalizations.of(Get.context!)!.accept_our} ",textStyle: textStyle(),)
+                            CustomTextView(txt:"${tr.accept_our} ",textStyle: textStyle(),)
                           ],
                         ),
                       ),
@@ -172,7 +173,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                           onTap: (){
                             Get.to(() => TermsScreen());
                           },
-                          child: CustomTextView(txt:"${AppLocalizations.of(Get.context!)!.terms_and_conditions}" ,
+                          child: CustomTextView(txt:"${tr.terms_and_conditions}" ,
                             textAlign:TextAlign.start,
                             textStyle: textStyleUnderLinePrimary()!.copyWith(color: colorBlack , fontSize: fontSize14),)),
                     ],
@@ -188,11 +189,11 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                       isLoading: controller.isLoading,
                       isExpanded: true,
                       textButton:
-                      "${AppLocalizations.of(Get.context!)!.sign_up}",
+                      "${tr.sign_up}",
                       onClicked: () {
                         if(!controller.isAccepte){
-                          snackError("${AppLocalizations.of(Get.context!)!.error_occurred}",
-                              "${AppLocalizations.of(Get.context!)!.you_cant_register_without_accept_our_terms}");
+                          snackError("${tr.error_occurred}",
+                              "${tr.you_cant_register_without_accept_our_terms}");
                         }
 
                         if (_formKey.currentState!.validate() && controller.isAccepte) {
@@ -212,12 +213,12 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
               ),
               SizedBox(height: sizeH20,),
               SharedPref.instance.getUserType().toString().toLowerCase() == "${ConstanceNetwork.bothType}" ?
-              UnSelectedButton(
-                textButton: "${AppLocalizations.of(Get.context!)!.register_as_company}",
+              SeconderyFormButton(
+                buttonText: "${tr.register_as_company}",
                 onClicked: (){
                   Get.to(() => RegisterCompanyScreen());
                 },
-              ) : const SizedBox(),             
+              ) : const SizedBox(),
               SizedBox(height : sizeH80),
               InkWell(
                 onTap: (){
@@ -229,11 +230,11 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                     children: [
                       TextSpan(
                           text:
-                              "${AppLocalizations.of(Get.context!)!.have_an_account}",
+                              "${tr.have_an_account}",
                           style: textStylePrimary()!.copyWith(color: colorBlack,fontSize: 13)),
                       TextSpan(
                           text:
-                              "${AppLocalizations.of(Get.context!)!.sign_in}",
+                              "${tr.sign_in}",
                           style: textStylePrimary()!.copyWith(fontSize: 13)),
                     ],
                   ),

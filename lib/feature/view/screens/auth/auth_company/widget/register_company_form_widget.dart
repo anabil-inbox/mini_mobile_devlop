@@ -11,13 +11,15 @@ import 'package:inbox_clients/feature/view/screens/auth/country/choose_country_v
 import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/company_both_login/company_both_login_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
 import 'company_sector_item_widget.dart';
@@ -41,7 +43,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 controller: controller.tdcrNumber,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_cr_number}';
+                    return '${tr.fill_cr_number}';
                   }
                   return null;
                 },
@@ -52,7 +54,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                     hintText:
-                        "${AppLocalizations.of(Get.context!)!.cr_number}"),
+                        "${tr.cr_number}"),
               ),
               SizedBox(
                 height: padding16,
@@ -63,7 +65,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 controller: controller.tdCompanyName,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_your_company_name}';
+                    return '${tr.fill_your_company_name}';
                   }
                   return null;
                 },
@@ -73,7 +75,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 },
                 decoration: InputDecoration(
                     hintText:
-                        "${AppLocalizations.of(Get.context!)!.company_name}"),
+                        "${tr.company_name}"),
               ),
            
               SizedBox(
@@ -87,16 +89,16 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_your_company_email}';
+                    return '${tr.fill_your_company_email}';
                   } else if (!GetUtils.isEmail(value)) {
-                    return '${AppLocalizations.of(Get.context!)!.please_enter_valid_email}';
+                    return '${tr.please_enter_valid_email}';
                   }
                   return null;
                 },
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                     hintText:
-                        "${AppLocalizations.of(Get.context!)!.your_email_address}"),
+                        "${tr.your_email_address}"),
               ),
               SizedBox(
                 height: padding16,
@@ -118,7 +120,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                             child: SvgPicture.asset("assets/svgs/dropdown.svg"),
                           ),
                           hintText:
-                              "${AppLocalizations.of(Get.context!)!.company_sector}"));
+                              "${tr.company_sector}"));
                 },
               ),
               SizedBox(
@@ -133,13 +135,13 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_name_of_applicant}';
+                    return '${tr.fill_name_of_applicant}';
                   }
                   return null;
                 },
                 decoration: InputDecoration(
                     hintText:
-                        "${AppLocalizations.of(Get.context!)!.name_of_application}"),
+                        "${tr.name_of_application}"),
               ),
               SizedBox(
                 height: padding16,
@@ -152,13 +154,13 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${AppLocalizations.of(Get.context!)!.fill_the_applicant_department}';
+                    return '${tr.fill_the_applicant_department}';
                   }
                   return null;
                 },
                 decoration: InputDecoration(
                     hintText:
-                        "${AppLocalizations.of(Get.context!)!.applicant_department}"),
+                        "${tr.applicant_department}"),
               ),
               SizedBox(
                 height: padding16,
@@ -219,9 +221,9 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                               controller: controller.tdMobileNumber,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';
+                                  return '${tr.fill_your_phone_number}';
                                 } else if (value.length != 9) {
-                                  return "${AppLocalizations.of(Get.context!)!.phone_number_invalid}";
+                                  return "${tr.phone_number_invalid}";
                                 }
                                 return null;
                               },
@@ -251,14 +253,14 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                           children: [
                             value.isAccepte
                                 ? SvgPicture.asset("assets/svgs/check.svg")
-                                : SvgPicture.asset("assets/svgs/uncheck.svg"),
+                                : SvgPicture.asset("assets/svgs/uncheck.svg",color: colorPrimary,),
                             SizedBox(
                               width: 10,
                             ),
                             Text(
-                              "${AppLocalizations.of(Get.context!)!.accept_our} ",
+                              "${tr.accept_our} ",
                               style: textStyleHint()!.copyWith(
-                                  fontSize: 14, fontWeight: FontWeight.normal),
+                                  fontSize: fontSize14, fontWeight: FontWeight.normal),
                             )
                           ],
                         ),
@@ -268,9 +270,9 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                             Get.to(() => TermsScreen());
                           },
                           child: Text(
-                            "${AppLocalizations.of(Get.context!)!.terms_and_conditions}",
+                            "${tr.terms_and_conditions}",
                             style: textStyleUnderLinePrimary()!
-                                .copyWith(color: colorBlack, fontSize: 14),
+                                .copyWith(color: colorBlack, fontSize: fontSize14),
                           )),
                     ],
                   );
@@ -285,17 +287,17 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                       isLoading: logic.isLoading,
                       isExpanded: true,
                       textButton:
-                          "${AppLocalizations.of(Get.context!)!.sign_up}",
+                          "${tr.sign_up}",
                       onClicked: () {
                         if (logic.companySector == null) {
                           snackError(
-                              "${AppLocalizations.of(context)!.error_occurred}",
-                              "${AppLocalizations.of(context)!.you_have_to_choose_sector_name}");
+                              "${tr.error_occurred}",
+                              "${tr.you_have_to_choose_sector_name}");
                         }
                         if (logic.isAccepte == false) {
                           snackError(
-                              "${AppLocalizations.of(context)!.error_occurred}",
-                              "${AppLocalizations.of(context)!.you_cant_register_without_accept_our_terms}");
+                              "${tr.error_occurred}",
+                              "${tr.you_cant_register_without_accept_our_terms}");
                         }
                         if (_formKey.currentState!.validate() &&
                             logic.companySector != null &&
@@ -325,9 +327,9 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
               ),
               SharedPref.instance.getUserType().toString().toLowerCase() ==
                       "${ConstanceNetwork.bothType}"
-                  ? UnSelectedButton(
-                      textButton:
-                          "${AppLocalizations.of(Get.context!)!.register_as_user}",
+                  ? SeconderyFormButton(
+                buttonText:
+                          "${tr.register_as_user}",
                       onClicked: () {
                         Get.to(() => UserRegisterScreen());
                       },
@@ -346,11 +348,11 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                     children: [
                       TextSpan(
                           text:
-                              "${AppLocalizations.of(Get.context!)!.have_an_account}",
+                              "${tr.have_an_account}",
                           style: textStylePrimary()!
                               .copyWith(color: colorTextHint, fontSize: 13)),
                       TextSpan(
-                          text: "${AppLocalizations.of(Get.context!)!.sign_in}",
+                          text: "${tr.sign_in}",
                           style: textStylePrimary()!.copyWith(fontSize: 13)),
                     ],
                   ),
@@ -376,7 +378,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
         children: [
           SizedBox(height: sizeH40),
           Text(
-            "${AppLocalizations.of(Get.context!)!.company_sector}",
+            "${tr.company_sector}",
             style: textStyleTitle(),
           ),
           SizedBox(height: sizeH22),
@@ -424,7 +426,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
           ),
           PrimaryButton(
               isLoading: false,
-              textButton: "${AppLocalizations.of(Get.context!)!.select}",
+              textButton: "${tr.select}",
               onClicked: () {
                 print("${controller.companySector}");
                 controller.companySector = controller.temproreySectorName;

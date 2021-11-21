@@ -4,15 +4,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:inbox_clients/feature/view/screens/auth/splash/splash.dart';
-import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
-import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/util/app_color.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../main.dart';
 
@@ -85,7 +83,7 @@ class AppWidget extends StatelessWidget {
           }),
         ),
         // home: const SplashScreen()
-         home: HomeScreen(),
+       //  home: HomeScreen(),
       ),
     );
   }

@@ -39,8 +39,8 @@ class HeaderLogin extends GetWidget<IntroViewModle> {
           PositionedDirectional(
             start: padding0,
             end: padding0,
-            top: padding69,
-            bottom: padding32,
+            top: padding80,
+            bottom: padding40,
             child: SvgPicture.asset("assets/svgs/logo_horizantal.svg",),
           ),
           

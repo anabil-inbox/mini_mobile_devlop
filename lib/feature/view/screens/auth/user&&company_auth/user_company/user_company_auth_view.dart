@@ -12,7 +12,8 @@ import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_mod
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
 class UserCompanyLoginScreen extends GetWidget<IntroViewModle> {
@@ -34,16 +35,16 @@ class UserCompanyLoginScreen extends GetWidget<IntroViewModle> {
             height: sizeH22,
           ),
           type == "${ConstanceNetwork.userType}"
-              ? Text("${AppLocalizations.of(Get.context!)!.user_login}",
+              ? Text("${tr.user_login}",
                   style: textStyleHints() ,textAlign: TextAlign.center)
-              : Text("${AppLocalizations.of(Get.context!)!.company_log_in}",
+              : Text("${tr.company_log_in}",
                   style: textStyleHints(),textAlign: TextAlign.center),
           SizedBox(
             height: sizeH10,
           ),
           type == "${ConstanceNetwork.userType}"
               ? Text(
-                  "${AppLocalizations.of(Get.context!)!.what_is_your_phone_number}",
+                  "${tr.what_is_your_phone_number}",
                   style: textStyleHints(),textAlign: TextAlign.center,) : const SizedBox(),
             
              SizedBox(
@@ -76,13 +77,13 @@ class UserCompanyLoginScreen extends GetWidget<IntroViewModle> {
                   children: [
                     TextSpan(
                         text:
-                            "${AppLocalizations.of(Get.context!)!.dont_have_an_account}",
+                            "${tr.dont_have_an_account}",
                         style: textStylePrimary()!.copyWith(color: colorTextHint,fontSize: 13),
                         
                         ),
                     TextSpan(
                         text:
-                            "${AppLocalizations.of(Get.context!)!.sign_up_here}",
+                            "${tr.sign_up_here}",
                         style: textStylePrimary()!.copyWith(fontSize: 13)),
                   ],
                 ),

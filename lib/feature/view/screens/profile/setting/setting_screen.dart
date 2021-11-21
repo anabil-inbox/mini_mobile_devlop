@@ -6,7 +6,8 @@ import 'package:inbox_clients/feature/view/screens/profile/widget/setting_item_n
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
         automaticallyImplyLeading: true,
         elevation: 1,
         title: Text(
-          "${AppLocalizations.of(Get.context!)!.setting}",
+          "${tr.setting}",
           style: textStyleAppBarTitle(),
         ),
         leading: IconButton(
@@ -36,15 +37,15 @@ class SettingsScreen extends StatelessWidget {
           SizedBox(
             height: sizeH20,
           ),
-          SettingItemNoPadding(settingTitle: "${AppLocalizations.of(context)!.helpCenter}", onTap: (){}),
+          SettingItemNoPadding(settingTitle: "${tr.helpCenter}", onTap: (){}),
            SizedBox(
             height: sizeH16,
           ),
-          SettingItemNoPadding(settingTitle: "${AppLocalizations.of(context)!.about_inbox}", onTap: (){}),
+          SettingItemNoPadding(settingTitle: "${tr.about_inbox}", onTap: (){}),
            SizedBox(
             height: sizeH16,
           ),
-          SettingItemNoPadding(settingTitle: "${AppLocalizations.of(context)!.terms_and_conditions}", onTap: (){}),
+          SettingItemNoPadding(settingTitle: "${tr.terms_and_conditions}", onTap: (){}),
         ],
       ),
     );
