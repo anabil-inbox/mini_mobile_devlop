@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:inbox_clients/feature/view/screens/auth/splash/splash.dart';
+import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -83,8 +84,8 @@ class AppWidget extends StatelessWidget {
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
           }),
         ),
-         home: const SplashScreen()
-        // home: HomeScreen(),
+        // home: const SplashScreen()
+         home: HomeScreen(),
       ),
     );
   }
