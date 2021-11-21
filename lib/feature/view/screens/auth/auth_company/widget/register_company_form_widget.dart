@@ -11,6 +11,7 @@ import 'package:inbox_clients/feature/view/screens/auth/country/choose_country_v
 import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/company_both_login/company_both_login_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -18,6 +19,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
 import 'company_sector_item_widget.dart';
@@ -251,14 +253,14 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                           children: [
                             value.isAccepte
                                 ? SvgPicture.asset("assets/svgs/check.svg")
-                                : SvgPicture.asset("assets/svgs/uncheck.svg"),
+                                : SvgPicture.asset("assets/svgs/uncheck.svg",color: colorPrimary,),
                             SizedBox(
                               width: 10,
                             ),
                             Text(
                               "${tr.accept_our} ",
                               style: textStyleHint()!.copyWith(
-                                  fontSize: 14, fontWeight: FontWeight.normal),
+                                  fontSize: fontSize14, fontWeight: FontWeight.normal),
                             )
                           ],
                         ),
@@ -270,7 +272,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                           child: Text(
                             "${tr.terms_and_conditions}",
                             style: textStyleUnderLinePrimary()!
-                                .copyWith(color: colorBlack, fontSize: 14),
+                                .copyWith(color: colorBlack, fontSize: fontSize14),
                           )),
                     ],
                   );
@@ -325,8 +327,8 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
               ),
               SharedPref.instance.getUserType().toString().toLowerCase() ==
                       "${ConstanceNetwork.bothType}"
-                  ? UnSelectedButton(
-                      textButton:
+                  ? SeconderyFormButton(
+                buttonText:
                           "${tr.register_as_user}",
                       onClicked: () {
                         Get.to(() => UserRegisterScreen());

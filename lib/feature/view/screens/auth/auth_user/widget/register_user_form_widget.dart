@@ -9,6 +9,7 @@ import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -162,7 +163,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
 
                           children: [
                             value.isAccepte ? SvgPicture.asset("assets/svgs/check.svg") :
-                            SvgPicture.asset("assets/svgs/uncheck.svg"),
+                            SvgPicture.asset("assets/svgs/uncheck.svg",color: seconderyColor,),
                             SizedBox(width: 10,),
                             CustomTextView(txt:"${tr.accept_our} ",textStyle: textStyle(),)
                           ],
@@ -212,12 +213,12 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
               ),
               SizedBox(height: sizeH20,),
               SharedPref.instance.getUserType().toString().toLowerCase() == "${ConstanceNetwork.bothType}" ?
-              UnSelectedButton(
-                textButton: "${tr.register_as_company}",
+              SeconderyFormButton(
+                buttonText: "${tr.register_as_company}",
                 onClicked: (){
                   Get.to(() => RegisterCompanyScreen());
                 },
-              ) : const SizedBox(),             
+              ) : const SizedBox(),
               SizedBox(height : sizeH80),
               InkWell(
                 onTap: (){

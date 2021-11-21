@@ -48,20 +48,29 @@ class HeaderRegisterCompany extends    GetWidget<IntroViewModle> {
             icon: SvgPicture.asset("assets/svgs/cross.svg"),
           )),
             height == 200 ?  PositionedDirectional(
-            end: padding104,
-            start: padding104,
-            top: padding69,
-            bottom: padding32,
+              start: padding0,
+              end: padding0,
+              top: padding80,
+              bottom: padding40,
             child: SvgPicture.asset("assets/svgs/logo_horizantal.svg",),
-          ) : PositionedDirectional(
-            start: padding0,
-            end: padding0,
-            top: padding32,
-            bottom: padding0,
-            child: Padding(
-              padding:  EdgeInsets.all(sizeH20!),
-              child: SvgPicture.asset("assets/svgs/logo_horizantal.svg"),
-            )),
+          ) :
+            PositionedDirectional(
+              start: padding0,
+              end: padding0,
+              top: padding69,
+              bottom: padding12,
+              child: SvgPicture.asset("assets/svgs/logo_horizantal.svg",),
+            ),
+
+          // PositionedDirectional(
+            // start: padding0,
+            // end: padding0,
+            // top: padding45,
+            // bottom: padding30,
+            // child: Padding(
+            //   padding:  EdgeInsets.all(sizeH20!),
+            //   child: SvgPicture.asset("assets/svgs/logo_horizantal.svg"),
+            // )),
         ],
       ),
     );

@@ -15,6 +15,7 @@ import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
 class IntroScreen extends GetWidget<IntroViewModle> {
@@ -53,7 +54,7 @@ final String type;
             Positioned(
               right: padding20,
               left: padding20,
-              bottom: padding60,
+              bottom: padding30,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -102,26 +103,30 @@ final String type;
             // ),
             PositionedDirectional(
                 top: padding57,
-                start: padding306,
-                child: TextButton(
-                    style: textButtonStyle,
-                    onPressed: () {
-                     moveToIntro();
-                    },
-                    child: Text(
-                      "${tr.skip}",
-                      style: textStyleIntroBody(),
-                    ))),
-            PositionedDirectional(
-                top: padding60,
-                start: padding20,
-                end: padding315,
-                child: IconButton(
-                  icon: SvgPicture.asset("assets/svgs/language_eye.svg"),
-                  onPressed: () {
-                    changeLanguageBottomSheet();
-                  },
+                start: padding12,
+                end: padding12,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: SvgPicture.asset("assets/svgs/language_eye.svg"),
+                      onPressed: () {
+                        changeLanguageBottomSheet();
+                      },
+                    ),
+                    TextButton(
+                        style: textButtonStyle,
+                        onPressed: () {
+                         moveToIntro();
+                        },
+                        child: Text(
+                          "${tr.skip}",
+                          style: textStyleIntroBody()!.copyWith(fontSize: fontSize15),
+                        )),
+
+                  ],
                 )),
+
           ],
         ),
       ),

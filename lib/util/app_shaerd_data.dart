@@ -182,7 +182,7 @@ Widget imageNetwork({double? width, double? height, String? url}) {
           // border: Border.all(color: colorBorderLight),
           image: DecorationImage(
             image: CachedNetworkImageProvider(url ?? urlUserPlacholder!),
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
           ),
         ),
       );

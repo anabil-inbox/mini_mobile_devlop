@@ -130,14 +130,14 @@ TextStyle? textStyleHint() {
   return TextStyle(
     fontSize: fontSize16,
     fontWeight: FontWeight.bold,
-    color: colorUnSelectedWidget,
+    color: colorTextHint1,
   );
 }
 
 TextStyle? textStyleUnSelectedButton() {
   return TextStyle(
     fontSize: fontSize16,
-    color: Color(0xff676771),
+    color: colorTextDark,
     fontWeight: FontWeight.bold
   );
 }
@@ -176,7 +176,8 @@ TextStyle? textStyleIntroBody(){
   return TextStyle(
     color: Colors.black, 
     fontSize: fontSize14,
-    fontWeight: FontWeight.normal
+    // fontWeight: FontWeight.normal
+      fontFamily: Constance.Font_regular
   );
 }
 
@@ -249,17 +250,17 @@ BoxShadow? boxShadowLight() {
 ButtonStyle? get buttonStyle => ButtonStyle(
     padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 12)) ,
     backgroundColor: MaterialStateProperty.all(colorPrimaryDark),
-    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(6))));
 
 ButtonStyle? get primaryButtonStyle => ButtonStyle(
     padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
     backgroundColor: MaterialStateProperty.all(colorPrimary),
-    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)))
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)))
     );
 ButtonStyle? get primaryButtonOpacityStyle => ButtonStyle(
     padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
     backgroundColor: MaterialStateProperty.all(colorPrimaryOpcaityColor),
-    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)))
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)))
     );
 
 
@@ -267,27 +268,27 @@ ButtonStyle? get seconderyCustomButtonStyle => ButtonStyle(
     textStyle: MaterialStateProperty.all(textPrimaryButton()),
     padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
     backgroundColor: MaterialStateProperty.all(colorPrimary),
-    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(6))));
 
 ButtonStyle? get seconderyButtonBothFormStyle => ButtonStyle(
     textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black)),
     padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
         backgroundColor: MaterialStateProperty.all(colorUnSelectedWidget),
 
-    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(6))));
 
 
 ButtonStyle? get seconderyButtonStyle => ButtonStyle(
     textStyle: MaterialStateProperty.all(textSeconderyButton()!.copyWith(color: Colors.black)),
     padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
-    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(6))));
 
 
 ButtonStyle? get textButtonStyle => ButtonStyle(
     textStyle: MaterialStateProperty.all(textSeconderyButton()),
     overlayColor: MaterialStateProperty.all(seconderyColor),
     padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)) ,
-    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))));
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(6))));
 
 
 ScrollPhysics? customScrollViewIOS() =>

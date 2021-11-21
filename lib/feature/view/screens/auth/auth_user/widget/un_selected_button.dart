@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/font_dimne.dart';
 
 class UnSelectedButton extends StatelessWidget {
   const UnSelectedButton({Key? key , required this.onClicked , required this.textButton}) : super(key: key);
@@ -15,7 +16,7 @@ class UnSelectedButton extends StatelessWidget {
       height: sizeH50,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4)
+        borderRadius: BorderRadius.circular(6)
       ),
       child: MaterialButton(
       focusColor: Colors.black,  
@@ -24,7 +25,7 @@ class UnSelectedButton extends StatelessWidget {
       onPressed: () {
         onClicked();
       },
-      child: Text("$textButton" , style: textStyleUnSelectedButton()!.copyWith(fontSize: 15),)
+      child: Text("$textButton" , style: textStyleUnSelectedButton()!.copyWith(fontSize: fontSize16),)
       ));
   }
 }

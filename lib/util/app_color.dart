@@ -6,11 +6,12 @@ var colorPrimary = const Color(0xFFE63331);
 var colorPrimaryDark = const Color(0xFF50133A);
 var colorHint = const Color(0xff676771);
 Color seconderyColor = const Color(0xffE63331);
-Color colorUnSelectedWidget = const Color(0xffCCCCCC);
+Color colorUnSelectedWidget =  Color(0xff676771).withAlpha(17);
+Color colorTextHint1 =  Color(0xff676771);
 Color colorScaffoldRegistrationBody = const Color(0xffF7F9FB);
 Color seconderyButton = const Color(0xffDFE1E5);
 Color seconderyButtonUnSelected = const Color(0xff676771);
-Color colorPrimaryOpcaityColor = const Color(0xffFBDCDC);
+Color colorPrimaryOpcaityColor =  Color(0xffE63331).withAlpha(17);
 Color colorBtnGray = const Color(0xFFDADBDF);
 
 //todo this for textField
