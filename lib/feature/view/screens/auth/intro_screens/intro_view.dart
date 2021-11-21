@@ -51,10 +51,10 @@ final String type;
                         : []);
               },
             ),
-            Positioned(
-              right: padding20,
-              left: padding20,
-              bottom: padding30,
+            PositionedDirectional(
+              start: padding20,
+              end: padding20,
+              bottom: sizeH31,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

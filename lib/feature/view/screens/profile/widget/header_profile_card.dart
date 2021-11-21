@@ -86,6 +86,7 @@ class HeaderProfileCard extends StatelessWidget {
           Container(
               margin: EdgeInsets.symmetric(horizontal: sizeH20!),
               child: PrimaryButtonOpacityColor(
+                  
                   textButton: "${tr.edit_profile}",
                   isLoading: false,
                   onClicked: () {

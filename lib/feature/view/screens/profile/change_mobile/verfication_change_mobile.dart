@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/widget/header_code_verfication_widget.dart';
-import 'package:inbox_clients/feature/view/screens/home/controller.dart';
-import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
+import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
-import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
 import 'package:inbox_clients/util/font_dimne.dart';
-import 'package:inbox_clients/util/sh_util.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 
@@ -47,12 +44,15 @@ class _ChangeMobilScreenState extends State<VerficationChangeMobilScreen> {
             Text(
               "${tr.enter_your_passcode}",
               style: textStyleHints(),
-            ),
-            
-          SizedBox(
+            ),     
+            SizedBox(
+                height: sizeH30!,
+              ),
+            bildeTextActiveCode(context),  
+            SizedBox(
             height: sizeH190,
           ),
-          GetBuilder<ProfileViewModle>(
+            GetBuilder<ProfileViewModle>(
             builder: (value) {
               return Column(
                 children: [

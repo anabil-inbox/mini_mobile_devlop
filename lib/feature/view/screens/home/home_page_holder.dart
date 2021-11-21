@@ -3,24 +3,20 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
+import 'package:inbox_clients/feature/view/widgets/empty_state/home_empty_statte.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
-import 'package:inbox_clients/util/app_style.dart';
 
-class HomePageHolder extends StatefulWidget {
-  const HomePageHolder({Key? key}) : super(key: key);
+// ignore: must_be_immutable
+class HomePageHolder extends StatelessWidget {
+  HomePageHolder({Key? key}) : super(key: key);
 
-  @override
-  State<HomePageHolder> createState() => _HomePageHolderState();
-}
-
-class _HomePageHolderState extends State<HomePageHolder> {
   int index = 1;
   List<Widget> bnbScreens = [
     const HomeScreen(),
-    const Center(child: const Text("Screen")),
-    const Center(child: const Text("Screen")),
+    const EmptyHomeWidget(),
+    const EmptyHomeWidget(),
     const ProfileScreen(),
   ];
 
@@ -28,15 +24,13 @@ class _HomePageHolderState extends State<HomePageHolder> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GetBuilder<HomeViewModel>(
-          init:HomeViewModel() ,
+          init: HomeViewModel(),
           builder: (logic) {
-        return bnbScreens[logic.currentIndex];
-      }),
+            return bnbScreens[logic.currentIndex];
+          }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme
-            .of(context)
-            .primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
         onPressed: () {},
         child: Icon(Icons.add),
         elevation: 2.0,
@@ -70,7 +64,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
                           minWidth: sizeW48,
                           child: logic.currentIndex == 0
                               ? SvgPicture.asset(
-                              "assets/svgs/home_selected.svg")
+                                  "assets/svgs/home_selected.svg")
                               : SvgPicture.asset("assets/svgs/home.svg"),
                         ),
                         SizedBox(width: sizeW20),
@@ -82,7 +76,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
                           minWidth: sizeW48,
                           child: logic.currentIndex == 1
                               ? SvgPicture.asset(
-                              "assets/svgs/document_selected.svg")
+                                  "assets/svgs/document_selected.svg")
                               : SvgPicture.asset("assets/svgs/document.svg"),
                         ),
                       ],
@@ -97,9 +91,9 @@ class _HomePageHolderState extends State<HomePageHolder> {
                           minWidth: sizeW48,
                           child: logic.currentIndex == 2
                               ? SvgPicture.asset(
-                              "assets/svgs/notification_selected.svg")
+                                  "assets/svgs/notification_selected.svg")
                               : SvgPicture.asset(
-                              "assets/svgs/notification.svg"),
+                                  "assets/svgs/notification.svg"),
                         ),
                         SizedBox(width: sizeW20),
                         MaterialButton(
@@ -109,7 +103,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
                           minWidth: sizeW48,
                           child: logic.currentIndex == 3
                               ? SvgPicture.asset(
-                              "assets/svgs/profile_selected.svg")
+                                  "assets/svgs/profile_selected.svg")
                               : SvgPicture.asset("assets/svgs/profile.svg"),
                         ),
                       ],

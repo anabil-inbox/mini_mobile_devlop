@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/setting_item_no_padding.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -37,15 +38,21 @@ class SettingsScreen extends StatelessWidget {
           SizedBox(
             height: sizeH20,
           ),
-          SettingItemNoPadding(settingTitle: "${tr.helpCenter}", onTap: (){}),
+          SettingItemNoPadding(settingTitle: "${tr.helpCenter}", onTap: (){
+
+          }),
            SizedBox(
             height: sizeH16,
           ),
-          SettingItemNoPadding(settingTitle: "${tr.about_inbox}", onTap: (){}),
+          SettingItemNoPadding(settingTitle: "${tr.about_inbox}", onTap: (){
+            Get.to(() => TermsScreen());
+          }),
            SizedBox(
             height: sizeH16,
           ),
-          SettingItemNoPadding(settingTitle: "${tr.terms_and_conditions}", onTap: (){}),
+          SettingItemNoPadding(settingTitle: "${tr.terms_and_conditions}", onTap: (){
+
+          }),
         ],
       ),
     );
