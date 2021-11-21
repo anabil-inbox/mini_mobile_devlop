@@ -269,7 +269,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                   height: sizeH10,
                 ),
               ],
-            )); 
+            ));
+
           },
         ),
       ),
