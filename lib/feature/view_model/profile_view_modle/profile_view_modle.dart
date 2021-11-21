@@ -122,14 +122,13 @@ class ProfileViewModle extends BaseController {
     List data = [];
     try {
       await ProfileHelper.getInstance.getMyAddress().then((value) => {
+            Logger().e(value.toJson().toString()),
             isLoading = false,
             data = value.data,
             userAddress = data.map((e) => Address.fromJson(e)).toList(),
-            print("msg_res ${value.data.toString()}"),
             update()
           });
     } catch (e) {}
-    print("msg_user_address ${userAddress.length}");
     isLoading = false;
     update();
   }
@@ -161,7 +160,9 @@ class ProfileViewModle extends BaseController {
     } catch (e) {}
   }
 
-  editAddress(Address address) async {
+  editAddress(Address address, bool isDefoltAddressUpdate) async {
+    isLoading = true;
+    update();
     try {
       await ProfileHelper.getInstance
           .editAddress(address.toJson())
@@ -169,17 +170,22 @@ class ProfileViewModle extends BaseController {
                 Logger().i("${value.status!.message}"),
                 if (value.status!.success!)
                   {
+                    Logger().i(value.toJson().toString()),
                     snackSuccess(
                         "${AppLocalizations.of(Get.context!)!.success}",
                         "${value.status!.message}"),
                     getMyAddress(),
-                    Get.back()
+                    isDefoltAddressUpdate ? {} : Get.back(),
+                    isLoading = false,
+                    update()
                   }
                 else
                   {
                     snackError(
                         "${AppLocalizations.of(Get.context!)!.error_occurred}",
-                        "${value.status!.message}")
+                        "${value.status!.message}"),
+                    isLoading = false,
+                    update(),
                   }
               });
     } catch (e) {}

@@ -15,7 +15,7 @@ class AddressItem extends StatelessWidget {
   AddressItem({Key? key, required this.address}) : super(key: key);
 
   ProfileViewModle profileViewModle = Get.find<ProfileViewModle>();
-  final Address address;
+  Address address;
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ProfileViewModle>(
@@ -40,7 +40,9 @@ class AddressItem extends StatelessWidget {
                       child: address.isPrimaryAddress == 1
                           ? InkWell(
                               onTap: () {
-                                profileViewModle.editAddress(Address(
+                                print("UnCheck");
+
+                                this.address = Address(
                                   id: address.id,
                                   addressTitle: address.addressTitle,
                                   geoAddress: address.geoAddress,
@@ -52,11 +54,42 @@ class AddressItem extends StatelessWidget {
                                   latitude: address.latitude,
                                   longitude: address.longitude,
                                   isPrimaryAddress: 0,
-                                ));
+                                );
+                                profileViewModle.editAddress(
+                                  Address(
+                                  id: address.id,
+                                  addressTitle: address.addressTitle,
+                                  geoAddress: address.geoAddress,
+                                  extraDetails: address.extraDetails,
+                                  buildingNo: address.buildingNo,
+                                  zone: address.zone,
+                                  streat: address.streat,
+                                  unitNo: address.unitNo,
+                                  latitude: address.latitude,
+                                  longitude: address.longitude,
+                                  isPrimaryAddress: 0,
+                                  
+                                ),true);
+                                profileViewModle.update();
                               },
                               child: SvgPicture.asset("assets/svgs/check.svg"))
                           : InkWell(
                               onTap: () {
+                                print("Check");
+                                this.address = Address(
+                                  id: address.id,
+                                  addressTitle: address.addressTitle,
+                                  geoAddress: address.geoAddress,
+                                  extraDetails: address.extraDetails,
+                                  buildingNo: address.buildingNo,
+                                  zone: address.zone,
+                                  streat: address.streat,
+                                  unitNo: address.unitNo,
+                                  latitude: address.latitude,
+                                  longitude: address.longitude,
+                                  isPrimaryAddress: 1,
+                                );
+
                                 profileViewModle.editAddress(Address(
                                   id: address.id,
                                   addressTitle: address.addressTitle,
@@ -69,7 +102,8 @@ class AddressItem extends StatelessWidget {
                                   latitude: address.latitude,
                                   longitude: address.longitude,
                                   isPrimaryAddress: 1,
-                                ));
+                                ), true);
+                                profileViewModle.update();
                               },
                               child:
                                   SvgPicture.asset("assets/svgs/uncheck.svg"))),
