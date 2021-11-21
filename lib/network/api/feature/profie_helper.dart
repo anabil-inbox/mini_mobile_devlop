@@ -1,6 +1,7 @@
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/api/model/profile_api.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
 class ProfileHelper {
@@ -20,7 +21,7 @@ class ProfileHelper {
     }
   }
 
-  Future<AppResponse> editAddress(Map<String,dynamic> body) async {
+  Future<AppResponse> editAddress(Map<String, dynamic> body) async {
     var appResponse = await ProfileApi.getInstance.uppdateAddress(
         body: body,
         url: "${ConstanceNetwork.editAddressEndPoint}",
@@ -43,36 +44,39 @@ class ProfileHelper {
     }
   }
 
-  Future<AppResponse> deleteAddress({var body}) async{
+  Future<AppResponse> deleteAddress({var body}) async {
     var appResponse = await ProfileApi.getInstance.deleteAddress(
-            url: "${ConstanceNetwork.deleteAdressEndPoint}",
-            header: ConstanceNetwork.header(4),
-            body: body
-            );
-        if (appResponse.status?.success == true) {
-          return appResponse;
-        } else {
-          return appResponse;
-        }
+        url: "${ConstanceNetwork.deleteAdressEndPoint}",
+        header: ConstanceNetwork.header(4),
+        body: body);
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
   }
 
   Future<AppResponse> logOut() async {
     var appResponse = await ProfileApi.getInstance.deleteAddress(
-            url: "${ConstanceNetwork.logOutEndPoint}",
-            header: ConstanceNetwork.header(4),
-            );
-        if (appResponse.status?.success == true) {
-          return appResponse;
-        } else {
-          return appResponse;
-        }
+      url: "${ConstanceNetwork.logOutEndPoint}",
+      header: ConstanceNetwork.header(4),
+    );
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
   }
 
-  Future<AppResponse> editProfile(Map<String,dynamic> body) async {
+  Future<AppResponse> editProfile(Map<String, dynamic> body) async {
     var appResponse = await ProfileApi.getInstance.editProfile(
         body: body,
-        url: "${ConstanceNetwork.editProfilEndPoint}",
+        url:
+            SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty
+                ? "${ConstanceNetwork.editProfilEndPoint}"
+                : "${ConstanceNetwork.editProfilCompanyEndPoint}",
         header: ConstanceNetwork.header(4));
+        
     if (appResponse.status?.success == true) {
       return appResponse;
     } else {

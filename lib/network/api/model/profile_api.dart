@@ -81,9 +81,12 @@ class ProfileApi {
   try{
     var response = await DioManagerClass.getInstance
         .dioPostFormMethod(url: url, header: header , body: body);
+        
         await SharedPref.instance.setCurrentUserData(
                 response.toString()
               );
+           
+     print("msg_response_on_edit_profile ${response.toString()}");      
     return AppResponse.fromJson(json.decode(response.toString()));
 
     }on DioError catch (ex) {

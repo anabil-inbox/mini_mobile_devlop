@@ -17,15 +17,36 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
 import 'package:inbox_clients/util/sh_util.dart';
+import 'package:logger/logger.dart';
 
 // ignore: must_be_immutable
-class CompanyEditProfile extends StatelessWidget {
+class CompanyEditProfile extends StatefulWidget {
   CompanyEditProfile({Key? key}) : super(key: key);
 
+  static final _formKey = GlobalKey<FormState>();
+
+  @override
+  State<CompanyEditProfile> createState() => _CompanyEditProfileState();
+}
+
+class _CompanyEditProfileState extends State<CompanyEditProfile> {
   ProfileViewModle profileViewModle = Get.put(ProfileViewModle());
 
-  static final _formKey = GlobalKey<FormState>();
+    @override
+  void initState() {
+    super.initState();
+    Logger().i("${SharedPref.instance.getCurrentUserData().toJson().toString()}");
+   profileViewModle.tdCompanyApplicantDepartment.text = SharedPref.instance.getCurrentUserData().applicantName ?? "";
+   profileViewModle.tdCompanyNameEdit.text = SharedPref.instance.getCurrentUserData().customerName ?? "";
+   profileViewModle.tdCompanyMobileNumber.text = SharedPref.instance.getCurrentUserData().mobile ?? "";
+   profileViewModle.tdCompanyNameOfApplicationEdit.text = SharedPref.instance.getCurrentUserData().applicantName ?? "";
+    profileViewModle.companySector!.sectorName = SharedPref.instance.getCurrentUserData().companySector ?? "";
+    profileViewModle.tdCompanyEmailEdit.text = SharedPref.instance.getCurrentUserData().email ?? "";
+   profileViewModle.contactMap = SharedPref.instance.getCurrentUserData().contactNumber ??  [{}];  
+  }
+
   var countryCode = "";
+
   var flagUrl = "";
 
   @override
@@ -53,7 +74,7 @@ class CompanyEditProfile extends StatelessWidget {
           width: double.infinity,
           margin: EdgeInsets.symmetric(horizontal: sizeH20!),
           child: Form(
-            key: _formKey,
+            key: CompanyEditProfile._formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -99,6 +120,7 @@ class CompanyEditProfile extends StatelessWidget {
                   height: sizeH25,
                 ),
                 TextFormField(
+                  controller: profileViewModle.tdCompanyNameEdit,
                   textCapitalization: TextCapitalization.sentences,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -106,7 +128,10 @@ class CompanyEditProfile extends StatelessWidget {
                     }
                     return null;
                   },
-                  onSaved: (newValue) {},
+                  onSaved: (newValue) {
+                    profileViewModle.tdCompanyNameEdit.text = newValue!;
+                    profileViewModle.update();
+                  },
                   decoration: InputDecoration(hintText: "${tr.company_name}"),
                 ),
                 SizedBox(
@@ -114,7 +139,11 @@ class CompanyEditProfile extends StatelessWidget {
                 ),
 
                 TextFormField(
-                  onSaved: (newValue) {},
+                  controller: profileViewModle.tdCompanyEmailEdit,
+                  onSaved: (newValue) {
+                    profileViewModle.tdCompanyEmailEdit.text = newValue!;
+                    profileViewModle.update();
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '${tr.fill_your_company_email}';
@@ -180,8 +209,13 @@ class CompanyEditProfile extends StatelessWidget {
                 //   height: padding16,
                 // ),
                 TextFormField(
+                  controller: profileViewModle.tdCompanyNameOfApplicationEdit,
+                  onSaved: (newValue) {
+                    profileViewModle.tdCompanyNameOfApplicationEdit.text = newValue!;
+                    profileViewModle.update();
+                  },
                   textCapitalization: TextCapitalization.sentences,
-                  onSaved: (newValue) {},
+                  
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '${tr.fill_name_of_applicant}';
@@ -195,8 +229,11 @@ class CompanyEditProfile extends StatelessWidget {
                   height: padding16,
                 ),
                 TextFormField(
-                  //  controller: controller.tdApplicantDepartment,
-                  onSaved: (newValue) {},
+                   controller: profileViewModle.tdCompanyApplicantDepartment,
+                  onSaved: (newValue) {
+                    profileViewModle.tdCompanyApplicantDepartment.text = newValue!;
+                    profileViewModle.update();
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '${tr.fill_the_applicant_department}';
@@ -284,16 +321,16 @@ class CompanyEditProfile extends StatelessWidget {
                                 child: TextFormField(
                                   textDirection: TextDirection.ltr,
                                   maxLength: 9,
-                                  onSaved: (newValue) {
-                                    profileViewModle.tdUserMobileNumberEdit
-                                        .text = newValue.toString();
-                                    profileViewModle.update();
-                                  },
+                                 
                                   decoration: InputDecoration(
                                     counterText: "",
                                   ),
-                                  controller:
-                                  profileViewModle.tdUserMobileNumberEdit,
+                             
+                                  controller: profileViewModle.tdCompanyMobileNumber,
+                                onSaved: (newValue) {
+                                  profileViewModle.tdCompanyMobileNumber.text = newValue!;
+                                  profileViewModle.update();
+                                },
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return '${tr.fill_your_phone_number}';
@@ -337,7 +374,7 @@ class CompanyEditProfile extends StatelessWidget {
                           logic.contactMap.removeAt(index);
                           logic.update();
                         },
-                        mobileNumber:logic.tdUserMobileNumberEdit.text ,
+                        mobileNumber: logic.contactMap[index]["mobile_number"] ,
                         onChange: (_) {
                         logic.contactMap[index][ConstanceNetwork.mobileNumberKey] = _;
                         logic.update();
@@ -345,7 +382,6 @@ class CompanyEditProfile extends StatelessWidget {
                     },
                   );
                 }),
-
                 SizedBox(
                   height: sizeH31,
                 ),
@@ -356,8 +392,8 @@ class CompanyEditProfile extends StatelessWidget {
                         isExpanded: true,
                         textButton: "${tr.save}",
                         onClicked: () {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
+                          if (CompanyEditProfile._formKey.currentState!.validate()) {
+                            CompanyEditProfile._formKey.currentState!.save();
                             logic.editProfileUser();
                           }
                         });

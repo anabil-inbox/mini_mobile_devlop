@@ -7,6 +7,8 @@ import 'package:inbox_clients/feature/view/widgets/empty_state/home_empty_statte
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/sh_util.dart';
+import 'package:logger/logger.dart';
 
 // ignore: must_be_immutable
 class HomePageHolder extends StatelessWidget {
@@ -31,7 +33,9 @@ class HomePageHolder extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () {},
+        onPressed: () {
+          Logger().d("${SharedPref.instance.getCurrentUserData().toJson().toString()}");
+        },
         child: Icon(Icons.add),
         elevation: 2.0,
       ),

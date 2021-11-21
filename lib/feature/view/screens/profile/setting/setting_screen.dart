@@ -45,13 +45,13 @@ class SettingsScreen extends StatelessWidget {
             height: sizeH16,
           ),
           SettingItemNoPadding(settingTitle: "${tr.about_inbox}", onTap: (){
-            Get.to(() => TermsScreen());
+            Get.to(() => TermsScreen(isAboutUs: true,));
           }),
            SizedBox(
             height: sizeH16,
           ),
           SettingItemNoPadding(settingTitle: "${tr.terms_and_conditions}", onTap: (){
-
+            Get.to(() => TermsScreen());
           }),
         ],
       ),

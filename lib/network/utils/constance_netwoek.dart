@@ -61,6 +61,8 @@ abstract class ConstanceNetwork {
 
   static String editProfilEndPoint = "inbox_app.api.auth.edit_profile";
 
+  static String editProfilCompanyEndPoint = "inbox_app.api.auth.company_edit_profile";
+
   
   //todo this for constance type of user
   static String userType = "user";

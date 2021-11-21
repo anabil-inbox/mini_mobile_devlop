@@ -5,6 +5,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/map.dart';
+import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -57,19 +58,9 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: scaffoldColor,
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(Get.context!);
-          },
-          icon: SvgPicture.asset("assets/svgs/back_arrow.svg"),
-        ),
-        title: Text(
-          "Edit Address",
-          style: textStyleLargeText(),
-        ),
-        centerTitle: true,
-        backgroundColor: colorBackground,
+      appBar: CustomAppBarWidget(
+        isCenterTitle: true,
+        titleWidget: Text("${tr.edit_address}",style: textStyleAppBarTitle(),),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: sizeH16!),

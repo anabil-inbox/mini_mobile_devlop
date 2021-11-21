@@ -208,10 +208,6 @@ class AuthViewModle extends GetxController {
             {
               Get.put(AuthViewModle()),
               Logger().d(value.data["Customer"]),
-              // SharedPref.instance.setCurrentUserDate(
-              //   value.data["Customer"],
-              // ),
-              // SharedPref.instance.setUserToken(value.data["access_token"]),
               isLoading = false,
               update(),
 
@@ -367,7 +363,7 @@ class AuthViewModle extends GetxController {
       await _checkBiometrics();
       await _getAvailableBiometrics();
       await _authenticate();
-      if (isAuth!) {
+      if (isAuth! && SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty) {
         await signInUser(
             user: User(
                 countryCode: "${SharedPref.instance.getCurrentUserData().countryCode}",
@@ -375,6 +371,15 @@ class AuthViewModle extends GetxController {
                 udid: "$identifier",
                 deviceType: "$deviceType",
                 fcm: "${SharedPref.instance.getFCMToken()}"));
+
+      }else if(isAuth! && SharedPref.instance.getCurrentUserData().crNumber.toString().isNotEmpty){
+        await signInCompany(
+          Company(
+            crNumber: SharedPref.instance.getCurrentUserData().crNumber,
+            deviceType: deviceType,
+            udid: identifier,
+            fcm: "${SharedPref.instance.getFCMToken()}"),
+        );
       }
       isLoading = false;
       update();

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/model/language.dart';
@@ -52,29 +53,32 @@ class SharedPref {
 //   }
 
   setCurrentUserData(String profileData) async {
-  try {
-    bool? isSaved =
-          await _prefs?.setString("$userDataKey", profileData.toString());
-    print(isSaved);
-  } catch (e) {
-    return "$e";
-  }
-}
-
-  Customer getCurrentUserData(){
     try {
-    var string = _prefs?.getString("$userDataKey");
-    var decode = json.decode(string!)["data"]["Customer"];
-    Customer profileData = Customer.fromJson(decode);
-        print("get_Current_user $profileData");
-     return profileData;
+      bool? isSaved =
+          await _prefs?.setString("$userDataKey", profileData.toString());
+      print(isSaved);
     } catch (e) {
+      Logger().e(e);
+      return "$e";
+    }
+  }
+
+  Customer getCurrentUserData() {
+    try {
+      var string = _prefs?.getString("$userDataKey");
+      Logger().e(string);
+      var decode = json.decode(string!)["data"]["Customer"];
+      if (GetUtils.isNull(json.decode(string)["data"]["Customer"])) {
+       decode = json.decode(string)["data"];
+      }
+      Customer profileData = Customer.fromJson(decode);
+      print("get_Current_user ${profileData.toJson().toString()}");
+      return profileData;
+    } catch (e) {
+      Logger().e(e);
       return Customer();
     }
-   
-    
   }
-
 
   getAppSetting() {
     try {
@@ -137,10 +141,9 @@ class SharedPref {
     return _prefs!.getString("$customrKey");
   }
 
-  setUserType(String customerType){
+  setUserType(String customerType) {
     _prefs!.setString("$customrKey", customerType);
   }
-
 
   setUserLoginState(String state) async {
     try {
@@ -164,38 +167,30 @@ class SharedPref {
     _prefs = await SharedPreferences?.getInstance();
   }
 
-   setFCMToken(String fcmToken) async {
-     try{
-     SharedPreferences pref = await SharedPreferences.getInstance();
-     pref.setString("$fcmKey", fcmToken);
-     }catch(e){
-
-     }
- 
-    
+  setFCMToken(String fcmToken) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setString("$fcmKey", fcmToken);
+    } catch (e) {}
   }
 
-   String getFCMToken() {
+  String getFCMToken() {
     return _prefs!.getString("$fcmKey") ?? "";
-   }
+  }
 
-   setUserToken(String token) async{
-    try{
+  setUserToken(String token) async {
+    try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString("$tokenKey", token);
-    }catch(e){
-
-    }
-
+    } catch (e) {}
   }
 
-   getUserToken(){
-        try {
+  getUserToken() {
+    try {
       return SharedPref._prefs!.getString('$tokenKey');
     } catch (e) {
       print(e);
       return "";
     }
-  
-    }
+  }
 }

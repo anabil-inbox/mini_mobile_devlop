@@ -23,7 +23,7 @@ class Customer {
     String? mobile;
     String? countryCode;
     dynamic image;
-    List<dynamic>? contactNumber;
+    List<Map<String,dynamic>>? contactNumber;
 
     factory Customer.fromJson(Map<String, dynamic> json) => Customer(
         id: json["id"] ?? "",
@@ -36,7 +36,7 @@ class Customer {
         mobile: json["mobile"] ?? "",
         countryCode: json["country_code"] ?? "",
         image: json["image"] ?? "",
-        contactNumber: List<dynamic>.from(json["contact_number"].map((x) => x)) ,
+        contactNumber:  List<Map<String,dynamic>>.from(json["contact_number"].map((x) => x)) ,
     );
 
     Map<String, dynamic> toJson() => {
@@ -50,7 +50,7 @@ class Customer {
         "mobile": mobile,
         "country_code": countryCode,
         "image": image,
-        "contact_number": List<dynamic>.from(contactNumber!.map((x) => x)),
+        "contact_number":  List<Map<String,dynamic>>.from(contactNumber!.map((x) => x)),
     };
 }
 

@@ -1,3 +1,4 @@
+import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 import 'package:flutter/material.dart';
@@ -23,19 +24,9 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: scaffoldColor,
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(Get.context!);
-          },
-          icon: SvgPicture.asset("assets/svgs/back_arrow.svg"),
-        ),
-        title: Text(
-          "Add Address",
-          style: textStyleLargeText(),
-        ),
-        centerTitle: true,
-        backgroundColor: colorBackground,
+      appBar: CustomAppBarWidget(
+        isCenterTitle: true,
+        titleWidget: Text("${tr.add_new_address}", style: textStyleAppBarTitle(),),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: sizeH16!),
@@ -217,7 +208,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   init: ProfileViewModle(),
                   builder: (_) {
                     return PrimaryButton(
-                        textButton: "Save",
+                        textButton: "${tr.save}",
                         isLoading: controller.isLoading,
                         onClicked: () {
                           if (_formKey.currentState!.validate()) {
