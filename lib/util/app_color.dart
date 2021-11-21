@@ -11,7 +11,7 @@ Color colorTextHint1 =  Color(0xff676771);
 Color colorScaffoldRegistrationBody = const Color(0xffF7F9FB);
 Color seconderyButton = const Color(0xffDFE1E5);
 Color seconderyButtonUnSelected = const Color(0xff676771);
-Color colorPrimaryOpcaityColor =  Color(0xffE63331).withAlpha(17);
+Color colorPrimaryOpcaityColor =  Color(0xffF6E3E5);
 Color colorBtnGray = const Color(0xFFDADBDF);
 
 //todo this for textField

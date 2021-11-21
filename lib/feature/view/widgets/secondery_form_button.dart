@@ -13,7 +13,9 @@ import 'package:inbox_clients/util/app_style.dart';
 class SeconderyFormButton extends StatelessWidget {
   final Function onClicked;
 
-  const SeconderyFormButton({ Key? key , required this.buttonText, required this.onClicked}) : super(key: key);
+  final Color? color;
+
+  const SeconderyFormButton({ Key? key , required this.buttonText, required this.onClicked,this.color}) : super(key: key);
   final String buttonText;
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class SeconderyFormButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(4)
       ),
       child: MaterialButton(
-        color: seconderyButton,
+        color: color??seconderyButton,
         onPressed:  (){
           onClicked();
           // if (buttonText.toLowerCase()==("${tr.login_as_company.toString().toLowerCase()}")) {
