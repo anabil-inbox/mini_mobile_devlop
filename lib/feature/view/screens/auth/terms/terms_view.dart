@@ -13,7 +13,8 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
 class TermsScreen extends StatelessWidget {
-    const TermsScreen({ Key? key }) : super(key: key);
+  final bool? isAboutUs;
+    const TermsScreen({ Key? key, this.isAboutUs = false,  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class TermsScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         elevation: 1,
-        title: Text("${tr.terms_and_conditions}" , style: textStyleAppBarTitle(),),
+        title: Text( isAboutUs! ? "${tr.about_inbox}" : "${tr.terms_and_conditions}" , style: textStyleAppBarTitle(),),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(Get.context!);
