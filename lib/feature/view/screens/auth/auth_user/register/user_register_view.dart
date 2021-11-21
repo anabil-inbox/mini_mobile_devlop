@@ -23,7 +23,7 @@ class UserRegisterScreen extends GetWidget<AuthViewModle> {
             HeaderRegisterCompany(
               height: sizeH200!,
               onBackPressed: (){
-                print("object");
+                // print("object");
                 Get.offAll(() => UserBothLoginScreen());
               },
             ),
