@@ -9,7 +9,7 @@ import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 
@@ -115,10 +115,10 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                           profileViewModle.update();
                         },
                         decoration: InputDecoration(
-                            hintText: "${AppLocalizations.of(context)!.full_name}"),
+                            hintText: "${tr.full_name}"),
                         validator: (e) {
                           if (e!.isEmpty) {
-                            return '${AppLocalizations.of(context)!.fill_your_name}';
+                            return '${tr.fill_your_name}';
                           }
                           return null;
                         },
@@ -134,10 +134,10 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                         },
                         decoration: InputDecoration(
                             hintText:
-                                "${AppLocalizations.of(context)!.email_address}"),
+                                "${tr.email_address}"),
                         validator: (e) {
                           if (e!.isEmpty) {
-                            return '${AppLocalizations.of(context)!.fill_your_email}';
+                            return '${tr.fill_your_email}';
                           }
                           return null;
                         },
@@ -295,7 +295,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
             child: GetBuilder<ProfileViewModle>(
               builder: (value) {
                 return PrimaryButton(
-                    textButton: "${AppLocalizations.of(context)!.save}",
+                    textButton: "${tr.save}",
                     isLoading: value.isLoading,
                     onClicked: () {
                       if (UserEditProfileScreen._formKey.currentState!

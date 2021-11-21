@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_place/google_place.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
@@ -20,7 +22,6 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileViewModle extends BaseController {
   bool isAccepteDefoltLocation = true;
@@ -180,7 +181,7 @@ class ProfileViewModle extends BaseController {
                 else
                   {
                     snackError(
-                        "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                        "${tr.error_occurred}",
                         "${value.status!.message}"),
                     isLoading = false,
                     update(),

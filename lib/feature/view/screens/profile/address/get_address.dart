@@ -7,8 +7,9 @@ import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class GetAddressScreen extends GetWidget<ProfileViewModle> {
   const GetAddressScreen({Key? key}) : super(key: key);
@@ -53,7 +54,7 @@ class GetAddressScreen extends GetWidget<ProfileViewModle> {
             margin: EdgeInsets.only(
                 right: sizeH20!, left: sizeH20!, bottom: sizeH34!),
             child: PrimaryButton(
-                textButton: "${AppLocalizations.of(context)!.add_new_address}",
+                textButton: "${tr.add_new_address}",
                 isLoading: false,
                 onClicked: () {
                   Get.to(AddAddressScreen());

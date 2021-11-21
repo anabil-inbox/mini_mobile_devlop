@@ -8,7 +8,7 @@ import 'package:inbox_clients/feature/view/screens/storage/details_storage/detai
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 
 class ProfileScreen extends GetWidget<ProfileViewModle> {
@@ -31,7 +31,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                    Get.to(StorageDetailsView());
                   },
                   trailingTitle: "0 QAR",
-                  settingTitle: "${AppLocalizations.of(context)!.my_wallet}",
+                  settingTitle: "${tr.my_wallet}",
                   iconPath: "assets/svgs/wallet.svg",
                 ),
                 SizedBox(height: sizeH12,),  
@@ -40,7 +40,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                    
                   },
                   trailingTitle: "0 point",
-                  settingTitle: "${AppLocalizations.of(context)!.my_rewards}",
+                  settingTitle: "${tr.my_rewards}",
                   iconPath: "assets/svgs/rewareds.svg",
                 ),
                 SizedBox(height: sizeH12,), 
@@ -49,7 +49,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                    changeLanguageBottomSheet();
                   },
                   trailingTitle: "",
-                  settingTitle: "${AppLocalizations.of(context)!.language}",
+                  settingTitle: "${tr.language}",
                   iconPath: "assets/svgs/language_profile.svg",
                 ),
                 SizedBox(height: sizeH12,), 
@@ -57,7 +57,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                   onTap: (){
                   //  Get.to(() => GetAddressScreen());
                   },
-                  settingTitle: "${AppLocalizations.of(context)!.my_address}",
+                  settingTitle: "${tr.my_address}",
                   trailingTitle: "",
                   iconPath: "assets/svgs/adress_icon.svg",
                 ),
@@ -66,7 +66,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                   onTap: (){
                    
                   },
-                  settingTitle: "${AppLocalizations.of(context)!.payment_card}",
+                  settingTitle: "${tr.payment_card}",
                   trailingTitle: "",
                   iconPath: "assets/svgs/payment_card.svg",
                 ),
@@ -75,7 +75,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                   onTap: (){
                     
                   },
-                  settingTitle: "${AppLocalizations.of(context)!.log}",
+                  settingTitle: "${tr.log}",
                   trailingTitle: "",
                   iconPath: "assets/svgs/log_icon.svg",
                 ),
@@ -85,7 +85,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                   //  Get.to(() => SettingsScreen());
 
                   },
-                  settingTitle: "${AppLocalizations.of(context)!.setting}",
+                  settingTitle: "${tr.setting}",
                   trailingTitle: "",
                   iconPath: "assets/svgs/setting.svg",
                 ),
@@ -94,7 +94,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                   onTap: (){
                     controller.logOutDiloag();
                   },
-                  settingTitle: "${AppLocalizations.of(context)!.log_out}",
+                  settingTitle: "${tr.log_out}",
                   trailingTitle: "",
                   iconPath: "assets/svgs/logout.svg",
                 ),

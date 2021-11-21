@@ -8,8 +8,9 @@ import 'package:inbox_clients/feature/view/screens/profile/edit_profile/user_edi
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 
 class HeaderProfileCard extends StatelessWidget {
@@ -88,7 +89,7 @@ class HeaderProfileCard extends StatelessWidget {
           Container(
               margin: EdgeInsets.symmetric(horizontal: sizeH20!),
               child: PrimaryButtonOpacityColor(
-                  textButton: "${AppLocalizations.of(context)!.edit_profile}",
+                  textButton: "${tr.edit_profile}",
                   isLoading: false,
                   onClicked: () {
                    Get.to(() => UserEditProfileScreen());

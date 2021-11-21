@@ -4,8 +4,8 @@ import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/compa
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class SeconderyFormButton extends StatelessWidget {
@@ -24,9 +24,9 @@ class SeconderyFormButton extends StatelessWidget {
         color: seconderyButton,
         onPressed:  (){
           
-           if (buttonText.toLowerCase().contains("${AppLocalizations.of(context)!.company.toString().toLowerCase()}")) {
+           if (buttonText.toLowerCase().contains("${tr.company.toString().toLowerCase()}")) {
              Get.off(() => CompanyBothLoginScreen());
-           }else if(buttonText.toLowerCase().contains("${AppLocalizations.of(context)!.user.toString().toLowerCase()}")){
+           }else if(buttonText.toLowerCase().contains("${tr.user.toString().toLowerCase()}")){
              Get.off(() => UserBothLoginScreen());
            }
         },

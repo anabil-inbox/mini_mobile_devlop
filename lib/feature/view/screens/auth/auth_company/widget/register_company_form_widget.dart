@@ -15,7 +15,7 @@ import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/sh_util.dart';
@@ -289,13 +289,13 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                       onClicked: () {
                         if (logic.companySector == null) {
                           snackError(
-                              "${AppLocalizations.of(context)!.error_occurred}",
-                              "${AppLocalizations.of(context)!.you_have_to_choose_sector_name}");
+                              "${tr.error_occurred}",
+                              "${tr.you_have_to_choose_sector_name}");
                         }
                         if (logic.isAccepte == false) {
                           snackError(
-                              "${AppLocalizations.of(context)!.error_occurred}",
-                              "${AppLocalizations.of(context)!.you_cant_register_without_accept_our_terms}");
+                              "${tr.error_occurred}",
+                              "${tr.you_cant_register_without_accept_our_terms}");
                         }
                         if (_formKey.currentState!.validate() &&
                             logic.companySector != null &&
