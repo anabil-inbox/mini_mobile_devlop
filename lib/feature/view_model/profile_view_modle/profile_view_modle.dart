@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
@@ -24,6 +25,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ProfileViewModle extends BaseController {
   bool isAccepteDefoltLocation = true;
   bool isLoading = false;
+  bool isDeleteting = false;
 
   Address address = Address();
   String? userLat;
@@ -114,17 +116,23 @@ class ProfileViewModle extends BaseController {
   }
 
   getMyAddress() async {
+    isLoading = true;
+    update();
     List data = [];
     try {
       await ProfileHelper.getInstance.getMyAddress().then((value) => {
+            isLoading = false,
             data = value.data,
             userAddress = data.map((e) => Address.fromJson(e)).toList(),
             update()
           });
     } catch (e) {}
+    isLoading = false;
+    update();
   }
 
   deleteAddress(String addressId) async {
+    isDeleteting = true;
     update();
     try {
       await ProfileHelper.getInstance
@@ -132,12 +140,16 @@ class ProfileViewModle extends BaseController {
                 Logger().i("${value.status!.message}"),
                 if (value.status!.success!)
                   {
+                    isDeleteting = false,
+                    update(),
                     snackSuccess(
                         "${tr.success}",
                         "${value.status!.message}"),
                   }
                 else
                   {
+                    isDeleteting = false,
+                    update(),
                     snackError(
                         "${tr.error_occurred}",
                         "${value.status!.message}")
@@ -146,7 +158,9 @@ class ProfileViewModle extends BaseController {
     } catch (e) {}
   }
 
-  editAddress(Address address) async {
+  editAddress(Address address, bool isDefoltAddressUpdate) async {
+    isLoading = true;
+    update();
     try {
       await ProfileHelper.getInstance
           .editAddress(address.toJson())
@@ -154,21 +168,27 @@ class ProfileViewModle extends BaseController {
                 Logger().i("${value.status!.message}"),
                 if (value.status!.success!)
                   {
+                    Logger().i(value.toJson().toString()),
                     snackSuccess(
                         "${tr.success}",
                         "${value.status!.message}"),
                     getMyAddress(),
-                    Get.back()
+                    isDefoltAddressUpdate ? {} : Get.back(),
+                    isLoading = false,
+                    update()
                   }
                 else
                   {
                     snackError(
-                        "${tr.error_occurred}",
-                        "${value.status!.message}")
+                        "${AppLocalizations.of(Get.context!)!.error_occurred}",
+                        "${value.status!.message}"),
+                    isLoading = false,
+                    update(),
                   }
               });
     } catch (e) {}
   }
+
   //-- for log out
 
   logOutDiloag() {
@@ -273,7 +293,7 @@ class ProfileViewModle extends BaseController {
           {"mobile_number": 85555555, "country_code": 972}
         ]*/
       }).then((value) => {
-        
+
        Logger().i("${value.status!.message}"),
             if (value.status!.success!)
               {
@@ -325,12 +345,82 @@ class ProfileViewModle extends BaseController {
     );
   }
 
+  // for maps functions && td Controller :
+  TextEditingController tdSearchMap = TextEditingController();
+  Completer<GoogleMapController> controllerCompleter = Completer();
+  double latitude = 25.36;
+  double longitude = 51.18;
+  String addressFromLocation = "";
+  AutocompletePrediction? selectAutocompletePrediction;
+  GooglePlace googlePlace =
+      GooglePlace("AIzaSyAozWyP-XVpiaIfqgKprWwwCce5ou46YZE");
+  Marker mark = Marker(markerId: MarkerId(LatLng(25.36, 51.18).toString()));
+  List<AutocompletePrediction> predictions = [];
+  CameraPosition kGooglePlex = CameraPosition(
+    target: LatLng(25.36, 51.18),
+    zoom: 10,
+  );
+
+  void autoCompleteSearch(String value) async {
+    var result = await googlePlace.queryAutocomplete.get(value);
+    if (result != null && result.predictions != null) {
+      predictions = result.predictions!;
+    } else {
+      predictions = [];
+    }
+    update();
+  }
+
+  onClickMap(LatLng point) {
+    try {
+      mark = Marker(
+        markerId: MarkerId(point.toString()),
+        position: point,
+        infoWindow: InfoWindow(
+          title: 'Marker',
+        ),
+      );
+    } catch (e) {
+      print("msg_error $e");
+    }
+    update();
+  }
+
+  getDetailsPlace(String placeName, String placeId) async {
+    googlePlace.details.get(placeId).then((value) {
+      DetailsResponse detailsResponse = value!;
+      latitude = detailsResponse.result!.geometry!.location!.lat!;
+      longitude = detailsResponse.result!.geometry!.location!.lng!;
+      addressFromLocation = placeName;
+      createCurrentMarker(LatLng(latitude, longitude), "$placeName");
+    });
+    update();
+  }
+
+  void createCurrentMarker(LatLng point, String title) async {
+    latitude = point.latitude;
+    longitude = point.longitude;
+    print("create current marker $point");
+    await getAddressFromLatLong(LatLng(latitude, longitude));
+    update();
+  }
+
+  Future<void> getAddressFromLatLong(LatLng position) async {
+    onClickMap(position);
+    kGooglePlex = CameraPosition(target: position);
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    Placemark place = placemarks[0];
+    String address =
+        '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+    tdLocation.text = address;
+    tdLocationEdit.text = address;
+    update();
+  }
+
   @override
   void onInit() {
     super.onInit();
-    // getMyAddress();
-    // currentCustomer = SharedPref.instance.getCurrentUserData();
-    //  update();
-    //  editProfileUser();
+    getMyAddress();
   }
 }
