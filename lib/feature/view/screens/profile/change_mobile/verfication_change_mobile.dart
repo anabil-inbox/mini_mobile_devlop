@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/widget/header_code_verfication_widget.dart';
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
+import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -12,79 +13,126 @@ import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-
 class VerficationChangeMobilScreen extends StatefulWidget {
-
   @override
-  State<VerficationChangeMobilScreen> createState() => _ChangeMobilScreenState();
+  State<VerficationChangeMobilScreen> createState() =>
+      _ChangeMobilScreenState();
 }
 
 class _ChangeMobilScreenState extends State<VerficationChangeMobilScreen> {
-
   ProfileViewModle profileViewModle = Get.find<ProfileViewModle>();
+  AuthViewModle authViewModle = Get.find<AuthViewModle>();
   @override
   void initState() {
     super.initState();
     profileViewModle.startTimerCounter = 60;
     profileViewModle.startTimer();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorScaffoldRegistrationBody,
-      body: ListView(
-        padding: const EdgeInsets.all(0),
-        children: [
+        backgroundColor: colorScaffoldRegistrationBody,
+        body: ListView(padding: const EdgeInsets.all(0), children: [
           HeaderCodeVerfication(),
           Column(
             children: [
-            SizedBox(
-              height: sizeH16,
-            ),
-            Text(
-              "${AppLocalizations.of(context)!.enter_your_passcode}",
-              style: textStyleHints(),
-            ),
-            
-          SizedBox(
-            height: sizeH190,
+              SizedBox(
+                height: sizeH16,
+              ),
+              Text(
+                "${AppLocalizations.of(context)!.enter_your_passcode}",
+                style: textStyleHints(),
+              ),
+              SizedBox(
+                height: sizeH30!,
+              ),
+              bildeTextActiveCode(context),
+              SizedBox(
+                height: sizeH20,
+              ),
+              InkWell(
+                splashColor: colorTrans,
+                highlightColor: colorTrans,
+                onTap: () {
+                  if (authViewModle.startTimerCounter == 0) {
+                    authViewModle.startTimerCounter = 60;
+                    authViewModle.startTimer();
+                    authViewModle.update();
+                    authViewModle.reSendVerficationCode(
+                        id: SharedPref.instance.getCurrentUserData().id,
+                        udid: authViewModle.identifier,
+                        // countryCode: countryCode,
+                        // mobileNumber: mobileNumber,
+                        target: "email");
+                  } else {
+                    print("msg_Blocked ${authViewModle.startTimerCounter}");
+                  }
+                },
+                child: RichText(
+                  text: TextSpan(style: textStyleTitle(), children: [
+                    TextSpan(
+                        text: "${AppLocalizations.of(context)!.verify_by} ",
+                        style: textStyleHint()!.copyWith(
+                            fontWeight: FontWeight.normal,
+                            fontSize: fontSize14)),
+                    TextSpan(
+                        text: "${AppLocalizations.of(context)!.email_address}",
+                        style: textStyleUnderLinePrimary()!.copyWith(
+                            decoration: TextDecoration.none,
+                            fontWeight: FontWeight.normal,
+                            fontSize: fontSize14))
+                  ]),
+                ),
+              ),
+              SizedBox(
+                height: sizeH190,
+              ),
+              GetBuilder<AuthViewModle>(
+                builder: (value) {
+                  return Column(
+                    children: [
+                      value.startTimerCounter != 0
+                          ? Text(
+                              "${AppLocalizations.of(context)!.resend_code_in} : ${value.startTimerCounter}",
+                              style: textStyleHint()!.copyWith(
+                                  decoration: TextDecoration.none,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: fontSize14),
+                            )
+                          : const SizedBox(),
+                      value.startTimerCounter == 0
+                          ? InkWell(
+                              splashColor: colorTrans,
+                              highlightColor: colorTrans,
+                              onTap: () {
+                                value.reSendVerficationCode(
+                                  countryCode: SharedPref.instance
+                                      .getCurrentUserData()
+                                      .countryCode,
+                                  target: "sms",
+                                  mobileNumber: value.tdMobileNumber.text,
+                                  udid: value.identifier,
+                                );
+                                value.startTimerCounter = 60;
+                                value.startTimer();
+                                value.update();
+                              },
+                              child: Text(
+                                "${AppLocalizations.of(context)!.resend}",
+                                style: textStyleUnderLinePrimary()!.copyWith(
+                                    decoration: TextDecoration.none,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: fontSize14),
+                              ))
+                          : const SizedBox(),
+                    ],
+                  );
+                },
+              ),
+            ],
           ),
-          GetBuilder<ProfileViewModle>(
-            builder: (value) {
-              return Column(
-                children: [
-                 value.startTimerCounter != 0 ? Text(
-                    "${AppLocalizations.of(context)!.resend_code_in} : ${value.startTimerCounter}",
-                    style: textStyleHint()!.copyWith(decoration: TextDecoration.none,fontWeight: FontWeight.normal,fontSize: fontSize14),
-                  ) : const SizedBox(),
-                  value.startTimerCounter == 0
-                      ? InkWell(
-                          splashColor: colorTrans,
-                          highlightColor: colorTrans,
-                          onTap: () {
-                            //   value.reSendVerficationCode(
-                            //   countryCode: countryCode,
-                            //   target: type == "user" ? "sms" : "eamil",
-                            //   mobileNumber: mobileNumber,
-                            //   udid: value.identifier,
-                            // );
-                            value.startTimerCounter = 60;
-                            value.startTimer();
-                            value.update();
-                          },
-                          child: Text(
-                            "${AppLocalizations.of(context)!.resend}",
-                            style: textStyleUnderLinePrimary()!.copyWith(decoration: TextDecoration.none,fontWeight: FontWeight.normal,fontSize: fontSize14),
-                          ))
-                      : const SizedBox()
-                ],
-              );
-            },
-          )
-        ],
-      ),
-         ]));
+        ]));
   }
 
   Widget bildeTextActiveCode(
@@ -93,6 +141,7 @@ class _ChangeMobilScreenState extends State<VerficationChangeMobilScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: sizeW80!),
       child: PinCodeTextField(
+        controller: authViewModle.tdPinCode,
         hintCharacter: "__",
         hintStyle: textStyleTitle(),
         length: 4,
@@ -118,17 +167,16 @@ class _ChangeMobilScreenState extends State<VerficationChangeMobilScreen> {
         enableActiveFill: true,
         keyboardType: TextInputType.number,
         onCompleted: (v) {
-          if(v=="1234"){
-            Get.put(ProfileViewModle());
-            Get.offAll(() => ProfileScreen());
+          if (v == "1234") {
+            // Get.put(ProfileViewModle());
+            // Get.offAll(() => ProfileScreen());
           }
-          // authViewModle.checkVerficationCode(
-          //   countryCode: countryCode,
-          //   mobileNumber: mobileNumber,
-          //   code: v.toString(),
-          //   udid: controller.identifier,
-          // );
-        
+          authViewModle.checkVerficationCode(
+            id: SharedPref.instance.getCurrentUserData().id,
+            countryCode: authViewModle.defCountry.prefix,
+            mobileNumber: authViewModle.tdMobileNumber.text,
+            code: v.toString(),
+          );
         },
         onChanged: (value) {},
         /*validator: (value) {

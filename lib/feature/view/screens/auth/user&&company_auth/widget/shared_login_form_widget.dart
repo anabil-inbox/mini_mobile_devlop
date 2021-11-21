@@ -134,7 +134,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                                   controller.signInUser(
                                       user: User(
                                     countryCode:
-                                        "${controller.defCountry.prefix!.replaceFirst("+", "")}",
+                                        "${controller.defCountry.prefix}",
                                     mobile: controller.tdMobileNumber.text,
                                     udid: controller.identifier,
                                     deviceType: controller.deviceType,
@@ -176,7 +176,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                               controller.signInUser(
                                   user: User(
                                 countryCode:
-                                    "${controller.defCountry.prefix!.replaceAll("+", "")}",
+                                    "${controller.defCountry.prefix}",
                                 mobile: controller.tdMobileNumber.text,
                                 udid: controller.identifier,
                                 deviceType: controller.deviceType,

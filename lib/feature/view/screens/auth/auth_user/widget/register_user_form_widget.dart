@@ -204,7 +204,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                                   fullName: controller.tdName.text,
                                   udid: controller.identifier,
                                   fcm: "${SharedPref.instance.getFCMToken()}",
-                                  countryCode: "${controller.defCountry.prefix!.replaceAll("+", "")}"));
+                                  countryCode: "${controller.defCountry.prefix}"));
                         }
 
                       });

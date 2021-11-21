@@ -11,6 +11,9 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'address/get_address.dart';
+import 'setting/setting_screen.dart';
+
 
 class ProfileScreen extends GetWidget<ProfileViewModle> {
   const ProfileScreen({ Key? key }) : super(key: key);
@@ -56,7 +59,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                 SizedBox(height: sizeH12,), 
                 SettingItem(
                   onTap: (){
-                  //  Get.to(() => GetAddressScreen());
+                    Get.to(() => GetAddressScreen());
                   },
                   settingTitle: "${AppLocalizations.of(context)!.my_address}",
                   trailingTitle: "",
@@ -83,8 +86,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                 SizedBox(height: sizeH12,), 
                 SettingItem(
                   onTap: (){
-                  //  Get.to(() => SettingsScreen());
-                  Get.to(() => Controller());
+                    Get.to(() => SettingsScreen());
                   },
                   settingTitle: "${AppLocalizations.of(context)!.setting}",
                   trailingTitle: "",

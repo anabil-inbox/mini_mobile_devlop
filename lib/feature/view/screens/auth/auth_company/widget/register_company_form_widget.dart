@@ -304,7 +304,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                               company: Company(
                             crNumber: logic.tdcrNumber.text,
                             countryCode:
-                                logic.defCountry.prefix!.replaceAll("+", ""),
+                                logic.defCountry.prefix,
                             companyName: logic.tdCompanyName.text,
                             companySector: logic.companySector!.name,
                             applicantName: logic.tdNameOfApplicant.text,

@@ -25,7 +25,7 @@ class GetAddressScreen extends GetWidget<ProfileViewModle> {
           icon: SvgPicture.asset("assets/svgs/back_arrow.svg"),
         ),
         title: Text(
-          "Add Address",
+          "My Address",
           style: textStyleLargeText(),
         ),
         centerTitle: true,
@@ -38,14 +38,12 @@ class GetAddressScreen extends GetWidget<ProfileViewModle> {
           ),
           Expanded(
             child: GetBuilder<ProfileViewModle>(
-              init: ProfileViewModle(),
               builder: (logic) {
-                return !logic.isLoading
-                    ? ListView(
-                        children: controller.userAddress
+                return  ListView(
+                        children: logic.userAddress
                             .map((e) => AddressItem(address: e))
-                            .toList())
-                    : Image.asset("assets/gif/loading_shimmer.gif");
+                            .toList()
+                            );
               },
             ),
           ),

@@ -15,15 +15,16 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget{
   final double? elevation;
   final Widget? leadingWidget;
   final Function()? onBackBtnClick;
+  final double? leadingWidth;
 
 
-  const CustomAppBarWidget({Key? key, this.isCenterTitle = false, this.titleWidget, this.actionsWidgets, this.appBarColor, this.brightness, this.elevation, this.leadingWidget, this.onBackBtnClick}) : super(key: key);
+  const CustomAppBarWidget({Key? key, this.isCenterTitle = false, this.titleWidget, this.actionsWidgets, this.appBarColor, this.brightness, this.elevation, this.leadingWidget, this.onBackBtnClick , this.leadingWidth}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
     return AppBar(
-      leadingWidth: sizeW90,
+      leadingWidth: GetUtils.isNull(leadingWidth)? sizeW90 : leadingWidth,
       automaticallyImplyLeading: true,
       centerTitle: isCenterTitle,
       title: titleWidget??const SizedBox.shrink(),

@@ -314,7 +314,7 @@ class AuthViewModle extends GetxController {
               snackSuccess("${AppLocalizations.of(Get.context!)!.success}",
                   "${value.status!.message}"),
               Get.put(ProfileViewModle()),
-              Get.off(() => ProfileScreen()),
+              Get.offAll(() => ProfileScreen()),
               //   Get.off(() => HomeScreen()),
             }
           else
@@ -324,6 +324,7 @@ class AuthViewModle extends GetxController {
             }
         });
   }
+
 
   reSendVerficationCode(
       {String? udid,
@@ -335,7 +336,7 @@ class AuthViewModle extends GetxController {
     update();
     await AuthHelper.getInstance.reSendVerficationCode({
       "id": "$id",
-      "udid": "$udid",
+      "udid": "$identifier",
       "target": "$target",
       "mobile_number": "$mobileNumber",
       "country_code": "$countryCode"

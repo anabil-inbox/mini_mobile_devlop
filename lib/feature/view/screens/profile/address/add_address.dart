@@ -7,6 +7,7 @@ import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -137,7 +138,8 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                 ),
                 TextFormField(
                   onTap: (){
-                   Get.to(() => MapScreen());
+                   Get.to(() => MapSample());
+                  // Get.to(() => Body());
                   },
                   onSaved: (newValue) {
                     controller.tdLocation.text = newValue!;
@@ -216,7 +218,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   init: ProfileViewModle(),
                   builder: (_) {
                     return PrimaryButton(
-                        textButton: "Save",
+                        textButton: "${tr.save}",
                         isLoading: controller.isLoading,
                         onClicked: () {
                           if (_formKey.currentState!.validate()) {
@@ -229,8 +231,9 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                               extraDetails: controller.tdExtraDetailes.text,
                               buildingNo: controller.tdBuildingNo.text,
                               unitNo: controller.tdUnitNo.text,
-                              latitude: double.parse(controller.userLat ?? ""),
-                              longitude: double.parse(controller.userLong ?? ""),
+                              geoAddress: controller.tdLocation.text,
+                              latitude: controller.mark.position.latitude ,
+                              longitude: controller.mark.position.longitude,
                             ));
                           }
                         },

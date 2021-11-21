@@ -9,6 +9,7 @@ class Address {
         this.extraDetails,
         this.longitude,
         this.latitude,
+        this.geoAddress,
         this.isPrimaryAddress,
     });
 
@@ -21,6 +22,7 @@ class Address {
     String? extraDetails;
     double? longitude;
     double? latitude;
+    String? geoAddress;
     int? isPrimaryAddress;
 
     factory Address.fromJson(Map<String, dynamic> json) => Address(
@@ -30,6 +32,7 @@ class Address {
         unitNo: json["unit_no"],
         zone: json["zone"],
         streat: json["streat"],
+        geoAddress: json["geo_address"],
         extraDetails: json["extra_details"],
         longitude: json["longitude"].toDouble(),
         latitude: json["latitude"].toDouble(),
@@ -42,6 +45,7 @@ class Address {
         "building_no": buildingNo,
         "unit_no": unitNo,
         "zone": zone,
+        "geo_address":geoAddress,
         "streat": streat,
         "extra_details": extraDetails,
         "longitude": longitude,
