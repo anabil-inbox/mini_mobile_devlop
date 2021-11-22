@@ -26,7 +26,7 @@ class MapSample extends GetWidget<ProfileViewModle> {
                   child: Container(
                     clipBehavior: Clip.hardEdge,
                     decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                    BoxDecoration(borderRadius: BorderRadius.circular(15)),
                     child: TextFormField(
                       controller: controller.tdSearchMap,
                       decoration: InputDecoration(
