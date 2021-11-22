@@ -26,9 +26,9 @@ class Country {
     }
 
     Map<String, dynamic> toJson() => {
-        "name": name,
-        "flag": flag,
-        "prefix": prefix,
+        "name": name ?? "",
+        "flag": flag ?? "",
+        "prefix": prefix ?? "",
     };
 }
 

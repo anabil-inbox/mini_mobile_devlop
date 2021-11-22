@@ -136,33 +136,37 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                 SizedBox(
                   height: sizeH10,
                 ),
-                TextFormField(
+                InkWell(
                   onTap: (){
                    Get.to(() => MapSample());
                   },
-                  onSaved: (newValue) {
-                    controller.tdLocation.text = newValue!;
-                    controller.update();
-                  },
-                  controller: controller.tdLocation,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '${AppLocalizations.of(Get.context!)!.choose_your_location}';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                      suffixIcon: Image.asset(
-                        "assets/png/Location.png",
-                        color: Colors.transparent,
-                      ),
-                      // suffixIcon: SvgPicture.asset(
-                      //   "assets/svgs/location.svg",
-                      //   color: Colors.transparent,
-                      // ),
-                      suffixStyle: TextStyle(color: Colors.transparent),
-                      hintText:
-                          "${AppLocalizations.of(context)!.choose_your_location}"),
+                  child: TextFormField(
+                    onSaved: (newValue) {
+                      controller.tdLocation.text = newValue!;
+                      controller.update();
+                    },
+                    controller: controller.tdLocation,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '${AppLocalizations.of(Get.context!)!.choose_your_location}';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        enabled: false,
+                        suffixIcon: Image.asset(
+                          "assets/png/Location.png",
+                          width: 10,
+                          height: 10,
+                        ),
+                        // suffixIcon: SvgPicture.asset(
+                        //   "assets/svgs/location.svg",
+                        //   color: Colors.transparent,
+                        // ),
+                        suffixStyle: TextStyle(color: Colors.transparent),
+                        hintText:
+                            "${AppLocalizations.of(context)!.choose_your_location}"),
+                  ),
                 ),
                 SizedBox(
                   height: sizeH10,
@@ -252,6 +256,4 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
       ),
     );
   }
-
-
 }

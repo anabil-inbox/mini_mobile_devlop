@@ -24,40 +24,35 @@ class ProfileApi {
   }
 
   Future<AppResponse> getMyAddress({var url, var header, var body}) async {
-    try{
-    var response = await DioManagerClass.getInstance
-        .dioGetMethod(url: url, header: header);
-    return AppResponse.fromJson(json.decode(response.toString()));
-
-    }on DioError catch (ex) {
+    try {
+      var response = await DioManagerClass.getInstance
+          .dioGetMethod(url: url, header: header);
+      return AppResponse.fromJson(json.decode(response.toString()));
+    } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
       return AppResponse.fromJson(message);
     }
-
   }
- 
+
   Future<AppResponse> uppdateAddress({var url, var header, var body}) async {
-    try{
-    var response = await DioManagerClass.getInstance
-        .dioPostMethod(url: url, header: header , body: body);
-    return AppResponse.fromJson(json.decode(response.toString()));
-
-    }on DioError catch (ex) {
+    try {
+      var response = await DioManagerClass.getInstance
+          .dioPostMethod(url: url, header: header, body: body);
+      return AppResponse.fromJson(json.decode(response.toString()));
+    } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
       return AppResponse.fromJson(message);
     }
-
   }
 
-  Future<AppResponse> deleteAddress({var url, var header, var body}) async{
-     try{
-    var response = await DioManagerClass.getInstance
-        .dioPostMethod(url: url, header: header , body:body);
-    return AppResponse.fromJson(json.decode(response.toString()));
-
-    }on DioError catch (ex) {
+  Future<AppResponse> deleteAddress({var url, var header, var body}) async {
+    try {
+      var response = await DioManagerClass.getInstance
+          .dioPostMethod(url: url, header: header, body: body);
+      return AppResponse.fromJson(json.decode(response.toString()));
+    } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
       return AppResponse.fromJson(message);
@@ -65,12 +60,11 @@ class ProfileApi {
   }
 
   Future<AppResponse> logOut({var url, var header}) async {
-    try{
-    var response = await DioManagerClass.getInstance
-        .dioGetMethod(url: url, header: header);
-    return AppResponse.fromJson(json.decode(response.toString()));
-
-    }on DioError catch (ex) {
+    try {
+      var response = await DioManagerClass.getInstance
+          .dioGetMethod(url: url, header: header);
+      return AppResponse.fromJson(json.decode(response.toString()));
+    } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
       return AppResponse.fromJson(message);
@@ -78,18 +72,19 @@ class ProfileApi {
   }
 
   Future<AppResponse> editProfile({var url, var header, var body}) async {
-  try{
-    var response = await DioManagerClass.getInstance
-        .dioPostFormMethod(url: url, header: header , body: body);
-        
-        await SharedPref.instance.setCurrentUserData(
-                response.toString()
-              );
-           
-     print("msg_response_on_edit_profile ${response.toString()}");      
-    return AppResponse.fromJson(json.decode(response.toString()));
+    try {
+      var response = await DioManagerClass.getInstance
+          .dioPostFormMethod(url: url, header: header, body: body);
 
-    }on DioError catch (ex) {
+      Logger().i(response);
+      if (response.toString().contains("success:false")) {
+        print("msg_if_false");
+      } else {
+        await SharedPref.instance.setCurrentUserData(response.toString());
+      }
+
+      return AppResponse.fromJson(json.decode(response.toString()));
+    } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
       return AppResponse.fromJson(message);

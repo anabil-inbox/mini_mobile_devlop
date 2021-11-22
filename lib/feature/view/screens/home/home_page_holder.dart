@@ -34,7 +34,9 @@ class HomePageHolder extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
         onPressed: () {
-          Logger().d("${SharedPref.instance.getCurrentUserData().toJson().toString()}");
+          Logger().d(
+              "${SharedPref.instance.getCurrentUserData().toJson().toString()}");
+          Logger().d("${SharedPref.instance.getUserToken()}");
         },
         child: Icon(Icons.add),
         elevation: 2.0,

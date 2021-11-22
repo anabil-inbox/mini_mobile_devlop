@@ -45,8 +45,6 @@ class DioManagerClass {
     print("msg_request_url : $url");
     print("msg_request_header : $header");
     print("msg_request_body : $body");
-    print("msg_request_current_user ${SharedPref.instance.getCurrentUserData().toJson().toString()}");
-    print("msg_request_current_user_cr_number ${SharedPref.instance.getCurrentUserData().crNumber}");
     return await _dio!.post(
       url,
       options: Options(headers: header),

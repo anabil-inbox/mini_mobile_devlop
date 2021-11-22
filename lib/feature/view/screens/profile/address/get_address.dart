@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/add_address.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/address_item.dart';
@@ -11,7 +10,6 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
-
 class GetAddressScreen extends GetWidget<ProfileViewModle> {
   const GetAddressScreen({Key? key}) : super(key: key);
 
@@ -21,7 +19,10 @@ class GetAddressScreen extends GetWidget<ProfileViewModle> {
       backgroundColor: scaffoldColor,
       appBar: CustomAppBarWidget(
         isCenterTitle: true,
-        titleWidget: Text("${tr.my_address}",style: textStyleAppBarTitle(),),
+        titleWidget: Text(
+          "${tr.my_address}",
+          style: textStyleAppBarTitle(),
+        ),
       ),
       body: Column(
         children: [
@@ -32,12 +33,12 @@ class GetAddressScreen extends GetWidget<ProfileViewModle> {
             child: GetBuilder<ProfileViewModle>(
               init: ProfileViewModle(),
               builder: (logic) {
-                return !logic.isLoading
-                    ? ListView(
+                return logic.userAddress.isEmpty
+                    ? const SizedBox()
+                    : ListView(
                         children: controller.userAddress
                             .map((e) => AddressItem(address: e))
-                            .toList())
-                    : Image.asset("assets/gif/loading_shimmer.gif");
+                            .toList());
               },
             ),
           ),
@@ -50,8 +51,7 @@ class GetAddressScreen extends GetWidget<ProfileViewModle> {
                 onClicked: () {
                   Get.to(AddAddressScreen());
                 },
-                isExpanded: true
-                ),
+                isExpanded: true),
           )
         ],
       ),

@@ -173,29 +173,33 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                     SizedBox(
                       height: sizeH10,
                     ),
-                    TextFormField(
+                    InkWell(
                       onTap: () {
                         Get.to(() => MapSample());
                       },
-                      onSaved: (newValue) {
-                        controller.tdLocationEdit.text = newValue!;
-                        controller.update();
-                      },
-                      controller: controller.tdLocationEdit,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '${AppLocalizations.of(Get.context!)!.choose_your_location}';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          suffixIcon: Image.asset(
-                            "assets/png/Location.png",
-                            color: Colors.transparent,
-                          ),
-                          suffixStyle: TextStyle(color: Colors.transparent),
-                          hintText:
-                              "${AppLocalizations.of(context)!.choose_your_location}"),
+                      child: TextFormField(
+                        onSaved: (newValue) {
+                          controller.tdLocationEdit.text = newValue!;
+                          controller.update();
+                        },
+                        controller: controller.tdLocationEdit,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '${AppLocalizations.of(Get.context!)!.choose_your_location}';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          enabled: false,
+                            suffixIcon: Image.asset(
+                              "assets/png/Location.png",
+                              width: sizeW15,
+                              height: sizeH16,
+                            ),
+                            suffixStyle: TextStyle(color: Colors.transparent),
+                            hintText:
+                                "${AppLocalizations.of(context)!.choose_your_location}"),
+                      ),
                     ),
                     SizedBox(
                       height: sizeH10,

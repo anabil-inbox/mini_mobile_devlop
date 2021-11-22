@@ -69,8 +69,9 @@ class SharedPref {
       var decode;
       if (GetUtils.isNull(json.decode(string!)["data"]["Customer"])) {
         decode = json.decode(string)["data"];
+      }else{
+       decode = json.decode(string)["data"]["Customer"];
       }
-      decode = json.decode(string)["data"]["Customer"];
       Customer profileData = Customer.fromJson(decode);
       return profileData;
     } catch (e) {

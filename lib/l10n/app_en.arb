@@ -107,5 +107,7 @@
     "scan_your_fingerprint_to_authenticate":"Scan your fingerprint to authenticate",
     "cancle":"Cancle",
     "are_you_sure_you_want_to_log_out":"Are You Sure You want to Log Out ?",
-    "edit_address": "Edit Address"
+    "edit_address": "Edit Address",
+    "alternative_contact":"Alternative Contact",
+    "are_you_sure_you_want_to_delete_address":"are You Sure You Want To Delete Address ?"
 }
