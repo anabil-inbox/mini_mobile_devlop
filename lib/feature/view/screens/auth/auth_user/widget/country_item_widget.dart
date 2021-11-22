@@ -41,7 +41,7 @@ class CountryItem extends StatelessWidget {
                        selectedIndex == cellIndex ?  
                        SvgPicture.asset("assets/svgs/check.svg") : 
                        SvgPicture.asset("assets/svgs/uncheck.svg"),
-                      SizedBox(width: sizeW15,),
+                      SizedBox(width: sizeW10,),
                       GetUtils.isNull(item.flag) || 
                       item.flag.toString().isEmpty ? SizedBox(  width: 36,
                         height: 26)
@@ -50,6 +50,7 @@ class CountryItem extends StatelessWidget {
                         width: 36,
                         height: 26
                       ),
+                      SizedBox(width: sizeW10,),
                       Expanded(child: Text(item.name!)),
                     ],
                   ),

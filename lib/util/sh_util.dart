@@ -126,6 +126,8 @@ class SharedPref {
   setAppLanguage(var local) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString('$languageKey', local.toString());
+    print("exxx:${local.toString()}");
+
   }
 
   String getAppLanguageMain() {

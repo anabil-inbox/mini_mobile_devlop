@@ -478,10 +478,10 @@ class CustomMaterialPageRoute extends MaterialPageRoute {
 }
 
 bool isArabicLang() {
-  return SharedPref.instance.getAppLanguage() == "ar"
+  return (SharedPref.instance.getAppLanguageMain() == "ar"
       ? true
-      : false;
-  // bool isRTL=TextDirection.RTL as bool;
+      : false);
+  bool isRTL=TextDirection.RTL as bool;
   // return isRTL;
 }
 
