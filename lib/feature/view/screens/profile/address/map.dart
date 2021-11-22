@@ -131,6 +131,8 @@ class MapSample extends GetWidget<ProfileViewModle> {
                                         controller
                                             .selectAutocompletePrediction!
                                             .placeId!);
+                                      controller.predictions = [];
+                                      controller.update();    
                                   },
                                   child: Column(
                                     crossAxisAlignment:
