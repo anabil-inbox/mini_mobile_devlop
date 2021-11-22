@@ -33,7 +33,7 @@ class MapSample extends GetWidget<ProfileViewModle> {
                           filled: true,
                           fillColor: scaffoldColor,
                           prefixIcon: Padding(
-                            padding: const EdgeInsets.all(12),
+                            padding: const EdgeInsets.all(15),
                             child: SvgPicture.asset(
                               "assets/svgs/search_icon.svg",
                             ),
