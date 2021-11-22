@@ -6,16 +6,18 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/edit_address.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 // ignore: must_be_immutable
 class AddressItem extends StatelessWidget {
   AddressItem({Key? key, required this.address}) : super(key: key);
 
   ProfileViewModle profileViewModle = Get.find<ProfileViewModle>();
-   Address address;
+  Address address;
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ProfileViewModle>(
@@ -56,20 +58,20 @@ class AddressItem extends StatelessWidget {
                                   isPrimaryAddress: 0,
                                 );
                                 profileViewModle.editAddress(
-                                  Address(
-                                  id: address.id,
-                                  addressTitle: address.addressTitle,
-                                  geoAddress: address.geoAddress,
-                                  extraDetails: address.extraDetails,
-                                  buildingNo: address.buildingNo,
-                                  zone: address.zone,
-                                  streat: address.streat,
-                                  unitNo: address.unitNo,
-                                  latitude: address.latitude,
-                                  longitude: address.longitude,
-                                  isPrimaryAddress: 0,
-
-                                ),true);
+                                    Address(
+                                      id: address.id,
+                                      addressTitle: address.addressTitle,
+                                      geoAddress: address.geoAddress,
+                                      extraDetails: address.extraDetails,
+                                      buildingNo: address.buildingNo,
+                                      zone: address.zone,
+                                      streat: address.streat,
+                                      unitNo: address.unitNo,
+                                      latitude: address.latitude,
+                                      longitude: address.longitude,
+                                      isPrimaryAddress: 0,
+                                    ),
+                                    true);
                                 profileViewModle.update();
                               },
                               child: SvgPicture.asset("assets/svgs/check.svg"))
@@ -90,19 +92,21 @@ class AddressItem extends StatelessWidget {
                                   isPrimaryAddress: 1,
                                 );
 
-                                profileViewModle.editAddress(Address(
-                                  id: address.id,
-                                  addressTitle: address.addressTitle,
-                                  geoAddress: address.geoAddress,
-                                  extraDetails: address.extraDetails,
-                                  buildingNo: address.buildingNo,
-                                  zone: address.zone,
-                                  streat: address.streat,
-                                  unitNo: address.unitNo,
-                                  latitude: address.latitude,
-                                  longitude: address.longitude,
-                                  isPrimaryAddress: 1,
-                                ), true);
+                                profileViewModle.editAddress(
+                                    Address(
+                                      id: address.id,
+                                      addressTitle: address.addressTitle,
+                                      geoAddress: address.geoAddress,
+                                      extraDetails: address.extraDetails,
+                                      buildingNo: address.buildingNo,
+                                      zone: address.zone,
+                                      streat: address.streat,
+                                      unitNo: address.unitNo,
+                                      latitude: address.latitude,
+                                      longitude: address.longitude,
+                                      isPrimaryAddress: 1,
+                                    ),
+                                    true);
                                 profileViewModle.update();
                               },
                               child:
@@ -116,7 +120,7 @@ class AddressItem extends StatelessWidget {
                     top: sizeH54,
                     start: sizeH54,
                     child: Text(
-                        "${address.streat} ${address.zone} ${address.buildingNo}"),
+                        "${address.geoAddress}"),
                   ),
                   PositionedDirectional(
                     top: sizeH12,
@@ -125,10 +129,20 @@ class AddressItem extends StatelessWidget {
                       children: [
                         InkWell(
                             onTap: () {
-                              profileViewModle.deleteAddress(address.id!);
-                              profileViewModle.userAddress.removeWhere(
-                                  (element) => element.id == address.id);
-                              profileViewModle.update();
+                              Get.bottomSheet(GlobalBottomSheet(
+                                isTwoBtn: true,
+                                title: "${tr.are_you_sure_you_want_to_delete_address}",
+                                onOkBtnClick: () {
+                                  profileViewModle.deleteAddress(address.id!);
+                                  profileViewModle.userAddress.removeWhere(
+                                      (element) => element.id == address.id);
+                                  profileViewModle.update();
+                                   Get.back();
+                                },
+                                onCancelBtnClick: () {
+                                  Get.back();
+                                },
+                              ));
                             },
                             child: SvgPicture.asset("assets/svgs/delete.svg")),
                         SizedBox(

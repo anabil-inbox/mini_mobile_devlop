@@ -74,7 +74,7 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdCompanyApplicantDepartment = TextEditingController();
   TextEditingController tdCompanyMobileNumber = TextEditingController();
 
-  List<Map<String, dynamic>> contactMap = [];
+  List<Map<String, String>> contactMap = [];
   // for address (add , edit ,delete)
 
   clearControllers() {
@@ -116,6 +116,7 @@ class ProfileViewModle extends BaseController {
                         "${tr.error_occurred}", "${value.status!.message}")
                   }
               });
+              clearControllers();
     } catch (e) {}
 
     return address;
@@ -280,7 +281,7 @@ class ProfileViewModle extends BaseController {
     hideFocus(Get.context!);
     Map<String, dynamic> myMap = Map<String, dynamic>();
 
-    if (SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty) {
+    if (SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty || GetUtils.isNull(SharedPref.instance.getCurrentUserData().crNumber)) {
       myMap = {
         "email": "${tdUserEmailEdit.text}",
         "full_name": "${tdUserFullNameEdit.text}",
@@ -302,11 +303,10 @@ class ProfileViewModle extends BaseController {
     }
     try {
       Logger().i("myMappp ${myMap.toString()}");
-      Logger().i("myimg $img");
+      Logger().i("myContact map $contactMap");
 
       Logger().d(contactMap);
       await ProfileHelper.getInstance.editProfile(myMap).then((value) => {
-            Logger().i("${value.status!.message}"),
             if (value.status!.success!)
               {
                 snackSuccess("${tr.success}", "${value.status!.message}"),
@@ -368,13 +368,17 @@ class ProfileViewModle extends BaseController {
     zoom: 10,
   );
 
+
+
   void autoCompleteSearch(String value) async {
     var result = await googlePlace.queryAutocomplete.get(value);
+    update();
     if (result != null && result.predictions != null) {
       predictions = result.predictions!;
       update();
     } else {
       predictions = [];
+      update();
     }
     update();
   }
@@ -400,7 +404,10 @@ class ProfileViewModle extends BaseController {
       latitude = detailsResponse.result!.geometry!.location!.lat!;
       longitude = detailsResponse.result!.geometry!.location!.lng!;
       addressFromLocation = placeName;
+      
       createCurrentMarker(LatLng(latitude, longitude), "$placeName");
+      kGooglePlex = CameraPosition(target: LatLng(latitude,longitude));
+      update();
     });
     update();
   }
@@ -429,6 +436,7 @@ class ProfileViewModle extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    userAddress.clear();
     getMyAddress();
   }
 }

@@ -42,7 +42,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
    profileViewModle.tdCompanyNameOfApplicationEdit.text = SharedPref.instance.getCurrentUserData().applicantName ?? "";
    profileViewModle.companySector!.sectorName = SharedPref.instance.getCurrentUserData().companySector ?? "";
    profileViewModle.tdCompanyEmailEdit.text = SharedPref.instance.getCurrentUserData().email ?? "";
-   profileViewModle.contactMap = SharedPref.instance.getCurrentUserData().contactNumber ??  [];  
+  // profileViewModle.contactMap = SharedPref.instance.getCurrentUserData().contactNumber ??  [];  
   }
 
   var countryCode = "";
@@ -64,7 +64,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
           onPressed: () {
             Navigator.pop(Get.context!);
           },
-          icon: SvgPicture.asset("assets/svgs/back_arrow.svg"),
+          icon: isArabicLang()?SvgPicture.asset("assets/svgs/back_arrow_ar.svg"):SvgPicture.asset("assets/svgs/back_arrow.svg"),
         ),
         centerTitle: true,
         backgroundColor: colorBackground,
@@ -249,7 +249,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                 Container(
                     width: double.infinity,
                     child: Text(
-                      "Alternative Contact",
+                      "${tr.alternative_contact}",
                       textAlign: TextAlign.start,
                     )),
                 SizedBox(
@@ -493,7 +493,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
     if (profileViewModle.tdUserMobileNumberEdit.text.isEmpty) {
       return;
     }
-    Map<String, dynamic> map = {
+    Map<String, String> map = {
       "${ConstanceNetwork.countryCodeKey}": "${countryCode/*.replaceAll("+", "")*/}",
      "${ConstanceNetwork.mobileNumberKey}": "${profileViewModle.tdUserMobileNumberEdit.text}",
     };

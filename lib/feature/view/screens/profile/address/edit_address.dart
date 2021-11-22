@@ -8,6 +8,7 @@ import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -59,7 +60,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
           onPressed: () {
             Navigator.pop(Get.context!);
           },
-          icon: SvgPicture.asset("assets/svgs/back_arrow.svg"),
+          icon: isArabicLang()?SvgPicture.asset("assets/svgs/back_arrow_ar.svg"):SvgPicture.asset("assets/svgs/back_arrow.svg"),
         ),
         title: Text(
           "Edit Address",
@@ -172,29 +173,33 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                     SizedBox(
                       height: sizeH10,
                     ),
-                    TextFormField(
+                    InkWell(
                       onTap: () {
                         Get.to(() => MapSample());
                       },
-                      onSaved: (newValue) {
-                        controller.tdLocationEdit.text = newValue!;
-                        controller.update();
-                      },
-                      controller: controller.tdLocationEdit,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '${AppLocalizations.of(Get.context!)!.choose_your_location}';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          suffixIcon: SvgPicture.asset(
-                            "assets/svgs/location.svg",
-                            color: Colors.transparent,
-                          ),
-                          suffixStyle: TextStyle(color: Colors.transparent),
-                          hintText:
-                              "${AppLocalizations.of(context)!.choose_your_location}"),
+                      child: TextFormField(
+                        onSaved: (newValue) {
+                          controller.tdLocationEdit.text = newValue!;
+                          controller.update();
+                        },
+                        controller: controller.tdLocationEdit,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '${AppLocalizations.of(Get.context!)!.choose_your_location}';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          enabled: false,
+                            suffixIcon: Image.asset(
+                              "assets/png/Location.png",
+                              width: sizeW15,
+                              height: sizeH16,
+                            ),
+                            suffixStyle: TextStyle(color: Colors.transparent),
+                            hintText:
+                                "${AppLocalizations.of(context)!.choose_your_location}"),
+                      ),
                     ),
                     SizedBox(
                       height: sizeH10,

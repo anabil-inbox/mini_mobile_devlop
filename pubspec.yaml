@@ -83,6 +83,7 @@ flutter:
   assets:
    #- assets/images/
     - assets/svgs/
+    - assets/png/
     - assets/fonts/
     - assets/gif/
 

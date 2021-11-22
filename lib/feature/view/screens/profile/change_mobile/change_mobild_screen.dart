@@ -6,7 +6,6 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/widget/header_code_verfication_widget.dart';
 import 'package:inbox_clients/feature/view/screens/auth/country/choose_country_view.dart';
-import 'package:inbox_clients/feature/view/screens/profile/change_mobile/verfication_change_mobile.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -83,7 +82,8 @@ class ChangeMobileScreen extends StatelessWidget {
                                       initState: (_) {},
                                       builder: (value) {
                                         return Text(
-                                          "${value.defCountry.prefix == null || value.defCountry.prefix!.isEmpty ? "+974" : value.defCountry.prefix}",
+                                          "${value.defCountry.prefix == null || value.defCountry.prefix!.isEmpty ? 
+                                          "+974" : value.defCountry.prefix}",
                                           textDirection: TextDirection.ltr,
                                         );
                                       },

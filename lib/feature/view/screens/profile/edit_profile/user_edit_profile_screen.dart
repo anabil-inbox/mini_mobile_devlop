@@ -26,18 +26,20 @@ class UserEditProfileScreen extends StatefulWidget {
 class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
   ProfileViewModle profileViewModle = Get.put(ProfileViewModle());
 
-  var countryCode = SharedPref.instance.getCurrentUserData().country![0].prefix ?? "";
-  var flagUrl = SharedPref.instance.getCurrentUserData().country![0].flag ?? "";
-  
+  var countryCode =
+      SharedPref.instance.getCurrentUserData().country?[0].prefix ?? "";
+  var flagUrl = SharedPref.instance.getCurrentUserData().country?[0].flag ?? "";
+
   @override
   void initState() {
     super.initState();
     profileViewModle.tdUserFullNameEdit.text =
-    SharedPref.instance.getCurrentUserData().customerName ?? "";
+        SharedPref.instance.getCurrentUserData().customerName ?? "";
     profileViewModle.tdUserEmailEdit.text =
-    SharedPref.instance.getCurrentUserData().email ?? "";
-   // profileViewModle.contactMap.clear();
-   profileViewModle.contactMap = SharedPref.instance.getCurrentUserData().contactNumber ?? [];
+        SharedPref.instance.getCurrentUserData().email ?? "";
+    // profileViewModle.contactMap.clear();
+    // profileViewModle.contactMap =
+    //     SharedPref.instance.getCurrentUserData().contactNumber ?? [];
   }
 
   @override
@@ -55,7 +57,9 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
           onPressed: () {
             Navigator.pop(Get.context!);
           },
-          icon: SvgPicture.asset("assets/svgs/back_arrow.svg"),
+          icon: isArabicLang()
+              ? SvgPicture.asset("assets/svgs/back_arrow_ar.svg")
+              : SvgPicture.asset("assets/svgs/back_arrow.svg"),
         ),
         centerTitle: true,
         backgroundColor: colorBackground,
@@ -80,26 +84,30 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                           GetBuilder<ProfileViewModle>(
                             builder: (_) {
                               return InkWell(
-                                onTap: () async{
-                                 await profileViewModle.getImage();
-                                },
-                                child: profileViewModle.img != null ? CircleAvatar(
-                                  radius: 50,
-                                 backgroundImage : Image.file(
-                                    profileViewModle.img!,
-                                    fit: BoxFit.cover,
-                                  ).image,
-                                  backgroundColor: colorPrimary.withOpacity(0.5),
-                                ) : CircleAvatar(
-                                  radius: 50,
-                                  backgroundColor: colorPrimary.withOpacity(0.5),
-                              )
-                              );
+                                  onTap: () async {
+                                    await profileViewModle.getImage();
+                                  },
+                                  child: profileViewModle.img != null
+                                      ? CircleAvatar(
+                                          radius: 50,
+                                          backgroundImage: Image.file(
+                                            profileViewModle.img!,
+                                            fit: BoxFit.cover,
+                                          ).image,
+                                          backgroundColor:
+                                              colorPrimary.withOpacity(0.5),
+                                        )
+                                      : CircleAvatar(
+                                          radius: 50,
+                                          backgroundColor:
+                                              colorPrimary.withOpacity(0.5),
+                                        ));
                             },
                           ),
                           PositionedDirectional(
                             end: 0,
-                            child: SvgPicture.asset("assets/svgs/update_red.svg"),
+                            child:
+                                SvgPicture.asset("assets/svgs/update_red.svg"),
                           )
                         ],
                       ),
@@ -113,12 +121,12 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                           profileViewModle.tdUserFullNameEdit.text = e!;
                           profileViewModle.update();
                         },
-                        decoration: InputDecoration(
-                            hintText: "${tr.full_name}"),
+                        decoration:
+                            InputDecoration(hintText: "${tr.full_name}"),
                         validator: (e) {
                           if (e.toString().trim().isEmpty) {
                             return '${tr.fill_your_name}';
-                          }else if(e!.length < 2){
+                          } else if (e!.length < 2) {
                             return '${tr.fill_your_name}';
                           }
                           return null;
@@ -133,13 +141,12 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                           profileViewModle.tdUserEmailEdit.text = e!;
                           profileViewModle.update();
                         },
-                        decoration: InputDecoration(
-                            hintText:
-                                "${tr.email_address}"),
+                        decoration:
+                            InputDecoration(hintText: "${tr.email_address}"),
                         validator: (e) {
                           if (e!.isEmpty) {
                             return '${tr.fill_your_email}';
-                          }else if(!GetUtils.isEmail(e)){
+                          } else if (!GetUtils.isEmail(e)) {
                             return "${tr.please_enter_valid_email}";
                           }
                           return null;
@@ -151,7 +158,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                       Container(
                           width: double.infinity,
                           child: Text(
-                            "Alternative Contact",
+                            "${tr.alternative_contact}",
                             textAlign: TextAlign.start,
                           )),
                       SizedBox(
@@ -184,50 +191,58 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                     //  width: 36,
                                     //  height: 26
                                     // ),
-                                  GetBuilder<AuthViewModle>(
-                                    init: AuthViewModle(),
-                                    initState: (_) {},
-                                    builder: (value) {
-                                      print("flag_msg ${SharedPref.instance.getCurrentUserData().country![0].flag}");
-                                      if (flagUrl.isEmpty)
-                                        flagUrl = "assets/svgs/qatar_flag.svg";
-                                      else
-                                        flagUrl = SharedPref.instance.getCurrentUserData().country![0].flag ?? ""; 
-                                      return
-                                        Row(
+                                    GetBuilder<AuthViewModle>(
+                                      init: AuthViewModle(),
+                                      initState: (_) {},
+                                      builder: (value) {
+                                        // print(
+                                        //     "flag_msg ${SharedPref.instance.getCurrentUserData().country?[0].flag}");
+                                        // print(
+                                        //     "flag_url $flagUrl");
+
+                                        // if (flagUrl.isEmpty)
+                                        //   flagUrl =
+                                        //       "assets/svgs/qatar_flag.svg";
+                                        // else
+                                        //   flagUrl = SharedPref.instance
+                                        //           .getCurrentUserData()
+                                        //           .country?[0]
+                                        //           .flag ??
+                                        //       "";
+                                        return Row(
                                           children: [
-                                            // flagUrl.isEmpty
+                                            // flagUrl.isEmpty || GetUtils.isNull(flagUrl)
                                             //     ? SvgPicture.asset(
-                                            //     "assets/svgs/qatar_flag.svg")
+                                            //         "assets/svgs/qatar_flag.svg")
                                             //     : imageNetwork(
-                                            //     url:
-                                            //     "${ConstanceNetwork.imageUrl}$flagUrl",                                              
-                                            //     width: 36,
-                                            //     height: 26),
+                                            //         url:"${ConstanceNetwork.imageUrl}$flagUrl",
+                                            //         width: 36,
+                                            //         height: 26),
                                             VerticalDivider(),
                                             Text(
                                               "$countryCode",
-                                              textDirection: TextDirection.ltr,
+                                               textDirection: TextDirection.ltr,
                                             ),
                                           ],
                                         );
-                                    },
-                                  ),
+                                      },
+                                    ),
                                     Expanded(
                                       child: TextFormField(
                                         enabled: true,
                                         textDirection: TextDirection.ltr,
                                         maxLength: 9,
                                         onSaved: (newValue) {
-                                          profileViewModle.tdUserMobileNumberEdit
+                                          profileViewModle
+                                              .tdUserMobileNumberEdit
                                               .text = newValue.toString();
                                           profileViewModle.update();
                                         },
                                         decoration: InputDecoration(
                                           counterText: "",
                                         ),
-                                        controller:
-                                            profileViewModle.tdUserMobileNumberEdit,
+                                        controller: profileViewModle
+                                            .tdUserMobileNumberEdit,
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
                                             return '${tr.fill_your_phone_number}';
@@ -259,28 +274,31 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                       SizedBox(
                         height: sizeH20,
                       ),
-                      GetBuilder<ProfileViewModle>(
-                          builder: (logic) {
-                            
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              keyboardDismissBehavior:ScrollViewKeyboardDismissBehavior.onDrag ,
-                              itemCount: logic.contactMap.length,
-                              itemBuilder: (context, index) {
-                                return ContactItemWidget(
-                                  deleteContact: (){
-                                    logic.contactMap.removeAt(index);
-                                    logic.update();
-                                  },
-                                  mobileNumber:logic.tdUserMobileNumberEdit.text ,
-                                  onChange: (_) {
-                                    logic.contactMap[index][ConstanceNetwork.mobileNumberKey] = _;
-                                    logic.update();
-                                  },flag:flagUrl ,prefix: logic.contactMap[index][ConstanceNetwork.countryCodeKey],);
+                      GetBuilder<ProfileViewModle>(builder: (logic) {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          itemCount: logic.contactMap.length,
+                          itemBuilder: (context, index) {
+                            return ContactItemWidget(
+                              deleteContact: () {
+                                logic.contactMap.removeAt(index);
+                                logic.update();
                               },
+                              mobileNumber: logic.tdUserMobileNumberEdit.text,
+                              onChange: (_) {
+                                logic.contactMap[index]
+                                    [ConstanceNetwork.mobileNumberKey] = _;
+                                logic.update();
+                              },
+                              flag: flagUrl,
+                              prefix: logic.contactMap[index]
+                                  [ConstanceNetwork.countryCodeKey],
                             );
-                          }),
-                     
+                          },
+                        );
+                      }),
                     ],
                   ),
                 ),
@@ -288,7 +306,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
             ),
           ),
           Padding(
-            padding:  EdgeInsets.symmetric(horizontal: sizeH20!),
+            padding: EdgeInsets.symmetric(horizontal: sizeH20!),
             child: GetBuilder<ProfileViewModle>(
               builder: (value) {
                 return PrimaryButton(
@@ -314,16 +332,15 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
 
   void _addNewContact() {
     print("_addNewContact");
-    ///todo here i check if number is empty  i will not do any thing
-    ///else i will add item to map and pass to list of map to show in listview
     if (profileViewModle.tdUserMobileNumberEdit.text.isEmpty) {
       return;
     }
-    Map<String, dynamic> map = {
-      "${ConstanceNetwork.countryCodeKey}": "${countryCode/*.replaceAll("+", "")*/}",
-      "${ConstanceNetwork.mobileNumberKey}": "${profileViewModle.tdUserMobileNumberEdit.text}",
+    Map<String, String> map = {
+      "${ConstanceNetwork.countryCodeKey}":
+          "$countryCode",
+      "${ConstanceNetwork.mobileNumberKey}":
+          "${profileViewModle.tdUserMobileNumberEdit.text}",
     };
-
     profileViewModle.contactMap.add(map);
     profileViewModle.update();
   }

@@ -41,6 +41,7 @@ class MapSample extends GetWidget<ProfileViewModle> {
                           hintText: "${tr.search_for_country}"),
                       onChanged: (newVal) {
                         controller.autoCompleteSearch(newVal);
+                        controller.update();
                       },
                     ),
                   ),
@@ -50,57 +51,64 @@ class MapSample extends GetWidget<ProfileViewModle> {
           },
         ),
       ),
-      body: Stack(
-        children: [
-          GetBuilder<ProfileViewModle>(
-            builder: (_) {
-              return GoogleMap(
-                mapType: MapType.normal,
-                initialCameraPosition: controller.kGooglePlex,
-                onTap: (lat) {
-                  controller.onClickMap(lat);
-                },
-                markers: {controller.mark},
-                onMapCreated: (GoogleMapController mapController) {
-                  controller.controllerCompleter.complete(mapController);
-                },
-              );
-            },
-          ),
-          Positioned(
-              bottom: sizeH40,
-              right: sizeH18,
-              left: sizeH18,
-              child: PrimaryButton(
-                  textButton: "${tr.select}",
-                  isLoading: false,
-                  onClicked: () async {
-                    await controller
-                        .getAddressFromLatLong(controller.mark.position);
-                    controller.update();
-                    Get.back();
+      body: GetBuilder<ProfileViewModle>(
+        init: ProfileViewModle(),
+        initState: (_) {},
+        builder: (_) {
+          return Stack(
+              children: [
+                GetBuilder<ProfileViewModle>(
+                  builder: (_) {
+                    return GoogleMap(
+                      mapType: MapType.normal,
+                      initialCameraPosition: controller.kGooglePlex,
+                      onTap: (lat) {
+                        controller.onClickMap(lat);
+                      },
+                      markers: {controller.mark},
+                      onMapCreated: (GoogleMapController mapController) {
+                        controller.controllerCompleter.complete(mapController);
+                      },
+                    );
                   },
-                  isExpanded: true)),
-          (controller.predictions.length == 0 ||
-              controller.tdSearchMap.text.isEmpty)
-              ? const SizedBox()
-              : GetBuilder<ProfileViewModle>(
-            init: ProfileViewModle(),
-            initState: (_) {},
-            builder: (_) {
-              return Expanded(
-                  child: (controller.predictions.length == 0 ||
-                      controller.tdSearchMap.text.isEmpty)
-                      ? const SizedBox()
-                      : SingleChildScrollView(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.white,
-                            ),
-                            margin: EdgeInsets.only(
+                ),
+                Positioned(
+                    bottom: sizeH40,
+                    right: sizeH18,
+                    left: sizeH18,
+                    child: PrimaryButton(
+                        textButton: "${tr.select}",
+                        isLoading: false,
+                        onClicked: () async {
+                          await controller
+                              .getAddressFromLatLong(controller.mark.position);
+                          controller.update();
+                          Get.back();
+                        },
+                        isExpanded: true)),
+                (controller.predictions.length == 0 ||
+                    controller.tdSearchMap.text.isEmpty)
+                    ? const SizedBox()
+                    : GetBuilder<ProfileViewModle>(
+                  init: ProfileViewModle(),
+                  initState: (_) {},
+                  builder: (_) {
+                    print("msg_map${controller.predictions.length}");
+                    print("msg_map${controller.tdSearchMap.text.isEmpty}");
+                    print("msg_map${controller.predictions.isEmpty}");
+      
+                    return Expanded(
+                        child: (controller.predictions.length == 0 ||
+                            controller.tdSearchMap.text.isEmpty || controller.predictions.isEmpty)
+                            ? const SizedBox()
+                            : SingleChildScrollView(
+                            child: Padding(
+                                padding: const EdgeInsets.only(left: 30),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.white,
+                                  ),      margin: EdgeInsets.only(
                                 left: 20,
                                 right: 20,
                                 top: 0,
@@ -161,6 +169,8 @@ class MapSample extends GetWidget<ProfileViewModle> {
             },
           )
         ],
+      ); 
+        },
       ),
     );
   }

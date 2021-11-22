@@ -52,7 +52,7 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
           onPressed: () {
             Navigator.pop(Get.context!);
           },
-          icon: SvgPicture.asset("assets/svgs/back_arrow.svg"),
+          icon: SvgPicture.asset(isArabicLang()?"assets/svgs/back_arrow_ar.svg":"assets/svgs/back_arrow.svg"),
         ),
         title: Text(
           "${tr.choose_country}",

@@ -18,7 +18,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
   AddAddressScreen({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +28,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
           onPressed: () {
             Navigator.pop(Get.context!);
           },
-          icon: SvgPicture.asset("assets/svgs/back_arrow.svg"),
+          icon: isArabicLang()?SvgPicture.asset("assets/svgs/back_arrow_ar.svg"):SvgPicture.asset("assets/svgs/back_arrow.svg"),
         ),
         title: Text(
           "Add Address",
@@ -136,29 +136,37 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                 SizedBox(
                   height: sizeH10,
                 ),
-                TextFormField(
+                InkWell(
                   onTap: (){
                    Get.to(() => MapSample());
                   },
-                  onSaved: (newValue) {
-                    controller.tdLocation.text = newValue!;
-                    controller.update();
-                  },
-                  controller: controller.tdLocation,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '${AppLocalizations.of(Get.context!)!.choose_your_location}';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                      suffixIcon: SvgPicture.asset(
-                        "assets/svgs/location.svg",
-                        color: Colors.transparent,
-                      ),
-                      suffixStyle: TextStyle(color: Colors.transparent),
-                      hintText:
-                          "${AppLocalizations.of(context)!.choose_your_location}"),
+                  child: TextFormField(
+                    onSaved: (newValue) {
+                      controller.tdLocation.text = newValue!;
+                      controller.update();
+                    },
+                    controller: controller.tdLocation,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '${AppLocalizations.of(Get.context!)!.choose_your_location}';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        enabled: false,
+                        suffixIcon: Image.asset(
+                          "assets/png/Location.png",
+                          width: 10,
+                          height: 10,
+                        ),
+                        // suffixIcon: SvgPicture.asset(
+                        //   "assets/svgs/location.svg",
+                        //   color: Colors.transparent,
+                        // ),
+                        suffixStyle: TextStyle(color: Colors.transparent),
+                        hintText:
+                            "${AppLocalizations.of(context)!.choose_your_location}"),
+                  ),
                 ),
                 SizedBox(
                   height: sizeH10,

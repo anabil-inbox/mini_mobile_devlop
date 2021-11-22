@@ -16,7 +16,7 @@ class BackBtnWidget extends StatelessWidget {
         onTap: onTap ??_getBack,
         child: Padding(
           padding: const EdgeInsets.all(4.0),
-          child: SvgPicture.asset("assets/svgs/back_btn_widget.svg" , width: sizeW36,height: sizeH34,),
+          child: SvgPicture.asset(isArabicLang()?"assets/svgs/back_arrow_ar.svg":"assets/svgs/back_btn_widget.svg" , width: sizeW36,height: sizeH34,),
         ));
   }
 

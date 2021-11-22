@@ -1,3 +1,4 @@
+import 'package:get/utils.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/api/model/profile_api.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -72,7 +73,7 @@ class ProfileHelper {
     var appResponse = await ProfileApi.getInstance.editProfile(
         body: body,
         url:
-            SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty
+            SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty || GetUtils.isNull(SharedPref.instance.getCurrentUserData().crNumber)
                 ? "${ConstanceNetwork.editProfilEndPoint}"
                 : "${ConstanceNetwork.editProfilCompanyEndPoint}",
         header: ConstanceNetwork.header(4));

@@ -106,5 +106,8 @@
      "recall":"اعد الاتصال",
       "giveaway":"تبرع",
       "filter_by_name":"تصفية حسب الاسم",
-      "edit_address":"تعديل عنوان"     
+      "edit_address":"تعديل عنوان",
+      "alternative_contact":"جهات اتصال بديلة",
+          "are_you_sure_you_want_to_delete_address":"هل انت متأكد انك تود حذف العنوان ؟"
+    
 }
