@@ -1,4 +1,4 @@
-package com.inbox.clients.inbox_clients;
+package com.inbox.clients;
 
 
 import io.flutter.embedding.android.FlutterFragmentActivity;
