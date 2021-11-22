@@ -24,6 +24,7 @@ class MapSample extends GetWidget<ProfileViewModle> {
               children: [
                 Expanded(
                   child: Container(
+                    height: 50,
                     clipBehavior: Clip.hardEdge,
                     decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(15)),
