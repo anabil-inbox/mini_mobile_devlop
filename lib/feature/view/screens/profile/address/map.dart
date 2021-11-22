@@ -16,7 +16,7 @@ class MapSample extends GetWidget<ProfileViewModle> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBarWidget(
-        leadingWidth: sizeW60,
+        leadingWidth: sizeW50,
         isCenterTitle: false,
         titleWidget: GetBuilder<ProfileViewModle>(
           builder: (_) {
@@ -24,7 +24,7 @@ class MapSample extends GetWidget<ProfileViewModle> {
               children: [
                 Expanded(
                   child: Container(
-                    height: 50,
+                    height: 45,
                     clipBehavior: Clip.hardEdge,
                     decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(15)),
