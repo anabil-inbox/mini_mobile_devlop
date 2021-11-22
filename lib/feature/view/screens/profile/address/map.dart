@@ -16,7 +16,7 @@ class MapSample extends GetWidget<ProfileViewModle> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBarWidget(
-        leadingWidth: sizeW50,
+        leadingWidth: sizeW60,
         isCenterTitle: false,
         titleWidget: GetBuilder<ProfileViewModle>(
           builder: (_) {
@@ -26,7 +26,7 @@ class MapSample extends GetWidget<ProfileViewModle> {
                   child: Container(
                     clipBehavior: Clip.hardEdge,
                     decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(100)),
+                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
                     child: TextFormField(
                       controller: controller.tdSearchMap,
                       decoration: InputDecoration(
