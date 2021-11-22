@@ -130,14 +130,9 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                             textButton: "${tr.continue_form}",
                             isLoading: controller.isLoading,
                             onClicked: () {
+                              print("object2");
                               if (_formKey.currentState!.validate()) {
-                                if (type == "${ConstanceNetwork.userType}" &&
-                                    SharedPref.instance
-                                        .getCurrentUserData()
-                                        .crNumber
-                                        .toString()
-                                        .isEmpty) {
-                                  print("msg_in_if");
+                                if (type == "${ConstanceNetwork.userType}") {
                                   controller.signInUser(
                                       user: User(
                                     countryCode:
@@ -149,8 +144,6 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                                   ));
                                 } else if (type ==
                                     "${ConstanceNetwork.companyType}") {
-                                  print("msg_in_else");
-
                                   controller.signInCompany(Company(
                                       crNumber: logic.tdcrNumber.text,
                                       udid: controller.identifier,
@@ -181,6 +174,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                         isExpanded: true,
                         onClicked: () {
                           if (_formKey.currentState!.validate()) {
+                            print("object1");
                             if (type == "${ConstanceNetwork.userType}") {
                               controller.signInUser(
                                   user: User(

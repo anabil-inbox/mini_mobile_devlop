@@ -40,9 +40,9 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
    profileViewModle.tdCompanyNameEdit.text = SharedPref.instance.getCurrentUserData().customerName ?? "";
    profileViewModle.tdCompanyMobileNumber.text = SharedPref.instance.getCurrentUserData().mobile ?? "";
    profileViewModle.tdCompanyNameOfApplicationEdit.text = SharedPref.instance.getCurrentUserData().applicantName ?? "";
-    profileViewModle.companySector!.sectorName = SharedPref.instance.getCurrentUserData().companySector ?? "";
-    profileViewModle.tdCompanyEmailEdit.text = SharedPref.instance.getCurrentUserData().email ?? "";
-   profileViewModle.contactMap = SharedPref.instance.getCurrentUserData().contactNumber ??  [{}];  
+   profileViewModle.companySector!.sectorName = SharedPref.instance.getCurrentUserData().companySector ?? "";
+   profileViewModle.tdCompanyEmailEdit.text = SharedPref.instance.getCurrentUserData().email ?? "";
+   profileViewModle.contactMap = SharedPref.instance.getCurrentUserData().contactNumber ??  [];  
   }
 
   var countryCode = "";

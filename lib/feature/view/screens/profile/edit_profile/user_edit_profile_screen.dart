@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/view/screens/auth/country/choose_country_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
@@ -26,8 +25,8 @@ class UserEditProfileScreen extends StatefulWidget {
 class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
   ProfileViewModle profileViewModle = Get.put(ProfileViewModle());
 
-  var countryCode = "";
-  var flagUrl = "";
+  var countryCode = SharedPref.instance.getCurrentUserData().country![0].prefix ?? "";
+  var flagUrl = SharedPref.instance.getCurrentUserData().country![0].flag ?? "";
 
   @override
   void initState() {
@@ -117,7 +116,9 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                         decoration: InputDecoration(
                             hintText: "${tr.full_name}"),
                         validator: (e) {
-                          if (e!.isEmpty) {
+                          if (e.toString().trim().isEmpty) {
+                            return '${tr.fill_your_name}';
+                          }else if(e!.length < 2){
                             return '${tr.fill_your_name}';
                           }
                           return null;
@@ -138,6 +139,8 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                         validator: (e) {
                           if (e!.isEmpty) {
                             return '${tr.fill_your_email}';
+                          }else if(!GetUtils.isEmail(e)){
+                            return "${tr.please_enter_valid_email}";
                           }
                           return null;
                         },
@@ -159,7 +162,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                           Expanded(
                             child: InkWell(
                               onTap: () {
-                                Get.to(() => ChooseCountryScreen());
+                             //   Get.to(() => ChooseCountryScreen());
                               },
                               child: Container(
                                 clipBehavior: Clip.hardEdge,
@@ -185,31 +188,24 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                     init: AuthViewModle(),
                                     initState: (_) {},
                                     builder: (value) {
-                                      countryCode =
-                                          value.defCountry.prefix.toString();
-                                      if (value.defCountry.name!
-                                          .toLowerCase()
-                                          .contains("qatar"))
+                                      if (flagUrl.isEmpty)
                                         flagUrl = "assets/svgs/qatar_flag.svg";
                                       else
-                                        flagUrl = value.defCountry.flag.toString();
+                                        flagUrl = SharedPref.instance.getCurrentUserData().country![0].flag ?? ""; 
                                       return
                                         Row(
                                           children: [
-                                            value.defCountry.name!
-                                                .toLowerCase()
-                                                .contains("qatar")
+                                            flagUrl.isEmpty
                                                 ? SvgPicture.asset(
                                                 "assets/svgs/qatar_flag.svg")
                                                 : imageNetwork(
                                                 url:
-                                                "${ConstanceNetwork.imageUrl}${value
-                                                    .defCountry.flag}",
+                                                "${ConstanceNetwork.imageUrl}$flagUrl",
                                                 width: 36,
                                                 height: 26),
                                             VerticalDivider(),
                                             Text(
-                                              "${value.defCountry.prefix}",
+                                              "$countryCode",
                                               textDirection: TextDirection.ltr,
                                             ),
                                           ],
@@ -218,6 +214,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                   ),
                                     Expanded(
                                       child: TextFormField(
+                                        enabled: false,
                                         textDirection: TextDirection.ltr,
                                         maxLength: 9,
                                         onSaved: (newValue) {
@@ -281,8 +278,6 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                               },
                             );
                           }),
-
-                     
                      
                     ],
                   ),

@@ -1,3 +1,5 @@
+import 'package:inbox_clients/feature/model/country.dart';
+
 class Customer {
     Customer({
         this.id,
@@ -11,6 +13,8 @@ class Customer {
         this.countryCode,
         this.image,
         this.contactNumber,
+        this.isDisabled,
+        this.country,
     });
 
     String? id;
@@ -23,20 +27,24 @@ class Customer {
     String? mobile;
     String? countryCode;
     dynamic image;
-    List<Map<String,dynamic>>? contactNumber;
+    List<Map<String, dynamic>>? contactNumber;
+    bool? isDisabled;
+    List<Country>? country;
 
     factory Customer.fromJson(Map<String, dynamic> json) => Customer(
-        id: json["id"] ?? "",
-        customerName: json["customer_name"] ?? "",
-        crNumber: json["cr_number"] ?? "",
-        email: json["email"] ?? "",
-        companySector: json["company_sector"] ?? "",
-        applicantName: json["applicant_name"] ?? "",
-        applicantDepartment: json["applicant_department"] ?? "",
-        mobile: json["mobile"] ?? "",
-        countryCode: json["country_code"] ?? "",
-        image: json["image"] ?? "",
-        contactNumber:  List<Map<String,dynamic>>.from(json["contact_number"].map((x) => x)) ,
+        id: json["id"],
+        customerName: json["customer_name"],
+        crNumber: json["cr_number"],
+        email: json["email"],
+        companySector: json["company_sector"],
+        applicantName: json["applicant_name"],
+        applicantDepartment: json["applicant_department"],
+        mobile: json["mobile"],
+        countryCode: json["country_code"],
+        image: json["image"],
+        contactNumber: List<Map<String, dynamic>>.from(json["contact_number"].map((x) => x)),
+        isDisabled: json["is_disabled"],
+        country: List<Country>.from(json["country"].map((x) => Country.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -50,8 +58,8 @@ class Customer {
         "mobile": mobile,
         "country_code": countryCode,
         "image": image,
-        "contact_number":  List<Map<String,dynamic>>.from(contactNumber!.map((x) => x)),
+        "contact_number": List<Map<String, dynamic>>.from(contactNumber!.map((x) => x)),
+        "is_disabled": isDisabled,
+        "country": List<dynamic>.from(country!.map((x) => x.toJson())),
     };
 }
-
-

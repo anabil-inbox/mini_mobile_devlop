@@ -17,6 +17,7 @@ import 'package:inbox_clients/feature/view/screens/auth/auth_company/verfication
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/face.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
+import 'package:inbox_clients/feature/view/screens/profile/change_mobile/verfication_change_mobile.dart';
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
@@ -104,14 +105,9 @@ class AuthViewModle extends GetxController {
     await AuthHelper.getInstance.registerUser(user!.toJson()).then((value) => {
           if (value.status!.success!)
             {
-              log.e(value.status!.toJson()),
-              // SharedPref.instance.setCurrentUserDate(
-              //   value.data["Customer"],
-              // ),
               isLoading = false,
               update(),
-              snackSuccess("${tr.success}",
-                  "${value.status!.message}"),
+              snackSuccess("${tr.success}", "${value.status!.message}"),
               Get.to(() => CompanyVerficationCodeScreen(
                   id: value.data["Customer"]["id"],
                   mobileNumber: user.mobile!,
@@ -123,8 +119,7 @@ class AuthViewModle extends GetxController {
               log.e(value.status!.toJson()),
               isLoading = false,
               update(),
-              snackError("${tr.error_occurred}",
-                  "${value.status!.message}")
+              snackError("${tr.error_occurred}", "${value.status!.message}")
             }
         });
 
@@ -144,8 +139,7 @@ class AuthViewModle extends GetxController {
                 {
                   isLoading = false,
                   update(),
-                  snackSuccess("${tr.success}",
-                      "${value.status!.message}"),
+                  snackSuccess("${tr.success}", "${value.status!.message}"),
                   Get.to(() => CompanyVerficationCodeScreen(
                       id: value.data["Customer"]["id"],
                       countryCode: company.countryCode!,
@@ -157,9 +151,7 @@ class AuthViewModle extends GetxController {
                   log.e(value.status!.toJson()),
                   isLoading = false,
                   update(),
-                  snackError(
-                      "${tr.error_occurred}",
-                      "${value.status!.message}")
+                  snackError("${tr.error_occurred}", "${value.status!.message}")
                 }
             });
 
@@ -177,8 +169,7 @@ class AuthViewModle extends GetxController {
               Logger().d(value.data["Customer"]),
               isLoading = false,
               update(),
-              snackSuccess("${tr.success}",
-                  "${value.status!.message}"),
+              snackSuccess("${tr.success}", "${value.status!.message}"),
               Get.to(() => CompanyVerficationCodeScreen(
                   id: value.data["Customer"]["id"],
                   mobileNumber: user.mobile!,
@@ -189,8 +180,7 @@ class AuthViewModle extends GetxController {
             {
               isLoading = false,
               update(),
-              snackError("${tr.error_occurred}",
-                  "${value.status!.message}")
+              snackError("${tr.error_occurred}", "${value.status!.message}")
             }
         });
 
@@ -210,9 +200,7 @@ class AuthViewModle extends GetxController {
               Logger().d(value.data["Customer"]),
               isLoading = false,
               update(),
-
-              snackSuccess("${tr.success}",
-                  "${value.status!.message}"),
+              snackSuccess("${tr.success}", "${value.status!.message}"),
               Get.to(() => CompanyVerficationCodeScreen(
                   id: value.data["Customer"]["id"],
                   mobileNumber: value.data["Customer"]["mobile"] ?? "",
@@ -224,8 +212,7 @@ class AuthViewModle extends GetxController {
               print("msg_value ${value.toJson()}"),
               isLoading = false,
               update(),
-              snackError("${tr.error_occurred}",
-                  "${value.status!.message}")
+              snackError("${tr.error_occurred}", "${value.status!.message}")
             }
         });
 
@@ -307,26 +294,24 @@ class AuthViewModle extends GetxController {
     await AuthHelper.getInstance.checkVerficationCode(params).then((value) => {
           if (value.status!.success!)
             {
-              snackSuccess("${tr.success}",
-                  "${value.status!.message}"),
+              snackSuccess("${tr.success}", "${value.status!.message}"),
               Get.put(ProfileViewModle()),
               //Get.off(() => ProfileScreen()),
               Get.off(() => HomePageHolder()),
             }
           else
-            {
-              snackError("${tr.error_occurred}",
-                  "${value.status!.message}")
-            }
+            {snackError("${tr.error_occurred}", "${value.status!.message}")}
         });
   }
 
-  reSendVerficationCode(
-      {String? udid,
-      String? id,
-      String? target,
-      String? mobileNumber,
-      String? countryCode}) async {
+  reSendVerficationCode({
+    String? udid,
+    String? id,
+    String? target,
+    String? mobileNumber,
+    String? countryCode,
+    bool isFromChange = false,
+  }) async {
     isLoading = true;
     update();
     await AuthHelper.getInstance.reSendVerficationCode({
@@ -342,15 +327,18 @@ class AuthViewModle extends GetxController {
               startTimerCounter = 60,
               startTimer(),
               update(),
-              snackSuccess("${tr.success}",
-                  "${value.status!.message}"),
+              snackSuccess("${tr.success}", "${value.status!.message}"),
+              isFromChange ? Get.to(() => VerficationChangeMobilScreen(
+                id: id ?? "",
+                mobileNumber: mobileNumber ?? "",
+                countryCode: countryCode ?? "",
+              )) : {},
             }
           else
             {
               isLoading = false,
               update(),
-              snackError("${tr.error_occurred}",
-                  "${value.status!.message}")
+              snackError("${tr.error_occurred}", "${value.status!.message}")
             }
         });
   }
@@ -363,22 +351,32 @@ class AuthViewModle extends GetxController {
       await _checkBiometrics();
       await _getAvailableBiometrics();
       await _authenticate();
-      if (isAuth! && SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty) {
+      if (isAuth! &&
+          SharedPref.instance
+              .getCurrentUserData()
+              .crNumber
+              .toString()
+              .isEmpty) {
         await signInUser(
             user: User(
-                countryCode: "${SharedPref.instance.getCurrentUserData().countryCode}",
+                countryCode:
+                    "${SharedPref.instance.getCurrentUserData().countryCode}",
                 mobile: "${SharedPref.instance.getCurrentUserData().mobile}",
                 udid: "$identifier",
                 deviceType: "$deviceType",
                 fcm: "${SharedPref.instance.getFCMToken()}"));
-
-      }else if(isAuth! && SharedPref.instance.getCurrentUserData().crNumber.toString().isNotEmpty){
+      } else if (isAuth! &&
+          SharedPref.instance
+              .getCurrentUserData()
+              .crNumber
+              .toString()
+              .isNotEmpty) {
         await signInCompany(
           Company(
-            crNumber: SharedPref.instance.getCurrentUserData().crNumber,
-            deviceType: deviceType,
-            udid: identifier,
-            fcm: "${SharedPref.instance.getFCMToken()}"),
+              crNumber: SharedPref.instance.getCurrentUserData().crNumber,
+              deviceType: deviceType,
+              udid: identifier,
+              fcm: "${SharedPref.instance.getFCMToken()}"),
         );
       }
       isLoading = false;

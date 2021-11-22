@@ -1,5 +1,3 @@
-import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
-import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,8 +7,9 @@ import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'map.dart';
 
@@ -24,9 +23,19 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: scaffoldColor,
-      appBar: CustomAppBarWidget(
-        isCenterTitle: true,
-        titleWidget: Text("${tr.add_new_address}", style: textStyleAppBarTitle(),),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(Get.context!);
+          },
+          icon: SvgPicture.asset("assets/svgs/back_arrow.svg"),
+        ),
+        title: Text(
+          "Add Address",
+          style: textStyleLargeText(),
+        ),
+        centerTitle: true,
+        backgroundColor: colorBackground,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: sizeH16!),
@@ -45,12 +54,12 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   controller: controller.tdTitle,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '${tr.fill_the_title_correctly}';
+                      return '${AppLocalizations.of(Get.context!)!.fill_the_title_correctly}';
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                      hintText: "${tr.title}"),
+                      hintText: "${AppLocalizations.of(context)!.title}"),
                 ),
                 SizedBox(
                   height: sizeH10,
@@ -63,12 +72,12 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '${tr.fill_the_building_no_correctly}';
+                      return '${AppLocalizations.of(Get.context!)!.fill_the_building_no_correctly}';
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                      hintText: "${tr.building_no}"),
+                      hintText: "${AppLocalizations.of(context)!.building_no}"),
                 ),
                 SizedBox(
                   height: sizeH10,
@@ -81,12 +90,12 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '${tr.fill_the_unit_no_correctly}';
+                      return '${AppLocalizations.of(Get.context!)!.fill_the_unit_no_correctly}';
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                      hintText: "${tr.unit_no}"),
+                      hintText: "${AppLocalizations.of(context)!.unit_no}"),
                 ),
                 SizedBox(
                   height: sizeH10,
@@ -99,12 +108,12 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   controller: controller.tdZone,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '${tr.fill_the_zone_correctly}';
+                      return '${AppLocalizations.of(Get.context!)!.fill_the_zone_correctly}';
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                      hintText: "${tr.zone}"),
+                      hintText: "${AppLocalizations.of(context)!.zone}"),
                 ),
                 SizedBox(
                   height: sizeH10,
@@ -117,12 +126,12 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   controller: controller.tdStreet,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '${tr.fill_the_street_correctly}';
+                      return '${AppLocalizations.of(Get.context!)!.fill_the_street_correctly}';
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                      hintText: "${tr.street}"),
+                      hintText: "${AppLocalizations.of(context)!.street}"),
                 ),
                 SizedBox(
                   height: sizeH10,
@@ -138,7 +147,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   controller: controller.tdLocation,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '${tr.choose_your_location}';
+                      return '${AppLocalizations.of(Get.context!)!.choose_your_location}';
                     }
                     return null;
                   },
@@ -149,7 +158,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                       ),
                       suffixStyle: TextStyle(color: Colors.transparent),
                       hintText:
-                          "${tr.choose_your_location}"),
+                          "${AppLocalizations.of(context)!.choose_your_location}"),
                 ),
                 SizedBox(
                   height: sizeH10,
@@ -162,7 +171,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   controller: controller.tdExtraDetailes,
                   decoration: InputDecoration(
                       hintText:
-                          "${tr.extra_details}"),
+                          "${AppLocalizations.of(context)!.extra_details}"),
                 ),
                 SizedBox(
                   height: sizeH25,
@@ -190,7 +199,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                             width: sizeH10,
                           ),
                           Text(
-                            "${tr.make_default_address}",
+                            "${AppLocalizations.of(context)!.make_default_address}",
                             style: textStyleHint()!.copyWith(
                                 color: Colors.black.withOpacity(0.6),
                                 fontSize: 14,
@@ -221,8 +230,9 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                               extraDetails: controller.tdExtraDetailes.text,
                               buildingNo: controller.tdBuildingNo.text,
                               unitNo: controller.tdUnitNo.text,
-                              latitude: double.parse(controller.userLat ?? ""),
-                              longitude: double.parse(controller.userLong ?? ""),
+                              geoAddress: controller.tdLocation.text,
+                              latitude: controller.mark.position.latitude ,
+                              longitude: controller.mark.position.longitude,
                             ));
                           }
                         },

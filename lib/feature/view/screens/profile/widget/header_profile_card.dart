@@ -81,12 +81,23 @@ class HeaderProfileCard extends StatelessWidget {
                       SizedBox(
                         width: sizeH9,
                       ),
-                      InkWell(
-                          onTap: () {
-                            print("Cliked");
-                            Get.to(() => ChangeMobileScreen());
-                          },
-                          child: SvgPicture.asset("assets/svgs/edit_pen.svg")),
+                      if (SharedPref.instance
+                              .getCurrentUserData()
+                              .crNumber
+                              .toString()
+                              .isEmpty ||
+                          GetUtils.isNull(SharedPref.instance
+                              .getCurrentUserData()
+                              .crNumber))
+                         InkWell(
+                            onTap: () {
+                              print("Cliked");
+                              Get.to(() => ChangeMobileScreen());
+                            },
+                            child:
+                                SvgPicture.asset("assets/svgs/edit_pen.svg"))
+                      else
+                        const SizedBox(),
                     ],
                   )
                 ],

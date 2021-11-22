@@ -111,11 +111,9 @@ class AppFcm {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification notification = message.notification!;
       //todo this for add badge for app
-      Logger().e("android_ ${message.data}  ${message.notification?.android.toString().toString()}");
       var android = message.data;
       if ( Platform.isIOS ||Platform.isAndroid) {
         messages = message;
-        Logger().e("android $android  \n ios ${notification.title}");
         //todo this for update ui when recive message
         updatePages(message);
         flutterLocalNotificationsPlugin.show(

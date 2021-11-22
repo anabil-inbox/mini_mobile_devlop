@@ -66,13 +66,12 @@ class SharedPref {
   Customer getCurrentUserData() {
     try {
       var string = _prefs?.getString("$userDataKey");
-      Logger().e(string);
-      var decode = json.decode(string!)["data"]["Customer"];
-      if (GetUtils.isNull(json.decode(string)["data"]["Customer"])) {
-       decode = json.decode(string)["data"];
+      var decode;
+      if (GetUtils.isNull(json.decode(string!)["data"]["Customer"])) {
+        decode = json.decode(string)["data"];
       }
+      decode = json.decode(string)["data"]["Customer"];
       Customer profileData = Customer.fromJson(decode);
-      print("get_Current_user ${profileData.toJson().toString()}");
       return profileData;
     } catch (e) {
       Logger().e(e);
@@ -181,7 +180,9 @@ class SharedPref {
   setUserToken(String token) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setString("$tokenKey", token);
+      if (!GetUtils.isNull(token)) {
+        pref.setString("$tokenKey", token);
+      }
     } catch (e) {}
   }
 
