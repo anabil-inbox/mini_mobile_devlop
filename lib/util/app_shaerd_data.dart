@@ -25,6 +25,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'app_color.dart';
 import 'app_style.dart';
+import 'constance.dart';
 import 'string.dart';
 
 String? urlPlacholder =
@@ -476,5 +477,12 @@ class CustomMaterialPageRoute extends MaterialPageRoute {
         );
 }
 
+bool isArabicLang() {
+  return SharedPref.instance.getAppLanguage() == "ar"
+      ? true
+      : false;
+  // bool isRTL=TextDirection.RTL as bool;
+  // return isRTL;
+}
 
 AppLocalizations get tr => AppLocalizations.of(Get.context!)!;

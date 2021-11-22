@@ -28,7 +28,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
           onPressed: () {
             Navigator.pop(Get.context!);
           },
-          icon: SvgPicture.asset("assets/svgs/back_arrow.svg"),
+          icon: isArabicLang()?SvgPicture.asset("assets/svgs/back_arrow_ar.svg"):SvgPicture.asset("assets/svgs/back_arrow.svg"),
         ),
         title: Text(
           "Add Address",
@@ -152,10 +152,14 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                     return null;
                   },
                   decoration: InputDecoration(
-                      suffixIcon: SvgPicture.asset(
-                        "assets/svgs/location.svg",
+                      suffixIcon: Image.asset(
+                        "assets/png/Location.png",
                         color: Colors.transparent,
                       ),
+                      // suffixIcon: SvgPicture.asset(
+                      //   "assets/svgs/location.svg",
+                      //   color: Colors.transparent,
+                      // ),
                       suffixStyle: TextStyle(color: Colors.transparent),
                       hintText:
                           "${AppLocalizations.of(context)!.choose_your_location}"),
