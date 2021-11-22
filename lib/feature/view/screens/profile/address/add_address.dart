@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
@@ -9,10 +9,8 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'map.dart';
-
 
 class AddAddressScreen extends GetWidget<ProfileViewModle> {
   AddAddressScreen({Key? key}) : super(key: key);
@@ -28,10 +26,12 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
           onPressed: () {
             Navigator.pop(Get.context!);
           },
-          icon: isArabicLang()?SvgPicture.asset("assets/svgs/back_arrow_ar.svg"):SvgPicture.asset("assets/svgs/back_arrow.svg"),
+          icon: isArabicLang()
+              ? SvgPicture.asset("assets/svgs/back_arrow_ar.svg")
+              : SvgPicture.asset("assets/svgs/back_arrow.svg"),
         ),
         title: Text(
-          "Add Address",
+          "${tr.add_address}",
           style: textStyleLargeText(),
         ),
         centerTitle: true,
@@ -137,8 +137,8 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   height: sizeH10,
                 ),
                 InkWell(
-                  onTap: (){
-                   Get.to(() => MapSample());
+                  onTap: () {
+                    Get.to(() => MapSample());
                   },
                   child: TextFormField(
                     onSaved: (newValue) {
@@ -154,10 +154,13 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                     },
                     decoration: InputDecoration(
                         enabled: false,
-                        suffixIcon: Image.asset(
-                          "assets/png/Location.png",
-                          width: 10,
-                          height: 10,
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Image.asset(
+                            "assets/png/Location.png",
+                            width: 10,
+                            height: 10,
+                          ),
                         ),
                         // suffixIcon: SvgPicture.asset(
                         //   "assets/svgs/location.svg",
@@ -191,7 +194,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                     controller.isAccepteDefoltLocation =
                         !controller.isAccepteDefoltLocation;
 
-                        print("msg_${controller.isAccepteDefoltLocation}");
+                    print("msg_${controller.isAccepteDefoltLocation}");
                     controller.update();
                   },
                   child: GetBuilder<ProfileViewModle>(
@@ -229,23 +232,22 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                         isLoading: controller.isLoading,
                         onClicked: () {
                           if (_formKey.currentState!.validate()) {
-                            controller.addNewAddress(
-                              Address(
+                            controller.addNewAddress(Address(
                               addressTitle: controller.tdTitle.text,
-                              isPrimaryAddress: controller.isAccepteDefoltLocation ? 1 : 0,
+                              isPrimaryAddress:
+                                  controller.isAccepteDefoltLocation ? 1 : 0,
                               zone: controller.tdZone.text,
                               streat: controller.tdStreet.text,
                               extraDetails: controller.tdExtraDetailes.text,
                               buildingNo: controller.tdBuildingNo.text,
                               unitNo: controller.tdUnitNo.text,
                               geoAddress: controller.tdLocation.text,
-                              latitude: controller.mark.position.latitude ,
+                              latitude: controller.mark.position.latitude,
                               longitude: controller.mark.position.longitude,
                             ));
                           }
                         },
-                        isExpanded: true
-                        );
+                        isExpanded: true);
                   },
                 ),
                 SizedBox(
