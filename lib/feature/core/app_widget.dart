@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:inbox_clients/feature/view/screens/auth/splash/splash.dart';
-import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/util/app_color.dart';
 
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -85,7 +84,7 @@ class AppWidget extends StatelessWidget {
           }),
         ),
          home: const SplashScreen()
-        // home: HomeScreen(),
+       //  home: HomeScreen(),
       ),
     );
   }

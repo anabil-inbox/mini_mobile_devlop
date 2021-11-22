@@ -81,6 +81,12 @@ TextStyle? textStyleAppbar() {
       fontFamily: Constance.Font_regular);
 }
 
+TextStyle? textStyleSubTitle(){
+   return TextStyle(
+      color: colorTextBlack,
+      fontSize: fontSize21,
+      fontFamily: Constance.Font_regular);
+}
 TextStyle? textStyleLargeText() {
   return textStyle()?.copyWith(
       color: colorTextBlack,

@@ -38,7 +38,9 @@ class SettingsScreen extends StatelessWidget {
           SizedBox(
             height: sizeH20,
           ),
-          SettingItemNoPadding(settingTitle: "${tr.helpCenter}", onTap: (){}),
+          SettingItemNoPadding(settingTitle: "${tr.helpCenter}", onTap: (){
+
+          }),
            SizedBox(
             height: sizeH16,
           ),

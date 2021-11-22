@@ -79,8 +79,8 @@ class PrimaryButtonOpacityColor extends StatelessWidget {
             : Text(
                 "$textButton",
                 style: textStylePrimary()!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
+                    fontWeight: FontWeight.normal,
+                    fontSize: fontSize15,
                     color: colorPrimary),
               ),
       ),

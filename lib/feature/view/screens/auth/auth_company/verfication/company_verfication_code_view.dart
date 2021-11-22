@@ -70,7 +70,7 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
             SizedBox(
               height: sizeH16,
             ),
-            bildeTextActiveCode(context,authViewModle.tdPinCode),
+           bildeTextActiveCode(context,authViewModle.tdPinCode),
             widget.type == ConstanceNetwork.userType
                 ? SizedBox(
                     height: sizeH38,

@@ -6,7 +6,6 @@ import 'package:inbox_clients/feature/view/widgets/empty_state/home_empty_statte
 import 'package:inbox_clients/feature/view/widgets/icon_btn.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
-import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/constance.dart';
 
 class HomeScreen extends StatelessWidget {

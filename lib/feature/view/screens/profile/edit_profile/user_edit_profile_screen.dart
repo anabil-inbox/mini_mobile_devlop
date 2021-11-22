@@ -26,19 +26,18 @@ class UserEditProfileScreen extends StatefulWidget {
 class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
   ProfileViewModle profileViewModle = Get.put(ProfileViewModle());
 
-  var countryCode = "";
-  var flagUrl = "";
-
+  var countryCode = SharedPref.instance.getCurrentUserData().country![0].prefix ?? "";
+  var flagUrl = SharedPref.instance.getCurrentUserData().country![0].flag ?? "";
+  
   @override
   void initState() {
     super.initState();
     profileViewModle.tdUserFullNameEdit.text =
-        SharedPref.instance.getCurrentUserData().customerName ?? "";
+    SharedPref.instance.getCurrentUserData().customerName ?? "";
     profileViewModle.tdUserEmailEdit.text =
-        SharedPref.instance.getCurrentUserData().email ?? "";
-    profileViewModle.tdUserMobileNumberEdit.text =
-        SharedPref.instance.getCurrentUserData().mobile ?? "";
-    profileViewModle.contactMap.clear();
+    SharedPref.instance.getCurrentUserData().email ?? "";
+   // profileViewModle.contactMap.clear();
+   profileViewModle.contactMap = SharedPref.instance.getCurrentUserData().contactNumber ?? [];
   }
 
   @override
@@ -117,7 +116,9 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                         decoration: InputDecoration(
                             hintText: "${tr.full_name}"),
                         validator: (e) {
-                          if (e!.isEmpty) {
+                          if (e.toString().trim().isEmpty) {
+                            return '${tr.fill_your_name}';
+                          }else if(e!.length < 2){
                             return '${tr.fill_your_name}';
                           }
                           return null;
@@ -138,6 +139,8 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                         validator: (e) {
                           if (e!.isEmpty) {
                             return '${tr.fill_your_email}';
+                          }else if(!GetUtils.isEmail(e)){
+                            return "${tr.please_enter_valid_email}";
                           }
                           return null;
                         },
@@ -185,31 +188,25 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                     init: AuthViewModle(),
                                     initState: (_) {},
                                     builder: (value) {
-                                      countryCode =
-                                          value.defCountry.prefix.toString();
-                                      if (value.defCountry.name!
-                                          .toLowerCase()
-                                          .contains("qatar"))
+                                      print("flag_msg ${SharedPref.instance.getCurrentUserData().country![0].flag}");
+                                      if (flagUrl.isEmpty)
                                         flagUrl = "assets/svgs/qatar_flag.svg";
                                       else
-                                        flagUrl = value.defCountry.flag.toString();
+                                        flagUrl = SharedPref.instance.getCurrentUserData().country![0].flag ?? ""; 
                                       return
                                         Row(
                                           children: [
-                                            value.defCountry.name!
-                                                .toLowerCase()
-                                                .contains("qatar")
-                                                ? SvgPicture.asset(
-                                                "assets/svgs/qatar_flag.svg")
-                                                : imageNetwork(
-                                                url:
-                                                "${ConstanceNetwork.imageUrl}${value
-                                                    .defCountry.flag}",
-                                                width: 36,
-                                                height: 26),
+                                            // flagUrl.isEmpty
+                                            //     ? SvgPicture.asset(
+                                            //     "assets/svgs/qatar_flag.svg")
+                                            //     : imageNetwork(
+                                            //     url:
+                                            //     "${ConstanceNetwork.imageUrl}$flagUrl",                                              
+                                            //     width: 36,
+                                            //     height: 26),
                                             VerticalDivider(),
                                             Text(
-                                              "${value.defCountry.prefix}",
+                                              "$countryCode",
                                               textDirection: TextDirection.ltr,
                                             ),
                                           ],
@@ -218,6 +215,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                   ),
                                     Expanded(
                                       child: TextFormField(
+                                        enabled: true,
                                         textDirection: TextDirection.ltr,
                                         maxLength: 9,
                                         onSaved: (newValue) {
@@ -263,6 +261,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                       ),
                       GetBuilder<ProfileViewModle>(
                           builder: (logic) {
+                            
                             return ListView.builder(
                               shrinkWrap: true,
                               keyboardDismissBehavior:ScrollViewKeyboardDismissBehavior.onDrag ,
@@ -281,8 +280,6 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                               },
                             );
                           }),
-
-                     
                      
                     ],
                   ),
@@ -316,6 +313,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
   }
 
   void _addNewContact() {
+    print("_addNewContact");
     ///todo here i check if number is empty  i will not do any thing
     ///else i will add item to map and pass to list of map to show in listview
     if (profileViewModle.tdUserMobileNumberEdit.text.isEmpty) {

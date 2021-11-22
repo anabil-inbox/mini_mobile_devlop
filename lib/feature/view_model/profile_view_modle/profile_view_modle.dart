@@ -18,7 +18,6 @@ import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
-import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
@@ -62,9 +61,18 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdUserFullNameEdit = TextEditingController();
   TextEditingController tdUserEmailEdit = TextEditingController();
   TextEditingController tdUserMobileNumberEdit = TextEditingController();
-  Country defCountry = Country(prefix: SharedPref.instance.getCurrentUserData().countryCode);
+  Country defCountry =
+      Country(prefix: SharedPref.instance.getCurrentUserData().countryCode);
   final picker = ImagePicker();
   File? img;
+
+  //here to edit profile company controllers
+  TextEditingController tdCompanyNameEdit = TextEditingController();
+  TextEditingController tdCompanyEmailEdit = TextEditingController();
+  TextEditingController tdCompanyNameOfApplicationEdit =
+      TextEditingController();
+  TextEditingController tdCompanyApplicantDepartment = TextEditingController();
+  TextEditingController tdCompanyMobileNumber = TextEditingController();
 
   List<Map<String, dynamic>> contactMap = [];
   // for address (add , edit ,delete)
@@ -94,9 +102,7 @@ class ProfileViewModle extends BaseController {
                   {
                     isLoading = false,
                     update(),
-                    snackSuccess(
-                        "${tr.success}",
-                        "${value.status!.message}"),
+                    snackSuccess("${tr.success}", "${value.status!.message}"),
                     getMyAddress(),
                     clearControllers(),
                     update(),
@@ -107,8 +113,7 @@ class ProfileViewModle extends BaseController {
                     isLoading = false,
                     update(),
                     snackError(
-                        "${tr.error_occurred}",
-                        "${value.status!.message}")
+                        "${tr.error_occurred}", "${value.status!.message}")
                   }
               });
     } catch (e) {}
@@ -136,26 +141,23 @@ class ProfileViewModle extends BaseController {
     isDeleteting = true;
     update();
     try {
-      await ProfileHelper.getInstance
-          .deleteAddress(body: {"id": "$addressId"}).then((value) => {
-                Logger().i("${value.status!.message}"),
-                if (value.status!.success!)
-                  {
-                    isDeleteting = false,
-                    update(),
-                    snackSuccess(
-                        "${tr.success}",
-                        "${value.status!.message}"),
-                  }
-                else
-                  {
-                    isDeleteting = false,
-                    update(),
-                    snackError(
-                        "${tr.error_occurred}",
-                        "${value.status!.message}")
-                  }
-              });
+      await ProfileHelper.getInstance.deleteAddress(body: {
+        "id": "$addressId"
+      }).then((value) => {
+            Logger().i("${value.status!.message}"),
+            if (value.status!.success!)
+              {
+                isDeleteting = false,
+                update(),
+                snackSuccess("${tr.success}", "${value.status!.message}"),
+              }
+            else
+              {
+                isDeleteting = false,
+                update(),
+                snackError("${tr.error_occurred}", "${value.status!.message}")
+              }
+          });
     } catch (e) {}
   }
 
@@ -170,9 +172,7 @@ class ProfileViewModle extends BaseController {
                 if (value.status!.success!)
                   {
                     Logger().i(value.toJson().toString()),
-                    snackSuccess(
-                        "${tr.success}",
-                        "${value.status!.message}"),
+                    snackSuccess("${tr.success}", "${value.status!.message}"),
                     getMyAddress(),
                     isDefoltAddressUpdate ? {} : Get.back(),
                     isLoading = false,
@@ -181,8 +181,7 @@ class ProfileViewModle extends BaseController {
                 else
                   {
                     snackError(
-                        "${tr.error_occurred}",
-                        "${value.status!.message}"),
+                        "${tr.error_occurred}", "${value.status!.message}"),
                     isLoading = false,
                     update(),
                   }
@@ -195,10 +194,10 @@ class ProfileViewModle extends BaseController {
   logOutDiloag() {
     Get.bottomSheet(GlobalBottomSheet(
       title: "${tr.are_you_sure_you_want_to_log_out}",
-      onOkBtnClick:  (){
+      onOkBtnClick: () {
         logOut();
       },
-      onCancelBtnClick: (){
+      onCancelBtnClick: () {
         Get.back();
       },
     ));
@@ -256,8 +255,7 @@ class ProfileViewModle extends BaseController {
             Logger().i("${value.status!.message}"),
             if (value.status!.success!)
               {
-                snackSuccess("${tr.success}",
-                    "${value.status!.message}"),
+                snackSuccess("${tr.success}", "${value.status!.message}"),
                 isLoading = false,
                 update(),
                 SharedPref.instance
@@ -268,9 +266,7 @@ class ProfileViewModle extends BaseController {
               {
                 isLoading = false,
                 update(),
-                snackError(
-                    "${tr.error_occurred}",
-                    "${value.status!.message}")
+                snackError("${tr.error_occurred}", "${value.status!.message}")
               }
           });
     } catch (e) {}
@@ -282,24 +278,38 @@ class ProfileViewModle extends BaseController {
     isLoading = true;
     update();
     hideFocus(Get.context!);
+    Map<String, dynamic> myMap = Map<String, dynamic>();
 
-    try {
-      Logger().d(contactMap);
-      await ProfileHelper.getInstance.editProfile({
+    if (SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty) {
+      myMap = {
         "email": "${tdUserEmailEdit.text}",
         "full_name": "${tdUserFullNameEdit.text}",
         "image": "image",
-        "contact_number": contactMap/*[
-          {"mobile_number": 855555, "country_code": 970},
-          {"mobile_number": 85555555, "country_code": 972}
-        ]*/
-      }).then((value) => {
+        "contact_number": contactMap
+      };
+    } else {
+      myMap = {
+        "email": "${tdCompanyEmailEdit.text}",
+        "company_name": "${tdCompanyNameEdit.text}",
+        "image": img != null ? "${await compressImage(img!)}" : "img",
+        "contact_number": contactMap,
+        "company_sector": companySector!.name,
+        "applicant_name": tdCompanyNameOfApplicationEdit.text,
+        "applicant_department": tdCompanyApplicantDepartment.text,
+        "mobile_number": tdCompanyMobileNumber.text,
+        "country_code": defCountry.prefix,
+      };
+    }
+    try {
+      Logger().i("myMappp ${myMap.toString()}");
+      Logger().i("myimg $img");
 
-       Logger().i("${value.status!.message}"),
+      Logger().d(contactMap);
+      await ProfileHelper.getInstance.editProfile(myMap).then((value) => {
+            Logger().i("${value.status!.message}"),
             if (value.status!.success!)
               {
-                snackSuccess("${tr.success}",
-                    "${value.status!.message}"),
+                snackSuccess("${tr.success}", "${value.status!.message}"),
                 isLoading = false,
                 update(),
                 Get.back()
@@ -308,14 +318,10 @@ class ProfileViewModle extends BaseController {
               {
                 isLoading = false,
                 update(),
-                snackError(
-                    "${tr.error_occurred}",
-                    "${value.status!.message}")
+                snackError("${tr.error_occurred}", "${value.status!.message}")
               }
-        });
-    } catch (e) {
-
-    }
+          });
+    } catch (e) {}
   }
 
   Future getImage() async {
@@ -366,6 +372,7 @@ class ProfileViewModle extends BaseController {
     var result = await googlePlace.queryAutocomplete.get(value);
     if (result != null && result.predictions != null) {
       predictions = result.predictions!;
+      update();
     } else {
       predictions = [];
     }
