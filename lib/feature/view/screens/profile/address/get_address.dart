@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/add_address.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/address_item.dart';
@@ -17,12 +18,28 @@ class GetAddressScreen extends GetWidget<ProfileViewModle> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: scaffoldColor,
-      appBar: CustomAppBarWidget(
-        isCenterTitle: true,
-        titleWidget: Text(
-          "${tr.my_address}",
-          style: textStyleAppBarTitle(),
+      // appBar: CustomAppBarWidget(
+      //   isCenterTitle: true,
+      //   titleWidget: Text(
+      //     "${tr.my_address}",
+      //     style: textStyleAppBarTitle(),
+      //   ),
+      // ),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(Get.context!);
+          },
+          icon: isArabicLang()
+              ? SvgPicture.asset("assets/svgs/back_arrow_ar.svg")
+              : SvgPicture.asset("assets/svgs/back_arrow.svg"),
         ),
+        title: Text(
+          "${tr.my_address}",
+          style: textStyleLargeText(),
+        ),
+        centerTitle: true,
+        backgroundColor: colorBackground,
       ),
       body: Column(
         children: [
