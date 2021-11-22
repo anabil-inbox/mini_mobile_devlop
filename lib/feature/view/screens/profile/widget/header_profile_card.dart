@@ -72,9 +72,9 @@ class HeaderProfileCard extends StatelessWidget {
                         initState: (_) {},
                         builder: (_) {
                           return Text(
-                            "${SharedPref.instance.getCurrentUserData().mobile}",
-                            style: textStyleHint()!
-                                .copyWith(fontWeight: FontWeight.normal),
+                            "${SharedPref.instance.getCurrentUserData().countryCode} ${SharedPref.instance.getCurrentUserData().mobile}",
+                            style: textStyleHint()!.copyWith(fontWeight: FontWeight.normal),
+                              textDirection:TextDirection.ltr
                           );
                         },
                       ),
