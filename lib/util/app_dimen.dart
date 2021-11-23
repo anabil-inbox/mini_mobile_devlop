@@ -121,6 +121,7 @@ final double? padding32 = 32;
 final double? padding9 = 9;
 final double? padding12 = 12;
 final double? padding4 = 4;
+final double? padding6 = 6;
 final double? padding16 = 16;
 final double? padding14 = 14;
 final double? padding18 = 18;

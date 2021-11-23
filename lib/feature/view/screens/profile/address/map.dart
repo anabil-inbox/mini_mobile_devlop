@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/utils.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
@@ -11,14 +13,30 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 
-class MapSample extends GetWidget<ProfileViewModle> {
+class MapSample extends StatefulWidget {
+  @override
+  State<MapSample> createState() => _MapSampleState();
+}
+
+class _MapSampleState extends State<MapSample> {
+  ProfileViewModle profileViewModle = Get.find<ProfileViewModle>();
+
+  @override
+  void initState() {
+    super.initState();
+    profileViewModle.getCurrentUserLagAndLong();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBarWidget(
         leadingWidth: sizeW50,
-        isCenterTitle: false,
+        isCenterTitle: true,
         titleWidget: GetBuilder<ProfileViewModle>(
+          initState: (_) {
+            profileViewModle.getCurrentUserLagAndLong();
+          },
           builder: (_) {
             return Row(
               children: [
@@ -27,11 +45,12 @@ class MapSample extends GetWidget<ProfileViewModle> {
                     height: 45,
                     clipBehavior: Clip.hardEdge,
                     decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(100)),
+                        BoxDecoration(borderRadius: BorderRadius.circular(15)),
                     child: TextFormField(
-                      controller: controller.tdSearchMap,
+                      controller: profileViewModle.tdSearchMap,
                       decoration: InputDecoration(
                           filled: true,
+                          // contentPadding: EdgeInsets.only(top: 5,bottom: 5),
                           fillColor: scaffoldColor,
                           prefixIcon: Padding(
                             padding: const EdgeInsets.all(12),
@@ -43,8 +62,9 @@ class MapSample extends GetWidget<ProfileViewModle> {
                       onChanged: (newVal) {
                         print("msg_new_val $newVal");
                         if (newVal.isNotEmpty)
-                          controller.autoCompleteSearch(newVal);
-                        controller.update();
+                          profileViewModle.autoCompleteSearch(newVal);
+                        profileViewModle.isSearching = true;
+                        profileViewModle.update();
                       },
                     ),
                   ),
@@ -64,15 +84,22 @@ class MapSample extends GetWidget<ProfileViewModle> {
                 builder: (_) {
                   return GoogleMap(
                     mapType: MapType.normal,
-                    initialCameraPosition: controller.kGooglePlex,
+                    initialCameraPosition:
+                        GetUtils.isNull(profileViewModle.kGooglePlex)
+                            ? CameraPosition(
+                                target: LatLng(25.36, 51.18),
+                                zoom: 10,
+                              )
+                            : profileViewModle.kGooglePlex!,
                     onTap: (lat) {
-                      controller.onClickMap(lat);
+                      profileViewModle.onClickMap(lat);
                     },
-                    markers: {controller.mark},
+                    markers: {profileViewModle.mark},
                     onMapCreated: (GoogleMapController mapController) {
-                      controller.controllerCompleter.complete(mapController);
-                      controller.mapController = mapController;
-                      controller.update();
+                      profileViewModle.controllerCompleter
+                          .complete(mapController);
+                      profileViewModle.mapController = mapController;
+                      profileViewModle.update();
                     },
                   );
                 },
@@ -85,13 +112,15 @@ class MapSample extends GetWidget<ProfileViewModle> {
                       textButton: "${tr.select}",
                       isLoading: false,
                       onClicked: () async {
-                        await controller.getAddressFromLatLong(controller.mark.position);
-                         controller.update();
-                         Get.back();
+                        await profileViewModle.getAddressFromLatLong(
+                            profileViewModle.mark.position);
+                        profileViewModle.update();
+                        Get.back();
                       },
                       isExpanded: true)),
-              (controller.tdSearchMap.text.isEmpty ||
-                      controller.predictions.isEmpty)
+                      (profileViewModle.tdSearchMap.text.isEmpty ||
+                      profileViewModle.predictions.isEmpty ||
+                      !profileViewModle.isSearching)
                   ? const SizedBox()
                   : Container(
                       height: 200,
@@ -107,28 +136,31 @@ class MapSample extends GetWidget<ProfileViewModle> {
                                 left: 20, right: 20, top: 0, bottom: 10),
                             child: ListView.builder(
                               shrinkWrap: true,
-                              itemCount: controller.predictions.length,
+                              itemCount: profileViewModle.predictions.length,
                               padding: EdgeInsets.only(top: 10, bottom: 10),
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () async {
+                                    profileViewModle.isSearching = false;
+                                    profileViewModle.update();
                                     print("log_clicked_:");
-                                    controller.selectAutocompletePrediction =
-                                        controller.predictions[index];
-                                    print(
-                                        "log_choose_: ${controller.predictions[index].placeId}");
-                                    print(
-                                        "log_choose_: ${controller.predictions[index].description}");
-                                    print(
-                                        "log_choose_: ${controller.predictions[index].types}");
-                                    await controller.getDetailsPlace(
-                                        controller
+                                    profileViewModle
+                                            .selectAutocompletePrediction =
+                                        profileViewModle.predictions[index];
+                                    profileViewModle.tdSearchMap.text =
+                                        profileViewModle
+                                            .predictions[index].description
+                                            .toString();
+                                    await profileViewModle.getDetailsPlace(
+                                        profileViewModle
                                             .predictions[index].description!,
-                                        controller.selectAutocompletePrediction!
+                                        profileViewModle
+                                            .selectAutocompletePrediction!
                                             .placeId!);
-
-                                    controller.predictions = [];
-                                    controller.update();
+                                    profileViewModle.predictions = [];
+                                    profileViewModle.isSearching = false;
+                                    profileViewModle.update();
+                                    
                                   },
                                   child: Column(
                                     crossAxisAlignment:
@@ -142,7 +174,8 @@ class MapSample extends GetWidget<ProfileViewModle> {
                                           children: [
                                             Expanded(
                                               child: Text(
-                                                controller.predictions[index]
+                                                profileViewModle
+                                                    .predictions[index]
                                                     .description!,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(fontSize: 11),

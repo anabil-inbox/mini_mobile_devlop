@@ -18,7 +18,7 @@ class User {
     String? fcm;
 
     factory User.fromJson(Map<String, dynamic> json) => User(
-        mobile: json["mobile"],
+        mobile: json["mobile_number"],
         countryCode: json["country_code"],
         email: json["email"],
         fullName: json["full_name"],
@@ -30,7 +30,7 @@ class User {
 
     Map<String, dynamic> toJson() => {
         "country_code": "$countryCode",
-        "mobile": "$mobile",
+        "mobile_number": "$mobile",
          "udid": "$udid",
         "device_type": "$deviceType",
         "fcm": "$fcm",

@@ -203,7 +203,7 @@ class AuthViewModle extends GetxController {
               snackSuccess("${tr.success}", "${value.status!.message}"),
               Get.to(() => CompanyVerficationCodeScreen(
                   id: value.data["Customer"]["id"],
-                  mobileNumber: value.data["Customer"]["mobile"] ?? "",
+                  mobileNumber: value.data["Customer"]["mobile_number"] ?? "",
                   countryCode: value.data["Customer"]["country_code"] ?? "",
                   type: "${ConstanceNetwork.companyType}")),
             }
@@ -287,7 +287,7 @@ class AuthViewModle extends GetxController {
     params["code"] = code;
     if (mobileNumber.toString().isNotEmpty &&
         countryCode.toString().isNotEmpty) {
-      params["mobile_number"] = mobileNumber;
+      params["${ConstanceNetwork.mobileNumberKey}"] = mobileNumber;
       params["country_code"] = countryCode;
     }
 
@@ -318,7 +318,7 @@ class AuthViewModle extends GetxController {
       "id": "$id",
       "udid": "$udid",
       "target": "$target",
-      "mobile": "$mobileNumber",
+      "${ConstanceNetwork.mobileNumberKey}": "$mobileNumber",
       "country_code": "$countryCode"
     }).then((value) => {
           if (value.status!.success!)

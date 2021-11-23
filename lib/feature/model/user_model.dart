@@ -27,7 +27,7 @@ class Company {
 
     factory Company.fromJson(Map<String, dynamic> json) => Company(
         crNumber: json["cr_number"] ?? "",
-        mobile: json["mobile"] ?? "",
+        mobile: json["mobile_number"] ?? "",
         countryCode: json["country_code"] ?? "",
         email: json["email"] ?? "",
         companyName: json["company_name"] ?? "",
@@ -41,7 +41,7 @@ class Company {
 
     Map<String, dynamic> toJson() => {
         "cr_number": crNumber,
-        "mobile": mobile,
+        "mobile_number": mobile,
         "country_code": countryCode,
         "email": email,
         "company_name": companyName,

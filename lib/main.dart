@@ -31,3 +31,5 @@ class BindingsController extends Bindings{
    Get.lazyPut(() => ProfileViewModle());
   }
 }
+
+// get current user Location : 

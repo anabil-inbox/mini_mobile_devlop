@@ -5,6 +5,7 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class HeaderCodeVerfication extends StatelessWidget {
   const HeaderCodeVerfication({Key? key}) : super(key: key);
@@ -26,13 +27,15 @@ class HeaderCodeVerfication extends StatelessWidget {
             ),
           ),
           PositionedDirectional(
-              top: padding40,
-              start:padding20,
-              child: IconButton(
+              top: padding30,
+              start:padding6,
+              child:
+              IconButton(
             onPressed: () {
               Get.back();
             },
-            icon: SvgPicture.asset("assets/svgs/back_arrow.svg"),
+               iconSize: 48, icon: isArabicLang()?SvgPicture.asset("assets/svgs/back_arrow_ar.svg",width: 40,height: 40,)
+                  :SvgPicture.asset("assets/svgs/back_arrow.svg",width: 40,height: 40,),
           )),
           PositionedDirectional(
             start: padding104,

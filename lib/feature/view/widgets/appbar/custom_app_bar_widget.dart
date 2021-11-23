@@ -23,7 +23,8 @@ final double? leadingWidth;
   Widget build(BuildContext context) {
     screenUtil(context);
     return AppBar(
-      leadingWidth:leadingWidth?? sizeW90,
+      // leadingWidth:leadingWidth?? sizeW90,
+     titleSpacing: 10,
       automaticallyImplyLeading: true,
       centerTitle: isCenterTitle,
       title: titleWidget??const SizedBox.shrink(),

@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_place/google_place.dart';
@@ -75,6 +76,7 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdCompanyMobileNumber = TextEditingController();
 
   List<Map<String, String>> contactMap = [];
+
   // for address (add , edit ,delete)
 
   clearControllers() {
@@ -202,50 +204,6 @@ class ProfileViewModle extends BaseController {
         Get.back();
       },
     ));
-    // Get.defaultDialog(
-    //     titlePadding: EdgeInsets.all(16),
-    //     titleStyle: textStyleBtn()!.copyWith(color: colorBlack),
-    //     title: "${tr.are_you_sure_you_want_to_log_out}",
-    //     content: Container(
-    //       child: Row(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         children: [
-    //           Container(
-    //             width: 140,
-    //             child: TextButton(
-    //                 style: ButtonStyle(
-    //                     backgroundColor:
-    //                         MaterialStateProperty.all(colorPrimary)),
-    //                 onPressed: () {
-    //                   logOut();
-    //                 },
-    //                 child: Text(
-    //                   "${tr.log_out}",
-    //                   style: TextStyle(
-    //                       color: colorTextWhite, fontWeight: FontWeight.bold),
-    //                 )),
-    //           ),
-    //           SizedBox(
-    //             width: sizeW10,
-    //           ),
-    //           Container(
-    //             width: 140,
-    //             child: TextButton(
-    //                 style: ButtonStyle(
-    //                     backgroundColor:
-    //                         MaterialStateProperty.all(colorUnSelectedWidget)),
-    //                 onPressed: () {
-    //                   Get.back();
-    //                 },
-    //                 child: Text(
-    //                   "${tr.cancle}",
-    //                   style: textStyleHints()!
-    //                       .copyWith(fontWeight: FontWeight.bold),
-    //                 )),
-    //           ),
-    //         ],
-    //       ),
-    //     ));
   }
 
   logOut() async {
@@ -298,7 +256,7 @@ class ProfileViewModle extends BaseController {
         "company_sector": companySector!.name,
         "applicant_name": tdCompanyNameOfApplicationEdit.text,
         "applicant_department": tdCompanyApplicantDepartment.text,
-        "mobile_number": tdCompanyMobileNumber.text,
+        "${ConstanceNetwork.mobileNumberKey}": tdCompanyMobileNumber.text,
         "country_code": defCountry.prefix,
       };
     }
@@ -365,10 +323,9 @@ class ProfileViewModle extends BaseController {
       GooglePlace("AIzaSyAozWyP-XVpiaIfqgKprWwwCce5ou46YZE");
   Marker mark = Marker(markerId: MarkerId(LatLng(25.36, 51.18).toString()));
   List<AutocompletePrediction> predictions = [];
-  CameraPosition kGooglePlex = CameraPosition(
-    target: LatLng(25.36, 51.18),
-    zoom: 10,
-  );
+  CameraPosition? kGooglePlex;
+  LatLng? currentPostion;
+  bool isSearching = false;
 
   void autoCompleteSearch(String value) async {
     try {
@@ -387,6 +344,8 @@ class ProfileViewModle extends BaseController {
 
   onClickMap(LatLng point) {
     try {
+      isSearching = false;
+      update();
       mark = Marker(
         markerId: MarkerId(point.toString()),
         position: point,
@@ -401,8 +360,8 @@ class ProfileViewModle extends BaseController {
   }
 
   getDetailsPlace(String placeName, String placeId) async {
-      print("log_getDetailes with params $placeName , $placeId");
-      googlePlace.details.get(placeId).then((value) async {
+    print("log_getDetailes with params $placeName , $placeId");
+    googlePlace.details.get(placeId).then((value) async {
       print("log_getDetailes googlePlace.details");
       DetailsResponse detailsResponse = value!;
       latitude = detailsResponse.result!.geometry!.location!.lat!;
@@ -413,21 +372,47 @@ class ProfileViewModle extends BaseController {
       print("log_OutFrom_logDetailes");
       print("log_msg_controller ${latitude} , ${longitude}");
       mapController = await controllerCompleter.future;
-      await changeCameraPosition(mapController!, placeName);
+      await changeCameraPosition(mapController!);
     });
   }
 
-  Future<void> changeCameraPosition(GoogleMapController controller , String placeName) async {
+  Future<void> changeCameraPosition(GoogleMapController controller) async {
     print("log_msg_in_change_camera $latitude , $longitude");
     print("log_msg_in_change_camera_con ${GetUtils.isNull(controller)}");
-    createCurrentMarker(LatLng(latitude, longitude), "$placeName");
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-    CameraPosition(target: LatLng(latitude, longitude), zoom: 10)));
-        update();
+    createCurrentMarker(LatLng(latitude, longitude));
+    await controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(latitude, longitude), zoom: 10)));
+    update();
   }
 
+  Future<void> getCurrentUserLagAndLong() async {
+    var position = await GeolocatorPlatform.instance
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    currentPostion = LatLng(position.latitude, position.longitude);
+    print("msg_position $currentPostion");
+    if (!GetUtils.isNull(currentPostion)) {
+       kGooglePlex = CameraPosition(
+       target: LatLng(currentPostion!.latitude, currentPostion!.latitude),
+       zoom: 10,
+       );
+       print("msg_position_in_if $currentPostion");
+       latitude = currentPostion!.latitude;
+       longitude = currentPostion!.longitude;
+       mapController = await controllerCompleter.future;
+       print("msg_mapController ${mapController.toString()}");
+       await changeCameraPosition(mapController!);
+       update();
+    } else {
+      kGooglePlex = CameraPosition(
+        target: LatLng(25.36, 51.18),
+        zoom: 10,
+      );
+      print("msg_position_in_else $currentPostion");
+      update();
+    }
+  }
 
-  void createCurrentMarker(LatLng point, String title) async {
+  void createCurrentMarker(LatLng point) async {
     latitude = point.latitude;
     longitude = point.longitude;
     print("create current marker $point");
@@ -437,16 +422,42 @@ class ProfileViewModle extends BaseController {
 
   Future<void> getAddressFromLatLong(LatLng position) async {
     onClickMap(position);
-     kGooglePlex = CameraPosition(target: position);
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    Placemark place = placemarks[0];
-    String address =
-        '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
-    tdLocation.text = address;
-    tdLocationEdit.text = address;
-    
-    update();
+    kGooglePlex = CameraPosition(target: position);
+    try {
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+      Placemark place = placemarks[0];
+      if (placemarks == null || placemarks.isEmpty) {
+        String address = "${tr.unknown_address}";
+        tdLocation.text = address;
+        tdLocationEdit.text = address;
+        update();
+        return;
+      }
+      if (place == null) {
+        String address = "${tr.unknown_address}";
+        tdLocation.text = address;
+        tdLocationEdit.text = address;
+        update();
+        return;
+      }
+      print("tttt: ${place.toString()}");
+      String address = "";
+      if (place.street!.isNotEmpty) address += "${place.street}";
+      if (place.postalCode!.isNotEmpty) address += ", ${place.postalCode}";
+      if (place.locality!.isNotEmpty) address += ", ${place.locality}";
+      if (place.administrativeArea!.isNotEmpty)
+        address += ", ${place.administrativeArea}";
+      print("tttt: ${address.toString()}");
+      tdLocation.text = address;
+      tdLocationEdit.text = address;
+      update();
+    } catch (e) {
+      String address = "${tr.unknown_address}";
+      tdLocation.text = address;
+      tdLocationEdit.text = address;
+      update();
+    }
   }
 
   @override
@@ -455,5 +466,4 @@ class ProfileViewModle extends BaseController {
     userAddress.clear();
     getMyAddress();
   }
-
 }
