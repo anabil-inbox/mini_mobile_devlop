@@ -32,4 +32,3 @@ class BindingsController extends Bindings{
   }
 }
 
-// get current user Location : 

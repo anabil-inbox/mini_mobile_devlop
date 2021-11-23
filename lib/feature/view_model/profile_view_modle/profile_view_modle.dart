@@ -87,6 +87,7 @@ class ProfileViewModle extends BaseController {
     tdStreet.clear();
     tdLocation.clear();
     tdExtraDetailes.clear();
+    tdSearchMap.clear();
   }
 
   Future<Address> addNewAddress(Address newAddress) async {
@@ -441,14 +442,12 @@ class ProfileViewModle extends BaseController {
         update();
         return;
       }
-      print("tttt: ${place.toString()}");
       String address = "";
       if (place.street!.isNotEmpty) address += "${place.street}";
       if (place.postalCode!.isNotEmpty) address += ", ${place.postalCode}";
       if (place.locality!.isNotEmpty) address += ", ${place.locality}";
       if (place.administrativeArea!.isNotEmpty)
         address += ", ${place.administrativeArea}";
-      print("tttt: ${address.toString()}");
       tdLocation.text = address;
       tdLocationEdit.text = address;
       update();
