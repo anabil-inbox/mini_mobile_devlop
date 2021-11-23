@@ -51,7 +51,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                     return null;
                   },
                   decoration: InputDecoration(
-                      hintText: "${AppLocalizations.of(context)!.title}"),
+                      hintText: "${tr.title}"),
                 ),
                 SizedBox(
                   height: sizeH10,
@@ -69,7 +69,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                     return null;
                   },
                   decoration: InputDecoration(
-                      hintText: "${AppLocalizations.of(context)!.building_no}"),
+                      hintText: "${tr.building_no}"),
                 ),
                 SizedBox(
                   height: sizeH10,
@@ -87,7 +87,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                     return null;
                   },
                   decoration: InputDecoration(
-                      hintText: "${AppLocalizations.of(context)!.unit_no}"),
+                      hintText: "${tr.unit_no}"),
                 ),
                 SizedBox(
                   height: sizeH10,
@@ -105,7 +105,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                     return null;
                   },
                   decoration: InputDecoration(
-                      hintText: "${AppLocalizations.of(context)!.zone}"),
+                      hintText: "${tr.zone}"),
                 ),
                 SizedBox(
                   height: sizeH10,
@@ -123,7 +123,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                     return null;
                   },
                   decoration: InputDecoration(
-                      hintText: "${AppLocalizations.of(context)!.street}"),
+                      hintText: "${tr.street}"),
                 ),
                 SizedBox(
                   height: sizeH10,
@@ -160,7 +160,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                         // ),
                         suffixStyle: TextStyle(color: Colors.transparent),
                         hintText:
-                            "${AppLocalizations.of(context)!.choose_your_location}"),
+                            "${tr.choose_your_location}"),
                   ),
                 ),
                 SizedBox(
@@ -174,7 +174,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   controller: controller.tdExtraDetailes,
                   decoration: InputDecoration(
                       hintText:
-                          "${AppLocalizations.of(context)!.extra_details}"),
+                          "${tr.extra_details}"),
                 ),
                 SizedBox(
                   height: sizeH25,
@@ -202,7 +202,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                             width: sizeH10,
                           ),
                           Text(
-                            "${AppLocalizations.of(context)!.make_default_address}",
+                            "${tr.make_default_address}",
                             style: textStyleHint()!.copyWith(
                                 color: Colors.black.withOpacity(0.6),
                                 fontSize: 14,

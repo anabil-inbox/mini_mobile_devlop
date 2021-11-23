@@ -75,6 +75,7 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdCompanyMobileNumber = TextEditingController();
 
   List<Map<String, String>> contactMap = [];
+
   // for address (add , edit ,delete)
 
   clearControllers() {
@@ -400,8 +401,8 @@ class ProfileViewModle extends BaseController {
   }
 
   getDetailsPlace(String placeName, String placeId) async {
-      print("log_getDetailes with params $placeName , $placeId");
-      googlePlace.details.get(placeId).then((value) async {
+    print("log_getDetailes with params $placeName , $placeId");
+    googlePlace.details.get(placeId).then((value) async {
       print("log_getDetailes googlePlace.details");
       DetailsResponse detailsResponse = value!;
       latitude = detailsResponse.result!.geometry!.location!.lat!;
@@ -416,14 +417,14 @@ class ProfileViewModle extends BaseController {
     });
   }
 
-  Future<void> changeCameraPosition(GoogleMapController controller , String placeName) async {
+  Future<void> changeCameraPosition(
+      GoogleMapController controller, String placeName) async {
     print("log_msg_in_change_camera $latitude , $longitude");
     createCurrentMarker(LatLng(latitude, longitude), "$placeName");
-      await controller.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(latitude, longitude), zoom: 10)));
-        update();
+    await controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(latitude, longitude), zoom: 10)));
+    update();
   }
-
 
   void createCurrentMarker(LatLng point, String title) async {
     latitude = point.latitude;
@@ -433,17 +434,47 @@ class ProfileViewModle extends BaseController {
     update();
   }
 
+
   Future<void> getAddressFromLatLong(LatLng position) async {
     onClickMap(position);
     kGooglePlex = CameraPosition(target: position);
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    Placemark place = placemarks[0];
-    String address =
-        '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
-    tdLocation.text = address;
-    tdLocationEdit.text = address;
-    update();
+   try{
+     List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+     Placemark place = placemarks[0];
+     if (placemarks == null || placemarks.isEmpty) {
+       String address = "${tr.unknown_address}";
+       tdLocation.text = address;
+       tdLocationEdit.text = address;
+       update();
+       return;
+     }
+     if (place == null) {
+       String address = "${tr.unknown_address}";
+       tdLocation.text = address;
+       tdLocationEdit.text = address;
+       update();
+       return;
+     }
+  print("tttt: ${place.toString()}");
+     String address ="";
+     if(place.street!.isNotEmpty)
+       address+="${place.street}";
+     if(place.postalCode!.isNotEmpty)
+       address+=", ${place.postalCode}";
+     if(place.locality!.isNotEmpty)
+       address+=", ${place.locality}";
+     if(place.administrativeArea!.isNotEmpty)
+       address+=", ${place.administrativeArea}";
+     print("tttt: ${address.toString()}");
+     tdLocation.text = address;
+     tdLocationEdit.text = address;
+     update();
+   }catch(e){
+     String address = "${tr.unknown_address}";
+     tdLocation.text = address;
+     tdLocationEdit.text = address;
+     update();
+   }
   }
 
   @override

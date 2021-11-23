@@ -191,10 +191,13 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                         },
                         decoration: InputDecoration(
                           enabled: false,
-                            suffixIcon: Image.asset(
-                              "assets/png/Location.png",
-                              width: sizeW15,
-                              height: sizeH16,
+                            suffixIcon: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Image.asset(
+                                "assets/png/Location.png",
+                                width: sizeW15,
+                                height: sizeH16,
+                              ),
                             ),
                             suffixStyle: TextStyle(color: Colors.transparent),
                             hintText:
