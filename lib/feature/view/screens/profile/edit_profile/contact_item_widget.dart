@@ -38,17 +38,12 @@ class ContactItemWidget extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    flag.toString().contains("assets")
-                        ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
-                        : imageNetwork(
-                            url: "${ConstanceNetwork.imageUrl}${flag}",
-                            width: 36,
-                            height: 26),
-                    VerticalDivider(),
-                    Text(
-                      "${prefix}",
+                     Text(
+                      "$prefix",
                       textDirection: TextDirection.ltr,
                     ),
+                    VerticalDivider(),
+                   
                   ],
                 ),
                 Expanded(

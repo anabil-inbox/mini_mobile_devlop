@@ -45,6 +45,8 @@ class DioManagerClass {
     print("msg_request_url : $url");
     print("msg_request_header : $header");
     print("msg_request_body : $body");
+    print("msg_request_form_fields ${FormData.fromMap(body).fields}");
+    print("msg_request_form_fiels ${FormData.fromMap(body).files}");
     return await _dio!.post(
       url,
       options: Options(headers: header),

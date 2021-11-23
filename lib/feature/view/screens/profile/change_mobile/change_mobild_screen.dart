@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -8,16 +7,16 @@ import 'package:inbox_clients/feature/view/screens/auth/auth_company/widget/head
 import 'package:inbox_clients/feature/view/screens/auth/country/choose_country_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
-import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
 class ChangeMobileScreen extends StatelessWidget {
-  ChangeMobileScreen({Key? key}) : super(key: key);
+  ChangeMobileScreen({Key? key, required this.mobileNumber}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
+  final String mobileNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,6 @@ class ChangeMobileScreen extends StatelessWidget {
       backgroundColor: colorScaffoldRegistrationBody,
       body: GetBuilder<AuthViewModle>(
         init: AuthViewModle(),
-        initState: (_) {},
         builder: (logic) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,8 +32,7 @@ class ChangeMobileScreen extends StatelessWidget {
               SizedBox(height: sizeH25),
               Text("${tr.change_mobile_number}"),
               SizedBox(height: sizeH10),
-              Text(
-                  "${tr.what_is_your_new_phone_number}"),
+              Text("${tr.what_is_your_new_phone_number}"),
               SizedBox(
                 height: sizeH22,
               ),
@@ -62,30 +59,21 @@ class ChangeMobileScreen extends StatelessWidget {
                                   textDirection: TextDirection.ltr,
                                   children: [
                                     SizedBox(
-                                      width: sizeW18,
+                                      width: sizeW10,
                                     ),
-                                    value.defCountry.name!
-                                                .toLowerCase()
-                                                .contains("qatar") ||
-                                            value.defCountry.name!.isEmpty
-                                        ? SvgPicture.asset(
-                                            "assets/svgs/qatar_flag.svg")
-                                        : imageNetwork(
-                                            url:
-                                                "${ConstanceNetwork.imageUrl}${value.defCountry.flag}",
-                                            width: 36,
-                                            height: 26),
-                                    VerticalDivider(),
                                     GetBuilder<AuthViewModle>(
                                       init: AuthViewModle(),
                                       initState: (_) {},
                                       builder: (value) {
                                         return Text(
-                                          "${value.defCountry.prefix == null || value.defCountry.prefix!.isEmpty ? 
-                                          "+974" : value.defCountry.prefix}",
+                                          "${value.defCountry.prefix == null || value.defCountry.prefix!.isEmpty ? "+974" : value.defCountry.prefix}",
                                           textDirection: TextDirection.ltr,
                                         );
                                       },
+                                    ),
+                                    VerticalDivider(),
+                                    SizedBox(
+                                      width: sizeW10,
                                     ),
                                     Expanded(
                                       child: TextFormField(
@@ -121,24 +109,22 @@ class ChangeMobileScreen extends StatelessWidget {
                           height: sizeH31,
                         ),
                         GetBuilder<AuthViewModle>(
-                          builder: (_) {
+                          builder: (value) {
                             return PrimaryButton(
                                 textButton: "${tr.save}",
-                                isLoading: false,
+                                isLoading: value.isLoading,
                                 onClicked: () async {
                                   if (_formKey.currentState!.validate()) {
                                     await logic.reSendVerficationCode(
-                                      id: SharedPref.instance
-                                          .getCurrentUserData()
-                                          .id,
-                                       udid: logic.identifier,   
-                                      target: "sms",
-                                      mobileNumber:
-                                          "${logic.tdMobileNumber.text}",
-                                      countryCode: logic.defCountry.prefix,
-                                      isFromChange: true
-                                    );
-                                    
+                                        id: SharedPref.instance
+                                            .getCurrentUserData()
+                                            .id,
+                                        udid: logic.identifier,
+                                        target: "sms",
+                                        mobileNumber:
+                                            "${logic.tdMobileNumber.text}",
+                                        countryCode: logic.defCountry.prefix,
+                                        isFromChange: true);
                                   }
                                 },
                                 isExpanded: true);

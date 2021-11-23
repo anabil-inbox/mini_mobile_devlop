@@ -27,7 +27,11 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
           "${tr.add_address}",
           style: textStyleAppBarTitle(),
         ),
-        isCenterTitle: true,        
+        isCenterTitle: true, 
+        onBackBtnClick: (){
+          controller.clearControllers();
+          Get.back();
+        },       
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: sizeH16!),

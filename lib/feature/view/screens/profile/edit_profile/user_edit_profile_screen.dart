@@ -25,10 +25,7 @@ class UserEditProfileScreen extends StatefulWidget {
 
 class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
   ProfileViewModle profileViewModle = Get.put(ProfileViewModle());
-
-  var countryCode =
-      SharedPref.instance.getCurrentUserData().country?[0].prefix ?? "";
-  var flagUrl = SharedPref.instance.getCurrentUserData().country?[0].flag ?? "";
+  AuthViewModle authViewModle = Get.put(AuthViewModle());
 
   @override
   void initState() {
@@ -37,9 +34,9 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
         SharedPref.instance.getCurrentUserData().customerName ?? "";
     profileViewModle.tdUserEmailEdit.text =
         SharedPref.instance.getCurrentUserData().email ?? "";
-    // profileViewModle.contactMap.clear();
-    // profileViewModle.contactMap =
-    //     SharedPref.instance.getCurrentUserData().contactNumber ?? [];
+    profileViewModle.contactMap.clear();
+    profileViewModle.contactMap =
+        SharedPref.instance.getCurrentUserData().contactNumber!.toList();
   }
 
   @override
@@ -83,7 +80,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                         children: [
                           GetBuilder<ProfileViewModle>(
                             builder: (_) {
-                              return InkWell(
+                              return  InkWell(
                                   onTap: () async {
                                     await profileViewModle.getImage();
                                   },
@@ -97,11 +94,19 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                           backgroundColor:
                                               colorPrimary.withOpacity(0.5),
                                         )
-                                      : CircleAvatar(
+                                      : GetUtils.isNull(SharedPref.instance.getCurrentUserData().image) || 
+                                      SharedPref.instance.getCurrentUserData().image.toString().isEmpty
+                                      ? CircleAvatar(
                                           radius: 50,
                                           backgroundColor:
                                               colorPrimary.withOpacity(0.5),
-                                        ));
+                                        ):CircleAvatar(
+                                          radius: 50,
+                                          backgroundImage: NetworkImage("${SharedPref.instance.getCurrentUserData().image}"),
+                                        )
+                                        );
+                            
+                            
                             },
                           ),
                           PositionedDirectional(
@@ -184,45 +189,17 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                     SizedBox(
                                       width: sizeW18,
                                     ),
-                                    // authViewModle.defCountry.name!.toLowerCase().contains("qatar")
-                                    // ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
-                                    // : imageNetwork(
-                                    //  url: "${ConstanceNetwork.imageUrl}${authViewModle.defCountry.flag}" ,
-                                    //  width: 36,
-                                    //  height: 26
-                                    // ),
                                     GetBuilder<AuthViewModle>(
                                       init: AuthViewModle(),
                                       initState: (_) {},
                                       builder: (value) {
-                                        // print(
-                                        //     "flag_msg ${SharedPref.instance.getCurrentUserData().country?[0].flag}");
-                                        // print(
-                                        //     "flag_url $flagUrl");
-
-                                        // if (flagUrl.isEmpty)
-                                        //   flagUrl =
-                                        //       "assets/svgs/qatar_flag.svg";
-                                        // else
-                                        //   flagUrl = SharedPref.instance
-                                        //           .getCurrentUserData()
-                                        //           .country?[0]
-                                        //           .flag ??
-                                        //       "";
                                         return Row(
                                           children: [
-                                            // flagUrl.isEmpty || GetUtils.isNull(flagUrl)
-                                            //     ? SvgPicture.asset(
-                                            //         "assets/svgs/qatar_flag.svg")
-                                            //     : imageNetwork(
-                                            //         url:"${ConstanceNetwork.imageUrl}$flagUrl",
-                                            //         width: 36,
-                                            //         height: 26),
-                                            VerticalDivider(),
                                             Text(
-                                              "$countryCode",
-                                               textDirection: TextDirection.ltr,
+                                              "${value.defCountry.prefix}",
+                                              textDirection: TextDirection.ltr,
                                             ),
+                                            VerticalDivider(),
                                           ],
                                         );
                                       },
@@ -243,14 +220,6 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                         ),
                                         controller: profileViewModle
                                             .tdUserMobileNumberEdit,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return '${tr.fill_your_phone_number}';
-                                          } else if (value.length != 9) {
-                                            return "${tr.phone_number_invalid}";
-                                          }
-                                          return null;
-                                        },
                                         keyboardType: TextInputType.number,
                                       ),
                                     )
@@ -262,12 +231,20 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                           SizedBox(
                             width: sizeW4,
                           ),
-                          InkWell(
-                            onTap: _addNewContact,
-                            child: SvgPicture.asset(
-                              "assets/svgs/add.svg",
-                              fit: BoxFit.cover,
-                            ),
+                          GetBuilder<AuthViewModle>(
+                            init: AuthViewModle(),
+                            initState: (_) {},
+                            builder: (logic) {
+                              return InkWell(
+                                onTap: () {
+                                  addNewContact("${logic.defCountry.prefix}");
+                                },
+                                child: SvgPicture.asset(
+                                  "assets/svgs/add.svg",
+                                  fit: BoxFit.cover,
+                                ),
+                              );
+                            },
                           )
                         ],
                       ),
@@ -282,20 +259,19 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                           itemCount: logic.contactMap.length,
                           itemBuilder: (context, index) {
                             return ContactItemWidget(
-                              deleteContact: () {
-                                logic.contactMap.removeAt(index);
-                                logic.update();
-                              },
-                              mobileNumber: logic.tdUserMobileNumberEdit.text,
-                              onChange: (_) {
-                                logic.contactMap[index]
-                                    [ConstanceNetwork.mobileNumberKey] = _;
-                                logic.update();
-                              },
-                              flag: flagUrl,
-                              prefix: logic.contactMap[index]
-                                  [ConstanceNetwork.countryCodeKey],
-                            );
+                                deleteContact: () {
+                                  logic.contactMap.removeAt(index);
+                                  logic.update();
+                                },
+                                mobileNumber: logic.contactMap[index]
+                                    ["${ConstanceNetwork.mobileNumberKey}"],
+                                onChange: (_) {
+                                  logic.contactMap[index]
+                                      [ConstanceNetwork.mobileNumberKey] = _;
+                                  logic.update();
+                                },
+                                prefix: logic.contactMap[index]
+                                    ["${ConstanceNetwork.countryCodeKey}"]);
                           },
                         );
                       }),
@@ -330,18 +306,20 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
     );
   }
 
-  void _addNewContact() {
+  addNewContact(String countryCode) {
     print("_addNewContact");
+
     if (profileViewModle.tdUserMobileNumberEdit.text.isEmpty) {
       return;
     }
+
     Map<String, String> map = {
-      "${ConstanceNetwork.countryCodeKey}":
-          "$countryCode",
+      "${ConstanceNetwork.countryCodeKey}": "$countryCode",
       "${ConstanceNetwork.mobileNumberKey}":
           "${profileViewModle.tdUserMobileNumberEdit.text}",
     };
     profileViewModle.contactMap.add(map);
+    profileViewModle.tdUserMobileNumberEdit.clear();
     profileViewModle.update();
   }
 }

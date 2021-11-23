@@ -76,7 +76,7 @@ class ProfileApi {
       var response = await DioManagerClass.getInstance
           .dioPostFormMethod(url: url, header: header, body: body);
 
-      Logger().i(response);
+      Logger().i("editProfile_response $response");
       if (response.toString().contains("success:false")) {
         print("msg_if_false");
       } else {

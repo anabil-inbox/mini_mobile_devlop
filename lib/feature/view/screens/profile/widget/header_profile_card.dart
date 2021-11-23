@@ -43,9 +43,28 @@ class HeaderProfileCard extends StatelessWidget {
               SizedBox(
                 width: sizeH16,
               ),
-              CircleAvatar(
-                backgroundColor: colorPrimary,
-                radius: 35,
+              GetBuilder<ProfileViewModle>(
+                init: ProfileViewModle(),
+                initState: (_) {},
+                builder: (_) {
+                  return GetUtils.isNull(
+                              SharedPref.instance.getCurrentUserData().image) ||
+                          SharedPref.instance
+                              .getCurrentUserData()
+                              .image
+                              .toString()
+                              .isEmpty
+                      ? CircleAvatar(
+                          backgroundColor: colorPrimary,
+                          radius: 35,
+                        )
+                      : CircleAvatar(
+                          backgroundColor: colorPrimary,
+                          backgroundImage: NetworkImage(
+                              "${SharedPref.instance.getCurrentUserData().image}"),
+                          radius: 35,
+                        );
+                },
               ),
               SizedBox(
                 width: sizeH10,
@@ -72,10 +91,10 @@ class HeaderProfileCard extends StatelessWidget {
                         initState: (_) {},
                         builder: (_) {
                           return Text(
-                            "${SharedPref.instance.getCurrentUserData().countryCode} ${SharedPref.instance.getCurrentUserData().mobile}",
-                            style: textStyleHint()!.copyWith(fontWeight: FontWeight.normal),
-                              textDirection:TextDirection.ltr
-                          );
+                              "${SharedPref.instance.getCurrentUserData().countryCode} ${SharedPref.instance.getCurrentUserData().mobile}",
+                              style: textStyleHint()!
+                                  .copyWith(fontWeight: FontWeight.normal),
+                              textDirection: TextDirection.ltr);
                         },
                       ),
                       SizedBox(
@@ -89,13 +108,15 @@ class HeaderProfileCard extends StatelessWidget {
                           GetUtils.isNull(SharedPref.instance
                               .getCurrentUserData()
                               .crNumber))
-                         InkWell(
+                        InkWell(
                             onTap: () {
                               print("Cliked");
-                              Get.to(() => ChangeMobileScreen());
+                              Get.to(() => ChangeMobileScreen(
+                                    mobileNumber:
+                                        "${SharedPref.instance.getCurrentUserData().countryCode} ${SharedPref.instance.getCurrentUserData().mobile}",
+                                  ));
                             },
-                            child:
-                                SvgPicture.asset("assets/svgs/edit_pen.svg"))
+                            child: SvgPicture.asset("assets/svgs/edit_pen.svg"))
                       else
                         const SizedBox(),
                     ],

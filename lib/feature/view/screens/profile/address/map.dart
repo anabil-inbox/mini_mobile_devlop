@@ -24,7 +24,9 @@ class _MapSampleState extends State<MapSample> {
   @override
   void initState() {
     super.initState();
-    profileViewModle.getCurrentUserLagAndLong();
+    if (GetUtils.isNull(profileViewModle.currentPostion)) {
+       profileViewModle.getCurrentUserLagAndLong();
+    }
   }
 
   @override
@@ -83,6 +85,7 @@ class _MapSampleState extends State<MapSample> {
               GetBuilder<ProfileViewModle>(
                 builder: (_) {
                   return GoogleMap(
+                    mapToolbarEnabled: false,
                     mapType: MapType.normal,
                     initialCameraPosition:
                         GetUtils.isNull(profileViewModle.kGooglePlex)
@@ -95,10 +98,10 @@ class _MapSampleState extends State<MapSample> {
                       profileViewModle.onClickMap(lat);
                     },
                     markers: {profileViewModle.mark},
-                    onMapCreated: (GoogleMapController mapController) {
+                    onMapCreated: (GoogleMapController newMapController) {
                       profileViewModle.controllerCompleter
-                          .complete(mapController);
-                      profileViewModle.mapController = mapController;
+                          .complete(newMapController);
+                      profileViewModle.mapController = newMapController;
                       profileViewModle.update();
                     },
                   );
@@ -112,13 +115,14 @@ class _MapSampleState extends State<MapSample> {
                       textButton: "${tr.select}",
                       isLoading: false,
                       onClicked: () async {
+
                         await profileViewModle.getAddressFromLatLong(
                             profileViewModle.mark.position);
                         profileViewModle.update();
-                        Get.back();
+                       Get.back();
                       },
                       isExpanded: true)),
-                      (profileViewModle.tdSearchMap.text.isEmpty ||
+              (profileViewModle.tdSearchMap.text.isEmpty ||
                       profileViewModle.predictions.isEmpty ||
                       !profileViewModle.isSearching)
                   ? const SizedBox()
@@ -160,7 +164,6 @@ class _MapSampleState extends State<MapSample> {
                                     profileViewModle.predictions = [];
                                     profileViewModle.isSearching = false;
                                     profileViewModle.update();
-                                    
                                   },
                                   child: Column(
                                     crossAxisAlignment:

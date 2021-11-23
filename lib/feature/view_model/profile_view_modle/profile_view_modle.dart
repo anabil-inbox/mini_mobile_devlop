@@ -1,8 +1,10 @@
 // ignore_for_file: unnecessary_brace_in_string_interps
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart' as multiPart;
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -22,6 +24,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
+
 
 class ProfileViewModle extends BaseController {
   bool isAccepteDefoltLocation = true;
@@ -75,7 +78,7 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdCompanyApplicantDepartment = TextEditingController();
   TextEditingController tdCompanyMobileNumber = TextEditingController();
 
-  List<Map<String, String>> contactMap = [];
+  List<Map<String, dynamic>> contactMap = [];
 
   // for address (add , edit ,delete)
 
@@ -237,23 +240,33 @@ class ProfileViewModle extends BaseController {
   editProfileUser() async {
     isLoading = true;
     update();
+    var myImg;
     hideFocus(Get.context!);
     Map<String, dynamic> myMap = Map<String, dynamic>();
-
+    if(img != null){
+     myImg = await compressImage(img!);
+    }
+        // FormData data = FormData.fromMap({
+        //       "file": await MultipartFile.fromFile(
+        //         file.path,
+        //         filename: fileName,
+        //       ),
+        //     });
     if (SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty ||
         GetUtils.isNull(SharedPref.instance.getCurrentUserData().crNumber)) {
       myMap = {
         "email": "${tdUserEmailEdit.text}",
         "full_name": "${tdUserFullNameEdit.text}",
-        "image": "image",
-        "contact_number": contactMap
+        "image":  multiPart.MultipartFile.fromFileSync(myImg!.path),
+        "contact_number" : jsonEncode(contactMap)
       };
+    
     } else {
       myMap = {
         "email": "${tdCompanyEmailEdit.text}",
         "company_name": "${tdCompanyNameEdit.text}",
-        "image": img != null ? "${await compressImage(img!)}" : "img",
-        "contact_number": contactMap,
+        "image": multiPart.MultipartFile.fromFileSync(myImg!.path),
+        "contact_number": jsonEncode(contactMap),
         "company_sector": companySector!.name,
         "applicant_name": tdCompanyNameOfApplicationEdit.text,
         "applicant_department": tdCompanyApplicantDepartment.text,
@@ -262,10 +275,9 @@ class ProfileViewModle extends BaseController {
       };
     }
     try {
-      Logger().i("myMappp ${myMap.toString()}");
-      Logger().i("myContact map $contactMap");
+      
+      Logger().e("image ${myMap}");
 
-      Logger().d(contactMap);
       await ProfileHelper.getInstance.editProfile(myMap).then((value) => {
             if (value.status!.success!)
               {
@@ -354,6 +366,7 @@ class ProfileViewModle extends BaseController {
           title: 'Marker',
         ),
       );
+      update();
     } catch (e) {
       print("msg_error $e");
     }
@@ -387,22 +400,23 @@ class ProfileViewModle extends BaseController {
   }
 
   Future<void> getCurrentUserLagAndLong() async {
+    
     var position = await GeolocatorPlatform.instance
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     currentPostion = LatLng(position.latitude, position.longitude);
     print("msg_position $currentPostion");
     if (!GetUtils.isNull(currentPostion)) {
-       kGooglePlex = CameraPosition(
-       target: LatLng(currentPostion!.latitude, currentPostion!.latitude),
-       zoom: 10,
-       );
-       print("msg_position_in_if $currentPostion");
-       latitude = currentPostion!.latitude;
-       longitude = currentPostion!.longitude;
-       mapController = await controllerCompleter.future;
-       print("msg_mapController ${mapController.toString()}");
-       await changeCameraPosition(mapController!);
-       update();
+      kGooglePlex = CameraPosition(
+        target: LatLng(currentPostion!.latitude, currentPostion!.latitude),
+        zoom: 10,
+      );
+      print("msg_position_in_if $currentPostion");
+      latitude = currentPostion!.latitude;
+      longitude = currentPostion!.longitude;
+      mapController = await controllerCompleter.future;
+      print("msg_mapController ${mapController.toString()}");
+      await changeCameraPosition(mapController!);
+      update();
     } else {
       kGooglePlex = CameraPosition(
         target: LatLng(25.36, 51.18),
@@ -422,6 +436,8 @@ class ProfileViewModle extends BaseController {
   }
 
   Future<void> getAddressFromLatLong(LatLng position) async {
+    latitude = position.latitude;
+    longitude = position.longitude;
     onClickMap(position);
     kGooglePlex = CameraPosition(target: position);
     try {
@@ -459,6 +475,7 @@ class ProfileViewModle extends BaseController {
     }
   }
 
+  
   @override
   void onInit() {
     super.onInit();
