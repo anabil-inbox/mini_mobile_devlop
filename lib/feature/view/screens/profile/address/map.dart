@@ -71,6 +71,8 @@ class MapSample extends GetWidget<ProfileViewModle> {
                     markers: {controller.mark},
                     onMapCreated: (GoogleMapController mapController) {
                       controller.controllerCompleter.complete(mapController);
+                      controller.mapController = mapController;
+                      controller.update();
                     },
                   );
                 },
@@ -83,10 +85,9 @@ class MapSample extends GetWidget<ProfileViewModle> {
                       textButton: "${tr.select}",
                       isLoading: false,
                       onClicked: () async {
-                        await controller
-                            .getAddressFromLatLong(controller.mark.position);
-                        controller.update();
-                        Get.back();
+                        await controller.getAddressFromLatLong(controller.mark.position);
+                         controller.update();
+                         Get.back();
                       },
                       isExpanded: true)),
               (controller.tdSearchMap.text.isEmpty ||

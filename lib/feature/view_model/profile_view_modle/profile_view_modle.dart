@@ -128,9 +128,9 @@ class ProfileViewModle extends BaseController {
     List data = [];
     try {
       await ProfileHelper.getInstance.getMyAddress().then((value) => {
-            isLoading = false,
             data = value.data,
             userAddress = data.map((e) => Address.fromJson(e)).toList(),
+            isLoading = false,
             update()
           });
     } catch (e) {}
@@ -356,6 +356,7 @@ class ProfileViewModle extends BaseController {
   // for maps functions && td Controller :
   TextEditingController tdSearchMap = TextEditingController();
   Completer<GoogleMapController> controllerCompleter = Completer();
+  GoogleMapController? mapController;
   double latitude = 25.36;
   double longitude = 51.18;
   String addressFromLocation = "";
@@ -411,16 +412,17 @@ class ProfileViewModle extends BaseController {
     }).then((value) async {
       print("log_OutFrom_logDetailes");
       print("log_msg_controller ${latitude} , ${longitude}");
-      GoogleMapController controller = await controllerCompleter.future;
-      await changeCameraPosition(controller, placeName);
+      mapController = await controllerCompleter.future;
+      await changeCameraPosition(mapController!, placeName);
     });
   }
 
   Future<void> changeCameraPosition(GoogleMapController controller , String placeName) async {
     print("log_msg_in_change_camera $latitude , $longitude");
+    print("log_msg_in_change_camera_con ${GetUtils.isNull(controller)}");
     createCurrentMarker(LatLng(latitude, longitude), "$placeName");
-      await controller.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(latitude, longitude), zoom: 10)));
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+    CameraPosition(target: LatLng(latitude, longitude), zoom: 10)));
         update();
   }
 
@@ -435,7 +437,7 @@ class ProfileViewModle extends BaseController {
 
   Future<void> getAddressFromLatLong(LatLng position) async {
     onClickMap(position);
-    kGooglePlex = CameraPosition(target: position);
+     kGooglePlex = CameraPosition(target: position);
     List<Placemark> placemarks =
         await placemarkFromCoordinates(position.latitude, position.longitude);
     Placemark place = placemarks[0];
@@ -443,6 +445,7 @@ class ProfileViewModle extends BaseController {
         '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
     tdLocation.text = address;
     tdLocationEdit.text = address;
+    
     update();
   }
 
@@ -452,4 +455,5 @@ class ProfileViewModle extends BaseController {
     userAddress.clear();
     getMyAddress();
   }
+
 }

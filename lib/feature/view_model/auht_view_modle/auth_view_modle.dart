@@ -318,7 +318,7 @@ class AuthViewModle extends GetxController {
       "id": "$id",
       "udid": "$udid",
       "target": "$target",
-      "mobile_number": "$mobileNumber",
+      "mobile": "$mobileNumber",
       "country_code": "$countryCode"
     }).then((value) => {
           if (value.status!.success!)
