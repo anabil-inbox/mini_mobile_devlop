@@ -26,7 +26,7 @@ class MapSample extends GetWidget<ProfileViewModle> {
                   child: Container(
                     clipBehavior: Clip.hardEdge,
                     decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(100)),
+                        BoxDecoration(borderRadius: BorderRadius.circular(100)),
                     child: TextFormField(
                       controller: controller.tdSearchMap,
                       decoration: InputDecoration(
@@ -40,7 +40,9 @@ class MapSample extends GetWidget<ProfileViewModle> {
                           ),
                           hintText: "${tr.search_for_country}"),
                       onChanged: (newVal) {
-                        controller.autoCompleteSearch(newVal);
+                        print("msg_new_val $newVal");
+                        if (newVal.isNotEmpty)
+                          controller.autoCompleteSearch(newVal);
                         controller.update();
                       },
                     ),
@@ -56,106 +58,92 @@ class MapSample extends GetWidget<ProfileViewModle> {
         initState: (_) {},
         builder: (_) {
           return Stack(
-              children: [
-                GetBuilder<ProfileViewModle>(
-                  builder: (_) {
-                    return GoogleMap(
-                      mapType: MapType.normal,
-                      initialCameraPosition: controller.kGooglePlex,
-                      onTap: (lat) {
-                        controller.onClickMap(lat);
+            children: [
+              GetBuilder<ProfileViewModle>(
+                builder: (_) {
+                  return GoogleMap(
+                    mapType: MapType.normal,
+                    initialCameraPosition: controller.kGooglePlex,
+                    onTap: (lat) {
+                      controller.onClickMap(lat);
+                    },
+                    markers: {controller.mark},
+                    onMapCreated: (GoogleMapController mapController) {
+                      controller.controllerCompleter.complete(mapController);
+                    },
+                  );
+                },
+              ),
+              Positioned(
+                  bottom: sizeH40,
+                  right: sizeH18,
+                  left: sizeH18,
+                  child: PrimaryButton(
+                      textButton: "${tr.select}",
+                      isLoading: false,
+                      onClicked: () async {
+                        await controller
+                            .getAddressFromLatLong(controller.mark.position);
+                        controller.update();
+                        Get.back();
                       },
-                      markers: {controller.mark},
-                      onMapCreated: (GoogleMapController mapController) {
-                        controller.controllerCompleter.complete(mapController);
-                      },
-                    );
-                  },
-                ),
-                Positioned(
-                    bottom: sizeH40,
-                    right: sizeH18,
-                    left: sizeH18,
-                    child: PrimaryButton(
-                        textButton: "${tr.select}",
-                        isLoading: false,
-                        onClicked: () async {
-                          await controller
-                              .getAddressFromLatLong(controller.mark.position);
-                          controller.update();
-                          Get.back();
-                        },
-                        isExpanded: true)),
-                (controller.predictions.length == 0 ||
-                    controller.tdSearchMap.text.isEmpty)
-                    ? const SizedBox()
-                    : GetBuilder<ProfileViewModle>(
-                  init: ProfileViewModle(),
-                  initState: (_) {},
-                  builder: (_) {
-                    print("msg_map${controller.predictions.length}");
-                    print("msg_map${controller.tdSearchMap.text.isEmpty}");
-                    print("msg_map${controller.predictions.isEmpty}");
-      
-                    return Expanded(
-                        child: (controller.predictions.length == 0 ||
-                            controller.tdSearchMap.text.isEmpty || controller.predictions.isEmpty)
-                            ? const SizedBox()
-                            : SingleChildScrollView(
-                            child: Padding(
-                                padding: const EdgeInsets.only(left: 30),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.white,
-                                  ),      margin: EdgeInsets.only(
-                                left: 20,
-                                right: 20,
-                                top: 0,
-                                bottom: 10),
+                      isExpanded: true)),
+              (controller.tdSearchMap.text.isEmpty ||
+                      controller.predictions.isEmpty)
+                  ? const SizedBox()
+                  : Container(
+                      height: 200,
+                      child: GetBuilder<ProfileViewModle>(
+                        builder: (_) {
+                          return SingleChildScrollView(
+                              child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white,
+                            ),
+                            margin: EdgeInsets.only(
+                                left: 20, right: 20, top: 0, bottom: 10),
                             child: ListView.builder(
-                              itemCount:
-                              controller.predictions.length,
-                              padding: EdgeInsets.only(
-                                  top: 10, bottom: 10),
                               shrinkWrap: true,
+                              itemCount: controller.predictions.length,
+                              padding: EdgeInsets.only(top: 10, bottom: 10),
                               itemBuilder: (context, index) {
                                 return InkWell(
-                                  onTap: () {
-                                    controller
-                                        .selectAutocompletePrediction =
-                                    controller.predictions[index];
-                                    controller.getDetailsPlace(
-                                        controller.predictions[index]
-                                            .description!,
+                                  onTap: () async {
+                                    print("log_clicked_:");
+                                    controller.selectAutocompletePrediction =
+                                        controller.predictions[index];
+                                    print(
+                                        "log_choose_: ${controller.predictions[index].placeId}");
+                                    print(
+                                        "log_choose_: ${controller.predictions[index].description}");
+                                    print(
+                                        "log_choose_: ${controller.predictions[index].types}");
+                                    await controller.getDetailsPlace(
                                         controller
-                                            .selectAutocompletePrediction!
+                                            .predictions[index].description!,
+                                        controller.selectAutocompletePrediction!
                                             .placeId!);
-                                      controller.predictions = [];
-                                      controller.update();    
+
+                                    controller.predictions = [];
+                                    controller.update();
                                   },
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.start,
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Padding(
-                                        padding:
-                                        const EdgeInsets.only(
+                                        padding: const EdgeInsets.only(
                                             left: 10, right: 10),
                                         child: Row(
                                           children: [
                                             Expanded(
                                               child: Text(
-                                                controller
-                                                    .predictions[
-                                                index]
+                                                controller.predictions[index]
                                                     .description!,
-                                                overflow: TextOverflow
-                                                    .ellipsis,
-                                                style: TextStyle(
-                                                    fontSize: 11),
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(fontSize: 11),
                                               ),
                                             ),
                                           ],
@@ -167,11 +155,11 @@ class MapSample extends GetWidget<ProfileViewModle> {
                                 );
                               },
                             ),
-                          ))));
-            },
-          )
-        ],
-      ); 
+                          ));
+                        },
+                      ))
+            ],
+          );
         },
       ),
     );

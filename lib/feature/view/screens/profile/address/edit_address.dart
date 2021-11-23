@@ -63,7 +63,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
           icon: isArabicLang()?SvgPicture.asset("assets/svgs/back_arrow_ar.svg"):SvgPicture.asset("assets/svgs/back_arrow.svg"),
         ),
         title: Text(
-          "Edit Address",
+          "${tr.edit_address}",
           style: textStyleLargeText(),
         ),
         centerTitle: true,

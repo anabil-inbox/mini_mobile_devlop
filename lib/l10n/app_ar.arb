@@ -81,8 +81,10 @@
     "fill_the_zone_correctly":"المنطقة",
     "fill_the_street_correctly":"ادخل الشارع بشكل صحيح",
     "Choose your location":"اختر عنوانك بشكل صحيح",
-    "add_new_address":"اضافة عنوان جديد",
-    "edit_profile":"تعديل الملف الشخصي",
+    "add_new_address":"إضافة عنوان جديد",
+       "add_address":"إضافة عنوان",
+       "edit_address":"تعديل العنوان",
+ "edit_profile":"تعديل الملف الشخصي",
     "my_wallet":"محفظتي",
     "my_rewards":"هداياي",
     "my_address":"عناويني",
@@ -108,6 +110,6 @@
       "filter_by_name":"تصفية حسب الاسم",
       "edit_address":"تعديل عنوان",
       "alternative_contact":"جهات اتصال بديلة",
-          "are_you_sure_you_want_to_delete_address":"هل انت متأكد انك تود حذف العنوان ؟"
+      "are_you_sure_you_want_to_delete_address":"هل انت متأكد انك تود حذف العنوان ؟"
     
 }

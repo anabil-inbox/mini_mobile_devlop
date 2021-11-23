@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_brace_in_string_interps
+
 import 'dart:async';
 import 'dart:io';
 
@@ -15,8 +17,6 @@ import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
-import 'package:inbox_clients/util/app_color.dart';
-import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/sh_util.dart';
@@ -116,7 +116,7 @@ class ProfileViewModle extends BaseController {
                         "${tr.error_occurred}", "${value.status!.message}")
                   }
               });
-              clearControllers();
+      clearControllers();
     } catch (e) {}
 
     return address;
@@ -281,7 +281,8 @@ class ProfileViewModle extends BaseController {
     hideFocus(Get.context!);
     Map<String, dynamic> myMap = Map<String, dynamic>();
 
-    if (SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty || GetUtils.isNull(SharedPref.instance.getCurrentUserData().crNumber)) {
+    if (SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty ||
+        GetUtils.isNull(SharedPref.instance.getCurrentUserData().crNumber)) {
       myMap = {
         "email": "${tdUserEmailEdit.text}",
         "full_name": "${tdUserFullNameEdit.text}",
@@ -368,18 +369,18 @@ class ProfileViewModle extends BaseController {
     zoom: 10,
   );
 
-
-
   void autoCompleteSearch(String value) async {
-    var result = await googlePlace.queryAutocomplete.get(value);
-    update();
-    if (result != null && result.predictions != null) {
-      predictions = result.predictions!;
+    try {
+      var result = await googlePlace.queryAutocomplete.get(value);
       update();
-    } else {
-      predictions = [];
-      update();
-    }
+      if (result != null && result.predictions != null) {
+        predictions = result.predictions!;
+        update();
+      } else {
+        predictions = [];
+        update();
+      }
+    } catch (e) {}
     update();
   }
 
@@ -399,17 +400,27 @@ class ProfileViewModle extends BaseController {
   }
 
   getDetailsPlace(String placeName, String placeId) async {
-    googlePlace.details.get(placeId).then((value) {
+    print("log_getDetailes with params $placeName , $placeId");
+    googlePlace.details.get(placeId).then((value) async {
+      print("log_getDetailes googlePlace.details");
       DetailsResponse detailsResponse = value!;
       latitude = detailsResponse.result!.geometry!.location!.lat!;
       longitude = detailsResponse.result!.geometry!.location!.lng!;
       addressFromLocation = placeName;
-      
-      createCurrentMarker(LatLng(latitude, longitude), "$placeName");
-      kGooglePlex = CameraPosition(target: LatLng(latitude,longitude));
       update();
+    }).then((value) async {
+      print("log_OutFrom_logDetailes");
+      print("log_msg_controller ${latitude} , ${longitude}");
+      final GoogleMapController controller = await controllerCompleter.future;
+      try {
+        await controller.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(target: LatLng(latitude, longitude), zoom: 10)));
+        createCurrentMarker(LatLng(latitude, longitude), "$placeName");
+        update();
+      } catch (e) {
+         print("msg_e $e");
+      }
     });
-    update();
   }
 
   void createCurrentMarker(LatLng point, String title) async {
