@@ -15,7 +15,7 @@ class BackBtnWidget extends StatelessWidget {
     return InkWell(
         onTap: onTap ??_getBack,
         child: Padding(
-          padding: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.all(6.0),
           child: SvgPicture.asset(isArabicLang()?"assets/svgs/back_arrow_ar.svg":"assets/svgs/back_btn_widget.svg" , width: sizeW36,height: sizeH34,),
         ));
   }
