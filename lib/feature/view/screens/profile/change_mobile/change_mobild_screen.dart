@@ -11,7 +11,6 @@ import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
@@ -33,10 +32,10 @@ class ChangeMobileScreen extends StatelessWidget {
             children: [
               HeaderCodeVerfication(),
               SizedBox(height: sizeH25),
-              Text("${AppLocalizations.of(context)!.change_mobile_number}"),
+              Text("${tr.change_mobile_number}"),
               SizedBox(height: sizeH10),
               Text(
-                  "${AppLocalizations.of(context)!.what_is_your_new_phone_number}"),
+                  "${tr.what_is_your_new_phone_number}"),
               SizedBox(
                 height: sizeH22,
               ),
@@ -103,9 +102,9 @@ class ChangeMobileScreen extends StatelessWidget {
                                         controller: logic.tdMobileNumber,
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return '${AppLocalizations.of(Get.context!)!.fill_your_phone_number}';
+                                            return '${tr.fill_your_phone_number}';
                                           } else if (value.length != 9) {
-                                            return "${AppLocalizations.of(Get.context!)!.phone_number_invalid}";
+                                            return "${tr.phone_number_invalid}";
                                           }
                                           return null;
                                         },

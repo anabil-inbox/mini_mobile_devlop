@@ -400,8 +400,8 @@ class ProfileViewModle extends BaseController {
   }
 
   getDetailsPlace(String placeName, String placeId) async {
-    print("log_getDetailes with params $placeName , $placeId");
-    googlePlace.details.get(placeId).then((value) async {
+      print("log_getDetailes with params $placeName , $placeId");
+      googlePlace.details.get(placeId).then((value) async {
       print("log_getDetailes googlePlace.details");
       DetailsResponse detailsResponse = value!;
       latitude = detailsResponse.result!.geometry!.location!.lat!;
@@ -411,17 +411,19 @@ class ProfileViewModle extends BaseController {
     }).then((value) async {
       print("log_OutFrom_logDetailes");
       print("log_msg_controller ${latitude} , ${longitude}");
-      final GoogleMapController controller = await controllerCompleter.future;
-      try {
-        await controller.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(target: LatLng(latitude, longitude), zoom: 10)));
-        createCurrentMarker(LatLng(latitude, longitude), "$placeName");
-        update();
-      } catch (e) {
-         print("msg_e $e");
-      }
+      GoogleMapController controller = await controllerCompleter.future;
+      await changeCameraPosition(controller, placeName);
     });
   }
+
+  Future<void> changeCameraPosition(GoogleMapController controller , String placeName) async {
+    print("log_msg_in_change_camera $latitude , $longitude");
+    createCurrentMarker(LatLng(latitude, longitude), "$placeName");
+      await controller.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: LatLng(latitude, longitude), zoom: 10)));
+        update();
+  }
+
 
   void createCurrentMarker(LatLng point, String title) async {
     latitude = point.latitude;
