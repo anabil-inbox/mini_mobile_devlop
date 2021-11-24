@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
+import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -44,30 +45,26 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
     profileViewModle.latitude = widget.address.latitude ?? 0;
     profileViewModle.longitude = widget.address.longitude ?? 0;
     profileViewModle.mark = Marker(
-        position: LatLng(widget.address.latitude ?? 0, widget.address.longitude ?? 0),
+        position:
+            LatLng(widget.address.latitude ?? 0, widget.address.longitude ?? 0),
         markerId: MarkerId(
-            LatLng(widget.address.latitude ?? 0, widget.address.longitude ?? 0)
-                .toString(),
-                ));
+          LatLng(widget.address.latitude ?? 0, widget.address.longitude ?? 0)
+              .toString(),
+        ));
+    profileViewModle.kGooglePlex = CameraPosition(target: LatLng(widget.address.latitude ?? 0, widget.address.longitude ?? 0),zoom: 10);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: scaffoldColor,
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(Get.context!);
-          },
-          icon: isArabicLang()?SvgPicture.asset("assets/svgs/back_arrow_ar.svg"):SvgPicture.asset("assets/svgs/back_arrow.svg"),
-        ),
-        title: Text(
+      appBar: CustomAppBarWidget(
+        titleWidget: Text(
           "${tr.edit_address}",
-          style: textStyleLargeText(),
+          style: textStyleAppBarTitle(),
         ),
-        centerTitle: true,
-        backgroundColor: colorBackground,
+        isCenterTitle: true, 
+     
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: sizeH16!),
@@ -190,7 +187,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                           return null;
                         },
                         decoration: InputDecoration(
-                          enabled: false,
+                            enabled: false,
                             suffixIcon: Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Image.asset(
@@ -263,23 +260,29 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                             isLoading: controller.isLoading,
                             onClicked: () {
                               if (_formKey.currentState!.validate()) {
-                                controller.editAddress(Address(
-                                  id: widget.address.id,
-                                  addressTitle: controller.tdTitleEdit.text,
-                                  isPrimaryAddress:
-                                      controller.isAccepteDefoltLocation
-                                          ? 1
-                                          : 0,
-                                  zone: controller.tdZoneEdit.text,
-                                  streat: controller.tdStreetEdit.text,
-                                  extraDetails:
-                                      controller.tdExtraDetailesEdit.text,
-                                  buildingNo: controller.tdBuildingNoEdit.text,
-                                  geoAddress: controller.tdLocationEdit.text,
-                                  unitNo: controller.tdUnitNoEdit.text,
-                                  latitude: controller.mark.position.latitude,
-                                  longitude: controller.mark.position.longitude,
-                                ), false);
+                                controller.editAddress(
+                                    Address(
+                                      id: widget.address.id,
+                                      addressTitle: controller.tdTitleEdit.text,
+                                      isPrimaryAddress:
+                                          controller.isAccepteDefoltLocation
+                                              ? 1
+                                              : 0,
+                                      zone: controller.tdZoneEdit.text,
+                                      streat: controller.tdStreetEdit.text,
+                                      extraDetails:
+                                          controller.tdExtraDetailesEdit.text,
+                                      buildingNo:
+                                          controller.tdBuildingNoEdit.text,
+                                      geoAddress:
+                                          controller.tdLocationEdit.text,
+                                      unitNo: controller.tdUnitNoEdit.text,
+                                      latitude:
+                                          controller.mark.position.latitude,
+                                      longitude:
+                                          controller.mark.position.longitude,
+                                    ),
+                                    false);
                               }
                             },
                             isExpanded: true);

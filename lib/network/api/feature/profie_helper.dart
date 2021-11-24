@@ -77,7 +77,6 @@ class ProfileHelper {
                 ? "${ConstanceNetwork.editProfilEndPoint}"
                 : "${ConstanceNetwork.editProfilCompanyEndPoint}",
         header: ConstanceNetwork.header(4));
-        
     if (appResponse.status?.success == true) {
       return appResponse;
     } else {

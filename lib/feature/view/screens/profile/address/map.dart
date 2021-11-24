@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -6,6 +8,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/utils.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_place/google_place.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
@@ -24,9 +27,10 @@ class _MapSampleState extends State<MapSample> {
   @override
   void initState() {
     super.initState();
-    if (GetUtils.isNull(profileViewModle.currentPostion)) {
-       profileViewModle.getCurrentUserLagAndLong();
-    }
+
+        profileViewModle.googlePlace = GooglePlace("AIzaSyAozWyP-XVpiaIfqgKprWwwCce5ou46YZE");
+       // profileViewModle.currentPostion = LatLng(profileViewModle.latitude, profileViewModle.longitude);
+        
   }
 
   @override
@@ -36,23 +40,20 @@ class _MapSampleState extends State<MapSample> {
         leadingWidth: sizeW50,
         isCenterTitle: true,
         titleWidget: GetBuilder<ProfileViewModle>(
-          initState: (_) {
-            profileViewModle.getCurrentUserLagAndLong();
-          },
           builder: (_) {
             return Row(
               children: [
                 Expanded(
                   child: Container(
-                    height: 45,
                     clipBehavior: Clip.hardEdge,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(15)),
                     child: TextFormField(
+                      maxLines: 1,
+                      minLines: 1,
                       controller: profileViewModle.tdSearchMap,
                       decoration: InputDecoration(
                           filled: true,
-                          // contentPadding: EdgeInsets.only(top: 5,bottom: 5),
                           fillColor: scaffoldColor,
                           prefixIcon: Padding(
                             padding: const EdgeInsets.all(12),
@@ -62,7 +63,6 @@ class _MapSampleState extends State<MapSample> {
                           ),
                           hintText: "${tr.search_for_country}"),
                       onChanged: (newVal) {
-                        print("msg_new_val $newVal");
                         if (newVal.isNotEmpty)
                           profileViewModle.autoCompleteSearch(newVal);
                         profileViewModle.isSearching = true;
@@ -83,26 +83,59 @@ class _MapSampleState extends State<MapSample> {
           return Stack(
             children: [
               GetBuilder<ProfileViewModle>(
-                builder: (_) {
+                builder: (logic) {
                   return GoogleMap(
-                    mapToolbarEnabled: false,
+                    zoomControlsEnabled: false,
                     mapType: MapType.normal,
+                    mapToolbarEnabled: false,
+                    myLocationEnabled: false,
+                    zoomGesturesEnabled: true,
+                    scrollGesturesEnabled: true,
+                    rotateGesturesEnabled: false,
+                    gestureRecognizers: Set()
+                      ..add(Factory<PanGestureRecognizer>(
+                          () => PanGestureRecognizer()))
+                      ..add(
+                        Factory<VerticalDragGestureRecognizer>(
+                            () => VerticalDragGestureRecognizer()),
+                      )
+                      ..add(
+                        Factory<HorizontalDragGestureRecognizer>(
+                            () => HorizontalDragGestureRecognizer()),
+                      )
+                      ..add(
+                        Factory<ScaleGestureRecognizer>(
+                            () => ScaleGestureRecognizer()),
+                      ),
                     initialCameraPosition:
-                        GetUtils.isNull(profileViewModle.kGooglePlex)
+                        GetUtils.isNull(logic.kGooglePlex)
                             ? CameraPosition(
                                 target: LatLng(25.36, 51.18),
                                 zoom: 10,
                               )
-                            : profileViewModle.kGooglePlex!,
+                            : logic.kGooglePlex!,
                     onTap: (lat) {
-                      profileViewModle.onClickMap(lat);
+                      logic.onClickMap(lat);
                     },
-                    markers: {profileViewModle.mark},
+                    markers: {logic.mark},
                     onMapCreated: (GoogleMapController newMapController) {
-                      profileViewModle.controllerCompleter
-                          .complete(newMapController);
-                      profileViewModle.mapController = newMapController;
-                      profileViewModle.update();
+                      if(!logic.controllerCompleter.isCompleted){
+                      logic.controllerCompleter
+                                  .complete(newMapController);
+                                  
+                       }
+                      
+
+                      logic.mapController = newMapController;
+                      logic.update();
+                      if (GetUtils.isNull(profileViewModle.currentPostion)) {
+                        profileViewModle.getCurrentUserLagAndLong();
+                      }else{
+                      logic.getCurrentUserLagAndLong(latLng:logic.mark.position);
+
+                      }
+                      
+                      
                     },
                   );
                 },
@@ -115,11 +148,10 @@ class _MapSampleState extends State<MapSample> {
                       textButton: "${tr.select}",
                       isLoading: false,
                       onClicked: () async {
-
                         await profileViewModle.getAddressFromLatLong(
                             profileViewModle.mark.position);
                         profileViewModle.update();
-                       Get.back();
+                        Get.back();
                       },
                       isExpanded: true)),
               (profileViewModle.tdSearchMap.text.isEmpty ||
@@ -145,11 +177,10 @@ class _MapSampleState extends State<MapSample> {
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () async {
+
                                     profileViewModle.isSearching = false;
                                     profileViewModle.update();
-                                    print("log_clicked_:");
-                                    profileViewModle
-                                            .selectAutocompletePrediction =
+                                    profileViewModle.selectAutocompletePrediction =
                                         profileViewModle.predictions[index];
                                     profileViewModle.tdSearchMap.text =
                                         profileViewModle
@@ -161,9 +192,11 @@ class _MapSampleState extends State<MapSample> {
                                         profileViewModle
                                             .selectAutocompletePrediction!
                                             .placeId!);
+                                                                      
                                     profileViewModle.predictions = [];
                                     profileViewModle.isSearching = false;
                                     profileViewModle.update();
+
                                   },
                                   child: Column(
                                     crossAxisAlignment:

@@ -76,10 +76,11 @@ class ProfileApi {
       var response = await DioManagerClass.getInstance
           .dioPostFormMethod(url: url, header: header, body: body);
 
-      Logger().i("editProfile_response $response");
-      if (response.toString().contains("success:false")) {
+      Logger().i("editProfile_response ${response.statusCode}");
+      if (response.toString().toLowerCase().contains("success:false")) {
         print("msg_if_false");
       } else {
+        print("msg_if_true");
         await SharedPref.instance.setCurrentUserData(response.toString());
       }
 

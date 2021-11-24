@@ -111,6 +111,8 @@
       "filter_by_name":"تصفية حسب الاسم",
       "edit_address":"تعديل عنوان",
       "alternative_contact":"جهات اتصال بديلة",
-      "are_you_sure_you_want_to_delete_address":"هل انت متأكد انك تود حذف العنوان ؟"
-    
+      "are_you_sure_you_want_to_delete_address":"هل انت متأكد انك تود حذف العنوان ؟",
+      "point":"نقطة",
+      "available_balance":"الرصيد المتاح",
+      "transaction_history":"تاريخ المعاملات"
 }

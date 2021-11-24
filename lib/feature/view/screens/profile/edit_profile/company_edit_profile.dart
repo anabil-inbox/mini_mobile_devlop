@@ -32,17 +32,27 @@ class CompanyEditProfile extends StatefulWidget {
 class _CompanyEditProfileState extends State<CompanyEditProfile> {
   ProfileViewModle profileViewModle = Get.put(ProfileViewModle());
 
-    @override
+  @override
   void initState() {
     super.initState();
-    Logger().i("${SharedPref.instance.getCurrentUserData().toJson().toString()}");
-   profileViewModle.tdCompanyApplicantDepartment.text = SharedPref.instance.getCurrentUserData().applicantName ?? "";
-   profileViewModle.tdCompanyNameEdit.text = SharedPref.instance.getCurrentUserData().customerName ?? "";
-   profileViewModle.tdCompanyMobileNumber.text = SharedPref.instance.getCurrentUserData().mobile ?? "";
-   profileViewModle.tdCompanyNameOfApplicationEdit.text = SharedPref.instance.getCurrentUserData().applicantName ?? "";
-   profileViewModle.companySector!.sectorName = SharedPref.instance.getCurrentUserData().companySector ?? "";
-   profileViewModle.tdCompanyEmailEdit.text = SharedPref.instance.getCurrentUserData().email ?? "";
-  // profileViewModle.contactMap = SharedPref.instance.getCurrentUserData().contactNumber ??  [];  
+    Logger()
+        .i("${SharedPref.instance.getCurrentUserData().toJson().toString()}");
+    profileViewModle.tdCompanyApplicantDepartment.text =
+        SharedPref.instance.getCurrentUserData().applicantName ?? "";
+    profileViewModle.tdCompanyNameEdit.text =
+        SharedPref.instance.getCurrentUserData().customerName ?? "";
+    profileViewModle.tdCompanyMobileNumber.text =
+        SharedPref.instance.getCurrentUserData().mobile ?? "";
+    profileViewModle.tdCompanyNameOfApplicationEdit.text =
+        SharedPref.instance.getCurrentUserData().applicantName ?? "";
+    profileViewModle.companySector!.sectorName =
+        SharedPref.instance.getCurrentUserData().companySector ?? "";
+    profileViewModle.tdCompanyEmailEdit.text =
+        SharedPref.instance.getCurrentUserData().email ?? "";
+    // profileViewModle.contactMap = SharedPref.instance.getCurrentUserData().contactNumber ??  [];
+    profileViewModle.contactMap.clear();
+    // profileViewModle.contactMap =
+    //     SharedPref.instance.getCurrentUserData().contactNumber!.toList();
   }
 
   var countryCode = "";
@@ -64,7 +74,9 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
           onPressed: () {
             Navigator.pop(Get.context!);
           },
-          icon: isArabicLang()?SvgPicture.asset("assets/svgs/back_arrow_ar.svg"):SvgPicture.asset("assets/svgs/back_arrow.svg"),
+          icon: isArabicLang()
+              ? SvgPicture.asset("assets/svgs/back_arrow_ar.svg")
+              : SvgPicture.asset("assets/svgs/back_arrow.svg"),
         ),
         centerTitle: true,
         backgroundColor: colorBackground,
@@ -93,21 +105,19 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                             },
                             child: profileViewModle.img != null
                                 ? CircleAvatar(
-                              radius: 50,
-                              backgroundImage: Image
-                                  .file(
-                                profileViewModle.img!,
-                                fit: BoxFit.cover,
-                              )
-                                  .image,
-                              backgroundColor:
-                              colorPrimary.withOpacity(0.5),
-                            )
+                                    radius: 50,
+                                    backgroundImage: Image.file(
+                                      profileViewModle.img!,
+                                      fit: BoxFit.cover,
+                                    ).image,
+                                    backgroundColor:
+                                        colorPrimary.withOpacity(0.5),
+                                  )
                                 : CircleAvatar(
-                              radius: 50,
-                              backgroundColor:
-                              colorPrimary.withOpacity(0.5),
-                            ));
+                                    radius: 50,
+                                    backgroundColor:
+                                        colorPrimary.withOpacity(0.5),
+                                  ));
                       },
                     ),
                     PositionedDirectional(
@@ -123,7 +133,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                   controller: profileViewModle.tdCompanyNameEdit,
                   textCapitalization: TextCapitalization.sentences,
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null || value.trim().isEmpty) {
                       return '${tr.fill_your_company_name}';
                     }
                     return null;
@@ -137,7 +147,6 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                 SizedBox(
                   height: sizeH16,
                 ),
-
                 TextFormField(
                   controller: profileViewModle.tdCompanyEmailEdit,
                   onSaved: (newValue) {
@@ -145,7 +154,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                     profileViewModle.update();
                   },
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null || value.trim().isEmpty) {
                       return '${tr.fill_your_company_email}';
                     } else if (!GetUtils.isEmail(value)) {
                       return '${tr.please_enter_valid_email}';
@@ -154,7 +163,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                   },
                   keyboardType: TextInputType.emailAddress,
                   decoration:
-                  InputDecoration(hintText: "${tr.your_email_address}"),
+                      InputDecoration(hintText: "${tr.your_email_address}"),
                 ),
                 SizedBox(
                   height: sizeH16,
@@ -166,9 +175,9 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                     return TextFormField(
                         controller: TextEditingController(
                             text:
-                            GetUtils.isNull(logic.companySector!.sectorName)
-                                ? ""
-                                : logic.companySector!.sectorName),
+                                GetUtils.isNull(logic.companySector!.sectorName)
+                                    ? ""
+                                    : logic.companySector!.sectorName),
                         readOnly: true,
                         onTap: () {
                           chooseSectorCompany();
@@ -177,7 +186,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                             suffixIcon: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child:
-                              SvgPicture.asset("assets/svgs/dropdown.svg"),
+                                  SvgPicture.asset("assets/svgs/dropdown.svg"),
                             ),
                             hintText: "${tr.company_sector}"));
                   },
@@ -185,63 +194,41 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                 SizedBox(
                   height: sizeH16,
                 ),
-                // GetBuilder<AuthViewModle>(
-                //   init: AuthViewModle(),
-                //   initState: (_) {},
-                //   builder: (logic) {
-                //     return TextFormField(
-                //         controller:
-                //             TextEditingController(text: GetUtils.isNull(logic.companySector!.sectorName) ? "" : logic.companySector!.sectorName),
-                //         readOnly: true,
-                //         onTap: () {
-                //           chooseSectorCompany();
-                //         },
-                //         decoration: InputDecoration(
-                //             suffixIcon: Padding(
-                //               padding: const EdgeInsets.all(8.0),
-                //               child: SvgPicture.asset("assets/svgs/dropdown.svg"),
-                //             ),
-                //             hintText:
-                //                 "${tr.company_sector}"));
-                //   },
-                // ),
-                // SizedBox(
-                //   height: padding16,
-                // ),
                 TextFormField(
                   controller: profileViewModle.tdCompanyNameOfApplicationEdit,
                   onSaved: (newValue) {
-                    profileViewModle.tdCompanyNameOfApplicationEdit.text = newValue!;
+                    profileViewModle.tdCompanyNameOfApplicationEdit.text =
+                        newValue!;
                     profileViewModle.update();
                   },
                   textCapitalization: TextCapitalization.sentences,
-                  
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null || value.trim().isEmpty) {
                       return '${tr.fill_name_of_applicant}';
                     }
                     return null;
                   },
                   decoration:
-                  InputDecoration(hintText: "${tr.name_of_application}"),
+                      InputDecoration(hintText: "${tr.name_of_application}"),
                 ),
                 SizedBox(
                   height: padding16,
                 ),
                 TextFormField(
-                   controller: profileViewModle.tdCompanyApplicantDepartment,
+                  controller: profileViewModle.tdCompanyApplicantDepartment,
                   onSaved: (newValue) {
-                    profileViewModle.tdCompanyApplicantDepartment.text = newValue!;
+                    profileViewModle.tdCompanyApplicantDepartment.text =
+                        newValue!;
                     profileViewModle.update();
                   },
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null || value.trim().isEmpty) {
                       return '${tr.fill_the_applicant_department}';
                     }
                     return null;
                   },
                   decoration:
-                  InputDecoration(hintText: "${tr.applicant_department}"),
+                      InputDecoration(hintText: "${tr.applicant_department}"),
                 ),
                 SizedBox(
                   height: sizeH16,
@@ -275,13 +262,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                               SizedBox(
                                 width: sizeW18,
                               ),
-                              // profileViewModle.defCountry.name!.toLowerCase().contains("qatar")
-                              // ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
-                              // : imageNetwork(
-                              //  url: "${ConstanceNetwork.imageUrl}${profileViewModle.defCountry.flag}" ,
-                              //  width: 36,
-                              //  height: 26
-                              // ),
+                         
                               GetBuilder<AuthViewModle>(
                                 init: AuthViewModle(),
                                 initState: (_) {},
@@ -294,51 +275,49 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                                     flagUrl = "assets/svgs/qatar_flag.svg";
                                   else
                                     flagUrl = value.defCountry.flag.toString();
-                                  return
-                                    Row(
-                                      children: [
-                                        value.defCountry.name!
-                                            .toLowerCase()
-                                            .contains("qatar")
-                                            ? SvgPicture.asset(
-                                            "assets/svgs/qatar_flag.svg")
-                                            : imageNetwork(
-                                            url:
-                                            "${ConstanceNetwork.imageUrl}${value
-                                                .defCountry.flag}",
-                                            width: 36,
-                                            height: 26),
-                                        VerticalDivider(),
-                                        Text(
-                                          "${value.defCountry.prefix}",
-                                          textDirection: TextDirection.ltr,
-                                        ),
-                                      ],
-                                    );
+                                  return Row(
+                                    children: [
+                                      value.defCountry.name!
+                                              .toLowerCase()
+                                              .contains("qatar")
+                                          ? SvgPicture.asset(
+                                              "assets/svgs/qatar_flag.svg")
+                                          : imageNetwork(
+                                              url:
+                                                  "${ConstanceNetwork.imageUrl}${value.defCountry.flag}",
+                                              width: 36,
+                                              height: 26),
+                                      VerticalDivider(),
+                                      Text(
+                                        "${value.defCountry.prefix}",
+                                        textDirection: TextDirection.ltr,
+                                      ),
+                                    ],
+                                  );
                                 },
                               ),
                               Expanded(
                                 child: TextFormField(
                                   textDirection: TextDirection.ltr,
                                   maxLength: 9,
-                                 
                                   decoration: InputDecoration(
                                     counterText: "",
                                   ),
-                             
-                                  controller: profileViewModle.tdCompanyMobileNumber,
-                                onSaved: (newValue) {
-                                  profileViewModle.tdCompanyMobileNumber.text = newValue!;
-                                  profileViewModle.update();
-                                },
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return '${tr.fill_your_phone_number}';
-                                    } else if (value.length != 9) {
-                                      return "${tr.phone_number_invalid}";
-                                    }
-                                    return null;
+                                  controller:
+                                      profileViewModle.tdCompanyMobileNumber,
+                                  onSaved: (newValue) {
+                                    profileViewModle
+                                        .tdCompanyMobileNumber.text = newValue!;
+                                    profileViewModle.update();
                                   },
+                                  // validator: (value) {
+                                  //   if (value == null || value.isEmpty) {
+                                  //     return '${tr.fill_your_phone_number}';
+                                  //   } else if (value.length != 9) {
+                                  //     return "${tr.phone_number_invalid}";
+                                  //   }
+                                  //   return null;
+                                  // },
                                   keyboardType: TextInputType.number,
                                 ),
                               )
@@ -350,35 +329,49 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                     SizedBox(
                       width: sizeW4,
                     ),
-                    InkWell(
-                      onTap: _addNewContact,
-                      child: SvgPicture.asset(
-                        "assets/svgs/add.svg",
-                        fit: BoxFit.cover,
-                      ),
+                    GetBuilder<AuthViewModle>(
+                      init: AuthViewModle(),
+                      initState: (_) {},
+                      builder: (logic) {
+                        return InkWell(
+                          onTap: () {
+                            addNewContact("${logic.defCountry.prefix}");
+                          },
+                          child: SvgPicture.asset(
+                            "assets/svgs/add.svg",
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
                     )
                   ],
                 ),
                 SizedBox(
                   height: sizeH20,
                 ),
-                GetBuilder<ProfileViewModle>(
-                    builder: (logic) {
+                GetBuilder<ProfileViewModle>(builder: (logic) {
                   return ListView.builder(
                     shrinkWrap: true,
-                    keyboardDismissBehavior:ScrollViewKeyboardDismissBehavior.onDrag ,
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
                     itemCount: logic.contactMap.length,
                     itemBuilder: (context, index) {
                       return ContactItemWidget(
-                        deleteContact: (){
+                        deleteContact: () {
                           logic.contactMap.removeAt(index);
                           logic.update();
                         },
-                        mobileNumber: logic.contactMap[index]["mobile_number"] ,
+                        mobileNumber: logic.contactMap[index]
+                            [ConstanceNetwork.mobileNumberKey],
                         onChange: (_) {
-                        logic.contactMap[index][ConstanceNetwork.mobileNumberKey] = _;
-                        logic.update();
-                      },flag:flagUrl ,prefix: logic.contactMap[index][ConstanceNetwork.countryCodeKey],);
+                          logic.contactMap[index]
+                              [ConstanceNetwork.mobileNumberKey] = _;
+                          logic.update();
+                        },
+                        flag: flagUrl,
+                        prefix: logic.contactMap[index]
+                            [ConstanceNetwork.countryCodeKey],
+                      );
                     },
                   );
                 }),
@@ -392,7 +385,8 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                         isExpanded: true,
                         textButton: "${tr.save}",
                         onClicked: () {
-                          if (CompanyEditProfile._formKey.currentState!.validate()) {
+                          if (CompanyEditProfile._formKey.currentState!
+                              .validate()) {
                             CompanyEditProfile._formKey.currentState!.save();
                             logic.editProfileUser();
                           }
@@ -439,22 +433,20 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                               logic.selectedIndex = -1;
                               logic.update();
                               logic.selectedIndex = index;
-                              logic.temproreySectorName = ApiSettings
-                                  .fromJson(
-                                  json.decode(SharedPref.instance
-                                      .getAppSetting()!
-                                      .toString()))
+                              logic.temproreySectorName = ApiSettings.fromJson(
+                                      json.decode(SharedPref.instance
+                                          .getAppSetting()!
+                                          .toString()))
                                   .companySectors![index];
                               logic.update();
                             },
                             child: CompanySectorItem(
                                 cellIndex: index,
                                 selectedIndex: logic.selectedIndex,
-                                sector: ApiSettings
-                                    .fromJson(json.decode(
-                                    SharedPref.instance
-                                        .getAppSetting()!
-                                        .toString()))
+                                sector: ApiSettings.fromJson(json.decode(
+                                        SharedPref.instance
+                                            .getAppSetting()!
+                                            .toString()))
                                     .companySectors![index])),
                         SizedBox(
                           height: sizeH10,
@@ -487,18 +479,20 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
     ));
   }
 
-  void _addNewContact() {
-    ///todo here i check if number is empty  i will not do any thing
-    ///else i will add item to map and pass to list of map to show in listview
-    if (profileViewModle.tdUserMobileNumberEdit.text.isEmpty) {
+   addNewContact(String countryCode) {
+    print("Company_addNewContact");
+    
+    if (profileViewModle.tdCompanyMobileNumber.text.isEmpty) {
       return;
     }
-    Map<String, String> map = {
-      "${ConstanceNetwork.countryCodeKey}": "${countryCode/*.replaceAll("+", "")*/}",
-     "${ConstanceNetwork.mobileNumberKey}": "${profileViewModle.tdUserMobileNumberEdit.text}",
-    };
 
+    Map<String, String> map = {
+      "${ConstanceNetwork.countryCodeKey}": "$countryCode",
+      "${ConstanceNetwork.mobileNumberKey}":
+          "${profileViewModle.tdCompanyMobileNumber.text}",
+    };
     profileViewModle.contactMap.add(map);
+    profileViewModle.tdCompanyMobileNumber.clear();
     profileViewModle.update();
   }
 }

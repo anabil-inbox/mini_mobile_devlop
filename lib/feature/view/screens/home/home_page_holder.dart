@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
+import 'package:inbox_clients/feature/view/screens/notification/notification_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/empty_state/home_empty_statte.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
@@ -18,7 +19,7 @@ class HomePageHolder extends StatelessWidget {
   List<Widget> bnbScreens = [
     const HomeScreen(),
     const EmptyHomeWidget(),
-    const EmptyHomeWidget(),
+    const NotificationScreen(),
     const ProfileScreen(),
   ];
 

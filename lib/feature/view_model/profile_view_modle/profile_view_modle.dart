@@ -25,7 +25,6 @@ import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
-
 class ProfileViewModle extends BaseController {
   bool isAccepteDefoltLocation = true;
   bool isLoading = false;
@@ -243,29 +242,32 @@ class ProfileViewModle extends BaseController {
     var myImg;
     hideFocus(Get.context!);
     Map<String, dynamic> myMap = Map<String, dynamic>();
-    if(img != null){
-     myImg = await compressImage(img!);
+    if (img != null) {
+      myImg = await compressImage(img!);
     }
-        // FormData data = FormData.fromMap({
-        //       "file": await MultipartFile.fromFile(
-        //         file.path,
-        //         filename: fileName,
-        //       ),
-        //     });
+    // FormData data = FormData.fromMap({
+    //       "file": await MultipartFile.fromFile(
+    //         file.path,
+    //         filename: fileName,
+    //       ),
+    //     });
     if (SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty ||
         GetUtils.isNull(SharedPref.instance.getCurrentUserData().crNumber)) {
       myMap = {
         "email": "${tdUserEmailEdit.text}",
         "full_name": "${tdUserFullNameEdit.text}",
-        "image":  multiPart.MultipartFile.fromFileSync(myImg!.path),
-        "contact_number" : jsonEncode(contactMap)
+        "image": myImg != null
+            ? multiPart.MultipartFile.fromFileSync(myImg!.path)
+            : "",
+        "contact_number": jsonEncode(contactMap)
       };
-    
     } else {
       myMap = {
         "email": "${tdCompanyEmailEdit.text}",
         "company_name": "${tdCompanyNameEdit.text}",
-        "image": multiPart.MultipartFile.fromFileSync(myImg!.path),
+        "image": myImg != null
+            ? multiPart.MultipartFile.fromFileSync(myImg!.path)
+            : "",
         "contact_number": jsonEncode(contactMap),
         "company_sector": companySector!.name,
         "applicant_name": tdCompanyNameOfApplicationEdit.text,
@@ -275,8 +277,6 @@ class ProfileViewModle extends BaseController {
       };
     }
     try {
-      
-      Logger().e("image ${myMap}");
 
       await ProfileHelper.getInstance.editProfile(myMap).then((value) => {
             if (value.status!.success!)
@@ -385,7 +385,6 @@ class ProfileViewModle extends BaseController {
     }).then((value) async {
       print("log_OutFrom_logDetailes");
       print("log_msg_controller ${latitude} , ${longitude}");
-      mapController = await controllerCompleter.future;
       await changeCameraPosition(mapController!);
     });
   }
@@ -399,22 +398,18 @@ class ProfileViewModle extends BaseController {
     update();
   }
 
-  Future<void> getCurrentUserLagAndLong() async {
-    
+  Future<void> getCurrentUserLagAndLong({LatLng? latLng}) async {
     var position = await GeolocatorPlatform.instance
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    currentPostion = LatLng(position.latitude, position.longitude);
-    print("msg_position $currentPostion");
+    currentPostion = LatLng(latLng?.latitude?? position.latitude,latLng?.longitude?? position.longitude);
+    
     if (!GetUtils.isNull(currentPostion)) {
       kGooglePlex = CameraPosition(
         target: LatLng(currentPostion!.latitude, currentPostion!.latitude),
         zoom: 10,
       );
-      print("msg_position_in_if $currentPostion");
       latitude = currentPostion!.latitude;
       longitude = currentPostion!.longitude;
-      mapController = await controllerCompleter.future;
-      print("msg_mapController ${mapController.toString()}");
       await changeCameraPosition(mapController!);
       update();
     } else {
@@ -475,7 +470,6 @@ class ProfileViewModle extends BaseController {
     }
   }
 
-  
   @override
   void onInit() {
     super.onInit();

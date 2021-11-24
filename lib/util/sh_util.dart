@@ -54,6 +54,7 @@ class SharedPref {
 
   setCurrentUserData(String profileData) async {
     try {
+      print("msg_profile_data_to_save $profileData");
       bool? isSaved =
           await _prefs?.setString("$userDataKey", profileData.toString());
       print(isSaved);
@@ -68,6 +69,7 @@ class SharedPref {
       var string = _prefs?.getString("$userDataKey");
       var decode;
       if (GetUtils.isNull(json.decode(string!)["data"]["Customer"])) {
+        print("get Current user if");
         decode = json.decode(string)["data"];
       }else{
        decode = json.decode(string)["data"]["Customer"];

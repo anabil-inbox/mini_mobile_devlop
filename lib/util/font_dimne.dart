@@ -11,3 +11,4 @@ double? fontSize20 = 20;
 double? fontSize21 = 21;
 double? fontSize30 = 20;
 double? fontSize17 = 17;
+final double fontSize34 = 34;

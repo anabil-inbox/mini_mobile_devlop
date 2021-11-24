@@ -81,6 +81,13 @@ TextStyle? textStyleAppbar() {
       fontFamily: Constance.Font_regular);
 }
 
+TextStyle? textStyleBigPrimaryText() {
+  return TextStyle(
+    color: colorPrimary,
+    fontSize: fontSize34
+  );
+}
+
 TextStyle? textStyleSubTitle(){
    return TextStyle(
       color: colorTextBlack,
@@ -99,6 +106,14 @@ TextStyle? textStyleTitle() {
       color: colorPrimaryDark,
       fontSize: fontSize18,
       fontFamily: Constance.Font_regular);
+}
+
+TextStyle? textStylePrimaryFont(){
+  return TextStyle(
+    color: colorPrimary,
+    fontFamily: Constance.Font_regular,
+    fontSize: fontSize18
+  );
 }
 
 TextStyle? textStyleTitleBold() {
@@ -137,6 +152,29 @@ TextStyle? textStyleHint() {
     fontSize: fontSize16,
     fontWeight: FontWeight.bold,
     color: colorTextHint1,
+  );
+}
+TextStyle? smallHintTextStyle(){
+  return TextStyle(
+    fontSize: fontSize12,
+    fontWeight: FontWeight.normal,
+    color: colorTextHint1,
+  );
+}
+
+TextStyle? mediumHintTextStyle(){
+  return TextStyle(
+    fontSize: fontSize15,
+    fontWeight: FontWeight.normal,
+    color: colorHint2,
+  );
+}
+
+TextStyle? smallFontHint2TextStyle(){
+  return TextStyle(
+    fontSize: fontSize13,
+    fontWeight: FontWeight.normal,
+    color: colorHint3,
   );
 }
 
@@ -182,7 +220,6 @@ TextStyle? textStyleIntroBody(){
   return TextStyle(
     color: Colors.black, 
     fontSize: fontSize14,
-    // fontWeight: FontWeight.normal
       fontFamily: Constance.Font_regular
   );
 }
