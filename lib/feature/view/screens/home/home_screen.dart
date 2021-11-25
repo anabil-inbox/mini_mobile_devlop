@@ -40,6 +40,7 @@ class HomeScreen extends StatelessWidget {
             isFill: true,
             isBorder: true,
           ),
+
         ),
         SvgPicture.asset(
           "assets/svgs/Filter.svg",
