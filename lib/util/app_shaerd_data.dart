@@ -173,9 +173,8 @@ showAnimatedDialog(dialog) {
   );
 }
 
-var urlProduct =
-    "https://images.unsplash.com/photo-1613177794106-be20802b11d3?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xvY2slMjBoYW5kc3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80";
-Widget imageNetwork({double? width, double? height, String? url}) {
+var urlProduct = "https://images.unsplash.com/photo-1613177794106-be20802b11d3?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xvY2slMjBoYW5kc3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80";
+Widget imageNetwork({double? width, double? height, String? url , BoxFit? fit}) {
   return CachedNetworkImage(
     imageBuilder: (context, imageProvider) {
       return Container(

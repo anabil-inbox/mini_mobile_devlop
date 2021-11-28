@@ -9,7 +9,6 @@ import 'package:logger/logger.dart';
 class SplashViewModle extends GetxController{
     var log = Logger();
     ApiSettings? apiSettings;  
-    var pref = SharedPref.instance.init();
     List<CompanySector> arrCompanySector = [];
     List<String> arrSecName = [];
      

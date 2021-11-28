@@ -8,9 +8,10 @@ import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 class TextContainerWidget extends StatelessWidget {
-  const TextContainerWidget({Key? key, this.txt, this.colorBackground}) : super(key: key);
+  const TextContainerWidget({Key? key, this.txt, this.colorBackground, }) : super(key: key);
   final String? txt;
   final Color? colorBackground;
+
   @override
   Widget build(BuildContext context) {
     screenUtil(context);

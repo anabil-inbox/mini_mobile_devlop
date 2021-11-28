@@ -16,6 +16,7 @@ import 'package:inbox_clients/feature/view/widgets/icon_btn.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
+import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -27,7 +28,8 @@ class StorageDetailsView extends StatelessWidget {
   const StorageDetailsView({Key? key}) : super(key: key);
 
   //todo this for appbar
-  PreferredSizeWidget get appBar => CustomAppBarWidget(
+  PreferredSizeWidget get appBar =>
+      CustomAppBarWidget(
         isCenterTitle: true,
         titleWidget: CustomTextView(
           txt: "New Box 01",
@@ -35,19 +37,27 @@ class StorageDetailsView extends StatelessWidget {
           maxLine: Constance.maxLineOne,
         ),
         actionsWidgets: [
-          TextButton(
-            onPressed: () {},
-            child: CustomTextView(
-              txt: "${tr.select}",
-              textStyle: textStyleNormal()?.copyWith(color: colorRed),
-              maxLine: Constance.maxLineOne,
-            ),
-          ),
+          GetBuilder<StorageViewModel>(
+              init: StorageViewModel(),
+              builder: (logic) {
+            return TextButton(
+              onPressed: () {
+                logic.updateSelectBtn();
+                _goToFilterNameView();
+              },
+              child: CustomTextView(
+                txt: "${tr.select}",
+                textStyle: textStyleNormal()?.copyWith(color: colorRed),
+                maxLine: Constance.maxLineOne,
+              ),
+            );
+          }),
         ],
       );
 
   //todo this for search
-  Widget get searchWidget => CustomTextFormFiled(
+  Widget get searchWidget =>
+      CustomTextFormFiled(
         iconSize: sizeRadius20,
         maxLine: Constance.maxLineOne,
         icon: Icons.search,
@@ -56,7 +66,7 @@ class StorageDetailsView extends StatelessWidget {
         keyboardType: TextInputType.text,
         onSubmitted: (_) {},
         onChange: (_) {},
-        fun:_goToFilterNameView ,
+        fun: _goToFilterNameView,
         isReadOnly: true,
         isSmallPadding: false,
         isSmallPaddingWidth: true,
@@ -67,7 +77,8 @@ class StorageDetailsView extends StatelessWidget {
       );
 
   //todo this for item titles
-  Widget get headItemWidget => Row(
+  Widget get headItemWidget =>
+      Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomTextView(
@@ -75,12 +86,13 @@ class StorageDetailsView extends StatelessWidget {
             textStyle: textStyleNormal()?.copyWith(color: colorBlack),
             maxLine: Constance.maxLineOne,
           ),
-          TextContainerWidget(colorBackground: colorRedTrans,txt: tr.name,),
+          TextContainerWidget(colorBackground: colorRedTrans, txt: tr.name,),
         ],
       );
 
   Widget get btnActionsWidget => BtnActionWidget();
 
+  StorageViewModel get viewModel => Get.put(StorageViewModel());
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +129,7 @@ class StorageDetailsView extends StatelessWidget {
                       itemCount: 10,
                       shrinkWrap: true,
                       keyboardDismissBehavior:
-                          ScrollViewKeyboardDismissBehavior.onDrag,
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         return const RecentlyItemWidget();
@@ -142,9 +154,10 @@ class StorageDetailsView extends StatelessWidget {
                           physics: customScrollViewIOS(),
                           clipBehavior: Clip.antiAlias,
                           keyboardDismissBehavior:
-                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          ScrollViewKeyboardDismissBehavior.onDrag,
                           itemBuilder: (context, index) => const ItemsWidget(),
-                          separatorBuilder: (context, index) => Divider(
+                          separatorBuilder: (context, index) =>
+                              Divider(
                                 height: sizeH1,
                               ),
                           itemCount: 10),
@@ -159,7 +172,7 @@ class StorageDetailsView extends StatelessWidget {
           ),
           btnActionsWidget,
           SizedBox(
-            height: Platform.isIOS ? sizeH20:sizeH10,
+            height: Platform.isIOS ? sizeH20 : sizeH10,
           ),
         ],
       ),
@@ -167,8 +180,7 @@ class StorageDetailsView extends StatelessWidget {
   }
 
 
-
   void _goToFilterNameView() {
-    Get.to(()=> FilterStorageNameView());
+    Get.to(() => FilterStorageNameView());
   }
 }
