@@ -42,6 +42,9 @@ var colorOrangeLight = Color(0xFFF9B20C);
 var colorContainerGray = Color(0xFFF5F5F5);
 var colorContainerGrayLight = Color(0xFFBDBDBD).withOpacity(0.1);
 var scaffoldColor = Color(0xFFF7F9FB);
+var boxColorGray = Color(0xFFDDDBD7);
+var boxColorOrange = Color(0xFFF9AC19);
+var boxColorRed = Color(0xFFE63331);
 
 //todo trasparent color
 var transparent = Color(0x00000000);

@@ -28,7 +28,7 @@ class RecentlyItemWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ClipRRect(borderRadius: BorderRadius.circular(sizeRadius16!),child: imageNetwork(url: urlProduct ,height:sizeH85 , width:sizeW85 ,fit: BoxFit.cover ),),
+          ClipRRect(borderRadius: BorderRadius.circular(sizeRadius16!),child: imageNetwork(url: urlProduct ,height:sizeH85 , width:sizeW85 ,fit: BoxFit.contain ),),
           SizedBox(height: sizeH10,),
           Flexible(
             child: CustomTextView(

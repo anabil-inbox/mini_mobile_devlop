@@ -50,7 +50,7 @@ class ItemsWidget extends StatelessWidget {
               child: imageNetwork(url: urlProduct,
                   height: sizeH48,
                   width: sizeW45,
-                  fit: BoxFit.cover),
+                  fit: BoxFit.contain),
             ),
             SizedBox(
               width: sizeW10,

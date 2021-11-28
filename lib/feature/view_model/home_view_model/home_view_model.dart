@@ -26,4 +26,7 @@ class HomeViewModel extends BaseController{
     _currentIndex = index;
     update();
   }
+
+
+
 }

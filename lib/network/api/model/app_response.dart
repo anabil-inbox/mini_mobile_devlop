@@ -45,7 +45,7 @@ class Status {
   Status({
     this.message,
     this.code,
-    this.success,
+    this.success = false,
   });
 
   String? message;

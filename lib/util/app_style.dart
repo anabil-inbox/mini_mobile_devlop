@@ -128,6 +128,14 @@ TextStyle? textStyleNormal() {
       fontFamily: Constance.Font_regular);
 }
 
+TextStyle? textStyleNormalBlack() {
+  return textStyle()?.copyWith(
+      color: colorBlack,
+      fontSize: fontSize14,
+      height: 1.5,
+      fontFamily: Constance.Font_regular);
+}
+
 TextStyle? textStyleSmall() {
   return textStyleNormal()?.copyWith(
       color: colorBlack,

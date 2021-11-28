@@ -90,6 +90,7 @@ class FilterStorageNameView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       appBar: appBar,
       body: GetBuilder<StorageViewModel>(

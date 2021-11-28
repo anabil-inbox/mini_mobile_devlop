@@ -1,13 +1,22 @@
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
+import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/util/base_controller.dart';
+import 'package:logger/logger.dart';
 
 class StorageViewModel extends BaseController {
-
   //todo this for appbar select btn
   bool? isSelectBtnClick = false;
   bool? isSelectAllClick = false;
   List<String> listIndexSelected = <String>[];
+
   //todo this for appbar select btn
 
+  //todo this for home page
+  ValueNotifier<bool> isStorageCategories = ValueNotifier(false);
+  List<StorageCategoriesData> storageCategoriesList = <StorageCategoriesData>[];
+  //todo this for home page
   @override
   void onInit() {
     // TODO: implement onInit
@@ -40,11 +49,11 @@ class StorageViewModel extends BaseController {
   }
 
   //todo this for add single item to selected List item
-  addIndexToList(var index){
-    if(listIndexSelected.contains(index)){
+  addIndexToList(var index) {
+    if (listIndexSelected.contains(index)) {
       listIndexSelected.remove(index);
       update();
-    }else{
+    } else {
       listIndexSelected.add(index);
       update();
     }
@@ -52,12 +61,41 @@ class StorageViewModel extends BaseController {
 
   //todo this for add all item to selected List item
   void insertAllItemToList(List<String> list) {
-    if(isSelectAllClick!) {
+    if (isSelectAllClick!) {
       listIndexSelected.clear();
       listIndexSelected.addAll(list);
       update();
-    }else{
+    } else {
       listIndexSelected.clear();
+      update();
+    }
+  }
+
+  //todo this for get Home Page Requests Storage Categories
+  getStorageCategories() async {
+    try {
+      isStorageCategories.value = true;
+      await StorageFeature.getInstance.getStorageCategories().then((value) {
+        if (!GetUtils.isNull(value) && value.length != 0) {
+          //todo success here
+          storageCategoriesList = value;
+          isStorageCategories.value = false;
+          update();
+        } else {
+          //todo fail here
+          isStorageCategories.value = false;
+          update();
+        }
+      }).catchError((onError) {
+        //todo fail here
+        Logger().d(onError);
+        isStorageCategories.value = false;
+        update();
+      });
+    } catch (e) {
+      //todo fail here
+      Logger().d(e);
+      isStorageCategories.value = false;
       update();
     }
   }

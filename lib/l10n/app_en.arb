@@ -115,5 +115,8 @@
     "are_you_sure_you_want_to_delete_address":"Are You Sure You Want To Delete Address ?",
     "point":"point",
     "available_balance":"Available Balance",
-    "transaction_history":"Transaction History"
+    "transaction_history":"Transaction History",
+    "on_the_way":"On the way",
+    "in_warehouse":"in warehouse",
+    "at_home":"At Home"
 }

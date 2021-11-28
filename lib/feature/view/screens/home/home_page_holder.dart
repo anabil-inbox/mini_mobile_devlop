@@ -6,16 +6,23 @@ import 'package:inbox_clients/feature/view/screens/notification/notification_scr
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/empty_state/home_empty_statte.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
 // ignore: must_be_immutable
-class HomePageHolder extends StatelessWidget {
+class HomePageHolder extends StatefulWidget {
   HomePageHolder({Key? key}) : super(key: key);
 
+  @override
+  _HomePageHolderState createState() => _HomePageHolderState();
+}
+
+class _HomePageHolderState extends State<HomePageHolder> {
   int index = 1;
+
   List<Widget> bnbScreens = [
     const HomeScreen(),
     const EmptyHomeWidget(),
@@ -23,6 +30,12 @@ class HomePageHolder extends StatelessWidget {
     const ProfileScreen(),
   ];
 
+  StorageViewModel get storageViewModel => Get.put(StorageViewModel());
+  @override
+  void initState() {
+    super.initState();
+    storageViewModel.getStorageCategories();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,63 +137,4 @@ class HomePageHolder extends StatelessWidget {
       ),
     );
   }
-
-  // Widget buildBottomNavBar(BuildContext context) {
-  //   return Container(
-  //     height: sizeH60,
-  //     width: double.infinity,
-  //     clipBehavior: Clip.hardEdge,
-  //     decoration: BoxDecoration(
-  //       borderRadius: BorderRadius.vertical(
-  //         top: Radius.circular(sizeH20!),
-  //       ),
-  //     ),
-  //     child: BottomNavigationBar(
-  //         backgroundColor: colorTextWhite,
-  //         type: BottomNavigationBarType.fixed,
-  //         currentIndex: index,
-  //         onTap: (int index) =>
-  //             setState(() {
-  //               this.index = index;
-  //             }),
-  //         showSelectedLabels: false,
-  //         showUnselectedLabels: false,
-  //         selectedItemColor: Theme
-  //             .of(context)
-  //             .primaryColor,
-  //         items: [
-  //           BottomNavigationBarItem(
-  //               icon: index == 0
-  //                   ? SvgPicture.asset("assets/svgs/home_selected.svg")
-  //                   : SvgPicture.asset("assets/svgs/home.svg"),
-  //               label: ""),
-  //           BottomNavigationBarItem(
-  //               icon: index == 1
-  //                   ? SvgPicture.asset("assets/svgs/document_selected.svg")
-  //                   : SvgPicture.asset("assets/svgs/document.svg"),
-  //               label: ""),
-  //           BottomNavigationBarItem(
-  //               icon: index == 2
-  //                   ? SvgPicture.asset("assets/svgs/notification_selected.svg")
-  //                   : SvgPicture.asset("assets/svgs/notification.svg"),
-  //               label: ""),
-  //           BottomNavigationBarItem(
-  //               icon: index == 3
-  //                   ? SvgPicture.asset("assets/svgs/profile_selected.svg")
-  //                   : SvgPicture.asset("assets/svgs/profile.svg"),
-  //               label: ""),
-  //         ]),
-  //   );
-  // }
-  //
-  // Widget _getScreen() {
-  //   switch (index) {
-  //     case 0:
-  //       return const HomeScreen();
-  //     case 3:
-  //       return const ProfileScreen();
-  //     default:
-  //       return Center(child: const Text("Screen"));
-  //   }
-  // }
 }
