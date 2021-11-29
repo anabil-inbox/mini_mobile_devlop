@@ -58,7 +58,7 @@ class ProfileHelper {
   }
 
   Future<AppResponse> logOut() async {
-    var appResponse = await ProfileApi.getInstance.deleteAddress(
+    var appResponse = await ProfileApi.getInstance.logOut(
       url: "${ConstanceNetwork.logOutEndPoint}",
       header: ConstanceNetwork.header(4),
     );
@@ -69,7 +69,7 @@ class ProfileHelper {
     }
   }
 
-  Future<AppResponse> editProfile(Map<String, dynamic> body) async {
+  Future<AppResponse> editProfile(var body) async {
     var appResponse = await ProfileApi.getInstance.editProfile(
         body: body,
         url:

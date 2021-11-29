@@ -65,6 +65,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
         children: [
           Expanded(
             child: SingleChildScrollView(
+              primary: true,
               child: Container(
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(horizontal: sizeH20!),
@@ -186,6 +187,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                 child: Row(
                                   textDirection: TextDirection.ltr,
                                   children: [
+                                
                                     SizedBox(
                                       width: sizeW18,
                                     ),
@@ -223,6 +225,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                         keyboardType: TextInputType.number,
                                       ),
                                     )
+                                
                                   ],
                                 ),
                               ),
@@ -254,6 +257,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                       GetBuilder<ProfileViewModle>(builder: (logic) {
                         return ListView.builder(
                           shrinkWrap: true,
+                          primary: false,
                           keyboardDismissBehavior:
                               ScrollViewKeyboardDismissBehavior.onDrag,
                           itemCount: logic.contactMap.length,

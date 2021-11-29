@@ -44,12 +44,14 @@ class AuthApi {
     try {
       var response = await DioManagerClass.getInstance
           .dioPostMethod(url: url, body: body, header: header);
-      Logger().e(response);
+
       var jsonMap = json.decode(response.toString());
       if (jsonMap["status"]["success"] != false) {
         SharedPref.instance.setCurrentUserData(response.toString());
         SharedPref.instance.setUserToken(jsonMap["data"]["access_token"] ??
             "${SharedPref.instance.getUserToken()}");
+            
+        Logger().e(jsonMap["data"]["access_token"]);
         SharedPref.instance
             .setUserLoginState("${ConstanceNetwork.userLoginedState}");
       }
@@ -67,14 +69,7 @@ class AuthApi {
     try {
       var response = await DioManagerClass.getInstance
           .dioPostMethod(url: url, body: body, header: header);
-      // SharedPref.instance.setCurrentUserDate(response.toString());
-      // Logger().i(" 1 ${response.toString()}");
-      // Logger().i(" 2 ${json.decode(response.toString())}");
-      // Logger().i(" 3 ${json.decode(response.toString())["data"]["access_token"]}");
-      // SharedPref.instance.setUserToken(json.decode(response.toString())["data"]["access_token"]);
-      // SharedPref.instance.setUserLoginState("${ConstanceNetwork.userLoginedState}");
       SharedPref.instance.setCurrentUserData(response.toString());
-
       return AppResponse.fromJson(json.decode(response.toString()));
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());

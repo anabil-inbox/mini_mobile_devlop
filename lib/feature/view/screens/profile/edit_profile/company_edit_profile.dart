@@ -41,23 +41,18 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
         SharedPref.instance.getCurrentUserData().applicantName ?? "";
     profileViewModle.tdCompanyNameEdit.text =
         SharedPref.instance.getCurrentUserData().customerName ?? "";
-    profileViewModle.tdCompanyMobileNumber.text =
-        SharedPref.instance.getCurrentUserData().mobile ?? "";
+    // profileViewModle.tdCompanyMobileNumber.text =
+    //     SharedPref.instance.getCurrentUserData().mobile ?? "";
     profileViewModle.tdCompanyNameOfApplicationEdit.text =
         SharedPref.instance.getCurrentUserData().applicantName ?? "";
     profileViewModle.companySector!.sectorName =
         SharedPref.instance.getCurrentUserData().companySector ?? "";
     profileViewModle.tdCompanyEmailEdit.text =
         SharedPref.instance.getCurrentUserData().email ?? "";
-    // profileViewModle.contactMap = SharedPref.instance.getCurrentUserData().contactNumber ??  [];
     profileViewModle.contactMap.clear();
-    // profileViewModle.contactMap =
-    //     SharedPref.instance.getCurrentUserData().contactNumber!.toList();
+    profileViewModle.contactMap =
+        SharedPref.instance.getCurrentUserData().contactNumber!.toList();
   }
-
-  var countryCode = "";
-
-  var flagUrl = "";
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +77,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
         backgroundColor: colorBackground,
       ),
       body: SingleChildScrollView(
+        primary: true,
         child: Container(
           width: double.infinity,
           margin: EdgeInsets.symmetric(horizontal: sizeH20!),
@@ -113,11 +109,24 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                                     backgroundColor:
                                         colorPrimary.withOpacity(0.5),
                                   )
-                                : CircleAvatar(
-                                    radius: 50,
-                                    backgroundColor:
-                                        colorPrimary.withOpacity(0.5),
-                                  ));
+                                : GetUtils.isNull(SharedPref.instance
+                                            .getCurrentUserData()
+                                            .image) ||
+                                        SharedPref.instance
+                                            .getCurrentUserData()
+                                            .image
+                                            .toString()
+                                            .isEmpty
+                                    ? CircleAvatar(
+                                        radius: 50,
+                                        backgroundColor:
+                                            colorPrimary.withOpacity(0.5),
+                                      )
+                                    : CircleAvatar(
+                                        radius: 50,
+                                        backgroundImage: NetworkImage(
+                                            "${SharedPref.instance.getCurrentUserData().image}"),
+                                      ));
                       },
                     ),
                     PositionedDirectional(
@@ -262,35 +271,19 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                               SizedBox(
                                 width: sizeW18,
                               ),
-                         
                               GetBuilder<AuthViewModle>(
                                 init: AuthViewModle(),
                                 initState: (_) {},
                                 builder: (value) {
-                                  countryCode =
-                                      value.defCountry.prefix.toString();
-                                  if (value.defCountry.name!
-                                      .toLowerCase()
-                                      .contains("qatar"))
-                                    flagUrl = "assets/svgs/qatar_flag.svg";
-                                  else
-                                    flagUrl = value.defCountry.flag.toString();
                                   return Row(
+                                    textDirection: TextDirection.ltr,
                                     children: [
-                                      value.defCountry.name!
-                                              .toLowerCase()
-                                              .contains("qatar")
-                                          ? SvgPicture.asset(
-                                              "assets/svgs/qatar_flag.svg")
-                                          : imageNetwork(
-                                              url:
-                                                  "${ConstanceNetwork.imageUrl}${value.defCountry.flag}",
-                                              width: 36,
-                                              height: 26),
-                                      VerticalDivider(),
                                       Text(
                                         "${value.defCountry.prefix}",
                                         textDirection: TextDirection.ltr,
+                                      ),
+                                      VerticalDivider(
+
                                       ),
                                     ],
                                   );
@@ -298,29 +291,23 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                               ),
                               Expanded(
                                 child: TextFormField(
+                                  enabled: true,
                                   textDirection: TextDirection.ltr,
                                   maxLength: 9,
+                                  onSaved: (newValue) {
+                                    profileViewModle.tdCompanyMobileNumber
+                                        .text = newValue.toString();
+                                    profileViewModle.update();
+                                  },
                                   decoration: InputDecoration(
                                     counterText: "",
                                   ),
                                   controller:
                                       profileViewModle.tdCompanyMobileNumber,
-                                  onSaved: (newValue) {
-                                    profileViewModle
-                                        .tdCompanyMobileNumber.text = newValue!;
-                                    profileViewModle.update();
-                                  },
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return '${tr.fill_your_phone_number}';
-                                  //   } else if (value.length != 9) {
-                                  //     return "${tr.phone_number_invalid}";
-                                  //   }
-                                  //   return null;
-                                  // },
                                   keyboardType: TextInputType.number,
                                 ),
                               )
+                           
                             ],
                           ),
                         ),
@@ -352,26 +339,25 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                 GetBuilder<ProfileViewModle>(builder: (logic) {
                   return ListView.builder(
                     shrinkWrap: true,
+                    primary: false,
                     keyboardDismissBehavior:
                         ScrollViewKeyboardDismissBehavior.onDrag,
                     itemCount: logic.contactMap.length,
                     itemBuilder: (context, index) {
                       return ContactItemWidget(
-                        deleteContact: () {
-                          logic.contactMap.removeAt(index);
-                          logic.update();
-                        },
-                        mobileNumber: logic.contactMap[index]
-                            [ConstanceNetwork.mobileNumberKey],
-                        onChange: (_) {
-                          logic.contactMap[index]
-                              [ConstanceNetwork.mobileNumberKey] = _;
-                          logic.update();
-                        },
-                        flag: flagUrl,
-                        prefix: logic.contactMap[index]
-                            [ConstanceNetwork.countryCodeKey],
-                      );
+                          deleteContact: () {
+                            logic.contactMap.removeAt(index);
+                            logic.update();
+                          },
+                          mobileNumber: logic.contactMap[index]
+                              ["${ConstanceNetwork.mobileNumberKey}"],
+                          onChange: (_) {
+                            logic.contactMap[index]
+                                [ConstanceNetwork.mobileNumberKey] = _;
+                            logic.update();
+                          },
+                          prefix: logic.contactMap[index]
+                              ["${ConstanceNetwork.countryCodeKey}"]);
                     },
                   );
                 }),
@@ -479,9 +465,9 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
     ));
   }
 
-   addNewContact(String countryCode) {
+  addNewContact(String countryCode) {
     print("Company_addNewContact");
-    
+
     if (profileViewModle.tdCompanyMobileNumber.text.isEmpty) {
       return;
     }

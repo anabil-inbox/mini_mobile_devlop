@@ -386,7 +386,7 @@ updateLanguage(Locale locale) {
 void changeLanguageBottomSheet() {
   Get.bottomSheet(
     Container(
-    height: sizeH300,
+    height: sizeH350,
     decoration: BoxDecoration(
         color: colorTextWhite,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20))),

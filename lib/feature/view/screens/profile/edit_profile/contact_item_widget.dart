@@ -14,7 +14,14 @@ class ContactItemWidget extends StatelessWidget {
   final Function(String)? onChange;
   final Function()? deleteContact;
 
-  const ContactItemWidget({Key? key, this.flag, this.prefix, this.onChange, this.mobileNumber, this.deleteContact}) : super(key: key);
+  const ContactItemWidget(
+      {Key? key,
+      this.flag,
+      this.prefix,
+      this.onChange,
+      this.mobileNumber,
+      this.deleteContact})
+      : super(key: key);
 
   ProfileViewModle get viewModel => Get.find<ProfileViewModle>();
   @override
@@ -37,13 +44,13 @@ class ContactItemWidget extends StatelessWidget {
                   width: sizeW18,
                 ),
                 Row(
+                  textDirection: TextDirection.ltr,
                   children: [
-                     Text(
+                    Text(
                       "$prefix",
                       textDirection: TextDirection.ltr,
                     ),
                     VerticalDivider(),
-                   
                   ],
                 ),
                 Expanded(
@@ -72,8 +79,6 @@ class ContactItemWidget extends StatelessWidget {
                     keyboardType: TextInputType.number,
                   ),
                 ),
-               
-               
               ],
             ),
           ),
@@ -82,7 +87,7 @@ class ContactItemWidget extends StatelessWidget {
           width: sizeW4,
         ),
         InkWell(
-          onTap: deleteContact??(){},
+          onTap: deleteContact ?? () {},
           child: SvgPicture.asset(
             "assets/svgs/delete_box_widget.svg",
             fit: BoxFit.cover,
@@ -91,5 +96,4 @@ class ContactItemWidget extends StatelessWidget {
       ],
     );
   }
-
 }

@@ -61,6 +61,7 @@ final double? sizeH300 = 300.h;
 final double? sizeH330 = 330.h;
 final double sizeH150 = 150.h;
 final double sizeH54 = 54.h;
+final double? sizeH350 = 350.h;
 
 
 

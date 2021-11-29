@@ -228,7 +228,9 @@ class ProfileViewModle extends BaseController {
               {
                 isLoading = false,
                 update(),
-                snackError("${tr.error_occurred}", "${value.status!.message}")
+                snackError("${tr.error_occurred}", "${value.status!.message}"),
+                                Get.offAll(() => UserBothLoginScreen()),
+
               }
           });
     } catch (e) {}
@@ -277,8 +279,8 @@ class ProfileViewModle extends BaseController {
       };
     }
     try {
-
-      await ProfileHelper.getInstance.editProfile(myMap).then((value) => {
+      Logger().i("msg_request_map ${myMap}");
+            await ProfileHelper.getInstance.editProfile(myMap).then((value) => {
             if (value.status!.success!)
               {
                 snackSuccess("${tr.success}", "${value.status!.message}"),
