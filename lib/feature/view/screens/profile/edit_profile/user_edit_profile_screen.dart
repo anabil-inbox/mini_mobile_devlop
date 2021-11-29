@@ -258,6 +258,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                         return ListView.builder(
                           shrinkWrap: true,
                           primary: false,
+                          reverse: true,
                           keyboardDismissBehavior:
                               ScrollViewKeyboardDismissBehavior.onDrag,
                           itemCount: logic.contactMap.length,
