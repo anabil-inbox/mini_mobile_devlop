@@ -482,4 +482,5 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
     profileViewModle.tdCompanyMobileNumber.clear();
     profileViewModle.update();
   }
+
 }
