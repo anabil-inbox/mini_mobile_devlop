@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:logger/logger.dart';
@@ -19,8 +21,8 @@ class StorageViewModel extends BaseController {
   //todo this for home page
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
+    getStorageCategories();
   }
 
   @override
@@ -99,4 +101,13 @@ class StorageViewModel extends BaseController {
       update();
     }
   }
+
+//---------- to do for new storage Func ---------------
+ int currentLevel = 0;
+// for bottomSheet Detailes: 
+void detaielsBottomSheet(){
+  Get.bottomSheet(
+  BottomSheetDetaielsWidget()
+  );
+}
 }

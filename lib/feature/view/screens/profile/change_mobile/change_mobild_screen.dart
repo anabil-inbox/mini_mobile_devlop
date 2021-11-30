@@ -78,7 +78,7 @@ class ChangeMobileScreen extends StatelessWidget {
                                     Expanded(
                                       child: TextFormField(
                                         textDirection: TextDirection.ltr,
-                                        maxLength: 9,
+                                        maxLength: 10,
                                         onSaved: (newValue) {
                                           logic.tdMobileNumber.text =
                                               newValue.toString();
@@ -89,12 +89,7 @@ class ChangeMobileScreen extends StatelessWidget {
                                         ),
                                         controller: logic.tdMobileNumber,
                                         validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return '${tr.fill_your_phone_number}';
-                                          } else if (value.length != 9) {
-                                            return "${tr.phone_number_invalid}";
-                                          }
-                                          return null;
+                                          phoneVaild(value.toString());
                                         },
                                         keyboardType: TextInputType.number,
                                       ),

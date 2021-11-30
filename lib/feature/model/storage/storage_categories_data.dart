@@ -1,4 +1,3 @@
-import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:logger/logger.dart';
 
 class StorageCategoriesData {

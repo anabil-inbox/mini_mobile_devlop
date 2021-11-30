@@ -81,7 +81,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                         children: [
                           GetBuilder<ProfileViewModle>(
                             builder: (_) {
-                              return  InkWell(
+                              return InkWell(
                                   onTap: () async {
                                     await profileViewModle.getImage();
                                   },
@@ -95,19 +95,24 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                           backgroundColor:
                                               colorPrimary.withOpacity(0.5),
                                         )
-                                      : GetUtils.isNull(SharedPref.instance.getCurrentUserData().image) || 
-                                      SharedPref.instance.getCurrentUserData().image.toString().isEmpty
-                                      ? CircleAvatar(
-                                          radius: 50,
-                                          backgroundColor:
-                                              colorPrimary.withOpacity(0.5),
-                                        ):CircleAvatar(
-                                          radius: 50,
-                                          backgroundImage: NetworkImage("${SharedPref.instance.getCurrentUserData().image}"),
-                                        )
-                                        );
-                            
-                            
+                                      : GetUtils.isNull(SharedPref.instance
+                                                  .getCurrentUserData()
+                                                  .image) ||
+                                              SharedPref.instance
+                                                  .getCurrentUserData()
+                                                  .image
+                                                  .toString()
+                                                  .isEmpty
+                                          ? CircleAvatar(
+                                              radius: 50,
+                                              backgroundColor:
+                                                  colorPrimary.withOpacity(0.5),
+                                            )
+                                          : CircleAvatar(
+                                              radius: 50,
+                                              backgroundImage: NetworkImage(
+                                                  "${SharedPref.instance.getCurrentUserData().image}"),
+                                            ));
                             },
                           ),
                           PositionedDirectional(
@@ -187,7 +192,6 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                 child: Row(
                                   textDirection: TextDirection.ltr,
                                   children: [
-                                
                                     SizedBox(
                                       width: sizeW18,
                                     ),
@@ -210,12 +214,15 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                       child: TextFormField(
                                         enabled: true,
                                         textDirection: TextDirection.ltr,
-                                        maxLength: 9,
+                                        maxLength: 10,
                                         onSaved: (newValue) {
                                           profileViewModle
                                               .tdUserMobileNumberEdit
                                               .text = newValue.toString();
                                           profileViewModle.update();
+                                        },
+                                        validator: (e){
+                                          phoneVaild(e.toString());
                                         },
                                         decoration: InputDecoration(
                                           counterText: "",
@@ -225,7 +232,6 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                         keyboardType: TextInputType.number,
                                       ),
                                     )
-                                
                                   ],
                                 ),
                               ),
@@ -317,14 +323,15 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
     if (profileViewModle.tdUserMobileNumberEdit.text.isEmpty) {
       return;
     }
-
-    Map<String, String> map = {
-      "${ConstanceNetwork.countryCodeKey}": "$countryCode",
-      "${ConstanceNetwork.mobileNumberKey}":
-          "${profileViewModle.tdUserMobileNumberEdit.text}",
-    };
-    profileViewModle.contactMap.add(map);
-    profileViewModle.tdUserMobileNumberEdit.clear();
-    profileViewModle.update();
+    if (UserEditProfileScreen._formKey.currentState!.validate()) {
+      Map<String, String> map = {
+        "${ConstanceNetwork.countryCodeKey}": "$countryCode",
+        "${ConstanceNetwork.mobileNumberKey}":
+            "${profileViewModle.tdUserMobileNumberEdit.text}",
+      };
+      profileViewModle.contactMap.add(map);
+      profileViewModle.tdUserMobileNumberEdit.clear();
+      profileViewModle.update();
+    }
   }
 }

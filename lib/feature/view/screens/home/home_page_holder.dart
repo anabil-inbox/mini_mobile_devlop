@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
 import 'package:inbox_clients/feature/view/screens/notification/notification_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
+import 'package:inbox_clients/feature/view/screens/storage/new_storage/request_new_storage.dart';
 import 'package:inbox_clients/feature/view/widgets/empty_state/home_empty_statte.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
@@ -51,6 +52,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
           Logger().d(
               "${SharedPref.instance.getCurrentUserData().toJson().toString()}");
           Logger().d("${SharedPref.instance.getUserToken()}");
+          Get.to(() => RequestNewStorageScreen());
         },
         child: Icon(Icons.add),
         elevation: 2.0,

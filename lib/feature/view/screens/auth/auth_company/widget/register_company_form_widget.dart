@@ -209,7 +209,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                           Expanded(
                             child: TextFormField(
                               textDirection: TextDirection.ltr,
-                              maxLength: 9,
+                              maxLength: 10,
                               onSaved: (newValue) {
                                 controller.tdMobileNumber.text =
                                     newValue.toString();
@@ -220,12 +220,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                               ),
                               controller: controller.tdMobileNumber,
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return '${tr.fill_your_phone_number}';
-                                } else if (value.length != 9) {
-                                  return "${tr.phone_number_invalid}";
-                                }
-                                return null;
+                                phoneVaild(value.toString());
                               },
                               keyboardType: TextInputType.number,
                             ),

@@ -32,7 +32,6 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
           key: _formKey,
           child: Column(
             children: [
-              
               InkWell(
                 onTap: () {
                   Get.to(() => ChooseCountryScreen());
@@ -42,60 +41,57 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                   initState: (_) {},
                   builder: (_) {
                     return Container(
-                                  height: sizeH60,
-                                  decoration: BoxDecoration(
-                                    color: colorTextWhite,
-                                  ),
-                                  child: Row(
-                                    textDirection: TextDirection.ltr,
-                                    children: [
-                                      SizedBox(
-                                        width: sizeW18,
-                                      ),
-                                     controller.defCountry.name!.toLowerCase().contains("qatar") || controller.defCountry.name!.isEmpty
-                                              ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
-                                              : imageNetwork(
-                                               url: "${ConstanceNetwork.imageUrl}${controller.defCountry.flag}" ,
-                                                width: 36,
-                                                height: 26
-                                              ),
-                                      VerticalDivider(),
-                                      GetBuilder<AuthViewModle>(
-                                        init: AuthViewModle(),
-                                        initState: (_) {},
-                                        builder: (value) {
-                                          return Text(
-                                              "${value.defCountry.prefix == null ? "+974" : value.defCountry.prefix}");
-                                        },
-                                      ),
-                                      Expanded(
-                                        child: TextFormField(
-                                          textDirection: TextDirection.ltr,
-                                              maxLength: 9,
-                                          onSaved: (newValue) {
-                                            controller.tdMobileNumber.text =
-                                            newValue.toString();
-                                            controller.update();
-                                          },
-                                          decoration: InputDecoration(
-                                            counterText: "",
-                                          ),
-                                          controller: controller.tdMobileNumber,
-                                          validator: (value) {
-                                            if (value == null || value.isEmpty) {
-                                             return '${tr.fill_your_phone_number}';
-
-                            }else if(value.length != 9 ){
-                              return "${tr.phone_number_invalid}";
-                            }
-                            return null;
-                          },
-                          keyboardType: TextInputType.number,
-                        ),
-                      )
-                    ],
-                  ),
-                ) ; 
+                      height: sizeH60,
+                      decoration: BoxDecoration(
+                        color: colorTextWhite,
+                      ),
+                      child: Row(
+                        textDirection: TextDirection.ltr,
+                        children: [
+                          SizedBox(
+                            width: sizeW18,
+                          ),
+                          controller.defCountry.name!
+                                      .toLowerCase()
+                                      .contains("qatar") ||
+                                  controller.defCountry.name!.isEmpty
+                              ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
+                              : imageNetwork(
+                                  url:
+                                      "${ConstanceNetwork.imageUrl}${controller.defCountry.flag}",
+                                  width: 36,
+                                  height: 26),
+                          VerticalDivider(),
+                          GetBuilder<AuthViewModle>(
+                            init: AuthViewModle(),
+                            initState: (_) {},
+                            builder: (value) {
+                              return Text(
+                                  "${value.defCountry.prefix == null ? "+974" : value.defCountry.prefix}");
+                            },
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              textDirection: TextDirection.ltr,
+                              maxLength: 10,
+                              onSaved: (newValue) {
+                                controller.tdMobileNumber.text =
+                                    newValue.toString();
+                                controller.update();
+                              },
+                              decoration: InputDecoration(
+                                counterText: "",
+                              ),
+                              controller: controller.tdMobileNumber,
+                              validator: (value) {
+                                phoneVaild(value.toString());
+                              },
+                              keyboardType: TextInputType.number,
+                            ),
+                          )
+                        ],
+                      ),
+                    );
                   },
                 ),
               ),
@@ -112,14 +108,10 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '${tr.fill_your_name}';
-                  }else if (value.length <= 2){
-                    
-                  }
+                  } else if (value.length <= 2) {}
                   return null;
                 },
-                decoration: InputDecoration(
-                    hintText:
-                        "${tr.full_name}"),
+                decoration: InputDecoration(hintText: "${tr.full_name}"),
               ),
               SizedBox(
                 height: padding16,
@@ -139,9 +131,8 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                   return null;
                 },
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                    hintText:
-                        "${tr.your_email_address}"),
+                decoration:
+                    InputDecoration(hintText: "${tr.your_email_address}"),
               ),
               SizedBox(
                 height: padding32,
@@ -153,27 +144,38 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           value.isAccepte = !value.isAccepte;
                           value.update();
                         },
                         child: Row(
-
                           children: [
-                            value.isAccepte ? SvgPicture.asset("assets/svgs/check.svg") :
-                            SvgPicture.asset("assets/svgs/uncheck.svg",color: seconderyColor,),
-                            SizedBox(width: 10,),
-                            CustomTextView(txt:"${tr.accept_our} ",textStyle: textStyle(),)
+                            value.isAccepte
+                                ? SvgPicture.asset("assets/svgs/check.svg")
+                                : SvgPicture.asset(
+                                    "assets/svgs/uncheck.svg",
+                                    color: seconderyColor,
+                                  ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CustomTextView(
+                              txt: "${tr.accept_our} ",
+                              textStyle: textStyle(),
+                            )
                           ],
                         ),
                       ),
                       InkWell(
-                          onTap: (){
+                          onTap: () {
                             Get.to(() => TermsScreen());
                           },
-                          child: CustomTextView(txt:"${tr.terms_and_conditions}" ,
-                            textAlign:TextAlign.start,
-                            textStyle: textStyleUnderLinePrimary()!.copyWith(color: colorBlack , fontSize: fontSize14),)),
+                          child: CustomTextView(
+                            txt: "${tr.terms_and_conditions}",
+                            textAlign: TextAlign.start,
+                            textStyle: textStyleUnderLinePrimary()!.copyWith(
+                                color: colorBlack, fontSize: fontSize14),
+                          )),
                     ],
                   );
                 },
@@ -186,15 +188,15 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                   return PrimaryButton(
                       isLoading: controller.isLoading,
                       isExpanded: true,
-                      textButton:
-                      "${tr.sign_up}",
+                      textButton: "${tr.sign_up}",
                       onClicked: () {
-                        if(!controller.isAccepte){
+                        if (!controller.isAccepte) {
                           snackError("${tr.error_occurred}",
                               "${tr.you_cant_register_without_accept_our_terms}");
                         }
 
-                        if (_formKey.currentState!.validate() && controller.isAccepte) {
+                        if (_formKey.currentState!.validate() &&
+                            controller.isAccepte) {
                           controller.signUpUser(
                               user: User(
                                   deviceType: controller.deviceType,
@@ -203,23 +205,27 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                                   fullName: controller.tdName.text,
                                   udid: controller.identifier,
                                   fcm: "${SharedPref.instance.getFCMToken()}",
-                                  countryCode: "${controller.defCountry.prefix}"));
+                                  countryCode:
+                                      "${controller.defCountry.prefix}"));
                         }
-
                       });
                 },
               ),
-              SizedBox(height: sizeH20,),
-              SharedPref.instance.getUserType().toString().toLowerCase() == "${ConstanceNetwork.bothType}" ?
-              SeconderyFormButton(
-                buttonText: "${tr.register_as_company}",
-                onClicked: (){
-                  Get.to(() => RegisterCompanyScreen());
-                },
-              ) : const SizedBox(),
-              SizedBox(height : sizeH80),
+              SizedBox(
+                height: sizeH20,
+              ),
+              SharedPref.instance.getUserType().toString().toLowerCase() ==
+                      "${ConstanceNetwork.bothType}"
+                  ? SeconderyFormButton(
+                      buttonText: "${tr.register_as_company}",
+                      onClicked: () {
+                        Get.to(() => RegisterCompanyScreen());
+                      },
+                    )
+                  : const SizedBox(),
+              SizedBox(height: sizeH80),
               InkWell(
-                onTap: (){
+                onTap: () {
                   Get.to(() => UserBothLoginScreen());
                 },
                 child: RichText(
@@ -227,18 +233,16 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                     style: textStyleTitle(),
                     children: [
                       TextSpan(
-                          text:
-                              "${tr.have_an_account}",
-                          style: textStylePrimary()!.copyWith(color: colorBlack,fontSize: 13)),
+                          text: "${tr.have_an_account}",
+                          style: textStylePrimary()!
+                              .copyWith(color: colorBlack, fontSize: 13)),
                       TextSpan(
-                          text:
-                              "${tr.sign_in}",
+                          text: "${tr.sign_in}",
                           style: textStylePrimary()!.copyWith(fontSize: 13)),
                     ],
                   ),
                 ),
               ),
-
             ],
           )),
     );

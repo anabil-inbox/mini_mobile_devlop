@@ -53,32 +53,7 @@ class ContactItemWidget extends StatelessWidget {
                     VerticalDivider(),
                   ],
                 ),
-                Expanded(
-                  child: TextFormField(
-                    initialValue: "$mobileNumber",
-                    textDirection: TextDirection.ltr,
-                    maxLength: 9,
-                    onSaved: (newValue) {},
-                    decoration: InputDecoration(
-                      counterText: "",
-                    ),
-                    onChanged: (value) {
-                      onChange!(value.toString());
-                    },
-                    onFieldSubmitted: (value) {
-                      onChange!(value.toString());
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '${tr.fill_your_phone_number}';
-                      } else if (value.length != 9) {
-                        return "${tr.phone_number_invalid}";
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
+                Text("$mobileNumber")
               ],
             ),
           ),

@@ -88,6 +88,19 @@ TextStyle? textStyleBigPrimaryText() {
   );
 }
 
+TextStyle? textStyleMeduimPrimaryText() {
+  return TextStyle(
+    color: colorPrimary,
+    fontSize: fontSize13
+  );
+}
+TextStyle? textStyleMeduimBlackText() {
+  return TextStyle(
+    color: colorBlack,
+    fontSize: fontSize13
+  );
+}
+
 TextStyle? textStyleSubTitle(){
    return TextStyle(
       color: colorTextBlack,

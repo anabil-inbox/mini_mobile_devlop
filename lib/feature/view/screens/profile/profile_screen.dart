@@ -32,7 +32,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                 SizedBox(height: sizeH12,),  
                 SettingItem(
                   onTap: (){
-                   Get.to(StorageDetailsView());
+                   
                   },
                   trailingTitle: "0 QAR",
                   settingTitle: "${tr.my_wallet}",

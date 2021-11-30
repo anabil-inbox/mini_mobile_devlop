@@ -85,6 +85,15 @@ passwordValid(String val) {
   }
 }
 
+phoneVaild(String value) {
+  if (value == null || value.isEmpty) {
+    return tr.fill_your_phone_number;
+  } else if (value.length > 10 || value.length < 8) {
+    return tr.fill_your_phone_number;
+  }
+  return null;
+}
+
 emailValid(String val) {
   if (!GetUtils.isEmail(val)) {
     return messageMatcherEmail; 
@@ -480,7 +489,6 @@ bool isArabicLang() {
   return (SharedPref.instance.getAppLanguageMain() == "ar"
       ? true
       : false);
-  bool isRTL=TextDirection.RTL as bool;
   // return isRTL;
 }
 

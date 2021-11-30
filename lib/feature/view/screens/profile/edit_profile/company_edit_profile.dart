@@ -282,9 +282,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                                         "${value.defCountry.prefix}",
                                         textDirection: TextDirection.ltr,
                                       ),
-                                      VerticalDivider(
-
-                                      ),
+                                      VerticalDivider(),
                                     ],
                                   );
                                 },
@@ -293,7 +291,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                                 child: TextFormField(
                                   enabled: true,
                                   textDirection: TextDirection.ltr,
-                                  maxLength: 9,
+                                  maxLength: 10,
                                   onSaved: (newValue) {
                                     profileViewModle.tdCompanyMobileNumber
                                         .text = newValue.toString();
@@ -302,12 +300,14 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                                   decoration: InputDecoration(
                                     counterText: "",
                                   ),
+                                  validator: (e){
+                                    phoneVaild(e.toString());
+                                  },
                                   controller:
                                       profileViewModle.tdCompanyMobileNumber,
                                   keyboardType: TextInputType.number,
                                 ),
                               )
-                           
                             ],
                           ),
                         ),
@@ -473,14 +473,15 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
       return;
     }
 
-    Map<String, String> map = {
-      "${ConstanceNetwork.countryCodeKey}": "$countryCode",
-      "${ConstanceNetwork.mobileNumberKey}":
-          "${profileViewModle.tdCompanyMobileNumber.text}",
-    };
-    profileViewModle.contactMap.add(map);
-    profileViewModle.tdCompanyMobileNumber.clear();
-    profileViewModle.update();
+    if (CompanyEditProfile._formKey.currentState!.validate()) {
+      Map<String, String> map = {
+        "${ConstanceNetwork.countryCodeKey}": "$countryCode",
+        "${ConstanceNetwork.mobileNumberKey}":
+            "${profileViewModle.tdCompanyMobileNumber.text}",
+      };
+      profileViewModle.contactMap.add(map);
+      profileViewModle.tdCompanyMobileNumber.clear();
+      profileViewModle.update();
+    }
   }
-
 }
