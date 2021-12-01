@@ -103,7 +103,7 @@ abstract class ConstanceNetwork {
         'Content-Type': 'application/x-www-form-urlencoded'
       };
     } else if (typeToken == 4) {
-      print("msg_get_user_token ${SharedPref.instance.getUserToken()}");
+      print("msg_get_user_token_on_send_to_header ${SharedPref.instance.getUserToken()}");
       headers = {
         'Authorization': 'Bearer ${SharedPref.instance.getUserToken()}',
         'Content-Type': 'application/json',

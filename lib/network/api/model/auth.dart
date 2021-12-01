@@ -46,12 +46,13 @@ class AuthApi {
           .dioPostMethod(url: url, body: body, header: header);
 
       var jsonMap = json.decode(response.toString());
+
       if (jsonMap["status"]["success"] != false) {
-        SharedPref.instance.setCurrentUserData(response.toString());
-        SharedPref.instance.setUserToken(jsonMap["data"]["access_token"] ??
-            "${SharedPref.instance.getUserToken()}");
-            
+       await SharedPref.instance.setCurrentUserData(response.toString());
+             
         Logger().e(jsonMap["data"]["access_token"]);
+       await SharedPref.instance.setUserToken(jsonMap["data"]["access_token"]);
+
         SharedPref.instance
             .setUserLoginState("${ConstanceNetwork.userLoginedState}");
       }
