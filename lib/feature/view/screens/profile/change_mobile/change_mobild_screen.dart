@@ -89,7 +89,7 @@ class ChangeMobileScreen extends StatelessWidget {
                                         ),
                                         controller: logic.tdMobileNumber,
                                         validator: (value) {
-                                          phoneVaild(value.toString());
+                                          phoneValid(value.toString());
                                         },
                                         keyboardType: TextInputType.number,
                                       ),

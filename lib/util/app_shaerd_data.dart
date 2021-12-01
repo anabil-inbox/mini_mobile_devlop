@@ -85,8 +85,8 @@ passwordValid(String val) {
   }
 }
 
-phoneVaild(String value) {
-  if (value == null || value.isEmpty) {
+phoneValid(String value) {
+  if (GetUtils.isNull(value) || value.isEmpty) {
     return tr.fill_your_phone_number;
   } else if (value.length > 10 || value.length < 8) {
     return tr.fill_your_phone_number;

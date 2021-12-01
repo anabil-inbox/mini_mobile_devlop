@@ -301,7 +301,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                                     counterText: "",
                                   ),
                                   validator: (e){
-                                    phoneVaild(e.toString());
+                                    phoneValid(e.toString());
                                   },
                                   controller:
                                       profileViewModle.tdCompanyMobileNumber,

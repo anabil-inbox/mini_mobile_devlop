@@ -222,7 +222,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                           profileViewModle.update();
                                         },
                                         validator: (e){
-                                          phoneVaild(e.toString());
+                                          phoneValid(e.toString());
                                         },
                                         decoration: InputDecoration(
                                           counterText: "",

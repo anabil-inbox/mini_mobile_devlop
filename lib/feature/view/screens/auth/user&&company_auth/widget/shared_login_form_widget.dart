@@ -83,7 +83,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                                   },
                                   controller: controller.tdMobileNumber,
                                   validator: (value) {
-                                    phoneVaild(value.toString());
+                                    phoneValid(value.toString());
                                   },
                                   keyboardType: TextInputType.number,
                                 ),
