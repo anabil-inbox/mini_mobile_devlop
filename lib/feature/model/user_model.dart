@@ -26,22 +26,22 @@ class Company {
     String? fcm;
 
     factory Company.fromJson(Map<String, dynamic> json) => Company(
-        crNumber: json["cr_number"],
-        mobile: json["mobile"],
-        countryCode: json["country_code"],
-        email: json["email"],
-        companyName: json["company_name"],
-        companySector: json["company_sector"],
-        applicantName: json["applicant_name"],
-        applicantDepartment: json["applicant_department"],
-        udid: json["udid"],
-        deviceType: json["device_type"],
-        fcm: json["fcm"],
+        crNumber: json["cr_number"] ?? "",
+        mobile: json["mobile_number"] ?? "",
+        countryCode: json["country_code"] ?? "",
+        email: json["email"] ?? "",
+        companyName: json["company_name"] ?? "",
+        companySector: json["company_sector"] ?? "",
+        applicantName: json["applicant_name"] ?? "",
+        applicantDepartment: json["applicant_department"] ?? "",
+        udid: json["udid"] ?? "",
+        deviceType: json["device_type"] ?? "",
+        fcm: json["fcm"] ?? "",
     );
 
     Map<String, dynamic> toJson() => {
         "cr_number": crNumber,
-        "mobile": mobile,
+        "mobile_number": mobile,
         "country_code": countryCode,
         "email": email,
         "company_name": companyName,

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "182991472977",
+    "project_id": "inbox-6b6b3",
+    "storage_bucket": "inbox-6b6b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:182991472977:android:160f455b4f242aca66eb70",
+        "android_client_info": {
+          "package_name": "com.inbox.clients"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "182991472977-pahibapsltvmmu9epqeb4rgd2qmnh7dl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlByeJ3LIXCHD2ScT9OpKayP1tZyTtKEQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "182991472977-pahibapsltvmmu9epqeb4rgd2qmnh7dl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

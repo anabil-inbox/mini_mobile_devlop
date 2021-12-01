@@ -7,14 +7,13 @@ class CustomTextView extends StatelessWidget {
   final TextStyle? textStyle;
   final int? maxLine;
   final TextOverflow? textOverflow;
-  final bool? IsUpperCase;
+  final bool? isUpperCase;
 
-  const CustomTextView({Key? key, this.txt, this.textAlign, this.textStyle, this.maxLine, this.textOverflow, this.IsUpperCase = false}) : super(key: key);
+  const CustomTextView({Key? key, this.txt, this.textAlign, this.textStyle, this.maxLine, this.textOverflow, this.isUpperCase = false}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return AutoSizeText(
-      IsUpperCase!?txt!.toUpperCase():txt!,
-      textDirection: TextDirection.ltr,
+      isUpperCase!?txt!.toUpperCase():txt!,
       overflow: textOverflow,
       textAlign: textAlign,
       style: textStyle,

@@ -13,8 +13,7 @@ class FeatureHelper {
       try {
       var response = await FeatureApi.getInstance.getAppFeature(url: "${ConstanceNetwork.featureEndPoint}", header: ConstanceNetwork.header(0));
       if (response.status?.success == true) {
-        print("msg_res_ ${response.data["features"]}");
-        List data = response.data["features"];
+        List data = response.data;
         return data.map((e) => Feature.fromJson(e)).toList();
       } else {
         return [];
