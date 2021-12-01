@@ -53,7 +53,7 @@ class BottomSheetDetaielsWidget extends StatelessWidget {
                       itemCount: getPageCount(array: media),
                       itemBuilder: (context, index) {
                         return isVideo(path: media[index])
-                            ? VideoPlayer()
+                            ? VideoPlayer(videoUrl: "${media[index]}",)
                             : imageNetwork(
                                 url:"${ConstanceNetwork.imageUrl}${media[index]}");
                       },
