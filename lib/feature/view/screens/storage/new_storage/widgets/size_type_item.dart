@@ -35,7 +35,9 @@ class SizeTypeItem extends StatelessWidget {
             end: 0,
             child: TextButton(
               onPressed: (){
-                storageViewModel.showMainStorageBottomSheet();
+                storageViewModel.showMainStorageBottomSheet(
+                  storageCategoriesData: storageCategoriesData
+                );
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

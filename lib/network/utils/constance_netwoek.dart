@@ -6,7 +6,7 @@ abstract class ConstanceNetwork {
   static String imageUrl = "http://50.17.152.72/".trim();
 
   ///todo here insert key Of Request
-
+  
   ///todo this for login request user
   static var contryCodeKey = "country_code";
   static var mobileKey = "mobile";
@@ -71,6 +71,15 @@ abstract class ConstanceNetwork {
   static String userType = "user";
   static String companyType = "company";
   static String bothType = "both";
+
+
+
+  ///here keys of storage category type:
+  static String spaceCategoryType = "Space";
+  static String itemCategoryType = "Item";
+  static var quantityCategoryType = "Quantity";
+
+
 
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};

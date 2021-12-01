@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:logger/logger.dart';
 
 class StorageCategoriesData {
@@ -138,14 +140,17 @@ class StorageFeatures {
   StorageFeatures({
     this.storageFeature,
     this.addedPrice,
+    this.id
   });
 
   String? storageFeature;
   double? addedPrice;
+  String? id;
 
   factory StorageFeatures.fromJson(Map<String, dynamic> json) {
     try {
       return StorageFeatures(
+              id: json["id"] == null ? null : json["id"],
               storageFeature:json["storage_feature"] == null ? null: json["storage_feature"],
               addedPrice:json["added_price"] == null ? null: json["added_price"].toDouble(),
             );
@@ -160,6 +165,7 @@ class StorageFeatures {
       return {
               "storage_feature": storageFeature,
               "added_price": addedPrice,
+              "id":id
             };
     } catch (e) {
       Logger().d(e);
