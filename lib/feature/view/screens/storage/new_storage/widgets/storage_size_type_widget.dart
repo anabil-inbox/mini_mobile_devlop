@@ -47,7 +47,12 @@ class StorageSizeType extends StatelessWidget {
                       childAspectRatio: (sizeW290! / sizeH200!)),
                   itemBuilder: (contxet, index) {
                     return SizeTypeItem(
-                      itemType: builder.storageCategoriesList[index].storageName ?? "",
+                      media: [
+                        builder.storageCategoriesList[index].image ?? "",
+                        builder.storageCategoriesList[index].video ?? ""
+                      ],
+                      storageCategoriesData:
+                          builder.storageCategoriesList[index],
                     );
                   });
             },

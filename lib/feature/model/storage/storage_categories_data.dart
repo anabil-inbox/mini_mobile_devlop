@@ -13,6 +13,9 @@ class StorageCategoriesData {
     this.storageFeatures,
     this.items,
     this.storageItem,
+    this.image,
+    this.video,
+    this.description
   });
 
   String? name;
@@ -26,6 +29,9 @@ class StorageCategoriesData {
   List<StorageFeatures>? storageFeatures;
   List<Item>? items;
   List<StorageItem>? storageItem;
+  String? image;
+  String? video;
+  String? description;
 
   factory StorageCategoriesData.fromJson(Map<String, dynamic> json) {
     try {
@@ -38,6 +44,9 @@ class StorageCategoriesData {
               pricePerYear:json["price_per_year"] == null ? null: json["price_per_year"].toDouble(),
               priceForUnlimited:json["price_for_unlimited"] == null ? null: json["price_for_unlimited"].toDouble(),
               id:json["id"] == null ? null: json["id"],
+              video: json["video"] == null ? null : json["video"],
+              image: json["image"] == null ? null : json["image"],
+              description: json["description"] == null ? null : json["description"],
               storageFeatures:json["storage_features"] == null ? null: List<StorageFeatures>.from(json["storage_features"].map((x) => StorageFeatures.fromJson(x))),
               items:json["items"] == null ? null: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
               storageItem:json["storage_item"] == null ? null: List<StorageItem>.from(json["storage_item"].map((x) => StorageItem.fromJson(x))),
@@ -59,6 +68,9 @@ class StorageCategoriesData {
               "price_per_year": pricePerYear,
               "price_for_unlimited": priceForUnlimited,
               "id": id,
+              "image" : image,
+              "video" : video,
+              "description":description,
               "storage_features": List<dynamic>.from(storageFeatures!.map((x) => x.toJson())),
               "items": List<dynamic>.from(items!.map((x) => x.toJson())),
               "storage_item": List<dynamic>.from(storageItem!.map((x) => x.toJson())),

@@ -96,7 +96,7 @@ phoneVaild(String value) {
 
 emailValid(String val) {
   if (!GetUtils.isEmail(val)) {
-    return messageMatcherEmail; 
+    return messageMatcherEmail;
   } else {
     return;
   }
@@ -122,12 +122,26 @@ String getDeviceLang() {
   return languageCode;
 }
 
-/*String parseHtmlString(String htmlString) {
-  final document = parse(htmlString);
-  final String parsedString = parse(document.body.text).documentElement.text;
+bool isVideo({required String path}) {
+  if (path.toLowerCase().substring(path.lastIndexOf(".")) == ".mp4") {
+    return true;
+  } else if (path.toLowerCase().substring(path.lastIndexOf(".")) == ".mov") {
+    return true;
+  } else {
+    return false;
+  }
+}
 
-  return parsedString.trim();
-}*/
+int getPageCount({required List<String> array}) {
+  int count = 0;
+  array.forEach((element) {
+    if (element.isNotEmpty && !GetUtils.isNull(element)){
+      count++;
+    }
+  });
+  print("number of pages $count");
+  return count;
+}
 
 snackSuccess(String title, String body) {
   Future.delayed(Duration(seconds: 0)).then((value) {
@@ -182,8 +196,9 @@ showAnimatedDialog(dialog) {
   );
 }
 
-var urlProduct = "https://images.unsplash.com/photo-1613177794106-be20802b11d3?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xvY2slMjBoYW5kc3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80";
-Widget imageNetwork({double? width, double? height, String? url , BoxFit? fit}) {
+var urlProduct =
+    "https://images.unsplash.com/photo-1613177794106-be20802b11d3?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xvY2slMjBoYW5kc3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80";
+Widget imageNetwork({double? width, double? height, String? url, BoxFit? fit}) {
   return CachedNetworkImage(
     imageBuilder: (context, imageProvider) {
       return Container(
@@ -393,8 +408,7 @@ updateLanguage(Locale locale) {
 }
 
 void changeLanguageBottomSheet() {
-  Get.bottomSheet(
-    Container(
+  Get.bottomSheet(Container(
     height: sizeH350,
     decoration: BoxDecoration(
         color: colorTextWhite,
@@ -465,7 +479,6 @@ void changeLanguageBottomSheet() {
   ));
 }
 
-
 class CustomMaterialPageRoute extends MaterialPageRoute {
   @protected
   bool get hasScopedWillPopCallback {
@@ -486,9 +499,7 @@ class CustomMaterialPageRoute extends MaterialPageRoute {
 }
 
 bool isArabicLang() {
-  return (SharedPref.instance.getAppLanguageMain() == "ar"
-      ? true
-      : false);
+  return (SharedPref.instance.getAppLanguageMain() == "ar" ? true : false);
   // return isRTL;
 }
 

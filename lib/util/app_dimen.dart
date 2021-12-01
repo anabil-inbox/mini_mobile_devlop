@@ -62,6 +62,7 @@ final double? sizeH330 = 330.h;
 final double sizeH150 = 150.h;
 final double sizeH54 = 54.h;
 final double? sizeH350 = 350.h;
+final double sizeH320 = 320.h;
 
 
 
@@ -151,6 +152,7 @@ final double? padding222 = 222;
 final double? padding340 = 340;
 final double? padding52 = 52;
 final double? padding63 = 63;
+final double padding3 = 3;
 
 //todo Stack values 
 final double stack0 = 0;

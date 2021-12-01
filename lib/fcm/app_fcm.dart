@@ -64,8 +64,8 @@ class AppFcm {
         iOS: initializationSettingsIOS,
         macOS: null);
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
+    // await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      //  onSelectNotification: selectNotification);
     final notificationAppLaunchDetails =
     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
     if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {

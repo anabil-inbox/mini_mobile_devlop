@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/viedo_player.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
-import 'package:inbox_clients/util/app_shaerd_data.dart';
 
-class BottomSheetDetaielsWidget extends StatelessWidget {
-  const BottomSheetDetaielsWidget(
-      {Key? key, required this.storageCategoriesData, required this.media})
-      : super(key: key);
-
-  final StorageCategoriesData storageCategoriesData;
-  final List<String> media;
+class BottomSheetStorageMain extends StatelessWidget {
+  const BottomSheetStorageMain({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,32 +33,16 @@ class BottomSheetDetaielsWidget extends StatelessWidget {
             SizedBox(
               height: sizeH20,
             ),
-            Text(storageCategoriesData.storageName ?? ""),
+            Text("title"),
             SizedBox(
               height: sizeH20,
             ),
-            getPageCount(array: media) == 0
-                ? const SizedBox()
-                : Container(
-                    height: sizeH300,
-                    width: sizeW320,
-                    child: PageView.builder(
-                      itemCount: getPageCount(array: media),
-                      itemBuilder: (context, index) {
-                        return isVideo(path: media[index])
-                            ? VideoPlayer()
-                            : imageNetwork(
-                                url:"${ConstanceNetwork.imageUrl}${media[index]}");
-                      },
-                    ),
-                  ),
             SizedBox(
               height: sizeH20,
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: sizeH30!),
-              child:
-                  CustomTextView(txt: storageCategoriesData.description ?? ""),
+              child: CustomTextView(txt: "description"),
             ),
             SizedBox(
               height: sizeH20,

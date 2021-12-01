@@ -15,6 +15,7 @@ Color seconderyButton = const Color(0xffDFE1E5);
 Color seconderyButtonUnSelected = const Color(0xff676771);
 Color colorPrimaryOpcaityColor =  Color(0xffF6E3E5);
 Color colorBtnGray = const Color(0xFFDADBDF);
+Color colorSpacer = const Color(0xff8F92A1);
 
 //todo this for textField
 var colorBorderTextFiled = Color(0xFF707070);

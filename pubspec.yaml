@@ -58,6 +58,8 @@ dependencies:
   google_place: ^0.4.3
   geolocator: #latest version
   geocoding:  #latest version
+  video_player: ^2.2.7
+  chewie: ^1.2.2
 
 
 dev_dependencies:

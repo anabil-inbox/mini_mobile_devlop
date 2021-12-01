@@ -112,9 +112,16 @@ class StorageViewModel extends BaseController {
   //---------- to do for new storage Func ---------------
     int currentLevel = 0;
   // for bottomSheet Details:
-    void detailsBottomSheet() {
-      Get.bottomSheet(BottomSheetDetaielsWidget());
-    }
+  void detaielsBottomSheet({required StorageCategoriesData storageCategoriesData , required List<String> media}){
+    Get.bottomSheet(
+      BottomSheetDetaielsWidget(storageCategoriesData: storageCategoriesData, media: media,),
+      isScrollControlled: true,
+    );
+  }
+
+  void showMainStorageBottomSheet(){
+
+  }
 
     void changeTypeViewLVGV(){
       isListView = !isListView!;
