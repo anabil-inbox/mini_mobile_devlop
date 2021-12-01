@@ -75,15 +75,10 @@ class ProfileApi {
     try {
       var response = await DioManagerClass.getInstance
           .dioPostFormMethod(url: url, header: header, body: body);
-      print("msg_in_edit_profile");
-      Logger().i("editProfile_response ${response.statusCode}");
-      if (response.toString().toLowerCase().contains("success:false")) {
-        print("msg_if_false");
-      } else {
-        print("msg_if_true");
+      var jsonMap = json.decode(response.toString());
+      if (jsonMap["status"]["success"] != false) {
         await SharedPref.instance.setCurrentUserData(response.toString());
       }
-
       return AppResponse.fromJson(json.decode(response.toString()));
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());

@@ -94,6 +94,15 @@ phoneVaild(String value) {
   return null;
 }
 
+phoneVaildAlternativeContact(String value) {
+ if (value.length > 10 || value.length < 8) {
+     return tr.fill_your_phone_number;
+  }else{
+    return;
+  }
+
+}
+
 emailValid(String val) {
   if (!GetUtils.isEmail(val)) {
     return messageMatcherEmail;

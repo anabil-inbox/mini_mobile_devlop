@@ -44,10 +44,12 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
     super.initState();
     authViewModle.startTimerCounter = 60;
     authViewModle.startTimer();
-    Future.delayed(Duration(seconds: 2)).then((value) => {
-      authViewModle.tdPinCode.text = "1234",
-    
-    });
+
+    // Future.delayed(Duration(seconds: 2)).then((value) => {
+    //   authViewModle.tdPinCode.text = "1234",
+    // });
+  
+  
   }
 
 
@@ -70,7 +72,9 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
             SizedBox(
               height: sizeH16,
             ),
-           bildeTextActiveCode(context,authViewModle.tdPinCode),
+           bildeTextActiveCode(context, 
+           authViewModle.tdPinCode
+           ),
             widget.type == ConstanceNetwork.userType
                 ? SizedBox(
                     height: sizeH38,
@@ -163,6 +167,7 @@ class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScr
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: sizeW80!),
       child: PinCodeTextField(
+        autoFocus: true,
         controller: controller,
         hintCharacter: "__",
         hintStyle: textStyleTitle(),

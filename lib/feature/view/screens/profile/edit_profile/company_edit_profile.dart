@@ -31,6 +31,7 @@ class CompanyEditProfile extends StatefulWidget {
 
 class _CompanyEditProfileState extends State<CompanyEditProfile> {
   ProfileViewModle profileViewModle = Get.put(ProfileViewModle());
+  final _formFieldKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -287,28 +288,42 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                                   );
                                 },
                               ),
-                              Expanded(
-                                child: TextFormField(
-                                  enabled: true,
-                                  textDirection: TextDirection.ltr,
-                                  maxLength: 10,
-                                  onSaved: (newValue) {
-                                    profileViewModle.tdCompanyMobileNumber
-                                        .text = newValue.toString();
-                                    profileViewModle.update();
-                                  },
-                                  decoration: InputDecoration(
-                                    counterText: "",
-                                  ),
-                                  validator: (e){
-                                    phoneVaild(e.toString());
-                                  },
-                                  controller:
-                                      profileViewModle.tdCompanyMobileNumber,
-                                  keyboardType: TextInputType.number,
-                                ),
-                              )
-                            ],
+                             
+                             
+                                    GetBuilder<AuthViewModle>(
+                                      init: AuthViewModle(),
+                                      initState: (_) {},
+                                      builder: (bloc) {
+                                        return Form(
+                                          key: _formFieldKey,
+                                          child: Expanded(
+                                            child: TextFormField(
+                                              enabled: true,
+                                              textDirection: TextDirection.ltr,
+                                              maxLength: 10,
+                                              onSaved: (newValue) {
+                                                profileViewModle
+                                                    .tdUserMobileNumberEdit
+                                                    .text = newValue.toString();
+                                                profileViewModle.update();
+                                              },
+                                              decoration: const InputDecoration(
+                                                counterText: "",
+                                              ),
+                                              validator: (e) {
+                                                return phoneVaildAlternativeContact(
+                                                    e!);
+                                              },
+                                              controller: profileViewModle
+                                                  .tdUserMobileNumberEdit,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  ],
                           ),
                         ),
                       ),
@@ -466,21 +481,17 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
     ));
   }
 
+
   addNewContact(String countryCode) {
-    print("Company_addNewContact");
-
-    if (profileViewModle.tdCompanyMobileNumber.text.isEmpty) {
-      return;
-    }
-
-    if (CompanyEditProfile._formKey.currentState!.validate()) {
+    if (_formFieldKey.currentState!.validate()) {
       Map<String, String> map = {
-        "${ConstanceNetwork.countryCodeKey}": "$countryCode",
-        "${ConstanceNetwork.mobileNumberKey}":
-            "${profileViewModle.tdCompanyMobileNumber.text}",
+        ConstanceNetwork.countryCodeKey: countryCode,
+        ConstanceNetwork.mobileNumberKey:
+            profileViewModle.tdUserMobileNumberEdit.text,
       };
+
       profileViewModle.contactMap.add(map);
-      profileViewModle.tdCompanyMobileNumber.clear();
+      profileViewModle.tdUserMobileNumberEdit.clear();
       profileViewModle.update();
     }
   }

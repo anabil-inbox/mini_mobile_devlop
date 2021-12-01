@@ -69,6 +69,7 @@ class AuthApi {
     try {
       var response = await DioManagerClass.getInstance
           .dioPostMethod(url: url, body: body, header: header);
+          
       SharedPref.instance.setCurrentUserData(response.toString());
       return AppResponse.fromJson(json.decode(response.toString()));
     } on DioError catch (ex) {
