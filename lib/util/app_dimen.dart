@@ -113,6 +113,7 @@ final double sizeW95 = 95.w;
 
 
 //todo padding && radius
+final double? sizeRadius2 = 2;
 final double? sizeRadius = 12;
 final double? sizeRadius10 = 10;
 final double? sizeRadius16 = 16;
@@ -125,6 +126,7 @@ final double? padding10 = 10;
 final double? padding12 = 12;
 final double? padding4 = 4;
 final double? padding6 = 6;
+final double? padding7 = 7;
 final double? padding16 = 16;
 final double? padding14 = 14;
 final double? padding18 = 18;

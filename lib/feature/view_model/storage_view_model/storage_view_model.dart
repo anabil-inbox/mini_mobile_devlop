@@ -18,7 +18,14 @@ class StorageViewModel extends BaseController {
   //todo this for home page
   ValueNotifier<bool> isStorageCategories = ValueNotifier(false);
   List<StorageCategoriesData> storageCategoriesList = <StorageCategoriesData>[];
+
   //todo this for home page
+
+  //todo this for home page for list or grid view
+  bool? isListView = false;
+
+  //todo this for home page for list or grid view
+
   @override
   void onInit() {
     super.onInit();
@@ -102,12 +109,15 @@ class StorageViewModel extends BaseController {
     }
   }
 
-//---------- to do for new storage Func ---------------
- int currentLevel = 0;
-// for bottomSheet Detailes: 
-void detaielsBottomSheet(){
-  Get.bottomSheet(
-  BottomSheetDetaielsWidget()
-  );
-}
+  //---------- to do for new storage Func ---------------
+    int currentLevel = 0;
+  // for bottomSheet Details:
+    void detailsBottomSheet() {
+      Get.bottomSheet(BottomSheetDetaielsWidget());
+    }
+
+    void changeTypeViewLVGV(){
+      isListView = !isListView!;
+      update();
+    }
 }

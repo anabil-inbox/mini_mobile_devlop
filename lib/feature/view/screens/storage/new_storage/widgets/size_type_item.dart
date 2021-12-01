@@ -32,7 +32,7 @@ class SizeTypeItem extends StatelessWidget {
               child: TextButton(
                 onPressed: () {
                   print("object");
-                  storageViewModel.detaielsBottomSheet();
+                  storageViewModel.detailsBottomSheet();
                 },
                 child: SvgPicture.asset("assets/svgs/InfoCircle.svg"),
               ),
