@@ -20,7 +20,6 @@ class SizeTypeItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(padding10!),
       decoration: BoxDecoration(
         border: Border.all(color: colorBorderContainer),
         color: colorBackground,
@@ -28,22 +27,7 @@ class SizeTypeItem extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          PositionedDirectional(
-            end: 0,
-            top: -10,
-            child: SizedBox(
-              width: sizeW40,
-              child: TextButton(
-                onPressed: () {
-                  storageViewModel.detaielsBottomSheet(
-                    media : media,
-                    storageCategoriesData: storageCategoriesData
-                  );
-                },
-                child: SvgPicture.asset("assets/svgs/InfoCircle.svg"),
-              ),
-            ),
-          ),
+          
           PositionedDirectional(
             top: 0,
             bottom: 0,
@@ -51,7 +35,9 @@ class SizeTypeItem extends StatelessWidget {
             end: 0,
             child: TextButton(
               onPressed: (){
-                storageViewModel.showMainStorageBottomSheet();
+                storageViewModel.showMainStorageBottomSheet(
+                  storageCategoriesData: storageCategoriesData
+                );
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,7 +61,22 @@ class SizeTypeItem extends StatelessWidget {
               ),
             ),
           ),
-          
+          PositionedDirectional(
+            end: 0,
+            top: -10,
+            child: SizedBox(
+              width: sizeW40,
+              child: TextButton(
+                onPressed: () {
+                  storageViewModel.detaielsBottomSheet(
+                    media : media,
+                    storageCategoriesData: storageCategoriesData
+                  );
+                },
+                child: SvgPicture.asset("assets/svgs/InfoCircle.svg"),
+              ),
+            ),
+          ),
         ],
       ),
     );

@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
-import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/quantity_storage_bottom_sheet.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:logger/logger.dart';
 
@@ -25,6 +26,25 @@ class StorageViewModel extends BaseController {
   bool? isListView = false;
 
   //todo this for home page for list or grid view
+
+  // for quantity items counter
+  int quantity = 1;
+
+  void increaseQuantity() {
+    quantity++;
+    update();
+  }
+
+  void minesQuantity(){
+    if (quantity != 1 ) {
+      quantity --;
+    }
+    update();
+  }
+  
+  //fot duration vars
+int selectedDuration = 1;
+
 
   @override
   void onInit() {
@@ -110,21 +130,41 @@ class StorageViewModel extends BaseController {
   }
 
   //---------- to do for new storage Func ---------------
-    int currentLevel = 0;
+  int currentLevel = 0;
   // for bottomSheet Details:
-  void detaielsBottomSheet({required StorageCategoriesData storageCategoriesData , required List<String> media}){
+  void detaielsBottomSheet(
+      {required StorageCategoriesData storageCategoriesData,
+      required List<String> media}) {
     Get.bottomSheet(
-      BottomSheetDetaielsWidget(storageCategoriesData: storageCategoriesData, media: media,),
+      BottomSheetDetaielsWidget(
+        storageCategoriesData: storageCategoriesData,
+        media: media,
+      ),
       isScrollControlled: true,
     );
   }
 
-  void showMainStorageBottomSheet(){
-
+  void showMainStorageBottomSheet(
+      {required StorageCategoriesData storageCategoriesData}) {
+    if (ConstanceNetwork.quantityCategoryType ==
+        storageCategoriesData.storageCategoryType) {
+      Get.bottomSheet(
+        QuantityStorageBottomSheet(
+          storageCategoriesData: storageCategoriesData,
+        ),
+        isScrollControlled: true,
+      );
+    } else if (ConstanceNetwork.itemCategoryType ==
+        storageCategoriesData.storageCategoryType) {
+      /// print("$storageType");
+    } else if (ConstanceNetwork.spaceCategoryType ==
+        storageCategoriesData.storageCategoryType) {
+      /// print("$storageType");
+    }
   }
 
-    void changeTypeViewLVGV(){
-      isListView = !isListView!;
-      update();
-    }
+  void changeTypeViewLVGV() {
+    isListView = !isListView!;
+    update();
+  }
 }
