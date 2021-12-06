@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/bulk_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/quantity_storage_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:logger/logger.dart';
+import 'package:collection/collection.dart';
 
 class StorageViewModel extends BaseController {
   //todo this for appbar select btn
@@ -20,7 +23,15 @@ class StorageViewModel extends BaseController {
   ValueNotifier<bool> isStorageCategories = ValueNotifier(false);
   List<StorageCategoriesData> storageCategoriesList = <StorageCategoriesData>[];
 
-  //todo this for home page
+  // todo this for check deplication between Categories
+  String checkDaplication() {
+    for (int i = 0; i < storageCategoriesList.length; i++) {
+        if(storageCategoriesList[i].storageCategoryType == ConstanceNetwork.itemCategoryType){
+
+        }
+    }
+  return "";  
+  }
 
   //todo this for home page for list or grid view
   bool? isListView = false;
@@ -29,22 +40,222 @@ class StorageViewModel extends BaseController {
 
   // for quantity items counter
   int quantity = 1;
+  int numberOfDays = 1;
+  num balance = 0;
 
-  void increaseQuantity() {
-    quantity++;
-    update();
-  }
+  Set<StorageFeatures>? selectedStorageFeaturesArray = {};
+  Set<StorageItem> selectedStorageItems = {};
+  Set<String> lastItems = {};
+  Set<String> selectedFeaures = {};
+  Function deepEq = const DeepCollectionEquality().equals;
+  StorageItem? lastStorageItem;
+  String selectedDuration = ConstanceNetwork.dailyDurationType;
+  num customSpace = 0;
 
-  void minesQuantity(){
-    if (quantity != 1 ) {
-      quantity --;
+// declaration of TextEditing controllers For Custom Space :
+
+  TextEditingController tdX = TextEditingController();
+  TextEditingController tdY = TextEditingController();
+
+// bulk item declarations
+  bool isNeedingAdviser = false;
+  TextEditingController tdSearch = TextEditingController();
+  Item? selctedItem;
+  Set<Item> allItems = {};
+
+// this for last user chocies :
+  num totalBalance = 0;
+  List<StorageCategoriesData> userStorageCategoriesData = [];
+
+  void doOnChooseNewFeatures(
+      {required StorageFeatures storageFeatures,
+      required StorageCategoriesData storageCategoriesData}) {
+    if (selectedFeaures.contains(storageFeatures.id)) {
+      selectedFeaures.remove(storageFeatures.id);
+    } else {
+      selectedFeaures.add(storageFeatures.id!);
     }
+
+    if (selectedStorageFeaturesArray!.contains(storageFeatures.id)) {
+      selectedStorageFeaturesArray
+          ?.removeWhere((element) => element.id == storageFeatures.id);
+      //  countBalanceQuantity(storageCategoriesData: storageCategoriesData);
+    } else {
+      selectedStorageFeaturesArray?.add(storageFeatures);
+      //   countBalanceQuantity(storageCategoriesData: storageCategoriesData);
+    }
+    countBalanceQuantity(storageCategoriesData: storageCategoriesData);
+
     update();
   }
-  
-  //fot duration vars
-int selectedDuration = 1;
 
+  void countBalanceWithOptions(
+      {required StorageCategoriesData storageCategoriesData}) {
+    if (storageCategoriesData.storageCategoryType ==
+        ConstanceNetwork.quantityCategoryType) {
+      // storageCategoriesData.storageItem?.forEach((element) {
+      //   if (deepEq(element.options, selectedFeaures.toList())) {
+      //     lastStorageItem = element;
+      //   }
+      // });
+
+      storageCategoriesData.storageItem?.forEach((element) {
+        if (element.options!
+            .every((value) => selectedFeaures.toList().contains(value))) {
+          lastStorageItem = element;
+        }
+      });
+    } else if (storageCategoriesData.storageCategoryType ==
+            ConstanceNetwork.spaceCategoryType ||
+        storageCategoriesData.storageCategoryType ==
+            ConstanceNetwork.driedCage) {
+      // storageCategoriesData.storageItem?.forEach((element) {
+      //   if (deepEq(element.options, selectedFeaures.toList())) {
+      //     if (num.parse(element.from ?? "0") <= customSpace &&
+      //         num.parse(element.to ?? "0") >= customSpace) {
+      //       lastStorageItem = element;
+      //     } else {
+      //     }
+      //   }
+      // });
+
+      storageCategoriesData.storageItem?.forEach((element) {
+        if (element.options!
+            .every((value) => selectedFeaures.toList().contains(value))) {
+          if (num.parse(element.from ?? "0") <= customSpace &&
+              num.parse(element.to ?? "0") >= customSpace) {
+            lastStorageItem = element;
+          }
+        }
+      });
+    } else if (storageCategoriesData.storageCategoryType ==
+            ConstanceNetwork.spaceCategoryType ||
+        storageCategoriesData.storageCategoryType ==
+            ConstanceNetwork.itemCategoryType) {
+      storageCategoriesData.storageItem?.forEach((element) {
+        if (element.options!
+            .every((value) => selectedFeaures.toList().contains(value))) {
+          if (num.parse(element.from ?? "0") <= customSpace &&
+              num.parse(element.to ?? "0") >= customSpace) {
+            lastStorageItem = element;
+          }
+        }
+      });
+    }
+    print("msg_get_selcted_item ${lastStorageItem?.toJson()}");
+  }
+
+  void increaseQuantity(
+      {required StorageCategoriesData storageCategoriesData}) {
+    quantity++;
+    countBalanceQuantity(storageCategoriesData: storageCategoriesData);
+    update();
+  }
+
+  void minesQuantity({required StorageCategoriesData storageCategoriesData}) {
+    if (quantity != 1) {
+      quantity--;
+      countBalanceQuantity(storageCategoriesData: storageCategoriesData);
+      update();
+    }
+  }
+
+  void increaseDaysDurations(
+      {required StorageCategoriesData storageCategoriesData}) {
+    numberOfDays++;
+    countBalanceQuantity(storageCategoriesData: storageCategoriesData);
+    update();
+  }
+
+  void minasDaysDurations(
+      {required StorageCategoriesData storageCategoriesData}) {
+    if (numberOfDays != 1) {
+      numberOfDays--;
+      countBalanceQuantity(storageCategoriesData: storageCategoriesData);
+      update();
+    }
+  }
+
+  void countBalanceQuantity(
+      {required StorageCategoriesData storageCategoriesData}) {
+    countBalanceWithOptions(storageCategoriesData: storageCategoriesData);
+    getBalanceFromDuration(
+        newDuration: selectedDuration,
+        storageCategoriesData: storageCategoriesData);
+    update();
+  }
+
+  void getBalanceFromDuration(
+      {required String newDuration,
+      required StorageCategoriesData storageCategoriesData}) {
+    getSmallBalance(newDuration: newDuration, storageItem: lastStorageItem!);
+    update();
+  }
+
+  void getSmallBalance(
+      {required String newDuration, required StorageItem storageItem}) {
+    if (newDuration
+        .toLowerCase()
+        .contains(ConstanceNetwork.dailyDurationType.toLowerCase())) {
+      balance = num.parse(storageItem.price ?? "0");
+    } else if (newDuration
+        .toLowerCase()
+        .contains(ConstanceNetwork.montlyDurationType.toLowerCase())) {
+      balance = num.parse(storageItem.monthlyPrice ?? "0");
+    } else if (newDuration
+        .toLowerCase()
+        .contains(ConstanceNetwork.yearlyDurationType.toLowerCase())) {
+      balance = num.parse(storageItem.yearlyPrice ?? "0");
+    } else if (newDuration
+        .toLowerCase()
+        .contains(ConstanceNetwork.unLimtedDurationType.toLowerCase())) {
+      balance = num.parse(storageItem.price ?? "0");
+    } else {
+      balance = 0;
+    }
+    balance *= quantity * numberOfDays;
+    update();
+  }
+
+  void saveStorageDataToArray(
+      {required StorageCategoriesData storageCategoriesData}) {
+    StorageCategoriesData newStorageCategoriesData = storageCategoriesData;
+    newStorageCategoriesData.userPrice = balance;
+    newStorageCategoriesData.storageItem = [lastStorageItem!];
+    userStorageCategoriesData.add(newStorageCategoriesData);
+    update();
+  }
+
+  void intialBalance({required StorageCategoriesData storageCategoriesData}) {
+    balance = 0;
+    countBalanceWithOptions(storageCategoriesData: storageCategoriesData);
+
+    getSmallBalance(
+        newDuration: selectedDuration, storageItem: lastStorageItem!);
+  }
+
+  void doOnChangeSpace({required StorageCategoriesData storageCategoriesData}) {
+    if (tdX.text.length > 0 && tdY.text.length > 0) {
+      if (num.parse(tdX.text) * num.parse(tdY.text) > 1) {
+        customSpace = num.parse(tdX.text) * num.parse(tdY.text);
+      }
+    }
+    lastStorageItem?.to = customSpace.toString();
+    intialBalance(storageCategoriesData: storageCategoriesData);
+  }
+
+  String checkCategoreyType({required String storageCategoreyType}) {
+    if (storageCategoreyType == ConstanceNetwork.quantityCategoryType) {
+      return ConstanceNetwork.quantityCategoryType;
+    } else if (storageCategoreyType == ConstanceNetwork.spaceCategoryType ||
+        storageCategoreyType.toLowerCase().contains("space")) {
+      return ConstanceNetwork.spaceCategoryType;
+    } else if (storageCategoreyType == ConstanceNetwork.itemCategoryType) {
+      return ConstanceNetwork.itemCategoryType;
+    } else {
+      return "";
+    }
+  }
 
   @override
   void onInit() {
@@ -54,7 +265,6 @@ int selectedDuration = 1;
 
   @override
   void onReady() {
-    // TODO: implement onReady
     super.onReady();
   }
 
@@ -148,6 +358,7 @@ int selectedDuration = 1;
       {required StorageCategoriesData storageCategoriesData}) {
     if (ConstanceNetwork.quantityCategoryType ==
         storageCategoriesData.storageCategoryType) {
+      selectedStorageItems = storageCategoriesData.storageItem!.toSet();
       Get.bottomSheet(
         QuantityStorageBottomSheet(
           storageCategoriesData: storageCategoriesData,
@@ -156,10 +367,28 @@ int selectedDuration = 1;
       );
     } else if (ConstanceNetwork.itemCategoryType ==
         storageCategoriesData.storageCategoryType) {
-      /// print("$storageType");
+      Get.bottomSheet(
+        ItemStorageBottomSheet(
+          storageCategoriesData: storageCategoriesData,
+        ),
+        isScrollControlled: true,
+      );
     } else if (ConstanceNetwork.spaceCategoryType ==
         storageCategoriesData.storageCategoryType) {
-      /// print("$storageType");
+      Get.bottomSheet(
+        SpaceStorageBottomSheet(
+          storageCategoriesData: storageCategoriesData,
+        ),
+        isScrollControlled: true,
+      );
+    } else if (ConstanceNetwork.driedCage ==
+        storageCategoriesData.storageCategoryType) {
+      Get.bottomSheet(
+        SpaceStorageBottomSheet(
+          storageCategoriesData: storageCategoriesData,
+        ),
+        isScrollControlled: true,
+      );
     }
   }
 

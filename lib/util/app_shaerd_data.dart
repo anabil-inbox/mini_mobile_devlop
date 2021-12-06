@@ -12,7 +12,9 @@ import 'package:get/get.dart';
 import 'package:image/image.dart' as Img;
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
 import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/language_item_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bulk_item_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/splash_view_modle/splash_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -95,12 +97,11 @@ phoneVaild(String value) {
 }
 
 phoneVaildAlternativeContact(String value) {
- if (value.length > 10 || value.length < 8) {
-     return tr.fill_your_phone_number;
-  }else{
+  if (value.length > 10 || value.length < 8) {
+    return tr.fill_your_phone_number;
+  } else {
     return;
   }
-
 }
 
 emailValid(String val) {
@@ -144,7 +145,7 @@ bool isVideo({required String path}) {
 int getPageCount({required List<String> array}) {
   int count = 0;
   array.forEach((element) {
-    if (element.isNotEmpty && !GetUtils.isNull(element)){
+    if (element.isNotEmpty && !GetUtils.isNull(element)) {
       count++;
     }
   });
@@ -506,6 +507,9 @@ class CustomMaterialPageRoute extends MaterialPageRoute {
           fullscreenDialog: fullscreenDialog,
         );
 }
+
+
+
 
 bool isArabicLang() {
   return (SharedPref.instance.getAppLanguageMain() == "ar" ? true : false);

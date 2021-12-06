@@ -99,7 +99,7 @@ class ProfileViewModle extends BaseController {
     update();
     FocusScope.of(Get.context!).unfocus();
     try {
-      ProfileHelper.getInstance
+     await ProfileHelper.getInstance
           .addNewAddress(newAddress.toJson())
           .then((value) => {
                 Logger().i("${value.status!.message}"),
@@ -324,7 +324,7 @@ class ProfileViewModle extends BaseController {
   // for maps functions && td Controller :
   TextEditingController tdSearchMap = TextEditingController();
   Completer<GoogleMapController> controllerCompleter = Completer();
-  GoogleMapController? mapController;
+  GoogleMapController? mapController; 
   double latitude = 25.36;
   double longitude = 51.18;
   String addressFromLocation = "";

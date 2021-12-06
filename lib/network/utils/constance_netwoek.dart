@@ -78,6 +78,14 @@ abstract class ConstanceNetwork {
   static String spaceCategoryType = "Space";
   static String itemCategoryType = "Item";
   static var quantityCategoryType = "Quantity";
+  static var driedCage = "Dried Space";
+
+  ///here keys of duration status;
+    static var dailyDurationType = "Daily";
+    static var montlyDurationType = "Montly";
+    static var yearlyDurationType = "yearly";
+    static var unLimtedDurationType = "unlimited";
+    
 
 
 
