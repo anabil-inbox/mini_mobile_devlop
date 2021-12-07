@@ -29,6 +29,8 @@ import 'app_color.dart';
 import 'app_style.dart';
 import 'constance.dart';
 import 'string.dart';
+import 'package:collection/collection.dart';
+
 
 String? urlPlacholder =
     "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png";
@@ -157,18 +159,14 @@ bool areArraysEquales(List<String> listOne, List<String> listTwo) {
   if (listOne.length != listTwo.length) {
     return false;
   }
+  listOne.sort();
+  listTwo.sort();
 
-  for (var outterItem in listOne) {
-    for (var innerItem in listTwo) {
-      if (outterItem == innerItem) {
-        print("outter_inner_item_if $outterItem , $innerItem");
-      } else {
-        print("outter_inner_item_eles $outterItem , $innerItem");
-      }
-    }
-  }
+  print("listOne: ${listOne.toList().toString()}");
+  print("listTwo: ${listOne.toList().toString()}");
+  Function eq = const ListEquality().equals;
 
-  return true;
+  return eq(listOne , listTwo);
 }
 
 snackSuccess(String title, String body) {
