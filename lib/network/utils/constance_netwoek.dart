@@ -86,9 +86,10 @@ abstract class ConstanceNetwork {
     static var yearlyDurationType = "yearly";
     static var unLimtedDurationType = "unlimited";
     
-
-
-
+ //here block and enaeld Folder icons;
+  static String enableFolder = "assets/svgs/folder_icon.svg";
+  static String disableFolder = "assets/svgs/clocked_file.svg";
+  
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};
     if (typeToken == 0) {

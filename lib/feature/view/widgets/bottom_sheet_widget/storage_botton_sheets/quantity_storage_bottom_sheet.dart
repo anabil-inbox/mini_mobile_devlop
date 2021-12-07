@@ -128,6 +128,7 @@ class _QuantityStorageBottomSheetState
                     onClicked: () {
                       storageViewModel.saveStorageDataToArray(
                           storageCategoriesData: widget.storageCategoriesData);
+                          storageViewModel.checkDaplication();
                     },
                     isExpanded: true),
                 SizedBox(

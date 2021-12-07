@@ -32,96 +32,101 @@ class RequestNewStorageScreen extends StatelessWidget {
           style: textStyleAppBarTitle(),
         ),
       ),
-      body: SizedBox(
-        height: double.infinity,
-        child: Stack(
-          children: [
-            ListView(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              primary: true,
-              shrinkWrap: true,
+      body: GetBuilder<StorageViewModel>(
+        init: StorageViewModel(),
+        initState: (_) {},
+        builder: (_) {
+          return SizedBox(
+            height: double.infinity,
+            child: Stack(
               children: [
-                GetBuilder<StorageViewModel>(
-                  init: StorageViewModel(),
-                  initState: (_) {},
-                  builder: (val) {
-                    return RequestNewStorageHeader(
-                      currentLevel: val.currentLevel,
-                    );
-                  },
-                ),
-                GetBuilder<StorageViewModel>(
-                  init: StorageViewModel(),
-                  initState: (_) {},
-                  builder: (builder) {
-                    return StorageSizeType();
-                  },
-                ),
-                SizedBox(
-                  height: sizeH16,
-                ),
-                storageViewModel.userStorageCategoriesData.length > 0
-                    ? GetBuilder<StorageViewModel>(
-                        builder: (build) => Container(
-                              color: colorTextWhite,
-                              padding: EdgeInsets.all(20),
-                              child: ListView(
-                                shrinkWrap: true,
-                                primary: false,
-                                children: [
-                                  Text("My List"),
-                                  SizedBox(
-                                    height: sizeH10,
-                                  ),
-                                  PriceBottomSheetWidget(
-                                    priceTitle: "Total",
-                                    isTotalPalnce: true,
-                                  ),
-                                  SizedBox(
-                                    height: sizeH10,
-                                  ),
-                                  ListView(
-                                    primary: false,
+                ListView(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  primary: true,
+                  shrinkWrap: true,
+                  children: [
+                    GetBuilder<StorageViewModel>(
+                      init: StorageViewModel(),
+                      initState: (_) {},
+                      builder: (val) {
+                        return RequestNewStorageHeader(
+                          currentLevel: val.currentLevel,
+                        );
+                      },
+                    ),
+                    GetBuilder<StorageViewModel>(
+                      init: StorageViewModel(),
+                      initState: (_) {},
+                      builder: (builder) {
+                        return StorageSizeType();
+                      },
+                    ),
+                    SizedBox(
+                      height: sizeH16,
+                    ),
+                    storageViewModel.userStorageCategoriesData.length > 0
+                        ? GetBuilder<StorageViewModel>(
+                            builder: (build) => Container(
+                                  color: colorTextWhite,
+                                  padding: EdgeInsets.all(20),
+                                  child: ListView(
                                     shrinkWrap: true,
-                                    children: build.userStorageCategoriesData
-                                        .map((e) {
-                                      if (build.checkCategoreyType(
-                                              storageCategoreyType:
-                                                  e.storageCategoryType!) ==
-                                          ConstanceNetwork
-                                              .quantityCategoryType) {
-                                        return ShowSpaceAndQuantityWidget(
-                                            storageItem: e.storageItem![0]);
-                                      } else {
-                                        return ShowBulkItem(
-                                            storageItem: e.storageItem![0]);
-                                      }
-                                    }).toList(),
-                                  )
-                                ],
-                              ),
-                            ))
-                    : const SizedBox(),
+                                    primary: false,
+                                    children: [
+                                      Text("My List"),
+                                      SizedBox(
+                                        height: sizeH10,
+                                      ),
+                                      PriceBottomSheetWidget(
+                                        priceTitle: "Total",
+                                        isTotalPalnce: true,
+                                      ),
+                                      SizedBox(
+                                        height: sizeH10,
+                                      ),
+                                      ListView(
+                                        primary: false,
+                                        shrinkWrap: true,
+                                        children: build
+                                            .userStorageCategoriesData
+                                            .map((e) {
+                                          if (build.checkCategoreyType( storageCategoreyType:  e.storageCategoryType!) == ConstanceNetwork.quantityCategoryType || build.checkCategoreyType( storageCategoreyType:  e.storageCategoryType!) == ConstanceNetwork.spaceCategoryType) {
+                                            return ShowSpaceAndQuantityWidget(
+                                                storageCategoriesData: e,
+                                                storageItem: e.storageItem![0]);
+                                          } else {
+                                            return ShowBulkItem(
+                                                storageItem: e.storageItem![0]);
+                                          }
+                                        }).toList(),
+                                      ),
+                                       SizedBox(
+                                        height: sizeH50,
+                                      ),
+                                    ],
+                                  ),
+                                ))
+                        : const SizedBox(),
+                  ],
+                ),
+                Positioned(
+                  bottom: padding10,
+                  right: padding20,
+                  left: padding20,
+                  child: PrimaryButton(
+                      textButton: "Next",
+                      isLoading: false,
+                      colorBtn:
+                          storageViewModel.userStorageCategoriesData.length > 0
+                              ? colorPrimary
+                              : colorUnSelectedWidget,
+                      onClicked: () {},
+                      isExpanded: true),
+                )
               ],
             ),
-            Positioned(
-              bottom: padding10,
-              right: padding20,
-              left: padding20,
-              child: PrimaryButton(
-                  textButton: "Next",
-                  isLoading: false,
-                  colorBtn:
-                      storageViewModel.userStorageCategoriesData.length > 0
-                          ? colorPrimary
-                          : colorUnSelectedWidget,
-                  onClicked: () {
-
-                  },
-                  isExpanded: true),
-            )
-          ],
-        ),
+          );
+        },
       ),
     );
   }

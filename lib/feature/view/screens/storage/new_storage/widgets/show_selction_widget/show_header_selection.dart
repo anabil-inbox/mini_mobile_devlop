@@ -30,7 +30,7 @@ class ShowHeaderSelection extends StatelessWidget {
                       borderRadius: BorderRadius.circular(padding9!)),
                   padding: EdgeInsets.symmetric(
                       vertical: padding9!, horizontal: padding4!),
-                  child: Text("3 x 6")),
+                  child: Text("$quantityOrSpace")),
               SizedBox(
                 width: sizeW20,
               ),

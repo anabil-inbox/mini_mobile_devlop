@@ -7,6 +7,7 @@ import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_b
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:logger/logger.dart';
 import 'package:collection/collection.dart';
@@ -24,14 +25,50 @@ class StorageViewModel extends BaseController {
   List<StorageCategoriesData> storageCategoriesList = <StorageCategoriesData>[];
 
   // todo this for check deplication between Categories
-  String checkDaplication() {
-    for (int i = 0; i < storageCategoriesList.length; i++) {
-        if(storageCategoriesList[i].storageCategoryType == ConstanceNetwork.itemCategoryType){
+  /// هي الانواع اللي عنا
+  /// Quantity
+  /// Item
+  /// Space
+  /// Dried Space
+  /// Cooled Space
+  /// Chilled Space
+  /// Frozen Space
+// اذا كان  Quantity او Item في الlist
+// فممنوع اختار معهم اي اشي من الانواع الباقية
+// اما ال space باقدر اختارهم مع بعض
 
-        }
+  bool isShowAll = true;
+  bool isShowQuantityAndItems = false;
+  bool isShowSpaces = false;
+
+  checkDaplication() {
+    if (userStorageCategoriesData.length == 0) {
+      isShowAll = true;
+      isShowQuantityAndItems = false;
+      isShowSpaces = false;
+      update();
+      return;
     }
-  return "";  
+    for (StorageCategoriesData item in userStorageCategoriesData) {
+      if (item.storageCategoryType == ConstanceNetwork.quantityCategoryType ||
+          item.storageCategoryType == ConstanceNetwork.itemCategoryType) {
+        isShowQuantityAndItems = true;
+        isShowSpaces = false;
+        isShowAll = false;
+        update();
+        return;
+      } else {
+        isShowSpaces = true;
+        isShowAll = false;
+        isShowQuantityAndItems = false;
+
+        update();
+        return;
+      }
+    }
   }
+
+  /// reached to CheckDuplications ::
 
   //todo this for home page for list or grid view
   bool? isListView = false;
@@ -43,7 +80,7 @@ class StorageViewModel extends BaseController {
   int numberOfDays = 1;
   num balance = 0;
 
-  Set<StorageFeatures>? selectedStorageFeaturesArray = {};
+  // Set<StorageFeatures>? selectedStorageFeaturesArray = {};
   Set<StorageItem> selectedStorageItems = {};
   Set<String> lastItems = {};
   Set<String> selectedFeaures = {};
@@ -67,6 +104,7 @@ class StorageViewModel extends BaseController {
   num totalBalance = 0;
   List<StorageCategoriesData> userStorageCategoriesData = [];
 
+// to do when user choose new option :
   void doOnChooseNewFeatures(
       {required StorageFeatures storageFeatures,
       required StorageCategoriesData storageCategoriesData}) {
@@ -76,19 +114,19 @@ class StorageViewModel extends BaseController {
       selectedFeaures.add(storageFeatures.id!);
     }
 
-    if (selectedStorageFeaturesArray!.contains(storageFeatures.id)) {
-      selectedStorageFeaturesArray
-          ?.removeWhere((element) => element.id == storageFeatures.id);
-      //  countBalanceQuantity(storageCategoriesData: storageCategoriesData);
-    } else {
-      selectedStorageFeaturesArray?.add(storageFeatures);
-      //   countBalanceQuantity(storageCategoriesData: storageCategoriesData);
-    }
+    // if (selectedStorageFeaturesArray!.contains(storageFeatures.id)) {
+    //   selectedStorageFeaturesArray
+    //       ?.removeWhere((element) => element.id == storageFeatures.id);
+    //   //  countBalanceQuantity(storageCategoriesData: storageCategoriesData);
+    // } else {
+    //   selectedStorageFeaturesArray?.add(storageFeatures);
+    //   //   countBalanceQuantity(storageCategoriesData: storageCategoriesData);
+    // }
     countBalanceQuantity(storageCategoriesData: storageCategoriesData);
-
     update();
   }
 
+  /// to do when you want to count balance with new choosen options :
   void countBalanceWithOptions(
       {required StorageCategoriesData storageCategoriesData}) {
     if (storageCategoriesData.storageCategoryType ==
@@ -98,10 +136,14 @@ class StorageViewModel extends BaseController {
       //     lastStorageItem = element;
       //   }
       // });
-
       storageCategoriesData.storageItem?.forEach((element) {
-        if (element.options!
-            .every((value) => selectedFeaures.toList().contains(value))) {
+        //   if (element.options!.every((firstValue) {
+        //     print("msg_Outter $firstValue");
+        //     print("result ${selectedFeaures.toList().contains(firstValue)}");
+        //  //  return selectedFeaures.toList().every((val) => firstValue == val);
+        //  return areArraysEquales(element.options!, selectedFeaures.toList());
+        //   } ))
+        if (areArraysEquales(element.options!, selectedFeaures.toList())) {
           lastStorageItem = element;
         }
       });
@@ -118,30 +160,45 @@ class StorageViewModel extends BaseController {
       //     }
       //   }
       // });
+      // storageCategoriesData.storageItem?.forEach((element) {
+      //   if (element.options!
+      //       .every((value) => selectedFeaures.toList().contains(value))) {
+      //     if (num.parse(element.from ?? "0") <= customSpace &&
+      //         num.parse(element.to ?? "0") >= customSpace) {
+      //       lastStorageItem = element;
+      //     }
+      //   }
+      // });
 
       storageCategoriesData.storageItem?.forEach((element) {
-        if (element.options!
-            .every((value) => selectedFeaures.toList().contains(value))) {
+        if (areArraysEquales(element.options!, selectedFeaures.toList())) {
           if (num.parse(element.from ?? "0") <= customSpace &&
               num.parse(element.to ?? "0") >= customSpace) {
+            lastStorageItem?.x = tdX.text;
+            lastStorageItem?.y = tdY.text;
             lastStorageItem = element;
           }
         }
       });
     } else if (storageCategoriesData.storageCategoryType ==
-            ConstanceNetwork.spaceCategoryType ||
-        storageCategoriesData.storageCategoryType ==
             ConstanceNetwork.itemCategoryType) {
+      // storageCategoriesData.storageItem?.forEach((element) {
+      //   if (element.options!
+      //       .every((value) => selectedFeaures.toList().contains(value))) {
+      //     if (num.parse(element.from ?? "0") <= customSpace &&
+      //         num.parse(element.to ?? "0") >= customSpace) {
+      //       lastStorageItem = element;
+      //     }
+      //   }
+      // });
+
       storageCategoriesData.storageItem?.forEach((element) {
-        if (element.options!
-            .every((value) => selectedFeaures.toList().contains(value))) {
-          if (num.parse(element.from ?? "0") <= customSpace &&
-              num.parse(element.to ?? "0") >= customSpace) {
-            lastStorageItem = element;
-          }
+        if (areArraysEquales(element.options!, selectedFeaures.toList())) {
+          print("${element.toJson()}");
         }
       });
     }
+
     print("msg_get_selcted_item ${lastStorageItem?.toJson()}");
   }
 
@@ -221,8 +278,15 @@ class StorageViewModel extends BaseController {
       {required StorageCategoriesData storageCategoriesData}) {
     StorageCategoriesData newStorageCategoriesData = storageCategoriesData;
     newStorageCategoriesData.userPrice = balance;
+    totalBalance += balance;
     newStorageCategoriesData.storageItem = [lastStorageItem!];
+    newStorageCategoriesData.quantity = quantity;
     userStorageCategoriesData.add(newStorageCategoriesData);
+    
+    print("userStorageCateogories = ${newStorageCategoriesData.toJson()}");
+   
+    getStorageCategories();
+    Get.back();
     update();
   }
 

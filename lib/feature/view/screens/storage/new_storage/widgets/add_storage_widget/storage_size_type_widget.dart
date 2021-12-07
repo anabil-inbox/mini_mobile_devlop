@@ -12,8 +12,8 @@ import 'size_type_item.dart';
 class StorageSizeType extends StatelessWidget {
   const StorageSizeType({Key? key}) : super(key: key);
 
- static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
- 
+  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,7 +39,11 @@ class StorageSizeType extends StatelessWidget {
           ),
           GetBuilder<StorageViewModel>(
             init: StorageViewModel(),
-            initState: (_) {},
+            // initState: (_) {
+            //   WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+            //       storageViewModel.checkDaplication();
+            //   });
+            // },
             builder: (builder) {
               return GridView.builder(
                   shrinkWrap: true,

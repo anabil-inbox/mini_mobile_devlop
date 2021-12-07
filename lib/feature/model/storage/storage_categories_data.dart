@@ -16,7 +16,8 @@ class StorageCategoriesData {
       this.image,
       this.video,
       this.description,
-      this.userPrice
+      this.userPrice,
+      this.quantity
       });
 
   String? name;
@@ -34,6 +35,7 @@ class StorageCategoriesData {
   String? video;
   String? description;
   num? userPrice;
+  int? quantity;
 
   factory StorageCategoriesData.fromJson(Map<String, dynamic> json) {
     try {
@@ -224,6 +226,8 @@ class StorageItem {
       this.item,
       this.from,
       this.to,
+      this.x,
+      this.y,
       this.monthlyPrice,
       this.yearlyPrice});
 
@@ -233,6 +237,8 @@ class StorageItem {
   String? item;
   String? from;
   String? to;
+  String? x;
+  String? y;
   String? monthlyPrice;
   String? yearlyPrice;
 

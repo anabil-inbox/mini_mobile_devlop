@@ -9,7 +9,7 @@ class ShowOptionsWidget extends StatelessWidget {
       : super(key: key);
 
   final List<String> storageItemOptions;
-
+  
   @override
   Widget build(BuildContext context) {
     return storageItemOptions.isNotEmpty

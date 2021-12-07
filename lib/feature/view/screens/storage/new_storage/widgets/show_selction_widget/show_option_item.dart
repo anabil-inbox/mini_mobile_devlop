@@ -20,8 +20,6 @@ class ShowOptionItem extends StatelessWidget {
               "$optionTitle",
               style: smallHintTextStyle()?.copyWith(fontSize: fontSize13),
             ),
-            const Spacer(),
-            Text("12 QR" , style: textStylePrimarySmall(),)
           ],
         ),
         SizedBox(height: sizeH12,)

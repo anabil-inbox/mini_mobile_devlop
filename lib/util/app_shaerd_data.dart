@@ -153,6 +153,24 @@ int getPageCount({required List<String> array}) {
   return count;
 }
 
+bool areArraysEquales(List<String> listOne, List<String> listTwo) {
+  if (listOne.length != listTwo.length) {
+    return false;
+  }
+
+  for (var outterItem in listOne) {
+    for (var innerItem in listTwo) {
+      if (outterItem == innerItem) {
+        print("outter_inner_item_if $outterItem , $innerItem");
+      } else {
+        print("outter_inner_item_eles $outterItem , $innerItem");
+      }
+    }
+  }
+
+  return true;
+}
+
 snackSuccess(String title, String body) {
   Future.delayed(Duration(seconds: 0)).then((value) {
     Get.snackbar("$title", "$body",
@@ -507,9 +525,6 @@ class CustomMaterialPageRoute extends MaterialPageRoute {
           fullscreenDialog: fullscreenDialog,
         );
 }
-
-
-
 
 bool isArabicLang() {
   return (SharedPref.instance.getAppLanguageMain() == "ar" ? true : false);
