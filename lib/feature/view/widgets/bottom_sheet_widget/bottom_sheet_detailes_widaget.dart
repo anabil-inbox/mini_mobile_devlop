@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/viedo_player.dart';
@@ -46,18 +45,27 @@ class BottomSheetDetaielsWidget extends StatelessWidget {
             ),
             getPageCount(array: media) == 0
                 ? const SizedBox()
-                : Container(
-                    height: sizeH300,
-                    width: sizeW320,
-                    child: PageView.builder(
-                      itemCount: getPageCount(array: media),
-                      itemBuilder: (context, index) {
-                        return isVideo(path: media[index])
-                            ? VideoPlayer(videoUrl: "${media[index]}",)
-                            : imageNetwork(
-                                url:"${ConstanceNetwork.imageUrl}${media[index]}");
-                      },
-                    ),
+                : Column(
+                    children: [
+                      Container(
+                        height: sizeH300,
+                        width: sizeW320,
+                        child: PageView.builder(
+                          itemCount: getPageCount(array: media),
+                          itemBuilder: (context, index) {
+                            return isVideo(path: media[index])
+                                ? VideoPlayer(
+                                    videoUrl: "${media[index]}",
+                                  )
+                                : imageNetwork(
+                                    url:
+                                        "${ConstanceNetwork.imageUrl}${media[index]}");
+                          
+                          },
+                        ),
+                      ),
+                      
+                    ],
                   ),
             SizedBox(
               height: sizeH20,

@@ -78,6 +78,14 @@ abstract class ConstanceNetwork {
   static String spaceCategoryType = "Space";
   static String itemCategoryType = "Item";
   static var quantityCategoryType = "Quantity";
+  static var driedCage = "Dried Space";
+
+  ///here keys of duration status;
+    static var dailyDurationType = "Daily";
+    static var montlyDurationType = "Montly";
+    static var yearlyDurationType = "yearly";
+    static var unLimtedDurationType = "unlimited";
+    
 
 
 
@@ -103,7 +111,7 @@ abstract class ConstanceNetwork {
         'Content-Type': 'application/x-www-form-urlencoded'
       };
     } else if (typeToken == 4) {
-      print("msg_get_user_token ${SharedPref.instance.getUserToken()}");
+      print("msg_get_user_token_on_send_to_header ${SharedPref.instance.getUserToken()}");
       headers = {
         'Authorization': 'Bearer ${SharedPref.instance.getUserToken()}',
         'Content-Type': 'application/json',

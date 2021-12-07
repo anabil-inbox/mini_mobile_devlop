@@ -27,12 +27,11 @@ class SizeTypeItem extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          
           PositionedDirectional(
-            top: 0,
-            bottom: 0,
-            start: 0,
-            end: 0,
+            top: padding0,
+            bottom: padding0,
+            start: padding0,
+            end: padding0,
             child: TextButton(
               onPressed: (){
                 storageViewModel.showMainStorageBottomSheet(
@@ -62,7 +61,7 @@ class SizeTypeItem extends StatelessWidget {
             ),
           ),
           PositionedDirectional(
-            end: 0,
+            end: padding0,
             top: -10,
             child: SizedBox(
               width: sizeW40,

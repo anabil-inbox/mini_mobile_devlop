@@ -129,7 +129,8 @@ class AddressItem extends StatelessWidget {
                       children: [
                         InkWell(
                             onTap: () {
-                              Get.bottomSheet(GlobalBottomSheet(
+                              Get.bottomSheet(
+                                GlobalBottomSheet(
                                 isTwoBtn: true,
                                 title: "${tr.are_you_sure_you_want_to_delete_address}",
                                 onOkBtnClick: () {

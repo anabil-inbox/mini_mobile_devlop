@@ -16,7 +16,7 @@
         android:label="INBOX"
         android:icon="@mipmap/ic_launcher">
          <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyAozWyP-XVpiaIfqgKprWwwCce5ou46YZE"/>
+               android:value="AIzaSyAzBtxE3NluLYNrUajTg9OnG7X_luzESvU"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

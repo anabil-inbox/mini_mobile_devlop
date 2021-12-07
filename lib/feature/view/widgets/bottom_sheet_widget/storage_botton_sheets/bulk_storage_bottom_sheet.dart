@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
+import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/add_item_widget.dart';
+import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/need_inspector_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/options_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/period_storage_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/price_bottom_sheet_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/quantity_widget.dart';
-import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 
-class QuantityStorageBottomSheet extends StatefulWidget {
-  const QuantityStorageBottomSheet(
-      {Key? key, required this.storageCategoriesData})
+import '../../primary_button.dart';
+
+class ItemStorageBottomSheet extends StatefulWidget {
+  const ItemStorageBottomSheet({Key? key, required this.storageCategoriesData})
       : super(key: key);
 
   final StorageCategoriesData storageCategoriesData;
 
   @override
-  State<QuantityStorageBottomSheet> createState() =>
-      _QuantityStorageBottomSheetState();
+  State<ItemStorageBottomSheet> createState() => _ItemStorageBottomSheetState();
 }
 
-class _QuantityStorageBottomSheetState
-    extends State<QuantityStorageBottomSheet> {
+class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
   StorageViewModel storageViewModel = Get.find<StorageViewModel>();
   @override
   void initState() {
@@ -74,22 +76,20 @@ class _QuantityStorageBottomSheetState
                 SizedBox(
                   height: sizeH16,
                 ),
-                QuantityWidget(
-                  value: storageViewModel.quantity,
-                  increasingFunction: () {
-                    builder.increaseQuantity(
-                        storageCategoriesData: widget.storageCategoriesData);
-                  },
-                  mineassingFunction: () {
-                    builder.minesQuantity(
-                        storageCategoriesData: widget.storageCategoriesData);
-                  },
-                  quantityTitle: "${tr.quantity}",
-                  storageCategoriesData: widget.storageCategoriesData,
-                ),
+                NeedInspectorWidget(),
                 SizedBox(
                   height: sizeH16,
                 ),
+                builder.isNeedingAdviser
+                    ? const SizedBox()
+                    : AddItemWidget(
+                        storageCategoriesData: widget.storageCategoriesData,
+                      ),
+                builder.isNeedingAdviser
+                    ? const SizedBox()
+                    : SizedBox(
+                        height: sizeH16,
+                      ),
                 PeriodStorageWidget(
                   storageCategoriesData: widget.storageCategoriesData,
                 ),

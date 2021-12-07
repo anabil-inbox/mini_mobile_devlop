@@ -118,5 +118,13 @@
       "on_the_way":"في الطريق",
       "in_warehouse":"في المخزن",
        "at_home":"في المنزل",
-       "request_new_storage" : "طلب تخزين جديد"
+       "request_new_storage" : "طلب تخزين جديد",
+       "storage_size_type" :  "حجم ونوع التخزين:",
+       "choose_from_below" : "اختر من الاسفل",
+       "quantity":"الكمية",
+      "duration_of_subscription" : "مدة الاشتراك",
+      "starting_from_pickup_date":"ابتداء من تاريخ الاستلام",
+      "price":"السعر",
+      "options":"الخيارات",
+      "next":"التالي"
 }
