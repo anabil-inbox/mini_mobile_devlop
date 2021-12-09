@@ -14,12 +14,11 @@ import 'package:inbox_clients/util/constance.dart';
 // ignore: must_be_immutable
 class SizeTypeItem extends StatelessWidget {
   SizeTypeItem(
-      {Key? key, required this.storageCategoriesData, required this.media})
+      {Key? key, required this.storageCategoriesData, required this.media })
       : super(key: key);
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
   final StorageCategoriesData storageCategoriesData;
   final List<String> media;
-
   bool isEnable = true;
 
   @override

@@ -85,22 +85,58 @@ class RequestNewStorageScreen extends StatelessWidget {
                                         height: sizeH10,
                                       ),
                                       ListView(
-                                        primary: false,
-                                        shrinkWrap: true,
-                                        children: build
-                                            .userStorageCategoriesData
-                                            .map((e) {
-                                          if (build.checkCategoreyType( storageCategoreyType:  e.storageCategoryType!) == ConstanceNetwork.quantityCategoryType || build.checkCategoreyType( storageCategoreyType:  e.storageCategoryType!) == ConstanceNetwork.spaceCategoryType) {
-                                            return ShowSpaceAndQuantityWidget(
-                                                storageCategoriesData: e,
-                                                storageItem: e.storageItem![0]);
-                                          } else {
-                                            return ShowBulkItem(
-                                                storageItem: e.storageItem![0]);
-                                          }
-                                        }).toList(),
-                                      ),
-                                       SizedBox(
+                                          primary: false,
+                                          shrinkWrap: true,
+                                          // children: build
+                                          //     .userStorageCategoriesData
+                                          //     .asMap()
+                                          //     .map((e) {
+                                          // if (build.checkCategoreyType( storageCategoreyType:  e.storageCategoryType!) == ConstanceNetwork.quantityCategoryType || build.checkCategoreyType( storageCategoreyType:  e.storageCategoryType!) == ConstanceNetwork.spaceCategoryType) {
+                                          //   return MapEntry(
+                                          //     index,
+                                          // ShowSpaceAndQuantityWidget(
+                                          //   storageCategoriesData: e,
+                                          //   storageItem: e.storageItem![0]);
+                                          //   )} else {
+                                          //   return MapEntry(
+                                          //     index,
+                                          // ShowBulkItem(
+                                          //   storageItem: e.storageItem![0]);
+                                          // )  }
+                                          // }).values.toList(),
+                                          children: build
+                                              .userStorageCategoriesData
+                                              .asMap()
+                                              .map((index, value) => MapEntry(
+                                                    index,
+                                                    build.checkCategoreyType(
+                                                                    storageCategoreyType:
+                                                                        value
+                                                                            .storageCategoryType!) ==
+                                                                ConstanceNetwork
+                                                                    .quantityCategoryType ||
+                                                            build.checkCategoreyType(
+                                                                    storageCategoreyType:
+                                                                        value
+                                                                            .storageCategoryType!) ==
+                                                                ConstanceNetwork
+                                                                    .spaceCategoryType
+                                                        ? ShowSpaceAndQuantityWidget(
+                                                            index: index,
+                                                            storageCategoriesData:
+                                                                value,
+                                                            storageItem: value
+                                                                    .storageItem![
+                                                                0])
+                                                        : ShowBulkItem(
+                                                          storageCategoriesData: value,
+                                                          index: index,
+                                                            storageItem: value
+                                                                .storageItem![0]),
+                                                  ))
+                                              .values
+                                              .toList()),
+                                      SizedBox(
                                         height: sizeH50,
                                       ),
                                     ],
@@ -120,7 +156,9 @@ class RequestNewStorageScreen extends StatelessWidget {
                           storageViewModel.userStorageCategoriesData.length > 0
                               ? colorPrimary
                               : colorUnSelectedWidget,
-                      onClicked: () {},
+                      onClicked: () {
+                        
+                      },
                       isExpanded: true),
                 )
               ],

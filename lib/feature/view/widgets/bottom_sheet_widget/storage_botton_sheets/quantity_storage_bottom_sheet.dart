@@ -14,11 +14,12 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class QuantityStorageBottomSheet extends StatefulWidget {
   const QuantityStorageBottomSheet(
-      {Key? key, required this.storageCategoriesData})
+      {Key? key, required this.storageCategoriesData , this.isUpdate = false , required this.index})
       : super(key: key);
 
   final StorageCategoriesData storageCategoriesData;
-
+  final bool isUpdate;
+  final int index;
   @override
   State<QuantityStorageBottomSheet> createState() =>
       _QuantityStorageBottomSheetState();
@@ -127,6 +128,8 @@ class _QuantityStorageBottomSheetState
                     isLoading: false,
                     onClicked: () {
                       storageViewModel.saveStorageDataToArray(
+                          updateIndex: widget.index,
+                          isUpdate: widget.isUpdate,
                           storageCategoriesData: widget.storageCategoriesData);
                           storageViewModel.checkDaplication();
                     },

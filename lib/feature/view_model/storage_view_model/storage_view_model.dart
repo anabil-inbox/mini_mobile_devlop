@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/bulk_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/quantity_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
@@ -10,7 +14,6 @@ import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:logger/logger.dart';
-import 'package:collection/collection.dart';
 
 class StorageViewModel extends BaseController {
   //todo this for appbar select btn
@@ -84,8 +87,10 @@ class StorageViewModel extends BaseController {
   Set<StorageItem> selectedStorageItems = {};
   Set<String> lastItems = {};
   Set<String> selectedFeaures = {};
-  Function deepEq = const DeepCollectionEquality().equals;
+  // Function deepEq = const DeepCollectionEquality().equals;
   StorageItem? lastStorageItem;
+  Set<StorageItem> arrayLastStorageItem = {};
+
   String selectedDuration = ConstanceNetwork.dailyDurationType;
   num customSpace = 0;
 
@@ -113,17 +118,13 @@ class StorageViewModel extends BaseController {
     } else {
       selectedFeaures.add(storageFeatures.id!);
     }
-
-    // if (selectedStorageFeaturesArray!.contains(storageFeatures.id)) {
-    //   selectedStorageFeaturesArray
-    //       ?.removeWhere((element) => element.id == storageFeatures.id);
-    //   //  countBalanceQuantity(storageCategoriesData: storageCategoriesData);
-    // } else {
-    //   selectedStorageFeaturesArray?.add(storageFeatures);
-    //   //   countBalanceQuantity(storageCategoriesData: storageCategoriesData);
-    // }
-    countBalanceQuantity(storageCategoriesData: storageCategoriesData);
-    update();
+    if (storageCategoriesData.storageCategoryType ==
+        ConstanceNetwork.itemCategoryType) {
+      addNewBulkOption(storageCategoriesData: storageCategoriesData);
+    } else {
+      countBalanceQuantity(storageCategoriesData: storageCategoriesData);
+      update();
+    }
   }
 
   /// to do when you want to count balance with new choosen options :
@@ -181,24 +182,12 @@ class StorageViewModel extends BaseController {
         }
       });
     } else if (storageCategoriesData.storageCategoryType ==
-            ConstanceNetwork.itemCategoryType) {
-      // storageCategoriesData.storageItem?.forEach((element) {
-      //   if (element.options!
-      //       .every((value) => selectedFeaures.toList().contains(value))) {
-      //     if (num.parse(element.from ?? "0") <= customSpace &&
-      //         num.parse(element.to ?? "0") >= customSpace) {
-      //       lastStorageItem = element;
-      //     }
-      //   }
-      // });
-
-      storageCategoriesData.storageItem?.forEach((element) {
-        if (areArraysEquales(element.options!, selectedFeaures.toList())) {
-          print("${element.toJson()}");
-        }
-      });
+        ConstanceNetwork.itemCategoryType) {
+      // doOnAddNewBulkItem(storageCategoriesData: storageCategoriesData);
+      for (var item in arrayLastStorageItem) {
+        //  getBulksBalance(storageItem: item, newDuration: selectedDuration);
+      }
     }
-
     print("msg_get_selcted_item ${lastStorageItem?.toJson()}");
   }
 
@@ -207,6 +196,20 @@ class StorageViewModel extends BaseController {
     quantity++;
     countBalanceQuantity(storageCategoriesData: storageCategoriesData);
     update();
+  }
+
+  void increaseQuantityForBulks(
+      {required StorageCategoriesData storageCategoriesData}) {
+    quantity++;
+    update();
+  }
+
+  void minesQuantityForBulks(
+      {required StorageCategoriesData storageCategoriesData}) {
+    if (quantity != 1) {
+      quantity--;
+      update();
+    }
   }
 
   void minesQuantity({required StorageCategoriesData storageCategoriesData}) {
@@ -220,7 +223,12 @@ class StorageViewModel extends BaseController {
   void increaseDaysDurations(
       {required StorageCategoriesData storageCategoriesData}) {
     numberOfDays++;
-    countBalanceQuantity(storageCategoriesData: storageCategoriesData);
+    if (storageCategoriesData.storageCategoryType ==
+        ConstanceNetwork.itemCategoryType) {
+      getBulksBalance(localBulk: localBulk);
+    } else {
+      countBalanceQuantity(storageCategoriesData: storageCategoriesData);
+    }
     update();
   }
 
@@ -228,7 +236,12 @@ class StorageViewModel extends BaseController {
       {required StorageCategoriesData storageCategoriesData}) {
     if (numberOfDays != 1) {
       numberOfDays--;
-      countBalanceQuantity(storageCategoriesData: storageCategoriesData);
+      if (storageCategoriesData.storageCategoryType ==
+          ConstanceNetwork.itemCategoryType) {
+        getBulksBalance(localBulk: localBulk);
+      } else {
+        countBalanceQuantity(storageCategoriesData: storageCategoriesData);
+      }
       update();
     }
   }
@@ -247,6 +260,12 @@ class StorageViewModel extends BaseController {
       required StorageCategoriesData storageCategoriesData}) {
     getSmallBalance(newDuration: newDuration, storageItem: lastStorageItem!);
     update();
+  }
+
+  void onChangeBulkDuration(
+      {required String newDuration,
+      required StorageCategoriesData storageCategoriesData}) {
+    getBulksBalance(localBulk: localBulk);
   }
 
   void getSmallBalance(
@@ -270,22 +289,39 @@ class StorageViewModel extends BaseController {
     } else {
       balance = 0;
     }
+
     balance *= quantity * numberOfDays;
     update();
   }
 
   void saveStorageDataToArray(
-      {required StorageCategoriesData storageCategoriesData}) {
-    StorageCategoriesData newStorageCategoriesData = storageCategoriesData;
-    newStorageCategoriesData.userPrice = balance;
-    totalBalance += balance;
-    newStorageCategoriesData.storageItem = [lastStorageItem!];
-    newStorageCategoriesData.quantity = quantity;
-    userStorageCategoriesData.add(newStorageCategoriesData);
-    
-    print("userStorageCateogories = ${newStorageCategoriesData.toJson()}");
-   
+      {required StorageCategoriesData storageCategoriesData,
+      bool isUpdate = false,
+      int? updateIndex}) {
+    if (storageCategoriesData.storageCategoryType ==
+        ConstanceNetwork.itemCategoryType) {
+      saveBulksUser(
+          storageCategoriesData: storageCategoriesData,
+          index: updateIndex ?? 0);
+    } else {
+      StorageCategoriesData newStorageCategoriesData = storageCategoriesData;
+      newStorageCategoriesData.userPrice = balance;
+      totalBalance += balance;
+      newStorageCategoriesData.storageItem = [lastStorageItem!];
+      newStorageCategoriesData.quantity = quantity;
+      if (isUpdate) {
+        userStorageCategoriesData[updateIndex!] = newStorageCategoriesData;
+      } else {
+        newStorageCategoriesData.groupId = updateIndex;
+        userStorageCategoriesData.add(newStorageCategoriesData);
+      }
+    }
+
     getStorageCategories();
+    selctedItem = null;
+    selectedDuration = "Daily";
+    selectedFeaures.clear();
+    quantity = 1;
     Get.back();
     update();
   }
@@ -293,7 +329,6 @@ class StorageViewModel extends BaseController {
   void intialBalance({required StorageCategoriesData storageCategoriesData}) {
     balance = 0;
     countBalanceWithOptions(storageCategoriesData: storageCategoriesData);
-
     getSmallBalance(
         newDuration: selectedDuration, storageItem: lastStorageItem!);
   }
@@ -321,6 +356,243 @@ class StorageViewModel extends BaseController {
     }
   }
 
+  /// excute when user add New Bulk! -_- :
+
+  void doOnAddNewBulk(
+      {required Item newItem,
+      required StorageCategoriesData storageCategoriesData}) {
+    if (allItems.contains(newItem)) {
+      for (var item in allItems) {
+        if (item == newItem) {
+          newItem.quantity = newItem.quantity! + item.quantity!;
+        }
+      }
+    } else {
+      newItem.quantity = quantity;
+      allItems.add(newItem);
+      for (var item in arrayLastStorageItem) {
+        if (item.item == newItem.storageName) {
+          item.quantity = quantity;
+          print("msg_item ${item.toJson()}");
+        }
+      }
+      quantity = 1;
+      update();
+    }
+
+    countBalanceWithOptions(storageCategoriesData: storageCategoriesData);
+    update();
+  }
+
+  /// excute when user add Delete A Bulk! -_- :
+  void ondeleteNewBulk(
+      {required Item deletedItem,
+      required StorageCategoriesData storageCategoriesData}) {
+    allItems.remove(deletedItem);
+    arrayLastStorageItem
+        .removeWhere((element) => element.item == deletedItem.storageName);
+    balance = 0;
+    countBalanceWithOptions(storageCategoriesData: storageCategoriesData);
+    // balance = 0;
+    // for (var item in arrayLastStorageItem) {
+    //   getBulksBalance(storageItem: item, newDuration: selectedDuration);
+    // }
+  }
+
+  // void calcuateBulkBalance({required List<Item> bulksItems}) {
+  //   for (var bulk in bulksItems) {
+  //     // if (bulk.storageType == lastStorageItem!.item) {
+  //     //   getBulksBalance(newDuration: selectedDuration, storageItem: lastStorageItem!);
+  //     // }
+  //    // getBulksBalance(newDuration: selectedDuration, storageItem: lastStorageItem!);
+  //   }
+  // }
+  // this function to calculate bulks balance with options :
+
+  //--------------------------------- Bulk items --------------------------------------------------------:
+
+  //array to save session builk into:
+  Set<StorageCategoriesData> bulkArrayItems = {};
+  Set<StorageItem> endStorageItem = {};
+  StorageItem? finalStorageItem;
+
+  LocalBulk localBulk = LocalBulk();
+
+  // to add new Bulk Item
+
+  // void addNewBulk({required StorageCategoriesData newValue}) {
+  //   if (bulkArrayItems.contains(newValue)) {
+  //     bulkArrayItems.forEach((element) {
+  //       if (element == newValue) {
+  //         element.quantity = element.quantity ?? 1 + newValue.quantity!;
+  //         print("${element.quantity}");
+  //       }
+  //     });
+  //   } else {
+  //     bulkArrayItems.add(newValue);
+  //   }
+  // //  doOnAddNewBulkItem(storageCategoriesData: newValue);
+  //   update();
+  //   // printArray(list: bulkArrayItems.toList());
+  // }
+
+  // doOnAddNewBulkItem({required StorageCategoriesData storageCategoriesData}) {
+  //   for (var i = 0; i < storageCategoriesData.storageItem!.length; i++) {
+  //     if (areArraysEquales(storageCategoriesData.storageItem![i].options ?? [],
+  //         selectedFeaures.toList())) {
+  //       if (storageCategoriesData.storageItem![i].item != null &&
+  //           storageCategoriesData.storageItem![i].item ==
+  //               selctedItem?.storageName) {
+  //         lastStorageItem = storageCategoriesData.storageItem![i];
+  //         arrayLastStorageItem.add(lastStorageItem!);
+  //       //  break;
+  //       } else {
+  //         lastStorageItem = storageCategoriesData.storageItem![i];
+  //       }
+  //        arrayLastStorageItem.add(lastStorageItem!);
+  //     }
+  //   }
+  // }
+
+  void addNewBulk(
+      {required StorageCategoriesData storageCategoriesData,
+      required Item item}) {
+    storageCategoriesData.storageItem?.forEach((element) {
+      if (element.item == item.storageName) {
+        element.quantity = quantity;
+        localBulk.endStorageItem.add(element);
+      }
+    });
+    getBulksBalance(localBulk: localBulk);
+  }
+
+  void addNewBulkOption(
+      {required StorageCategoriesData storageCategoriesData}) {
+    if (selectedFeaures.isEmpty) {
+      localBulk.optionStorageItem = null;
+    } else {
+      storageCategoriesData.storageItem?.forEach((element) {
+        if (areArraysEquales(
+            element.options!.toList(), selectedFeaures.toList())) {
+          localBulk.optionStorageItem = element;
+        }
+      });
+    }
+
+    getBulksBalance(localBulk: localBulk);
+  }
+
+  void removeFromBulk(StorageItem storageItem) {
+    localBulk.endStorageItem.remove(storageItem);
+    getBulksBalance(localBulk: localBulk);
+    update();
+  }
+
+  void getBulksBalance({required LocalBulk localBulk}) {
+    balance = 0;
+
+    for (var item in localBulk.endStorageItem) {
+      if (selectedDuration
+          .toLowerCase()
+          .contains(ConstanceNetwork.dailyDurationType.toLowerCase())) {
+        balance += num.parse(item.price ?? "0") * item.quantity! * numberOfDays;
+      } else if (selectedDuration
+          .toLowerCase()
+          .contains(ConstanceNetwork.montlyDurationType.toLowerCase())) {
+        balance +=
+            num.parse(item.monthlyPrice ?? "0") * item.quantity! * numberOfDays;
+      } else if (selectedDuration
+          .toLowerCase()
+          .contains(ConstanceNetwork.yearlyDurationType.toLowerCase())) {
+        balance +=
+            num.parse(item.yearlyPrice ?? "0") * item.quantity! * numberOfDays;
+      } else {
+        balance = 0;
+      }
+    }
+
+    if (selectedDuration
+        .toLowerCase()
+        .contains(ConstanceNetwork.dailyDurationType.toLowerCase())) {
+      balance += num.parse(localBulk.optionStorageItem?.price ?? "0");
+    } else if (selectedDuration
+        .toLowerCase()
+        .contains(ConstanceNetwork.montlyDurationType.toLowerCase())) {
+      balance += num.parse(localBulk.optionStorageItem?.monthlyPrice ?? "0");
+    } else if (selectedDuration
+        .toLowerCase()
+        .contains(ConstanceNetwork.yearlyDurationType.toLowerCase())) {
+      balance += num.parse(localBulk.optionStorageItem?.yearlyPrice ?? "0");
+    } else {
+      balance = 0;
+    }
+
+    localBulk.printObject();
+    update();
+  }
+
+// this for saving Categores Data :
+
+  void saveBulksUser(
+      {required StorageCategoriesData storageCategoriesData,
+      required int index}) {
+    for (var item in localBulk.endStorageItem) {
+      userStorageCategoriesData.add(StorageCategoriesData(
+        groupId: index,
+        name: storageCategoriesData.name,
+        storageName: item.item,
+        quantity: item.quantity,
+        userPrice: balance,
+        storageCategoryType: ConstanceNetwork.itemCategoryType,
+        storageItem: [
+          StorageItem(
+            item: item.item,
+            options: localBulk.optionStorageItem?.options,
+          )
+        ],
+      ));
+    }
+    getStorageCategories();
+    totalBalance += balance;
+    update();
+  }
+
+//****************************************************************************************************
+// List<LocalBulk> arrLocalBulks = [];
+
+//   void addNewBulk({required StorageCategoriesData newValue}) {
+
+//   }
+
+  void printArray({required List list}) {
+    print("--------------------------------------------------");
+    print("msg_in_print_array_length:: ${list.length}");
+    for (var item in list) {
+      print("msg_in_print_array ${item.toJson()}");
+    }
+    print("--------------------------------------------------");
+  }
+
+//---------------------------------- end bulk items -------------------------------------------------:
+
+  void deleteCategoreyDataBottomSheet(
+      {required StorageCategoriesData storageCategoriesData}) {
+    Get.bottomSheet(GlobalBottomSheet(
+      title: "Are You Sure You want to delete This Order ?",
+      onOkBtnClick: () {
+        userStorageCategoriesData.remove(storageCategoriesData);
+        totalBalance -= storageCategoriesData.userPrice ?? 0;
+
+        checkDaplication();
+        update();
+        Get.back();
+      },
+      onCancelBtnClick: () {
+        Get.back();
+      },
+    ));
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -334,7 +606,6 @@ class StorageViewModel extends BaseController {
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
   }
 
@@ -419,12 +690,16 @@ class StorageViewModel extends BaseController {
   }
 
   void showMainStorageBottomSheet(
-      {required StorageCategoriesData storageCategoriesData}) {
+      {required StorageCategoriesData storageCategoriesData,
+      bool isUpdate = false,
+      int index = 0}) {
     if (ConstanceNetwork.quantityCategoryType ==
         storageCategoriesData.storageCategoryType) {
       selectedStorageItems = storageCategoriesData.storageItem!.toSet();
       Get.bottomSheet(
         QuantityStorageBottomSheet(
+          isUpdate: isUpdate,
+          index: index,
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
@@ -433,6 +708,8 @@ class StorageViewModel extends BaseController {
         storageCategoriesData.storageCategoryType) {
       Get.bottomSheet(
         ItemStorageBottomSheet(
+          index: index,
+          isUpdate: isUpdate,
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
@@ -441,6 +718,8 @@ class StorageViewModel extends BaseController {
         storageCategoriesData.storageCategoryType) {
       Get.bottomSheet(
         SpaceStorageBottomSheet(
+          index: index,
+          isUpdate: isUpdate,
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
@@ -449,6 +728,8 @@ class StorageViewModel extends BaseController {
         storageCategoriesData.storageCategoryType) {
       Get.bottomSheet(
         SpaceStorageBottomSheet(
+          index: index,
+          isUpdate: isUpdate,
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,

@@ -21,24 +21,24 @@ class AddItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("Add All items "),
           SizedBox(
             height: sizeH16,
           ),
-          storageViewModel.allItems.length != 0
+          storageViewModel.localBulk.endStorageItem.length != 0
               ? GetBuilder<StorageViewModel>(builder: (logical) {
                   return SizedBox(
                     height: sizeH40,
                     child: ListView(
                         scrollDirection: Axis.horizontal,
-                        children: storageViewModel.allItems
+                        children: storageViewModel.localBulk.endStorageItem
                             .map((e) => BulkItemWidget(
-                                  title: e.storageType ?? "",
+                                  title: e.item ?? "",
                                   quantity: e.quantity ?? 0,
                                   deleteFunction: () {
-                                    storageViewModel.allItems.remove(e);
-                                    storageViewModel.update();
+                                    storageViewModel.removeFromBulk(e);
                                   },
                                 ))
                             .toList()),
@@ -116,7 +116,7 @@ class AddItemWidget extends StatelessWidget {
                                 icon: SvgPicture.asset(
                                     "assets/svgs/circle_mines.svg"),
                                 onPressed: () {
-                                  builder.minesQuantity(
+                                  builder.minesQuantityForBulks(
                                       storageCategoriesData:
                                           storageCategoriesData);
                                 },
@@ -134,7 +134,7 @@ class AddItemWidget extends StatelessWidget {
                                 icon: SvgPicture.asset(
                                     "assets/svgs/circle_add.svg"),
                                 onPressed: () {
-                                  value.increaseQuantity(
+                                  value.increaseQuantityForBulks(
                                       storageCategoriesData:
                                           storageCategoriesData);
                                 },
@@ -154,10 +154,14 @@ class AddItemWidget extends StatelessWidget {
             buttonText: "Add",
             function: () {
               if (storageViewModel.selctedItem != null) {
-                storageViewModel.selctedItem!.quantity =
+                // storageCategoriesData.quantity = storageViewModel.quantity;
+                storageViewModel.selctedItem?.quantity =
                     storageViewModel.quantity;
-                storageViewModel.allItems.add(storageViewModel.selctedItem!);
-                storageViewModel.update();
+                // storageViewModel.allItems.add(storageViewModel.selctedItem!);
+                // storageViewModel.addNewBulk(newValue: storageCategoriesData);
+                storageViewModel.addNewBulk(
+                    storageCategoriesData: storageCategoriesData,
+                    item: storageViewModel.selctedItem!);
               }
             },
           )
@@ -166,6 +170,3 @@ class AddItemWidget extends StatelessWidget {
     );
   }
 }
-
-
-/// saving the quantity value with all Object **** 

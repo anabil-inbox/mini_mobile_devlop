@@ -17,8 +17,8 @@ class StorageCategoriesData {
       this.video,
       this.description,
       this.userPrice,
-      this.quantity
-      });
+      this.quantity,
+      this.groupId});
 
   String? name;
   String? storageName;
@@ -36,6 +36,7 @@ class StorageCategoriesData {
   String? description;
   num? userPrice;
   int? quantity;
+  int? groupId;
 
   factory StorageCategoriesData.fromJson(Map<String, dynamic> json) {
     try {
@@ -60,6 +61,7 @@ class StorageCategoriesData {
         id: json["id"] == null ? null : json["id"],
         video: json["video"] == null ? null : json["video"],
         image: json["image"] == null ? null : json["image"],
+        groupId: json["group_id"] == null ? null : json["group_id"],
         description: json["description"] == null ? null : json["description"],
         storageFeatures: json["storage_features"] == null
             ? null
@@ -93,6 +95,7 @@ class StorageCategoriesData {
         "image": image,
         "video": video,
         "description": description,
+        "group_id": groupId,
         "storage_features":
             List<dynamic>.from(storageFeatures!.map((x) => x.toJson())),
         "items": List<dynamic>.from(items!.map((x) => x.toJson())),
@@ -117,8 +120,8 @@ class Item {
       this.storageType,
       this.image,
       this.video,
-      this.quantity
-      });
+      this.quantity,
+      this.storageName});
 
   int? from;
   int? to;
@@ -131,29 +134,32 @@ class Item {
   dynamic video;
   dynamic image;
   int? quantity;
+  String? storageName;
 
   factory Item.fromJson(Map<String, dynamic> json) {
     try {
       return Item(
-        from: json["_from"] == null ? null : json["_from"],
-        to: json["_to"] == null ? null : json["_to"],
-        pricePerDay: json["price_per_day"] == null
-            ? null
-            : json["price_per_day"].toDouble(),
-        pricePerMonth: json["price_per_month"] == null
-            ? null
-            : json["price_per_month"].toDouble(),
-        pricePerYear: json["price_per_year"] == null
-            ? null
-            : json["price_per_year"].toDouble(),
-        priceForUnlimited: json["price_for_unlimited"] == null
-            ? null
-            : json["price_for_unlimited"].toDouble(),
-        storageType: json["storage_type"] == null ? null : json["storage_type"],
-        description: json["description"] == null ? null : json["description"],
-        video: json["video"] == null ? null : json["video"],
-        image: json["image"] == null ? null : json["image"],
-      );
+          from: json["_from"] == null ? null : json["_from"],
+          to: json["_to"] == null ? null : json["_to"],
+          pricePerDay: json["price_per_day"] == null
+              ? null
+              : json["price_per_day"].toDouble(),
+          pricePerMonth: json["price_per_month"] == null
+              ? null
+              : json["price_per_month"].toDouble(),
+          pricePerYear: json["price_per_year"] == null
+              ? null
+              : json["price_per_year"].toDouble(),
+          priceForUnlimited: json["price_for_unlimited"] == null
+              ? null
+              : json["price_for_unlimited"].toDouble(),
+          storageType:
+              json["storage_type"] == null ? null : json["storage_type"],
+          description: json["description"] == null ? null : json["description"],
+          video: json["video"] == null ? null : json["video"],
+          image: json["image"] == null ? null : json["image"],
+          storageName:
+              json["storage_name"] == null ? null : json["storage_name"]);
     } catch (e) {
       Logger().d(e);
       return Item.fromJson({});
@@ -173,7 +179,8 @@ class Item {
         "description": description,
         "video": video,
         "image": image,
-        "quantity" : quantity
+        "quantity": quantity,
+        "storage_name": storageName
       };
     } catch (e) {
       Logger().d(e);
@@ -229,6 +236,7 @@ class StorageItem {
       this.x,
       this.y,
       this.monthlyPrice,
+      this.quantity,
       this.yearlyPrice});
 
   List<String>? options;
@@ -241,6 +249,7 @@ class StorageItem {
   String? y;
   String? monthlyPrice;
   String? yearlyPrice;
+  int? quantity;
 
   factory StorageItem.fromJson(Map<String, dynamic> json) {
     try {

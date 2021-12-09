@@ -18,11 +18,12 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import '../../primary_button.dart';
 
 class ItemStorageBottomSheet extends StatefulWidget {
-  const ItemStorageBottomSheet({Key? key, required this.storageCategoriesData})
+  const ItemStorageBottomSheet({Key? key, required this.storageCategoriesData , this.isUpdate = false , required this.index})
       : super(key: key);
 
   final StorageCategoriesData storageCategoriesData;
-
+  final bool isUpdate;
+  final int index;
   @override
   State<ItemStorageBottomSheet> createState() => _ItemStorageBottomSheetState();
 }
@@ -32,10 +33,10 @@ class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      storageViewModel.intialBalance(
-          storageCategoriesData: widget.storageCategoriesData);
-    });
+    // WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    //   storageViewModel.intialBalance(
+    //       storageCategoriesData: widget.storageCategoriesData);
+    // });
   }
 
   @override
@@ -127,6 +128,7 @@ class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
                     isLoading: false,
                     onClicked: () {
                       storageViewModel.saveStorageDataToArray(
+                          updateIndex: widget.index,
                           storageCategoriesData: widget.storageCategoriesData);
                       storageViewModel.checkDaplication();   
                     },

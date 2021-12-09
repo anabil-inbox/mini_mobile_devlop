@@ -161,11 +161,7 @@ bool areArraysEquales(List<String> listOne, List<String> listTwo) {
   }
   listOne.sort();
   listTwo.sort();
-
-  print("listOne: ${listOne.toList().toString()}");
-  print("listTwo: ${listOne.toList().toString()}");
   Function eq = const ListEquality().equals;
-
   return eq(listOne , listTwo);
 }
 

@@ -15,11 +15,12 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import '../../primary_button.dart';
 
 class SpaceStorageBottomSheet extends StatefulWidget {
-  const SpaceStorageBottomSheet({Key? key, required this.storageCategoriesData})
+  const SpaceStorageBottomSheet({Key? key, required this.storageCategoriesData , this.isUpdate = false , required this.index})
       : super(key: key);
 
   final StorageCategoriesData storageCategoriesData;
-
+  final bool isUpdate;
+  final int index;
   @override
   State<SpaceStorageBottomSheet> createState() =>
       _SpaceStorageBottomSheetState();
@@ -121,6 +122,8 @@ class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
                     isLoading: false,
                     onClicked: () {
                       storageViewModel.saveStorageDataToArray(
+                          updateIndex: widget.index,
+                          isUpdate: widget.isUpdate,
                           storageCategoriesData: widget.storageCategoriesData);
                       storageViewModel.checkDaplication();
                       storageViewModel.update();

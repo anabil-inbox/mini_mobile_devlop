@@ -12,12 +12,14 @@ class ShowSpaceAndQuantityWidget extends StatelessWidget {
   const ShowSpaceAndQuantityWidget(
       {Key? key,
       required this.storageItem,
-      required this.storageCategoriesData
+      required this.storageCategoriesData,
+      required this.index
       })
       : super(key: key);
 
   final StorageItem storageItem;
   final StorageCategoriesData storageCategoriesData;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +36,14 @@ class ShowSpaceAndQuantityWidget extends StatelessWidget {
           ),
            !GetUtils.isNull(storageItem.from) ? 
            ShowHeaderSelection(
+            index: index,
+            storageCategoriesData: storageCategoriesData,
             storageName: storageCategoriesData.storageName ?? "",
             quantityOrSpace: " ${storageItem.from} X ${storageItem.to}",
           ) : 
           ShowHeaderSelection(
+            index: index,
+            storageCategoriesData: storageCategoriesData,
             storageName: storageCategoriesData.storageName ?? "",
             quantityOrSpace: "X ${storageCategoriesData.quantity ?? 1}",
           ),

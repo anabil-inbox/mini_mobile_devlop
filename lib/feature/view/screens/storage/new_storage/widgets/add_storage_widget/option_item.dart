@@ -3,12 +3,16 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
 // ignore: must_be_immutable
 class OptionItem extends StatelessWidget {
   OptionItem(
-      {Key? key, required this.optionTitle, required this.storageFeatures , required this.storageCategoriesData})
+      {Key? key,
+      required this.optionTitle,
+      required this.storageFeatures,
+      required this.storageCategoriesData})
       : super(key: key);
 
   StorageViewModel storageViewModel = Get.find<StorageViewModel>();
@@ -29,13 +33,13 @@ class OptionItem extends StatelessWidget {
             InkWell(
               onTap: () {
                 storageViewModel.doOnChooseNewFeatures(
-                storageCategoriesData: storageCategoriesData,
-                storageFeatures: storageFeatures);
+                    storageCategoriesData: storageCategoriesData,
+                    storageFeatures: storageFeatures);
                 storageViewModel.update();
               },
               child: Row(
                 children: [
-                    storageViewModel.selectedFeaures.contains(storageFeatures.id)
+                  storageViewModel.selectedFeaures.contains(storageFeatures.id)
                       ? SvgPicture.asset("assets/svgs/true.svg")
                       : SvgPicture.asset("assets/svgs/uncheck.svg"),
                   SizedBox(

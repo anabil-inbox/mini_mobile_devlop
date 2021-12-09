@@ -32,7 +32,7 @@ class OptionWidget extends StatelessWidget {
           ListView.builder(
             padding: EdgeInsets.all(padding0!),
             shrinkWrap: true,
-            itemCount: storageCategoriesData.storageFeatures!.length,
+            itemCount: storageCategoriesData.storageFeatures?.length,
             primary: false,
             itemBuilder: 
             (context, index) => OptionItem(

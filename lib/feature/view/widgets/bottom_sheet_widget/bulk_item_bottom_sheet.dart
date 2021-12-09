@@ -53,16 +53,17 @@ class BulkItemButtomSheet extends StatelessWidget {
               height: sizeH25,
             ),
             !GetUtils.isNull(storageCategoriesData.items)
-                ? GetBuilder<StorageViewModel>(builder: (e) {
-                    return ListView(
-                        shrinkWrap: true,
-                        primary: false,
-                        children: storageCategoriesData.items!
-                            .map(
-                              (e) => e.storageType!.toLowerCase().contains(
-                                          storageViewModel.tdSearch.text
-                                              .toLowerCase()) ||
-                                      storageViewModel.tdSearch.text.isEmpty
+                ?
+                GetBuilder<StorageViewModel>(
+                    builder: (b) => ListView(
+                          shrinkWrap: true,
+                          primary: false,
+                          children: storageCategoriesData.items!
+                              .map((e) => e.storageType!.toLowerCase().contains(
+                                          "${storageViewModel.tdSearch.text.toLowerCase()}") ||
+                                      storageViewModel.tdSearch.text
+                                          .trim()
+                                          .isEmpty
                                   ? SeconderyButtom(
                                       onClicked: () {
                                         storageViewModel.selctedItem = e;
@@ -71,10 +72,9 @@ class BulkItemButtomSheet extends StatelessWidget {
                                       },
                                       textButton: "${e.storageType}",
                                     )
-                                  : const SizedBox(),
-                            )
-                            .toList());
-                  })
+                                  : const SizedBox())
+                              .toList(),
+                        ))
                 : const SizedBox(),
             SizedBox(
               height: sizeH25,

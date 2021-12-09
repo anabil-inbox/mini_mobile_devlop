@@ -39,11 +39,6 @@ class StorageSizeType extends StatelessWidget {
           ),
           GetBuilder<StorageViewModel>(
             init: StorageViewModel(),
-            // initState: (_) {
-            //   WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-            //       storageViewModel.checkDaplication();
-            //   });
-            // },
             builder: (builder) {
               return GridView.builder(
                   shrinkWrap: true,
