@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
@@ -307,6 +305,7 @@ class StorageViewModel extends BaseController {
       StorageCategoriesData newStorageCategoriesData = storageCategoriesData;
       newStorageCategoriesData.userPrice = balance;
       totalBalance += balance;
+      newStorageCategoriesData.storageFeatures = selectedFeaures;
       newStorageCategoriesData.storageItem = [lastStorageItem!];
       newStorageCategoriesData.quantity = quantity;
       if (isUpdate) {
@@ -695,7 +694,16 @@ class StorageViewModel extends BaseController {
       int index = 0}) {
     if (ConstanceNetwork.quantityCategoryType ==
         storageCategoriesData.storageCategoryType) {
+        lastStorageItem = storageCategoriesData.storageItem![0];
+
+      if (isUpdate) {
+        storageCategoriesData.storageFeatures?.forEach((element) {
+          selectedFeaures.add(element.id!);
+        });
+      }
+
       selectedStorageItems = storageCategoriesData.storageItem!.toSet();
+
       Get.bottomSheet(
         QuantityStorageBottomSheet(
           isUpdate: isUpdate,
