@@ -16,8 +16,10 @@ class StorageCategoriesData {
       this.image,
       this.video,
       this.description,
+      this.selectedDuration,
       this.userPrice,
       this.quantity,
+      this.numberOfDays,
       this.groupId});
 
   String? name;
@@ -37,6 +39,9 @@ class StorageCategoriesData {
   num? userPrice;
   int? quantity;
   int? groupId;
+  StorageItem? selectedItem;
+  String? selectedDuration;
+  int? numberOfDays = 1; 
 
   factory StorageCategoriesData.fromJson(Map<String, dynamic> json) {
     try {

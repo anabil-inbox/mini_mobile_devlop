@@ -84,7 +84,7 @@ class StorageViewModel extends BaseController {
   // Set<StorageFeatures>? selectedStorageFeaturesArray = {};
   Set<StorageItem> selectedStorageItems = {};
   Set<String> lastItems = {};
-  Set<String> selectedFeaures = {};
+  Set<StorageFeatures> selectedFeaures = {};
   // Function deepEq = const DeepCollectionEquality().equals;
   StorageItem? lastStorageItem;
   Set<StorageItem> arrayLastStorageItem = {};
@@ -107,15 +107,24 @@ class StorageViewModel extends BaseController {
   num totalBalance = 0;
   List<StorageCategoriesData> userStorageCategoriesData = [];
 
+  /// this for account total balance for user choisess :
+
+  void calculateBalance() {
+    totalBalance = 0;
+    userStorageCategoriesData.forEach((element) {
+      totalBalance += element.userPrice!;
+    });
+  }
+
 // to do when user choose new option :
+
   void doOnChooseNewFeatures(
       {required StorageFeatures storageFeatures,
       required StorageCategoriesData storageCategoriesData}) {
-    if (selectedFeaures.contains(storageFeatures.id)) {
-      selectedFeaures.remove(storageFeatures.id);
+    if (selectedFeaures.contains(storageFeatures)) {
+      selectedFeaures.remove(storageFeatures);
     } else {
-      selectedFeaures.add(storageFeatures.id!);
-    }
+      selectedFeaures.add(storageFeatures);}
     if (storageCategoriesData.storageCategoryType ==
         ConstanceNetwork.itemCategoryType) {
       addNewBulkOption(storageCategoriesData: storageCategoriesData);
@@ -168,7 +177,6 @@ class StorageViewModel extends BaseController {
       //     }
       //   }
       // });
-
       storageCategoriesData.storageItem?.forEach((element) {
         if (areArraysEquales(element.options!, selectedFeaures.toList())) {
           if (num.parse(element.from ?? "0") <= customSpace &&
@@ -179,13 +187,14 @@ class StorageViewModel extends BaseController {
           }
         }
       });
-    } else if (storageCategoriesData.storageCategoryType ==
-        ConstanceNetwork.itemCategoryType) {
-      // doOnAddNewBulkItem(storageCategoriesData: storageCategoriesData);
-      for (var item in arrayLastStorageItem) {
-        //  getBulksBalance(storageItem: item, newDuration: selectedDuration);
-      }
     }
+    // else if (storageCategoriesData.storageCategoryType ==
+    //     ConstanceNetwork.itemCategoryType) {
+    //   // doOnAddNewBulkItem(storageCategoriesData: storageCategoriesData);
+    //   for (var item in arrayLastStorageItem) {
+    //     //  getBulksBalance(storageItem: item, newDuration: selectedDuration);
+    //   }
+    // }
     print("msg_get_selcted_item ${lastStorageItem?.toJson()}");
   }
 
@@ -305,9 +314,12 @@ class StorageViewModel extends BaseController {
       StorageCategoriesData newStorageCategoriesData = storageCategoriesData;
       newStorageCategoriesData.userPrice = balance;
       totalBalance += balance;
-      newStorageCategoriesData.storageFeatures = selectedFeaures;
-      newStorageCategoriesData.storageItem = [lastStorageItem!];
+      // newStorageCategoriesData.storageFeatures = selectedFeaures.toList();
+      // newStorageCategoriesData.storageItem = [lastStorageItem!];
+      newStorageCategoriesData.selectedItem = lastStorageItem;
       newStorageCategoriesData.quantity = quantity;
+      newStorageCategoriesData.selectedDuration = selectedDuration;
+      newStorageCategoriesData.numberOfDays = numberOfDays;
       if (isUpdate) {
         userStorageCategoriesData[updateIndex!] = newStorageCategoriesData;
       } else {
@@ -315,12 +327,13 @@ class StorageViewModel extends BaseController {
         userStorageCategoriesData.add(newStorageCategoriesData);
       }
     }
-
+    calculateBalance();
     getStorageCategories();
     selctedItem = null;
     selectedDuration = "Daily";
     selectedFeaures.clear();
     quantity = 1;
+    numberOfDays = 1;
     Get.back();
     update();
   }
@@ -583,6 +596,7 @@ class StorageViewModel extends BaseController {
         totalBalance -= storageCategoriesData.userPrice ?? 0;
 
         checkDaplication();
+        calculateBalance();
         update();
         Get.back();
       },
@@ -694,15 +708,25 @@ class StorageViewModel extends BaseController {
       int index = 0}) {
     if (ConstanceNetwork.quantityCategoryType ==
         storageCategoriesData.storageCategoryType) {
-        lastStorageItem = storageCategoriesData.storageItem![0];
-
       if (isUpdate) {
+        lastStorageItem = storageCategoriesData.selectedItem!;
+        numberOfDays = storageCategoriesData.numberOfDays ?? 1;
+        // lastStorageItem?.options?.forEach((element) {
+        //   selectedFeaures = element;
+        // });
+        selectedDuration = storageCategoriesData.selectedDuration!;
+        quantity = storageCategoriesData.quantity ?? 1;
         storageCategoriesData.storageFeatures?.forEach((element) {
-          selectedFeaures.add(element.id!);
+          lastStorageItem?.options?.forEach((inner) {
+            if (inner == element.storageFeature) {
+              selectedFeaures.add(element);
+            }
+          });
+          // for (var item in lastStorageItem!.options!) {
+          // }
         });
       }
-
-      selectedStorageItems = storageCategoriesData.storageItem!.toSet();
+      // selectedStorageItems = storageCategoriesData.storageItem!.toSet();
 
       Get.bottomSheet(
         QuantityStorageBottomSheet(

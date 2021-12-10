@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/utils.dart';
+import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
 import 'show_option_item.dart';
 
 class ShowOptionsWidget extends StatelessWidget {
-  const ShowOptionsWidget({Key? key, required this.storageItemOptions})
+  const ShowOptionsWidget({Key? key, required this.storageItem})
       : super(key: key);
 
-  final List<String> storageItemOptions;
+  final StorageItem storageItem;
   
   @override
   Widget build(BuildContext context) {
-    return storageItemOptions.isNotEmpty
+    return (!GetUtils.isNull(storageItem.options) && storageItem.options!.length > 0) 
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -27,8 +29,8 @@ class ShowOptionsWidget extends StatelessWidget {
               ListView(
                 shrinkWrap: true,
                 primary: false,
-                children: storageItemOptions
-                    .map((e) => ShowOptionItem(
+                children: storageItem.options
+                    !.map((e) => ShowOptionItem(
                           optionTitle: e,
                         ))
                     .toList(),

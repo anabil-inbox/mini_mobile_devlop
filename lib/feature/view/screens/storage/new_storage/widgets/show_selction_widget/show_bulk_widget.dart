@@ -18,6 +18,7 @@ class ShowBulkItem extends StatelessWidget {
   final StorageItem storageItem;
   final int index;
   final StorageCategoriesData storageCategoriesData;
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,7 +48,9 @@ class ShowBulkItem extends StatelessWidget {
           SizedBox(
             height: sizeH7,
           ),
-          ShowOptionsWidget(storageItemOptions: storageItem.options ?? []),
+          ShowOptionsWidget(
+            storageItem: storageItem,
+            ),
           SizedBox(
             height: sizeH9,
           ),
