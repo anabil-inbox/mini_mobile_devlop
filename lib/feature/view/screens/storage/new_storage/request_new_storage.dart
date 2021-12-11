@@ -87,23 +87,6 @@ class RequestNewStorageScreen extends StatelessWidget {
                                       ListView(
                                           primary: false,
                                           shrinkWrap: true,
-                                          // children: build
-                                          //     .userStorageCategoriesData
-                                          //     .asMap()
-                                          //     .map((e) {
-                                          // if (build.checkCategoreyType( storageCategoreyType:  e.storageCategoryType!) == ConstanceNetwork.quantityCategoryType || build.checkCategoreyType( storageCategoreyType:  e.storageCategoryType!) == ConstanceNetwork.spaceCategoryType) {
-                                          //   return MapEntry(
-                                          //     index,
-                                          // ShowSpaceAndQuantityWidget(
-                                          //   storageCategoriesData: e,
-                                          //   storageItem: e.storageItem![0]);
-                                          //   )} else {
-                                          //   return MapEntry(
-                                          //     index,
-                                          // ShowBulkItem(
-                                          //   storageItem: e.storageItem![0]);
-                                          // )  }
-                                          // }).values.toList(),
                                           children: build
                                               .userStorageCategoriesData
                                               .asMap()

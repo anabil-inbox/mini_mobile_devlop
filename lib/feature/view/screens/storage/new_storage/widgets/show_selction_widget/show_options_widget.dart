@@ -11,7 +11,7 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'show_option_item.dart';
 
 class ShowOptionsWidget extends StatelessWidget {
-   ShowOptionsWidget(
+  ShowOptionsWidget(
       {Key? key,
       required this.storageItem,
       this.localBulk,
@@ -38,7 +38,8 @@ class ShowOptionsWidget extends StatelessWidget {
                 height: sizeH7,
               ),
               storageCategoriesData.storageCategoryType ==
-                      ConstanceNetwork.itemCategoryType
+                          ConstanceNetwork.itemCategoryType &&
+                      !GetUtils.isNull(localBulk!.optionStorageItem?.options)
                   ? localBulk!.optionStorageItem!.options!.isNotEmpty
                       ? ListView(
                           shrinkWrap: true,

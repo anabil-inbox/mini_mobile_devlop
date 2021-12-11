@@ -551,8 +551,7 @@ class StorageViewModel extends BaseController {
 
 // this for saving Categores Data :
 
-  void saveBulksUser(
-      {required StorageCategoriesData storageCategoriesData,
+  void saveBulksUser({required StorageCategoriesData storageCategoriesData,
       required int index,
       required bool isUpdate}) {
     // for (var item in localBulk.endStorageItem) {
@@ -566,14 +565,11 @@ class StorageViewModel extends BaseController {
         ConstanceNetwork.itemCategoryType;
     newstorageCategoriesData.selectedDuration = selectedDuration;
     newstorageCategoriesData.numberOfDays = numberOfDays;
-   // newstorageCategoriesData.storageFeatures = selectedFeaures.toList();
-    newstorageCategoriesData.localBulk = localBulk;
-    // newstorageCategoriesData.storageItem = [
-    //   StorageItem(
-    //     quantity: quantity,
-    //     options: localBulk.optionStorageItem?.options,
-    //   )
-    // ];
+    LocalBulk lb = LocalBulk();
+   // newstorageCategoriesData.localBulk = localBulk;
+   lb.endStorageItem = localBulk.endStorageItem;
+   lb.optionStorageItem = localBulk.optionStorageItem;
+   newstorageCategoriesData.localBulk = lb;
     if (isUpdate) {
       userStorageCategoriesData[index] = newstorageCategoriesData;
     } else {
@@ -592,6 +588,7 @@ class StorageViewModel extends BaseController {
     tdX.clear();
     tdY.clear();
     tdSearch.clear();
+    localBulk.endStorageItem = {};
     update();
   }
 
@@ -737,7 +734,6 @@ class StorageViewModel extends BaseController {
       tdY.text = storageCategoriesData.y.toString();
       selectedDuration = storageCategoriesData.selectedDuration!;
       quantity = storageCategoriesData.quantity ?? 1;
-
       storageCategoriesData.storageFeatures?.forEach((element) {
         lastStorageItem?.options?.forEach((inner) {
           if (inner == element.storageFeature) {
