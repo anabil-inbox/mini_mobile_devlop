@@ -308,7 +308,7 @@ class StorageViewModel extends BaseController {
   void saveStorageDataToArray(
       {required StorageCategoriesData storageCategoriesData,
       bool isUpdate = false,
-      int? updateIndex}) async{
+      int? updateIndex}) async {
     if (storageCategoriesData.storageCategoryType ==
         ConstanceNetwork.itemCategoryType) {
       saveBulksUser(
@@ -318,15 +318,19 @@ class StorageViewModel extends BaseController {
     } else {
       if (storageCategoriesData.storageCategoryType ==
           ConstanceNetwork.quantityCategoryType) {
-        var quantityArray = await checkQuantity(boxCheckedId: "${lastStorageItem?.name}");
-        if(quantityArray[0].quantity! < quantity || quantityArray[0].quantity! == 0){
-          snackError("${tr.error_occurred}", "${tr.amount_of_vacant_boxes_not_enough} ${quantityArray[0].quantity}");
+        var quantityArray =
+            await checkQuantity(boxCheckedId: "${lastStorageItem?.name}");
+        if (quantityArray[0].quantity! < quantity ||
+            quantityArray[0].quantity! == 0) {
+          snackError("${tr.error_occurred}",
+              "${tr.amount_of_vacant_boxes_not_enough} ${quantityArray[0].quantity}");
           return;
         }
       }
-      
+
       StorageCategoriesData newStorageCategoriesData = storageCategoriesData;
       newStorageCategoriesData.userPrice = balance;
+      newStorageCategoriesData.needAdviser = isNeedingAdviser;
       totalBalance += balance;
       newStorageCategoriesData.x = int.tryParse(tdX.text);
       newStorageCategoriesData.y = int.tryParse(tdY.text);
@@ -348,6 +352,7 @@ class StorageViewModel extends BaseController {
     selectedFeaures.clear();
     quantity = 1;
     numberOfDays = 1;
+    isNeedingAdviser = false;
     tdX.clear();
     tdY.clear();
     tdSearch.clear();
@@ -571,6 +576,8 @@ class StorageViewModel extends BaseController {
     newstorageCategoriesData.name = storageCategoriesData.name;
     newstorageCategoriesData.selectedItem = lastStorageItem;
     newstorageCategoriesData.userPrice = balance;
+    newstorageCategoriesData.needAdviser = isNeedingAdviser;
+
     newstorageCategoriesData.storageCategoryType =
         ConstanceNetwork.itemCategoryType;
     newstorageCategoriesData.selectedDuration = selectedDuration;

@@ -5,6 +5,7 @@ import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/a
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 // ignore: must_be_immutable
 class CustomSpaceWidget extends StatelessWidget {
@@ -28,7 +29,7 @@ class CustomSpaceWidget extends StatelessWidget {
             width: sizeW10,
             height: sizeH60,
           ),
-          Text("Custom Space"),
+          Text("${tr.custom_space}"),
           const Spacer(),
           SpaceWidget(
             storageCategoriesData: storageCategoriesData,

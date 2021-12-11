@@ -128,5 +128,10 @@
     "price":"Price",
     "options":"Options",
     "next":"Next",
-    "amount_of_vacant_boxes_not_enough" : "Amount Of Vacant Boxes Not Enough , Available Space : "
+    "amount_of_vacant_boxes_not_enough" : "Amount Of Vacant Boxes Not Enough , Available Space : ",
+    "need_inspectator":"Need Inspectator",
+    "days":"Days",
+    "add":"Add",
+    "add_all_items":"Add All Items",
+    "custom_space":"Custom Space"
 }

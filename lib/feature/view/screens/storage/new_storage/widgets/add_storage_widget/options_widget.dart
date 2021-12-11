@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 import 'option_item.dart';
 
@@ -25,7 +26,7 @@ class OptionWidget extends StatelessWidget {
           SizedBox(
             height: sizeH12,
           ),
-          Text("Options"),
+          Text("${tr.options}"),
           SizedBox(
             height: sizeH14,
           ),

@@ -103,7 +103,7 @@ class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
                       builder.minasDaysDurations(
                           storageCategoriesData: widget.storageCategoriesData);
                     },
-                    quantityTitle: "Days",
+                   quantityTitle: "${tr.days}",
                     storageCategoriesData: widget.storageCategoriesData,
                   )
                 else

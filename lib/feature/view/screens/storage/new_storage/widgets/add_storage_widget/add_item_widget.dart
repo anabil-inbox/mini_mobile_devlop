@@ -8,6 +8,7 @@ import 'package:inbox_clients/feature/view/widgets/primary_border_button.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 import 'bulk_item_widget.dart';
 
@@ -23,7 +24,7 @@ class AddItemWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Add All items "),
+          Text("${tr.add_all_items}"),
           SizedBox(
             height: sizeH16,
           ),
@@ -74,7 +75,7 @@ class AddItemWidget extends StatelessWidget {
                   initState: (_) {},
                   builder: (build) {
                     return Text(
-                        "${build.selctedItem?.storageType ?? "choose Item"}");
+                        "${build.selctedItem?.storageType ?? "${tr.choose_from_below}"}");
                   },
                 ),
                 const Spacer(),
@@ -152,7 +153,7 @@ class AddItemWidget extends StatelessWidget {
             height: sizeH16,
           ),
           PrimaryBorderButton(
-            buttonText: "Add",
+            buttonText: "${tr.add}",
             function: () {
               if (storageViewModel.selctedItem != null) {
                 // storageCategoriesData.quantity = storageViewModel.quantity;

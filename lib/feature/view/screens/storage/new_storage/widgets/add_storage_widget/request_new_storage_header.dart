@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class RequestNewStorageHeader extends StatelessWidget {
   const RequestNewStorageHeader({Key? key, required this.currentLevel})
@@ -27,9 +28,9 @@ class RequestNewStorageHeader extends StatelessWidget {
                 child: Row(
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Boxes"),
-                    Text("Location"),
-                    Text("Payment")
+                    Text("${tr.boxes}"),
+                    Text("${tr.location}"),
+                    Text("${tr.payment}")
                   ],
                 ),
               ),

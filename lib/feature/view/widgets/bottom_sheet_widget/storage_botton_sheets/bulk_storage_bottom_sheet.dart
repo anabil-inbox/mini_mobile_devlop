@@ -116,7 +116,7 @@ class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
                       builder.minasDaysDurations(
                           storageCategoriesData: widget.storageCategoriesData);
                     },
-                    quantityTitle: "Days",
+                    quantityTitle: "${tr.days}",
                     storageCategoriesData: widget.storageCategoriesData,
                   )
                 else

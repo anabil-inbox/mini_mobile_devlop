@@ -4,6 +4,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class NeedInspectorWidget extends StatelessWidget {
   const NeedInspectorWidget({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class NeedInspectorWidget extends StatelessWidget {
                 SizedBox(
                   width: sizeW12,
                 ),
-                Text("Need inspectator")
+                Text("${tr.need_inspectator}")
               ],
             ),
           ),
