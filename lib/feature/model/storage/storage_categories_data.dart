@@ -1,3 +1,4 @@
+import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
 import 'package:logger/logger.dart';
 
 class StorageCategoriesData {
@@ -20,6 +21,10 @@ class StorageCategoriesData {
       this.userPrice,
       this.quantity,
       this.numberOfDays,
+      this.x,
+      this.y,
+      this.selectedItem,
+      this.localBulk,
       this.groupId});
 
   String? name;
@@ -42,6 +47,9 @@ class StorageCategoriesData {
   StorageItem? selectedItem;
   String? selectedDuration;
   int? numberOfDays = 1; 
+  int? x;
+  int? y;
+  LocalBulk? localBulk;
 
   factory StorageCategoriesData.fromJson(Map<String, dynamic> json) {
     try {

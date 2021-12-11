@@ -9,7 +9,6 @@ import 'package:inbox_clients/util/app_dimen.dart';
 class OptionItem extends StatelessWidget {
   OptionItem(
       {Key? key,
-      required this.optionTitle,
       required this.storageFeatures,
       required this.storageCategoriesData})
       : super(key: key);
@@ -17,8 +16,6 @@ class OptionItem extends StatelessWidget {
   StorageViewModel storageViewModel = Get.find<StorageViewModel>();
 
   final StorageFeatures storageFeatures;
-  final String optionTitle;
-  bool isSelcted = false;
   final StorageCategoriesData storageCategoriesData;
 
   @override
@@ -33,7 +30,8 @@ class OptionItem extends StatelessWidget {
               onTap: () {
                 storageViewModel.doOnChooseNewFeatures(
                     storageCategoriesData: storageCategoriesData,
-                    storageFeatures: storageFeatures);
+                    storageFeatures: storageFeatures
+                    );
                 storageViewModel.update();
               },
               child: Row(

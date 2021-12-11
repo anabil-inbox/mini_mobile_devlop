@@ -35,12 +35,12 @@ class OptionWidget extends StatelessWidget {
             itemCount: storageCategoriesData.storageFeatures?.length,
             primary: false,
             itemBuilder: 
-            (context, index) => OptionItem(
+            (context, index) =>
+             OptionItem(
                 storageCategoriesData: storageCategoriesData,
                 storageFeatures: storageCategoriesData
                 .storageFeatures![index],
-                optionTitle: storageCategoriesData
-                .storageFeatures![index].storageFeature!),
+                ),
           ),
         ],
       ),

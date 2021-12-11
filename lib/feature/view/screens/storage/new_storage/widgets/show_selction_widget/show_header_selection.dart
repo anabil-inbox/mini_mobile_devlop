@@ -35,13 +35,15 @@ class ShowHeaderSelection extends StatelessWidget {
           style: textStyleNormalBlack(),
         ),
         const Spacer(),
-        Container(
-            decoration: BoxDecoration(
-                color: colorTextWhite,
-                borderRadius: BorderRadius.circular(padding9!)),
-            padding: EdgeInsets.symmetric(
-                vertical: padding9!, horizontal: padding4!),
-            child: Text("$quantityOrSpace")),
+        quantityOrSpace.trim().isNotEmpty
+            ? Container(
+                decoration: BoxDecoration(
+                    color: colorTextWhite,
+                    borderRadius: BorderRadius.circular(padding9!)),
+                padding: EdgeInsets.symmetric(
+                    vertical: padding9!, horizontal: padding4!),
+                child: Text("$quantityOrSpace"))
+            : const SizedBox(),
         SizedBox(
           width: sizeW20,
         ),

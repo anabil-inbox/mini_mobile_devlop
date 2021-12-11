@@ -18,7 +18,7 @@ class ShowBulkItem extends StatelessWidget {
   final StorageItem storageItem;
   final int index;
   final StorageCategoriesData storageCategoriesData;
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,20 +37,48 @@ class ShowBulkItem extends StatelessWidget {
             index: index,
             storageCategoriesData: storageCategoriesData,
             storageName: storageCategoriesData.name ?? "",
-            quantityOrSpace: "X ${storageCategoriesData.quantity}",
+            quantityOrSpace: "",
           ),
           SizedBox(
             height: sizeH7,
           ),
-          Text("${storageItem.item}",
-            style: textStyleNormalBlack(),
+          SizedBox(
+            height: 30,
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: storageCategoriesData.localBulk!.endStorageItem
+                  .map((e) => Row(
+                        children: [
+                          Text(
+                            "${e.item}",
+                            style: textStyleNormalBlack(),
+                          ),
+                          SizedBox(
+                            width: sizeW4,
+                          ),
+                          Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: padding10!, vertical: padding4!),
+                              decoration: BoxDecoration(
+                                  color: colorBackground,
+                                  borderRadius:
+                                      BorderRadius.circular(padding7!)),
+                              child: Text("X ${e.quantity}")),
+                          SizedBox(
+                            width: sizeW7,
+                          ),
+                        ],
+                      ))
+                  .toList(),
+            ),
           ),
           SizedBox(
             height: sizeH7,
           ),
           ShowOptionsWidget(
             storageItem: storageItem,
-            ),
+          ),
           SizedBox(
             height: sizeH9,
           ),

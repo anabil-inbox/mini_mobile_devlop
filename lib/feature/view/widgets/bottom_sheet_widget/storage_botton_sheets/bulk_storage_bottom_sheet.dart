@@ -129,6 +129,7 @@ class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
                     onClicked: () {
                       storageViewModel.saveStorageDataToArray(
                           updateIndex: widget.index,
+                          isUpdate: widget.isUpdate,
                           storageCategoriesData: widget.storageCategoriesData);
                       storageViewModel.checkDaplication();   
                     },
