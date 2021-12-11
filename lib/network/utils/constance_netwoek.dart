@@ -65,6 +65,7 @@ abstract class ConstanceNetwork {
 
   //todo this for storage end point
   static String storageCategoriesApi = "inbox_app.api.storage.categories";
+  static String storageCheckQuantity = "inbox_app.api.quantity.quantity";
 
 
   //todo this for constance type of user

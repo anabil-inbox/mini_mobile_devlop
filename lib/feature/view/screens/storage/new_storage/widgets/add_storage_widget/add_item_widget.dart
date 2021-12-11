@@ -28,7 +28,8 @@ class AddItemWidget extends StatelessWidget {
             height: sizeH16,
           ),
           storageViewModel.localBulk.endStorageItem.length != 0
-              ? GetBuilder<StorageViewModel>(builder: (logical) {
+              ? GetBuilder<StorageViewModel>(builder: 
+              (logical) {
                   return SizedBox(
                     height: sizeH40,
                     child: ListView(

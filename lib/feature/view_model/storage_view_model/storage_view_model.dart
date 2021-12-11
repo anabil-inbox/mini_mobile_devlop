@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
+import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
@@ -305,7 +308,7 @@ class StorageViewModel extends BaseController {
   void saveStorageDataToArray(
       {required StorageCategoriesData storageCategoriesData,
       bool isUpdate = false,
-      int? updateIndex}) {
+      int? updateIndex}) async{
     if (storageCategoriesData.storageCategoryType ==
         ConstanceNetwork.itemCategoryType) {
       saveBulksUser(
@@ -313,11 +316,18 @@ class StorageViewModel extends BaseController {
           storageCategoriesData: storageCategoriesData,
           index: updateIndex ?? 0);
     } else {
+      if (storageCategoriesData.storageCategoryType ==
+          ConstanceNetwork.quantityCategoryType) {
+        var quantityArray = await checkQuantity(boxCheckedId: "${lastStorageItem?.name}");
+        if(quantityArray[0].quantity! < quantity || quantityArray[0].quantity! == 0){
+          snackError("${tr.error_occurred}", "${tr.amount_of_vacant_boxes_not_enough} ${quantityArray[0].quantity}");
+          return;
+        }
+      }
+      
       StorageCategoriesData newStorageCategoriesData = storageCategoriesData;
       newStorageCategoriesData.userPrice = balance;
       totalBalance += balance;
-      // newStorageCategoriesData.storageFeatures = selectedFeaures.toList();
-      // newStorageCategoriesData.storageItem = [lastStorageItem!];
       newStorageCategoriesData.x = int.tryParse(tdX.text);
       newStorageCategoriesData.y = int.tryParse(tdY.text);
       newStorageCategoriesData.selectedItem = lastStorageItem;
@@ -485,13 +495,14 @@ class StorageViewModel extends BaseController {
     getBulksBalance(localBulk: localBulk);
   }
 
-  void addNewBulkOption({required StorageCategoriesData storageCategoriesData}) {
-
+  void addNewBulkOption(
+      {required StorageCategoriesData storageCategoriesData}) {
     if (selectedFeaures.isEmpty) {
       localBulk.optionStorageItem = null;
     } else {
       storageCategoriesData.storageItem?.forEach((element) {
-        if (areArraysEquales(element.options!.toList(), selectedFeaures.toList())) {
+        if (areArraysEquales(
+            element.options!.toList(), selectedFeaures.toList())) {
           localBulk.optionStorageItem = element;
         }
       });
@@ -551,11 +562,10 @@ class StorageViewModel extends BaseController {
 
 // this for saving Categores Data :
 
-  void saveBulksUser({required StorageCategoriesData storageCategoriesData,
+  void saveBulksUser(
+      {required StorageCategoriesData storageCategoriesData,
       required int index,
       required bool isUpdate}) {
-    // for (var item in localBulk.endStorageItem) {
-
     StorageCategoriesData newstorageCategoriesData = storageCategoriesData;
     newstorageCategoriesData.groupId = index;
     newstorageCategoriesData.name = storageCategoriesData.name;
@@ -566,10 +576,10 @@ class StorageViewModel extends BaseController {
     newstorageCategoriesData.selectedDuration = selectedDuration;
     newstorageCategoriesData.numberOfDays = numberOfDays;
     LocalBulk lb = LocalBulk();
-   // newstorageCategoriesData.localBulk = localBulk;
-   lb.endStorageItem = localBulk.endStorageItem;
-   lb.optionStorageItem = localBulk.optionStorageItem;
-   newstorageCategoriesData.localBulk = lb;
+    // newstorageCategoriesData.localBulk = localBulk;
+    lb.endStorageItem = localBulk.endStorageItem;
+    lb.optionStorageItem = localBulk.optionStorageItem;
+    newstorageCategoriesData.localBulk = lb;
     if (isUpdate) {
       userStorageCategoriesData[index] = newstorageCategoriesData;
     } else {
@@ -585,10 +595,13 @@ class StorageViewModel extends BaseController {
     selectedFeaures.clear();
     quantity = 1;
     numberOfDays = 1;
+    balance = 0;
     tdX.clear();
     tdY.clear();
     tdSearch.clear();
+    localBulk = LocalBulk();
     localBulk.endStorageItem = {};
+    localBulk.optionStorageItem = null;
     update();
   }
 
@@ -600,6 +613,27 @@ class StorageViewModel extends BaseController {
 //   }
 
 //---------------------------------- end bulk items -------------------------------------------------:
+
+// this for check Quantity Befor Add:
+  bool isLoading = false;
+
+  Future<List<Quantity>> checkQuantity({required String boxCheckedId}) async {
+    isLoading = true;
+    Set<Quantity> res = {};
+
+    await StorageFeature.getInstance
+        .getStorageQuantity(
+            item: jsonEncode([
+          {"item": "$boxCheckedId"}
+        ]))
+        .then((value) => {
+              res = value.toSet(),
+              isLoading = false,
+              update(),
+            });
+
+    return res.toList();
+  }
 
   void deleteCategoreyDataBottomSheet(
       {required StorageCategoriesData storageCategoriesData}) {
@@ -725,7 +759,6 @@ class StorageViewModel extends BaseController {
           ConstanceNetwork.itemCategoryType) {
         lastStorageItem = storageCategoriesData.localBulk!.optionStorageItem;
         localBulk = storageCategoriesData.localBulk!;
-        
       } else {
         lastStorageItem = storageCategoriesData.selectedItem!;
       }

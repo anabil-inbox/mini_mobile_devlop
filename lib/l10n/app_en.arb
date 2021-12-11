@@ -127,6 +127,6 @@
     "starting_from_pickup_date":"starting from pickup date",
     "price":"Price",
     "options":"Options",
-    "next":"Next"
-
+    "next":"Next",
+    "amount_of_vacant_boxes_not_enough" : "Amount Of Vacant Boxes Not Enough , Available Space : "
 }

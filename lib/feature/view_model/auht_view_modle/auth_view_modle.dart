@@ -331,7 +331,10 @@ class AuthViewModle extends GetxController {
               update(),
               snackError("${tr.error_occurred}", "${value.status!.message}")
             }
-        });
+       
+       
+        }
+        );
   }
 
   //this for Touch/face (Id) Bottom Sheet :
