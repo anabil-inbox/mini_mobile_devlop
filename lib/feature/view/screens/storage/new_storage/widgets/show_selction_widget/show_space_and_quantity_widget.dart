@@ -51,6 +51,8 @@ class ShowSpaceAndQuantityWidget extends StatelessWidget {
             height: sizeH18,
           ),
           ShowOptionsWidget(
+            storageCategoriesData: storageCategoriesData,
+            localBulk: storageCategoriesData.localBulk,
             storageItem: storageCategoriesData.selectedItem!,
             ),
           SizedBox(

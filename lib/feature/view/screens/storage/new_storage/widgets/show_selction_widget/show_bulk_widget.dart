@@ -77,7 +77,30 @@ class ShowBulkItem extends StatelessWidget {
             height: sizeH7,
           ),
           ShowOptionsWidget(
+            storageCategoriesData: storageCategoriesData,
+            localBulk: storageCategoriesData.localBulk!,
             storageItem: storageItem,
+          ),
+          SizedBox(
+            height: sizeH9,
+          ),
+          Row(
+            children: [
+              Text(
+                "Total",
+                style: textStyleNormalBlack(),
+              ),
+              const Spacer(),
+              Text("${storageCategoriesData.userPrice}",
+                  style: textStylePrimaryFont()
+                      ?.copyWith(fontWeight: FontWeight.bold)),
+              SizedBox(
+                width: sizeW2,
+              ),
+              Text("QR",
+                  style: textStylePrimaryFont()
+                      ?.copyWith(fontWeight: FontWeight.bold))
+            ],
           ),
           SizedBox(
             height: sizeH9,

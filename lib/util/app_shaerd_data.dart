@@ -165,6 +165,7 @@ bool areArraysEquales(List<String> listOne, List<StorageFeatures> listTwo) {
   if (listOne.length != localArray.length) {
     return false;
   }
+  
   listOne.sort();
   localArray.sort();
   Function eq = const ListEquality().equals;

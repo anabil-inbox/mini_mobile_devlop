@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/add_item_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/need_inspector_widget.dart';
@@ -18,7 +19,11 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import '../../primary_button.dart';
 
 class ItemStorageBottomSheet extends StatefulWidget {
-  const ItemStorageBottomSheet({Key? key, required this.storageCategoriesData , this.isUpdate = false , required this.index})
+  const ItemStorageBottomSheet(
+      {Key? key,
+      required this.storageCategoriesData,
+      this.isUpdate = false,
+      required this.index})
       : super(key: key);
 
   final StorageCategoriesData storageCategoriesData;
@@ -33,10 +38,12 @@ class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-    //   storageViewModel.intialBalance(
-    //       storageCategoriesData: widget.storageCategoriesData);
-    // });
+    if (!GetUtils.isNull(widget.storageCategoriesData.localBulk)) {
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        storageViewModel.getBulksBalance(
+            localBulk: widget.storageCategoriesData.localBulk!);
+      });
+    }
   }
 
   @override
@@ -131,7 +138,7 @@ class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
                           updateIndex: widget.index,
                           isUpdate: widget.isUpdate,
                           storageCategoriesData: widget.storageCategoriesData);
-                      storageViewModel.checkDaplication();   
+                      storageViewModel.checkDaplication();
                     },
                     isExpanded: true),
                 SizedBox(

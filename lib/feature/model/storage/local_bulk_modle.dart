@@ -1,8 +1,10 @@
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
+import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 
 class LocalBulk {
   Set<StorageItem> endStorageItem = {};
   StorageItem? optionStorageItem;
+  Set<StorageFeature>? storageFeature;
 
   void printObject() {
     print("--------------------------------------------------");
@@ -10,6 +12,7 @@ class LocalBulk {
     for (var item in endStorageItem) {
       print("msg_in_print_array ${item.toJson()}");
     }
+    
     print("msg_option ${optionStorageItem?.toJson()}");
     print("--------------------------------------------------");
   }

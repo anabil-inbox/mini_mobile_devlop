@@ -485,19 +485,18 @@ class StorageViewModel extends BaseController {
     getBulksBalance(localBulk: localBulk);
   }
 
-  void addNewBulkOption(
-      {required StorageCategoriesData storageCategoriesData}) {
+  void addNewBulkOption({required StorageCategoriesData storageCategoriesData}) {
+
     if (selectedFeaures.isEmpty) {
       localBulk.optionStorageItem = null;
     } else {
       storageCategoriesData.storageItem?.forEach((element) {
-        if (areArraysEquales(
-            element.options!.toList(), selectedFeaures.toList())) {
+        if (areArraysEquales(element.options!.toList(), selectedFeaures.toList())) {
           localBulk.optionStorageItem = element;
         }
       });
     }
-
+    localBulk.printObject();
     getBulksBalance(localBulk: localBulk);
   }
 
@@ -554,30 +553,32 @@ class StorageViewModel extends BaseController {
 
   void saveBulksUser(
       {required StorageCategoriesData storageCategoriesData,
-      required int index , required bool isUpdate}) {
+      required int index,
+      required bool isUpdate}) {
     // for (var item in localBulk.endStorageItem) {
-      
+
     StorageCategoriesData newstorageCategoriesData = storageCategoriesData;
     newstorageCategoriesData.groupId = index;
     newstorageCategoriesData.name = storageCategoriesData.name;
     newstorageCategoriesData.selectedItem = lastStorageItem;
     newstorageCategoriesData.userPrice = balance;
-    newstorageCategoriesData.storageCategoryType = ConstanceNetwork.itemCategoryType;
+    newstorageCategoriesData.storageCategoryType =
+        ConstanceNetwork.itemCategoryType;
     newstorageCategoriesData.selectedDuration = selectedDuration;
     newstorageCategoriesData.numberOfDays = numberOfDays;
-    newstorageCategoriesData.storageFeatures = selectedFeaures.toList();
+   // newstorageCategoriesData.storageFeatures = selectedFeaures.toList();
     newstorageCategoriesData.localBulk = localBulk;
-    newstorageCategoriesData.storageItem =[
-        StorageItem(
-          quantity: quantity,
-          options: localBulk.optionStorageItem?.options,
-        )
-      ];
-     if (isUpdate) {
-        userStorageCategoriesData[index] = newstorageCategoriesData;
-      } else {
-        userStorageCategoriesData.add(newstorageCategoriesData);
-      }
+    // newstorageCategoriesData.storageItem = [
+    //   StorageItem(
+    //     quantity: quantity,
+    //     options: localBulk.optionStorageItem?.options,
+    //   )
+    // ];
+    if (isUpdate) {
+      userStorageCategoriesData[index] = newstorageCategoriesData;
+    } else {
+      userStorageCategoriesData.add(newstorageCategoriesData);
+    }
     localBulk.printObject();
     getStorageCategories();
     totalBalance += balance;
@@ -600,7 +601,6 @@ class StorageViewModel extends BaseController {
 //   void addNewBulk({required StorageCategoriesData newValue}) {
 
 //   }
-
 
 //---------------------------------- end bulk items -------------------------------------------------:
 
@@ -727,23 +727,23 @@ class StorageViewModel extends BaseController {
       if (storageCategoriesData.storageCategoryType ==
           ConstanceNetwork.itemCategoryType) {
         lastStorageItem = storageCategoriesData.localBulk!.optionStorageItem;
+        localBulk = storageCategoriesData.localBulk!;
+        
       } else {
         lastStorageItem = storageCategoriesData.selectedItem!;
       }
-      //  lastStorageItem = storageCategoriesData.selectedItem!;
       numberOfDays = storageCategoriesData.numberOfDays ?? 1;
       tdX.text = storageCategoriesData.x.toString();
       tdY.text = storageCategoriesData.y.toString();
       selectedDuration = storageCategoriesData.selectedDuration!;
       quantity = storageCategoriesData.quantity ?? 1;
+
       storageCategoriesData.storageFeatures?.forEach((element) {
         lastStorageItem?.options?.forEach((inner) {
           if (inner == element.storageFeature) {
             selectedFeaures.add(element);
           }
         });
-        // for (var item in lastStorageItem!.options!) {
-        // }
       });
     }
 
