@@ -28,18 +28,27 @@ class StorageFeature {
     }
   }
 
-
-  Future<List<Quantity>> getStorageQuantity({required var item}) async {
+  Future<AppResponse> getStorageQuantity({required var item}) async {
     var appResponse = await StorageModel.getInstance.getStorageQuantity(
         item: item,
         url: "${ConstanceNetwork.storageCheckQuantity}?item=$item",
         header: ConstanceNetwork.header(4));
-       // Logger().i("msg_res ${appResponse.data.toString()}");
     if (appResponse.status?.success == true) {
-      List data = appResponse.data["items"];
-      return data.map((e) => Quantity.fromJson(e)).toList();
+      return appResponse;
     } else {
-      return [];
+      return appResponse;
+    }
+  }
+
+  Future<AppResponse> addNewOrder({required var items}) async {
+    var appResponse = await StorageModel.getInstance.addNewOrder(
+        item: items,
+        url: "${ConstanceNetwork.storageAddOrder}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
     }
   }
 }

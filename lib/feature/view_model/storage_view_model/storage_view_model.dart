@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
 import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
@@ -10,8 +11,12 @@ import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bo
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/bulk_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/quantity_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
+import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
+import 'package:inbox_clients/util/app_color.dart';
+import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:logger/logger.dart';
@@ -86,7 +91,7 @@ class StorageViewModel extends BaseController {
 
   // Set<StorageFeatures>? selectedStorageFeaturesArray = {};
   Set<StorageItem> selectedStorageItems = {};
-  Set<String> lastItems = {};
+  //Set<String> lastItems = {};
   Set<StorageFeatures> selectedFeaures = {};
   // Function deepEq = const DeepCollectionEquality().equals;
   StorageItem? lastStorageItem;
@@ -318,14 +323,14 @@ class StorageViewModel extends BaseController {
     } else {
       if (storageCategoriesData.storageCategoryType ==
           ConstanceNetwork.quantityCategoryType) {
-        var quantityArray =
-            await checkQuantity(boxCheckedId: "${lastStorageItem?.name}");
-        if (quantityArray[0].quantity! < quantity ||
-            quantityArray[0].quantity! == 0) {
-          snackError("${tr.error_occurred}",
-              "${tr.amount_of_vacant_boxes_not_enough} ${quantityArray[0].quantity}");
-          return;
-        }
+        var resQuantity = await checkQuantity(
+            boxCheckedId: "${lastStorageItem?.name}", quntity: quantity);
+        // if (resQuantity.availableQuantity! < quantity ||
+        //     resQuantity.availableQuantity! == 0) {
+        // snackError("${tr.error_occurred}",
+        //     "${tr.amount_of_vacant_boxes_not_enough} ${resQuantity.availableQuantity}");
+        //   return;
+        // }
       }
 
       StorageCategoriesData newStorageCategoriesData = storageCategoriesData;
@@ -571,6 +576,11 @@ class StorageViewModel extends BaseController {
       {required StorageCategoriesData storageCategoriesData,
       required int index,
       required bool isUpdate}) {
+    if (storageCategoriesData.storageCategoryType ==
+            ConstanceNetwork.itemCategoryType &&
+        isNeedingAdviser) {
+      return;
+    }
     StorageCategoriesData newstorageCategoriesData = storageCategoriesData;
     newstorageCategoriesData.groupId = index;
     newstorageCategoriesData.name = storageCategoriesData.name;
@@ -624,22 +634,126 @@ class StorageViewModel extends BaseController {
 // this for check Quantity Befor Add:
   bool isLoading = false;
 
-  Future<List<Quantity>> checkQuantity({required String boxCheckedId}) async {
+  checkQuantity(
+      {required String boxCheckedId, required int quntity}) async {
     isLoading = true;
-    Set<Quantity> res = {};
+   // AppResponse res = AppResponse();
 
     await StorageFeature.getInstance
         .getStorageQuantity(
             item: jsonEncode([
-          {"item": "$boxCheckedId"}
+          {"item": "$boxCheckedId", "qty": quantity}
         ]))
         .then((value) => {
-              res = value.toSet(),
-              isLoading = false,
-              update(),
+              if (value.status!.success!)
+                {
+                  isLoading = false,
+                  update(),
+                }
+              else
+                {
+                  snackError(
+                    "${value.status!.message}",
+                    "${tr.amount_of_vacant_boxes_not_enough}",
+                  ),
+                }
             });
 
-    return res.toList();
+   // return res;
+  }
+
+  // this for add storage Order :
+
+  Future<void> addNewStorage() async {
+    //still this layer will complete when you complete order // refer to =>
+  }
+
+// working hours bottom sheet
+  List<Day> selectedDay = [];
+
+  void chooseDayBottomSheet({required WorkingHours workingHours}) {
+    Get.bottomSheet(
+      Container(
+        padding: EdgeInsets.symmetric(horizontal: padding16!),
+        decoration: BoxDecoration(
+            color: colorTextWhite,
+            borderRadius: BorderRadius.circular(padding6!)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListView(
+              shrinkWrap: true,
+              children: [
+                SizedBox(
+                  height: sizeH40,
+                ),
+                SeconderyButtom(
+                    textButton: "${ConstanceNetwork.sunday}",
+                    onClicked: () {
+                      selectedDay = workingHours.saturday!;
+                      update();
+                      Get.back();
+                    }),
+                SizedBox(
+                  height: sizeH10,
+                ),
+                SeconderyButtom(
+                    textButton: "${ConstanceNetwork.monday}",
+                    onClicked: () {
+                      selectedDay = workingHours.monday!;
+                      update();
+                      Get.back();
+                    }),
+                SizedBox(
+                  height: sizeH10,
+                ),
+                SeconderyButtom(
+                    textButton: "${ConstanceNetwork.tuesday}",
+                    onClicked: () {
+                      selectedDay = workingHours.tuesday!;
+                      update();
+                      Get.back();
+                    }),
+                SizedBox(
+                  height: sizeH10,
+                ),
+                SeconderyButtom(
+                    textButton: "${ConstanceNetwork.wednesday}",
+                    onClicked: () {
+                      selectedDay = workingHours.wednesday!;
+                      update();
+                      Get.back();
+                    }),
+                SizedBox(
+                  height: sizeH10,
+                ),
+                SeconderyButtom(
+                    textButton: "${ConstanceNetwork.friday}",
+                    onClicked: () {
+                      selectedDay = workingHours.friday!;
+                      update();
+                      Get.back();
+                    }),
+                SizedBox(
+                  height: sizeH10,
+                ),
+                SeconderyButtom(
+                    textButton: "${ConstanceNetwork.saturday}",
+                    onClicked: () {
+                      selectedDay = workingHours.saturday!;
+                      update();
+                      Get.back();
+                    }),
+                SizedBox(
+                  height: sizeH40,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      isScrollControlled: true,
+    );
   }
 
   void deleteCategoreyDataBottomSheet(

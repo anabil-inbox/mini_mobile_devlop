@@ -39,7 +39,7 @@ class ShowSpaceAndQuantityWidget extends StatelessWidget {
             index: index,
             storageCategoriesData: storageCategoriesData,
             storageName: storageCategoriesData.storageName ?? "",
-            quantityOrSpace: " ${storageCategoriesData.x} X ${storageCategoriesData.y}",
+            quantityOrSpace: " ${storageCategoriesData.x ?? 1} X ${storageCategoriesData.y ?? 1}",
           ) : 
           ShowHeaderSelection(
             index: index,

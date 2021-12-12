@@ -5,6 +5,15 @@ abstract class ConstanceNetwork {
   ///todo here insert base_url
   static String imageUrl = "http://50.17.152.72/".trim();
 
+  // contsanse for Days Constance 
+  static var sunday = "sunday";
+  static var monday = "monday";
+  static var tuesday = "tuesday";
+  static var wednesday = "wednesday";
+  static var thuersday = "thuersday";
+  static var friday = "friday";
+  static var saturday = "saturday";
+
   ///todo here insert key Of Request
   
   ///todo this for login request user
@@ -66,6 +75,7 @@ abstract class ConstanceNetwork {
   //todo this for storage end point
   static String storageCategoriesApi = "inbox_app.api.storage.categories";
   static String storageCheckQuantity = "inbox_app.api.quantity.quantity";
+  static String storageAddOrder = "inbox_app.api.sales_order.sales_order";
 
 
   //todo this for constance type of user

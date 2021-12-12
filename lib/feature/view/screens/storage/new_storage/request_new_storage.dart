@@ -12,6 +12,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import 'request_new_storage_step_two.dart';
 import 'widgets/add_storage_widget/request_new_storage_header.dart';
 import 'widgets/add_storage_widget/storage_size_type_widget.dart';
 import 'widgets/show_selction_widget/show_space_and_quantity_widget.dart';
@@ -112,8 +113,9 @@ class RequestNewStorageScreen extends StatelessWidget {
                                                                     .storageItem![
                                                                 0])
                                                         : ShowBulkItem(
-                                                          storageCategoriesData: value,
-                                                          index: index,
+                                                            storageCategoriesData:
+                                                                value,
+                                                            index: index,
                                                             storageItem: value
                                                                 .storageItem![0]),
                                                   ))
@@ -133,15 +135,19 @@ class RequestNewStorageScreen extends StatelessWidget {
                   right: padding20,
                   left: padding20,
                   child: PrimaryButton(
-                      textButton: "Next",
+                      textButton: "${tr.next}",
                       isLoading: false,
                       colorBtn:
                           storageViewModel.userStorageCategoriesData.length > 0
                               ? colorPrimary
                               : colorUnSelectedWidget,
-                      onClicked: () {
-                        
-                      },
+                      onClicked:
+                          storageViewModel.userStorageCategoriesData.length > 0
+                              ? () {
+                                storageViewModel.currentLevel = 1;
+                                Get.to(() => RequestNewStoragesStepTwoScreen());
+                              }
+                              : () {},
                       isExpanded: true),
                 )
               ],

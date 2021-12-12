@@ -50,7 +50,7 @@ class StorageCategoriesData {
   int? x;
   int? y;
   LocalBulk? localBulk;
-  bool? needAdviser;
+  bool? needAdviser = false;
 
   factory StorageCategoriesData.fromJson(Map<String, dynamic> json) {
     try {
