@@ -14,11 +14,15 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class QuantityStorageBottomSheet extends StatefulWidget {
   const QuantityStorageBottomSheet(
-      {Key? key, required this.storageCategoriesData})
+      {Key? key,
+      required this.storageCategoriesData,
+      this.isUpdate = false,
+      required this.index})
       : super(key: key);
 
   final StorageCategoriesData storageCategoriesData;
-
+  final bool isUpdate;
+  final int index;
   @override
   State<QuantityStorageBottomSheet> createState() =>
       _QuantityStorageBottomSheetState();
@@ -108,7 +112,7 @@ class _QuantityStorageBottomSheetState
                       builder.minasDaysDurations(
                           storageCategoriesData: widget.storageCategoriesData);
                     },
-                    quantityTitle: "Days",
+                    quantityTitle: "${tr.days}",
                     storageCategoriesData: widget.storageCategoriesData,
                   )
                 else
@@ -122,14 +126,24 @@ class _QuantityStorageBottomSheetState
                 SizedBox(
                   height: sizeH16,
                 ),
-                PrimaryButton(
-                    textButton: "${tr.next}",
-                    isLoading: false,
-                    onClicked: () {
-                      storageViewModel.saveStorageDataToArray(
-                          storageCategoriesData: widget.storageCategoriesData);
-                    },
-                    isExpanded: true),
+                GetBuilder<StorageViewModel>(
+                  init: StorageViewModel(),
+                  initState: (_) {},
+                  builder: (b) {
+                    return PrimaryButton(
+                        textButton: "${tr.next}",
+                        isLoading: b.isLoading,
+                        onClicked: () {
+                          storageViewModel.saveStorageDataToArray(
+                              updateIndex: widget.index,
+                              isUpdate: widget.isUpdate,
+                              storageCategoriesData:
+                                  widget.storageCategoriesData);
+                          storageViewModel.checkDaplication();
+                        },
+                        isExpanded: true);
+                  },
+                ),
                 SizedBox(
                   height: sizeH16,
                 ),

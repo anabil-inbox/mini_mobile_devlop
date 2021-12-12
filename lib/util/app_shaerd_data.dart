@@ -11,10 +11,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as Img;
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
+import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/language_item_widget.dart';
-import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bulk_item_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
-import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/splash_view_modle/splash_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -27,8 +26,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'app_color.dart';
 import 'app_style.dart';
-import 'constance.dart';
 import 'string.dart';
+import 'package:collection/collection.dart';
 
 String? urlPlacholder =
     "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png";
@@ -151,6 +150,23 @@ int getPageCount({required List<String> array}) {
   });
   print("number of pages $count");
   return count;
+}
+
+bool areArraysEquales(List<String> listOne, List<StorageFeatures> listTwo) {
+  List<String> localArray = [];
+
+  listTwo.forEach((element) {
+    localArray.add(element.storageFeature!);
+  });
+
+  if (listOne.length != localArray.length) {
+    return false;
+  }
+  
+  listOne.sort();
+  localArray.sort();
+  Function eq = const ListEquality().equals;
+  return eq(listOne, localArray);
 }
 
 snackSuccess(String title, String body) {
@@ -507,9 +523,6 @@ class CustomMaterialPageRoute extends MaterialPageRoute {
           fullscreenDialog: fullscreenDialog,
         );
 }
-
-
-
 
 bool isArabicLang() {
   return (SharedPref.instance.getAppLanguageMain() == "ar" ? true : false);

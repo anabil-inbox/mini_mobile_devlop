@@ -8,6 +8,7 @@ import 'package:inbox_clients/feature/view/widgets/primary_border_button.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 import 'bulk_item_widget.dart';
 
@@ -21,24 +22,25 @@ class AddItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Add All items "),
+          Text("${tr.add_all_items}"),
           SizedBox(
             height: sizeH16,
           ),
-          storageViewModel.allItems.length != 0
-              ? GetBuilder<StorageViewModel>(builder: (logical) {
+          storageViewModel.localBulk.endStorageItem.length != 0
+              ? GetBuilder<StorageViewModel>(builder: 
+              (logical) {
                   return SizedBox(
                     height: sizeH40,
                     child: ListView(
                         scrollDirection: Axis.horizontal,
-                        children: storageViewModel.allItems
+                        children: storageViewModel.localBulk.endStorageItem
                             .map((e) => BulkItemWidget(
-                                  title: e.storageType ?? "",
+                                  title: e.item ?? "",
                                   quantity: e.quantity ?? 0,
                                   deleteFunction: () {
-                                    storageViewModel.allItems.remove(e);
-                                    storageViewModel.update();
+                                    storageViewModel.removeFromBulk(e);
                                   },
                                 ))
                             .toList()),
@@ -73,7 +75,7 @@ class AddItemWidget extends StatelessWidget {
                   initState: (_) {},
                   builder: (build) {
                     return Text(
-                        "${build.selctedItem?.storageType ?? "choose Item"}");
+                        "${build.selctedItem?.storageType ?? "${tr.choose_from_below}"}");
                   },
                 ),
                 const Spacer(),
@@ -116,7 +118,7 @@ class AddItemWidget extends StatelessWidget {
                                 icon: SvgPicture.asset(
                                     "assets/svgs/circle_mines.svg"),
                                 onPressed: () {
-                                  builder.minesQuantity(
+                                  builder.minesQuantityForBulks(
                                       storageCategoriesData:
                                           storageCategoriesData);
                                 },
@@ -134,7 +136,7 @@ class AddItemWidget extends StatelessWidget {
                                 icon: SvgPicture.asset(
                                     "assets/svgs/circle_add.svg"),
                                 onPressed: () {
-                                  value.increaseQuantity(
+                                  value.increaseQuantityForBulks(
                                       storageCategoriesData:
                                           storageCategoriesData);
                                 },
@@ -151,13 +153,17 @@ class AddItemWidget extends StatelessWidget {
             height: sizeH16,
           ),
           PrimaryBorderButton(
-            buttonText: "Add",
+            buttonText: "${tr.add}",
             function: () {
               if (storageViewModel.selctedItem != null) {
-                storageViewModel.selctedItem!.quantity =
+                // storageCategoriesData.quantity = storageViewModel.quantity;
+                storageViewModel.selctedItem?.quantity =
                     storageViewModel.quantity;
-                storageViewModel.allItems.add(storageViewModel.selctedItem!);
-                storageViewModel.update();
+                // storageViewModel.allItems.add(storageViewModel.selctedItem!);
+                // storageViewModel.addNewBulk(newValue: storageCategoriesData);
+                storageViewModel.addNewBulk(
+                    storageCategoriesData: storageCategoriesData,
+                    item: storageViewModel.selctedItem!);
               }
             },
           )
@@ -166,6 +172,3 @@ class AddItemWidget extends StatelessWidget {
     );
   }
 }
-
-
-/// saving the quantity value with all Object **** 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
@@ -50,7 +49,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   controller: controller.tdTitle,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return '${AppLocalizations.of(Get.context!)!.fill_the_title_correctly}';
+                      return '${tr.fill_the_title_correctly}';
                     }
                     return null;
                   },
@@ -68,7 +67,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   },
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return '${AppLocalizations.of(Get.context!)!.fill_the_building_no_correctly}';
+                      return '${tr.fill_the_building_no_correctly}';
                     }
                     return null;
                   },
@@ -86,7 +85,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   },
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return '${AppLocalizations.of(Get.context!)!.fill_the_unit_no_correctly}';
+                      return '${tr.fill_the_unit_no_correctly}';
                     }
                     return null;
                   },
@@ -104,7 +103,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   controller: controller.tdZone,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return '${AppLocalizations.of(Get.context!)!.fill_the_zone_correctly}';
+                      return '${tr.fill_the_zone_correctly}';
                     }
                     return null;
                   },
@@ -122,7 +121,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   controller: controller.tdStreet,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return '${AppLocalizations.of(Get.context!)!.fill_the_street_correctly}';
+                      return '${tr.fill_the_street_correctly}';
                     }
                     return null;
                   },
@@ -144,7 +143,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                     controller: controller.tdLocation,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return '${AppLocalizations.of(Get.context!)!.choose_your_location}';
+                        return '${tr.choose_your_location}';
                       }
                       return null;
                     },

@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
@@ -30,9 +31,17 @@ class DurationWidget extends StatelessWidget {
           onTap: () {
             storageViewModel.numberOfDays = 1;
             storageViewModel.selectedDuration = durationTitle;
-            storageViewModel.getBalanceFromDuration(
-                newDuration: durationTitle,
-                storageCategoriesData: storageCategoriesData);
+            if (storageCategoriesData.storageCategoryType ==
+                ConstanceNetwork.itemCategoryType) {
+              storageViewModel.onChangeBulkDuration(
+                  newDuration: durationTitle,
+                  storageCategoriesData: storageCategoriesData);
+            } else {
+              storageViewModel.getBalanceFromDuration(
+                  newDuration: durationTitle,
+                  storageCategoriesData: storageCategoriesData);
+            }
+
             storageViewModel.update();
           },
           child: Container(

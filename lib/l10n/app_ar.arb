@@ -126,5 +126,13 @@
       "starting_from_pickup_date":"ابتداء من تاريخ الاستلام",
       "price":"السعر",
       "options":"الخيارات",
-      "next":"التالي"
+      "next":"التالي",
+      "amount_of_vacant_boxes_not_enough" : "لا توجد مساحة كافية في المخزن , المساحة الشاغرة :",
+      "need_inspectator":"بحاجة مساعد",
+      "days":"عدد الايام",
+      "add":"اضافة",
+      "add_all_items":"جميع العناصر المضافة",
+      "custom_space":"مساحة مخصصصة",
+      "boxes":"الصناديق",
+      "payment":"الدفع"
 }
