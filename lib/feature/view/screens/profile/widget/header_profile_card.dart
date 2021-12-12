@@ -134,11 +134,6 @@ class HeaderProfileCard extends StatelessWidget {
                   textButton: "${tr.edit_profile}",
                   isLoading: false,
                   onClicked: () {
-                    print(
-                        "msg_here ${GetUtils.isNull(SharedPref.instance.getCurrentUserData().crNumber)}");
-
-                    print(
-                        "msg_2 ${SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty}");
                     if (GetUtils.isNull(SharedPref.instance
                             .getCurrentUserData()
                             .crNumber) ||

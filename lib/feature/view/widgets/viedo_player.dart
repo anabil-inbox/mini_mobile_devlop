@@ -31,23 +31,22 @@ class _VideoPlayerState extends State<VideoPlayer> {
   }
 
   initVideoPlayer() async {
-    videoPlayerController = VideoPlayerController.network(
-        "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4");
+    videoPlayerController = VideoPlayerController.network("${ConstanceNetwork.imageUrl}${widget.videoUrl}");
     await videoPlayerController.initialize();
     chewieController = ChewieController(
-        videoPlayerController: videoPlayerController,
-        autoPlay: true,
-        looping: true,
-        showOptions: true,
-        showControls: true,
-        showControlsOnInitialize: true,
-        allowPlaybackSpeedChanging: true,
-        allowedScreenSleep: true,
-        allowMuting: true,
-        autoInitialize: true,
-        // aspectRatio: (MediaQuery.of(context).size.width /
-        //     MediaQuery.of(context).size.width) /*w,h*/
-        );
+      videoPlayerController: videoPlayerController,
+      autoPlay: true,
+      looping: false,
+      showOptions: true,
+      showControls: true,
+      showControlsOnInitialize: true,
+      allowPlaybackSpeedChanging: true,
+      allowedScreenSleep: true,
+      allowMuting: true,
+      autoInitialize: true,
+      // aspectRatio: (MediaQuery.of(context).size.width /
+      //     MediaQuery.of(context).size.width) /*w,h*/
+    );
     playerWidget = Chewie(
       controller: chewieController,
     );

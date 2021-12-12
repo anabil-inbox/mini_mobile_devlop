@@ -48,6 +48,7 @@ class GlobalBottomSheet extends StatelessWidget {
             SizedBox(height: sizeH25),
             CustomTextView(
               txt: "$title",
+              textAlign: TextAlign.center,
               textStyle: textStyleTitle(),
             ),
           ],

@@ -99,7 +99,7 @@ class ProfileViewModle extends BaseController {
     update();
     FocusScope.of(Get.context!).unfocus();
     try {
-      ProfileHelper.getInstance
+     await ProfileHelper.getInstance
           .addNewAddress(newAddress.toJson())
           .then((value) => {
                 Logger().i("${value.status!.message}"),
@@ -229,8 +229,7 @@ class ProfileViewModle extends BaseController {
                 isLoading = false,
                 update(),
                 snackError("${tr.error_occurred}", "${value.status!.message}"),
-                                Get.offAll(() => UserBothLoginScreen()),
-
+                Get.offAll(() => UserBothLoginScreen()),
               }
           });
     } catch (e) {}
@@ -238,7 +237,7 @@ class ProfileViewModle extends BaseController {
 
   //-- for user Edit profile:
 
-  editProfileUser() async {
+  editProfileUser({String? identidire}) async {
     isLoading = true;
     update();
     var myImg;
@@ -247,12 +246,6 @@ class ProfileViewModle extends BaseController {
     if (img != null) {
       myImg = await compressImage(img!);
     }
-    // FormData data = FormData.fromMap({
-    //       "file": await MultipartFile.fromFile(
-    //         file.path,
-    //         filename: fileName,
-    //       ),
-    //     });
     if (SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty ||
         GetUtils.isNull(SharedPref.instance.getCurrentUserData().crNumber)) {
       myMap = {
@@ -261,7 +254,8 @@ class ProfileViewModle extends BaseController {
         "image": myImg != null
             ? multiPart.MultipartFile.fromFileSync(myImg!.path)
             : "",
-        "contact_number": jsonEncode(contactMap)
+        "contact_number": jsonEncode(contactMap),
+        "udid": identidire,
       };
     } else {
       myMap = {
@@ -276,11 +270,12 @@ class ProfileViewModle extends BaseController {
         "applicant_department": tdCompanyApplicantDepartment.text,
         "${ConstanceNetwork.mobileNumberKey}": tdCompanyMobileNumber.text,
         "country_code": defCountry.prefix,
+        "udid": identidire,
       };
     }
     try {
       Logger().i("msg_request_map ${myMap}");
-            await ProfileHelper.getInstance.editProfile(myMap).then((value) => {
+      await ProfileHelper.getInstance.editProfile(myMap).then((value) => {
             if (value.status!.success!)
               {
                 snackSuccess("${tr.success}", "${value.status!.message}"),
@@ -329,7 +324,7 @@ class ProfileViewModle extends BaseController {
   // for maps functions && td Controller :
   TextEditingController tdSearchMap = TextEditingController();
   Completer<GoogleMapController> controllerCompleter = Completer();
-  GoogleMapController? mapController;
+  GoogleMapController? mapController; 
   double latitude = 25.36;
   double longitude = 51.18;
   String addressFromLocation = "";
@@ -403,8 +398,9 @@ class ProfileViewModle extends BaseController {
   Future<void> getCurrentUserLagAndLong({LatLng? latLng}) async {
     var position = await GeolocatorPlatform.instance
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    currentPostion = LatLng(latLng?.latitude?? position.latitude,latLng?.longitude?? position.longitude);
-    
+    currentPostion = LatLng(latLng?.latitude ?? position.latitude,
+        latLng?.longitude ?? position.longitude);
+
     if (!GetUtils.isNull(currentPostion)) {
       kGooglePlex = CameraPosition(
         target: LatLng(currentPostion!.latitude, currentPostion!.latitude),

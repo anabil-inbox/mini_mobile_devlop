@@ -26,35 +26,14 @@ class SharedPref {
   static late SharedPreferences? _prefs;
 
   setAppSetting(var json) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
     String prfApiSettings = jsonEncode(json);
-    pref.setString('$appSettingKey', prfApiSettings);
+    _prefs?.setString('$appSettingKey', prfApiSettings);
   }
-
-  // setCurrentUserDate(Map<String,dynamic> customer) async {
-  //   try {
-  //     Map<String,dynamic> json = jsonDecode(customer.toString());
-  //     String user = jsonEncode(Customer.fromJson(json));
-  //     print("saved_Succeffully ${_prefs?.setString("$userDataKey","$user")}");
-  //   } catch (e) {
-  //     print("error $e");
-  //   }
-  // }
-
-  // getCurrentUserData() {
-//       print("msg_get_Current_user_data ${_prefs?.getString('$userDataKey')}");
-//       try{
-//         Customer currentUserObject = jsonDecode(_prefs!.getString('$userDataKey')!);
-//       return currentUserObject;
-//       }catch(e){
-//         print(e);
-//         return;
-//       }
-//   }
 
   setCurrentUserData(String profileData) async {
     try {
       print("msg_profile_data_to_save $profileData");
+      
       bool? isSaved =
           await _prefs?.setString("$userDataKey", profileData.toString());
       print(isSaved);
@@ -126,8 +105,7 @@ class SharedPref {
   }
 
   setAppLanguage(var local) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setString('$languageKey', local.toString());
+    _prefs?.setString('$languageKey', local.toString());
     print("exxx:${local.toString()}");
 
   }
@@ -183,10 +161,11 @@ class SharedPref {
   }
 
   setUserToken(String token) async {
+    Logger().i("msg_sett_user_token $token");
     try {
-      SharedPreferences pref = await SharedPreferences.getInstance();
+        
       if (!GetUtils.isNull(token)) {
-        pref.setString("$tokenKey", token);
+        _prefs?.setString("$tokenKey", token);
       }
     } catch (e) {}
   }

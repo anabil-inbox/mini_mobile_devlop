@@ -5,8 +5,17 @@ abstract class ConstanceNetwork {
   ///todo here insert base_url
   static String imageUrl = "http://50.17.152.72/".trim();
 
-  ///todo here insert key Of Request
+  // contsanse for Days Constance 
+  static var sunday = "sunday";
+  static var monday = "monday";
+  static var tuesday = "tuesday";
+  static var wednesday = "wednesday";
+  static var thuersday = "thuersday";
+  static var friday = "friday";
+  static var saturday = "saturday";
 
+  ///todo here insert key Of Request
+  
   ///todo this for login request user
   static var contryCodeKey = "country_code";
   static var mobileKey = "mobile";
@@ -65,6 +74,8 @@ abstract class ConstanceNetwork {
 
   //todo this for storage end point
   static String storageCategoriesApi = "inbox_app.api.storage.categories";
+  static String storageCheckQuantity = "inbox_app.api.quantity.quantity";
+  static String storageAddOrder = "inbox_app.api.sales_order.sales_order";
 
 
   //todo this for constance type of user
@@ -72,6 +83,24 @@ abstract class ConstanceNetwork {
   static String companyType = "company";
   static String bothType = "both";
 
+
+
+  ///here keys of storage category type:
+  static String spaceCategoryType = "Space";
+  static String itemCategoryType = "Item";
+  static var quantityCategoryType = "Quantity";
+  static var driedCage = "Dried Space";
+
+  ///here keys of duration status;
+    static var dailyDurationType = "Daily";
+    static var montlyDurationType = "Montly";
+    static var yearlyDurationType = "yearly";
+    static var unLimtedDurationType = "unlimited";
+    
+ //here block and enaeld Folder icons;
+  static String enableFolder = "assets/svgs/folder_icon.svg";
+  static String disableFolder = "assets/svgs/clocked_file.svg";
+  
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};
     if (typeToken == 0) {
@@ -94,7 +123,7 @@ abstract class ConstanceNetwork {
         'Content-Type': 'application/x-www-form-urlencoded'
       };
     } else if (typeToken == 4) {
-      print("msg_get_user_token ${SharedPref.instance.getUserToken()}");
+      print("msg_get_user_token_on_send_to_header ${SharedPref.instance.getUserToken()}");
       headers = {
         'Authorization': 'Bearer ${SharedPref.instance.getUserToken()}',
         'Content-Type': 'application/json',

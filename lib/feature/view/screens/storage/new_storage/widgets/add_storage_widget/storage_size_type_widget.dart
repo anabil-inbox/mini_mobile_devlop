@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/size_type_item.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+
+import 'size_type_item.dart';
 
 class StorageSizeType extends StatelessWidget {
   const StorageSizeType({Key? key}) : super(key: key);
+
+  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +24,14 @@ class StorageSizeType extends StatelessWidget {
         primary: false,
         children: [
           Text(
-            "Storage Size & Type:",
+            "${tr.storage_size_type}",
             style: textStyleIntroBody(),
           ),
           SizedBox(
             height: sizeH5,
           ),
           Text(
-            "Choose from below",
+            "${tr.choose_from_below}",
             style: smallHintTextStyle(),
           ),
           SizedBox(
@@ -34,7 +39,6 @@ class StorageSizeType extends StatelessWidget {
           ),
           GetBuilder<StorageViewModel>(
             init: StorageViewModel(),
-            initState: (_) {},
             builder: (builder) {
               return GridView.builder(
                   shrinkWrap: true,
