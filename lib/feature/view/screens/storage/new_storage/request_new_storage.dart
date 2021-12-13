@@ -147,7 +147,10 @@ class RequestNewStorageScreen extends StatelessWidget {
                                 storageViewModel.currentLevel = 1;
                                 Get.to(() => RequestNewStoragesStepTwoScreen());
                               }
-                              : () {},
+                              : () {
+                                //  storageViewModel.currentLevel = 1;
+                                // Get.to(() => RequestNewStoragesStepTwoScreen());
+                              },
                       isExpanded: true),
                 )
               ],

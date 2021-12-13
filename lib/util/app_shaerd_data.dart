@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as Img;
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
+import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/language_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
@@ -162,7 +163,7 @@ bool areArraysEquales(List<String> listOne, List<StorageFeatures> listTwo) {
   if (listOne.length != localArray.length) {
     return false;
   }
-  
+
   listOne.sort();
   localArray.sort();
   Function eq = const ListEquality().equals;
@@ -527,6 +528,59 @@ class CustomMaterialPageRoute extends MaterialPageRoute {
 bool isArabicLang() {
   return (SharedPref.instance.getAppLanguageMain() == "ar" ? true : false);
   // return isRTL;
+}
+
+Future<DateTime?> dateBiker() async {
+  Locale myLocale = Localizations.localeOf(Get.context!);
+  var picker = await showDatePicker(
+    context: Get.context!,
+    initialDate: DateTime.now(),
+    firstDate: DateTime.now(),
+    lastDate: DateTime(2030),
+    locale: myLocale,
+  );
+
+  return picker;
+}
+
+List<Day> getDayByNumber({required DateTime selectedDateTime}) {
+  List<Day>? workTime = [];
+  String dayName = "";
+  DateTime dt = DateTime.now();
+
+  ApiSettings settings =
+      ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
+
+  print(" ${settings.toJson()} ");
+  if (selectedDateTime.weekday == 0) {
+    dayName = "Sunday";
+    workTime = settings.workingHours?.sunday;
+  } else if (selectedDateTime.weekday == 1) {
+    dayName = "Monday";
+    workTime = settings.workingHours?.monday;
+  } else if (selectedDateTime.weekday == 2) {
+    dayName = "Tuesday";
+    workTime = settings.workingHours?.tuesday;
+  } else if (selectedDateTime.weekday == 3) {
+    dayName = "wednesday";
+    workTime = settings.workingHours?.wednesday;
+  } else if (selectedDateTime.weekday == 4) {
+    dayName = "thuersday";
+    workTime = settings.workingHours?.thuersday;
+  } else if (selectedDateTime.weekday == 5) {
+    dayName = "friday";
+    workTime = settings.workingHours?.friday;
+  } else if (selectedDateTime.weekday == 6) {
+    dayName = "saturday";
+    workTime = settings.workingHours?.saturday;
+  }
+
+  print("dayName : $dayName : dayNumber : ${selectedDateTime.weekday}");
+  if (workTime!.isNotEmpty) {
+    workTime[0].day = dayName;
+  }
+
+  return workTime;
 }
 
 AppLocalizations get tr => AppLocalizations.of(Get.context!)!;

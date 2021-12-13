@@ -48,13 +48,14 @@ class _HomePageHolderState extends State<HomePageHolder> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
+
         onPressed: () {
           Logger().d(
               "${SharedPref.instance.getCurrentUserData().toJson().toString()}");
           Logger().d("${SharedPref.instance.getUserToken()}");
           Get.to(() => RequestNewStorageScreen());
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,color: colorTextWhite,),
         elevation: 2.0,
       ),
       bottomNavigationBar: GetBuilder<HomeViewModel>(

@@ -128,10 +128,12 @@
     "price":"Price",
     "options":"Options",
     "next":"Next",
-    "amount_of_vacant_boxes_not_enough" : "Amount Of Vacant Boxes Not Enough , Available Space : ",
+    "amount_of_vacant_boxes_not_enough" : "Space Not Enough",
     "need_inspectator":"Need Inspectator",
     "days":"Days",
     "add":"Add",
     "add_all_items":"Add All Items",
-    "custom_space":"Custom Space"
+    "custom_space":"Custom Space",
+    "you_have_to_add_item":"You Have To Add Item",
+    "sorry_there_are_no_work_hours":"Sorry, there are no Work hours on this day"
 }

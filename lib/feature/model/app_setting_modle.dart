@@ -136,11 +136,13 @@ class Day {
     Day({
         this.from,
         this.to,
+        this.day
     });
 
     String? from;
     String? to;
-    
+    String? day;
+
     factory Day.fromJson(Map<String, dynamic> json) => Day(
         from: json["from"],
         to: json["to"],

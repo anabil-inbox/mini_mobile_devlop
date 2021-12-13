@@ -29,27 +29,55 @@ class RequestNewStoragesStepTwoScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: padding20!),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-            GetBuilder<StorageViewModel>(
-              init: StorageViewModel(),
-              initState: (_) {},
-              builder: (val) {
-                return RequestNewStorageHeader(
-                  currentLevel: val.currentLevel,
-                );
-              },
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GetBuilder<StorageViewModel>(
+                  init: StorageViewModel(),
+                  initState: (_) {},
+                  builder: (val) {
+                    return RequestNewStorageHeader(
+                      currentLevel: val.currentLevel,
+                    );
+                  },
+                ),
+                Text("Schedule Pickup"),
+                SizedBox(
+                  height: sizeH10,
+                ),
+                SchedulePickup(),
+                SizedBox(
+                  height: sizeH16,
+                ),
+                PickupAddress(),
+              ],
             ),
-            Text("Schedule Pickup"),
-            SizedBox(
-              height: sizeH10,
-            ),
-            SchedulePickup(),
-            SizedBox(
-              height: sizeH16,
-            ),
-            PickupAddress(),
+            PositionedDirectional(
+                bottom: 34,
+                start: 16,
+                child: Container(
+                    width: sizeW150,
+                    child: PrimaryButton(
+                      isExpanded: false,
+                      isLoading: false,
+                      textButton: "text",
+                      onClicked: () {},
+                    )
+                    )),
+            PositionedDirectional(
+                bottom: 34,
+                end: 16,
+                child: Container(
+                    width: sizeW150,
+                    child: 
+                    SeconderyButtom(
+                      textButton: "text",
+                      onClicked: () {
+                        
+                      },
+                    ))),
           ],
         ),
       ),

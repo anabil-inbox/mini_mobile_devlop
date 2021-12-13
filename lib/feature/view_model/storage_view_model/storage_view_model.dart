@@ -1,16 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
 import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
+import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/selected_hour_item.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/bulk_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/quantity_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
@@ -325,12 +328,15 @@ class StorageViewModel extends BaseController {
           ConstanceNetwork.quantityCategoryType) {
         var resQuantity = await checkQuantity(
             boxCheckedId: "${lastStorageItem?.name}", quntity: quantity);
-        // if (resQuantity.availableQuantity! < quantity ||
-        //     resQuantity.availableQuantity! == 0) {
-        // snackError("${tr.error_occurred}",
-        //     "${tr.amount_of_vacant_boxes_not_enough} ${resQuantity.availableQuantity}");
-        //   return;
-        // }
+        Quantity q = Quantity.fromJson(resQuantity.data["item"]);
+        if (q.quantityStatus == 0) {
+          bool isComplete = await checkSpaceDiloag(
+              quantity: Quantity.fromJson(resQuantity.data),
+              message: resQuantity.status!.message!);
+              if(!isComplete){
+                return;
+              }
+        }
       }
 
       StorageCategoriesData newStorageCategoriesData = storageCategoriesData;
@@ -580,6 +586,9 @@ class StorageViewModel extends BaseController {
             ConstanceNetwork.itemCategoryType &&
         isNeedingAdviser) {
       return;
+    }else if(localBulk.endStorageItem.isEmpty){
+      snackError("${tr.error_occurred}", "${tr.you_have_to_add_item}");
+      return;
     }
     StorageCategoriesData newstorageCategoriesData = storageCategoriesData;
     newstorageCategoriesData.groupId = index;
@@ -634,10 +643,10 @@ class StorageViewModel extends BaseController {
 // this for check Quantity Befor Add:
   bool isLoading = false;
 
-  checkQuantity(
+  Future<AppResponse> checkQuantity(
       {required String boxCheckedId, required int quntity}) async {
     isLoading = true;
-   // AppResponse res = AppResponse();
+    AppResponse res = AppResponse();
 
     await StorageFeature.getInstance
         .getStorageQuantity(
@@ -652,14 +661,43 @@ class StorageViewModel extends BaseController {
                 }
               else
                 {
+                  isLoading = false,
                   snackError(
                     "${value.status!.message}",
-                    "${tr.amount_of_vacant_boxes_not_enough}",
+                    "",
                   ),
-                }
+                },
+              res = value,
             });
 
-   // return res;
+    return res;
+  }
+
+  // here for quantity status == 0 (No Space):
+
+  Future<bool> checkSpaceDiloag(
+      {required Quantity quantity, required String message}) async {
+    bool complete = false;    
+    await Get.defaultDialog(
+      titlePadding: EdgeInsets.only(top: sizeH16!),
+      title: "${tr.amount_of_vacant_boxes_not_enough}",
+      middleText: "$message",
+      actions: [
+      TextButton(
+          onPressed: () {
+            Get.back();
+            complete = true;
+          },
+          child: Text("${tr.ok}")),
+      TextButton(
+          onPressed: () {
+            Get.back();
+            complete = false;
+          },
+          child: Text("${tr.cancle}")),
+    ]);
+
+    return complete;
   }
 
   // this for add storage Order :
@@ -669,86 +707,44 @@ class StorageViewModel extends BaseController {
   }
 
 // working hours bottom sheet
-  List<Day> selectedDay = [];
 
-  void chooseDayBottomSheet({required WorkingHours workingHours}) {
+  List<Day>? selctedWorksHours = [];
+  DateTime? selectedDateTime;
+  Day? selectedDay;
+
+  void showDatePicker() async {
+    var dt = await dateBiker();
+    if (!GetUtils.isNull(dt)) {
+      selctedWorksHours = getDayByNumber(selectedDateTime: dt!);
+      selectedDateTime = DateTime(dt.year, dt.month, dt.day);
+    }
+    update();
+  }
+
+  void chooseTimeBottomSheet() {
     Get.bottomSheet(
       Container(
         padding: EdgeInsets.symmetric(horizontal: padding16!),
         decoration: BoxDecoration(
             color: colorTextWhite,
-            borderRadius: BorderRadius.circular(padding6!)),
+            borderRadius:
+                BorderRadius.vertical(top: Radius.circular(padding30!))),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListView(
-              shrinkWrap: true,
-              children: [
-                SizedBox(
-                  height: sizeH40,
-                ),
-                SeconderyButtom(
-                    textButton: "${ConstanceNetwork.sunday}",
-                    onClicked: () {
-                      selectedDay = workingHours.saturday!;
-                      update();
-                      Get.back();
-                    }),
-                SizedBox(
-                  height: sizeH10,
-                ),
-                SeconderyButtom(
-                    textButton: "${ConstanceNetwork.monday}",
-                    onClicked: () {
-                      selectedDay = workingHours.monday!;
-                      update();
-                      Get.back();
-                    }),
-                SizedBox(
-                  height: sizeH10,
-                ),
-                SeconderyButtom(
-                    textButton: "${ConstanceNetwork.tuesday}",
-                    onClicked: () {
-                      selectedDay = workingHours.tuesday!;
-                      update();
-                      Get.back();
-                    }),
-                SizedBox(
-                  height: sizeH10,
-                ),
-                SeconderyButtom(
-                    textButton: "${ConstanceNetwork.wednesday}",
-                    onClicked: () {
-                      selectedDay = workingHours.wednesday!;
-                      update();
-                      Get.back();
-                    }),
-                SizedBox(
-                  height: sizeH10,
-                ),
-                SeconderyButtom(
-                    textButton: "${ConstanceNetwork.friday}",
-                    onClicked: () {
-                      selectedDay = workingHours.friday!;
-                      update();
-                      Get.back();
-                    }),
-                SizedBox(
-                  height: sizeH10,
-                ),
-                SeconderyButtom(
-                    textButton: "${ConstanceNetwork.saturday}",
-                    onClicked: () {
-                      selectedDay = workingHours.saturday!;
-                      update();
-                      Get.back();
-                    }),
-                SizedBox(
-                  height: sizeH40,
-                ),
-              ],
+            SizedBox(
+              height: sizeH50,
             ),
+            selctedWorksHours!.isEmpty
+                ? Padding(
+                  padding: EdgeInsets.only(bottom: padding20!),
+                  child: Text("${tr.sorry_there_are_no_work_hours}" , textAlign: TextAlign.center,))
+                : ListView(
+                    shrinkWrap: true,
+                    children: selctedWorksHours!
+                        .map((e) => SelectedHourItem(day: e))
+                        .toList(),
+                  ),
           ],
         ),
       ),
@@ -920,7 +916,7 @@ class StorageViewModel extends BaseController {
         isScrollControlled: true,
       );
     } else if (ConstanceNetwork.spaceCategoryType ==
-        storageCategoriesData.storageCategoryType) {
+        storageCategoriesData.storageCategoryType || storageCategoriesData.storageCategoryType!.toLowerCase().contains("space")) {
       Get.bottomSheet(
         SpaceStorageBottomSheet(
           index: index,

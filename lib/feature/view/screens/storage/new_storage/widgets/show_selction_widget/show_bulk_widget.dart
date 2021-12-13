@@ -36,7 +36,7 @@ class ShowBulkItem extends StatelessWidget {
           ShowHeaderSelection(
             index: index,
             storageCategoriesData: storageCategoriesData,
-            storageName: storageCategoriesData.name ?? "",
+            storageName: storageCategoriesData.storageName ?? "",
             quantityOrSpace: "",
           ),
           SizedBox(

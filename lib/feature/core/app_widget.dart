@@ -44,6 +44,7 @@ class AppWidget extends StatelessWidget {
         enableLog: true,
         themeMode: ThemeMode.system,
         theme: ThemeData(
+          colorScheme: ColorScheme.light(primary: colorPrimary),
           fontFamily: Constance.Font_regular,
           cupertinoOverrideTheme: CupertinoThemeData(
             primaryColor: colorPrimary,

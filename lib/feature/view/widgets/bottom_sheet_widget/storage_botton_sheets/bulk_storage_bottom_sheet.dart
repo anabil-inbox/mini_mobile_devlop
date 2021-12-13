@@ -134,6 +134,7 @@ class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
                     textButton: "${tr.next}",
                     isLoading: false,
                     onClicked: () {
+                      
                       storageViewModel.saveStorageDataToArray(
                           updateIndex: widget.index,
                           isUpdate: widget.isUpdate,
