@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
-import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
-import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 import 'pickup_address_item.dart';
 
-class PickupAddress extends StatelessWidget {
-  const PickupAddress({Key? key}) : super(key: key);
+class PickupUserAddress extends StatelessWidget {
+  const PickupUserAddress({Key? key}) : super(key: key);
+  
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,25 +27,21 @@ class PickupAddress extends StatelessWidget {
           init: StorageViewModel(),
           initState: (_) {
             WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-              if (storageViewModel
-                          .userStorageCategoriesData[0].storageCategoryType ==
-                      ConstanceNetwork.itemCategoryType ||
-                  storageViewModel
-                          .userStorageCategoriesData[0].storageCategoryType ==
-                      ConstanceNetwork.quantityCategoryType) {
-                storageViewModel.getUserAddress();
-              } else {
-                storageViewModel.getStoreAddress();
-              }
+              storageViewModel.getStoreAddress();
             });
           },
           builder: (_) {
-            return storageViewModel.userAddress.isNotEmpty
+            return storageViewModel.storeAddress.isNotEmpty
                 ? ListView(
                     primary: false,
                     shrinkWrap: true,
-                    children: storageViewModel.userAddress
-                        .map((e) => PickupAddressItem(address: e))
+                    children: storageViewModel.storeAddress
+                        .map((e) => e.addresses!.isNotEmpty 
+                            ? PickupAddressItem(
+                                store: e,
+                                address: e.addresses?[0] ??
+                                    Address(title: e.addresses?[0].title ?? ""))
+                            : const SizedBox())
                         .toList(),
                   )
                 : const SizedBox();

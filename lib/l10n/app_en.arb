@@ -135,5 +135,6 @@
     "add_all_items":"Add All Items",
     "custom_space":"Custom Space",
     "you_have_to_add_item":"You Have To Add Item",
-    "sorry_there_are_no_work_hours":"Sorry, there are no Work hours on this day"
+    "sorry_there_are_no_work_hours":"Sorry, there are no Work hours on this day",
+    "add_to_cart":"Add To Cart"
 }

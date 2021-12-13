@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
 import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
+import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/selected_hour_item.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
@@ -15,6 +17,7 @@ import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_b
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
+import 'package:inbox_clients/network/api/feature/profie_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -333,9 +336,9 @@ class StorageViewModel extends BaseController {
           bool isComplete = await checkSpaceDiloag(
               quantity: Quantity.fromJson(resQuantity.data),
               message: resQuantity.status!.message!);
-              if(!isComplete){
-                return;
-              }
+          if (!isComplete) {
+            return;
+          }
         }
       }
 
@@ -586,7 +589,7 @@ class StorageViewModel extends BaseController {
             ConstanceNetwork.itemCategoryType &&
         isNeedingAdviser) {
       return;
-    }else if(localBulk.endStorageItem.isEmpty){
+    } else if (localBulk.endStorageItem.isEmpty) {
       snackError("${tr.error_occurred}", "${tr.you_have_to_add_item}");
       return;
     }
@@ -677,25 +680,25 @@ class StorageViewModel extends BaseController {
 
   Future<bool> checkSpaceDiloag(
       {required Quantity quantity, required String message}) async {
-    bool complete = false;    
+    bool complete = false;
     await Get.defaultDialog(
-      titlePadding: EdgeInsets.only(top: sizeH16!),
-      title: "${tr.amount_of_vacant_boxes_not_enough}",
-      middleText: "$message",
-      actions: [
-      TextButton(
-          onPressed: () {
-            Get.back();
-            complete = true;
-          },
-          child: Text("${tr.ok}")),
-      TextButton(
-          onPressed: () {
-            Get.back();
-            complete = false;
-          },
-          child: Text("${tr.cancle}")),
-    ]);
+        titlePadding: EdgeInsets.only(top: sizeH16!),
+        title: "${tr.amount_of_vacant_boxes_not_enough}",
+        middleText: "$message",
+        actions: [
+          TextButton(
+              onPressed: () {
+                Get.back();
+                complete = true;
+              },
+              child: Text("${tr.ok}")),
+          TextButton(
+              onPressed: () {
+                Get.back();
+                complete = false;
+              },
+              child: Text("${tr.cancle}")),
+        ]);
 
     return complete;
   }
@@ -705,12 +708,38 @@ class StorageViewModel extends BaseController {
   Future<void> addNewStorage() async {
     //still this layer will complete when you complete order // refer to =>
   }
+  // getting Address For Stores
+  Set<Store> storeAddress = {};
+  Set<Address> userAddress = {};
 
-// working hours bottom sheet
+  getStoreAddress() async {
+    isLoading = true;
+    update();
+    await StorageFeature.getInstance.getStoreAddress().then((value) => {
+          storeAddress = value.toSet(),
+        });
+
+    isLoading = false;
+    update();
+  }
+
+  getUserAddress() async {
+    await ProfileHelper.getInstance.getMyAddress().then((value) => {
+          if (value.status!.success!)
+            {
+              userAddress = value.data.map((e) => Address.fromJson(e)).toList(),
+            }
+        });
+    update();
+  }
+
+  // working hours bottom sheet
 
   List<Day>? selctedWorksHours = [];
   DateTime? selectedDateTime;
   Day? selectedDay;
+  Store? selectedStore;
+  Address? selectedAddress;
 
   void showDatePicker() async {
     var dt = await dateBiker();
@@ -737,8 +766,11 @@ class StorageViewModel extends BaseController {
             ),
             selctedWorksHours!.isEmpty
                 ? Padding(
-                  padding: EdgeInsets.only(bottom: padding20!),
-                  child: Text("${tr.sorry_there_are_no_work_hours}" , textAlign: TextAlign.center,))
+                    padding: EdgeInsets.only(bottom: padding20!),
+                    child: Text(
+                      "${tr.sorry_there_are_no_work_hours}",
+                      textAlign: TextAlign.center,
+                    ))
                 : ListView(
                     shrinkWrap: true,
                     children: selctedWorksHours!
@@ -916,7 +948,10 @@ class StorageViewModel extends BaseController {
         isScrollControlled: true,
       );
     } else if (ConstanceNetwork.spaceCategoryType ==
-        storageCategoriesData.storageCategoryType || storageCategoriesData.storageCategoryType!.toLowerCase().contains("space")) {
+            storageCategoriesData.storageCategoryType ||
+        storageCategoriesData.storageCategoryType!
+            .toLowerCase()
+            .contains("space")) {
       Get.bottomSheet(
         SpaceStorageBottomSheet(
           index: index,

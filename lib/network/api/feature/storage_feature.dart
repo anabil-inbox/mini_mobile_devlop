@@ -1,5 +1,6 @@
 import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
+import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/api/model/splash.dart';
 import 'package:inbox_clients/network/api/model/storage.dart';
@@ -49,6 +50,19 @@ class StorageFeature {
       return appResponse;
     } else {
       return appResponse;
+    }
+  }
+
+
+  Future<List<Store>> getStoreAddress() async {
+    var appResponse = await StorageModel.getInstance.getStoresAddress(
+        url: "${ConstanceNetwork.storageWareHouse}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      List data = appResponse.data;
+      return data.map((e) => Store.fromJson(e)).toList();
+    } else {
+      return [];
     }
   }
 }

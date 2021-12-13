@@ -27,11 +27,6 @@ class SchedulePickup extends StatelessWidget {
           ),
           child: InkWell(
             onTap: () async {
-              // ApiSettings settings = ApiSettings.fromJson(
-              //     json.decode(SharedPref.instance.getAppSetting()!.toString()));
-              // print("settings ${settings.workingHours?.toJson()}");
-              // storageViewModel.chooseDayBottomSheet(
-              //     workingHours: settings.workingHours!);
               storageViewModel.showDatePicker();
             },
             child: GetBuilder<StorageViewModel>(

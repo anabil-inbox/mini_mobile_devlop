@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
+import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -31,8 +32,8 @@ class RequestNewStoragesStepTwoScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: padding20!),
         child: Stack(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            ListView(
+              primary: true,
               children: [
                 GetBuilder<StorageViewModel>(
                   init: StorageViewModel(),
@@ -62,7 +63,7 @@ class RequestNewStoragesStepTwoScreen extends StatelessWidget {
                     child: PrimaryButton(
                       isExpanded: false,
                       isLoading: false,
-                      textButton: "text",
+                      textButton: "${tr.next}",
                       onClicked: () {},
                     )
                     )),
@@ -72,8 +73,8 @@ class RequestNewStoragesStepTwoScreen extends StatelessWidget {
                 child: Container(
                     width: sizeW150,
                     child: 
-                    SeconderyButtom(
-                      textButton: "text",
+                    SeconderyFormButton(
+                      buttonText: "${tr.add_to_cart}",
                       onClicked: () {
                         
                       },

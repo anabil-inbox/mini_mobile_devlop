@@ -109,7 +109,8 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 builder: (logic) {
                   return TextFormField(
                       controller:
-                          TextEditingController(text: GetUtils.isNull(logic.companySector!.sectorName) ? "" : logic.companySector!.sectorName),
+                          TextEditingController(text: GetUtils.isNull(logic.companySector?.sectorName) ? "" : 
+                          logic.companySector!.sectorName),
                       readOnly: true,
                       onTap: () {
                         chooseSectorCompany();
