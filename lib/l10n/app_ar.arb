@@ -137,5 +137,10 @@
       "payment":"الدفع",
       "you_have_to_add_item":"يجب عليك اختيار عنصر",
        "sorry_there_are_no_work_hours":"نأسف، لا يوجد ساعات عمل في هذا اليوم",
-       "add_to_cart":"اضافة الى السلة"
+       "add_to_cart":"اضافة الى السلة",
+       "you_have_to_add_address":"يجب عليك تحديد عنوان",
+     "you_have_to_select_date":"يجب عليك تحديد التاريخ",
+     "you_have_to_select_time":"يجب عليك تحديد الوقت",
+     "empty_order":"الطلب فارغ",
+      "you_have_to_select_payment_method":"يجب عليك ان تحدد وسيلة دفع"
 }

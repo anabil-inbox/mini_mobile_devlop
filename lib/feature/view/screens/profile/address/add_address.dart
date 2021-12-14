@@ -227,7 +227,8 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                         isLoading: controller.isLoading,
                         onClicked: () {
                           if (_formKey.currentState!.validate()) {
-                            controller.addNewAddress(Address(
+                            controller.addNewAddress(
+                              Address(
                               addressTitle: controller.tdTitle.text,
                               isPrimaryAddress:
                                   controller.isAccepteDefoltLocation ? 1 : 0,

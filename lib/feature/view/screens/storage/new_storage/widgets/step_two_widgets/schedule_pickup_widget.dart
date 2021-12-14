@@ -70,44 +70,41 @@ class SchedulePickup extends StatelessWidget {
             color: colorTextWhite,
           ),
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              storageViewModel.chooseTimeBottomSheet();
+            },
             child: Row(
               children: [
                 Text("Time"),
                 const Spacer(),
-                InkWell(
-                  onTap: () {
-                    storageViewModel.chooseTimeBottomSheet();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: sizeH7!, vertical: sizeH7!),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(padding6!),
-                      color: scaffoldSecondery,
-                    ),
-                    child: GetBuilder<StorageViewModel>(
-                      init: StorageViewModel(),
-                      initState: (_) {},
-                      builder: (_) {
-                        return Row(
-                          children: [
-                            GetUtils.isNull(storageViewModel.selectedDay)
-                                ? Text("10:00 Am- 06:00 pm")
-                                : CustomTextView(
-                                    txt:
-                                        "${storageViewModel.selectedDay?.from} - ${storageViewModel.selectedDay?.to}",
-                                  ),
-                            SizedBox(
-                              width: sizeW7,
-                            ),
-                            SvgPicture.asset("assets/svgs/down_arrow.svg")
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                )
+                GetUtils.isNull(storageViewModel.selectedDay) ?
+                 Container(
+                   padding: EdgeInsets.symmetric(
+                       horizontal: sizeH7!, vertical: sizeH7!),
+                   decoration: BoxDecoration(
+                     borderRadius: BorderRadius.circular(padding6!),
+                     color: scaffoldSecondery,
+                   ),
+                   child: GetBuilder<StorageViewModel>(
+                     init: StorageViewModel(),
+                     initState: (_) {},
+                     builder: (_) {
+                       return Row(
+                         children: [
+                           GetUtils.isNull(storageViewModel.selectedDay)
+                               ? const SizedBox()
+                               : CustomTextView(
+                                   txt: "${storageViewModel.selectedDay?.from} - ${storageViewModel.selectedDay?.to}",
+                                 ),
+                           SizedBox(
+                             width: sizeW7,
+                           ),
+                           SvgPicture.asset("assets/svgs/down_arrow.svg")
+                         ],
+                       );
+                     },
+                   ),
+                 ) : const SizedBox()
               ],
             ),
           ),

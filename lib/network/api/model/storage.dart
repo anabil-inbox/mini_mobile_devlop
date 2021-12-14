@@ -9,9 +9,10 @@ class StorageModel {
   StorageModel._();
   static final StorageModel getInstance = StorageModel._();
 
-  Future<AppResponse> getStorageCategories({var url , var header})async{
+  Future<AppResponse> getStorageCategories({var url, var header}) async {
     try {
-      var response = await DioManagerClass.getInstance.dioGetMethod(url: url, header: header);
+      var response = await DioManagerClass.getInstance
+          .dioGetMethod(url: url, header: header);
       return AppResponse.fromJson(json.decode(response.toString()));
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
@@ -20,10 +21,11 @@ class StorageModel {
     }
   }
 
-
-Future<AppResponse> getStorageQuantity({var url , var header , var item})async{
+  Future<AppResponse> getStorageQuantity(
+      {var url, var header, var item}) async {
     try {
-      var response = await DioManagerClass.getInstance.dioGetMethod(url: url, header: header);
+      var response = await DioManagerClass.getInstance
+          .dioGetMethod(url: url, header: header);
       return AppResponse.fromJson(json.decode(response.toString()));
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
@@ -32,9 +34,10 @@ Future<AppResponse> getStorageQuantity({var url , var header , var item})async{
     }
   }
 
-Future<AppResponse> addNewOrder({var url , var header , var item})async{
+  Future<AppResponse> addNewOrder({var url, var header, var item}) async {
     try {
-      var response = await DioManagerClass.getInstance.dioPostMethod(url: url, header: header);
+      var response = await DioManagerClass.getInstance
+          .dioPostMethod(url: url, header: header);
       return AppResponse.fromJson(json.decode(response.toString()));
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
@@ -43,9 +46,10 @@ Future<AppResponse> addNewOrder({var url , var header , var item})async{
     }
   }
 
-  Future<AppResponse> getStoresAddress({var url , var header})async{
+  Future<AppResponse> getStoresAddress({var url, var header}) async {
     try {
-      var response = await DioManagerClass.getInstance.dioGetMethod(url: url, header: header);
+      var response = await DioManagerClass.getInstance
+          .dioGetMethod(url: url, header: header);
       return AppResponse.fromJson(json.decode(response.toString()));
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
@@ -54,4 +58,15 @@ Future<AppResponse> addNewOrder({var url , var header , var item})async{
     }
   }
 
+  Future<AppResponse> addNewStorage({var url, var header, var body}) async {
+    try {
+      var response = await DioManagerClass.getInstance
+          .dioPostMethod(url: url, header: header, body: body);
+      return AppResponse.fromJson(json.decode(response.toString()));
+    } on DioError catch (ex) {
+      var message = json.decode(ex.response.toString());
+      Logger().e(message);
+      return AppResponse.fromJson(message);
+    }
+  }
 }

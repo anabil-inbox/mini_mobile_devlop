@@ -297,6 +297,7 @@ class StorageItem {
         "to": to == null ? null : to,
         "monthly_price": monthlyPrice == null ? null : monthlyPrice,
         "yearly_price": yearlyPrice == null ? null : yearlyPrice,
+        "qty" : quantity
       };
     } catch (e) {
       Logger().d(e);

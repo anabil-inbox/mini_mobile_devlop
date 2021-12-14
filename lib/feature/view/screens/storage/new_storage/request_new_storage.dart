@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/price_bottom_sheet_widget.dart';
+import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/show_selction_widget/my_list_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/show_selction_widget/show_bulk_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -65,69 +67,7 @@ class RequestNewStorageScreen extends StatelessWidget {
                     SizedBox(
                       height: sizeH16,
                     ),
-                    storageViewModel.userStorageCategoriesData.length > 0
-                        ? GetBuilder<StorageViewModel>(
-                            builder: (build) => Container(
-                                  color: colorTextWhite,
-                                  padding: EdgeInsets.all(20),
-                                  child: ListView(
-                                    shrinkWrap: true,
-                                    primary: false,
-                                    children: [
-                                      Text("My List"),
-                                      SizedBox(
-                                        height: sizeH10,
-                                      ),
-                                      PriceBottomSheetWidget(
-                                        priceTitle: "Total",
-                                        isTotalPalnce: true,
-                                      ),
-                                      SizedBox(
-                                        height: sizeH10,
-                                      ),
-                                      ListView(
-                                          primary: false,
-                                          shrinkWrap: true,
-                                          children: build
-                                              .userStorageCategoriesData
-                                              .asMap()
-                                              .map((index, value) => MapEntry(
-                                                    index,
-                                                    build.checkCategoreyType(
-                                                                    storageCategoreyType:
-                                                                        value
-                                                                            .storageCategoryType!) ==
-                                                                ConstanceNetwork
-                                                                    .quantityCategoryType ||
-                                                            build.checkCategoreyType(
-                                                                    storageCategoreyType:
-                                                                        value
-                                                                            .storageCategoryType!) ==
-                                                                ConstanceNetwork
-                                                                    .spaceCategoryType
-                                                        ? ShowSpaceAndQuantityWidget(
-                                                            index: index,
-                                                            storageCategoriesData:
-                                                                value,
-                                                            storageItem: value
-                                                                    .storageItem![
-                                                                0])
-                                                        : ShowBulkItem(
-                                                            storageCategoriesData:
-                                                                value,
-                                                            index: index,
-                                                            storageItem: value
-                                                                .storageItem![0]),
-                                                  ))
-                                              .values
-                                              .toList()),
-                                      SizedBox(
-                                        height: sizeH50,
-                                      ),
-                                    ],
-                                  ),
-                                ))
-                        : const SizedBox(),
+                    MyListWidget()
                   ],
                 ),
                 Positioned(
@@ -141,16 +81,15 @@ class RequestNewStorageScreen extends StatelessWidget {
                           storageViewModel.userStorageCategoriesData.length > 0
                               ? colorPrimary
                               : colorUnSelectedWidget,
-                      onClicked:
-                          storageViewModel.userStorageCategoriesData.length > 0
-                              ? () {
-                                storageViewModel.currentLevel = 1;
-                                Get.to(() => RequestNewStoragesStepTwoScreen());
-                              }
-                              : () {
-                                //  storageViewModel.currentLevel = 1;
-                                // Get.to(() => RequestNewStoragesStepTwoScreen());
-                              },
+                      onClicked: storageViewModel
+                                  .userStorageCategoriesData.length >
+                              0
+                          ? () {
+                              storageViewModel.currentLevel = 1;
+                              Get.put(ProfileViewModle());
+                              Get.to(() => RequestNewStoragesStepTwoScreen());
+                            }
+                          : () {},
                       isExpanded: true),
                 )
               ],

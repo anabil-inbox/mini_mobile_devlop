@@ -77,6 +77,9 @@ abstract class ConstanceNetwork {
   static String storageCheckQuantity = "inbox_app.api.quantity.quantity";
   static String storageAddOrder = "inbox_app.api.sales_order.sales_order";
   static String storageWareHouse = "inbox_app.api.warehouse.warehouse";
+  static String storageAddNewStorage = "inbox_app.api.sales_order.sales_order";
+
+
 
   //todo this for constance type of user
   static String userType = "user";

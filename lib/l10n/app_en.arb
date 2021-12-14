@@ -136,5 +136,10 @@
     "custom_space":"Custom Space",
     "you_have_to_add_item":"You Have To Add Item",
     "sorry_there_are_no_work_hours":"Sorry, there are no Work hours on this day",
-    "add_to_cart":"Add To Cart"
+    "add_to_cart":"Add To Cart",
+    "you_have_to_add_address":"You Have To Select Address",
+    "you_have_to_select_date":"You Have To Select Date",
+    "you_have_to_select_time":"You Have To Select Time",
+    "empty_order":"Empty Order",
+    "you_have_to_select_payment_method":"You Have To Select Payment Method"
 }

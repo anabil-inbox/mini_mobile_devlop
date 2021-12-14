@@ -65,4 +65,18 @@ class StorageFeature {
       return [];
     }
   }
+
+
+   Future<AppResponse> addNewStorage({var body}) async {
+    var appResponse = await StorageModel.getInstance.addNewStorage(
+        url: "${ConstanceNetwork.storageAddOrder}",
+        body: body,
+        header: ConstanceNetwork.header(4));
+        Logger().i("${appResponse.toJson()}");
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
 }

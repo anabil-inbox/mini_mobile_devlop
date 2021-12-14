@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
+import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
@@ -15,8 +16,6 @@ import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bo
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/bulk_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/quantity_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
-import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
-import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
@@ -25,6 +24,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
+import 'package:inbox_clients/util/string.dart';
 import 'package:logger/logger.dart';
 
 class StorageViewModel extends BaseController {
@@ -707,7 +707,62 @@ class StorageViewModel extends BaseController {
 
   Future<void> addNewStorage() async {
     //still this layer will complete when you complete order // refer to =>
+    List<StorageItem> storageFeature = [];
+
+    userStorageCategoriesData.forEach((element) {
+      element.selectedItem!.quantity = element.quantity;
+      storageFeature.add(element.selectedItem!);
+    });
+
+    isLoading = true;
+    update();
+    await StorageFeature.getInstance.addNewStorage(body: {
+      "shipping_address_name": "dadadas-Other",
+      // "items_list": jsonEncode(storageFeature)
+      "items_list": jsonEncode([
+        {
+          "item_code": "Bulk ItemTest_in",
+          "qty": 1,
+          "delivery_date": "2021-12-8",
+          "subscription": "Daily",
+          "subscription_duration": 10,
+          "subscription_price": 0,
+          "group_id": 1,
+          "storage_type": "Item",
+          "item_parent": 0,
+          "need_adviser": 0
+        },
+      ])
+    }).then((value) => {
+          if (value.status!.success!)
+            {
+              isLoading = false,
+              update(),
+              snackSuccess("${tr.success}", "${value.status!.message}"),
+            }
+          else
+            {
+              isLoading = false,
+              update(),
+              snackError("${tr.error_occurred}", "${value.status!.message}")
+            }
+        });
   }
+
+  // validate Adding New Storage:
+  bool isValiedToSaveStorage() {
+    if (userStorageCategoriesData.isEmpty) {
+      snackError("${tr.error_occurred}", "${tr.empty_order}");
+      return false;
+    } else if (GetUtils.isNull(selectedPaymentMethod)) {
+      snackError(
+          "${tr.error_occurred}", "${tr.you_have_to_select_payment_method}");
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   // getting Address For Stores
   Set<Store> storeAddress = {};
   Set<Address> userAddress = {};
@@ -723,14 +778,31 @@ class StorageViewModel extends BaseController {
     update();
   }
 
-  getUserAddress() async {
-    await ProfileHelper.getInstance.getMyAddress().then((value) => {
-          if (value.status!.success!)
-            {
-              userAddress = value.data.map((e) => Address.fromJson(e)).toList(),
-            }
-        });
-    update();
+  // this is for validate step two if All inputs true :
+  bool isStepTwoValidate({required String catygoreyType}) {
+    if (catygoreyType == ConstanceNetwork.itemCategoryType ||
+        catygoreyType == ConstanceNetwork.quantityCategoryType) {
+      if (GetUtils.isNull(selectedAddress)) {
+        snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
+        return false;
+      }
+    } else if (GetUtils.isNull(storeAddress)) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
+      return false;
+    }
+
+    if (GetUtils.isNull(selectedDateTime)) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_select_date}");
+      return false;
+    } else if (selctedWorksHours!.isEmpty) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_select_time}");
+      return false;
+    } else if (GetUtils.isNull(selectedDay)) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_select_time}");
+      return false;
+    } else {
+      return true;
+    }
   }
 
   // working hours bottom sheet
@@ -783,6 +855,9 @@ class StorageViewModel extends BaseController {
       isScrollControlled: true,
     );
   }
+  // this for payment Selcted::
+
+  PaymentMethod? selectedPaymentMethod;
 
   void deleteCategoreyDataBottomSheet(
       {required StorageCategoriesData storageCategoriesData}) {
