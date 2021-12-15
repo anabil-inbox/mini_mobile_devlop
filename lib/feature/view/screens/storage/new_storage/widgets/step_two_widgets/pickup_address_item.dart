@@ -6,6 +6,8 @@ import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/font_dimne.dart';
 
 class PickupAddressItem extends StatelessWidget {
   const PickupAddressItem({Key? key, required this.address, this.store})
@@ -61,7 +63,7 @@ class PickupAddressItem extends StatelessWidget {
                 SizedBox(
                   width: sizeW20,
                 ),
-                Text("${address.streat ?? ""}")
+                Text("${address.streat ?? ""}" , style: textStyleHints()!.copyWith(fontSize: fontSize14),)
               ],
             ),
             SizedBox(

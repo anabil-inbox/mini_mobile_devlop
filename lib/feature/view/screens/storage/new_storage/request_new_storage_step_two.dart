@@ -46,7 +46,7 @@ class RequestNewStoragesStepTwoScreen extends StatelessWidget {
                     );
                   },
                 ),
-                Text("Schedule Pickup"),
+                Text("${tr.schedule_pickup}"),
                 SizedBox(
                   height: sizeH10,
                 ),
@@ -58,8 +58,9 @@ class RequestNewStoragesStepTwoScreen extends StatelessWidget {
               ],
             ),
             PositionedDirectional(
-                bottom: 34,
-                start: 16,
+                bottom: padding32,
+                start: padding0,
+                end: padding0,
                 child: Container(
                     width: sizeW150,
                     child: PrimaryButton(
@@ -77,15 +78,15 @@ class RequestNewStoragesStepTwoScreen extends StatelessWidget {
                         }
                       },
                     ))),
-            PositionedDirectional(
-                bottom: 34,
-                end: 16,
-                child: Container(
-                    width: sizeW150,
-                    child: SeconderyFormButton(
-                      buttonText: "${tr.add_to_cart}",
-                      onClicked: () {},
-                    ))),
+            // PositionedDirectional(
+            //     bottom: 34,
+            //     end: 16,
+            //     child: Container(
+            //         width: sizeW150,
+            //         child: SeconderyFormButton(
+            //           buttonText: "${tr.add_to_cart}",
+            //           onClicked: () {},
+            //         ))),
           ],
         ),
       ),

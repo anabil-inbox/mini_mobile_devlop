@@ -20,7 +20,7 @@ class PickupAddress extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Pickup Address"),
+        Text("${tr.pickup_address}"),
         SizedBox(
           height: sizeH10,
         ),

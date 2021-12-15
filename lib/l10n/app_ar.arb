@@ -142,5 +142,14 @@
      "you_have_to_select_date":"يجب عليك تحديد التاريخ",
      "you_have_to_select_time":"يجب عليك تحديد الوقت",
      "empty_order":"الطلب فارغ",
-      "you_have_to_select_payment_method":"يجب عليك ان تحدد وسيلة دفع"
+      "you_have_to_select_payment_method":"يجب عليك ان تحدد وسيلة دفع",
+      "request_box":"اطلب الصندوق",
+      "select_payment_method":"اختر طريقة الدفع",
+      "my_list":"قائمتي",
+      "total":"المجمل",
+      "location":"الموقع",
+      "schedule_pickup":"وقت الاستلام",
+      "date": "التاريخ",
+      "time":"الوقت",
+      "pickup_address":"عنوان الطلب"
 }

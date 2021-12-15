@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/view/screens/home/widget/box_gv_item_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/box_gv_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/filter_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
@@ -16,7 +15,6 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
-import 'package:inbox_clients/util/font_dimne.dart';
 
 import 'widget/box_lv_widget.dart';
 

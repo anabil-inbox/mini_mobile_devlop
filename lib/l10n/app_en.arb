@@ -141,5 +141,16 @@
     "you_have_to_select_date":"You Have To Select Date",
     "you_have_to_select_time":"You Have To Select Time",
     "empty_order":"Empty Order",
-    "you_have_to_select_payment_method":"You Have To Select Payment Method"
+    "you_have_to_select_payment_method":"You Have To Select Payment Method",
+    "request_box":"Request Box",
+    "select_payment_method":"Select Payment Method",
+    "my_list":"My List",
+    "total":"Total",
+    "boxes":"Boxes",
+    "payment":"Payment",
+    "location":"Location",
+    "schedule_pickup":"Schedule pickup",
+    "date":"Date",
+    "time":"Time",
+    "pickup_address":"Pickup Address"
 }

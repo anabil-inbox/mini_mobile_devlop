@@ -8,7 +8,10 @@ import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
+import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/date_time_util.dart';
+import 'package:inbox_clients/util/font_dimne.dart';
 
 class SchedulePickup extends StatelessWidget {
   const SchedulePickup({Key? key}) : super(key: key);
@@ -35,7 +38,10 @@ class SchedulePickup extends StatelessWidget {
               builder: (_) {
                 return Row(
                   children: [
-                    Text("Date"),
+                    Text(
+                      "${tr.date}",
+                      style: textStyleHints(),
+                    ),
                     const Spacer(),
                     !GetUtils.isNull(storageViewModel.selectedDateTime)
                         ? Container(
@@ -47,8 +53,12 @@ class SchedulePickup extends StatelessWidget {
                             ),
                             child: Row(
                               children: [
-                                Text(
-                                    "${storageViewModel.selectedDateTime?.year}/${storageViewModel.selectedDateTime?.month}/${storageViewModel.selectedDateTime?.day}"),
+                                CustomTextView(
+                                  txt:
+                                      "${storageViewModel.selectedDateTime?.year}/${storageViewModel.selectedDateTime?.month}/${storageViewModel.selectedDateTime?.day}",
+                                  textStyle: textStyleHints()!
+                                      .copyWith(fontSize: fontSize13),
+                                ),
                                 SvgPicture.asset("assets/svgs/down_arrow.svg")
                               ],
                             ),
@@ -82,7 +92,10 @@ class SchedulePickup extends StatelessWidget {
               builder: (_) {
                 return Row(
                   children: [
-                    Text("Time"),
+                    Text(
+                      "${tr.time}",
+                      style: textStyleHints(),
+                    ),
                     const Spacer(),
                     !GetUtils.isNull(storageViewModel.selectedDay)
                         ? Container(
@@ -100,6 +113,8 @@ class SchedulePickup extends StatelessWidget {
                                     CustomTextView(
                                       txt:
                                           "${DateUtility.getLocalhouersFromUtc(day: storageViewModel.selectedDay!)}",
+                                      textStyle: textStyleHints()!
+                                          .copyWith(fontSize: fontSize13),
                                     ),
                                     SizedBox(
                                       width: sizeW7,

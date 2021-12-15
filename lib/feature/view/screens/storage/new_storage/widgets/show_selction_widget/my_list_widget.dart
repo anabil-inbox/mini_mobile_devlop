@@ -5,6 +5,7 @@ import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 import 'show_space_and_quantity_widget.dart';
 import 'show_bulk_widget.dart';
@@ -27,12 +28,12 @@ class MyListWidget extends StatelessWidget {
                     shrinkWrap: true,
                     primary: false,
                     children: [
-                      Text("My List"),
+                      Text("${tr.my_list}"),
                       SizedBox(
                         height: sizeH10,
                       ),
                       PriceBottomSheetWidget(
-                        priceTitle: "Total",
+                        priceTitle: "${tr.total}",
                         isTotalPalnce: true,
                       ),
                       SizedBox(

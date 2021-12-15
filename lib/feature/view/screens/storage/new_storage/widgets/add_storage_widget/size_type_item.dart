@@ -87,7 +87,7 @@ class SizeTypeItem extends StatelessWidget {
           ),
           PositionedDirectional(
             end: padding0,
-            top: -10,
+            top: padding10! * -1,
             child: SizedBox(
               width: sizeW40,
               child: TextButton(

@@ -48,7 +48,7 @@ class StorageSizeType extends StatelessWidget {
                       crossAxisCount: 2,
                       mainAxisSpacing: sizeW10!,
                       crossAxisSpacing: sizeH10!,
-                      childAspectRatio: (sizeW290! / sizeH200!)),
+                      childAspectRatio: (sizeH320 / sizeH200!)),
                   itemBuilder: (contxet, index) {
                     return SizeTypeItem(
                       media: [

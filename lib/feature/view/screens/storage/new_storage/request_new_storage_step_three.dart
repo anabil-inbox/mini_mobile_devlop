@@ -6,7 +6,6 @@ import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/a
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_three_widgets/payment_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
-import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -64,7 +63,8 @@ class RequestNewStorageStepThree extends StatelessWidget {
                 ),
                 PositionedDirectional(
                     bottom: padding32,
-                    start: padding40,
+                    start: padding20,
+                    end: padding20,
                     child: Container(
                         width: sizeW150,
                         child: GetBuilder<StorageViewModel>(
@@ -74,7 +74,7 @@ class RequestNewStorageStepThree extends StatelessWidget {
                             return PrimaryButton(
                               isExpanded: false,
                               isLoading: logic.isLoading,
-                              textButton: "Request Box",
+                              textButton: "${tr.request_box}",
                               onClicked: () {
                                 if (logic.isValiedToSaveStorage()) {
                                   logic.addNewStorage();
@@ -83,15 +83,15 @@ class RequestNewStorageStepThree extends StatelessWidget {
                             );
                           },
                         ))),
-                PositionedDirectional(
-                    bottom: padding32,
-                    end: padding40,
-                    child: Container(
-                        width: sizeW150,
-                        child: SeconderyFormButton(
-                          buttonText: "${tr.add_to_cart}",
-                          onClicked: () {},
-                        ))),
+                // PositionedDirectional(
+                //     bottom: padding32,
+                //     end: padding40,
+                //     child: Container(
+                //         width: sizeW150,
+                //         child: SeconderyFormButton(
+                //           buttonText: "${tr.add_to_cart}",
+                //           onClicked: () {},
+                //         ))),
               ],
             ),
           );
