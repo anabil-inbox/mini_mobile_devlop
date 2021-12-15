@@ -96,8 +96,8 @@ abstract class ConstanceNetwork {
 
   ///here keys of duration status;
     static var dailyDurationType = "Daily";
-    static var montlyDurationType = "Montly";
-    static var yearlyDurationType = "yearly";
+    static var montlyDurationType = "Monthly";
+    static var yearlyDurationType = "Yearly";
     static var unLimtedDurationType = "unlimited";
     
  //here block and enaeld Folder icons;

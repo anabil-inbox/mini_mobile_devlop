@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
+import 'package:inbox_clients/feature/model/storage/order_item.dart';
 import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
@@ -501,6 +502,22 @@ class StorageViewModel extends BaseController {
   //     }
   //   }
   // }
+  void onAddingAdviser({required StorageCategoriesData storageCategoriesData}) {
+    if (isNeedingAdviser) {
+      balance = 0;
+      selectedFeaures.clear();
+      update();
+      storageCategoriesData.storageItem?.forEach((element) {
+        if (element.options!.isEmpty &&
+            selectedFeaures.isEmpty &&
+            element.item == null) {
+          localBulk.optionStorageItem = element;
+        }
+      });
+
+      localBulk.printObject();
+    }
+  }
 
   void addNewBulk(
       {required StorageCategoriesData storageCategoriesData,
@@ -511,6 +528,7 @@ class StorageViewModel extends BaseController {
         localBulk.endStorageItem.add(element);
       }
     });
+
     getBulksBalance(localBulk: localBulk);
   }
 
@@ -523,6 +541,9 @@ class StorageViewModel extends BaseController {
         if (areArraysEquales(
             element.options!.toList(), selectedFeaures.toList())) {
           localBulk.optionStorageItem = element;
+          lastStorageItem?.quantity = quantity;
+          storageCategoriesData.quantity = quantity;
+          lastStorageItem = element;
         }
       });
     }
@@ -575,6 +596,7 @@ class StorageViewModel extends BaseController {
       balance = 0;
     }
 
+    localBulk.bulkprice = balance;
     localBulk.printObject();
     update();
   }
@@ -585,11 +607,7 @@ class StorageViewModel extends BaseController {
       {required StorageCategoriesData storageCategoriesData,
       required int index,
       required bool isUpdate}) {
-    if (storageCategoriesData.storageCategoryType ==
-            ConstanceNetwork.itemCategoryType &&
-        isNeedingAdviser) {
-      return;
-    } else if (localBulk.endStorageItem.isEmpty) {
+    if (localBulk.endStorageItem.isEmpty && !isNeedingAdviser) {
       snackError("${tr.error_occurred}", "${tr.you_have_to_add_item}");
       return;
     }
@@ -707,32 +725,56 @@ class StorageViewModel extends BaseController {
 
   Future<void> addNewStorage() async {
     //still this layer will complete when you complete order // refer to =>
-    List<StorageItem> storageFeature = [];
+    List<OrderItem> orderIyems = [];
 
     userStorageCategoriesData.forEach((element) {
-      element.selectedItem!.quantity = element.quantity;
-      storageFeature.add(element.selectedItem!);
+      final localOrderItem = OrderItem();
+      if (element.storageCategoryType == ConstanceNetwork.itemCategoryType) {
+        element.localBulk?.endStorageItem.forEach((innerElement) {
+          localOrderItem.itemCode = innerElement.name;
+          localOrderItem.deliveryDate = selectedDateTime.toString();
+          localOrderItem.subscription = element.selectedDuration;
+          localOrderItem.qty = innerElement.quantity;
+          localOrderItem.subscriptionDuration = element.numberOfDays;
+          localOrderItem.groupId = element.groupId;
+          localOrderItem.storageType = element.storageCategoryType;
+          localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
+          localOrderItem.subscriptionPrice =
+           element.userPrice! / element.numberOfDays! / innerElement.quantity!;
+          orderIyems.add(localOrderItem);
+        });
+        if (!GetUtils.isNull(element.localBulk!.optionStorageItem)) {
+          localOrderItem.itemCode = element.localBulk!.optionStorageItem!.name;
+          localOrderItem.deliveryDate = selectedDateTime.toString();
+          localOrderItem.subscription = element.selectedDuration;
+          localOrderItem.qty = 1;
+          localOrderItem.subscriptionDuration = element.numberOfDays;
+          localOrderItem.groupId = element.groupId;
+          localOrderItem.storageType = element.storageCategoryType;
+          localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
+          orderIyems.add(localOrderItem);
+        }
+      } else {
+        localOrderItem.itemCode = element.selectedItem!.name;
+        localOrderItem.qty = element.quantity;
+        localOrderItem.deliveryDate = selectedDateTime.toString();
+        localOrderItem.subscription = element.selectedDuration;
+        localOrderItem.subscriptionDuration = element.numberOfDays;
+        localOrderItem.groupId = element.groupId;
+        localOrderItem.storageType = element.storageCategoryType;
+        localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
+        localOrderItem.subscriptionPrice =
+            element.userPrice! / element.numberOfDays! / element.quantity!;
+        orderIyems.add(localOrderItem);
+      }
     });
 
     isLoading = true;
     update();
     await StorageFeature.getInstance.addNewStorage(body: {
-      "shipping_address_name": "dadadas-Other",
+      "shipping_address_name": "${selectedAddress!.id}",
       // "items_list": jsonEncode(storageFeature)
-      "items_list": jsonEncode([
-        {
-          "item_code": "Bulk ItemTest_in",
-          "qty": 1,
-          "delivery_date": "2021-12-8",
-          "subscription": "Daily",
-          "subscription_duration": 10,
-          "subscription_price": 0,
-          "group_id": 1,
-          "storage_type": "Item",
-          "item_parent": 0,
-          "need_adviser": 0
-        },
-      ])
+      "items_list": jsonEncode(orderIyems)
     }).then((value) => {
           if (value.status!.success!)
             {
@@ -750,6 +792,7 @@ class StorageViewModel extends BaseController {
   }
 
   // validate Adding New Storage:
+
   bool isValiedToSaveStorage() {
     if (userStorageCategoriesData.isEmpty) {
       snackError("${tr.error_occurred}", "${tr.empty_order}");

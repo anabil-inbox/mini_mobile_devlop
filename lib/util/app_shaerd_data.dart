@@ -583,4 +583,9 @@ List<Day> getDayByNumber({required DateTime selectedDateTime}) {
   return workTime;
 }
 
+num calculateBalance({required num balance}){
+  return balance;
+}
+
+
 AppLocalizations get tr => AppLocalizations.of(Get.context!)!;

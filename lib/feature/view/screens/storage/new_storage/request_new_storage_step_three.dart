@@ -57,6 +57,9 @@ class RequestNewStorageStepThree extends StatelessWidget {
                       height: sizeH16,
                     ),
                     PaymentWidget(),
+                    SizedBox(
+                      height: sizeH100,
+                    ),
                   ],
                 ),
                 PositionedDirectional(

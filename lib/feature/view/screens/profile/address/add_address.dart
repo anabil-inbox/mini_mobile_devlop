@@ -16,6 +16,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
   AddAddressScreen({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
+  static ProfileViewModle profileViewModle = Get.find<ProfileViewModle>();
 
   @override
   Widget build(BuildContext context) {
@@ -95,20 +96,33 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                 SizedBox(
                   height: sizeH10,
                 ),
-                TextFormField(
-                  onSaved: (newValue) {
-                    controller.tdZone.text = newValue!;
-                    controller.update();
+                InkWell(
+                  onTap: (){
+                    profileViewModle.showZoneBottmSheet();
                   },
-                  controller: controller.tdZone,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return '${tr.fill_the_zone_correctly}';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                      hintText: "${tr.zone}"),
+                  child: TextFormField(
+                    onSaved: (newValue) {
+                      controller.tdZone.text = newValue!;
+                      controller.update();
+                    },
+                    controller: controller.tdZone,
+                    validator: (value) {
+                      
+                      if (value == null || value.trim().isEmpty) {
+                        return '${tr.fill_the_zone_correctly}';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                          suffixIcon: Padding(
+                            padding: EdgeInsets.all(padding6!),
+                            child: SvgPicture.asset("assets/svgs/down_arrow.svg"),
+                          ),
+                      //  suffixStyle: TextStyle(color: Colors.transparent),
+                      //   suffix: SvgPicture.asset("assets/svgs/down_arrow.svg"),
+                        enabled: false,
+                        hintText: "${tr.zone}"),
+                  ),
                 ),
                 SizedBox(
                   height: sizeH10,
@@ -221,6 +235,9 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                 ),
                 GetBuilder<ProfileViewModle>(
                   init: ProfileViewModle(),
+                  initState: (_){
+
+                  },
                   builder: (_) {
                     return PrimaryButton(
                         textButton: "${tr.save}",
@@ -230,9 +247,8 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                             controller.addNewAddress(
                               Address(
                               addressTitle: controller.tdTitle.text,
-                              isPrimaryAddress:
-                                  controller.isAccepteDefoltLocation ? 1 : 0,
-                              zone: controller.tdZone.text,
+                              isPrimaryAddress: controller.isAccepteDefoltLocation ? 1 : 0,
+                              zone: controller.userAreaZone?.id ?? "",
                               streat: controller.tdStreet.text,
                               extraDetails: controller.tdExtraDetailes.text,
                               buildingNo: controller.tdBuildingNo.text,

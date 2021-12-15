@@ -6,6 +6,7 @@ import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/date_time_util.dart';
 
 class SelectedHourItem extends StatelessWidget {
   SelectedHourItem({Key? key, required this.day}) : super(key: key);
@@ -18,7 +19,7 @@ class SelectedHourItem extends StatelessWidget {
     return Column(
       children: [
         SeconderyButtom(
-            textButton: "${day?.from} - ${day?.to}",
+            textButton: "${DateUtility.getLocalhouersFromUtc(day: day!)}",
             onClicked: () {
               storageViewModel.selectedDay = day;
               storageViewModel.update();

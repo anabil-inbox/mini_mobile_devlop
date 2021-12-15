@@ -42,7 +42,7 @@ class StorageCategoriesData {
   String? video;
   String? description;
   num? userPrice;
-  int? quantity;
+  int? quantity = 1;
   int? groupId;
   StorageItem? selectedItem;
   String? selectedDuration;

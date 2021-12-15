@@ -18,7 +18,7 @@ import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
-import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
+import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -100,7 +100,7 @@ class ProfileViewModle extends BaseController {
     update();
     FocusScope.of(Get.context!).unfocus();
     try {
-     await ProfileHelper.getInstance
+      await ProfileHelper.getInstance
           .addNewAddress(newAddress.toJson())
           .then((value) => {
                 Logger().i("${value.status!.message}"),
@@ -236,6 +236,34 @@ class ProfileViewModle extends BaseController {
     } catch (e) {}
   }
 
+  // to od here for bottom sheet Time Zone :
+  AreaZone? userAreaZone;
+
+  void showZoneBottmSheet() {
+    Set<AreaZone> areaZone =
+        ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting()))
+                .areaZones
+                ?.toSet() ??
+            {};
+    Get.bottomSheet(
+        areaZone.isEmpty
+            ? Text("Sorrey , No Zone Area Available")
+            : ListView(
+                shrinkWrap: true,
+                children: areaZone
+                    .map((e) => SeconderyFormButton(
+                        buttonText: "${e.areaZone}",
+                        onClicked: () {
+                          userAreaZone = e;
+                          tdZone.text = e.areaZone ?? "";
+                          Get.back();
+                          update();
+                        }))
+                    .toList(),
+              ),
+        isScrollControlled: true);
+  }
+
   //-- for user Edit profile:
 
   editProfileUser({String? identidire}) async {
@@ -325,7 +353,7 @@ class ProfileViewModle extends BaseController {
   // for maps functions && td Controller :
   TextEditingController tdSearchMap = TextEditingController();
   Completer<GoogleMapController> controllerCompleter = Completer();
-  GoogleMapController? mapController; 
+  GoogleMapController? mapController;
   double latitude = 25.36;
   double longitude = 51.18;
   String addressFromLocation = "";

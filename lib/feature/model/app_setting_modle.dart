@@ -11,7 +11,8 @@ class ApiSettings {
       this.notAllowed,
       this.languges,
       this.workingHours,
-      this.paymentMethod});
+      this.paymentMethod,
+      this.areaZones});
 
   String? customerType;
   String? aboutUs;
@@ -22,6 +23,7 @@ class ApiSettings {
   List<Language>? languges;
   WorkingHours? workingHours;
   List<PaymentMethod>? paymentMethod;
+  List<AreaZone>? areaZones;
 
   factory ApiSettings.fromJson(Map<String, dynamic> json) => ApiSettings(
         customerType: json["customer_type"],
@@ -36,6 +38,8 @@ class ApiSettings {
         workingHours: WorkingHours.fromJson(json["working_hours"]),
         paymentMethod: List<PaymentMethod>.from(
             json["payment_method"].map((x) => PaymentMethod.fromJson(x))),
+        areaZones: List<AreaZone>.from(
+            json["area_zones"].map((x) => AreaZone.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,7 +53,8 @@ class ApiSettings {
         "languages": List<dynamic>.from(languges!.map((x) => x.toJson())),
         "payment_method":
             List<dynamic>.from(paymentMethod!.map((x) => x.toJson())),
-        "working_hours": workingHours?.toJson()
+        "working_hours": workingHours?.toJson(),
+        "area_zones": List<dynamic>.from(areaZones!.map((x) => x.toJson())),
       };
 }
 
@@ -158,5 +163,25 @@ class Day {
   Map<String, dynamic> toJson() => {
         "from": from,
         "to": to,
+      };
+}
+
+class AreaZone {
+  AreaZone({
+    this.id,
+    this.areaZone,
+  });
+
+  String? id;
+  String? areaZone;
+
+  factory AreaZone.fromJson(Map<String, dynamic> json) => AreaZone(
+        id: json["id"] == null ? null : json["id"],
+        areaZone: json["area_zone"] == null ? null : json["area_zone"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "area_zone": areaZone,
       };
 }
