@@ -151,5 +151,11 @@
       "schedule_pickup":"وقت الاستلام",
       "date": "التاريخ",
       "time":"الوقت",
-      "pickup_address":"عنوان الطلب"
+      "pickup_address":"عنوان الطلب",
+      "day":"يوم",
+      "befor":"منذ",
+      "Minutes":"دقيقة",
+      "Minute":"دقيقة",
+      "secondes":"ثواني",
+      "now":"الان"
 }

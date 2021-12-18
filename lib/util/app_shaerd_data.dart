@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as Img;
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
@@ -27,6 +28,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'app_color.dart';
 import 'app_style.dart';
+import 'constance/constance.dart';
 import 'string.dart';
 import 'package:collection/collection.dart';
 
@@ -587,5 +589,22 @@ num calculateBalance({required num balance}){
   return balance;
 }
 
+// Widget return By Box Status
+
+Widget retuenBoxByStatus({required String storageStatus}) {
+  String boxPath = "assets/svgs/desable_box.svg";
+  if (storageStatus == LocalConstance.boxAtHome) {
+    boxPath = "assets/svgs/home_box_red.svg";
+  } else if (storageStatus == LocalConstance.boxinWareHouse) {
+    boxPath = "assets/svgs/box_in_ware_house.svg";
+  } else if (storageStatus == LocalConstance.boxOnTheWay) {
+    boxPath = "assets/svgs/desable_box.svg";
+  }
+  return SvgPicture.asset(
+    boxPath,
+    width: sizeW50,
+    height: sizeH40,
+  );
+}
 
 AppLocalizations get tr => AppLocalizations.of(Get.context!)!;

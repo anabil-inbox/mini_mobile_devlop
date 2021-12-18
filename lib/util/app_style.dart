@@ -319,6 +319,10 @@ ButtonStyle? get buttonStyle => ButtonStyle(
     shape: MaterialStateProperty.all(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(6))));
 
+ ButtonStyle get buttonStyleBackgroundClicable => ButtonStyle(
+     backgroundColor: MaterialStateProperty.all(colorPrimary.withOpacity(0.1)),
+ );       
+
 ButtonStyle? get primaryButtonStyle => ButtonStyle(
     padding:
         MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: padding12!)),

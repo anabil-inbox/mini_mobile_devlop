@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
+import 'package:inbox_clients/feature/view/screens/my_orders/my_orders_screen.dart';
 import 'package:inbox_clients/feature/view/screens/notification/notification_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/request_new_storage.dart';
-import 'package:inbox_clients/feature/view/widgets/empty_state/home_empty_statte.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -26,7 +27,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
 
   List<Widget> bnbScreens = [
     const HomeScreen(),
-    const EmptyHomeWidget(),
+    const MyOrdersScreen(),
     const NotificationScreen(),
     const ProfileScreen(),
   ];
@@ -48,7 +49,6 @@ class _HomePageHolderState extends State<HomePageHolder> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
-
         onPressed: () {
           Logger().d(
               "${SharedPref.instance.getCurrentUserData().toJson().toString()}");
@@ -93,6 +93,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
                         SizedBox(width: sizeW20),
                         MaterialButton(
                           onPressed: () {
+                            Get.put(MyOrderViewModle());
                             logic.changeTab(1);
                             print('Event');
                           },

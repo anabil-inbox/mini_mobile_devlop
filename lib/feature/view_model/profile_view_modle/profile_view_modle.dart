@@ -17,11 +17,14 @@ import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
+import 'package:inbox_clients/feature/view/screens/profile/address/widgets/area_zone_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
-import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
+import 'package:inbox_clients/util/app_color.dart';
+import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
+import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
@@ -199,7 +202,8 @@ class ProfileViewModle extends BaseController {
   //-- for log out
 
   logOutDiloag() {
-    Get.bottomSheet(GlobalBottomSheet(
+    Get.bottomSheet(
+      GlobalBottomSheet(
       title: "${tr.are_you_sure_you_want_to_log_out}",
       onOkBtnClick: () {
         logOut();
@@ -245,23 +249,36 @@ class ProfileViewModle extends BaseController {
                 .areaZones
                 ?.toSet() ??
             {};
+
     Get.bottomSheet(
         areaZone.isEmpty
-            ? Text("Sorrey , No Zone Area Available")
-            : ListView(
-                shrinkWrap: true,
-                children: areaZone
-                    .map((e) => SeconderyFormButton(
-                        buttonText: "${e.areaZone}",
-                        onClicked: () {
-                          userAreaZone = e;
-                          tdZone.text = e.areaZone ?? "";
-                          Get.back();
-                          update();
-                        }))
-                    .toList(),
+            ? Text("Sorrey , No Zone Area Available", style:  textStyleTitle())
+            : Container(
+              decoration: BoxDecoration(
+              color: colorBackground,
+              borderRadius : BorderRadius.vertical(top: Radius.circular(padding30!))
               ),
-        isScrollControlled: true);
+              padding: EdgeInsets.symmetric(horizontal: padding20!),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: sizeH20,),
+                  Text("Select Your Time Zone " , style: textStyleTitle()!.copyWith(color: colorPrimary),),
+                  SizedBox(height: sizeH20,),
+                  ListView(
+                      shrinkWrap: true,
+                      children: areaZone
+                          .map((e) => AreaZoneWidget(
+                                areaZone: e,
+                              ))
+                          .toList(),
+                    ),
+                ],
+              ),
+            ),
+        isScrollControlled: true
+        );
+ 
   }
 
   //-- for user Edit profile:

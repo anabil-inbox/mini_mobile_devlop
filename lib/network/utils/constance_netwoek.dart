@@ -29,6 +29,13 @@ abstract class ConstanceNetwork {
   static var mobileNumberKey = "mobile_number";
   static var countryCodeKey = "country_code";
   ///todo this for add new contact key
+  
+  ///to add here home api End Pointes :
+  static String getCustomerBoxessEndPoint = "inbox_app.api.customer_storages.get_storages";
+  static String getSearchBoxessEndPoint = "inbox_app.search.search.search_box";
+  
+  // to add here my order End Points: 
+  static String getMyOrddersEndPoint = "inbox_app.api.sales_order.get_sales_orders";
 
 
   ///todo here insert end Point
@@ -79,6 +86,10 @@ abstract class ConstanceNetwork {
   static String storageWareHouse = "inbox_app.api.warehouse.warehouse";
   static String storageAddNewStorage = "inbox_app.api.sales_order.sales_order";
 
+  // this for constance network 
+
+  static String page = "page";
+  static String pageSize = "page_size";
 
 
   //todo this for constance type of user

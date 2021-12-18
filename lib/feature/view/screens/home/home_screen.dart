@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/core/dialog_loading.dart';
+import 'package:inbox_clients/feature/view/screens/home/search_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/box_gv_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/filter_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
@@ -9,6 +10,7 @@ import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/empty_state/home_empty_statte.dart';
 import 'package:inbox_clients/feature/view/widgets/icon_btn.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -20,6 +22,8 @@ import 'widget/box_lv_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  static HomeViewModel homeViewModle = Get.find<HomeViewModel>();
 
 //todo this for search
   Widget get searchWidget => Container(
@@ -78,7 +82,9 @@ class HomeScreen extends StatelessWidget {
                 width: sizeW48,
                 height: sizeH48,
                 backgroundColor: colorRed,
-                onPressed: () {},
+                onPressed: () {
+                  
+                },
                 borderColor: colorTrans,
                 icon: "assets/svgs/Scan.svg",
               ),
@@ -153,31 +159,41 @@ class HomeScreen extends StatelessWidget {
                 SingleChildScrollView(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: sizeW20!),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: sizeH150,
-                        ),
-                        const FilterWidget(),
-                        SizedBox(
-                          height: sizeH10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                    child: GetBuilder<HomeViewModel>(
+                      init: HomeViewModel(),
+                      initState: (_) {},
+                      builder: (_) {
+                        return Column(
                           children: [
-                            textHintsWidget("${tr.on_the_way}", null),
-                            textHintsWidget(
-                                "${tr.in_warehouse}", boxColorOrange),
-                            textHintsWidget("${tr.at_home}", boxColorRed),
+                            SizedBox(
+                              height: sizeH150,
+                            ),
+                            const FilterWidget(),
+                            SizedBox(
+                              height: sizeH10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                textHintsWidget("${tr.on_the_way}", null),
+                                textHintsWidget(
+                                    "${tr.in_warehouse}", boxColorOrange),
+                                textHintsWidget("${tr.at_home}", boxColorRed),
+                              ],
+                            ),
+                            if (!logic.isListView!) ...[
+                              homeViewModle.isLoading
+                                   ? DialogLoading()
+                                   : GVWidget(),
+                            ] else ...[
+                              homeViewModle.isLoading
+                                  ? DialogLoading()
+                                  : LVWidget(),
+                            ],
                           ],
-                        ),
-                        if(!logic.isListView!)...[
-                        GVWidget(),
-                        ]else ...[
-                          LVWidget(),
-                        ],
-                      ],
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -198,5 +214,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  void _goToFilterNameView() {}
+  void _goToFilterNameView() {
+    Get.to(() => SearchScreen());
+  }
 }

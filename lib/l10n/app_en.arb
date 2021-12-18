@@ -152,5 +152,12 @@
     "schedule_pickup":"Schedule pickup",
     "date":"Date",
     "time":"Time",
-    "pickup_address":"Pickup Address"
+    "pickup_address":"Pickup Address",
+    "minutes":"Minutes",
+    "secondes":"Secondes",
+    "day":"Day",
+    "hour" : "Hour",
+    "minute":"Minute",
+    "now":"Now",
+    "befor":"befor"
 }
