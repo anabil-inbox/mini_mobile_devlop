@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
+import 'package:inbox_clients/feature/view/screens/cart/cart_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/search_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/box_gv_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/filter_widget.dart';
@@ -96,7 +97,9 @@ class HomeScreen extends StatelessWidget {
                   width: sizeW48,
                   height: sizeH48,
                   backgroundColor: colorRedTrans,
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(() => const CartScreen());
+                  },
                   borderColor: colorTrans,
                 ),
               ],
