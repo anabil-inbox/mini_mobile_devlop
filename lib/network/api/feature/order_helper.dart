@@ -9,7 +9,7 @@ class OrderHelper {
   var log = Logger();
 
 
-  Future<List<OrderSales>> getCustomerBoxess(
+  Future<Set<OrderSales>> getCustomerBoxess(
       {required int pageSize, required int page}) async {
     var appResponse = await OrderApi.getInstance.getMyOrders(
         queryParameters: {"${ConstanceNetwork.page}": "$page", "${ConstanceNetwork.pageSize}": "$pageSize"},
@@ -17,9 +17,9 @@ class OrderHelper {
         header: ConstanceNetwork.header(4));
     if (appResponse.status?.success == true) {
       List data = appResponse.data["items"];
-      return data.map((e) => OrderSales.fromJson(e)).toList();
+      return data.map((e) => OrderSales.fromJson(e)).toSet();
     } else {
-      return [];
+      return {};
     }
   }
 }

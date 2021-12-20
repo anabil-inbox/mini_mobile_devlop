@@ -32,11 +32,14 @@ class _HomePageHolderState extends State<HomePageHolder> {
     const ProfileScreen(),
   ];
 
-  StorageViewModel get storageViewModel => Get.put(StorageViewModel());
+  static StorageViewModel get storageViewModel => Get.put(StorageViewModel());
+ // static MyOrderViewModle get myOrderViewModle => Get.put(MyOrderViewModle());
+
   @override
   void initState() {
     super.initState();
     storageViewModel.getStorageCategories();
+    storageViewModel.getTasks();
   }
   @override
   Widget build(BuildContext context) {

@@ -4,8 +4,9 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
 class StatusWidget extends StatelessWidget {
-  const StatusWidget({Key? key}) : super(key: key);
+  const StatusWidget({Key? key , this.status}) : super(key: key);
 
+  final String? status;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +29,7 @@ class StatusWidget extends StatelessWidget {
               TextButton(
                   style: buttonStyleBackgroundClicable,
                   onPressed: () {},
-                  child: Text("Waiting")),
+                  child: Text("$status")),
               SizedBox(
                 width: sizeW24,
               ),

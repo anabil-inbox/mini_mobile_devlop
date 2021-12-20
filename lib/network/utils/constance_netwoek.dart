@@ -85,6 +85,8 @@ abstract class ConstanceNetwork {
   static String storageAddOrder = "inbox_app.api.sales_order.sales_order";
   static String storageWareHouse = "inbox_app.api.warehouse.warehouse";
   static String storageAddNewStorage = "inbox_app.api.sales_order.sales_order";
+  static String getTaskEndPoint = "inbox_app.api.task.get_basic_tasks";
+  static String getOrderDetailes = "inbox_app.api.sales_order.get_order";
 
   // to add here item end pointes :
 

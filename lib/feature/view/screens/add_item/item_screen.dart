@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/view/screens/add_item/widgets/schedule_widget.dart';
+import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/schedule_pickup_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/appbar/widget/back_btn_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
@@ -12,7 +16,6 @@ import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:inbox_clients/util/constance.dart';
 
 class ItemScreen extends StatelessWidget {
   const ItemScreen({Key? key, required this.box}) : super(key: key);
@@ -25,19 +28,31 @@ class ItemScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: scaffoldColor,
-      appBar: CustomAppBarWidget(
-        isCenterTitle: true,
-        titleWidget: CustomTextView(
-          txt: "${box.storageName}",
-          textStyle: textStyleAppBarTitle(),
-          maxLine: Constance.maxLineOne,
+      appBar: AppBar(
+        backgroundColor: colorBackground,
+        actions: [
+          IconButton(
+              onPressed: () {
+                itemViewModle.showAddItemBottomSheet(box: box);
+              },
+              icon: SvgPicture.asset("assets/svgs/add_no_background.svg")),
+          SizedBox(
+            width: sizeW10,
+          ),
+        ],
+        leading: BackBtnWidget(),
+        centerTitle: true,
+        title: Text(
+          "${box.storageName}",
+          style: textStyleAppBarTitle(),
         ),
       ),
       body: GetBuilder<ItemViewModle>(
         init: ItemViewModle(),
-        initState: (_) async{
-        returendBox = await itemViewModle.getBoxBySerial(serial: box.serialNo ?? "");
-        itemViewModle.update();
+        initState: (_) async {
+          returendBox =
+              await itemViewModle.getBoxBySerial(serial: box.serialNo ?? "");
+          itemViewModle.update();
         },
         builder: (_) {
           return Padding(
@@ -93,7 +108,11 @@ class ItemScreen extends StatelessWidget {
                           PrimaryButton(
                             isExpanded: false,
                             isLoading: false,
-                            onClicked: () {},
+                            onClicked: () {
+                              Get.bottomSheet(
+                                SchedualWidget()
+                              );
+                            },
                             textButton: "Schedule Pickup",
                           ),
                           SizedBox(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/price_bottom_sheet_widget.dart';
-import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/show_selction_widget/show_options_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -10,7 +10,9 @@ import 'widgets/order_address_widget.dart';
 import 'widgets/status_widget.dart';
 
 class OrderDetailesScreen extends StatelessWidget {
-  const OrderDetailesScreen({Key? key}) : super(key: key);
+  const OrderDetailesScreen({Key? key , required this.orderSales}) : super(key: key);
+
+  final OrderSales orderSales;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class OrderDetailesScreen extends StatelessWidget {
       appBar: CustomAppBarWidget(
         elevation: 0,
         titleWidget: Text(
-          "Order #837",
+          "${orderSales.orderId}",
           style: textStyleAppBarTitle(),
         ),
         isCenterTitle: true,
@@ -33,21 +35,22 @@ class OrderDetailesScreen extends StatelessWidget {
             child: PriceBottomSheetWidget(
               backGroundColor: colorBackground,
               priceTitle: "Total Price",
-              totalPalance: 10,
+              totalPalance: orderSales.totalPrice,
             ),
           ),
           SizedBox(
             height: sizeH10,
           ),
-          StatusWidget(),
+          StatusWidget(status: orderSales.status,),
           SizedBox(
             height: sizeH10,
           ),
-          OrderAddressWidget(),
+          OrderAddressWidget(date: orderSales.deliveryDate.toString(),),
           SizedBox(
             height: sizeH10,
           ),
-          // ShowOptionsWidget(storageItem: storageItem, storageCategoriesData: storageCategoriesData)
+          
+
         ],
       ),
     );

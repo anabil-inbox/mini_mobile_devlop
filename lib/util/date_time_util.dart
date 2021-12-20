@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
-import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -44,7 +42,7 @@ class DateUtility {
   static String getChatTime(String date) {
     initializeDateFormatting(isArabicLang()?'ar':'en');
     try {
-      if (date == null || date.isEmpty) {
+      if (date.isEmpty) {
             return '';
           }
       String msg = '';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/add_address.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
@@ -24,6 +25,7 @@ class PickupAddress extends StatelessWidget {
         SizedBox(
           height: sizeH10,
         ),
+        
         if (storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
                 ConstanceNetwork.itemCategoryType ||
             storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
@@ -79,8 +81,10 @@ class PickupAddress extends StatelessWidget {
                       primary: false,
                       shrinkWrap: true,
                       children: storageViewModel.storeAddress
-                          .map((e) =>
-                              PickupAddressItem(address: e.addresses![0]))
+                          .map((e) => PickupAddressItem(
+                              address: e.addresses!.isNotEmpty
+                                  ? e.addresses![0]
+                                  : Address()))
                           .toList(),
                     )
                   : const SizedBox();

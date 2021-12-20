@@ -2,22 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
+import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 class MyOrderItem extends StatelessWidget {
-  const MyOrderItem({Key? key}) : super(key: key);
+  const MyOrderItem({Key? key, required this.orderSales}) : super(key: key);
+
+  final OrderSales orderSales;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       splashColor: colorTrans,
       highlightColor: colorTrans,
-      onTap: (){
-        Get.to(() => OrderDetailesScreen());
+      onTap: () {
+        Get.to(() => OrderDetailesScreen(
+              orderSales: orderSales,
+            ));
       },
       child: Column(
         children: [
@@ -40,38 +48,45 @@ class MyOrderItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Order #837",
+                      "${orderSales.orderId}",
                       style: textStyleMeduimBlackText(),
                     ),
                     SizedBox(
                       height: sizeH4,
                     ),
                     Text(
-                      "Wadi Alsail, 950, Building 5",
+                      "${orderSales.orderShippingAddress ?? orderSales.orderWarehouseAddress ?? ""}",
                       style: textStyleHints()!.copyWith(fontSize: fontSize13),
                     ),
                     SizedBox(
                       height: sizeH4,
                     ),
-                    Text("Mar 13, 2018",
-                        style: textStyleHints()!.copyWith(fontSize: fontSize13)),
+                    Text(
+                        "${DateUtility.getChatTime(orderSales.deliveryDate.toString())}",
+                        style:
+                            textStyleHints()!.copyWith(fontSize: fontSize13)),
                   ],
                 ),
                 const Spacer(),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     SizedBox(
                       height: sizeH10,
                     ),
-                    Text("100 QR"),
+                    CustomTextView(txt: "${orderSales.totalPrice}  "),
                     TextButton(
-                      style: buttonStyleBackgroundClicable,
-                      onPressed: () {
-                        
-                      }, child: Text("Waiting"))
+                        clipBehavior: Clip.none,
+                        style: buttonStyleBackgroundClicable,
+                        onPressed: () {},
+                        child: CustomTextView(
+                          txt: "${orderSales.status}",
+                          textStyle:
+                              textStyleSmall()?.copyWith(color: colorPrimary),
+                        ))
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -82,4 +97,13 @@ class MyOrderItem extends StatelessWidget {
       ),
     );
   }
+
+  // ButtonStyle getWidgetByStatus({required String orderStatue}){
+  //   if (orderStatue == LocalConstance.orderCancelled) {
+  //     return primaryButtonStyle!;
+  //   } else if(orderStatue == LocalConstance.orderToDeliver) {
+  //     return primaryButtonOpacityStyle!;
+  //   }
+  //   return buttonStyleBackgroundClicable.copyWith(backgroundColor: MaterialStateProperty.all(colorGreen.withOpacity(0.5)),);
+  // }
 }

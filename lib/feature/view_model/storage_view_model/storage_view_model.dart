@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
+import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/model/my_order/order_sales.dart' as OS;
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
 import 'package:inbox_clients/feature/model/storage/order_item.dart';
 import 'package:inbox_clients/feature/model/storage/payment.dart';
@@ -11,6 +14,7 @@ import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
+import 'package:inbox_clients/feature/view/screens/storage/new_storage/order_detailes_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/selected_hour_item.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
@@ -726,7 +730,6 @@ class StorageViewModel extends BaseController {
   Future<void> addNewStorage() async {
     //still this layer will complete when you complete order // refer to =>
     List<OrderItem> orderIyems = [];
-
     userStorageCategoriesData.forEach((element) {
       final localOrderItem = OrderItem();
       if (element.storageCategoryType == ConstanceNetwork.itemCategoryType) {
@@ -739,8 +742,9 @@ class StorageViewModel extends BaseController {
           localOrderItem.groupId = element.groupId;
           localOrderItem.storageType = element.storageCategoryType;
           localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
-          localOrderItem.subscriptionPrice =
-           element.userPrice! / element.numberOfDays! / innerElement.quantity!;
+          localOrderItem.subscriptionPrice = element.userPrice! /
+              element.numberOfDays! /
+              innerElement.quantity!;
           orderIyems.add(localOrderItem);
         });
         if (!GetUtils.isNull(element.localBulk!.optionStorageItem)) {
@@ -768,12 +772,10 @@ class StorageViewModel extends BaseController {
         orderIyems.add(localOrderItem);
       }
     });
-
     isLoading = true;
     update();
     await StorageFeature.getInstance.addNewStorage(body: {
-      "shipping_address_name": "${selectedAddress!.id}",
-      // "items_list": jsonEncode(storageFeature)
+      "shipping_address": "${selectedAddress!.id}",
       "items_list": jsonEncode(orderIyems)
     }).then((value) => {
           if (value.status!.success!)
@@ -781,7 +783,9 @@ class StorageViewModel extends BaseController {
               isLoading = false,
               update(),
               snackSuccess("${tr.success}", "${value.status!.message}"),
-              Get.off(() => HomePageHolder())
+              userStorageCategoriesData.clear(),
+              getOrderDetailes(orderId: value.data["order name"]),
+              Get.off(() => OrderDerailesScreen())
             }
           else
             {
@@ -791,6 +795,26 @@ class StorageViewModel extends BaseController {
             }
         });
   }
+
+  // here to getOrderDetailes With Id;
+//  Dangeras Dont Play ::
+
+
+OS.OrderSales? returnedOrderSales;
+
+ Future<OS.OrderSales> getOrderDetailes({required String orderId}) async {
+   OS.OrderSales orderSales = OS.OrderSales();
+    await StorageFeature.getInstance.getOrderDetailes(
+        body: {"order_id": "$orderId"}).then((value) => {
+          Logger().i("$value"),
+          orderSales = OS.OrderSales.fromJson(value.toJson()),
+          returnedOrderSales = orderSales
+          });
+      update();
+     return orderSales;     
+  }
+
+///  
 
   // validate Adding New Storage:
 
@@ -1001,6 +1025,17 @@ class StorageViewModel extends BaseController {
       isStorageCategories.value = false;
       update();
     }
+  }
+
+  // to do here get Tasks :
+  Set<Task> tasks = {};
+
+  getTasks() async {
+    await StorageFeature.getInstance.getTasks().then((value) => {
+          Logger().i("${value.toList().length}"),
+          tasks = value.toSet(),
+        });
+    update();
   }
 
   //---------- to do for new storage Func ---------------

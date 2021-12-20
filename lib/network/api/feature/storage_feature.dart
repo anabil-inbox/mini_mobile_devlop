@@ -1,3 +1,4 @@
+import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
@@ -19,6 +20,23 @@ class StorageFeature {
       if (response.status?.success == true) {
         List data = response.data;
         return data.map((e) => StorageCategoriesData.fromJson(e)).toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      log.d(e.toString());
+      return [];
+    }
+  }
+
+    Future<List<Task>> getTasks() async {
+    try {
+      var response = await StorageModel.getInstance.getTasks(
+          url: "${ConstanceNetwork.getTaskEndPoint}",
+          header: ConstanceNetwork.header(4));
+      if (response.status?.success == true) {
+        List data = response.data["data"];
+        return data.map((e) => Task.fromJson(e)).toList();
       } else {
         return [];
       }
@@ -78,4 +96,17 @@ class StorageFeature {
       return appResponse;
     }
   }
+   Future<AppResponse> getOrderDetailes({var body}) async {
+    var appResponse = await StorageModel.getInstance.getOrderDetailes(
+        url: "${ConstanceNetwork.getOrderDetailes}",
+        body: body,
+        header: ConstanceNetwork.header(4));
+        Logger().i("${appResponse.toJson()}");
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
 }

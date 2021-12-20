@@ -11,6 +11,8 @@ import 'choice_shape_widget.dart';
 class FilterWidget extends StatelessWidget {
   const FilterWidget({Key? key}) : super(key: key);
 
+  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -20,32 +22,40 @@ class FilterWidget extends StatelessWidget {
         height: sizeH50,
         decoration: BoxDecoration(
             color: colorTextWhite,
-            borderRadius: BorderRadius.circular(sizeRadius5!)
-        ),
+            borderRadius: BorderRadius.circular(sizeRadius5!)),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(width: sizeW5,),
+            SizedBox(
+              width: sizeW5,
+            ),
             Expanded(
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: sizeH30,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        reverse: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 6,
-                        itemBuilder: (context,
-                            index) => const ChoiceShapeWidget(),
-                      ),
-                    ),
+                  GetBuilder<StorageViewModel>(
+                    init: StorageViewModel(),
+                    initState: (_) {},
+                    builder: (logic) {
+                      return Expanded(
+                        child: SizedBox(
+                          height: sizeH30,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            reverse: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: logic.tasks.length,
+                            itemBuilder: (context, index) => ChoiceShapeWidget(
+                              task: logic.tasks.toList()[index],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -55,7 +65,9 @@ class FilterWidget extends StatelessWidget {
               onPressed: () {
                 logic.changeTypeViewLVGV();
               },
-              icon: !logic.isListView! ?"assets/svgs/list.svg":"assets/svgs/grid.svg",
+              icon: !logic.isListView!
+                  ? "assets/svgs/list.svg"
+                  : "assets/svgs/grid.svg",
               height: sizeH30,
               width: sizeW30,
               backgroundColor: colorTextWhite,

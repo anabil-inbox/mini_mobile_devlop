@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 class OrderAddressWidget extends StatelessWidget {
-  const OrderAddressWidget({Key? key}) : super(key: key);
+  const OrderAddressWidget({Key? key , this.date}) : super(key: key);
 
+  final String? date;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,9 +28,9 @@ class OrderAddressWidget extends StatelessWidget {
               SizedBox(
                 height: sizeH22,
               ),
-              Text("Date"),
+              Text("${tr.date}"),
               SizedBox(height: sizeH4,),
-              Text("Mar 13, 2018" , style: textStyleHints()!.copyWith(fontSize: fontSize13),),
+              Text("${DateUtility.getChatTime(date.toString())}" , style: textStyleHints()!.copyWith(fontSize: fontSize13),),
               SizedBox(
                 height: sizeH22,
               ),

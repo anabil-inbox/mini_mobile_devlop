@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart' as multiPart;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,7 +10,6 @@ import 'package:inbox_clients/feature/model/inside_box/item.dart';
 import 'package:inbox_clients/feature/view/screens/add_item/widgets/add_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
 import 'package:inbox_clients/network/api/feature/item_helper.dart';
-import 'package:inbox_clients/network/api/model/item_api.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -45,17 +46,23 @@ class ItemViewModle extends BaseController {
   Future<void> addItem({required String serialNo}) async {
     startLoading();
     List<Tag> tags = [];
+    List innerImages = [];
 
     for (var tag in usetTags) {
       tags.add(Tag(isEnabled: 1, name: tag));
+    }
+
+    for (var item in images) {
+      innerImages.add(multiPart.MultipartFile.fromFileSync(item.path));
     }
 
     await ItemHelper.getInstance.addItem(body: {
       "name": "${tdName.text}",
       "storage": "$serialNo",
       "qty": "$itemQuantity",
-      "tags": tags,
-      "item_gallery": images
+      "tags": jsonEncode(tags),
+      "item_gallery": innerImages.isNotEmpty ? innerImages : []
+      //  "item_gallery": {"":multiPart.MultipartFile.fromFileSync(item.path)}
     }).then((value) => {
           if (value.status!.success!)
             {
@@ -70,6 +77,13 @@ class ItemViewModle extends BaseController {
               endLoading()
             }
         });
+
+    images.clear();
+    tags.clear();
+    tdName.clear();
+    tdTag.clear();
+    itemQuantity = 1;
+    update();
   }
 
   // here for delete item
@@ -91,8 +105,6 @@ class ItemViewModle extends BaseController {
             }
         });
   }
-
-  
 
   // adding image to item functions ::
 

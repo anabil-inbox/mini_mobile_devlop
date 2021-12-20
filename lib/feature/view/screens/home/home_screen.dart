@@ -172,7 +172,7 @@ class HomeScreen extends StatelessWidget {
                             SizedBox(
                               height: sizeH150,
                             ),
-                            const FilterWidget(),
+                            FilterWidget(),
                             SizedBox(
                               height: sizeH10,
                             ),

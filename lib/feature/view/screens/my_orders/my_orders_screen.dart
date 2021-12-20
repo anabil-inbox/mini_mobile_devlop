@@ -18,18 +18,27 @@ class MyOrdersScreen extends StatelessWidget {
       body: Column(
         children: [
           MyOrderAppBar(),
-          GetBuilder<MyOrderViewModle>(
-            init: MyOrderViewModle(),
-            initState: (_) {},
-            builder: (_) {
-              return ListView(
-                controller: myOrderViewModle.scrollcontroller,
-                shrinkWrap: true,
-                children: myOrderViewModle.userOrderSales
-                    .map((e) => MyOrderItem())
-                    .toList(),
-              );
-            },
+          Expanded(
+            child: GetBuilder<MyOrderViewModle>(
+              init: MyOrderViewModle(),
+              initState: (_) {
+                myOrderViewModle.getOrdres();
+                myOrderViewModle.scrollcontroller.addListener(() {
+                  myOrderViewModle.pagination();
+                });
+              },
+              builder: (_) {
+                return ListView(
+                  controller: myOrderViewModle.scrollcontroller,
+                  shrinkWrap: true,
+                  children: myOrderViewModle.userOrderSales
+                      .map((e) => MyOrderItem(
+                            orderSales: e,
+                          ))
+                      .toList(),
+                );
+              },
+            ),
           )
         ],
       ),
