@@ -32,6 +32,7 @@ final double? leadingWidth;
       brightness: brightness??Brightness.light,
       elevation: elevation??1,
       leading: leadingWidget??BackBtnWidget(onTap: onBackBtnClick??_getBack,),
+      
     );
   }
    _getBack()=> Get.back();

@@ -1,27 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
-import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
-import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
-// ignore: must_be_immutable
-class QuantityWidget extends StatelessWidget {
-  QuantityWidget({Key? key, required this.storageCategoriesData , required this.quantityTitle , required this.increasingFunction, required this.mineassingFunction  ,required this.value})
-      : super(key: key);
-
-  final StorageCategoriesData storageCategoriesData;
-  StorageViewModel storageViewModel = Get.find<StorageViewModel>();
-  final String quantityTitle;
-  final Function increasingFunction;
-  final Function mineassingFunction;
-  final int value;
+class QtyWidget extends StatelessWidget {
+  const QtyWidget({ Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  
-    Container(
+    return Container(
           height: sizeH50,
           width: double.infinity,
           decoration: BoxDecoration(
@@ -32,7 +21,7 @@ class QuantityWidget extends StatelessWidget {
               SizedBox(
                 width: sizeW15,
               ),
-              Text(quantityTitle),
+              Text("Quantity"),
               const Spacer(),
               Container(
                 width: sizeH100,
@@ -51,11 +40,11 @@ class QuantityWidget extends StatelessWidget {
                       ),
                       height: sizeH40,
                       width: sizeW40,
-                      child: GetBuilder<StorageViewModel>(
-                        init: StorageViewModel(),
+                      child: GetBuilder<ItemViewModle>(
+                        init: ItemViewModle(),
                         initState: (_) {},
                         builder: (logic) {
-                          return Text("$value",
+                          return Text("${logic.itemQuantity}",
                             textAlign: TextAlign.center,
                           );
                         },
@@ -64,33 +53,30 @@ class QuantityWidget extends StatelessWidget {
                 PositionedDirectional(
                     bottom: -10,
                     end: 1,
-                    child: GetBuilder<StorageViewModel>(
-                      init: StorageViewModel(),
+                    child: GetBuilder<ItemViewModle>(
+                      init: ItemViewModle(),
                       initState: (_) {},
                       builder: (builder) {
                         return IconButton(
                           icon:
                               SvgPicture.asset("assets/svgs/circle_mines.svg"),
                           onPressed: () {
-                            mineassingFunction();
-                            // builder.minesQuantity(
-                            //     storageCategoriesData: storageCategoriesData);
-                          },
+                           builder.minesQty();
+                           },
                         );
                       },
                     )),
                 PositionedDirectional(
                     bottom: -10,
                     end: 50,
-                    child: GetBuilder<StorageViewModel>(
-                      init: StorageViewModel(),
+                    child: GetBuilder<ItemViewModle>(
+                      init: ItemViewModle(),
                       initState: (_) {},
                       builder: (value) {
                         return IconButton(
                           icon: SvgPicture.asset("assets/svgs/circle_add.svg"),
                           onPressed: () {
-                            increasingFunction();
-                          //  value.increaseQuantity(storageCategoriesData: storageCategoriesData);
+                          value.increaseQty();
                           },
                         );
                       },

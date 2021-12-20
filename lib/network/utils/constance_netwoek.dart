@@ -86,6 +86,15 @@ abstract class ConstanceNetwork {
   static String storageWareHouse = "inbox_app.api.warehouse.warehouse";
   static String storageAddNewStorage = "inbox_app.api.sales_order.sales_order";
 
+  // to add here item end pointes :
+
+  static String getBoxBySerialEndPoint = "inbox_app.api.customer_storages.get_box";
+  static String addItemEndPoint = "inbox_app.api.customer_storages.add_item";
+  static String deleteItemEndPoint = "inbox_app.api.customer_storages.item_delete";
+
+
+
+
   // this for constance network 
 
   static String page = "page";

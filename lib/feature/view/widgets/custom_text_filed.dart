@@ -122,6 +122,7 @@ class CustomTextFormFiled extends StatelessWidget
 
   InputDecoration inputDecorationWithIcon() {
     return InputDecoration(
+        suffixIconColor: suffixIconColor,
         prefixIcon: Icon(
           icon,
           color: iconColor,
@@ -179,6 +180,7 @@ class CustomTextFormFiled extends StatelessWidget
         counterText: "",
         isDense: true,
         filled: isFill,
+        
         errorStyle: TextStyle(
           /*  height: 0,*/ /*backgroundColor: colorBackground*/
         ),

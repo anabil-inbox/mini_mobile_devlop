@@ -60,6 +60,8 @@ dependencies:
   geocoding:  #latest version
   video_player: ^2.2.7
   chewie: ^1.2.2
+  qr_flutter: ^4.0.0
+  flutter_barcode_scanner: ^2.0.0
 
 
 dev_dependencies:

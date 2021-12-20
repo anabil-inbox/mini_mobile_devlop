@@ -11,11 +11,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as Img;
+import 'package:image_picker/image_picker.dart';
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/language_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/splash_view_modle/splash_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -606,5 +608,68 @@ Widget retuenBoxByStatus({required String storageStatus}) {
     height: sizeH40,
   );
 }
+
+
+  // void getImageBottomSheet() {
+  //   Get.bottomSheet(
+  //     Container(
+  //     height: sizeH240,
+  //     padding: EdgeInsets.symmetric(horizontal: padding20!),
+  //     decoration: BoxDecoration(
+  //         color: colorTextWhite,
+  //         borderRadius:
+  //             BorderRadius.vertical(top: Radius.circular(padding30!))),
+  //     child: Column(
+  //       children: [
+  //         SizedBox(
+  //           height: sizeH20,
+  //         ),
+  //         Container(
+  //           height: sizeH5,
+  //           width: sizeH50,
+  //           decoration: BoxDecoration(
+  //               color: colorUnSelectedWidget,
+  //               borderRadius: BorderRadius.circular(2.5)),
+  //         ),
+  //         SizedBox(
+  //           height: sizeH20,
+  //         ),
+  //         Text(
+  //           "Select Image",
+  //           style: textStyleAppBarTitle(),
+  //         ),
+  //         SizedBox(
+  //           height: sizeH25,
+  //         ),
+  //         SeconderyButtom(
+  //           buttonTextStyle: textSeconderyButtonUnBold(),
+  //           textButton: "Camera",
+  //           onClicked: () async {
+  //             await getImage(ImageSource.camera);
+  //             Get.back();
+  //           },
+  //           isExpanded: true,
+  //         ),
+  //         SizedBox(
+  //           height: sizeH20,
+  //         ),
+  //         SeconderyButtom(
+  //           buttonTextStyle: textSeconderyButtonUnBold(),
+  //           textButton: "Gallery",
+  //           onClicked: () async {
+  //             await getImage(ImageSource.gallery);
+  //             Get.back();
+  //           },
+  //           isExpanded: true,
+  //         ),
+  //         SizedBox(
+  //           height: sizeH20,
+  //         ),
+  //       ],
+  //     ),
+  //   ));
+  // }
+
+
 
 AppLocalizations get tr => AppLocalizations.of(Get.context!)!;

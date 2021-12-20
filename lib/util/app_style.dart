@@ -281,6 +281,14 @@ TextStyle? textStylePrimarySmall() {
       color: colorPrimary, fontSize: fontSize15, fontWeight: FontWeight.normal);
 }
 
+TextStyle? textSeconderyButtonUnBold(){
+  return TextStyle(
+    color: colorPrimary, 
+    fontSize: fontSize14,
+    fontWeight: FontWeight.normal
+  );
+}
+
 TextStyle? textStyleHints() {
   return TextStyle(
       color: colorHint, fontSize: fontSize15, fontWeight: FontWeight.normal);

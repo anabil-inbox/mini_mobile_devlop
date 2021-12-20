@@ -47,6 +47,7 @@ class HomeScreen extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 onSubmitted: (_) {},
                 onChange: (_) {},
+                
                 fun: _goToFilterNameView,
                 isReadOnly: true,
                 isSmallPadding: false,

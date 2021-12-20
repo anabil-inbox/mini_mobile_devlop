@@ -3,8 +3,10 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:inbox_clients/feature/view/screens/add_item/item_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/details_storage_view.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 import 'box_lv_item_widget.dart';
@@ -28,8 +30,14 @@ class LVWidget extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               itemCount: homeViewModel.userBoxess.length,
               shrinkWrap: true,
-              itemBuilder: (context, index) => HomeLVItemWidget(
-                box: homeViewModel.userBoxess.toList()[index],
+              itemBuilder: (context, index) => InkWell(
+                onTap: (){
+                  Get.put(ItemViewModle());
+                  Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index],));
+                },
+                child: HomeLVItemWidget(
+                  box: homeViewModel.userBoxess.toList()[index],
+                ),
               ),
             ),
           ],
