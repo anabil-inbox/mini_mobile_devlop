@@ -205,6 +205,9 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                               "${value.defCountry.prefix}",
                                               textDirection: TextDirection.ltr,
                                             ),
+                                            SizedBox(
+                                              width: sizeW5,
+                                            ),
                                             VerticalDivider(),
                                           ],
                                         );
@@ -221,8 +224,11 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                                               .text = newValue.toString();
                                           profileViewModle.update();
                                         },
-                                        validator: (e){
-                                          phoneVaild(e.toString());
+                                        validator: (e) {
+                                          if (e!.isEmpty) {
+                                            return null;
+                                          }
+                                          return phoneVaild(e.toString());
                                         },
                                         decoration: InputDecoration(
                                           counterText: "",

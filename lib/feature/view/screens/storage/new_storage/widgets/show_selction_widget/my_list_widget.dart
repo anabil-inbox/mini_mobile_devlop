@@ -13,63 +13,60 @@ import 'show_bulk_widget.dart';
 class MyListWidget extends StatelessWidget {
   const MyListWidget({Key? key}) : super(key: key);
 
-  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
-
   @override
   Widget build(BuildContext context) {
-    return storageViewModel.userStorageCategoriesData.length > 0
-        ? GetBuilder<StorageViewModel>(
-            builder: (build) => Container(
-                  padding: EdgeInsets.all(padding20!),
-                  decoration: BoxDecoration(
-                      color: colorTextWhite,
-                      borderRadius: BorderRadius.circular(padding6!)),
-                  child: ListView(
-                    shrinkWrap: true,
-                    primary: false,
-                    children: [
-                      Text("${tr.my_list}"),
-                      SizedBox(
-                        height: sizeH10,
-                      ),
-                      PriceBottomSheetWidget(
-                        priceTitle: "${tr.total}",
-                        isTotalPalnce: true,
-                      ),
-                      SizedBox(
-                        height: sizeH10,
-                      ),
-                      ListView(
-                          primary: false,
-                          shrinkWrap: true,
-                          children: build.userStorageCategoriesData
-                              .asMap()
-                              .map((index, value) => MapEntry(
-                                    index,
-                                    build.checkCategoreyType(
-                                                    storageCategoreyType: value
-                                                        .storageCategoryType!) ==
-                                                ConstanceNetwork
-                                                    .quantityCategoryType ||
-                                            build.checkCategoreyType(
-                                                    storageCategoreyType: value
-                                                        .storageCategoryType!) ==
-                                                ConstanceNetwork
-                                                    .spaceCategoryType
-                                        ? ShowSpaceAndQuantityWidget(
-                                            index: index,
-                                            storageCategoriesData: value,
-                                            storageItem: value.storageItem![0])
-                                        : ShowBulkItem(
-                                            storageCategoriesData: value,
-                                            index: index,
-                                            storageItem: value.storageItem![0]),
-                                  ))
-                              .values
-                              .toList()),
-                    ],
-                  ),
-                ))
-        : const SizedBox();
+    return GetBuilder<StorageViewModel>(
+        builder: (build) => build.userStorageCategoriesData.isEmpty
+            ? const SizedBox()
+            : Container(
+                padding: EdgeInsets.all(padding20!),
+                decoration: BoxDecoration(
+                    color: colorTextWhite,
+                    borderRadius: BorderRadius.circular(padding6!)),
+                child: ListView(
+                  shrinkWrap: true,
+                  primary: false,
+                  children: [
+                    Text("${tr.my_list}"),
+                    SizedBox(
+                      height: sizeH10,
+                    ),
+                    PriceBottomSheetWidget(
+                      priceTitle: "${tr.total}",
+                      isTotalPalnce: true,
+                    ),
+                    SizedBox(
+                      height: sizeH10,
+                    ),
+                    ListView(
+                        primary: false,
+                        shrinkWrap: true,
+                        children: build.userStorageCategoriesData
+                            .asMap()
+                            .map((index, value) => MapEntry(
+                                  index,
+                                  build.checkCategoreyType(
+                                                  storageCategoreyType: value
+                                                      .storageCategoryType!) ==
+                                              ConstanceNetwork
+                                                  .quantityCategoryType ||
+                                          build.checkCategoreyType(
+                                                  storageCategoreyType: value
+                                                      .storageCategoryType!) ==
+                                              ConstanceNetwork.spaceCategoryType
+                                      ? ShowSpaceAndQuantityWidget(
+                                          index: index,
+                                          storageCategoriesData: value,
+                                          storageItem: value.storageItem![0])
+                                      : ShowBulkItem(
+                                          storageCategoriesData: value,
+                                          index: index,
+                                          storageItem: value.storageItem![0]),
+                                ))
+                            .values
+                            .toList()),
+                  ],
+                ),
+              ));
   }
 }

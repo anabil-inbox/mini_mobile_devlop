@@ -13,35 +13,35 @@ import 'pickup_address_item.dart';
 
 class PickupAddress extends StatelessWidget {
   const PickupAddress({Key? key}) : super(key: key);
-  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+ // static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
   static ProfileViewModle profileViewModle = Get.find<ProfileViewModle>();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("${tr.pickup_address}"),
-        SizedBox(
-          height: sizeH10,
-        ),
-        
-        if (storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
-                ConstanceNetwork.itemCategoryType ||
-            storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
-                ConstanceNetwork.quantityCategoryType)
-          GetBuilder<ProfileViewModle>(
-            init: ProfileViewModle(),
-            initState: (_) {
-              WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                if (storageViewModel
-                            .userStorageCategoriesData[0].storageCategoryType ==
-                        ConstanceNetwork.itemCategoryType ||
-                    storageViewModel
-                            .userStorageCategoriesData[0].storageCategoryType ==
-                        ConstanceNetwork.quantityCategoryType) {
-                  profileViewModle.getMyAddress();
-                } else {
+    return GetBuilder<StorageViewModel>(
+      init: StorageViewModel(),
+      initState: (_) {},
+      builder: (storageViewModel) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("${tr.pickup_address}"),
+            SizedBox(
+              height: sizeH10,
+            ),
+            if (storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
+                    ConstanceNetwork.itemCategoryType ||
+                storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
+                    ConstanceNetwork.quantityCategoryType)
+              GetBuilder<ProfileViewModle>(
+                initState: (_) {
+                  WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                    if (storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
+                            ConstanceNetwork.itemCategoryType ||
+                        storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
+                            ConstanceNetwork.quantityCategoryType) {
+                      profileViewModle.getMyAddress();
+                   } else {
                   storageViewModel.getStoreAddress();
                 }
               });
@@ -60,7 +60,6 @@ class PickupAddress extends StatelessWidget {
           )
         else
           GetBuilder<StorageViewModel>(
-            init: StorageViewModel(),
             initState: (_) {
               WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
                 if (storageViewModel
@@ -93,6 +92,7 @@ class PickupAddress extends StatelessWidget {
         SizedBox(
           height: sizeH10,
         ),
+        if(storageViewModel.userStorageCategoriesData.isNotEmpty)
         if (storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
                 ConstanceNetwork.itemCategoryType ||
             storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
@@ -108,6 +108,8 @@ class PickupAddress extends StatelessWidget {
           height: sizeH100,
         )
       ],
+    ); 
+      },
     );
   }
 }

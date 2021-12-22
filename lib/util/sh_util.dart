@@ -33,7 +33,7 @@ class SharedPref {
   setCurrentUserData(String profileData) async {
     try {
       print("msg_profile_data_to_save $profileData");
-      
+
       bool? isSaved =
           await _prefs?.setString("$userDataKey", profileData.toString());
       print(isSaved);
@@ -50,8 +50,8 @@ class SharedPref {
       if (GetUtils.isNull(json.decode(string!)["data"]["Customer"])) {
         print("get Current user if");
         decode = json.decode(string)["data"];
-      }else{
-       decode = json.decode(string)["data"]["Customer"];
+      } else {
+        decode = json.decode(string)["data"]["Customer"];
       }
       Customer profileData = Customer.fromJson(decode);
       return profileData;
@@ -107,12 +107,11 @@ class SharedPref {
   setAppLanguage(var local) async {
     _prefs?.setString('$languageKey', local.toString());
     print("exxx:${local.toString()}");
-
   }
 
   String getAppLanguageMain() {
     try {
-      Object appLanguage = _prefs!.get("$languageKey")!;
+      Object appLanguage = _prefs!.get("$languageKey") ?? "en";
       return appLanguage.toString();
     } catch (e) {
       return "en";
@@ -129,8 +128,7 @@ class SharedPref {
 
   setUserLoginState(String state) async {
     try {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setString('$loginKey', '$state');
+      _prefs!.setString('$loginKey', '$state');
     } catch (e) {
       return "not Logined";
     }
@@ -138,7 +136,7 @@ class SharedPref {
 
   getUserLoginState() {
     try {
-      return SharedPref._prefs!.getString('$loginKey');
+      return _prefs!.getString('$loginKey');
     } catch (e) {
       print(e);
       return "";
@@ -163,7 +161,6 @@ class SharedPref {
   setUserToken(String token) async {
     Logger().i("msg_sett_user_token $token");
     try {
-        
       if (!GetUtils.isNull(token)) {
         _prefs?.setString("$tokenKey", token);
       }

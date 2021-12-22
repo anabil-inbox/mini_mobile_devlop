@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -11,6 +10,22 @@ SystemUiOverlayStyle? systemUiOverLayLight() {
   return SystemUiOverlayStyle.light.copyWith(
       statusBarColor: colorTextWhite, systemNavigationBarColor: colorTextWhite);
 }
+
+  BoxDecoration containerBoxDecoration(){
+    return BoxDecoration(
+      color: colorBackground,
+      borderRadius: BorderRadius.circular(padding6!)
+    );
+  }
+
+  BoxDecoration containerBoxDecorationHardEdge(){
+    return BoxDecoration(
+      color: colorBackground,
+      borderRadius: BorderRadius.vertical(top: Radius.circular(padding30!))
+    );
+  }
+
+
 
 TextStyle? textStyle() {
   return TextStyle(
@@ -100,6 +115,14 @@ TextStyle? textStyleBigPrimaryTextColorSeconderSize() {
   return TextStyle(
       color: colorPrimary,
       fontSize: fontSize30,
+      fontFamily: Constance.Font_bold,
+      fontWeight: FontWeight.bold);
+}
+
+TextStyle? textStyleBigPrimaryTextColorBigestSize() {
+  return TextStyle(
+      color: colorPrimary,
+      fontSize: fontSize34,
       fontFamily: Constance.Font_bold,
       fontWeight: FontWeight.bold);
 }

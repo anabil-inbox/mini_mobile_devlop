@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/widgets/icon_btn.dart';
-import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 import 'choice_shape_widget.dart';
 
-class FilterWidget extends StatelessWidget {
+class FilterWidget extends StatefulWidget {
   const FilterWidget({Key? key}) : super(key: key);
 
-  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+  @override
+  State<FilterWidget> createState() => _FilterWidgetState();
+}
 
+class _FilterWidgetState extends State<FilterWidget> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    return GetBuilder<StorageViewModel>(builder: (logic) {
+    return GetBuilder<HomeViewModel>(builder: (logic) {
       return Container(
         width: double.infinity,
         height: sizeH50,
@@ -37,8 +45,8 @@ class FilterWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  GetBuilder<StorageViewModel>(
-                    init: StorageViewModel(),
+                  GetBuilder<HomeViewModel>(
+                    init: HomeViewModel(),
                     initState: (_) {},
                     builder: (logic) {
                       return Expanded(
@@ -60,6 +68,9 @@ class FilterWidget extends StatelessWidget {
                 ],
               ),
             ),
+                 SizedBox(
+                            width: sizeW5,
+                          ),
             VerticalDivider(),
             IconBtn(
               onPressed: () {

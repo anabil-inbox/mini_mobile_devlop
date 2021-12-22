@@ -19,27 +19,37 @@ class ApiSettings {
   String? termOfConditions;
   ContactInfo? contactInfo;
   List<CompanySector>? companySectors;
-  List<dynamic>? notAllowed;
+  List<NotAllowed>? notAllowed;
   List<Language>? languges;
   WorkingHours? workingHours;
   List<PaymentMethod>? paymentMethod;
   List<AreaZone>? areaZones;
 
   factory ApiSettings.fromJson(Map<String, dynamic> json) => ApiSettings(
-        customerType: json["customer_type"],
+        customerType: json["customer_type"] ?? "both",
         aboutUs: json["about_us"] == null ? "" : json["about_us"],
         termOfConditions: json["term_of_conditions"],
-        contactInfo: ContactInfo.fromJson(json["contact_info"]),
-        companySectors: List<CompanySector>.from(
-            json["company_sectors"].map((x) => CompanySector.fromJson(x))),
-        notAllowed: List<dynamic>.from(json["not_allowed"].map((x) => x)),
+        contactInfo: json["contact_info"] == null
+            ? null
+            : ContactInfo.fromJson(json["contact_info"]),
+        companySectors: json["ccompany_sectors"] == []
+            ? []
+            : List<CompanySector>.from(json["company_sectors"].map((x) => CompanySector.fromJson(x))),
+       
+        notAllowed: json["not_allowed"] == null || json["not_allowed"] == []
+            ? []
+            : List<NotAllowed>.from(json["not_allowed"].map((x) => NotAllowed.fromJson(x))) ,
+       
+       
         languges: List<Language>.from(
             json["languages"].map((x) => Language.fromJson(x))),
         workingHours: WorkingHours.fromJson(json["working_hours"]),
         paymentMethod: List<PaymentMethod>.from(
             json["payment_method"].map((x) => PaymentMethod.fromJson(x))),
-        areaZones: List<AreaZone>.from(
-            json["area_zones"].map((x) => AreaZone.fromJson(x))),
+        areaZones: json["area_zones"] == null
+            ? null
+            : List<AreaZone>.from(
+                json["area_zones"].map((x) => AreaZone.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,7 +59,7 @@ class ApiSettings {
         "contact_info": contactInfo!.toJson(),
         "company_sectors":
             List<dynamic>.from(companySectors!.map((x) => x.toJson())),
-        "not_allowed": List<dynamic>.from(notAllowed!.map((x) => x)),
+        "not_allowed": List<NotAllowed>.from(notAllowed!.map((x) => x)),
         "languages": List<dynamic>.from(languges!.map((x) => x.toJson())),
         "payment_method":
             List<dynamic>.from(paymentMethod!.map((x) => x.toJson())),
@@ -183,5 +193,29 @@ class AreaZone {
   Map<String, dynamic> toJson() => {
         "id": id,
         "area_zone": areaZone,
+      };
+}
+
+class NotAllowed {
+  NotAllowed({
+    this.name,
+    this.title,
+    this.image,
+  });
+
+  String? name;
+  String? title;
+  String? image;
+
+  factory NotAllowed.fromJson(Map<String, dynamic> json) => NotAllowed(
+        name: json["name"] ?? "",
+        title: json["title"] ?? "",
+        image: json["image"] == null ? null : json["image"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "title": title,
+        "image": image == null ? null : image,
       };
 }

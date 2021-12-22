@@ -34,7 +34,8 @@ class ItemStorageBottomSheet extends StatefulWidget {
 }
 
 class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
-  StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+  static StorageViewModel get storageViewModel => Get.put(StorageViewModel());
+  
   @override
   void initState() {
     super.initState();

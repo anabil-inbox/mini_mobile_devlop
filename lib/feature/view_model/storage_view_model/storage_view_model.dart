@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
@@ -21,7 +20,6 @@ import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bo
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/bulk_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/quantity_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
-import 'package:inbox_clients/network/api/feature/profie_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -29,7 +27,6 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
-import 'package:inbox_clients/util/string.dart';
 import 'package:logger/logger.dart';
 
 class StorageViewModel extends BaseController {
@@ -124,7 +121,7 @@ class StorageViewModel extends BaseController {
 
 // this for last user chocies :
   num totalBalance = 0;
-  List<StorageCategoriesData> userStorageCategoriesData = [];
+  List<StorageCategoriesData> userStorageCategoriesData = <StorageCategoriesData>[];
 
   /// this for account total balance for user choisess :
 
@@ -336,14 +333,23 @@ class StorageViewModel extends BaseController {
           ConstanceNetwork.quantityCategoryType) {
         var resQuantity = await checkQuantity(
             boxCheckedId: "${lastStorageItem?.name}", quntity: quantity);
-        Quantity q = Quantity.fromJson(resQuantity.data["item"]);
-        if (q.quantityStatus == 0) {
-          bool isComplete = await checkSpaceDiloag(
-              quantity: Quantity.fromJson(resQuantity.data),
-              message: resQuantity.status!.message!);
-          if (!isComplete) {
-            return;
+        // if(resQuantity.status!.success!){
+
+        // }
+        if (resQuantity.data["item"] != null) {
+          Quantity q = Quantity.fromJson(resQuantity.data["item"]);
+          if (q.quantityStatus == 0) {
+            bool isComplete = await checkSpaceDiloag(
+                quantity: Quantity.fromJson(resQuantity.data),
+                message: resQuantity.status!.message!);
+            if (!isComplete) {
+              return;
+            }
           }
+        } else {
+          isLoading = false;
+          update();
+          return;
         }
       }
 
@@ -361,9 +367,12 @@ class StorageViewModel extends BaseController {
         userStorageCategoriesData[updateIndex!] = newStorageCategoriesData;
       } else {
         newStorageCategoriesData.groupId = updateIndex;
-        userStorageCategoriesData.add(newStorageCategoriesData);
+        await Future.delayed(Duration(seconds: 0)).then((value) =>
+            {userStorageCategoriesData.add(newStorageCategoriesData)});
       }
     }
+    Logger().i(storageCategoriesList.length);
+    print("msg_lrngth ${userStorageCategoriesData.length}");
     calculateBalance();
     getStorageCategories();
     selctedItem = null;
@@ -687,10 +696,6 @@ class StorageViewModel extends BaseController {
               else
                 {
                   isLoading = false,
-                  snackError(
-                    "${value.status!.message}",
-                    "",
-                  ),
                 },
               res = value,
             });
@@ -730,8 +735,9 @@ class StorageViewModel extends BaseController {
   Future<void> addNewStorage() async {
     //still this layer will complete when you complete order // refer to =>
     List<OrderItem> orderIyems = [];
+
     userStorageCategoriesData.forEach((element) {
-      final localOrderItem = OrderItem();
+      OrderItem localOrderItem = OrderItem();
       if (element.storageCategoryType == ConstanceNetwork.itemCategoryType) {
         element.localBulk?.endStorageItem.forEach((innerElement) {
           localOrderItem.itemCode = innerElement.name;
@@ -740,13 +746,19 @@ class StorageViewModel extends BaseController {
           localOrderItem.qty = innerElement.quantity;
           localOrderItem.subscriptionDuration = element.numberOfDays;
           localOrderItem.groupId = element.groupId;
+          localOrderItem.itemParent = 0;
           localOrderItem.storageType = element.storageCategoryType;
           localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
           localOrderItem.subscriptionPrice = element.userPrice! /
               element.numberOfDays! /
               innerElement.quantity!;
+          Logger().i("${localOrderItem.toJson()}");
+          print("${orderIyems.length}");
           orderIyems.add(localOrderItem);
+          localOrderItem = OrderItem();
+          print("${orderIyems.length}");
         });
+
         if (!GetUtils.isNull(element.localBulk!.optionStorageItem)) {
           localOrderItem.itemCode = element.localBulk!.optionStorageItem!.name;
           localOrderItem.deliveryDate = selectedDateTime.toString();
@@ -756,7 +768,9 @@ class StorageViewModel extends BaseController {
           localOrderItem.groupId = element.groupId;
           localOrderItem.storageType = element.storageCategoryType;
           localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
+          localOrderItem.itemParent = 0;
           orderIyems.add(localOrderItem);
+          localOrderItem = OrderItem();
         }
       } else {
         localOrderItem.itemCode = element.selectedItem!.name;
@@ -767,9 +781,11 @@ class StorageViewModel extends BaseController {
         localOrderItem.groupId = element.groupId;
         localOrderItem.storageType = element.storageCategoryType;
         localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
+        localOrderItem.itemParent = 0;
         localOrderItem.subscriptionPrice =
             element.userPrice! / element.numberOfDays! / element.quantity!;
         orderIyems.add(localOrderItem);
+        localOrderItem = OrderItem();
       }
     });
     isLoading = true;
@@ -782,10 +798,15 @@ class StorageViewModel extends BaseController {
             {
               isLoading = false,
               update(),
+              checkDaplication(),
               snackSuccess("${tr.success}", "${value.status!.message}"),
               userStorageCategoriesData.clear(),
-              getOrderDetailes(orderId: value.data["order name"]),
-              Get.off(() => OrderDerailesScreen())
+              selectedPaymentMethod = null,
+              selectedAddress = null,
+              selectedDateTime = null,
+              selectedStore = null,
+              selectedDay = null,
+              Get.close(2)
             }
           else
             {
@@ -797,26 +818,23 @@ class StorageViewModel extends BaseController {
   }
 
   // here to getOrderDetailes With Id;
-//  Dangeras Dont Play ::
+  //  Dangeras Dont Play ::
 
+  OS.OrderSales? returnedOrderSales;
 
-OS.OrderSales? returnedOrderSales;
-
- Future<OS.OrderSales> getOrderDetailes({required String orderId}) async {
-   OS.OrderSales orderSales = OS.OrderSales();
-    await StorageFeature.getInstance.getOrderDetailes(
-        body: {"order_id": "$orderId"}).then((value) => {
-          Logger().i("$value"),
-          orderSales = OS.OrderSales.fromJson(value.toJson()),
-          returnedOrderSales = orderSales
-          });
-      update();
-     return orderSales;     
+  Future<OS.OrderSales> getOrderDetailes({required String orderId}) async {
+    OS.OrderSales orderSales = OS.OrderSales();
+    await StorageFeature.getInstance
+        .getOrderDetailes(body: {"order_id": "$orderId"}).then((value) => {
+              Logger().i("$value"),
+              orderSales = OS.OrderSales.fromJson(value.data["order"]),
+              returnedOrderSales = orderSales
+            });
+    update();
+    return orderSales;
   }
 
-///  
-
-  // validate Adding New Storage:
+  /// validate Adding New Storage:
 
   bool isValiedToSaveStorage() {
     if (userStorageCategoriesData.isEmpty) {
@@ -855,6 +873,9 @@ OS.OrderSales? returnedOrderSales;
         return false;
       }
     } else if (GetUtils.isNull(storeAddress)) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
+      return false;
+    } else if (GetUtils.isNull(selectedAddress)) {
       snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
       return false;
     }
@@ -949,6 +970,9 @@ OS.OrderSales? returnedOrderSales;
   @override
   void onInit() {
     super.onInit();
+    storageCategoriesList.clear();
+    userStorageCategoriesData.clear();
+    userStorageCategoriesData = <StorageCategoriesData>[];
     getStorageCategories();
   }
 
@@ -1027,16 +1051,6 @@ OS.OrderSales? returnedOrderSales;
     }
   }
 
-  // to do here get Tasks :
-  Set<Task> tasks = {};
-
-  getTasks() async {
-    await StorageFeature.getInstance.getTasks().then((value) => {
-          Logger().i("${value.toList().length}"),
-          tasks = value.toSet(),
-        });
-    update();
-  }
 
   //---------- to do for new storage Func ---------------
   int currentLevel = 0;
@@ -1090,7 +1104,14 @@ OS.OrderSales? returnedOrderSales;
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
-      );
+      ).whenComplete(() => {
+            selectedFeaures.clear(),
+            selectedDuration = "Daily",
+            quantity = 1,
+            numberOfDays = 1,
+            lastStorageItem = null,
+            balance = 0,
+          });
     } else if (ConstanceNetwork.itemCategoryType ==
         storageCategoriesData.storageCategoryType) {
       Get.bottomSheet(
@@ -1100,7 +1121,15 @@ OS.OrderSales? returnedOrderSales;
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
-      );
+      ).whenComplete(() => {
+            selectedFeaures.clear(),
+            // localBulk = LocalBulk(),
+            selectedDuration = "Daily",
+            quantity = 1,
+            numberOfDays = 1,
+            lastStorageItem = null,
+            balance = 0,
+          });
     } else if (ConstanceNetwork.spaceCategoryType ==
             storageCategoriesData.storageCategoryType ||
         storageCategoriesData.storageCategoryType!
@@ -1113,7 +1142,14 @@ OS.OrderSales? returnedOrderSales;
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
-      );
+      ).whenComplete(() => {
+            selectedDuration = "Daily",
+            quantity = 1,
+            numberOfDays = 1,
+            selectedFeaures.clear(),
+            lastStorageItem = null,
+            balance = 0,
+          });
     } else if (ConstanceNetwork.driedCage ==
             storageCategoriesData.storageCategoryType ||
         ConstanceNetwork.spaceCategoryType ==
@@ -1125,9 +1161,19 @@ OS.OrderSales? returnedOrderSales;
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
-      );
+      ).whenComplete(() => {
+            selectedDuration = "Daily",
+            quantity = 1,
+            numberOfDays = 1,
+            selectedFeaures.clear(),
+            lastStorageItem = null,
+            balance = 0,
+          });
     }
   }
+
+  @override
+  InternalFinalCallback<void> get onDelete;
 
   void changeTypeViewLVGV() {
     isListView = !isListView!;

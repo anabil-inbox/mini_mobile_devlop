@@ -7,10 +7,24 @@ import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_vi
 
 import 'widgets/my_order_item.dart';
 
-class MyOrdersScreen extends StatelessWidget {
+class MyOrdersScreen extends StatefulWidget {
   const MyOrdersScreen({Key? key}) : super(key: key);
 
   static MyOrderViewModle myOrderViewModle = Get.find<MyOrderViewModle>();
+
+  @override
+  State<MyOrdersScreen> createState() => _MyOrdersScreenState();
+}
+
+class _MyOrdersScreenState extends State<MyOrdersScreen> {
+  @override
+  void initState() {
+    super.initState();
+    MyOrdersScreen.myOrderViewModle.getOrdres();
+    MyOrdersScreen.myOrderViewModle.scrollcontroller.addListener(() {
+      MyOrdersScreen.myOrderViewModle.pagination();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,23 +34,22 @@ class MyOrdersScreen extends StatelessWidget {
           MyOrderAppBar(),
           Expanded(
             child: GetBuilder<MyOrderViewModle>(
-              init: MyOrderViewModle(),
-              initState: (_) {
-                myOrderViewModle.getOrdres();
-                myOrderViewModle.scrollcontroller.addListener(() {
-                  myOrderViewModle.pagination();
-                });
-              },
-              builder: (_) {
-                return ListView(
-                  controller: myOrderViewModle.scrollcontroller,
-                  shrinkWrap: true,
-                  children: myOrderViewModle.userOrderSales
-                      .map((e) => MyOrderItem(
-                            orderSales: e,
-                          ))
-                      .toList(),
-                );
+              builder: (logic) {
+                return 
+                // logic.isLoading
+                //     // ? Center(
+                //     //     child: CircularProgressIndicator(),
+                //     //   )
+                //     // : 
+                    ListView(
+                        controller: logic.scrollcontroller,
+                        shrinkWrap: true,
+                        children: logic.userOrderSales
+                            .map((e) => MyOrderItem(
+                                  orderSales: e,
+                                ))
+                            .toList(),
+                      );
               },
             ),
           )

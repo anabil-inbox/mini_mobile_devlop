@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
-import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -14,10 +13,23 @@ import 'widgets/add_storage_widget/request_new_storage_header.dart';
 import 'widgets/step_two_widgets/pickup_address_widget.dart';
 import 'widgets/step_two_widgets/schedule_pickup_widget.dart';
 
-class RequestNewStoragesStepTwoScreen extends StatelessWidget {
+class RequestNewStoragesStepTwoScreen extends StatefulWidget {
   const RequestNewStoragesStepTwoScreen({Key? key}) : super(key: key);
 
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+
+  @override
+  State<RequestNewStoragesStepTwoScreen> createState() =>
+      _RequestNewStoragesStepTwoScreenState();
+}
+
+class _RequestNewStoragesStepTwoScreenState
+    extends State<RequestNewStoragesStepTwoScreen> {
+  @override
+  void initState() {
+    super.initState();
+    RequestNewStoragesStepTwoScreen.storageViewModel.currentLevel = 1;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,19 +75,25 @@ class RequestNewStoragesStepTwoScreen extends StatelessWidget {
                 end: padding0,
                 child: Container(
                     width: sizeW150,
-                    child: PrimaryButton(
-                      isExpanded: false,
-                      isLoading: false,
-                      textButton: "${tr.next}",
-                      onClicked: () {
-                        if (storageViewModel.isStepTwoValidate(
-                            catygoreyType: storageViewModel
-                                    .userStorageCategoriesData[0]
-                                    .storageCategoryType ??
-                                "")) {
-                          storageViewModel.currentLevel = 2;
-                          Get.to(() => RequestNewStorageStepThree());
-                        }
+                    child: GetBuilder<StorageViewModel>(
+                      init: StorageViewModel(),
+                      initState: (_) {},
+                      builder: (logic) {
+                        return PrimaryButton(
+                          isExpanded: false,
+                          isLoading: false,
+                          textButton: "${tr.next}",
+                          onClicked: () {
+                            if (logic.userStorageCategoriesData.isNotEmpty) if 
+                            (logic.isStepTwoValidate(catygoreyType: logic
+                                            .userStorageCategoriesData[0]
+                                            .storageCategoryType ??
+                                        "")) {
+                              logic.currentLevel = 2;
+                              Get.off(() => RequestNewStorageStepThree());
+                            }
+                          },
+                        );
                       },
                     ))),
             // PositionedDirectional(

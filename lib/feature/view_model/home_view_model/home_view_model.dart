@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
+import 'package:inbox_clients/network/api/feature/item_helper.dart';
+import 'package:inbox_clients/network/api/feature/storage_feature.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
+import 'package:inbox_clients/util/string.dart';
+import 'package:logger/logger.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class HomeViewModel extends BaseController {
   var _currentIndex = 0;
@@ -26,10 +35,12 @@ class HomeViewModel extends BaseController {
   TextEditingController tdSearch = TextEditingController();
   Set<Box> searchedBoxess = {};
   Future<void> searchForBox({required String searchText}) async {
-    await HomeHelper.getInstance.getBoxessWithSearch(serchText: "$searchText").then((value) => {
-      searchedBoxess = value.toSet(),
-      update(),
-    });
+    await HomeHelper.getInstance
+        .getBoxessWithSearch(serchText: "$searchText")
+        .then((value) => {
+              searchedBoxess = value.toSet(),
+              update(),
+            });
   }
 
   // start Loaging Function ::
@@ -48,6 +59,54 @@ class HomeViewModel extends BaseController {
   var scrollcontroller = ScrollController();
   int page = 1;
 
+  // open Scaner Qr :
+  var scanArea = (MediaQuery.of(Get.context!).size.width < 400 ||
+          MediaQuery.of(Get.context!).size.height < 400)
+      ? 150.0
+      : 300.0;
+
+  Barcode? result;
+  QRViewController? controller;
+
+  void onQRViewCreated(QRViewController controller) {
+    try {
+      this.controller = controller;
+
+      controller.scannedDataStream.listen((scanData) {
+        result = scanData;
+      }).onData((data) async {
+        Logger().i(data.code);
+
+        Logger().i("Serial ${data.code}");
+        await getBoxBySerial(serial: data.code ?? "").then((value) => {
+              if (GetUtils.isNull(value))
+                {Get.off(() => HomePageHolder())}
+              else
+                {
+                  Get.off(() => HomePageHolder(
+                        box: value,
+                        isFromScan: true,
+                      ))
+                }
+            });
+      });
+    } catch (e) {
+      Logger().e("$e");
+    }
+  }
+
+  void onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+    try {
+      if (!p) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('no Permission')),
+        );
+      }
+    } catch (e) {
+      Logger().e("$e");
+    }
+  }
+
   // this for Pagination :
 
   void pagination() {
@@ -58,15 +117,62 @@ class HomeViewModel extends BaseController {
     update();
   }
 
+  // to get box by his serial ::
+
+  Future<Box> getBoxBySerial({required String serial}) async {
+    Box box = Box();
+    await ItemHelper.getInstance
+        .getBoxBySerial(body: {"serial": serial}).then((value) => {
+              if (value.status!.success!)
+                {
+                  box = Box.fromJson(value.data["Storages"]),
+                }
+              else
+                {
+                  snackError("$error", "${value.status!.message}"),
+                }
+            });
+    return box;
+  }
+
   @override
   void onInit() {
     super.onInit();
     getCustomerBoxes();
+    getTasks();
     scrollcontroller.addListener(pagination);
   }
 
   void changeTab(int index) {
     _currentIndex = index;
+    update();
+  }
+
+  //
+    @override
+  InternalFinalCallback<void> get onDelete;
+  
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
+    // to do here get Tasks :
+  Set<Task> tasks = {};
+
+  getTasks() async {
+    await StorageFeature.getInstance.getTasks().then((value) => {
+          Logger().i("${value.toList().length}"),
+          tasks = value.toSet(),
+        });
+    update();
+  }
+
+    // to change From Grid to List >=<
+      bool? isListView = false;
+
+    void changeTypeViewLVGV() {
+    isListView = !isListView!;
     update();
   }
 }

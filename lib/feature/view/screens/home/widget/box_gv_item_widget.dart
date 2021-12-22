@@ -49,7 +49,7 @@ class HomeGVItemWidget extends StatelessWidget {
                   height: sizeH9,
                 ),
                 CustomTextView(
-                  txt: "${DateUtility.getChatTime(box.modified ?? "")}",
+                  txt: "${DateUtility.getChatTime(box.modified.toString())}",
                   maxLine: Constance.maxLineOne,
                   textStyle: textStyleNormal(),
                   textAlign: TextAlign.center,

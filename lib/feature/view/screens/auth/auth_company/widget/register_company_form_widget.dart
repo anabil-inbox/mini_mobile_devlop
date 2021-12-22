@@ -196,6 +196,9 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                                       "${ConstanceNetwork.imageUrl}${controller.defCountry.flag}",
                                   width: 36,
                                   height: 26),
+                                       SizedBox(
+                            width: sizeW5,
+                          ),
                           VerticalDivider(),
                           GetBuilder<AuthViewModle>(
                             init: AuthViewModle(),
@@ -221,7 +224,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                               ),
                               controller: controller.tdMobileNumber,
                               validator: (value) {
-                                phoneVaild(value.toString());
+                               return phoneVaild(value.toString());
                               },
                               keyboardType: TextInputType.number,
                             ),

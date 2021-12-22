@@ -50,6 +50,9 @@ class ContactItemWidget extends StatelessWidget {
                       "$prefix",
                       textDirection: TextDirection.ltr,
                     ),
+                         SizedBox(
+                            width: sizeW5,
+                          ),
                     VerticalDivider(),
                   ],
                 ),

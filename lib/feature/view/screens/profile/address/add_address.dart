@@ -61,6 +61,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                   height: sizeH10,
                 ),
                 TextFormField(
+                  keyboardType: TextInputType.number,
                   controller: controller.tdBuildingNo,
                   onSaved: (newValue) {
                     controller.tdBuildingNo.text = newValue!;
@@ -72,6 +73,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                     }
                     return null;
                   },
+                  
                   decoration: InputDecoration(
                       hintText: "${tr.building_no}"),
                 ),

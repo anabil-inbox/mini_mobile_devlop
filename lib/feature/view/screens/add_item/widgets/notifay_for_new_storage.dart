@@ -4,9 +4,10 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
-import 'package:inbox_clients/feature/view/screens/add_item/qr_screen.dart';
+import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -14,8 +15,13 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
+import '../qr_screen.dart';
+
 class NotifayForNewStorage extends StatelessWidget {
-  const NotifayForNewStorage({Key? key}) : super(key: key);
+  const NotifayForNewStorage({Key? key, required this.box}) : super(key: key);
+
+  final Box box;
+  static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +57,12 @@ class NotifayForNewStorage extends StatelessWidget {
                 SizedBox(
                   height: sizeH6,
                 ),
-                Text("New Box 01"),
+                Text("${box.serialNo}"),
                 SizedBox(
                   height: sizeH2,
                 ),
                 Text(
-                  "Not Delivered",
+                  "${box.storageStatus}",
                   style: textStyleHints()!.copyWith(fontSize: fontSize13),
                 ),
                 SizedBox(
@@ -128,12 +134,17 @@ class NotifayForNewStorage extends StatelessWidget {
                 isExpanded: false,
                 isLoading: false,
                 onClicked: () {
-                  Get.put(ItemViewModle());
-                 // Get.to(() => QrScreen());
+                 // Get.put(ItemViewModle());
+                  Get.to(() => QrScreen());
+                 
+                // homeViewModel.startScan();
+                 
                 },
                 textButton: "Scan QR Key",
               ),
-              SizedBox(width: sizeW12,),
+              SizedBox(
+                width: sizeW12,
+              ),
               SizedBox(
                 width: sizeW150,
                 child: SeconderyFormButton(

@@ -283,6 +283,9 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                                         "${value.defCountry.prefix}",
                                         textDirection: TextDirection.ltr,
                                       ),
+                                           SizedBox(
+                            width: sizeW5,
+                          ),
                                       VerticalDivider(),
                                     ],
                                   );
@@ -308,7 +311,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                                                 profileViewModle.update();
                                               },
                                               decoration: const InputDecoration(
-                                                counterText: "",
+                                               counterText: "",
                                               ),
                                               validator: (e) {
                                                 return phoneVaildAlternativeContact(

@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/model/inside_box/item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/btn_action_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/items_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/recent_item_widget.dart';
@@ -22,11 +24,12 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
-import 'package:inbox_clients/util/font_dimne.dart';
 
 class StorageDetailsView extends StatelessWidget {
-  const StorageDetailsView({Key? key}) : super(key: key);
+  const StorageDetailsView({Key? key , required this.tags}) : super(key: key);
 
+
+  
   //todo this for appbar
   PreferredSizeWidget get appBar =>
       CustomAppBarWidget(
@@ -94,11 +97,13 @@ class StorageDetailsView extends StatelessWidget {
 
   StorageViewModel get viewModel => Get.put(StorageViewModel());
 
+  final List<Tag> tags;
+
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
     return Scaffold(
-      appBar: appBar,
+     // appBar: appBar,
       body: Column(
         children: [
           Expanded(
@@ -110,32 +115,32 @@ class StorageDetailsView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   searchWidget,
-                  SizedBox(
-                    height: sizeH20,
-                  ),
-                  CustomTextView(
-                    txt: "${tr.recently_added}",
-                    textStyle: textStyleNormal()?.copyWith(color: colorBlack),
-                    maxLine: Constance.maxLineOne,
-                  ),
-                  SizedBox(
-                    height: sizeH10,
-                  ),
-                  SizedBox(
-                    height: sizeH180,
-                    child: ListView.builder(
-                      clipBehavior: Clip.none,
-                      physics: customScrollViewIOS(),
-                      itemCount: 10,
-                      shrinkWrap: true,
-                      keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return const RecentlyItemWidget();
-                      },
-                    ),
-                  ),
+                  // SizedBox(
+                  //   height: sizeH20,
+                  // ),
+                  // CustomTextView(
+                  //   txt: "${tr.recently_added}",
+                  //   textStyle: textStyleNormal()?.copyWith(color: colorBlack),
+                  //   maxLine: Constance.maxLineOne,
+                  // ),
+                  // SizedBox(
+                  //   height: sizeH10,
+                  // ),
+                  // SizedBox(
+                  //   height: sizeH180,
+                  //   child: ListView.builder(
+                  //     clipBehavior: Clip.none,
+                  //     physics: customScrollViewIOS(),
+                  //     itemCount: 10,
+                  //     shrinkWrap: true,
+                  //     keyboardDismissBehavior:
+                  //     ScrollViewKeyboardDismissBehavior.onDrag,
+                  //     scrollDirection: Axis.horizontal,
+                  //     itemBuilder: (context, index) {
+                  //       return const RecentlyItemWidget();
+                  //     },
+                  //   ),
+                  // ),
                   SizedBox(
                     height: sizeH20,
                   ),
@@ -155,12 +160,12 @@ class StorageDetailsView extends StatelessWidget {
                           clipBehavior: Clip.antiAlias,
                           keyboardDismissBehavior:
                           ScrollViewKeyboardDismissBehavior.onDrag,
-                          itemBuilder: (context, index) => const ItemsWidget(),
+                          itemBuilder: (context, index) =>  ItemsWidget(tag: tags[index],),
                           separatorBuilder: (context, index) =>
                               Divider(
                                 height: sizeH1,
                               ),
-                          itemCount: 10),
+                          itemCount: tags.length),
                     ),
                   ),
                   SizedBox(

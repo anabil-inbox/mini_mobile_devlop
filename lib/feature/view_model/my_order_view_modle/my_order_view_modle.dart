@@ -7,14 +7,18 @@ import 'package:logger/logger.dart';
 class MyOrderViewModle extends BaseController {
 // get user Orders Var And Functions ::
   Set<OrderSales> userOrderSales = {};
+  bool isLoading = false;
 
   Future<void> getOrdres() async {
+    isLoading = true;
+    update();
     await OrderHelper.getInstance
         .getCustomerBoxess(pageSize: 30, page: page)
         .then((value) => {
-              Logger().i("$value"),
               userOrderSales.addAll(value),
+              Logger().i("${userOrderSales.length}"),
             });
+    isLoading = false;
     update();
   }
 

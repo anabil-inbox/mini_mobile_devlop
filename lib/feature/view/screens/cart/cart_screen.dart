@@ -17,10 +17,10 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.bottomSheet(
-            NotifayForNewStorage(),
-            isScrollControlled: true
-          );
+          // Get.bottomSheet(
+          //  // NotifayForNewStorage(),
+          //   isScrollControlled: true
+          // );
         },
       ),
       appBar: CustomAppBarWidget(

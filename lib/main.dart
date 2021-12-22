@@ -15,7 +15,7 @@ import 'feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'feature/view_model/splash_view_modle/splash_view_modle.dart';
 import 'feature/view_model/storage_view_model/storage_view_model.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await AppFcm.fcmInstance.init();
@@ -25,16 +25,15 @@ void main() async{
   runApp(const AppWidget());
 }
 
-class BindingsController extends Bindings{
+class BindingsController extends Bindings {
   @override
   void dependencies() {
-   Get.lazyPut(() => SplashViewModle());
-   Get.lazyPut(() => IntroViewModle());
-   Get.lazyPut(() => AuthViewModle());
-   Get.lazyPut(() => ProfileViewModle());
-   Get.lazyPut(() => StorageViewModel());
-   Get.lazyPut(() => HomeViewModel());
-   Get.lazyPut(() => MyOrderViewModle());
+    Get.lazyPut(() => SplashViewModle());
+    Get.lazyPut(() => IntroViewModle());
+    Get.lazyPut(() => AuthViewModle());
+    Get.lazyPut(() => ProfileViewModle());
+    Get.lazyPut(() => StorageViewModel(), fenix: true);
+    Get.lazyPut(() => HomeViewModel(), fenix: true);
+    Get.lazyPut(() => MyOrderViewModle());
   }
 }
-

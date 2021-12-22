@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:inbox_clients/feature/model/inside_box/item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/btn_action_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/items_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/text_with_contanier_widget.dart';
@@ -43,33 +44,37 @@ class FilterStorageNameView extends StatelessWidget {
           GetBuilder<StorageViewModel>(
               init: StorageViewModel(),
               builder: (logic) {
-            return TextButton(
-              onPressed: () {
-                logic.updateSelectBtn();
-              },
-              child:logic.isSelectBtnClick! ?
-              SizedBox(
-                width: sizeW40,
-                child: TextButton(
+                return TextButton(
                   onPressed: () {
-                    logic.updateSelectAll(list);
+                    logic.updateSelectBtn();
                   },
-                  child:logic.isSelectAllClick !?SvgPicture.asset("assets/svgs/storage_check_active.svg"):SvgPicture.asset("assets/svgs/storage_check_deactive.svg"),
-                ),
-              )
-                  : CustomTextView(
-                txt: "${tr.select}",
-                textStyle: textStyleNormal()?.copyWith(color: colorRed),
-                maxLine: Constance.maxLineOne,
-              ),
-            );
-          }),
+                  child: logic.isSelectBtnClick!
+                      ? SizedBox(
+                          width: sizeW40,
+                          child: TextButton(
+                            onPressed: () {
+                              logic.updateSelectAll(list);
+                            },
+                            child: logic.isSelectAllClick!
+                                ? SvgPicture.asset(
+                                    "assets/svgs/storage_check_active.svg")
+                                : SvgPicture.asset(
+                                    "assets/svgs/storage_check_deactive.svg"),
+                          ),
+                        )
+                      : CustomTextView(
+                          txt: "${tr.select}",
+                          textStyle:
+                              textStyleNormal()?.copyWith(color: colorRed),
+                          maxLine: Constance.maxLineOne,
+                        ),
+                );
+              }),
         ],
       );
 
   //todo this for search
-  Widget get searchWidget =>
-      CustomTextFormFiled(
+  Widget get searchWidget => CustomTextFormFiled(
         iconSize: sizeRadius20,
         maxLine: Constance.maxLineOne,
         icon: Icons.search,
@@ -100,8 +105,7 @@ class FilterStorageNameView extends StatelessWidget {
               children: [
                 Expanded(
                   child: Padding(
-                    padding:
-                    EdgeInsets.only(
+                    padding: EdgeInsets.only(
                         top: sizeH20!, left: sizeW20!, right: sizeW20!),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -136,24 +140,38 @@ class FilterStorageNameView extends StatelessWidget {
                             groupBy: (element) => element[0] /*['group']*/,
                             groupSeparatorBuilder: (String groupByValue) =>
                                 Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: sizeH10,),
-                                    SizedBox(
-                                      width: sizeW30,
-                                      height: sizeH31,
-                                      child: TextContainerWidget(
-                                        colorBackground: colorRedTrans,
-                                        txt: groupByValue,
-                                      ),),
-                                    SizedBox(height: sizeH10,),
-                                  ],
-                                ) /*, Text(groupByValue , textAlign: TextAlign.start,)*/,
-                                itemBuilder: (context, dynamic element) => ItemsWidget(item:element,index:list.indexOf(element),isSelectedBtnClick: logic.isSelectBtnClick,onCheckItem: () {
-                                  logic.addIndexToList(element.toString());
-                                },),
-                            itemComparator: (item1, item2) => item1[0] /*['name']*/.compareTo(item2[0] /*['name']*/),
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: sizeH10,
+                                ),
+                                SizedBox(
+                                  width: sizeW30,
+                                  height: sizeH31,
+                                  child: TextContainerWidget(
+                                    colorBackground: colorRedTrans,
+                                    txt: groupByValue,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: sizeH10,
+                                ),
+                              ],
+                            ) /*, Text(groupByValue , textAlign: TextAlign.start,)*/,
+                            itemBuilder: (context, dynamic element) =>
+                                ItemsWidget(
+                              tag: Tag(),    
+                              item: element,
+                              index: list.indexOf(element),
+                              isSelectedBtnClick: logic.isSelectBtnClick,
+                              onCheckItem: () {
+                                logic.addIndexToList(element.toString());
+                              },
+                            ),
+                            itemComparator: (item1, item2) =>
+                                item1[0] /*['name']*/ .compareTo(
+                                    item2[0] /*['name']*/),
                             // optional
                             useStickyGroupSeparators: false,
                             // optional

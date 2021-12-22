@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
+import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/view/screens/add_item/qr_screen.dart';
 import 'package:inbox_clients/feature/view/screens/cart/cart_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/search_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/box_gv_widget.dart';
+import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/filter_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
@@ -21,11 +24,20 @@ import 'package:inbox_clients/util/constance.dart';
 
 import 'widget/box_lv_widget.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+// ignore: must_be_immutable
+class HomeScreen extends StatefulWidget {
+  HomeScreen({Key? key, this.isFromScan, this.box}) : super(key: key);
 
   static HomeViewModel homeViewModle = Get.find<HomeViewModel>();
 
+  bool? isFromScan = false;
+  Box? box;
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
 //todo this for search
   Widget get searchWidget => Container(
         height: sizeH50,
@@ -47,7 +59,6 @@ class HomeScreen extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 onSubmitted: (_) {},
                 onChange: (_) {},
-                
                 fun: _goToFilterNameView,
                 isReadOnly: true,
                 isSmallPadding: false,
@@ -72,9 +83,7 @@ class HomeScreen extends StatelessWidget {
             height: sizeH50,
             child: CustomAppBarWidget(
               elevation: 0,
-              appBarColor: (!logic.isStorageCategories.value &&
-                      GetUtils.isNull(logic.storageCategoriesList) &&
-                      logic.storageCategoriesList.length == 0)
+              appBarColor: (HomeScreen.homeViewModle.userBoxess.isEmpty)
                   ? scaffoldColor
                   : colorBackground,
               isCenterTitle: true,
@@ -85,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                 height: sizeH48,
                 backgroundColor: colorRed,
                 onPressed: () {
-                  
+                  Get.off(QrScreen());
                 },
                 borderColor: colorTrans,
                 icon: "assets/svgs/Scan.svg",
@@ -137,18 +146,32 @@ class HomeScreen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    HomeScreen.homeViewModle.scrollcontroller.addListener(() {
+      HomeScreen.homeViewModle.pagination();
+    });
+
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      if (widget.isFromScan ?? false) {
+        Get.bottomSheet(CheckInBoxWidget(), isScrollControlled: true);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: scaffoldColor,
-      body: GetBuilder<StorageViewModel>(
-        init: StorageViewModel(),
+      body: GetBuilder<HomeViewModel>(
+        init: HomeViewModel(),
         assignId: true,
         builder: (logic) {
-          if (logic.isStorageCategories.value) {
-            return const SizedBox.shrink();
-          } else if (!logic.isStorageCategories.value &&
-              GetUtils.isNull(logic.storageCategoriesList) &&
-              logic.storageCategoriesList.length == 0) {
+          if (logic.isLoading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (logic.userBoxess.isEmpty) {
             return SafeArea(
               child: Stack(
                 children: [
@@ -187,13 +210,9 @@ class HomeScreen extends StatelessWidget {
                               ],
                             ),
                             if (!logic.isListView!) ...[
-                              homeViewModle.isLoading
-                                   ? DialogLoading()
-                                   : GVWidget(),
+                              logic.isLoading ? DialogLoading() : GVWidget(),
                             ] else ...[
-                              homeViewModle.isLoading
-                                  ? DialogLoading()
-                                  : LVWidget(),
+                              logic.isLoading ? DialogLoading() : LVWidget(),
                             ],
                           ],
                         );

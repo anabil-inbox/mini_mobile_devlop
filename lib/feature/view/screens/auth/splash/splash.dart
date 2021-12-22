@@ -27,6 +27,7 @@ class SplashScreen extends GetWidget<SplashViewModle> {
 }
 
 moveToIntro(){  
+  
   String? state = SharedPref.instance.getUserLoginState();
 
   if (state?.toLowerCase() == "${ConstanceNetwork.userEnterd}") {
@@ -40,7 +41,6 @@ moveToIntro(){
     
   }else if(state?.toLowerCase() == "${ConstanceNetwork.userLoginedState}"){
     Get.off(() => HomePageHolder());
-  // Get.off(() => HomeScreen());
   }else{
     Get.off(() => IntroScreen(type: SharedPref.instance.getUserType()));
   }
