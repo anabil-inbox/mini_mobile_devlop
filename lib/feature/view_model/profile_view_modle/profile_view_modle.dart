@@ -202,8 +202,7 @@ class ProfileViewModle extends BaseController {
   //-- for log out
 
   logOutDiloag() {
-    Get.bottomSheet(
-      GlobalBottomSheet(
+    Get.bottomSheet(GlobalBottomSheet(
       title: "${tr.are_you_sure_you_want_to_log_out}",
       onOkBtnClick: () {
         logOut();
@@ -252,20 +251,33 @@ class ProfileViewModle extends BaseController {
 
     Get.bottomSheet(
         areaZone.isEmpty
-            ? Text("Sorrey , No Zone Area Available", style:  textStyleTitle())
+            ? Container(
+                decoration: BoxDecoration(
+                    color: colorBackground,
+                    borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(padding30!))),
+                child: Text("Sorrey , No Zone Area Available",
+                    style: textStyleTitle()))
             : Container(
-              decoration: BoxDecoration(
-              color: colorBackground,
-              borderRadius : BorderRadius.vertical(top: Radius.circular(padding30!))
-              ),
-              padding: EdgeInsets.symmetric(horizontal: padding20!),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: sizeH20,),
-                  Text("Select Your Time Zone " , style: textStyleTitle()!.copyWith(color: colorPrimary),),
-                  SizedBox(height: sizeH20,),
-                  ListView(
+                decoration: BoxDecoration(
+                    color: colorBackground,
+                    borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(padding30!))),
+                padding: EdgeInsets.symmetric(horizontal: padding20!),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: sizeH20,
+                    ),
+                    Text(
+                      "Select Your Time Zone ",
+                      style: textStyleTitle()!.copyWith(color: colorPrimary),
+                    ),
+                    SizedBox(
+                      height: sizeH20,
+                    ),
+                    ListView(
                       shrinkWrap: true,
                       children: areaZone
                           .map((e) => AreaZoneWidget(
@@ -273,12 +285,10 @@ class ProfileViewModle extends BaseController {
                               ))
                           .toList(),
                     ),
-                ],
+                  ],
+                ),
               ),
-            ),
-        isScrollControlled: true
-        );
- 
+        isScrollControlled: true);
   }
 
   //-- for user Edit profile:

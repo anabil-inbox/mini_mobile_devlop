@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 
 class MyOrderViewModle extends BaseController {
 // get user Orders Var And Functions ::
-  Set<OrderSales> userOrderSales = {};
+  Set<OrderSales> userOrderSales = <OrderSales>{};
   bool isLoading = false;
 
   Future<void> getOrdres() async {

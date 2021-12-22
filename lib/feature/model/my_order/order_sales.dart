@@ -51,6 +51,32 @@ class OrderSales {
         "order_warehouse_address": orderWarehouseAddress,
         "order_items": List<dynamic>.from(orderItems!.map((x) => x.toJson())),
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is OrderSales &&
+          runtimeType == other.runtimeType &&
+          orderId == other.orderId &&
+          customerId == other.customerId &&
+          orderType == other.orderType &&
+          totalPrice == other.totalPrice &&
+          deliveryDate == other.deliveryDate &&
+          status == other.status &&
+  //        orderItems == other.orderItems &&
+          orderShippingAddress == other.orderShippingAddress &&
+          orderWarehouseAddress == other.orderWarehouseAddress;
+
+  @override
+  int get hashCode =>
+      orderId.hashCode ^
+      customerId.hashCode ^
+      orderType.hashCode ^
+      totalPrice.hashCode ^
+      deliveryDate.hashCode ^
+      status.hashCode ^
+      orderShippingAddress.hashCode ^
+      orderWarehouseAddress.hashCode;
 }
 
 class OrderItem {
@@ -108,6 +134,35 @@ class OrderItem {
             ? null
             : List<dynamic>.from(itemsList!.map((x) => x.toJson())),
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is OrderItem &&
+          runtimeType == other.runtimeType &&
+          itemParent == other.itemParent &&
+          item == other.item &&
+          needAdviser == other.needAdviser &&
+          price == other.price &&
+          quantity == other.quantity &&
+          totalPrice == other.totalPrice &&
+          groupId == other.groupId &&
+          itemStatus == other.itemStatus &&
+          isParent == other.isParent &&
+          itemsList == other.itemsList;
+
+  @override
+  int get hashCode =>
+      itemParent.hashCode ^
+      item.hashCode ^
+      needAdviser.hashCode ^
+      price.hashCode ^
+      quantity.hashCode ^
+      totalPrice.hashCode ^
+      groupId.hashCode ^
+      itemStatus.hashCode ^
+      isParent.hashCode ^
+      itemsList.hashCode;
 }
 
 class ItemsList {
@@ -148,4 +203,27 @@ class ItemsList {
         "total_price": totalPrice,
         "group_id": groupId,
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ItemsList &&
+          runtimeType == other.runtimeType &&
+          itemParent == other.itemParent &&
+          item == other.item &&
+          needAdviser == other.needAdviser &&
+          price == other.price &&
+          quantity == other.quantity &&
+          totalPrice == other.totalPrice &&
+          groupId == other.groupId;
+
+  @override
+  int get hashCode =>
+      itemParent.hashCode ^
+      item.hashCode ^
+      needAdviser.hashCode ^
+      price.hashCode ^
+      quantity.hashCode ^
+      totalPrice.hashCode ^
+      groupId.hashCode;
 }
