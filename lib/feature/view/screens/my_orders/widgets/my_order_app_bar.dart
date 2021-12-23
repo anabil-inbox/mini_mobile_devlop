@@ -47,7 +47,5 @@ class MyOrderAppBar extends StatelessWidget {
           ),
         );
       });
-
-;
   }
 }

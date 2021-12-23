@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/view/screens/add_item/item_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/my_orders_screen.dart';
@@ -9,6 +10,7 @@ import 'package:inbox_clients/feature/view/screens/notification/notification_scr
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/request_new_storage.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/splash_view_modle/splash_view_modle.dart';
@@ -40,15 +42,15 @@ class _HomePageHolderState extends State<HomePageHolder> {
   ];
 
   static StorageViewModel get storageViewModel => Get.put(StorageViewModel());
-  static SplashViewModle get  splashViewModle => Get.put(SplashViewModle());
+  static SplashViewModle get splashViewModle => Get.put(SplashViewModle());
   static HomeViewModel get homeViewModle => Get.put(HomeViewModel());
+  
 
   @override
   void initState() {
     super.initState();
-    // Get.put(StorageViewModel());
-    // Get.put(HomeViewModel());
-    // Get.put(SplashViewModle());
+   Get.put(ProfileViewModle());
+  Get.put(ItemViewModle());
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       if (widget.isFromScan ?? false) {
         Get.bottomSheet(
@@ -57,10 +59,10 @@ class _HomePageHolderState extends State<HomePageHolder> {
             ),
             isScrollControlled: true);
       }
+      homeViewModle.getCustomerBoxes();
+      storageViewModel.getStorageCategories();
+      splashViewModle.getAppSetting();
     });
-    homeViewModle.getCustomerBoxes();
-    storageViewModel.getStorageCategories();
-    splashViewModle.getAppSetting();
   }
 
   @override
@@ -79,6 +81,9 @@ class _HomePageHolderState extends State<HomePageHolder> {
               "${SharedPref.instance.getCurrentUserData().toJson().toString()}");
           Logger().d("${SharedPref.instance.getUserToken()}");
           Get.to(() => RequestNewStorageScreen());
+        //  Get.put(ItemViewModle());
+        //  Get.to(() => ItemScreen(box: Box(storageName: "Test")));
+       // Get.to(StorageDetailsView(tags: [],));
         },
         child: Icon(
           Icons.add,

@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:inbox_clients/feature/core/loading.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/three_size_dot.dart';
 import 'package:inbox_clients/util/app_color.dart';

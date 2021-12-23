@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/user_model.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_register_view.dart';
-import 'package:inbox_clients/feature/view/screens/auth/auth_user/widget/un_selected_button.dart';
 import 'package:inbox_clients/feature/view/screens/auth/country/choose_country_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/company_both_login/company_both_login_view.dart';

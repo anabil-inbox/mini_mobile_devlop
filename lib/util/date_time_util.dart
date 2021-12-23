@@ -10,7 +10,7 @@ import 'app_shaerd_data.dart';
 class DateUtility {
   static String getPostTime2(String date) {
     initializeDateFormatting(isArabicLang() ? 'ar' : 'en');
-    if (date == null || date.isEmpty) {
+    if (date.isEmpty) {
       return '';
     }
     var dt = DateTime.parse(date).toLocal();
@@ -21,7 +21,7 @@ class DateUtility {
   }
 
   static String getdob(String date) {
-    if (date == null || date.isEmpty) {
+    if (date.isEmpty) {
       return '';
     }
     var dt = DateTime.parse(date).toLocal();
@@ -31,7 +31,7 @@ class DateUtility {
 
   static String getJoiningDate(String date) {
     initializeDateFormatting(isArabicLang() ? 'ar' : 'en');
-    if (date == null || date.isEmpty) {
+    if (date.isEmpty) {
       return '';
     }
     var dt = DateTime.parse(date).toLocal();
@@ -334,7 +334,6 @@ class DateUtility {
           dateNew.hour, min ?? dateNew.minute);
       dateNew = dateNew.toLocal();
       DateTime currentDate = DateTime.now().toLocal();
-      final timeInMilliSeconds = dateNew.difference(currentDate).inMilliseconds;
       final days = dateNew.difference(currentDate).inDays;
       final hours = dateNew.difference(currentDate).inHours;
       final minutes = dateNew.difference(currentDate).inMinutes;
@@ -369,7 +368,6 @@ class DateUtility {
 
   static String converToUtcTostring(String dates) {
     try {
-      String timeToDate = dates;
       var dateTime = DateTime.parse(dates);
       var dateLocal = dateTime.toLocal();
       String amPm = DateFormat.jm().format(DateFormat("hh:mm:ss")

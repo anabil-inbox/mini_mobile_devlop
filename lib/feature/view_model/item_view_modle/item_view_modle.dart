@@ -7,8 +7,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/inside_box/item.dart';
-import 'package:inbox_clients/feature/view/screens/add_item/widgets/add_item_widget.dart';
+import 'package:inbox_clients/feature/view/screens/add_item/widgets/chooce_add_method_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
+import 'package:inbox_clients/network/api/feature/home_helper.dart';
 import 'package:inbox_clients/network/api/feature/item_helper.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -26,6 +27,25 @@ class ItemViewModle extends BaseController {
   int itemQuantity = 1;
   Set<String> usetTags = {};
   List<File> images = [];
+
+  // to update Box Here ::
+  Future<void> updateBox({required Box box}) async {
+    startLoading();
+    await HomeHelper.getInstance.updateBox(body: {
+      "name": box.storageName,
+   // "serial": box.serialNo,
+      "new_name": tdName.text,
+      "tags": usetTags
+    }).then((value) => {
+          Logger().i("${value.toJson}"),
+          if (value.status!.success!)
+            {snackSuccess("${tr.success}", "${value.status?.message}")}
+          else
+            {snackError("${tr.error_occurred}", "${value.status?.message}")}
+        });
+    endLoading();
+  }
+
   // here for loading ::
 
   bool isLoading = false;
@@ -42,7 +62,6 @@ class ItemViewModle extends BaseController {
   }
 
   // here for adding item
-
   Future<void> addItem({required String serialNo}) async {
     startLoading();
     List<Tag> tags = [];
@@ -211,10 +230,16 @@ class ItemViewModle extends BaseController {
 
   void showAddItemBottomSheet({required Box box}) {
     Get.bottomSheet(
-        AddItemWidget(
+        ChooseAddMethodWidget(
           box: box,
         ),
         isScrollControlled: true);
+
+    // Get.bottomSheet(
+    //     AddItemWidget(
+    //       box: box,
+    //     ),
+    //     isScrollControlled: true);
   }
 
   //  Future<void> scanBarcodeNormal() async {

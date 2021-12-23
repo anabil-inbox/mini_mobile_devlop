@@ -16,10 +16,11 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'photo_item_widget.dart';
 
 class AddItemWidget extends StatelessWidget {
-  const AddItemWidget({Key? key , required this.box}) : super(key: key);
+  const AddItemWidget({Key? key, required this.box}) : super(key: key);
 
   static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
   final Box box;
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,12 +48,15 @@ class AddItemWidget extends StatelessWidget {
               ),
               TextFormField(
                 controller: itemViewModle.tdName,
-                validator: (e){
-                  if(e!.trim().length < 1){
+                validator: (e) {
+                  if (e!.trim().length < 1) {
                     return "${tr.fill_your_name}";
                   }
                 },
                 decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: colorBorderContainer),
+                    ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: colorBorderContainer),
                     ),
@@ -84,6 +88,12 @@ class AddItemWidget extends StatelessWidget {
                 builder: (builder) {
                   return Row(
                     children: [
+                      InkWell(
+                        child: SvgPicture.asset("assets/svgs/add_cont.svg"),
+                        onTap: () {
+                          builder.getImageBottomSheet();
+                        },
+                      ),
                       builder.images.isNotEmpty
                           ? Expanded(
                               child: Container(
@@ -99,12 +109,6 @@ class AddItemWidget extends StatelessWidget {
                               ),
                             )
                           : const SizedBox(),
-                      InkWell(
-                        child: SvgPicture.asset("assets/svgs/add_cont.svg"),
-                        onTap: () {
-                          builder.getImageBottomSheet();
-                        },
-                      )
                     ],
                   );
                 },

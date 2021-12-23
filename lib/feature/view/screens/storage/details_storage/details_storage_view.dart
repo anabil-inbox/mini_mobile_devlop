@@ -1,23 +1,15 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/inside_box/item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/btn_action_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/items_widget.dart';
-import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/recent_item_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/text_with_contanier_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/filter_storage/filter_storage_name_view.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
-import 'package:inbox_clients/feature/view/widgets/icon_btn.dart';
-import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
-import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
-import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -26,13 +18,10 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 
 class StorageDetailsView extends StatelessWidget {
-  const StorageDetailsView({Key? key , required this.tags}) : super(key: key);
+  const StorageDetailsView({Key? key, required this.tags}) : super(key: key);
 
-
-  
   //todo this for appbar
-  PreferredSizeWidget get appBar =>
-      CustomAppBarWidget(
+  PreferredSizeWidget get appBar => CustomAppBarWidget(
         isCenterTitle: true,
         titleWidget: CustomTextView(
           txt: "New Box 01",
@@ -43,24 +32,25 @@ class StorageDetailsView extends StatelessWidget {
           GetBuilder<StorageViewModel>(
               init: StorageViewModel(),
               builder: (logic) {
-            return TextButton(
-              onPressed: () {
-                logic.updateSelectBtn();
-                _goToFilterNameView();
-              },
-              child: CustomTextView(
-                txt: "${tr.select}",
-                textStyle: textStyleNormal()?.copyWith(color: colorRed),
-                maxLine: Constance.maxLineOne,
-              ),
-            );
-          }),
+                return TextButton(
+                  onPressed: () {
+                    logic.updateSelectBtn();
+                    _goToFilterNameView();
+                  },
+                  child: CustomTextView(
+                    txt: "${tr.select}",
+                    textStyle: textStyleNormal()?.copyWith(color: colorRed),
+                    maxLine: Constance.maxLineOne,
+                  ),
+                );
+              }),
+           IconButton(onPressed: (){}, icon: SvgPicture.asset("assets/svgs/update.svg")) ,
+           SizedBox(width: sizeW10,)  
         ],
       );
 
   //todo this for search
-  Widget get searchWidget =>
-      CustomTextFormFiled(
+  Widget get searchWidget => CustomTextFormFiled(
         iconSize: sizeRadius20,
         maxLine: Constance.maxLineOne,
         icon: Icons.search,
@@ -80,16 +70,20 @@ class StorageDetailsView extends StatelessWidget {
       );
 
   //todo this for item titles
-  Widget get headItemWidget =>
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget get headItemWidget => Row(
+       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomTextView(
             txt: "${tr.items}",
             textStyle: textStyleNormal()?.copyWith(color: colorBlack),
             maxLine: Constance.maxLineOne,
           ),
-          TextContainerWidget(colorBackground: colorRedTrans, txt: tr.name,),
+          TextButton(onPressed: () {}, child: Text("Add")),
+          const Spacer(),
+          TextContainerWidget(
+            colorBackground: colorRedTrans,
+            txt: tr.name,
+          ),
         ],
       );
 
@@ -103,7 +97,7 @@ class StorageDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     screenUtil(context);
     return Scaffold(
-     // appBar: appBar,
+      appBar: appBar,
       body: Column(
         children: [
           Expanded(
@@ -159,10 +153,11 @@ class StorageDetailsView extends StatelessWidget {
                           physics: customScrollViewIOS(),
                           clipBehavior: Clip.antiAlias,
                           keyboardDismissBehavior:
-                          ScrollViewKeyboardDismissBehavior.onDrag,
-                          itemBuilder: (context, index) =>  ItemsWidget(tag: tags[index],),
-                          separatorBuilder: (context, index) =>
-                              Divider(
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          itemBuilder: (context, index) => ItemsWidget(
+                                tag: tags[index],
+                              ),
+                          separatorBuilder: (context, index) => Divider(
                                 height: sizeH1,
                               ),
                           itemCount: tags.length),
@@ -183,7 +178,6 @@ class StorageDetailsView extends StatelessWidget {
       ),
     );
   }
-
 
   void _goToFilterNameView() {
     Get.to(() => FilterStorageNameView());

@@ -4,20 +4,17 @@ import 'dart:io';
 import 'dart:math' as Math;
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as Img;
-import 'package:image_picker/image_picker.dart';
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/language_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
-import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/splash_view_modle/splash_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -92,7 +89,7 @@ passwordValid(String val) {
 }
 
 phoneVaild(String value) {
-  if (value == null || value.isEmpty) {
+  if (value.isEmpty) {
     return tr.fill_your_phone_number;
   } else if (value.length > 10 || value.length < 8) {
     return tr.fill_your_phone_number;
@@ -550,7 +547,6 @@ Future<DateTime?> dateBiker() async {
 List<Day> getDayByNumber({required DateTime selectedDateTime}) {
   List<Day>? workTime = [];
   String dayName = "";
-  DateTime dt = DateTime.now();
 
   ApiSettings settings =
       ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
-import 'package:inbox_clients/feature/view/widgets/viedo_player.dart';
-import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 

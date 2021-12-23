@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:inbox_clients/feature/view/screens/add_item/widgets/notifay_for_new_storage.dart';
 import 'package:inbox_clients/feature/view/screens/cart/widgets/cart_head.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';

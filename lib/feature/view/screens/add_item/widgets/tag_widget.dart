@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:inbox_clients/feature/view/screens/add_item/widgets/photo_item_widget.dart';
 import 'package:inbox_clients/feature/view/screens/add_item/widgets/tag_item.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -26,6 +25,11 @@ class TagWidget extends StatelessWidget {
               children: [
                 TextFormField(
                   controller: logic.tdTag,
+                  decoration: InputDecoration(
+                    focusColor: colorTrans,
+                    focusedBorder: InputBorder.none,
+                    hintText: "Tag"
+                  ),
                   textInputAction: TextInputAction.go,
                   onFieldSubmitted: (e) {
                     if (e.trim().isNotEmpty) {
@@ -59,7 +63,7 @@ class TagWidget extends StatelessWidget {
                 SizedBox(
                   height: sizeH16,
                 ),
-               ],
+              ],
             );
           },
         ),

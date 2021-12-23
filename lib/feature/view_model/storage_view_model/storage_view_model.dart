@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
-import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/my_order/order_sales.dart' as OS;
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
 import 'package:inbox_clients/feature/model/storage/order_item.dart';
@@ -12,8 +11,6 @@ import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
-import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
-import 'package:inbox_clients/feature/view/screens/storage/new_storage/order_detailes_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/selected_hour_item.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
@@ -106,7 +103,7 @@ class StorageViewModel extends BaseController {
   Set<StorageItem> arrayLastStorageItem = {};
 
   String selectedDuration = ConstanceNetwork.dailyDurationType;
-  num customSpace = 0;
+  num customSpace = 1;
 
 // declaration of TextEditing controllers For Custom Space :
 
@@ -121,7 +118,8 @@ class StorageViewModel extends BaseController {
 
 // this for last user chocies :
   num totalBalance = 0;
-  List<StorageCategoriesData> userStorageCategoriesData = <StorageCategoriesData>[];
+  List<StorageCategoriesData> userStorageCategoriesData =
+      <StorageCategoriesData>[];
 
   /// this for account total balance for user choisess :
 
@@ -175,7 +173,10 @@ class StorageViewModel extends BaseController {
     } else if (storageCategoriesData.storageCategoryType ==
             ConstanceNetwork.spaceCategoryType ||
         storageCategoriesData.storageCategoryType ==
-            ConstanceNetwork.driedCage) {
+            ConstanceNetwork.driedCage ||
+        storageCategoriesData.storageCategoryType!
+            .toLowerCase()
+            .contains("space")) {
       // storageCategoriesData.storageItem?.forEach((element) {
       //   if (deepEq(element.options, selectedFeaures.toList())) {
       //     if (num.parse(element.from ?? "0") <= customSpace &&
@@ -792,7 +793,10 @@ class StorageViewModel extends BaseController {
     update();
     await StorageFeature.getInstance.addNewStorage(body: {
       "shipping_address": "${selectedAddress!.id}",
-      "items_list": jsonEncode(orderIyems)
+      "items_list": jsonEncode(orderIyems),
+      "order_to": "${selectedDay!.from}",
+      "order_from": "${selectedDay!.to}",
+      "order_time": "${selectedDay!.from}/${selectedDay!.to}",
     }).then((value) => {
           if (value.status!.success!)
             {
@@ -1050,7 +1054,6 @@ class StorageViewModel extends BaseController {
       update();
     }
   }
-
 
   //---------- to do for new storage Func ---------------
   int currentLevel = 0;

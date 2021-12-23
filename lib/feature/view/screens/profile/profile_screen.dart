@@ -6,7 +6,6 @@ import 'package:inbox_clients/feature/view/screens/profile/my_rewareds/my_reward
 import 'package:inbox_clients/feature/view/screens/profile/setting/setting_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/header_profile_card.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/setting_item.dart';
-import 'package:inbox_clients/feature/view/screens/storage/details_storage/details_storage_view.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/three_size_dot.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -10,7 +9,6 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
 import 'package:inbox_clients/util/font_dimne.dart';
-import 'package:inbox_clients/util/sh_util.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../widget/header_code_verfication_widget.dart';

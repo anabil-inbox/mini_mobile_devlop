@@ -29,6 +29,7 @@ final double? leadingWidth;
       title: titleWidget??const SizedBox.shrink(),
       actions: actionsWidgets??[],
       backgroundColor: appBarColor??colorTextWhite,
+      // ignore: deprecated_member_use
       brightness: brightness??Brightness.light,
       elevation: elevation??1,
       leading: leadingWidget??BackBtnWidget(onTap: onBackBtnClick??_getBack,),
@@ -37,6 +38,5 @@ final double? leadingWidth;
   }
    _getBack()=> Get.back();
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => Size.fromHeight(sizeH60!);
 }

@@ -45,7 +45,5 @@ class MyOrderSearch extends StatelessWidget {
           ],
         ),
       );
-
-;
   }
 }

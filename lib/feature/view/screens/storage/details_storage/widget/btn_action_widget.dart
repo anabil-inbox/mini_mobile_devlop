@@ -6,9 +6,15 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class BtnActionWidget extends StatelessWidget {
-  final String? redBtnText ,grayBtnText;
-  final Function()? onRedBtnClick , onGrayBtnClick ;
-  const BtnActionWidget({Key? key, this.redBtnText, this.grayBtnText, this.onRedBtnClick, this.onGrayBtnClick}) : super(key: key);
+  final String? redBtnText, grayBtnText;
+  final Function()? onRedBtnClick, onGrayBtnClick;
+  const BtnActionWidget(
+      {Key? key,
+      this.redBtnText,
+      this.grayBtnText,
+      this.onRedBtnClick,
+      this.onGrayBtnClick})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,20 +23,29 @@ class BtnActionWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        SizedBox(
+          width: sizeW10,
+        ),
+         IconBtn(
+          icon: "assets/svgs/share.svg",
+        ),
+         SizedBox(
+          width: sizeW10,
+        ),
         PrimaryButton(
-            textButton: redBtnText??"${tr.recall}",
+            textButton: redBtnText ?? "${tr.recall}",
             isLoading: false,
-            onClicked: onRedBtnClick??() {},
-            width: sizeW135,
+            onClicked: onRedBtnClick ?? () {},
+            width: sizeW114,
             isExpanded: false),
         SizedBox(
           width: sizeW10,
         ),
         PrimaryButton(
-          textButton: grayBtnText??"${tr.giveaway}",
+          textButton: grayBtnText ?? "${tr.giveaway}",
           isLoading: false,
-          onClicked: onGrayBtnClick??() {},
-          width: sizeW135,
+          onClicked: onGrayBtnClick ?? () {},
+          width: sizeW114,
           isExpanded: false,
           colorBtn: colorBtnGray,
           colorText: colorTextDark,
@@ -39,6 +54,10 @@ class BtnActionWidget extends StatelessWidget {
           width: sizeW10,
         ),
         IconBtn(),
+         SizedBox(
+          width: sizeW10,
+        ),
+       
       ],
     );
   }

@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: sizeH48,
                 backgroundColor: colorRed,
                 onPressed: () {
-                  Get.off(QrScreen());
+                  Get.to(() => QrScreen());
                 },
                 borderColor: colorTrans,
                 icon: "assets/svgs/Scan.svg",

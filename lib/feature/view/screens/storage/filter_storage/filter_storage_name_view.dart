@@ -18,6 +18,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 
+// ignore: must_be_immutable
 class FilterStorageNameView extends StatelessWidget {
   FilterStorageNameView({Key? key}) : super(key: key);
 

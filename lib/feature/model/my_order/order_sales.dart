@@ -101,7 +101,7 @@ class OrderItem {
   num? totalPrice;
   String? groupId;
   String? itemStatus;
-  dynamic? isParent;
+  dynamic isParent;
   List<ItemsList>? itemsList;
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(

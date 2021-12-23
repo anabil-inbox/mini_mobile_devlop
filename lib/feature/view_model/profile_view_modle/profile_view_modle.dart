@@ -202,7 +202,8 @@ class ProfileViewModle extends BaseController {
   //-- for log out
 
   logOutDiloag() {
-    Get.bottomSheet(GlobalBottomSheet(
+    Get.bottomSheet(
+     GlobalBottomSheet(
       title: "${tr.are_you_sure_you_want_to_log_out}",
       onOkBtnClick: () {
         logOut();
@@ -233,7 +234,7 @@ class ProfileViewModle extends BaseController {
                 isLoading = false,
                 update(),
                 snackError("${tr.error_occurred}", "${value.status!.message}"),
-                Get.offAll(() => UserBothLoginScreen()),
+               
               }
           });
     } catch (e) {}
@@ -493,13 +494,14 @@ class ProfileViewModle extends BaseController {
       List<Placemark> placemarks =
           await placemarkFromCoordinates(position.latitude, position.longitude);
       Placemark place = placemarks[0];
-      if (placemarks == null || placemarks.isEmpty) {
+      if (placemarks.isEmpty) {
         String address = "${tr.unknown_address}";
         tdLocation.text = address;
         tdLocationEdit.text = address;
         update();
         return;
       }
+      // ignore: unnecessary_null_comparison
       if (place == null) {
         String address = "${tr.unknown_address}";
         tdLocation.text = address;

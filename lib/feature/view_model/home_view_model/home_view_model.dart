@@ -8,7 +8,6 @@ import 'package:inbox_clients/network/api/feature/item_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
-import 'package:inbox_clients/util/string.dart';
 import 'package:logger/logger.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -68,7 +67,7 @@ class HomeViewModel extends BaseController {
   Barcode? result;
   QRViewController? controller;
 
-  void onQRViewCreated(QRViewController controller) {
+  onQRViewCreated(QRViewController controller) {
     try {
       this.controller = controller;
 
@@ -76,10 +75,9 @@ class HomeViewModel extends BaseController {
         result = scanData;
       }).onData((data) async {
         Logger().i(data.code);
-
         Logger().i("Serial ${data.code}");
         await getBoxBySerial(serial: data.code ?? "").then((value) => {
-              if (GetUtils.isNull(value))
+              if (value.id == null)
                 {Get.off(() => HomePageHolder())}
               else
                 {
@@ -121,17 +119,18 @@ class HomeViewModel extends BaseController {
 
   Future<Box> getBoxBySerial({required String serial}) async {
     Box box = Box();
-    await ItemHelper.getInstance
-        .getBoxBySerial(body: {"serial": serial}).then((value) => {
-              if (value.status!.success!)
-                {
-                  box = Box.fromJson(value.data["Storages"]),
-                }
-              else
-                {
-                  snackError("$error", "${value.status!.message}"),
-                }
-            });
+    await ItemHelper.getInstance.getBoxBySerial(body: {
+      "serial": serial
+    }).then((value) => {
+          if (value.status!.success!)
+            {
+              box = Box.fromJson(value.data["Storages"]),
+            }
+          else
+            {
+              snackError("${tr.error_occurred}", "${value.status!.message}"),
+            }
+        });
     return box;
   }
 
@@ -149,15 +148,16 @@ class HomeViewModel extends BaseController {
   }
 
   //
-    @override
+  @override
   InternalFinalCallback<void> get onDelete;
-  
+
   @override
   void dispose() {
     controller?.dispose();
     super.dispose();
   }
-    // to do here get Tasks :
+
+  // to do here get Tasks :
   Set<Task> tasks = {};
 
   getTasks() async {
@@ -168,10 +168,10 @@ class HomeViewModel extends BaseController {
     update();
   }
 
-    // to change From Grid to List >=<
-      bool? isListView = false;
+  // to change From Grid to List >=<
+  bool? isListView = false;
 
-    void changeTypeViewLVGV() {
+  void changeTypeViewLVGV() {
     isListView = !isListView!;
     update();
   }
