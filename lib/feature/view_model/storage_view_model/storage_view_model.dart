@@ -318,8 +318,7 @@ class StorageViewModel extends BaseController {
     update();
   }
 
-  void saveStorageDataToArray(
-      {required StorageCategoriesData storageCategoriesData,
+  void saveStorageDataToArray({required StorageCategoriesData storageCategoriesData,
       bool isUpdate = false,
       int? updateIndex}) async {
     if (storageCategoriesData.storageCategoryType ==
@@ -373,6 +372,7 @@ class StorageViewModel extends BaseController {
     print("msg_lrngth ${userStorageCategoriesData.length}");
     calculateBalance();
     getStorageCategories();
+    checkDaplication();
     selctedItem = null;
     selectedDuration = "Daily";
     selectedFeaures.clear();
@@ -382,6 +382,7 @@ class StorageViewModel extends BaseController {
     tdX.clear();
     tdY.clear();
     tdSearch.clear();
+    
     Get.back();
     update();
   }

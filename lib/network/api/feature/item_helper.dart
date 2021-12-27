@@ -46,4 +46,18 @@ class ItemHelper{
       return appResponse;
     }
   }
+
+
+  Future<AppResponse> updateItem({required var body}) async {
+    var appResponse = await ItemApi.getInstance.updateItem(
+        body: body,
+        url: "${ConstanceNetwork.updateItemEndPoint}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
 }

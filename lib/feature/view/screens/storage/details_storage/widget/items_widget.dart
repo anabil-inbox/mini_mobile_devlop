@@ -5,7 +5,7 @@ import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/add_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
-import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -14,27 +14,26 @@ import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 class ItemsWidget extends StatelessWidget {
-  const ItemsWidget(
-      {Key? key,
-      required this.box,
-      this.isSelectedBtnClick = false,
-      this.onCheckItem,
-      this.boxItem,
+  const ItemsWidget({
+    Key? key,
+    required this.box,
+    this.isSelectedBtnClick = false,
+    this.onCheckItem,
+    this.boxItem,
 //      required this.itemIndex
-      })
-      : super(key: key);
+  }) : super(key: key);
   final bool? isSelectedBtnClick;
   final Function()? onCheckItem;
   final BoxItem? boxItem;
   final Box box;
- // final int itemIndex;
+  // final int itemIndex;
 
   static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
 
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    return GetBuilder<StorageViewModel>(builder: (logic) {
+    return GetBuilder<ItemViewModle>(builder: (logic) {
       return Container(
         height: sizeH75,
         width: double.infinity,
@@ -52,7 +51,8 @@ class ItemsWidget extends StatelessWidget {
                 child: TextButton(
                   onPressed: onCheckItem ?? () {},
                   child: logic.listIndexSelected
-                          .contains(boxItem?.itemName ?? "")
+                              .contains(boxItem?.itemName ?? "") ||
+                          logic.isSelectAllClick
                       ? SvgPicture.asset("assets/svgs/storage_check_active.svg")
                       : SvgPicture.asset(
                           "assets/svgs/storage_check_deactive.svg"),
@@ -63,7 +63,11 @@ class ItemsWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(sizeRadius16!),
               child: imageNetwork(
-                  url: urlProduct,
+                  url: (GetUtils.isNull(boxItem!.itemGallery) ||
+                          boxItem!.itemGallery!.isEmpty)
+                      ? urlPlacholder
+                      : ConstanceNetwork.imageUrl +
+                          boxItem?.itemGallery?[0]["attachment"],
                   height: sizeH48,
                   width: sizeW45,
                   fit: BoxFit.contain),
@@ -97,35 +101,47 @@ class ItemsWidget extends StatelessWidget {
                 ],
               ),
             ),
-            PopupMenuButton<int>(
-                icon: SvgPicture.asset("assets/svgs/three_dot_widget.svg"),
-                itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
-                      PopupMenuItem<int>(value: 1, child: Text('Delete')),
-                      PopupMenuItem<int>(value: 2, child: Text('Update')),
-                      PopupMenuItem<int>(value: 3, child: Text('Do Something')),
-                    ],
-                onSelected: (int value) {
-                  switch (value) {
-                    case 1:
-                      itemViewModle.deleteItem(
-                          serialNo: box.serialNo ?? "",
-                          itemName: boxItem?.itemName ?? "");
-                      box.items?.removeWhere(
-                          (element) => element.itemName == boxItem?.itemName);
-                      itemViewModle.update();
-                      return;
-                    case 2:
-                      Get.bottomSheet(
-                        AddItemWidget(
-                          isUpdate: true,
-                          box: box,
-                          boxItem: boxItem!,
-                        ),
-                        isScrollControlled: true
-                      );
-                      return;
-                  }
-                })
+            logic.isSelectBtnClick!
+                ? const SizedBox()
+                : PopupMenuButton<int>(
+                    icon: SvgPicture.asset("assets/svgs/three_dot_widget.svg"),
+                    itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
+                          PopupMenuItem<int>(value: 1, child: Text('Delete')),
+                          PopupMenuItem<int>(value: 2, child: Text('Update')),
+                          PopupMenuItem<int>(value: 3, child: Text('Share')),
+                        ],
+                    onSelected: (int value) {
+                      switch (value) {
+                        case 1:
+                          {
+                            itemViewModle.deleteItem(
+                              id: boxItem?.id ?? "",
+                              serialNo: box.serialNo ?? "",
+                            );
+                            box.items?.removeWhere((element) =>
+                                element.itemName == boxItem?.itemName);
+                            itemViewModle.update();
+                            return;
+                          }
+                        case 2:
+                          {
+                            Get.bottomSheet(
+                                AddItemWidget(
+                                  isUpdate: true,
+                                  box: box,
+                                  boxItem: boxItem!,
+                                ),
+                                isScrollControlled: true);
+                            return;
+                          }
+
+                        case 3:
+                          {
+                            itemViewModle.shareItem(boxItem: boxItem!);
+                          }
+                          return;
+                      }
+                    })
           ],
         ),
       );

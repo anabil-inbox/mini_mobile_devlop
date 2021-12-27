@@ -7,7 +7,6 @@ import 'package:inbox_clients/feature/model/inside_box/item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/btn_action_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/items_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/text_with_contanier_widget.dart';
-import 'package:inbox_clients/feature/view/screens/storage/filter_storage/filter_storage_name_view.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
@@ -36,7 +35,6 @@ class StorageDetailsView extends StatelessWidget {
                 return TextButton(
                   onPressed: () {
                     logic.updateSelectBtn();
-                    _goToFilterNameView();
                   },
                   child: CustomTextView(
                     txt: "${tr.select}",
@@ -60,7 +58,7 @@ class StorageDetailsView extends StatelessWidget {
         keyboardType: TextInputType.text,
         onSubmitted: (_) {},
         onChange: (_) {},
-        fun: _goToFilterNameView,
+       
         isReadOnly: true,
         isSmallPadding: false,
         isSmallPaddingWidth: true,
@@ -179,9 +177,5 @@ class StorageDetailsView extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void _goToFilterNameView() {
-    Get.to(() => FilterStorageNameView());
   }
 }

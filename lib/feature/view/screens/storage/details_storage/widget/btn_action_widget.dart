@@ -7,12 +7,14 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class BtnActionWidget extends StatelessWidget {
   final String? redBtnText, grayBtnText;
-  final Function()? onRedBtnClick, onGrayBtnClick;
+  final Function()? onRedBtnClick, onGrayBtnClick, onShareBox, onDeleteBox;
   const BtnActionWidget(
       {Key? key,
       this.redBtnText,
       this.grayBtnText,
       this.onRedBtnClick,
+      this.onShareBox,
+      this.onDeleteBox,
       this.onGrayBtnClick})
       : super(key: key);
 
@@ -23,13 +25,13 @@ class BtnActionWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-          width: sizeW10,
-        ),
-         IconBtn(
+        IconBtn(
           icon: "assets/svgs/share.svg",
+          onPressed: () {
+            onShareBox!();
+          },
         ),
-         SizedBox(
+        SizedBox(
           width: sizeW10,
         ),
         PrimaryButton(
@@ -39,7 +41,7 @@ class BtnActionWidget extends StatelessWidget {
             width: sizeW114,
             isExpanded: false),
         SizedBox(
-          width: sizeW10,
+          width: sizeW5,
         ),
         PrimaryButton(
           textButton: grayBtnText ?? "${tr.giveaway}",
@@ -51,13 +53,13 @@ class BtnActionWidget extends StatelessWidget {
           colorText: colorTextDark,
         ),
         SizedBox(
-          width: sizeW10,
+          width: sizeW5,
         ),
-        IconBtn(),
-         SizedBox(
-          width: sizeW10,
+        IconBtn(
+          onPressed: () {
+            onDeleteBox!();
+          },
         ),
-       
       ],
     );
   }

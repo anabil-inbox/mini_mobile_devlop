@@ -5,9 +5,10 @@ class Item {
     this.itemDesc,
     this.gallery,
     this.tags,
-    this.name
+    this.name,
+    this.id
   });
-
+  String? id;
   String? itemName;
   String? itemQty;
   String? itemDesc;
@@ -19,6 +20,7 @@ class Item {
         itemName: json["item_name"],
         itemQty: json["item_qty"],
         itemDesc: json["item_desc"],
+        id: json["id"],
         gallery: List<dynamic>.from(json["gallery"].map((x) => x)),
         tags: List<Tag>.from(json["tags"].map((x) => Tag.fromJson(x))),
       );
@@ -27,6 +29,7 @@ class Item {
         "item_name": itemName,
         "item_qty": itemQty,
         "item_desc": itemDesc,
+        "id" : id,
         "gallery":
             gallery == null ? [] : List<dynamic>.from(gallery!.map((x) => x)),
         "tags": tags == null

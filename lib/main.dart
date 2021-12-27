@@ -18,7 +18,7 @@ import 'feature/view_model/storage_view_model/storage_view_model.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await AppFcm.fcmInstance.init();
+  await AppFcm.fcmInstance. init();
   await SharedPref.instance.init();
   portraitOrientation();
   DioManagerClass.getInstance.init();

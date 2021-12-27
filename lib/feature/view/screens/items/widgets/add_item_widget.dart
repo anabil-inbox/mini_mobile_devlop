@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/qty_widget.dart';
@@ -16,7 +17,12 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'photo_item_widget.dart';
 
 class AddItemWidget extends StatelessWidget {
-  const AddItemWidget({Key? key, required this.box , this.isUpdate = false , required this.boxItem}) : super(key: key);
+  const AddItemWidget(
+      {Key? key,
+      required this.box,
+      this.isUpdate = false,
+      required this.boxItem})
+      : super(key: key);
 
   static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
 
@@ -45,7 +51,7 @@ class AddItemWidget extends StatelessWidget {
               SizedBox(
                 height: sizeH20,
               ),
-              Text("Add Item"),
+              Text(isUpdate ?? false ? "Update Item" : "Add Item"),
               SizedBox(
                 height: sizeH20,
               ),
@@ -100,21 +106,89 @@ class AddItemWidget extends StatelessWidget {
                           builder.getImageBottomSheet();
                         },
                       ),
-                      builder.images.isNotEmpty
-                          ? Expanded(
-                              child: Container(
+                      Expanded(
+                        child: SizedBox(
+                           height: sizeH50,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            primary: true,
+                            // shrinkWrap: true,
+                            children: [
+                              builder.images.isNotEmpty
+                                  ? SizedBox(
+                                    height: sizeH50,
+                                    child: ListView(
+                                      primary: false,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      children: builder.images
+                                          .map((e) => PhotoItem(
+                                                isFromLocal: true,
+                                                img: e,
+                                              ))
+                                          .toList(),
+                                    ),
+                                  )
+                                  : const SizedBox(),
+                              !(GetUtils.isNull(boxItem.itemGallery) ||
+                                  boxItem.itemGallery!.isEmpty)
+                              ? SizedBox(
                                 height: sizeH50,
                                 child: ListView(
+                                   primary: false,
+                                      shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
-                                  children: builder.images
+                                  children: boxItem.itemGallery!
                                       .map((e) => PhotoItem(
-                                            img: e,
+                                            img: null,
+                                            isFromLocal: false,
+                                            url: e["attachment"],
                                           ))
                                       .toList(),
                                 ),
-                              ),
-                            )
-                          : const SizedBox(),
+                              )
+                              : const SizedBox(),
+                            
+                            ],
+                          ),
+                        ),
+                      ),
+                      // builder.images.isNotEmpty
+                      //     ? Expanded(
+                      //         child: Container(
+                      //           height: sizeH50,
+                      //           child: ListView(
+                      //             scrollDirection: Axis.horizontal,
+                      //             children: builder.images
+                      //                 .map((e) => PhotoItem(
+                      //                       isFromLocal: true,
+                      //                       img: e,
+                      //                     ))
+                      //                 .toList(),
+                      //           ),
+                      //         ),
+                      //       )
+                      //     : const SizedBox(),
+                      // !(GetUtils.isNull(boxItem.itemGallery) ||
+                      //         boxItem.itemGallery!.isEmpty)
+                      //     ? Expanded(
+                      //         child: Container(
+                      //           height: sizeH50,
+                      //           child: ListView(
+                      //              primary: false,
+                      //                 shrinkWrap: true,
+                      //             scrollDirection: Axis.horizontal,
+                      //             children: boxItem.itemGallery!
+                      //                 .map((e) => PhotoItem(
+                      //                       img: null,
+                      //                       isFromLocal: false,
+                      //                       url: e["attachment"],
+                      //                     ))
+                      //                 .toList(),
+                      //           ),
+                      //         ),
+                      //       )
+                      //     : const SizedBox(),
                     ],
                   );
                 },
@@ -127,11 +201,20 @@ class AddItemWidget extends StatelessWidget {
                 initState: (_) {},
                 builder: (builder) {
                   return PrimaryButton(
-                      textButton: "Add Item",
+                      textButton:
+                          isUpdate ?? false ? "Update Item" : "Add Item",
                       isLoading: builder.isLoading,
                       onClicked: () {
                         if (itemViewModle.formKey.currentState!.validate()) {
-                          itemViewModle.addItem(serialNo: box.serialNo ?? "");
+                          if (isUpdate!) {
+                            itemViewModle.updateItem(
+                              gallary: boxItem.itemGallery,
+                              serialNo: box.serialNo ?? "",
+                              itemId: boxItem.id!,
+                            );
+                          } else {
+                            itemViewModle.addItem(serialNo: box.serialNo ?? "");
+                          }
                         }
                       },
                       isExpanded: true);

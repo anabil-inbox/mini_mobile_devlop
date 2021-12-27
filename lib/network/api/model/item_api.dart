@@ -47,4 +47,18 @@ Future<AppResponse> deleteItem({var url, var header,var body}) async {
       return AppResponse.fromJson(message);
     }
   }
+
+
+  Future<AppResponse> updateItem({var url, var header,var body}) async {
+    try {
+      var response = await DioManagerClass.getInstance
+          .dioPostFormMethod(url: url, header: header,body: body);
+      return AppResponse.fromJson(json.decode(response.toString()));
+    } on DioError catch (ex) {
+      var message = json.decode(ex.response.toString());
+      Logger().e(message);
+      return AppResponse.fromJson(message);
+    }
+  }
+  
 }

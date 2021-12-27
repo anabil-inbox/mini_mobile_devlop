@@ -6,9 +6,9 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/empty_body_box_item.dart';
+import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/btn_action_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/items_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/text_with_contanier_widget.dart';
-import 'package:inbox_clients/feature/view/screens/storage/filter_storage/filter_storage_name_view.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/widget/back_btn_widget.dart';
 
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
@@ -16,6 +16,10 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
+
+import 'filter_items/filter_item_screen.dart';
 
 class ItemScreen extends StatelessWidget {
   const ItemScreen({Key? key, required this.box}) : super(key: key);
@@ -61,15 +65,23 @@ class ItemScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                itemViewModle.showUpdatBoxBottomSheet(box: box , isUpdate: true);
+                itemViewModle.showUpdatBoxBottomSheet(box: box, isUpdate: true);
               },
               icon: SvgPicture.asset("assets/svgs/update.svg")),
-          IconButton(
-              onPressed: () {
-                // itemViewModle.showAddItemBottomSheet(box: box);
-                Get.to(() => FilterStorageNameView());
-              },
-              icon: SvgPicture.asset("assets/svgs/storage_check_deactive.svg")),
+          Center(
+            child: InkWell(
+                onTap: () {
+                  itemViewModle.listIndexSelected.clear();
+                  itemViewModle.isSelectAllClick = false;
+                  itemViewModle.isSelectBtnClick = false;
+                  Get.to(() => FilterItemScreen());
+                },
+                child: Text(
+                  "Select",
+                  style: textStyleNormal()?.copyWith(color: colorRed),
+                  maxLines: Constance.maxLineOne,
+                )),
+          ),
           SizedBox(
             width: sizeW10,
           ),
@@ -146,7 +158,7 @@ class ItemScreen extends StatelessWidget {
                               keyboardDismissBehavior:
                                   ScrollViewKeyboardDismissBehavior.onDrag,
                               itemBuilder: (context, index) => ItemsWidget(
-                                   // itemIndex: index,
+                                    // itemIndex: index,
                                     box: itemViewModle.operationsBox!,
                                     boxItem: itemViewModle
                                         .operationsBox!.items![index],
@@ -159,6 +171,18 @@ class ItemScreen extends StatelessWidget {
                         ),
                       );
                     },
+                  ),
+                  BtnActionWidget(
+                    redBtnText: box.storageStatus == LocalConstance.boxAtHome
+                        ? "Pickup"
+                        : "${tr.recall}",
+                    onShareBox: () {
+                      itemViewModle.shareBox(box: box);
+                    },
+                    onDeleteBox: () {},
+                  ),
+                  SizedBox(
+                    height: sizeH10,
                   ),
                 ],
               ),

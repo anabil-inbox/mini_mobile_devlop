@@ -11,6 +11,7 @@ import 'package:inbox_clients/feature/model/inside_box/sended_image.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/chooce_add_method_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
 import 'package:inbox_clients/network/api/feature/item_helper.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -21,8 +22,14 @@ import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/string.dart';
 import 'package:logger/logger.dart';
+import 'package:share/share.dart';
 
 class ItemViewModle extends BaseController {
+
+  //to update Get Home View Modle and Update Oprations Box ::
+  static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+
+
   // to do here item Editting Controllers ::
   final formKey = GlobalKey<FormState>();
   final TextEditingController tdName = TextEditingController();
@@ -54,7 +61,9 @@ class ItemViewModle extends BaseController {
           if (value.status!.success!)
             {
               //  tdName.text = value.data["storage_name"],
-              snackSuccess("${tr.success}", "${value.status?.message}")
+              snackSuccess("${tr.success}", "${value.status?.message}"),
+              // operationsBox = Box.fromJson(value.data),
+              // homeViewModel.userBoxess.where((element) => element.id == operationsBox!.id)
             }
           else
             {snackError("${tr.error_occurred}", "${value.status?.message}")}
@@ -68,7 +77,6 @@ class ItemViewModle extends BaseController {
   }
 
   // here for loading ::
-
   bool isLoading = false;
   // start Loaging Function ::
   void startLoading() {
@@ -85,8 +93,63 @@ class ItemViewModle extends BaseController {
   // here for adding item With Name ::
   Future<void> addItem({required String serialNo}) async {
     startLoading();
+    var returedItemId;
     List<SendedTag> tags = [];
     List<SendedImage> innerImages = [];
+    Map<String, dynamic> map = {};
+
+    for (var tag in usesBoxItemsTags) {
+      tags.add(SendedTag(isEnable: 1, tag: tag));
+    }
+
+    for (var item in images) {
+      innerImages.add(SendedImage(
+          attachment: multiPart.MultipartFile.fromFileSync(item.path),
+          type: "Image"));
+    }
+    for (var i = 0; i < innerImages.length; i++) {
+      map["image[$i]"] = innerImages[i].attachment;
+      map["file[$i]"] = innerImages[i].type;
+    }
+    map["name"] = tdName.text;
+    map["storage"] = serialNo;
+    map["qty"] = itemQuantity;
+    map["tags"] = jsonEncode(tags);
+
+    await ItemHelper.getInstance.addItem(body: map).then((value) => {
+          if (value.status!.success!)
+            {
+               Logger().i("${value.data["data"]}"),
+
+              operationsBox?.items?.add(BoxItem.fromJson(value.data["data"])),
+              snackSuccess("${tr.success}", "${value.status!.message}"),
+              Get.back(),
+              endLoading()
+            }
+          else
+            {
+              snackError("${tr.error_occurred}", "${value.status!.message}"),
+              endLoading()
+            }
+        });
+    await getBoxBySerial(serial: serialNo);
+    images.clear();
+    tags.clear();
+    usesBoxItemsTags.clear();
+    tdName.clear();
+    tdTag.clear();
+    itemQuantity = 1;
+    update();
+    Get.close(1);
+  }
+
+  // here for updateing the Item
+
+  Future<void> updateItem({required String serialNo,required String itemId,required var gallary}) async {
+    startLoading();
+    List<SendedTag> tags = [];
+    List<SendedImage> innerImages = [];
+    Map<String, dynamic> map = {};
 
     for (var tag in usesBoxItemsTags) {
       tags.add(SendedTag(isEnable: 1, tag: tag));
@@ -98,27 +161,18 @@ class ItemViewModle extends BaseController {
           type: "Image"));
     }
 
-    for (var item in innerImages) {
-      Logger().i(item.toJson());
+    for (var i = 0; i < innerImages.length; i++) {
+      map["image[$i]"] = innerImages[i].attachment;
+      map["file[$i]"] = innerImages[i].type;
     }
 
-    await ItemHelper.getInstance.addItem(body: {
-      "name": "${tdName.text}",
-      "storage": "$serialNo",
-      "qty": "$itemQuantity",
-      "tags": jsonEncode(tags),
-      "gallery": innerImages.isNotEmpty
-          ? [
-              {
-                "type": "image",
-                "attachment": /* multiPart.MultipartFile.fromFileSync( */ images[
-                        0]
-                    .path /*)*/
-              }
-            ]
-          : []
-      // "gallery": innerImages.isNotEmpty ? jsonEncode(innerImages) : []
-    }).then((value) => {
+    map["id"] = itemId;
+    map["new_name"] = tdName.text;
+    map["qty"] = itemQuantity;
+    map["tags"] = jsonEncode(tags);
+    map["gallery"] = jsonEncode(gallary);
+
+    await ItemHelper.getInstance.updateItem(body: map).then((value) => {
           if (value.status!.success!)
             {
               Logger().i("${value.toJson()}"),
@@ -173,11 +227,10 @@ class ItemViewModle extends BaseController {
   }
 
   // here for delete item
-  Future<void> deleteItem({required String itemName, required String serialNo}) async {
+  Future<void> deleteItem(
+      {required String serialNo, required String id}) async {
     startLoading();
-    await ItemHelper.getInstance.deleteItem(body: {
-      "name": "$itemName"
-    }).then((value) => {
+    await ItemHelper.getInstance.deleteItem(body: {"id": id}).then((value) => {
           if (value.status!.success!)
             {
               Logger().i("${value.toJson()}"),
@@ -317,7 +370,8 @@ class ItemViewModle extends BaseController {
 
   // to show update Box Bottom Sheet ::
 
-  Future<void> showUpdatBoxBottomSheet({required Box box , required bool isUpdate}) async {
+  Future<void> showUpdatBoxBottomSheet(
+      {required Box box, required bool isUpdate}) async {
     Get.bottomSheet(
         CheckInBoxWidget(
           isUpdate: isUpdate,
@@ -326,4 +380,70 @@ class ItemViewModle extends BaseController {
         isScrollControlled: true);
   }
 
+  Future<void> shareItem({required BoxItem boxItem}) async {
+    try {
+      Share.share(
+        'check out my Box Item ! \n' +
+            'Item Name : ${boxItem.itemName}' +
+            '\nQuantity : ${boxItem.itemQuantity}',
+      );
+    } catch (e) {
+      printError();
+    }
+  }
+
+  Future<void> shareBox({required Box box}) async {
+    try {
+      Share.share(
+        'check out my Box ! \n' +
+            'Item Name : ${box.storageName}' +
+            '\nQuantity : ${box.options}',
+      );
+    } catch (e) {
+      printError();
+    }
+  }
+
+  // Here Functions For Filtering and Selected:
+
+  //todo this for appbar select btn
+  bool? isSelectBtnClick = false;
+  bool isSelectAllClick = false;
+  List<String> listIndexSelected = <String>[];
+
+  //todo this for show selection btn
+  updateSelectBtn() {
+    isSelectBtnClick = !isSelectBtnClick!;
+    update();
+  }
+
+  //todo this for select all item
+  updateSelectAll(List<String> list) {
+    isSelectAllClick = !isSelectAllClick;
+    update();
+    insertAllItemToList(list);
+  }
+
+  //todo this for add single item to selected List item
+  addIndexToList(var index) {
+    if (listIndexSelected.contains(index)) {
+      listIndexSelected.remove(index);
+      update();
+    } else {
+      listIndexSelected.add(index);
+      update();
+    }
+  }
+
+  //todo this for add all item to selected List item
+  void insertAllItemToList(List<String> list) {
+    if (isSelectAllClick) {
+      listIndexSelected.clear();
+      listIndexSelected.addAll(list);
+      update();
+    } else {
+      listIndexSelected.clear();
+      update();
+    }
+  }
 }

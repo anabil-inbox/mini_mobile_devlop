@@ -1,13 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class PhotoItem extends StatelessWidget {
-  const PhotoItem({Key? key, required this.img}) : super(key: key);
+  const PhotoItem({Key? key, required this.img , this.url , required this.isFromLocal}) : super(key: key);
 
-  final File img;
-
+  final File? img;
+  final String? url;
+  final bool isFromLocal;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,11 +19,11 @@ class PhotoItem extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(padding6!),
       ),
-      child: Image.file(
-        img,
+      child: isFromLocal ? Image.file(
+        img!,
         height: sizeH50,
         width: sizeW50,
-      ),
+      ) : imageNetwork(url: ConstanceNetwork.imageUrl+(url ?? urlPlacholder!)),
     );
   }
 }
