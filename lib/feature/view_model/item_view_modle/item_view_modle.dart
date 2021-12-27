@@ -7,7 +7,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/inside_box/item.dart';
-import 'package:inbox_clients/feature/view/screens/add_item/widgets/chooce_add_method_widget.dart';
+import 'package:inbox_clients/feature/model/inside_box/sended_image.dart';
+import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/chooce_add_method_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
 import 'package:inbox_clients/network/api/feature/item_helper.dart';
@@ -16,6 +18,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/base_controller.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/string.dart';
 import 'package:logger/logger.dart';
 
@@ -25,24 +28,42 @@ class ItemViewModle extends BaseController {
   final TextEditingController tdName = TextEditingController();
   final TextEditingController tdTag = TextEditingController();
   int itemQuantity = 1;
-  Set<String> usetTags = {};
+  Set<String> usesBoxTags = {};
+  Set<String> usesBoxItemsTags = {};
   List<File> images = [];
+  File? itemImage;
 
   // to update Box Here ::
   Future<void> updateBox({required Box box}) async {
+    Get.back();
     startLoading();
+    List<SendedTag> tags = [];
+
+    for (var tag in usesBoxTags) {
+      tags.add(SendedTag(isEnable: 1, tag: tag));
+    }
+
     await HomeHelper.getInstance.updateBox(body: {
       "name": box.storageName,
-   // "serial": box.serialNo,
+      "serial": box.serialNo,
+      "qty": itemQuantity,
       "new_name": tdName.text,
-      "tags": usetTags
+      "tags": jsonEncode(tags),
     }).then((value) => {
           Logger().i("${value.toJson}"),
           if (value.status!.success!)
-            {snackSuccess("${tr.success}", "${value.status?.message}")}
+            {
+              //  tdName.text = value.data["storage_name"],
+              snackSuccess("${tr.success}", "${value.status?.message}")
+            }
           else
             {snackError("${tr.error_occurred}", "${value.status?.message}")}
         });
+    await getBoxBySerial(serial: box.serialNo!);
+    tags.clear();
+    usesBoxTags.clear();
+    tdName.clear();
+    tdTag.clear();
     endLoading();
   }
 
@@ -61,18 +82,24 @@ class ItemViewModle extends BaseController {
     update();
   }
 
-  // here for adding item
+  // here for adding item With Name ::
   Future<void> addItem({required String serialNo}) async {
     startLoading();
-    List<Tag> tags = [];
-    List innerImages = [];
+    List<SendedTag> tags = [];
+    List<SendedImage> innerImages = [];
 
-    for (var tag in usetTags) {
-      tags.add(Tag(isEnabled: 1, name: tag));
+    for (var tag in usesBoxItemsTags) {
+      tags.add(SendedTag(isEnable: 1, tag: tag));
     }
 
     for (var item in images) {
-      innerImages.add(multiPart.MultipartFile.fromFileSync(item.path));
+      innerImages.add(SendedImage(
+          attachment: multiPart.MultipartFile.fromFileSync(item.path),
+          type: "Image"));
+    }
+
+    for (var item in innerImages) {
+      Logger().i(item.toJson());
     }
 
     await ItemHelper.getInstance.addItem(body: {
@@ -80,8 +107,17 @@ class ItemViewModle extends BaseController {
       "storage": "$serialNo",
       "qty": "$itemQuantity",
       "tags": jsonEncode(tags),
-      "item_gallery": innerImages.isNotEmpty ? innerImages : []
-      //  "item_gallery": {"":multiPart.MultipartFile.fromFileSync(item.path)}
+      "gallery": innerImages.isNotEmpty
+          ? [
+              {
+                "type": "image",
+                "attachment": /* multiPart.MultipartFile.fromFileSync( */ images[
+                        0]
+                    .path /*)*/
+              }
+            ]
+          : []
+      // "gallery": innerImages.isNotEmpty ? jsonEncode(innerImages) : []
     }).then((value) => {
           if (value.status!.success!)
             {
@@ -96,17 +132,48 @@ class ItemViewModle extends BaseController {
               endLoading()
             }
         });
-
+    await getBoxBySerial(serial: serialNo);
     images.clear();
     tags.clear();
+    usesBoxItemsTags.clear();
     tdName.clear();
     tdTag.clear();
     itemQuantity = 1;
     update();
   }
 
+  // here for Adding item without Name ::
+  Future<void> addItemWithPhoto({required String serialNo}) async {
+    startLoading();
+    await ItemHelper.getInstance.addItem(body: {
+      "storage": "$serialNo",
+      LocalConstance.qallery: itemImage != null
+          ? multiPart.MultipartFile.fromFileSync(itemImage!.path)
+          : "",
+      LocalConstance.quantity: 1,
+    }).then((value) => {
+          if (value.status!.success!)
+            {
+              Logger().i("${value.toJson()}"),
+              snackSuccess("${tr.success}", "${value.status!.message}"),
+              Get.back(),
+              endLoading()
+            }
+          else
+            {
+              Logger().e("${value.toJson()}"),
+              snackError("${tr.error_occurred}", "${value.status!.message}"),
+              endLoading()
+            }
+        });
+
+    images.clear();
+    itemQuantity = 1;
+    update();
+  }
+
   // here for delete item
-  Future<void> deleteItem({required String itemName}) async {
+  Future<void> deleteItem({required String itemName, required String serialNo}) async {
     startLoading();
     await ItemHelper.getInstance.deleteItem(body: {
       "name": "$itemName"
@@ -123,10 +190,10 @@ class ItemViewModle extends BaseController {
               endLoading()
             }
         });
+    update();
   }
 
   // adding image to item functions ::
-
   final picker = ImagePicker();
 
   void getImageBottomSheet() {
@@ -196,6 +263,15 @@ class ItemViewModle extends BaseController {
     }
   }
 
+  Future getItemImage({required String serialNo}) async {
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      itemImage = File(pickedImage.path);
+      await addItemWithPhoto(serialNo: serialNo);
+      update();
+    }
+  }
+
   void increaseQty() {
     itemQuantity++;
     update();
@@ -208,63 +284,46 @@ class ItemViewModle extends BaseController {
     update();
   }
 
+  // box Operations Box::
+  Box? operationsBox;
   // to get Box With His Serial No..
-  Future<Box> getBoxBySerial({required String serial}) async {
-    Box box = Box();
+  Future<void> getBoxBySerial({required String serial}) async {
+    startLoading();
     await ItemHelper.getInstance
         .getBoxBySerial(body: {"serial": serial}).then((value) => {
               if (value.status!.success!)
                 {
                   Logger().i("${value.toJson()}"),
-                  box = Box.fromJson(value.data["Storages"]),
+                  operationsBox = Box.fromJson(value.data),
                 }
               else
                 {
                   snackError("$error", "${value.status!.message}"),
                 }
             });
-    return box;
+    endLoading();
   }
 
   // to show Adding item BottomSheet :
 
-  void showAddItemBottomSheet({required Box box}) {
+  Future<void> showAddItemBottomSheet({required Box box}) async {
     Get.bottomSheet(
-        ChooseAddMethodWidget(
+      ChooseAddMethodWidget(
+        isUpdate: false,
+        box: box,
+      ),
+    );
+  }
+
+  // to show update Box Bottom Sheet ::
+
+  Future<void> showUpdatBoxBottomSheet({required Box box , required bool isUpdate}) async {
+    Get.bottomSheet(
+        CheckInBoxWidget(
+          isUpdate: isUpdate,
           box: box,
         ),
         isScrollControlled: true);
-
-    // Get.bottomSheet(
-    //     AddItemWidget(
-    //       box: box,
-    //     ),
-    //     isScrollControlled: true);
   }
 
-  //  Future<void> scanBarcodeNormal() async {
-  //   String barcodeScanRes;
-  //   try {
-  //     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-  //         '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-  //     print(barcodeScanRes);
-  //   } on PlatformException {
-  //     barcodeScanRes = 'Failed to get platform version.';
-  //   }
-  // }
-  //  Future<void> scanQR() async {
-  //   String barcodeScanRes;
-  //   try {
-  //     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-  //         '#ff6666', 'Cancel', true, ScanMode.QR);
-  //     print(barcodeScanRes);
-  //   } on PlatformException {
-  //     barcodeScanRes = 'Failed to get platform version.';
-  //   }
-  // }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 }

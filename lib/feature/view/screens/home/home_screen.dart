@@ -3,12 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
-import 'package:inbox_clients/feature/view/screens/add_item/qr_screen.dart';
 import 'package:inbox_clients/feature/view/screens/cart/cart_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/search_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/box_gv_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/filter_widget.dart';
+import 'package:inbox_clients/feature/view/screens/items/qr_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
@@ -154,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       if (widget.isFromScan ?? false) {
-        Get.bottomSheet(CheckInBoxWidget(), isScrollControlled: true);
+        Get.bottomSheet(CheckInBoxWidget(isUpdate: false,), isScrollControlled: true);
       }
     });
   }

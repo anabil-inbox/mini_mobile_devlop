@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
-import 'package:inbox_clients/feature/view/screens/add_item/item_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/my_orders_screen.dart';
@@ -56,6 +55,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
         Get.bottomSheet(
             CheckInBoxWidget(
               box: widget.box,
+              isUpdate: false,
             ),
             isScrollControlled: true);
       }
@@ -80,9 +80,9 @@ class _HomePageHolderState extends State<HomePageHolder> {
           Logger().d(
               "${SharedPref.instance.getCurrentUserData().toJson().toString()}");
           Logger().d("${SharedPref.instance.getUserToken()}");
-          Get.to(() => RequestNewStorageScreen());
-        //  Get.put(ItemViewModle());
-        //  Get.to(() => ItemScreen(box: Box(storageName: "Test")));
+        Get.to(() => RequestNewStorageScreen());
+       //  Get.put(ItemViewModle());
+       //  Get.to(() => ItemScreen(box: Box(storageName: "Test")));
        // Get.to(StorageDetailsView(tags: [],));
         },
         child: Icon(

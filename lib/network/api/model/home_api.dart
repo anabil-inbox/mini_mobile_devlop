@@ -45,5 +45,4 @@ class HomeApi {
       return AppResponse.fromJson(message);
     }
   }
-
   }

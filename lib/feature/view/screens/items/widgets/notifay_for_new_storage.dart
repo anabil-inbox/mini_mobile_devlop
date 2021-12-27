@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
@@ -12,6 +12,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 import '../qr_screen.dart';
@@ -56,7 +57,7 @@ class NotifayForNewStorage extends StatelessWidget {
                 SizedBox(
                   height: sizeH6,
                 ),
-                Text("${box.serialNo}"),
+                Text("${box.storageName}"),
                 SizedBox(
                   height: sizeH2,
                 ),
@@ -87,38 +88,40 @@ class NotifayForNewStorage extends StatelessWidget {
                   height: sizeH22,
                 ),
                 Text("Order Summary:"),
+                !(GetUtils.isNull(box.options) || box.options!.isEmpty)
+                    ? SizedBox(
+                        height: sizeH16,
+                      )
+                    : const SizedBox(),
+                !(GetUtils.isNull(box.options) || box.options!.isEmpty)
+                    ? Text("${tr.options} :")
+                    : const SizedBox(),
+                !(GetUtils.isNull(box.options) || box.options!.isEmpty)
+                    ? SizedBox(
+                        height: sizeH10,
+                      )
+                    : const SizedBox(),
+                !(GetUtils.isNull(box.options) || box.options!.isEmpty)
+                    ? ListView(
+                        padding: EdgeInsets.symmetric(horizontal: padding10!),
+                        shrinkWrap: true,
+                        children: box.options!.map((e) => Text("$e")).toList(),
+                      )
+                    : const SizedBox(),
                 SizedBox(
-                  height: sizeH2,
+                  height: sizeH22,
                 ),
-                Text(
-                  "1 Box",
-                ),
+                Text("${DateUtility.getChatTime(box.modified.toString())}"),
                 SizedBox(
-                  height: sizeH20,
+                  height: sizeH22,
                 ),
-                Text("6:43 PM"),
-                SizedBox(
-                  height: sizeH4,
-                ),
-                Text("Monday, June 7, 2021 (GMT+3)"),
-                SizedBox(
-                  height: sizeH4,
-                ),
-                Text("Time in West Bay, Doha"),
-                SizedBox(
-                  height: sizeH20,
-                ),
-                Text('Zone 20, St. 913, B. 6/10'),
+                Text('${box.address?.zone } , ${box.address?.streat} , ${box.address?.buildingNo}'),
                 SizedBox(
                   height: sizeH4,
                 ),
                 Text("Doha, Qatar"),
                 SizedBox(
-                  height: sizeH4,
-                ),
-                Text("+974 7070 1221"),
-                SizedBox(
-                  height: sizeH16,
+                  height: sizeH22,
                 ),
               ],
             ),
@@ -133,11 +136,10 @@ class NotifayForNewStorage extends StatelessWidget {
                 isExpanded: false,
                 isLoading: false,
                 onClicked: () {
-                 // Get.put(ItemViewModle());
+                  // Get.put(ItemViewModle());
                   Get.to(() => QrScreen());
-                 
-                // homeViewModel.startScan();
-                 
+
+                  // homeViewModel.startScan();
                 },
                 textButton: "Scan QR Key",
               ),

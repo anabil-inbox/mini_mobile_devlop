@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/model/inside_box/item.dart';
+import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/add_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -13,19 +15,26 @@ import 'package:inbox_clients/util/font_dimne.dart';
 
 class ItemsWidget extends StatelessWidget {
   const ItemsWidget(
-      {Key? key, this.isSelectedBtnClick = false, this.onCheckItem, this.index, this.item , required this.tag})
+      {Key? key,
+      required this.box,
+      this.isSelectedBtnClick = false,
+      this.onCheckItem,
+      this.boxItem,
+//      required this.itemIndex
+      })
       : super(key: key);
   final bool? isSelectedBtnClick;
   final Function()? onCheckItem;
-  final int? index;
-  final String? item;
-  final Tag? tag;
+  final BoxItem? boxItem;
+  final Box box;
+ // final int itemIndex;
+
+  static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
 
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    return GetBuilder<StorageViewModel>(
-        builder: (logic) {
+    return GetBuilder<StorageViewModel>(builder: (logic) {
       return Container(
         height: sizeH75,
         width: double.infinity,
@@ -37,20 +46,24 @@ class ItemsWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if(isSelectedBtnClick!)
+            if (isSelectedBtnClick!)
               SizedBox(
                 width: sizeW40,
                 child: TextButton(
                   onPressed: onCheckItem ?? () {},
-                  child: logic.listIndexSelected.contains(item)? 
-                  SvgPicture.asset("assets/svgs/storage_check_active.svg"):SvgPicture
-                      .asset("assets/svgs/storage_check_deactive.svg"),
+                  child: logic.listIndexSelected
+                          .contains(boxItem?.itemName ?? "")
+                      ? SvgPicture.asset("assets/svgs/storage_check_active.svg")
+                      : SvgPicture.asset(
+                          "assets/svgs/storage_check_deactive.svg"),
                 ),
-              ) else
-              const SizedBox.shrink(),
+              )
+            else
+              const SizedBox(),
             ClipRRect(
               borderRadius: BorderRadius.circular(sizeRadius16!),
-              child: imageNetwork(url: urlProduct,
+              child: imageNetwork(
+                  url: urlProduct,
                   height: sizeH48,
                   width: sizeW45,
                   fit: BoxFit.contain),
@@ -65,9 +78,8 @@ class ItemsWidget extends StatelessWidget {
                 children: [
                   Flexible(
                     child: CustomTextView(
-                      txt: "${tag?.name ?? ""}",
-                      textStyle:
-                      textStyleNormal()?.copyWith(color: colorBlack),
+                      txt: "${boxItem?.itemName ?? "Item Name"}",
+                      textStyle: textStyleNormal()?.copyWith(color: colorBlack),
                       maxLine: Constance.maxLineTwo,
                     ),
                   ),
@@ -85,13 +97,35 @@ class ItemsWidget extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
-              width: sizeW40,
-              child: TextButton(
-                onPressed: () {},
-                child: SvgPicture.asset("assets/svgs/three_dot_widget.svg"),
-              ),
-            ),
+            PopupMenuButton<int>(
+                icon: SvgPicture.asset("assets/svgs/three_dot_widget.svg"),
+                itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
+                      PopupMenuItem<int>(value: 1, child: Text('Delete')),
+                      PopupMenuItem<int>(value: 2, child: Text('Update')),
+                      PopupMenuItem<int>(value: 3, child: Text('Do Something')),
+                    ],
+                onSelected: (int value) {
+                  switch (value) {
+                    case 1:
+                      itemViewModle.deleteItem(
+                          serialNo: box.serialNo ?? "",
+                          itemName: boxItem?.itemName ?? "");
+                      box.items?.removeWhere(
+                          (element) => element.itemName == boxItem?.itemName);
+                      itemViewModle.update();
+                      return;
+                    case 2:
+                      Get.bottomSheet(
+                        AddItemWidget(
+                          isUpdate: true,
+                          box: box,
+                          boxItem: boxItem!,
+                        ),
+                        isScrollControlled: true
+                      );
+                      return;
+                  }
+                })
           ],
         ),
       );

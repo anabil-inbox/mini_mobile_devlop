@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:inbox_clients/feature/view/screens/add_item/widgets/tag_item.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/tag_item.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
-class TagWidget extends StatelessWidget {
-  const TagWidget({Key? key}) : super(key: key);
+class TagBoxWidget extends StatelessWidget {
+  const TagBoxWidget({Key? key}) : super(key: key);
+
+  static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,13 @@ class TagWidget extends StatelessWidget {
       child: Form(
         child: GetBuilder<ItemViewModle>(
           init: ItemViewModle(),
-          initState: (_) {},
+          initState: (_) {
+            Set<String> localSet = {};
+            for (var item in itemViewModle.operationsBox!.tags!) {
+              localSet.add(item.tag!);
+            }
+            itemViewModle.usesBoxTags = localSet;
+          },
           builder: (logic) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,14 +36,13 @@ class TagWidget extends StatelessWidget {
                 TextFormField(
                   controller: logic.tdTag,
                   decoration: InputDecoration(
-                    focusColor: colorTrans,
-                    focusedBorder: InputBorder.none,
-                    hintText: "Tag"
-                  ),
+                      focusColor: colorTrans,
+                      focusedBorder: InputBorder.none,
+                      hintText: "Tag"),
                   textInputAction: TextInputAction.go,
                   onFieldSubmitted: (e) {
                     if (e.trim().isNotEmpty) {
-                      logic.usetTags.add(e);
+                      logic.usesBoxTags.add(e);
                       logic.tdTag.clear();
                       logic.update();
                     }
@@ -45,14 +54,14 @@ class TagWidget extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: padding6!),
                   height: sizeH30,
-                  child: logic.usetTags.isNotEmpty
+                  child: logic.usesBoxTags.isNotEmpty
                       ? ListView(
                           scrollDirection: Axis.horizontal,
-                          children: logic.usetTags
+                          children: logic.usesBoxTags
                               .map((e) => TagItem(
                                     text: e,
                                     onTap: () {
-                                      logic.usetTags.remove(e);
+                                      logic.usesBoxTags.remove(e);
                                       logic.update();
                                     },
                                   ))

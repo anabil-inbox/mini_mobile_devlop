@@ -1,3 +1,5 @@
+import 'package:inbox_clients/feature/model/address_modle.dart';
+
 class Box {
     Box({
         this.id,
@@ -9,6 +11,8 @@ class Box {
         this.modified,
         this.tags,
         this.items,
+        this.options,
+        this.address
     });
 
     String? id;
@@ -18,9 +22,11 @@ class Box {
     String? storageStatus;
     int? enabled;
     DateTime? modified;
-    List<dynamic>? tags;
+    List<ItemTag>? tags;
     List<BoxItem>? items;
     bool? isExpanded = false;
+    List<String>? options;
+    Address? address;
 
     factory Box.fromJson(Map<String, dynamic> json) => Box(
         id: json["id"],
@@ -30,7 +36,9 @@ class Box {
         storageStatus: json["storage_status"],
         enabled: json["enabled"],
         modified: DateTime.parse(json["modified"]),
-        tags: json["tags"] == null ?  null : List<dynamic>.from(json["tags"].map((x) => x)),
+        address: json["address"] == null ? null : Address.fromJson(json["address"]),
+        options: json["options"] == null ? null : List<String>.from(json["options"].map((x) => x)),
+        tags: json["tags"] == null ?  null : List<ItemTag>.from(json["tags"].map((x) => ItemTag.fromJson(x))),
         items: json["items"] == null ?  null : List<BoxItem>.from(json["items"].map((x) => BoxItem.fromJson(x))),
     );
 
@@ -43,6 +51,7 @@ class Box {
         "enabled": enabled,
         "modified": modified?.toIso8601String(),
         "tags": List<dynamic>.from(tags!.map((x) => x)),
+        "options":List<String>.from(options!.map((e) => e)),
         "items": List<dynamic>.from(items!.map((x) => x.toJson())),
     };
 }

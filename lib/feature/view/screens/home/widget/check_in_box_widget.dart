@@ -6,8 +6,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
-import 'package:inbox_clients/feature/view/screens/add_item/widgets/tag_widget.dart';
-import 'package:inbox_clients/feature/view/screens/not_allowed/not_allowed_screen.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/tag_box_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
@@ -16,10 +15,11 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
 class CheckInBoxWidget extends StatelessWidget {
-  const CheckInBoxWidget({Key? key, this.box}) : super(key: key);
+  const CheckInBoxWidget({Key? key, this.box , required this.isUpdate}) : super(key: key);
 
   final Box? box;
   static ItemViewModle itemViewModle = Get.put(ItemViewModle());
+  final bool isUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -70,14 +70,16 @@ class CheckInBoxWidget extends StatelessWidget {
           GetBuilder<ItemViewModle>(
             init: ItemViewModle(),
             initState: (_) {
-              itemViewModle.tdName.text = box?.storageName ?? "";
+              itemViewModle.tdName.text = itemViewModle.operationsBox?.storageName ?? "";
             },
             builder: (_) {
               return TextFormField(
                 controller: itemViewModle.tdName,
                 decoration: InputDecoration(
                     focusColor: colorTrans,
-                    focusedBorder: InputBorder.none,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: colorBorderContainer),
+                    ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: colorBorderContainer),
                     ),
@@ -88,23 +90,28 @@ class CheckInBoxWidget extends StatelessWidget {
           SizedBox(
             height: sizeH20!,
           ),
-          TagWidget(),
+          TagBoxWidget(),
           SizedBox(
             height: sizeH20!,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              PrimaryButton(
-                isExpanded: false,
-                isLoading: false,
-                onClicked: () {
-                  
-                  Get.to(() => NotAllowedScreen(
-                        box: box!,
-                      ));
+              GetBuilder<ItemViewModle>(
+                init: ItemViewModle(),
+                initState: (_) {},
+                builder: (log) {
+                  return PrimaryButton(
+                    isExpanded: false,
+                    isLoading: log.isLoading,
+                    onClicked: () async {
+                      await itemViewModle.updateBox(box: box!);
+                     // itemViewModle.tdName.text = box?.storageName ?? "";
+                     // itemViewModle.update();
+                    },
+                    textButton: "Check-in Box",
+                  );
                 },
-                textButton: "Check-in Box",
               ),
               SizedBox(
                 width: sizeW12,

@@ -7,7 +7,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
-import 'package:inbox_clients/feature/view/screens/add_item/item_screen.dart';
+import 'package:inbox_clients/feature/view/screens/items/item_screen.dart';
 import 'package:inbox_clients/feature/view/screens/not_allowed/widgets/not_allowed_item.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';

@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:inbox_clients/feature/view/screens/add_item/widgets/notifay_for_new_storage.dart';
+import 'package:inbox_clients/feature/view/screens/items/item_screen.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
-import 'package:inbox_clients/util/constance/constance.dart';
 
 import 'box_gv_item_widget.dart';
 
@@ -34,14 +33,15 @@ class GVWidget extends StatelessWidget {
           itemBuilder: (context, index) => InkWell(
             onTap: () {
               Get.put(ItemViewModle());
-              if (homeViewModel.userBoxess.toList()[index].storageStatus == LocalConstance.boxOnTheWay) {
-                // Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index],));
-                  Get.bottomSheet(
-                    NotifayForNewStorage(box: homeViewModel.userBoxess.toList()[index],),
-                    isScrollControlled: true
-                  );
-              } 
-              
+              // if (homeViewModel.userBoxess.toList()[index].storageStatus == LocalConstance.boxOnTheWay) {
+              //     Get.bottomSheet(
+              //       NotifayForNewStorage(box: homeViewModel.userBoxess.toList()[index],),
+              //       isScrollControlled: true
+              //     );
+              // }else{
+              //   Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index]));
+              // } 
+               Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index]));
             },
             child: HomeGVItemWidget(
               box: homeViewModel.userBoxess.toList()[index],

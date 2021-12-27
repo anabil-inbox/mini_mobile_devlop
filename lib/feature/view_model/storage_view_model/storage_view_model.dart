@@ -75,7 +75,6 @@ class StorageViewModel extends BaseController {
         isShowSpaces = true;
         isShowAll = false;
         isShowQuantityAndItems = false;
-
         update();
         return;
       }
@@ -334,9 +333,7 @@ class StorageViewModel extends BaseController {
           ConstanceNetwork.quantityCategoryType) {
         var resQuantity = await checkQuantity(
             boxCheckedId: "${lastStorageItem?.name}", quntity: quantity);
-        // if(resQuantity.status!.success!){
-
-        // }
+            
         if (resQuantity.data["item"] != null) {
           Quantity q = Quantity.fromJson(resQuantity.data["item"]);
           if (q.quantityStatus == 0) {
@@ -518,8 +515,19 @@ class StorageViewModel extends BaseController {
   // }
   void onAddingAdviser({required StorageCategoriesData storageCategoriesData}) {
     if (isNeedingAdviser) {
-      balance = 0;
+      selctedItem = null;
+      selectedDuration = "Daily";
       selectedFeaures.clear();
+      quantity = 1;
+      numberOfDays = 1;
+      balance = 0;
+      tdX.clear();
+      tdY.clear();
+      tdSearch.clear();
+      localBulk = LocalBulk();
+      localBulk.endStorageItem = {};
+      localBulk.optionStorageItem = null;
+
       update();
       storageCategoriesData.storageItem?.forEach((element) {
         if (element.options!.isEmpty &&
@@ -803,6 +811,7 @@ class StorageViewModel extends BaseController {
               isLoading = false,
               update(),
               checkDaplication(),
+              isShowAll = true,
               snackSuccess("${tr.success}", "${value.status!.message}"),
               userStorageCategoriesData.clear(),
               selectedPaymentMethod = null,

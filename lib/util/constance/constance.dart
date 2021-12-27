@@ -11,4 +11,8 @@ class LocalConstance{
   static String orderCancelled = "Cancelled";
 
 
+  // to do here Api Constance ( Hard Coded ) : 
+  static String quantity = "qty";
+  static String qallery = "gallery";
+
 }

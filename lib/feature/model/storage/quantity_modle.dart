@@ -12,9 +12,9 @@ class Quantity {
     String? itemCode;
     String? itemName;
     String? itemNameTr;
-    double? availableQuantity;
+    num? availableQuantity;
     int? orderedQuantity;
-    double? quantityDifference;
+    num? quantityDifference;
     int? quantityStatus;
 
     factory Quantity.fromJson(Map<String, dynamic> json) => Quantity(

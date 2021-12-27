@@ -5,8 +5,8 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
-import 'package:inbox_clients/feature/view/screens/add_item/widgets/qty_widget.dart';
-import 'package:inbox_clients/feature/view/screens/add_item/widgets/tag_widget.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/qty_widget.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/tag_box_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -16,11 +16,14 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'photo_item_widget.dart';
 
 class AddItemWidget extends StatelessWidget {
-  const AddItemWidget({Key? key, required this.box}) : super(key: key);
+  const AddItemWidget({Key? key, required this.box , this.isUpdate = false , required this.boxItem}) : super(key: key);
 
   static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
+
   final Box box;
-  
+  final bool? isUpdate;
+  final BoxItem boxItem;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,7 +72,10 @@ class AddItemWidget extends StatelessWidget {
               SizedBox(
                 height: sizeH16,
               ),
-              TagWidget(),
+              TagBoxItemWidget(
+                boxItem: boxItem,
+                isUpdate: isUpdate ?? false,
+              ),
               SizedBox(
                 height: sizeH16,
               ),

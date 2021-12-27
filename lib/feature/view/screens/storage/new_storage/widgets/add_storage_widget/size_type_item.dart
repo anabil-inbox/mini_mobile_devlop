@@ -14,7 +14,7 @@ import 'package:inbox_clients/util/constance.dart';
 // ignore: must_be_immutable
 class SizeTypeItem extends StatelessWidget {
   SizeTypeItem(
-      {Key? key, required this.storageCategoriesData, required this.media })
+      {Key? key, required this.storageCategoriesData, required this.media})
       : super(key: key);
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
   final StorageCategoriesData storageCategoriesData;
@@ -117,7 +117,10 @@ class SizeTypeItem extends StatelessWidget {
     } else if (((storageCategoriesData.storageCategoryType ==
                 ConstanceNetwork.spaceCategoryType ||
             storageCategoriesData.storageCategoryType ==
-                ConstanceNetwork.driedCage) &&
+                ConstanceNetwork.driedCage ||
+            storageCategoriesData.storageCategoryType!
+                .toLowerCase()
+                .contains("space")) &&
         storageViewModel.isShowSpaces)) {
       return SvgPicture.asset(
         ConstanceNetwork.enableFolder,

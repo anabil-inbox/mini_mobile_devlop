@@ -3,8 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
-class SettingItem extends StatelessWidget {
-  const SettingItem(
+class SettingItemWithTitle extends StatelessWidget {
+  const SettingItemWithTitle(
       {Key? key,
       required this.iconPath,
       required this.settingTitle,
@@ -38,21 +38,36 @@ class SettingItem extends StatelessWidget {
                 )
               : const SizedBox(),
           contentPadding: EdgeInsets.all(0),
-          trailing: Container(
-           // color: colorBlack,
-            width: sizeW100,
-            height: sizeH100,
-            child: Row(
-              children: [
-                 const Spacer(),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                ),
-                SizedBox(width: sizeW10,)
-              ],
-            ),
-          )),
+          trailing: trailingTitle.isEmpty
+              ? Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                  ),
+                )
+              : Container(
+                  width: sizeW95,
+                  child: Row(
+                    children: [
+                      const Spacer(),
+                      Text(
+                        "$trailingTitle",
+                        style: TextStyle(color: colorPrimary),
+                      ),
+                      SizedBox(
+                        width: sizeW10,
+                      ),
+                      const Spacer(),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                      ),
+                      SizedBox(
+                        width: sizeW10,
+                      ),
+                    ],
+                  ))),
     );
   }
 }

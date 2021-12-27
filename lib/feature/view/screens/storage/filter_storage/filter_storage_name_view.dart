@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
-import 'package:inbox_clients/feature/model/inside_box/item.dart';
+import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/btn_action_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/items_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/text_with_contanier_widget.dart';
@@ -162,9 +162,10 @@ class FilterStorageNameView extends StatelessWidget {
                             ) /*, Text(groupByValue , textAlign: TextAlign.start,)*/,
                             itemBuilder: (context, dynamic element) =>
                                 ItemsWidget(
-                              tag: Tag(),    
-                              item: element,
-                              index: list.indexOf(element),
+                              // tag: Tag(),    
+                              // item: element,
+                              // index: list.indexOf(element),
+                              box: Box(),
                               isSelectedBtnClick: logic.isSelectBtnClick,
                               onCheckItem: () {
                                 logic.addIndexToList(element.toString());

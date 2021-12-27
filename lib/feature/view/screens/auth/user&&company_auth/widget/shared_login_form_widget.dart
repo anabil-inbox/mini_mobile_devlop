@@ -121,34 +121,35 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                     children: [
                       GetBuilder<AuthViewModle>(
                         builder: (logic) {
-                          return PrimaryButtonFingerPinter(
-                            isExpanded: false,
-                            textButton: "${tr.continue_form}",
-                            isLoading: controller.isLoading,
-                            onClicked: () {
-                              print("object2");
-                              if (_formKey.currentState!.validate()) {
-                                if (type == "${ConstanceNetwork.userType}") {
-                                  controller.signInUser(
-                                      user: User(
-                                    countryCode:
-                                        "${controller.defCountry.prefix}",
-                                    mobile: controller.tdMobileNumber.text,
-                                    udid: controller.identifier,
-                                    deviceType: controller.deviceType,
-                                    fcm: "${SharedPref.instance.getFCMToken()}",
-                                  ));
-                                } else if (type ==
-                                    "${ConstanceNetwork.companyType}") {
-                                  controller.signInCompany(Company(
-                                      crNumber: logic.tdcrNumber.text,
+                          return Expanded(
+                            child: PrimaryButtonFingerPinter(
+                              isExpanded: false,
+                              textButton: "${tr.continue_form}",
+                              isLoading: controller.isLoading,
+                              onClicked: () {
+                                if (_formKey.currentState!.validate()) {
+                                  if (type == "${ConstanceNetwork.userType}") {
+                                    controller.signInUser(
+                                        user: User(
+                                      countryCode:
+                                          "${controller.defCountry.prefix}",
+                                      mobile: controller.tdMobileNumber.text,
                                       udid: controller.identifier,
                                       deviceType: controller.deviceType,
-                                      fcm:
-                                          "${SharedPref.instance.getFCMToken()}"));
+                                      fcm: "${SharedPref.instance.getFCMToken()}",
+                                    ));
+                                  } else if (type ==
+                                      "${ConstanceNetwork.companyType}") {
+                                    controller.signInCompany(Company(
+                                        crNumber: logic.tdcrNumber.text,
+                                        udid: controller.identifier,
+                                        deviceType: controller.deviceType,
+                                        fcm:
+                                            "${SharedPref.instance.getFCMToken()}"));
+                                  }
                                 }
-                              }
-                            },
+                              },
+                            ),
                           );
                         },
                       ),
@@ -158,8 +159,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                           onPressed: () {
                             controller.logInWithTouchId();
                           },
-                          icon:
-                              SvgPicture.asset("assets/svgs/finger_pinter.svg"))
+                          icon:SvgPicture.asset("assets/svgs/finger_pinter.svg"))
                     ],
                   )
                 : GetBuilder<AuthViewModle>(
@@ -170,7 +170,6 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                         isExpanded: true,
                         onClicked: () {
                           if (_formKey.currentState!.validate()) {
-                            print("object1");
                             if (type == "${ConstanceNetwork.userType}") {
                               controller.signInUser(
                                   user: User(

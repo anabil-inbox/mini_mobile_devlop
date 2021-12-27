@@ -102,3 +102,24 @@ class Tag {
         "__unsaved": unsaved,
       };
 }
+
+
+
+class SendedTag {
+  SendedTag({
+    this.tag,
+    this.isEnable
+  });
+
+  String? tag;
+  int? isEnable;
+  factory SendedTag.fromJson(Map<String, dynamic> json) => SendedTag(
+        tag: json["tag"],
+        isEnable : json["is_enabled"]
+      );
+
+  Map<String, dynamic> toJson() => {
+        "tag": tag,
+        "is_enabled":isEnable
+      };
+}

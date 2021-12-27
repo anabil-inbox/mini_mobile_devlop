@@ -50,7 +50,7 @@ class UserBothLoginScreen extends StatelessWidget {
           SharedLoginForm(type: "${ConstanceNetwork.userType}"),
           SizedBox(height: sizeH20,),
           SharedPref.instance.getUserType() == "${ConstanceNetwork.bothType}" ? Padding(
-            padding: EdgeInsets.symmetric(horizontal: sizeW20!),
+            padding: EdgeInsets.symmetric(horizontal: padding20!),
             child: SeconderyFormButton(
               buttonText: "${tr.login_as_company}",
               onClicked: (){

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/inside_box/item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/btn_action_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/items_widget.dart';
@@ -155,7 +156,8 @@ class StorageDetailsView extends StatelessWidget {
                           keyboardDismissBehavior:
                               ScrollViewKeyboardDismissBehavior.onDrag,
                           itemBuilder: (context, index) => ItemsWidget(
-                                tag: tags[index],
+                                box: Box(),
+                                boxItem: BoxItem(),
                               ),
                           separatorBuilder: (context, index) => Divider(
                                 height: sizeH1,
