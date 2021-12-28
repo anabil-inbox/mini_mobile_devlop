@@ -112,7 +112,6 @@ class AddItemWidget extends StatelessWidget {
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             primary: true,
-                            // shrinkWrap: true,
                             children: [
                               builder.images.isNotEmpty
                                   ? SizedBox(

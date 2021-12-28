@@ -93,7 +93,7 @@ class NotAllowedScreen extends StatelessWidget {
                         textButton: "Accept",
                         isLoading: logic.isLoading,
                         onClicked: () async {
-                          await logic.updateBox(box: box);
+                         // await logic.updateBox(box: box);
                           box.storageName = logic.tdName.text;
                           Get.off(ItemScreen(box: box));
                         }, 

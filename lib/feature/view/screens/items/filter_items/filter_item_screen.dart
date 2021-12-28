@@ -2,13 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/btn_action_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/items_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/text_with_contanier_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/appbar/widget/back_btn_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
@@ -42,6 +46,16 @@ class FilterItemScreen extends StatelessWidget {
           txt: "${tr.filter_by_name}",
           textStyle: textStyleNormal()?.copyWith(color: colorBlack),
           maxLine: Constance.maxLineOne,
+        ),
+        leadingWidget: BackBtnWidget(
+          onTap: () {
+            itemViewModle.isSelectAllClick = false;
+            itemViewModle.isSelectBtnClick = false;
+            itemViewModle.listIndexSelected.clear();
+            itemViewModle.search = "";
+            Get.back();
+            itemViewModle.update();
+          },
         ),
         actionsWidgets: [
           GetBuilder<ItemViewModle>(
@@ -87,7 +101,10 @@ class FilterItemScreen extends StatelessWidget {
         textInputAction: TextInputAction.search,
         keyboardType: TextInputType.text,
         onSubmitted: (_) {},
-        onChange: (_) {},
+        onChange: (value) {
+          itemViewModle.search = value;
+          itemViewModle.update();
+        },
         isSmallPadding: false,
         isSmallPaddingWidth: true,
         fillColor: colorBackground,
@@ -125,7 +142,7 @@ class FilterItemScreen extends StatelessWidget {
                             elements: itemViewModle.operationsBox!.items!,
                             groupBy: (element) => element.itemName![0],
                             groupSeparatorBuilder: (String groupByValue) =>
-                                Column(
+                            Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -145,16 +162,31 @@ class FilterItemScreen extends StatelessWidget {
                                 ),
                               ],
                             ) /*, Text(groupByValue , textAlign: TextAlign.start,)*/,
-                            itemBuilder: (context, BoxItem element) =>
-                                ItemsWidget(
-                              box: itemViewModle.operationsBox!,
-                              boxItem: element,
-                              isSelectedBtnClick: logic.isSelectBtnClick,
-                              onCheckItem: () {
-                                logic.addIndexToList(
-                                    element.itemName.toString());
-                              },
-                            ),
+                            itemBuilder: (context, BoxItem element) {
+                              if (itemViewModle.search.isEmpty) {
+                                return ItemsWidget(
+                                  box: itemViewModle.operationsBox!,
+                                  boxItem: element,
+                                  isSelectedBtnClick: logic.isSelectBtnClick,
+                                  onCheckItem: () {
+                                    logic.addIndexToList(
+                                        element.itemName.toString());
+                                  },
+                                );
+                              } else if(element.itemName!.toLowerCase().contains(itemViewModle.search.toLowerCase())){
+                                return ItemsWidget(
+                                  box: itemViewModle.operationsBox!,
+                                  boxItem: element,
+                                  isSelectedBtnClick: logic.isSelectBtnClick,
+                                  onCheckItem: () {
+                                    logic.addIndexToList(
+                                        element.itemName.toString());
+                                  },
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            },
                             itemComparator: (item1, item2) {
                               return item1.itemName![0]
                                   .compareTo(item2.itemName![0]);

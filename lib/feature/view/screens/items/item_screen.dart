@@ -10,6 +10,7 @@ import 'package:inbox_clients/feature/view/screens/storage/details_storage/widge
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/items_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/text_with_contanier_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/widget/back_btn_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -23,6 +24,27 @@ import 'filter_items/filter_item_screen.dart';
 
 class ItemScreen extends StatelessWidget {
   const ItemScreen({Key? key, required this.box}) : super(key: key);
+
+  // Search Widget =>
+  Widget get searchWidget => CustomTextFormFiled(
+        iconSize: sizeRadius20,
+        maxLine: Constance.maxLineOne,
+        icon: Icons.search,
+        iconColor: colorBlack,
+        textInputAction: TextInputAction.search,
+        keyboardType: TextInputType.text,
+        onSubmitted: (_) {},
+        onChange: (value) {
+          itemViewModle.search = value.toString();
+          itemViewModle.update();
+        },
+        isSmallPadding: false,
+        isSmallPaddingWidth: true,
+        fillColor: colorBackground,
+        isFill: true,
+        isBorder: true,
+        label: tr.search,
+      );
 
   //todo this for item titles
   Widget get headItemWidget => Row(
@@ -65,7 +87,11 @@ class ItemScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                itemViewModle.showUpdatBoxBottomSheet(box: box, isUpdate: true);
+                if (itemViewModle.isLoading) {
+                } else {
+                  itemViewModle.showUpdatBoxBottomSheet(
+                      box: box, isUpdate: true);
+                }
               },
               icon: SvgPicture.asset("assets/svgs/update.svg")),
           Center(
@@ -74,6 +100,7 @@ class ItemScreen extends StatelessWidget {
                   itemViewModle.listIndexSelected.clear();
                   itemViewModle.isSelectAllClick = false;
                   itemViewModle.isSelectBtnClick = false;
+                  itemViewModle.search = "";
                   Get.to(() => FilterItemScreen());
                 },
                 child: Text(
@@ -86,7 +113,11 @@ class ItemScreen extends StatelessWidget {
             width: sizeW10,
           ),
         ],
-        leading: BackBtnWidget(),
+        leading: BackBtnWidget(
+          onTap: () {
+            Get.back(result: true);
+          },
+        ),
         centerTitle: true,
         title: GetBuilder<ItemViewModle>(
           init: ItemViewModle(),
@@ -126,16 +157,7 @@ class ItemScreen extends StatelessWidget {
                   SizedBox(
                     height: sizeH20,
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.all(padding16!),
-                          child: SvgPicture.asset(
-                            "assets/svgs/search_icon.svg",
-                          ),
-                        ),
-                        hintText: "Search"),
-                  ),
+                  searchWidget,
                   SizedBox(
                     height: sizeH10,
                   ),
@@ -157,15 +179,43 @@ class ItemScreen extends StatelessWidget {
                               clipBehavior: Clip.antiAlias,
                               keyboardDismissBehavior:
                                   ScrollViewKeyboardDismissBehavior.onDrag,
-                              itemBuilder: (context, index) => ItemsWidget(
-                                    // itemIndex: index,
+                              itemBuilder: (context, index) {
+                                if (itemViewModle.search.isEmpty) {
+                                  return ItemsWidget(
                                     box: itemViewModle.operationsBox!,
                                     boxItem: itemViewModle
                                         .operationsBox!.items![index],
-                                  ),
-                              separatorBuilder: (context, index) => Divider(
+                                  );
+                                } else if (itemViewModle
+                                    .operationsBox!.items![index].itemName!
+                                    .toLowerCase()
+                                    .contains(itemViewModle.search)) {
+                                  return ItemsWidget(
+                                    box: itemViewModle.operationsBox!,
+                                    boxItem: itemViewModle
+                                        .operationsBox!.items![index],
+                                  );
+                                } else {
+                                  return const SizedBox();
+                                }
+                              },
+                              separatorBuilder: (context, index) {
+                                if (itemViewModle.search.isEmpty) {
+                                  return Divider(
                                     height: sizeH1,
-                                  ),
+                                  );
+                                } else if (itemViewModle
+                                    .operationsBox!.items![index].itemName!
+                                    .toLowerCase()
+                                    .contains(
+                                        itemViewModle.search.toLowerCase())) {
+                                  return Divider(
+                                    height: sizeH1,
+                                  );
+                                } else {
+                                  return const SizedBox();
+                                }
+                              },
                               itemCount:
                                   itemViewModle.operationsBox!.items!.length),
                         ),

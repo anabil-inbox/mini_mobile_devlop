@@ -4,6 +4,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/view/screens/home/widget/search_body_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
+import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
@@ -41,7 +44,7 @@ class SearchedBoxWidget extends StatelessWidget {
                     },
                     children: homeViewModel.searchedBoxess
                         .toList()
-                        .map((item) => buildExpansionPanel(item))
+                        .map((item) => buildExpansionPanel(item: item))
                         .toList(),
                   ),
                 ),
@@ -53,10 +56,11 @@ class SearchedBoxWidget extends StatelessWidget {
     );
   }
 
-  ExpansionPanel buildExpansionPanel(Box item) {
+  ExpansionPanel buildExpansionPanel({required Box item}) {
     return ExpansionPanel(
       isExpanded: item.isExpanded!,
       canTapOnHeader: true,
+      
       headerBuilder: (BuildContext context, bool isExpanded) {
         return Container(
           clipBehavior: Clip.hardEdge,
@@ -76,7 +80,7 @@ class SearchedBoxWidget extends StatelessWidget {
                   SizedBox(
                     width: sizeW10,
                   ),
-                  Text("${item.storageName}"),
+                  Expanded(child: CustomTextView(txt: "${item.storageName}")),
                 ],
               ),
               SizedBox(
@@ -86,37 +90,14 @@ class SearchedBoxWidget extends StatelessWidget {
           ),
         );
       },
-      body: ListTile(
-        title: Column(
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: sizeW15,
-                ),
-                Container(
-                  child: Image.asset("assets/png/photo.png"),
-                ),
-                SizedBox(
-                  width: sizeW7,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Lorem Ipsum Dolor Narwhal"),
-                    Text(
-                      "Mar 13, 2018",
-                      style: textStyleHints()!.copyWith(fontSize: fontSize13),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: sizeH16,
-            )
-          ],
-        ),
+      body: ListView(
+        padding: const EdgeInsets.all(0),
+            shrinkWrap: true,
+        children: item.items!.map((e) => SearchBodyWidget(
+                  item: e,
+                  date: item.modified,
+                ))
+            .toList(),
       ),
     );
   }

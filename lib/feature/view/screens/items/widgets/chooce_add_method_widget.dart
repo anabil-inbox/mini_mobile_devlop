@@ -56,7 +56,6 @@ class ChooseAddMethodWidget extends StatelessWidget {
             textButton: "Add From Gallery",
             onClicked: () async {
               await itemViewModle.getItemImage(serialNo: box.serialNo ?? "");
-              Get.back();
             },
             isExpanded: true,
           ),

@@ -25,10 +25,12 @@ import 'package:logger/logger.dart';
 import 'package:share/share.dart';
 
 class ItemViewModle extends BaseController {
-
   //to update Get Home View Modle and Update Oprations Box ::
-  static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+  final HomeViewModel homeViewModel = Get.find<HomeViewModel>();
 
+  // to decler here search value ::
+
+  String search = "";
 
   // to do here item Editting Controllers ::
   final formKey = GlobalKey<FormState>();
@@ -41,34 +43,36 @@ class ItemViewModle extends BaseController {
   File? itemImage;
 
   // to update Box Here ::
-  Future<void> updateBox({required Box box}) async {
+  Future<void> updateBox({required Box box, required int index}) async {
     Get.back();
     startLoading();
     List<SendedTag> tags = [];
-
+    
     for (var tag in usesBoxTags) {
       tags.add(SendedTag(isEnable: 1, tag: tag));
     }
 
-    await HomeHelper.getInstance.updateBox(body: {
+    await HomeHelper.getInstance.updateBox(
+      body: {
       "name": box.storageName,
       "serial": box.serialNo,
       "qty": itemQuantity,
       "new_name": tdName.text,
       "tags": jsonEncode(tags),
     }).then((value) => {
-          Logger().i("${value.toJson}"),
           if (value.status!.success!)
             {
-              //  tdName.text = value.data["storage_name"],
+             // homeViewModel.getCustomerBoxes(),
               snackSuccess("${tr.success}", "${value.status?.message}"),
-              // operationsBox = Box.fromJson(value.data),
-              // homeViewModel.userBoxess.where((element) => element.id == operationsBox!.id)
+              operationsBox = Box.fromJson(value.data["data"]),
+              homeViewModel.userBoxess.clear(),
+              homeViewModel.getCustomerBoxes(),
+
             }
           else
             {snackError("${tr.error_occurred}", "${value.status?.message}")}
         });
-    await getBoxBySerial(serial: box.serialNo!);
+    // await getBoxBySerial(serial: box.serialNo!);
     tags.clear();
     usesBoxTags.clear();
     tdName.clear();
@@ -119,8 +123,7 @@ class ItemViewModle extends BaseController {
     await ItemHelper.getInstance.addItem(body: map).then((value) => {
           if (value.status!.success!)
             {
-               Logger().i("${value.data["data"]}"),
-
+              Logger().i("${value.data["data"]}"),
               operationsBox?.items?.add(BoxItem.fromJson(value.data["data"])),
               snackSuccess("${tr.success}", "${value.status!.message}"),
               Get.back(),
@@ -132,7 +135,6 @@ class ItemViewModle extends BaseController {
               endLoading()
             }
         });
-    await getBoxBySerial(serial: serialNo);
     images.clear();
     tags.clear();
     usesBoxItemsTags.clear();
@@ -145,7 +147,10 @@ class ItemViewModle extends BaseController {
 
   // here for updateing the Item
 
-  Future<void> updateItem({required String serialNo,required String itemId,required var gallary}) async {
+  Future<void> updateItem(
+      {required String serialNo,
+      required String itemId,
+      required var gallary}) async {
     startLoading();
     List<SendedTag> tags = [];
     List<SendedImage> innerImages = [];
@@ -198,19 +203,21 @@ class ItemViewModle extends BaseController {
 
   // here for Adding item without Name ::
   Future<void> addItemWithPhoto({required String serialNo}) async {
+    Get.back();
     startLoading();
     await ItemHelper.getInstance.addItem(body: {
       "storage": "$serialNo",
-      LocalConstance.qallery: itemImage != null
+      "image[0]": itemImage != null
           ? multiPart.MultipartFile.fromFileSync(itemImage!.path)
-          : "",
+          : [],
+      "file[0]": "Image",
       LocalConstance.quantity: 1,
     }).then((value) => {
           if (value.status!.success!)
             {
               Logger().i("${value.toJson()}"),
               snackSuccess("${tr.success}", "${value.status!.message}"),
-              Get.back(),
+              operationsBox?.items?.add(BoxItem.fromJson(value.data)),
               endLoading()
             }
           else
@@ -220,7 +227,6 @@ class ItemViewModle extends BaseController {
               endLoading()
             }
         });
-
     images.clear();
     itemQuantity = 1;
     update();
@@ -446,4 +452,7 @@ class ItemViewModle extends BaseController {
       update();
     }
   }
+
+  /// to do update Box :: => Local Work :: -_-
+  /// to do delete get Box By Serial :: 
 }

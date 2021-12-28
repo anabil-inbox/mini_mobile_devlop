@@ -9,18 +9,19 @@ import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/tag_box_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
 class CheckInBoxWidget extends StatelessWidget {
-  const CheckInBoxWidget({Key? key, this.box , required this.isUpdate}) : super(key: key);
+  const CheckInBoxWidget({Key? key, this.box , required this.isUpdate }) : super(key: key);
 
   final Box? box;
   static ItemViewModle itemViewModle = Get.put(ItemViewModle());
+  HomeViewModel get homeViewModel => Get.find<HomeViewModel>();
   final bool isUpdate;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -105,11 +106,12 @@ class CheckInBoxWidget extends StatelessWidget {
                     isExpanded: false,
                     isLoading: log.isLoading,
                     onClicked: () async {
-                      await itemViewModle.updateBox(box: box!);
+                      homeViewModel.userBoxess.toList().removeAt(homeViewModel.userBoxess.toList().indexOf(box!));
+                      await itemViewModle.updateBox(box: box!  , index:homeViewModel.userBoxess.toList().indexOf(box!));
                      // itemViewModle.tdName.text = box?.storageName ?? "";
                      // itemViewModle.update();
                     },
-                    textButton: "Check-in Box",
+                    textButton: isUpdate? "Update-Box" : "Check-in Box",
                   );
                 },
               ),

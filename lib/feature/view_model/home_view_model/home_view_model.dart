@@ -19,12 +19,13 @@ class HomeViewModel extends BaseController {
 
   // get Custome Boxes Vars And Functtions ::
   Set<Box> userBoxess = {};
+  
   Future<void> getCustomerBoxes() async {
     startLoading();
     await HomeHelper.getInstance
         .getCustomerBoxess(pageSize: 10, page: page)
         .then((value) => {
-              userBoxess = value.toSet(),
+              userBoxess.addAll(value),
               update(),
             });
     endLoading();

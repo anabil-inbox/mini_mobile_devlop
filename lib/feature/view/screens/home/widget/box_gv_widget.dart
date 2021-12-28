@@ -10,10 +10,11 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 import 'box_gv_item_widget.dart';
 
+// ignore: must_be_immutable
 class GVWidget extends StatelessWidget {
-  const GVWidget({Key? key}) : super(key: key);
+  GVWidget({Key? key}) : super(key: key);
 
-  static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+  HomeViewModel homeViewModel = Get.find<HomeViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class GVWidget extends StatelessWidget {
         GridView.builder(
           controller: homeViewModel.scrollcontroller,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: homeViewModel.userBoxess.length,
+          itemCount: homeViewModel.userBoxess.toList().length,
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
@@ -40,8 +41,11 @@ class GVWidget extends StatelessWidget {
               //     );
               // }else{
               //   Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index]));
-              // } 
-               Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index]));
+              // }
+              
+              Get.to(() =>
+                  ItemScreen(box: homeViewModel.userBoxess.toList()[index]));
+              homeViewModel.update();
             },
             child: HomeGVItemWidget(
               box: homeViewModel.userBoxess.toList()[index],

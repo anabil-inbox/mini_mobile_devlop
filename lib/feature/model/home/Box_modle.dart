@@ -34,7 +34,7 @@ class Box {
         saleOrder: json["sale_order"],
         storageStatus: json["storage_status"],
         enabled: json["enabled"],
-        modified: DateTime.parse(json["modified"]),
+        modified: json["modified"] == null ? null : DateTime.parse(json["modified"]),
         address:
             json["address"] == null ? null : Address.fromJson(json["address"]),
         options: json["options"] == null
@@ -56,10 +56,18 @@ class Box {
         "storage_status": storageStatus,
         "enabled": enabled,
         "modified": modified?.toIso8601String(),
-        "tags": List<dynamic>.from(tags!.map((x) => x)),
-        "options": List<String>.from(options!.map((e) => e)),
-        "items": List<dynamic>.from(items!.map((x) => x.toJson())),
+       "tags": List<dynamic>.from(tags!.map((x) => x)),
+       "options": List<String>.from(options!.map((e) => e)),
+       "items": List<dynamic>.from(items!.map((x) => x.toJson())),
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Box && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+ int get hashCode => id.hashCode;
 }
 
 class BoxItem {
