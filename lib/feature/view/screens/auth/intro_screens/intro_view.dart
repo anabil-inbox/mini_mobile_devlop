@@ -69,6 +69,7 @@ final String type;
                     width: sizeH7,
                   ),
                   SeconderyButtom(
+                    width: sizeW165,
                       textButton:
                           "${tr.sign_up}",
                       onClicked: () {
@@ -77,7 +78,6 @@ final String type;
                         }else if(type == "${ConstanceNetwork.companyType}"){
                           Get.off(() => RegisterCompanyScreen());  
                         }
-                       
                       })
                 ],
               ),

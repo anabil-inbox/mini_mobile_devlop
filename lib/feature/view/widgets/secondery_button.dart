@@ -6,16 +6,17 @@ import 'package:inbox_clients/util/app_style.dart';
 // ignore: must_be_immutable
 class SeconderyButtom extends StatelessWidget {
    SeconderyButtom(
-      {Key? key, required this.textButton, required this.onClicked , this.height})
+      {Key? key, required this.textButton, required this.onClicked , this.height , this.width})
       : super(key: key);
   final String textButton;
   final Function onClicked;
   double? height;
+  final double? width;
   
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
+      width: width??double.infinity,
       height: height??sizeH55,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
