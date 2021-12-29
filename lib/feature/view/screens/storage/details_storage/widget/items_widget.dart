@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/add_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/feature/view/widgets/icon_btn.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -103,45 +104,52 @@ class ItemsWidget extends StatelessWidget {
             ),
             logic.isSelectBtnClick!
                 ? const SizedBox()
-                : PopupMenuButton<int>(
+                : IconButton(
+                    onPressed: () {
+                      itemViewModle.showOptionOperationBottomSheet(
+                          box: box, boxItem: boxItem!);
+                    },
                     icon: SvgPicture.asset("assets/svgs/three_dot_widget.svg"),
-                    itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
-                          PopupMenuItem<int>(value: 1, child: Text('Delete')),
-                          PopupMenuItem<int>(value: 2, child: Text('Update')),
-                          PopupMenuItem<int>(value: 3, child: Text('Share')),
-                        ],
-                    onSelected: (int value) {
-                      switch (value) {
-                        case 1:
-                          {
-                            itemViewModle.deleteItem(
-                              id: boxItem?.id ?? "",
-                              serialNo: box.serialNo ?? "",
-                            );
-                            box.items?.removeWhere((element) =>
-                                element.itemName == boxItem?.itemName);
-                            itemViewModle.update();
-                            return;
-                          }
-                        case 2:
-                          {
-                            Get.bottomSheet(
-                                AddItemWidget(
-                                  isUpdate: true,
-                                  box: box,
-                                  boxItem: boxItem!,
-                                ),
-                                isScrollControlled: true);
-                            return;
-                          }
+                  )
 
-                        case 3:
-                          {
-                            itemViewModle.shareItem(boxItem: boxItem!);
-                          }
-                          return;
-                      }
-                    })
+            // PopupMenuButton<int>(
+            //     icon: SvgPicture.asset("assets/svgs/three_dot_widget.svg"),
+            //     itemBuilder: (BuildContext context) => [
+            //           PopupMenuItem<int>(value: 1, child: Text('Delete')),
+            //           PopupMenuItem<int>(value: 2, child: Text('Update')),
+            //           PopupMenuItem<int>(value: 3, child: Text('Share')),
+            //         ],
+            //     onSelected: (int value) {
+            //       switch (value) {
+            //         case 1:
+            //           {
+            // itemViewModle.deleteItem(
+            //   id: boxItem?.id ?? "",
+            //   serialNo: box.serialNo ?? "",
+            // );
+            // box.items?.removeWhere((element) =>
+            //     element.itemName == boxItem?.itemName);
+            // itemViewModle.update();
+            //             return;
+            //           }
+            //         case 2:
+            //           {
+                        // Get.bottomSheet(
+                        //     AddItemWidget(
+                        //       isUpdate: true,
+                        //       box: box,
+                        //       boxItem: boxItem!,
+                        //     ),
+                        //     isScrollControlled: true);
+            //             return;
+            //           }
+            //         case 3:
+                      // {
+                      //   itemViewModle.shareItem(boxItem: boxItem!);
+                      // }
+            //           return;
+            //       }
+            //     })
           ],
         ),
       );

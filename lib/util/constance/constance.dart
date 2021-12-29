@@ -15,4 +15,14 @@ class LocalConstance{
   static String quantity = "qty";
   static String qallery = "gallery";
 
+
+  // to do here constance for task Ids:
+  static String pickupId = "Pickup_sv";
+  static String destroyId = "Destroy_sv";
+  static String terminateId = "Terminate_sv";
+  static String giveawayId = "Give Away_sv";
+  static String fetchId = "Fetch_sv";
+  static String recallId = "Recall_sv";
+
+
 }

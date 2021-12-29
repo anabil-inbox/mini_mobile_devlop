@@ -1039,6 +1039,7 @@ class StorageViewModel extends BaseController {
   //todo this for get Home Page Requests Storage Categories
   getStorageCategories() async {
     try {
+      checkDaplication();
       isStorageCategories.value = true;
       await StorageFeature.getInstance.getStorageCategories().then((value) {
         if (!GetUtils.isNull(value) && value.length != 0) {

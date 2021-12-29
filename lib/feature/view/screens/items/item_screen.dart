@@ -68,9 +68,17 @@ class ItemScreen extends StatelessWidget {
                 ],
               )),
           const Spacer(),
-          TextContainerWidget(
-            colorBackground: colorRedTrans,
-            txt: tr.name,
+          IconButton(
+            padding: const EdgeInsets.all(0),
+            onPressed: (){
+              Get.to(() =>  FilterItemScreen(
+                title: "Filter By Name",
+              ));
+            },
+            icon: TextContainerWidget(
+              colorBackground: colorRedTrans,
+              txt: tr.name,
+            ),
           ),
         ],
       );
@@ -99,9 +107,11 @@ class ItemScreen extends StatelessWidget {
                 onTap: () {
                   itemViewModle.listIndexSelected.clear();
                   itemViewModle.isSelectAllClick = false;
-                  itemViewModle.isSelectBtnClick = false;
+                  itemViewModle.isSelectBtnClick = true;
                   itemViewModle.search = "";
-                  Get.to(() => FilterItemScreen());
+                  Get.to(() => FilterItemScreen(
+                    title: "Select Items",
+                  ));
                 },
                 child: Text(
                   "Select",
@@ -121,12 +131,21 @@ class ItemScreen extends StatelessWidget {
         centerTitle: true,
         title: GetBuilder<ItemViewModle>(
           init: ItemViewModle(),
-          initState: (_) {},
+          initState: (_) {
+            itemViewModle.operationsBox?.storageName = "";
+          },
           builder: (_) {
-            return Text(
-              "${itemViewModle.operationsBox?.storageName ?? ""}",
-              style: textStyleAppBarTitle(),
-            );
+            if (GetUtils.isNull(itemViewModle.operationsBox)) {
+              return Text("");
+            } else {
+              return  Text(
+                  "${itemViewModle.operationsBox!.storageName!.isEmpty ? "" : itemViewModle.operationsBox!.storageName}",
+                  style: textStyleAppBarTitle(),
+                  maxLines: Constance.maxLineTwo,
+                  textAlign: TextAlign.center,
+                );
+              
+            }
           },
         ),
       ),

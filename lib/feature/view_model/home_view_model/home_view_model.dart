@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
+import 'package:inbox_clients/feature/view/screens/home/widget/task_widget_BS.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
 import 'package:inbox_clients/network/api/feature/item_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
@@ -164,16 +165,44 @@ class HomeViewModel extends BaseController {
   getTasks() async {
     await StorageFeature.getInstance.getTasks().then((value) => {
           Logger().i("${value.toList().length}"),
-          tasks = value.toSet(),
+          for (var item in value) {
+              if (item.id != "Fetch_sv") {
+                tasks.add(item)
+              }
+          },
         });
     update();
   }
 
-  // to change From Grid to List >=<
+  // to do for Show Bottom Sheet For Task :
+  
+  Future<void> showTaskBottomSheet({required Task task}) async {
+    selctedOperationsBoxess.clear();
+    Get.bottomSheet(
+      TaskWidgetBS(task: task),
+      isScrollControlled: true
+    );
+  }
+
+  // to change From Grid to List >_<
   bool? isListView = false;
 
   void changeTypeViewLVGV() {
     isListView = !isListView!;
     update();
   }
+
+  // to do here for home Boxess Operations (Recall , Pickup , Give Away ... etc ):
+  Set<Box> selctedOperationsBoxess = {};
+
+  // to add New Box To selcted Boxess :: 
+  addToBoxessOperations({required Box box}){
+    if (selctedOperationsBoxess.contains(box)) {
+        selctedOperationsBoxess.remove(box);
+    } else {
+    selctedOperationsBoxess.add(box);
+    }
+    update();
+  }
+
 }

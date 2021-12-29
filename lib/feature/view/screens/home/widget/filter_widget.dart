@@ -8,19 +8,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 import 'choice_shape_widget.dart';
 
-class FilterWidget extends StatefulWidget {
-  const FilterWidget({Key? key}) : super(key: key);
-
-  @override
-  State<FilterWidget> createState() => _FilterWidgetState();
-}
-
-class _FilterWidgetState extends State<FilterWidget> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
+class FilterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -54,10 +42,14 @@ class _FilterWidgetState extends State<FilterWidget> {
                           height: sizeH30,
                           child: ListView.builder(
                             shrinkWrap: true,
-                            reverse: true,
+                            //reverse: true,
                             scrollDirection: Axis.horizontal,
                             itemCount: logic.tasks.length,
                             itemBuilder: (context, index) => ChoiceShapeWidget(
+                              onClicked: () {
+                                logic.showTaskBottomSheet(
+                                    task: logic.tasks.toList()[index]);
+                              },
                               task: logic.tasks.toList()[index],
                             ),
                           ),
@@ -68,9 +60,9 @@ class _FilterWidgetState extends State<FilterWidget> {
                 ],
               ),
             ),
-                 SizedBox(
-                            width: sizeW5,
-                          ),
+            SizedBox(
+              width: sizeW5,
+            ),
             VerticalDivider(),
             IconBtn(
               onPressed: () {

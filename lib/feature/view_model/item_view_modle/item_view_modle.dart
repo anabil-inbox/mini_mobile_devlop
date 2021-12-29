@@ -10,10 +10,13 @@ import 'package:inbox_clients/feature/model/inside_box/item.dart';
 import 'package:inbox_clients/feature/model/inside_box/sended_image.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/chooce_add_method_widget.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/items_operations_widget_BS.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
 import 'package:inbox_clients/network/api/feature/item_helper.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -47,13 +50,12 @@ class ItemViewModle extends BaseController {
     Get.back();
     startLoading();
     List<SendedTag> tags = [];
-    
+
     for (var tag in usesBoxTags) {
       tags.add(SendedTag(isEnable: 1, tag: tag));
     }
 
-    await HomeHelper.getInstance.updateBox(
-      body: {
+    await HomeHelper.getInstance.updateBox(body: {
       "name": box.storageName,
       "serial": box.serialNo,
       "qty": itemQuantity,
@@ -62,12 +64,11 @@ class ItemViewModle extends BaseController {
     }).then((value) => {
           if (value.status!.success!)
             {
-             // homeViewModel.getCustomerBoxes(),
+              // homeViewModel.getCustomerBoxes(),
               snackSuccess("${tr.success}", "${value.status?.message}"),
               operationsBox = Box.fromJson(value.data["data"]),
               homeViewModel.userBoxess.clear(),
               homeViewModel.getCustomerBoxes(),
-
             }
           else
             {snackError("${tr.error_occurred}", "${value.status?.message}")}
@@ -82,6 +83,7 @@ class ItemViewModle extends BaseController {
 
   // here for loading ::
   bool isLoading = false;
+
   // start Loaging Function ::
   void startLoading() {
     isLoading = true;
@@ -215,9 +217,8 @@ class ItemViewModle extends BaseController {
     }).then((value) => {
           if (value.status!.success!)
             {
-              Logger().i("${value.toJson()}"),
               snackSuccess("${tr.success}", "${value.status!.message}"),
-              operationsBox?.items?.add(BoxItem.fromJson(value.data)),
+              operationsBox?.items?.add(BoxItem.fromJson(value.data["data"])),
               endLoading()
             }
           else
@@ -232,7 +233,22 @@ class ItemViewModle extends BaseController {
     update();
   }
 
-  // here for delete item
+  // here for delete item Func && Botttom Sheet Alarm ::
+  Future<void> showDeleteItemBottomSheet(
+      {required String serialNo, required String id}) async {
+    await Get.bottomSheet(GlobalBottomSheet(
+      isTwoBtn: true,
+      title: "Are You Share You Want To Delete This Item ?",
+      onOkBtnClick: () async {
+        Get.close(2);
+        await deleteItem(serialNo: serialNo, id: id);
+      },
+      onCancelBtnClick: () {
+        Get.back();
+      },
+    ));
+  }
+
   Future<void> deleteItem(
       {required String serialNo, required String id}) async {
     startLoading();
@@ -343,7 +359,7 @@ class ItemViewModle extends BaseController {
     update();
   }
 
-  // box Operations Box::
+  // box Operations Dec ::
   Box? operationsBox;
   // to get Box With His Serial No..
   Future<void> getBoxBySerial({required String serial}) async {
@@ -364,7 +380,6 @@ class ItemViewModle extends BaseController {
   }
 
   // to show Adding item BottomSheet :
-
   Future<void> showAddItemBottomSheet({required Box box}) async {
     Get.bottomSheet(
       ChooseAddMethodWidget(
@@ -375,7 +390,6 @@ class ItemViewModle extends BaseController {
   }
 
   // to show update Box Bottom Sheet ::
-
   Future<void> showUpdatBoxBottomSheet(
       {required Box box, required bool isUpdate}) async {
     Get.bottomSheet(
@@ -387,12 +401,26 @@ class ItemViewModle extends BaseController {
   }
 
   Future<void> shareItem({required BoxItem boxItem}) async {
+
+    String strToShare = 'check out my Box Item !' +
+        '\n Item Name : ${boxItem.itemName}' +
+        '\n Item Quantity : ${boxItem.itemQuantity} \n';
+    if (boxItem.itemGallery!.isNotEmpty) {
+      strToShare += 'Item Attachment :';
+      for (var item in boxItem.itemGallery!) {
+
+        strToShare += '\n ${ConstanceNetwork.imageUrl + item["attachment"]}';
+        Logger().e(ConstanceNetwork.imageUrl + item["attachment"]);
+      }
+    }
+    if (boxItem.itemTags!.isNotEmpty) {
+      strToShare += 'Item Tags : ';
+      for (var item in boxItem.itemTags!) {
+        strToShare += '\n ${item.tag ?? ''}';
+      }
+    }
     try {
-      Share.share(
-        'check out my Box Item ! \n' +
-            'Item Name : ${boxItem.itemName}' +
-            '\nQuantity : ${boxItem.itemQuantity}',
-      );
+      Share.share(strToShare);
     } catch (e) {
       printError();
     }
@@ -408,6 +436,18 @@ class ItemViewModle extends BaseController {
     } catch (e) {
       printError();
     }
+  }
+
+  // here Function For Update And Delete And Share Box Bottom Sheet ::
+
+  Future<void> showOptionOperationBottomSheet(
+      {required BoxItem boxItem, required Box box}) async {
+    Get.bottomSheet(
+        ItemsOperationBS(
+          box: box,
+          boxItem: boxItem,
+        ),
+        isScrollControlled: true);
   }
 
   // Here Functions For Filtering and Selected:
@@ -452,7 +492,4 @@ class ItemViewModle extends BaseController {
       update();
     }
   }
-
-  /// to do update Box :: => Local Work :: -_-
-  /// to do delete get Box By Serial :: 
 }

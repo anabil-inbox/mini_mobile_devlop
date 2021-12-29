@@ -111,6 +111,9 @@ final double? sizeW70 =  70.w;
 final double? sizeW60 =  60.w;
 final double? sizeW50 =  50.w;
 final double sizeW95 = 95.w;
+final double sizeW250 = 250.w;
+final double sizeW240 = 240.w;
+
 
 
 

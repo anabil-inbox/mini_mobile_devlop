@@ -32,4 +32,12 @@ class Task {
         "area_zones": List<dynamic>.from(areaZones!.map((x) => x)),
         "VAS": List<dynamic>.from(vas!.map((x) => x)),
     };
+
+    @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Task && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

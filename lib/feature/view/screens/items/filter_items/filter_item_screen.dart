@@ -24,26 +24,16 @@ import 'package:inbox_clients/util/constance.dart';
 
 // ignore: must_be_immutable
 class FilterItemScreen extends StatelessWidget {
-  FilterItemScreen({Key? key}) : super(key: key);
+  const FilterItemScreen({Key? key, required this.title}) : super(key: key);
 
   static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
-
-  List<String> list = [
-    "A firsItem",
-    "B Second Item",
-    "A firtItem",
-    "B Secund Item",
-    "A fistItem",
-    "B Seound Item",
-    "A frstItem",
-    "B Scound Item",
-  ];
+  final String title;
 
   //todo this for appbar
   PreferredSizeWidget get appBar => CustomAppBarWidget(
         isCenterTitle: true,
         titleWidget: CustomTextView(
-          txt: "${tr.filter_by_name}",
+          txt: "$title",
           textStyle: textStyleNormal()?.copyWith(color: colorBlack),
           maxLine: Constance.maxLineOne,
         ),
@@ -70,7 +60,8 @@ class FilterItemScreen extends StatelessWidget {
                           width: sizeW40,
                           child: TextButton(
                             onPressed: () {
-                              logic.updateSelectAll(list);
+                              logic.isSelectAllClick = !logic.isSelectAllClick;
+                              logic.update();
                             },
                             child: (logic.isSelectAllClick ||
                                     (logic.listIndexSelected.length ==
@@ -78,7 +69,7 @@ class FilterItemScreen extends StatelessWidget {
                                 ? SvgPicture.asset(
                                     "assets/svgs/storage_check_active.svg")
                                 : SvgPicture.asset(
-                                    "assets/svgs/storage_check_deactive.svg"),
+                                    "assets/svgs/select_all_no_background.svg"),
                           ),
                         )
                       : CustomTextView(
@@ -142,7 +133,7 @@ class FilterItemScreen extends StatelessWidget {
                             elements: itemViewModle.operationsBox!.items!,
                             groupBy: (element) => element.itemName![0],
                             groupSeparatorBuilder: (String groupByValue) =>
-                            Column(
+                                Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -173,7 +164,10 @@ class FilterItemScreen extends StatelessWidget {
                                         element.itemName.toString());
                                   },
                                 );
-                              } else if(element.itemName!.toLowerCase().contains(itemViewModle.search.toLowerCase())){
+                              } else if (element.itemName!
+                                  .toLowerCase()
+                                  .contains(
+                                      itemViewModle.search.toLowerCase())) {
                                 return ItemsWidget(
                                   box: itemViewModle.operationsBox!,
                                   boxItem: element,
