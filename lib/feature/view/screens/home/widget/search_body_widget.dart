@@ -24,8 +24,8 @@ class SearchBodyWidget extends StatelessWidget {
               child: imageNetwork(
                   height: sizeH44,
                   width: sizeW44,
-                  url:
-                   ConstanceNetwork.imageUrl+(item.itemGallery?[0]["attachment"] ?? urlPlacholder)),
+                  url: item.itemGallery!.isEmpty ? urlPlacholder :
+                    ConstanceNetwork.imageUrl+(item.itemGallery?[0]["attachment"] ?? urlPlacholder)),
             ),
             SizedBox(
               width: sizeW7,

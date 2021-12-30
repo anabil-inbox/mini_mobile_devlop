@@ -432,10 +432,12 @@ class AuthViewModle extends GetxController {
     getDeviceDetails();
     getPhonePlatform();
     update();
+   // tdPinCode = TextEditingController();
   }
 
   @override
   void onReady() {
     super.onReady();
   }
+
 }

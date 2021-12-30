@@ -32,7 +32,6 @@ class CompanyVerficationCodeScreen extends StatefulWidget {
 }
 
 class _CompanyVerficationCodeScreenState extends State<CompanyVerficationCodeScreen> {
-
   
   final AuthViewModle authViewModle = Get.find<AuthViewModle>();
   

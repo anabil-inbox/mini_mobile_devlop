@@ -1,3 +1,5 @@
+import 'package:inbox_clients/feature/model/app_setting_modle.dart';
+
 class Task {
     Task({
         this.id,
@@ -12,16 +14,16 @@ class Task {
     String? task;
     String? taskName;
     num? price;
-    List<dynamic>? areaZones;
-    List<dynamic>? vas;
+    List<AreaZone>? areaZones;
+    List<VAS>? vas;
 
     factory Task.fromJson(Map<String, dynamic> json) => Task(
         id: json["id"],
         task: json["task"],
         taskName: json["task_name"],
         price: json["price"],
-        areaZones: List<dynamic>.from(json["area_zones"].map((x) => x)),
-        vas: List<dynamic>.from(json["VAS"].map((x) => x)),
+        areaZones: List<AreaZone>.from(json["area_zones"].map((x) => AreaZone.fromJson(x))),
+        vas: List<VAS>.from(json["VAS"].map((x) => VAS.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -29,8 +31,8 @@ class Task {
         "task": task,
         "task_name": taskName,
         "price": price,
-        "area_zones": List<dynamic>.from(areaZones!.map((x) => x)),
-        "VAS": List<dynamic>.from(vas!.map((x) => x)),
+        "area_zones": List<AreaZone>.from(areaZones!.map((x) => x)),
+        "VAS": List<VAS>.from(vas!.map((x) => x)),
     };
 
     @override
@@ -40,4 +42,29 @@ class Task {
 
   @override
   int get hashCode => id.hashCode;
+}
+
+
+class VAS {
+    VAS({
+        this.id,
+        this.name,
+        this.price,
+    });
+
+    String? id;
+    String? name;
+    num? price;
+
+    factory VAS.fromJson(Map<String, dynamic> json) => VAS(
+        id: json["id"],
+        name: json["name"],
+        price: json["price"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "price": price,
+    };
 }

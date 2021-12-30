@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/model/address_modle.dart';
+import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/task_widget_BS.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
@@ -175,8 +178,7 @@ class HomeViewModel extends BaseController {
 
   // to do for Show Bottom Sheet For Task :
 
-  Future<void> showTaskBottomSheet(
-      {required Task task}) async {
+  Future<void> showTaskBottomSheet({required Task task}) async {
     selctedOperationsBoxess.clear();
     Get.bottomSheet(
         TaskWidgetBS(
@@ -204,5 +206,45 @@ class HomeViewModel extends BaseController {
       selctedOperationsBoxess.add(box);
     }
     update();
+  }
+
+  // to start work with user And Store Address ::
+  Address? selectedAddres;
+
+  Set<Store> storeAddress = {};
+  bool isLoadingGetAddress = false;
+  // to get Store Address ::
+
+  getStoreAddress() async {
+    isLoadingGetAddress = true;
+    update();
+    await StorageFeature.getInstance.getStoreAddress().then((value) => {
+          storeAddress = value.toSet(),
+        });
+    isLoadingGetAddress = false;
+    update();
+  }
+
+  List<Day>? selctedWorksHours = [];
+  DateTime? selectedDateTime;
+
+  void showDatePicker() async {
+    var dt = await dateBiker();
+    if (!GetUtils.isNull(dt)) {
+      selctedWorksHours = getDayByNumber(selectedDateTime: dt!);
+      selectedDateTime = DateTime(dt.year, dt.month, dt.day);
+    }
+    update();
+  }
+
+  // to do here VAS :
+  Set<VAS> selectedVAS = {};
+
+  addVASToArray({required VAS vas}) {
+    if (selectedVAS.contains(vas)) {
+      selectedVAS.remove(vas);
+    } else {
+      selectedVAS.add(vas);
+    }
   }
 }

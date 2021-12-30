@@ -29,7 +29,7 @@ class HomeHelper {
         url: "${ConstanceNetwork.getSearchBoxessEndPoint}",
         header: ConstanceNetwork.header(4));
     if (appResponse.status?.success == true) {
-      List data = appResponse.data["data"];
+      List data = appResponse.data;
       return data.map((e) => Box.fromJson(e)).toSet();
     } else {
       return {};

@@ -969,7 +969,6 @@ class StorageViewModel extends BaseController {
       onOkBtnClick: () {
         userStorageCategoriesData.remove(storageCategoriesData);
         totalBalance -= storageCategoriesData.userPrice ?? 0;
-
         checkDaplication();
         calculateBalance();
         update();
