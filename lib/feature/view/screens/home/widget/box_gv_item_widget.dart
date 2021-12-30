@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/notifay_for_new_storage.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -27,10 +30,10 @@ class HomeGVItemWidget extends StatelessWidget {
       child: Stack(
         children: [
           PositionedDirectional(
-            top: 0,
-            bottom: 0,
-            start: 0,
-            end: 0,
+            top: padding0,
+            bottom: padding0,
+            start: padding0,
+            end: padding0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -58,14 +61,19 @@ class HomeGVItemWidget extends StatelessWidget {
             ),
           ),
           PositionedDirectional(
-            end: 0,
-            top: -10,
+            end: padding0,
+            top: padding10! * -1,
             child: SizedBox(
               width: sizeW40,
               child: Tooltip(
                 message: "${box.serialNo}",
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.bottomSheet(
+                      NotifayForNewStorage(box: box),
+                      isScrollControlled: true
+                    );
+                  },
                   child: SvgPicture.asset("assets/svgs/InfoCircle.svg"),
                 ),
               ),

@@ -405,18 +405,16 @@ class ItemViewModle extends BaseController {
     String strToShare = 'check out my Box Item !' +
         '\n Item Name : ${boxItem.itemName}' +
         '\n Item Quantity : ${boxItem.itemQuantity} \n';
-    if (boxItem.itemGallery!.isNotEmpty) {
-      strToShare += 'Item Attachment :';
-      for (var item in boxItem.itemGallery!) {
-
-        strToShare += '\n ${ConstanceNetwork.imageUrl + item["attachment"]}';
-        Logger().e(ConstanceNetwork.imageUrl + item["attachment"]);
-      }
-    }
     if (boxItem.itemTags!.isNotEmpty) {
       strToShare += 'Item Tags : ';
       for (var item in boxItem.itemTags!) {
         strToShare += '\n ${item.tag ?? ''}';
+      }
+    }
+        if (boxItem.itemGallery!.isNotEmpty) {
+      strToShare += '\n Item Attachment :';
+      for (var item in boxItem.itemGallery!) {
+        strToShare += '\n ${ConstanceNetwork.imageUrl + item["attachment"]}';
       }
     }
     try {

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/pickup_adress_BS.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -11,10 +13,12 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 
-import 'box_in_task_widget.dart';
+import '../box_in_task_widget.dart';
+
 
 class TaskWidgetBS extends StatelessWidget {
-  const TaskWidgetBS({Key? key, required this.task}) : super(key: key);
+  const TaskWidgetBS({Key? key, required this.task})
+      : super(key: key);
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
   final Task task;
 
@@ -56,9 +60,15 @@ class TaskWidgetBS extends StatelessWidget {
                       : colorUnSelectedWidget,
                   textButton: "Next",
                   isLoading: false,
-                  onClicked: () {
-                    
-                  },
+                  onClicked: homeViewModel.selctedOperationsBoxess.length > 0
+                      ? () {
+                          Get.bottomSheet(
+                              PickupAddressBSWidget(
+                                task: task,
+                              ),
+                              isScrollControlled: true);
+                        }
+                      : () {},
                   isExpanded: true);
             },
           ),

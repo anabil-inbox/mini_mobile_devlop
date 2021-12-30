@@ -3,7 +3,7 @@ import 'package:inbox_clients/util/sh_util.dart';
 
 abstract class ConstanceNetwork {
   ///todo here insert base_url
-  static String imageUrl = "http://50.17.152.72/".trim();
+  static String imageUrl = "http://inbox.ahdtech.com/".trim();
 
   // contsanse for Days Constance 
   static var sunday = "sunday";
@@ -13,7 +13,6 @@ abstract class ConstanceNetwork {
   static var thuersday = "thuersday";
   static var friday = "friday";
   static var saturday = "saturday";
-
   ///todo here insert key Of Request
   
   ///todo this for login request user

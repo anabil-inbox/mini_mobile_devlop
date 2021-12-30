@@ -115,7 +115,8 @@ class NotifayForNewStorage extends StatelessWidget {
                 SizedBox(
                   height: sizeH22,
                 ),
-                Text('${box.address?.zone } , ${box.address?.streat} , ${box.address?.buildingNo}'),
+                Text(
+                    '${box.address?.zone} , ${box.address?.streat} , ${box.address?.buildingNo}'),
                 SizedBox(
                   height: sizeH4,
                 ),
@@ -129,33 +130,41 @@ class NotifayForNewStorage extends StatelessWidget {
           SizedBox(
             height: sizeH20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              PrimaryButton(
-                isExpanded: false,
-                isLoading: false,
-                onClicked: () {
-                  // Get.put(ItemViewModle());
-                  Get.to(() => QrScreen());
-
-                  // homeViewModel.startScan();
-                },
-                textButton: "Scan QR Key",
-              ),
-              SizedBox(
-                width: sizeW12,
-              ),
-              SizedBox(
-                width: sizeW150,
-                child: SeconderyFormButton(
-                  buttonText: "${tr.cancle}",
-                  onClicked: () {
-                    Get.back();
-                  },
-                ),
-              ),
-            ],
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     PrimaryButton(
+          //       isExpanded: false,
+          //       isLoading: false,
+          //       onClicked: () {
+          //         // Get.put(ItemViewModle());
+          //         Get.to(() => QrScreen());
+          //         // homeViewModel.startScan();
+          //       },
+          //       textButton: "Scan QR Key",
+          //     ),
+          //     SizedBox(
+          //       width: sizeW12,
+          //     ),
+          // SizedBox(
+          //   width: sizeW150,
+          //   child: SeconderyFormButton(
+          //     buttonText: "${tr.cancle}",
+          //     onClicked: () {
+          //       Get.back();
+          //     },
+          //   ),
+          // ),
+          //   ],
+          // ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: sizeH20!),
+            child: SeconderyFormButton(
+              buttonText: "${tr.cancle}",
+              onClicked: () {
+                Get.back();
+              },
+            ),
           ),
           SizedBox(
             height: sizeH20,

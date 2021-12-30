@@ -195,7 +195,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(
                               height: sizeH150,
                             ),
-                            FilterWidget(),
+                            FilterWidget(
+                            ),
                             SizedBox(
                               height: sizeH10,
                             ),
