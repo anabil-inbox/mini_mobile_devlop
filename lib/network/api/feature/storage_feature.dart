@@ -109,4 +109,17 @@ class StorageFeature {
     }
   }
 
+
+  Future<AppResponse> customerStoragesChangeStatus({var body}) async {
+    var appResponse = await StorageModel.getInstance.customerStoragesChangeStatus(
+        url: "${ConstanceNetwork.customerStoragesChangeStatus}",
+        body: body,
+        header: ConstanceNetwork.header(2));
+    Logger().i("${appResponse.toJson()}");
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
 }

@@ -68,6 +68,11 @@ class Box {
 
   @override
  int get hashCode => id.hashCode;
+
+  @override
+  String toString() {
+    return 'Box{id: $id, serialNo: $serialNo, storageName: $storageName, saleOrder: $saleOrder, storageStatus: $storageStatus, enabled: $enabled, modified: $modified, tags: $tags, items: $items, isExpanded: $isExpanded, options: $options, address: $address}';
+  }
 }
 
 class BoxItem {

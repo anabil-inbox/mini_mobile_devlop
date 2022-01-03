@@ -8,6 +8,7 @@ import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -18,11 +19,13 @@ import 'package:inbox_clients/util/font_dimne.dart';
 import '../qr_screen.dart';
 
 class NotifayForNewStorage extends StatelessWidget {
-  const NotifayForNewStorage({Key? key, required this.box, this.showQrScanner = false}) : super(key: key);
+  const NotifayForNewStorage({Key? key, required this.box, this.showQrScanner = false,this.index }) : super(key: key);
 
   final Box box;
   final bool? showQrScanner;
+  final int? index;
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +143,7 @@ class NotifayForNewStorage extends StatelessWidget {
                   isLoading: false,
                   onClicked: () {
                     // Get.put(ItemViewModle());
-                    Get.to(() => QrScreen());
+                    Get.to(() => QrScreen(isFromAtHome:true ,index:index , storageViewModel:storageViewModel));
                     // homeViewModel.startScan();
                   },
                   textButton: "Scan QR Key",

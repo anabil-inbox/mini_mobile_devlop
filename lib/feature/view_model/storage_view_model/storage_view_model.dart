@@ -11,19 +11,25 @@ import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
+import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/selected_hour_item.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/bulk_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/quantity_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
+import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/base_controller.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:inbox_clients/util/string.dart';
 import 'package:logger/logger.dart';
 
 class StorageViewModel extends BaseController {
@@ -55,6 +61,7 @@ class StorageViewModel extends BaseController {
   bool isShowQuantityAndItems = false;
   bool isShowSpaces = false;
 
+  bool? isChangeStatusLoading = false;
   checkDaplication() {
     if (userStorageCategoriesData.length == 0) {
       isShowAll = true;
@@ -719,8 +726,9 @@ class StorageViewModel extends BaseController {
       {required Quantity quantity, required String message}) async {
     bool complete = false;
     await Get.defaultDialog(
-        titlePadding: EdgeInsets.only(top: sizeH16!),
-        title: "${tr.amount_of_vacant_boxes_not_enough}",
+        titlePadding: EdgeInsets.all(0),
+
+         title: "${/*tr.amount_of_vacant_boxes_not_enough*/""}",
         middleText: "$message",
         actions: [
           TextButton(
@@ -1187,6 +1195,49 @@ class StorageViewModel extends BaseController {
 
   @override
   InternalFinalCallback<void> get onDelete;
+
+
+  //todo this for customerStoragesChangeStatus api
+  //todo i concatenate homeViewModel with storageViewModel
+  //todo i get index of list to update it local
+  customerStoragesChangeStatus(var serial,{int? index, HomeViewModel? homeViewModel})async{
+    if(serial == null ){
+      Get.back();
+      return;
+    }
+    isChangeStatusLoading = true;
+    update();
+    var body = {"${ConstanceNetwork.serial}":"$serial"};
+    await StorageFeature.getInstance.customerStoragesChangeStatus(body:body).then((value) {
+        if(!GetUtils.isNull(value)){
+          if( value.status!.success!){
+            isChangeStatusLoading = false;
+            homeViewModel?.userBoxess.toList()[index!].storageStatus = "${LocalConstance.boxAtHome}";
+            homeViewModel?.update();
+            update();
+            Get.back();
+            Future.delayed(Duration(seconds: 0)).then((value) {
+              Get.bottomSheet(
+                  CheckInBoxWidget(
+                    box: homeViewModel?.userBoxess.toList()[index!],
+                    isUpdate: false,
+                  ),
+                  isScrollControlled: true);
+            });
+
+          }else{
+           snackError(tr.error_occurred, value.status!.message!);
+          }
+        }else{
+          isChangeStatusLoading = false;
+          update();
+        }
+    }).catchError((onError){
+      Logger().d(onError);
+      isChangeStatusLoading = false;
+      update();
+    });
+  }
 
   void changeTypeViewLVGV() {
     isListView = !isListView!;

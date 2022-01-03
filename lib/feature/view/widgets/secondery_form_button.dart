@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
@@ -26,7 +27,10 @@ class SeconderyFormButton extends StatelessWidget {
         onPressed:  (){
           onClicked();
         },
-        child: Text("$buttonText" , style: buttonTextStyle ?? textStyleHint()!.copyWith(color: colorHint , fontWeight: FontWeight.bold,fontSize: 15),),
+        child: CustomTextView(textStyle:buttonTextStyle ?? textStyleHint()!.copyWith(color: colorHint , fontWeight: FontWeight.bold,fontSize: 15),
+            textAlign:TextAlign.center ,txt:"$buttonText"  ,),
+
+        // Text("$buttonText" , style: buttonTextStyle ?? textStyleHint()!.copyWith(color: colorHint , fontWeight: FontWeight.bold,fontSize: 15),),
       ),
     );
   }

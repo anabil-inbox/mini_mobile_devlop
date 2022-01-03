@@ -152,8 +152,11 @@ class ItemScreen extends StatelessWidget {
       body: GetBuilder<ItemViewModle>(
         init: ItemViewModle(),
         initState: (_) async {
-          await itemViewModle.getBoxBySerial(serial: box.serialNo ?? "");
-          itemViewModle.update();
+          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async{
+            await itemViewModle.getBoxBySerial(serial: box.serialNo ?? "");
+            itemViewModle.update();
+          });
+
         },
         builder: (logic) {
           if (logic.isLoading) {

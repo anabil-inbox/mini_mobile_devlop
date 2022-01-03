@@ -82,6 +82,7 @@ abstract class ConstanceNetwork {
   static String storageCategoriesApi = "inbox_app.api.storage.categories";
   static String storageCheckQuantity = "inbox_app.api.quantity.quantity";
   static String storageAddOrder = "inbox_app.api.sales_order.sales_order";
+  static String customerStoragesChangeStatus = "inbox_app.api.customer_storages.change_status";
   static String storageWareHouse = "inbox_app.api.warehouse.warehouse";
   static String storageAddNewStorage = "inbox_app.api.sales_order.sales_order";
   static String getTaskEndPoint = "inbox_app.api.task.get_basic_tasks";
@@ -116,6 +117,7 @@ abstract class ConstanceNetwork {
   static String itemCategoryType = "Item";
   static var quantityCategoryType = "Quantity";
   static var driedCage = "Dried Space";
+  static var serial = "serial";
 
   ///here keys of duration status;
     static var dailyDurationType = "Daily";
@@ -141,7 +143,7 @@ abstract class ConstanceNetwork {
       };
     } else if (typeToken == 2) {
       headers = {
-        //    'Authorization': '${SharedPref.instance.getToken().toString()}',
+           'Authorization': 'Bearer ${SharedPref.instance.getUserToken().toString()}',
       };
     } else if (typeToken == 3) {
       headers = {

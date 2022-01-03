@@ -9,6 +9,7 @@ import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:logger/logger.dart';
 
 import 'box_gv_item_widget.dart';
 
@@ -36,9 +37,10 @@ class GVWidget extends StatelessWidget {
           itemBuilder: (context, index) => InkWell(
             onTap: () {
               Get.put(ItemViewModle());
+              Logger().d(homeViewModel.userBoxess.toList()[index].toString());
               if (homeViewModel.userBoxess.toList()[index].storageStatus == LocalConstance.boxOnTheWay) {
                   Get.bottomSheet(
-                    NotifayForNewStorage(box: homeViewModel.userBoxess.toList()[index],showQrScanner: true,),
+                    NotifayForNewStorage(box: homeViewModel.userBoxess.toList()[index],showQrScanner: true, index:index ),
                     isScrollControlled: true
                   );
               }else{

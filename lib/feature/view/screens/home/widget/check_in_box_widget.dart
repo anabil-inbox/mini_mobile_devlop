@@ -7,6 +7,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/tag_box_widget.dart';
+import 'package:inbox_clients/feature/view/screens/not_allowed/not_allowed_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
@@ -106,10 +107,15 @@ class CheckInBoxWidget extends StatelessWidget {
                     isExpanded: false,
                     isLoading: log.isLoading,
                     onClicked: () async {
-                      homeViewModel.userBoxess.toList().removeAt(homeViewModel.userBoxess.toList().indexOf(box!));
-                      await itemViewModle.updateBox(box: box!  , index:homeViewModel.userBoxess.toList().indexOf(box!));
-                     // itemViewModle.tdName.text = box?.storageName ?? "";
-                     // itemViewModle.update();
+                      if(isUpdate){
+                        homeViewModel.userBoxess.toList().removeAt(homeViewModel.userBoxess.toList().indexOf(box!));
+                        await itemViewModle.updateBox(box: box!  , index:homeViewModel.userBoxess.toList().indexOf(box!));
+                        // itemViewModle.tdName.text = box?.storageName ?? "";
+                        // itemViewModle.update();
+                      }else{
+                        Get.back();
+                        Get.to(NotAllowedScreen(box: box!,));
+                      }
                     },
                     textButton: isUpdate? "Update-Box" : "Check-in Box",
                   );

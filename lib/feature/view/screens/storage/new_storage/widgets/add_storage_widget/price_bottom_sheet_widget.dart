@@ -49,22 +49,22 @@ class PriceBottomSheetWidget extends StatelessWidget {
                   return totalPalance == null
                       ? Text(
                           isTotalPalnce
-                              ? "${logic.totalBalance}"
-                              : "${logic.balance}",
+                              ? "${formatStringWithCurrency(logic.totalBalance , "")}"
+                              : "${formatStringWithCurrency(logic.balance, "")}",
                           style: textStyleBigPrimaryTextColorSeconderSize(),
                         )
-                      : Text("$totalPalance",
+                      : Text("${formatStringWithCurrency(totalPalance, "")}",
                           style: textStyleBigPrimaryTextColorSeconderSize());
                 },
               ),
-              SizedBox(
-                width: sizeW4,
-              ),
-              Text(
-                "QR",
-                style: textStyleBigPrimaryTextColorSeconderSize()!
-                    .copyWith(fontSize: fontSize21),
-              )
+              // SizedBox(
+              //   width: sizeW4,
+              // ),
+              // Text(
+              //   "QR",
+              //   style: textStyleBigPrimaryTextColorSeconderSize()!
+              //       .copyWith(fontSize: fontSize21),
+              // )
             ],
           ),
           SizedBox(

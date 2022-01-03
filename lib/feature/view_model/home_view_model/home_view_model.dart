@@ -7,6 +7,7 @@ import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/task_widget_BS.dart';
+import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
 import 'package:inbox_clients/network/api/feature/item_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
@@ -72,7 +73,7 @@ class HomeViewModel extends BaseController {
   Barcode? result;
   QRViewController? controller;
 
-  onQRViewCreated(QRViewController controller) {
+  onQRViewCreated(QRViewController controller, {bool? isFromAtHome, int? index, StorageViewModel? storageViewModel}) {
     try {
       this.controller = controller;
 
@@ -81,17 +82,25 @@ class HomeViewModel extends BaseController {
       }).onData((data) async {
         Logger().i(data.code);
         Logger().i("Serial ${data.code}");
-        await getBoxBySerial(serial: data.code ?? "").then((value) => {
-              if (value.id == null)
-                {Get.off(() => HomePageHolder())}
-              else
-                {
-                  Get.off(() => HomePageHolder(
-                        box: value,
-                        isFromScan: true,
-                      ))
-                }
-            });
+        if(isFromAtHome!)
+        {
+          controller.dispose();
+          await fromAtHome(data.code , index , storageViewModel);
+        }
+        else
+         {
+           await getBoxBySerial(serial: data.code ?? "").then((value) => {
+             if (value.id == null)
+               {Get.off(() => HomePageHolder())}
+             else
+               {
+                 Get.off(() => HomePageHolder(
+                   box: value,
+                   isFromScan: true,
+                 ))
+               }
+           });
+         }
       });
     } catch (e) {
       Logger().e("$e");
@@ -245,6 +254,19 @@ class HomeViewModel extends BaseController {
       selectedVAS.remove(vas);
     } else {
       selectedVAS.add(vas);
+    }
+  }
+
+   fromAtHome(String? code, int? index, StorageViewModel? storageViewModel) async{
+    if (code == null)
+    {
+      //todo show dialog
+    }
+    else
+    {
+      await storageViewModel?.customerStoragesChangeStatus(code ,index:index , homeViewModel:this);
+      Get.back();
+
     }
   }
 }

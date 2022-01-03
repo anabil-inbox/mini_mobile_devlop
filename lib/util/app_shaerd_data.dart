@@ -431,6 +431,18 @@ double sumStringVal(String? valOne, String? valTwo) {
       convertStringToDouble("${valTwo.toString()}"));
 }
 
+String formatStringWithCurrency(var data, String currency) {
+  try {
+    var number = data.toString().replaceAll("\$", "").replaceAll(",", "");
+    number = "${currency.isEmpty?"QR":currency} ${NumberFormat("#0.00", "en_US").format(double.parse(number))}";
+    //var numbers = "${currency}${double.parse(number).toStringAsFixed(2)}";
+    return number.toString();
+  } catch (e) {
+    print(e);
+    return "0.00";
+  }
+}
+
 updateLanguage(Locale locale) {
   Get.updateLocale(locale);
 }

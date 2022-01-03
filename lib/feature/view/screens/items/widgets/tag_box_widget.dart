@@ -24,10 +24,12 @@ class TagBoxWidget extends StatelessWidget {
           init: ItemViewModle(),
           initState: (_) {
             Set<String> localSet = {};
-            for (var item in itemViewModle.operationsBox!.tags!) {
-              localSet.add(item.tag!);
+            if(itemViewModle.operationsBox != null) {
+              for (var item in itemViewModle.operationsBox!.tags!) {
+                localSet.add(item.tag!);
+              }
+              itemViewModle.usesBoxTags = localSet;
             }
-            itemViewModle.usesBoxTags = localSet;
           },
           builder: (logic) {
             return Column(
