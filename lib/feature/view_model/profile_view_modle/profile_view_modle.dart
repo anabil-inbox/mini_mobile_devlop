@@ -454,7 +454,7 @@ class ProfileViewModle extends BaseController {
 
   Future<void> getCurrentUserLagAndLong({LatLng? latLng}) async {
     var position = await GeolocatorPlatform.instance
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        .getCurrentPosition(/*desiredAccuracy: LocationAccuracy.high*/);
     currentPostion = LatLng(latLng?.latitude ?? position.latitude,
         latLng?.longitude ?? position.longitude);
 

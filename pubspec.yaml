@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.3+3
+version: 1.0.4+3
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -30,8 +30,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  image_picker: ^0.8.2
-  flutter_staggered_animations: ^1.0.0
+  image_picker: ^0.8.4+4
   connectivity: ^3.0.6
   image: ^3.0.2
   get: ^4.3.4
@@ -39,25 +38,24 @@ dependencies:
   flutter_screenutil: ^5.0.0+2
   flutter_svg: ^0.22.0
   logger: ^1.0.0
-  shimmer: ^1.1.2
-  shared_preferences: ^2.0.6
   auto_size_text: ^3.0.0-nullsafety.0
   intl: ^0.17.0
-  url_launcher: ^6.0.7
-  dio: ^4.0.0
+  url_launcher: ^6.0.17
+  shared_preferences: ^2.0.11
+  dio: ^4.0.4
   introduction_screen: ^2.1.0
   infinite_scroll_pagination: ^3.1.0
   device_info: ^2.0.2
   pin_code_fields: ^7.3.0
   firebase_core: ^1.10.0
   firebase_messaging: ^11.1.0
-  flutter_local_notifications: ^9.0.3
-  local_auth: any
+  flutter_local_notifications: ^9.1.4
+  local_auth: ^1.1.8
   grouped_list: ^4.1.0
-  google_maps_flutter: ^2.0.6 #2.1.0
+  google_maps_flutter: ^2.1.0
   google_place: ^0.4.3
-  geolocator: #latest version
-  geocoding:  #latest version
+  geolocator: ^8.0.0
+  geocoding: ^2.0.1
   video_player: ^2.2.7
   chewie: ^1.2.2
   qr_code_scanner: ^0.6.1

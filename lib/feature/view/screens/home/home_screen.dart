@@ -9,6 +9,7 @@ import 'package:inbox_clients/feature/view/screens/home/widget/box_gv_widget.dar
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/filter_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/qr_screen.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/notifay_for_new_storage.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
@@ -204,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                textHintsWidget("${tr.on_the_way}", null),
+                                InkWell(onTap: /*onTheWayClick*/(){},child: textHintsWidget("${tr.on_the_way}", null)),
                                 textHintsWidget(
                                     "${tr.in_warehouse}", boxColorOrange),
                                 textHintsWidget("${tr.at_home}", boxColorRed),
@@ -241,4 +242,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void _goToFilterNameView() {
     Get.to(() => SearchScreen());
   }
+
+  // void onTheWayClick() async{
+  //   Get.bottomSheet(
+  //       NotifayForNewStorage(box: Box(),showQrScanner: true,),
+  //       isScrollControlled: true
+  //   );
+  // }
 }

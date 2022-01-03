@@ -18,9 +18,10 @@ import 'package:inbox_clients/util/font_dimne.dart';
 import '../qr_screen.dart';
 
 class NotifayForNewStorage extends StatelessWidget {
-  const NotifayForNewStorage({Key? key, required this.box}) : super(key: key);
+  const NotifayForNewStorage({Key? key, required this.box, this.showQrScanner = false}) : super(key: key);
 
   final Box box;
+  final bool? showQrScanner;
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
 
   @override
@@ -130,33 +131,35 @@ class NotifayForNewStorage extends StatelessWidget {
           SizedBox(
             height: sizeH20,
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     PrimaryButton(
-          //       isExpanded: false,
-          //       isLoading: false,
-          //       onClicked: () {
-          //         // Get.put(ItemViewModle());
-          //         Get.to(() => QrScreen());
-          //         // homeViewModel.startScan();
-          //       },
-          //       textButton: "Scan QR Key",
-          //     ),
-          //     SizedBox(
-          //       width: sizeW12,
-          //     ),
-          // SizedBox(
-          //   width: sizeW150,
-          //   child: SeconderyFormButton(
-          //     buttonText: "${tr.cancle}",
-          //     onClicked: () {
-          //       Get.back();
-          //     },
-          //   ),
-          // ),
-          //   ],
-          // ),
+          if(showQrScanner!)...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                PrimaryButton(
+                  isExpanded: false,
+                  isLoading: false,
+                  onClicked: () {
+                    // Get.put(ItemViewModle());
+                    Get.to(() => QrScreen());
+                    // homeViewModel.startScan();
+                  },
+                  textButton: "Scan QR Key",
+                ),
+                SizedBox(
+                  width: sizeW12,
+                ),
+            SizedBox(
+              width: sizeW150,
+              child: SeconderyFormButton(
+                buttonText: "${tr.cancle}",
+                onClicked: () {
+                  Get.back();
+                },
+              ),
+            ),
+              ],
+            ),
+          ]else ...[
           Padding(
             padding: EdgeInsets.symmetric(horizontal: sizeH20!),
             child: SeconderyFormButton(
@@ -166,6 +169,7 @@ class NotifayForNewStorage extends StatelessWidget {
               },
             ),
           ),
+          ],
           SizedBox(
             height: sizeH20,
           ),
