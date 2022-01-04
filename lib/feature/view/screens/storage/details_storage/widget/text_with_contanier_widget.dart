@@ -18,8 +18,7 @@ class TextContainerWidget extends StatelessWidget {
     return Container(
       height: sizeH20,
       alignment: Alignment.center,
-      padding:
-      EdgeInsets.only(left: sizeW7!, right: sizeW7!, bottom: sizeH2!),
+      padding: EdgeInsets.only(left: 0, right: 0, bottom: sizeH2!),
       decoration: BoxDecoration(
         color: colorBackground??colorRedTrans,
         borderRadius: BorderRadius.circular(sizeRadius10!),

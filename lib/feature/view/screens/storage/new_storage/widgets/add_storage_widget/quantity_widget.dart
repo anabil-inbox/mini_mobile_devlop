@@ -20,7 +20,8 @@ class QuantityWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return  
+    Container(
           height: sizeH50,
           width: double.infinity,
           decoration: BoxDecoration(
@@ -39,17 +40,17 @@ class QuantityWidget extends StatelessWidget {
                 child: Stack(
                   children: [
                     PositionedDirectional(
-                        bottom: -5,
-                        start: 30,
+                        bottom: padding0,
+                        start: padding20,
+                        end: padding20,
+                        top: 0,
                         child: Container(
                           clipBehavior: Clip.hardEdge,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
+                            borderRadius: BorderRadius.circular(padding104!),
                         color: scaffoldColor,
                       ),
-                      height: sizeH40,
-                      width: sizeW40,
                       child: GetBuilder<StorageViewModel>(
                         init: StorageViewModel(),
                         initState: (_) {},
@@ -60,27 +61,27 @@ class QuantityWidget extends StatelessWidget {
                         },
                       ),
                     )),
-                PositionedDirectional(
-                    bottom: -10,
-                    end: 1,
-                    child: GetBuilder<StorageViewModel>(
-                      init: StorageViewModel(),
-                      initState: (_) {},
-                      builder: (builder) {
-                        return IconButton(
-                          icon:
-                              SvgPicture.asset("assets/svgs/circle_mines.svg"),
-                          onPressed: () {
-                            mineassingFunction();
-                            // builder.minesQuantity(
-                            //     storageCategoriesData: storageCategoriesData);
+                    PositionedDirectional(
+                        bottom: padding10! * -1,
+                        end: padding3,
+                        child: GetBuilder<StorageViewModel>(
+                          init: StorageViewModel(),
+                          initState: (_) {},
+                          builder: (builder) {
+                            return IconButton(
+                              icon:
+                                  SvgPicture.asset("assets/svgs/circle_mines.svg"),
+                              onPressed: () {
+                                mineassingFunction();
+                                // builder.minesQuantity(
+                                //     storageCategoriesData: storageCategoriesData);
+                              },
+                            );
                           },
-                        );
-                      },
-                    )),
-                PositionedDirectional(
-                    bottom: -10,
-                    end: 50,
+                        )),
+                    PositionedDirectional(
+                    bottom: padding10! * -1,
+                    end: padding52,
                     child: GetBuilder<StorageViewModel>(
                       init: StorageViewModel(),
                       initState: (_) {},

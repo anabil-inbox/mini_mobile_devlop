@@ -33,7 +33,7 @@ class AppResponse {
 
   Map<String, dynamic> toJson() {
     try {
-      return {"status": status?.toJson(), "data": data};
+      return {"status": status?.toJson()??{}, "data": data??{}};
     } catch (e) {
       Logger().e(e);
       return {"": ""};

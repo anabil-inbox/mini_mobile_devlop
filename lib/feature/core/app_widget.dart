@@ -27,6 +27,7 @@ class AppWidget extends StatelessWidget {
     return ScreenUtilInit(
       designSize: Size(392.72727272727275, 803.6363636363636),
       builder: () => GetMaterialApp(
+        smartManagement: SmartManagement.keepFactory,
         title: 'Inbox Clients',
         locale: Locale(SharedPref.instance.getAppLanguageMain().split("_")[0]),
         localizationsDelegates: [
@@ -44,6 +45,7 @@ class AppWidget extends StatelessWidget {
         enableLog: true,
         themeMode: ThemeMode.system,
         theme: ThemeData(
+          colorScheme: ColorScheme.light(primary: colorPrimary),
           fontFamily: Constance.Font_regular,
           cupertinoOverrideTheme: CupertinoThemeData(
             primaryColor: colorPrimary,

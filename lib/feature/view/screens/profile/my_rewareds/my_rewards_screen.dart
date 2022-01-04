@@ -4,7 +4,6 @@ import 'package:inbox_clients/feature/view/screens/profile/widget/availabe_balan
 import 'package:inbox_clients/feature/view/screens/profile/widget/history_item.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/transfer_points_item.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
-import 'package:inbox_clients/feature/view/widgets/notification_item.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';

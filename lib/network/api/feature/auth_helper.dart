@@ -1,10 +1,6 @@
-import 'dart:convert';
-
-import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/api/model/auth.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
-import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
 class AuthHelper {

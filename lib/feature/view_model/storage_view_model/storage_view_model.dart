@@ -1,24 +1,35 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
+import 'package:inbox_clients/feature/model/my_order/order_sales.dart' as OS;
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
+import 'package:inbox_clients/feature/model/storage/order_item.dart';
+import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
+import 'package:inbox_clients/feature/model/storage/store_modle.dart';
+import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
+import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/selected_hour_item.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/bulk_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/quantity_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
-import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
+import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
+import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/base_controller.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:inbox_clients/util/string.dart';
 import 'package:logger/logger.dart';
 
 class StorageViewModel extends BaseController {
@@ -50,6 +61,7 @@ class StorageViewModel extends BaseController {
   bool isShowQuantityAndItems = false;
   bool isShowSpaces = false;
 
+  bool? isChangeStatusLoading = false;
   checkDaplication() {
     if (userStorageCategoriesData.length == 0) {
       isShowAll = true;
@@ -70,7 +82,6 @@ class StorageViewModel extends BaseController {
         isShowSpaces = true;
         isShowAll = false;
         isShowQuantityAndItems = false;
-
         update();
         return;
       }
@@ -98,7 +109,7 @@ class StorageViewModel extends BaseController {
   Set<StorageItem> arrayLastStorageItem = {};
 
   String selectedDuration = ConstanceNetwork.dailyDurationType;
-  num customSpace = 0;
+  num customSpace = 1;
 
 // declaration of TextEditing controllers For Custom Space :
 
@@ -113,7 +124,8 @@ class StorageViewModel extends BaseController {
 
 // this for last user chocies :
   num totalBalance = 0;
-  List<StorageCategoriesData> userStorageCategoriesData = [];
+  List<StorageCategoriesData> userStorageCategoriesData =
+      <StorageCategoriesData>[];
 
   /// this for account total balance for user choisess :
 
@@ -167,7 +179,10 @@ class StorageViewModel extends BaseController {
     } else if (storageCategoriesData.storageCategoryType ==
             ConstanceNetwork.spaceCategoryType ||
         storageCategoriesData.storageCategoryType ==
-            ConstanceNetwork.driedCage) {
+            ConstanceNetwork.driedCage ||
+        storageCategoriesData.storageCategoryType!
+            .toLowerCase()
+            .contains("space")) {
       // storageCategoriesData.storageItem?.forEach((element) {
       //   if (deepEq(element.options, selectedFeaures.toList())) {
       //     if (num.parse(element.from ?? "0") <= customSpace &&
@@ -310,8 +325,7 @@ class StorageViewModel extends BaseController {
     update();
   }
 
-  void saveStorageDataToArray(
-      {required StorageCategoriesData storageCategoriesData,
+  void saveStorageDataToArray({required StorageCategoriesData storageCategoriesData,
       bool isUpdate = false,
       int? updateIndex}) async {
     if (storageCategoriesData.storageCategoryType ==
@@ -325,12 +339,22 @@ class StorageViewModel extends BaseController {
           ConstanceNetwork.quantityCategoryType) {
         var resQuantity = await checkQuantity(
             boxCheckedId: "${lastStorageItem?.name}", quntity: quantity);
-        // if (resQuantity.availableQuantity! < quantity ||
-        //     resQuantity.availableQuantity! == 0) {
-        // snackError("${tr.error_occurred}",
-        //     "${tr.amount_of_vacant_boxes_not_enough} ${resQuantity.availableQuantity}");
-        //   return;
-        // }
+            
+        if (resQuantity.data["item"] != null) {
+          Quantity q = Quantity.fromJson(resQuantity.data["item"]);
+          if (q.quantityStatus == 0) {
+            bool isComplete = await checkSpaceDiloag(
+                quantity: Quantity.fromJson(resQuantity.data),
+                message: resQuantity.status!.message!);
+            if (!isComplete) {
+              return;
+            }
+          }
+        } else {
+          isLoading = false;
+          update();
+          return;
+        }
       }
 
       StorageCategoriesData newStorageCategoriesData = storageCategoriesData;
@@ -347,11 +371,15 @@ class StorageViewModel extends BaseController {
         userStorageCategoriesData[updateIndex!] = newStorageCategoriesData;
       } else {
         newStorageCategoriesData.groupId = updateIndex;
-        userStorageCategoriesData.add(newStorageCategoriesData);
+        await Future.delayed(Duration(seconds: 0)).then((value) =>
+            {userStorageCategoriesData.add(newStorageCategoriesData)});
       }
     }
+    Logger().i(storageCategoriesList.length);
+    print("msg_lrngth ${userStorageCategoriesData.length}");
     calculateBalance();
     getStorageCategories();
+    checkDaplication();
     selctedItem = null;
     selectedDuration = "Daily";
     selectedFeaures.clear();
@@ -361,6 +389,7 @@ class StorageViewModel extends BaseController {
     tdX.clear();
     tdY.clear();
     tdSearch.clear();
+    
     Get.back();
     update();
   }
@@ -492,6 +521,33 @@ class StorageViewModel extends BaseController {
   //     }
   //   }
   // }
+  void onAddingAdviser({required StorageCategoriesData storageCategoriesData}) {
+    if (isNeedingAdviser) {
+      selctedItem = null;
+      selectedDuration = "Daily";
+      selectedFeaures.clear();
+      quantity = 1;
+      numberOfDays = 1;
+      balance = 0;
+      tdX.clear();
+      tdY.clear();
+      tdSearch.clear();
+      localBulk = LocalBulk();
+      localBulk.endStorageItem = {};
+      localBulk.optionStorageItem = null;
+
+      update();
+      storageCategoriesData.storageItem?.forEach((element) {
+        if (element.options!.isEmpty &&
+            selectedFeaures.isEmpty &&
+            element.item == null) {
+          localBulk.optionStorageItem = element;
+        }
+      });
+
+      localBulk.printObject();
+    }
+  }
 
   void addNewBulk(
       {required StorageCategoriesData storageCategoriesData,
@@ -502,6 +558,7 @@ class StorageViewModel extends BaseController {
         localBulk.endStorageItem.add(element);
       }
     });
+
     getBulksBalance(localBulk: localBulk);
   }
 
@@ -514,6 +571,9 @@ class StorageViewModel extends BaseController {
         if (areArraysEquales(
             element.options!.toList(), selectedFeaures.toList())) {
           localBulk.optionStorageItem = element;
+          lastStorageItem?.quantity = quantity;
+          storageCategoriesData.quantity = quantity;
+          lastStorageItem = element;
         }
       });
     }
@@ -566,6 +626,7 @@ class StorageViewModel extends BaseController {
       balance = 0;
     }
 
+    localBulk.bulkprice = balance;
     localBulk.printObject();
     update();
   }
@@ -576,9 +637,8 @@ class StorageViewModel extends BaseController {
       {required StorageCategoriesData storageCategoriesData,
       required int index,
       required bool isUpdate}) {
-    if (storageCategoriesData.storageCategoryType ==
-            ConstanceNetwork.itemCategoryType &&
-        isNeedingAdviser) {
+    if (localBulk.endStorageItem.isEmpty && !isNeedingAdviser) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_add_item}");
       return;
     }
     StorageCategoriesData newstorageCategoriesData = storageCategoriesData;
@@ -634,10 +694,10 @@ class StorageViewModel extends BaseController {
 // this for check Quantity Befor Add:
   bool isLoading = false;
 
-  checkQuantity(
+  Future<AppResponse> checkQuantity(
       {required String boxCheckedId, required int quntity}) async {
     isLoading = true;
-   // AppResponse res = AppResponse();
+    AppResponse res = AppResponse();
 
     await StorageFeature.getInstance
         .getStorageQuantity(
@@ -652,109 +712,263 @@ class StorageViewModel extends BaseController {
                 }
               else
                 {
-                  snackError(
-                    "${value.status!.message}",
-                    "${tr.amount_of_vacant_boxes_not_enough}",
-                  ),
-                }
+                  isLoading = false,
+                },
+              res = value,
             });
 
-   // return res;
+    return res;
+  }
+
+  // here for quantity status == 0 (No Space):
+
+  Future<bool> checkSpaceDiloag(
+      {required Quantity quantity, required String message}) async {
+    bool complete = false;
+    await Get.defaultDialog(
+        titlePadding: EdgeInsets.all(0),
+
+         title: "${/*tr.amount_of_vacant_boxes_not_enough*/""}",
+        middleText: "$message",
+        actions: [
+          TextButton(
+              onPressed: () {
+                Get.back();
+                complete = true;
+              },
+              child: Text("${tr.ok}")),
+          TextButton(
+              onPressed: () {
+                Get.back();
+                complete = false;
+              },
+              child: Text("${tr.cancle}")),
+        ]);
+
+    return complete;
   }
 
   // this for add storage Order :
 
   Future<void> addNewStorage() async {
     //still this layer will complete when you complete order // refer to =>
+    List<OrderItem> orderIyems = [];
+
+    userStorageCategoriesData.forEach((element) {
+      OrderItem localOrderItem = OrderItem();
+      if (element.storageCategoryType == ConstanceNetwork.itemCategoryType) {
+        element.localBulk?.endStorageItem.forEach((innerElement) {
+          localOrderItem.itemCode = innerElement.name;
+          localOrderItem.deliveryDate = selectedDateTime.toString();
+          localOrderItem.subscription = element.selectedDuration;
+          localOrderItem.qty = innerElement.quantity;
+          localOrderItem.subscriptionDuration = element.numberOfDays;
+          localOrderItem.groupId = element.groupId;
+          localOrderItem.itemParent = 0;
+          localOrderItem.storageType = element.storageCategoryType;
+          localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
+          localOrderItem.subscriptionPrice = element.userPrice! /
+              element.numberOfDays! /
+              innerElement.quantity!;
+          Logger().i("${localOrderItem.toJson()}");
+          print("${orderIyems.length}");
+          orderIyems.add(localOrderItem);
+          localOrderItem = OrderItem();
+          print("${orderIyems.length}");
+        });
+
+        if (!GetUtils.isNull(element.localBulk!.optionStorageItem)) {
+          localOrderItem.itemCode = element.localBulk!.optionStorageItem!.name;
+          localOrderItem.deliveryDate = selectedDateTime.toString();
+          localOrderItem.subscription = element.selectedDuration;
+          localOrderItem.qty = 1;
+          localOrderItem.subscriptionDuration = element.numberOfDays;
+          localOrderItem.groupId = element.groupId;
+          localOrderItem.storageType = element.storageCategoryType;
+          localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
+          localOrderItem.itemParent = 0;
+          orderIyems.add(localOrderItem);
+          localOrderItem = OrderItem();
+        }
+      } else {
+        localOrderItem.itemCode = element.selectedItem!.name;
+        localOrderItem.qty = element.quantity;
+        localOrderItem.deliveryDate = selectedDateTime.toString();
+        localOrderItem.subscription = element.selectedDuration;
+        localOrderItem.subscriptionDuration = element.numberOfDays;
+        localOrderItem.groupId = element.groupId;
+        localOrderItem.storageType = element.storageCategoryType;
+        localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
+        localOrderItem.itemParent = 0;
+        localOrderItem.subscriptionPrice =
+            element.userPrice! / element.numberOfDays! / element.quantity!;
+        orderIyems.add(localOrderItem);
+        localOrderItem = OrderItem();
+      }
+    });
+    isLoading = true;
+    update();
+    await StorageFeature.getInstance.addNewStorage(body: {
+      "shipping_address": "${selectedAddress!.id}",
+      "items_list": jsonEncode(orderIyems),
+      "order_to": "${selectedDay!.from}",
+      "order_from": "${selectedDay!.to}",
+      "order_time": "${selectedDay!.from}/${selectedDay!.to}",
+    }).then((value) => {
+          if (value.status!.success!)
+            {
+              isLoading = false,
+              update(),
+              checkDaplication(),
+              isShowAll = true,
+              snackSuccess("${tr.success}", "${value.status!.message}"),
+              userStorageCategoriesData.clear(),
+              selectedPaymentMethod = null,
+              selectedAddress = null,
+              selectedDateTime = null,
+              selectedStore = null,
+              selectedDay = null,
+              Get.close(2)
+            }
+          else
+            {
+              isLoading = false,
+              update(),
+              snackError("${tr.error_occurred}", "${value.status!.message}")
+            }
+        });
   }
 
-// working hours bottom sheet
-  List<Day> selectedDay = [];
+  // here to getOrderDetailes With Id;
+  //  Dangeras Dont Play ::
 
-  void chooseDayBottomSheet({required WorkingHours workingHours}) {
+  OS.OrderSales? returnedOrderSales;
+
+  Future<OS.OrderSales> getOrderDetailes({required String orderId}) async {
+    OS.OrderSales orderSales = OS.OrderSales();
+    await StorageFeature.getInstance
+        .getOrderDetailes(body: {"order_id": "$orderId"}).then((value) => {
+              Logger().i("$value"),
+              orderSales = OS.OrderSales.fromJson(value.data["order"]),
+              returnedOrderSales = orderSales
+            });
+    update();
+    return orderSales;
+  }
+
+  /// validate Adding New Storage:
+
+  bool isValiedToSaveStorage() {
+    if (userStorageCategoriesData.isEmpty) {
+      snackError("${tr.error_occurred}", "${tr.empty_order}");
+      return false;
+    } else if (GetUtils.isNull(selectedPaymentMethod)) {
+      snackError(
+          "${tr.error_occurred}", "${tr.you_have_to_select_payment_method}");
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  // getting Address For Stores
+  Set<Store> storeAddress = {};
+  Set<Address> userAddress = {};
+
+  getStoreAddress() async {
+    isLoading = true;
+    update();
+    await StorageFeature.getInstance.getStoreAddress().then((value) => {
+          storeAddress = value.toSet(),
+        });
+
+    isLoading = false;
+    update();
+  }
+
+  // this is for validate step two if All inputs true :
+  bool isStepTwoValidate({required String catygoreyType}) {
+    if (catygoreyType == ConstanceNetwork.itemCategoryType ||
+        catygoreyType == ConstanceNetwork.quantityCategoryType) {
+      if (GetUtils.isNull(selectedAddress)) {
+        snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
+        return false;
+      }
+    } else if (GetUtils.isNull(storeAddress)) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
+      return false;
+    } else if (GetUtils.isNull(selectedAddress)) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
+      return false;
+    }
+
+    if (GetUtils.isNull(selectedDateTime)) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_select_date}");
+      return false;
+    } else if (selctedWorksHours!.isEmpty) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_select_time}");
+      return false;
+    } else if (GetUtils.isNull(selectedDay)) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_select_time}");
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  // working hours bottom sheet
+
+  List<Day>? selctedWorksHours = [];
+  DateTime? selectedDateTime;
+  Day? selectedDay;
+  Store? selectedStore;
+  Address? selectedAddress;
+
+  void showDatePicker() async {
+    var dt = await dateBiker();
+    if (!GetUtils.isNull(dt)) {
+      selctedWorksHours = getDayByNumber(selectedDateTime: dt!);
+      selectedDateTime = DateTime(dt.year, dt.month, dt.day);
+    }
+    update();
+  }
+
+  void chooseTimeBottomSheet() {
     Get.bottomSheet(
       Container(
         padding: EdgeInsets.symmetric(horizontal: padding16!),
         decoration: BoxDecoration(
             color: colorTextWhite,
-            borderRadius: BorderRadius.circular(padding6!)),
+            borderRadius:
+                BorderRadius.vertical(top: Radius.circular(padding30!))),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListView(
-              shrinkWrap: true,
-              children: [
-                SizedBox(
-                  height: sizeH40,
-                ),
-                SeconderyButtom(
-                    textButton: "${ConstanceNetwork.sunday}",
-                    onClicked: () {
-                      selectedDay = workingHours.saturday!;
-                      update();
-                      Get.back();
-                    }),
-                SizedBox(
-                  height: sizeH10,
-                ),
-                SeconderyButtom(
-                    textButton: "${ConstanceNetwork.monday}",
-                    onClicked: () {
-                      selectedDay = workingHours.monday!;
-                      update();
-                      Get.back();
-                    }),
-                SizedBox(
-                  height: sizeH10,
-                ),
-                SeconderyButtom(
-                    textButton: "${ConstanceNetwork.tuesday}",
-                    onClicked: () {
-                      selectedDay = workingHours.tuesday!;
-                      update();
-                      Get.back();
-                    }),
-                SizedBox(
-                  height: sizeH10,
-                ),
-                SeconderyButtom(
-                    textButton: "${ConstanceNetwork.wednesday}",
-                    onClicked: () {
-                      selectedDay = workingHours.wednesday!;
-                      update();
-                      Get.back();
-                    }),
-                SizedBox(
-                  height: sizeH10,
-                ),
-                SeconderyButtom(
-                    textButton: "${ConstanceNetwork.friday}",
-                    onClicked: () {
-                      selectedDay = workingHours.friday!;
-                      update();
-                      Get.back();
-                    }),
-                SizedBox(
-                  height: sizeH10,
-                ),
-                SeconderyButtom(
-                    textButton: "${ConstanceNetwork.saturday}",
-                    onClicked: () {
-                      selectedDay = workingHours.saturday!;
-                      update();
-                      Get.back();
-                    }),
-                SizedBox(
-                  height: sizeH40,
-                ),
-              ],
+            SizedBox(
+              height: sizeH50,
             ),
+            selctedWorksHours!.isEmpty
+                ? Padding(
+                    padding: EdgeInsets.only(bottom: padding20!),
+                    child: Text(
+                      "${tr.sorry_there_are_no_work_hours}",
+                      textAlign: TextAlign.center,
+                    ))
+                : ListView(
+                    shrinkWrap: true,
+                    children: selctedWorksHours!
+                        .map((e) => SelectedHourItem(day: e))
+                        .toList(),
+                  ),
           ],
         ),
       ),
       isScrollControlled: true,
     );
   }
+  // this for payment Selcted::
+
+  PaymentMethod? selectedPaymentMethod;
 
   void deleteCategoreyDataBottomSheet(
       {required StorageCategoriesData storageCategoriesData}) {
@@ -763,7 +977,6 @@ class StorageViewModel extends BaseController {
       onOkBtnClick: () {
         userStorageCategoriesData.remove(storageCategoriesData);
         totalBalance -= storageCategoriesData.userPrice ?? 0;
-
         checkDaplication();
         calculateBalance();
         update();
@@ -778,6 +991,9 @@ class StorageViewModel extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    storageCategoriesList.clear();
+    userStorageCategoriesData.clear();
+    userStorageCategoriesData = <StorageCategoriesData>[];
     getStorageCategories();
   }
 
@@ -830,6 +1046,7 @@ class StorageViewModel extends BaseController {
   //todo this for get Home Page Requests Storage Categories
   getStorageCategories() async {
     try {
+      checkDaplication();
       isStorageCategories.value = true;
       await StorageFeature.getInstance.getStorageCategories().then((value) {
         if (!GetUtils.isNull(value) && value.length != 0) {
@@ -908,7 +1125,14 @@ class StorageViewModel extends BaseController {
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
-      );
+      ).whenComplete(() => {
+            selectedFeaures.clear(),
+            selectedDuration = "Daily",
+            quantity = 1,
+            numberOfDays = 1,
+            lastStorageItem = null,
+            balance = 0,
+          });
     } else if (ConstanceNetwork.itemCategoryType ==
         storageCategoriesData.storageCategoryType) {
       Get.bottomSheet(
@@ -918,9 +1142,20 @@ class StorageViewModel extends BaseController {
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
-      );
+      ).whenComplete(() => {
+            selectedFeaures.clear(),
+            // localBulk = LocalBulk(),
+            selectedDuration = "Daily",
+            quantity = 1,
+            numberOfDays = 1,
+            lastStorageItem = null,
+            balance = 0,
+          });
     } else if (ConstanceNetwork.spaceCategoryType ==
-        storageCategoriesData.storageCategoryType) {
+            storageCategoriesData.storageCategoryType ||
+        storageCategoriesData.storageCategoryType!
+            .toLowerCase()
+            .contains("space")) {
       Get.bottomSheet(
         SpaceStorageBottomSheet(
           index: index,
@@ -928,7 +1163,14 @@ class StorageViewModel extends BaseController {
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
-      );
+      ).whenComplete(() => {
+            selectedDuration = "Daily",
+            quantity = 1,
+            numberOfDays = 1,
+            selectedFeaures.clear(),
+            lastStorageItem = null,
+            balance = 0,
+          });
     } else if (ConstanceNetwork.driedCage ==
             storageCategoriesData.storageCategoryType ||
         ConstanceNetwork.spaceCategoryType ==
@@ -940,8 +1182,61 @@ class StorageViewModel extends BaseController {
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
-      );
+      ).whenComplete(() => {
+            selectedDuration = "Daily",
+            quantity = 1,
+            numberOfDays = 1,
+            selectedFeaures.clear(),
+            lastStorageItem = null,
+            balance = 0,
+          });
     }
+  }
+
+  @override
+  InternalFinalCallback<void> get onDelete;
+
+
+  //todo this for customerStoragesChangeStatus api
+  //todo i concatenate homeViewModel with storageViewModel
+  //todo i get index of list to update it local
+  customerStoragesChangeStatus(var serial,{int? index, HomeViewModel? homeViewModel})async{
+    if(serial == null ){
+      Get.back();
+      return;
+    }
+    isChangeStatusLoading = true;
+    update();
+    var body = {"${ConstanceNetwork.serial}":"$serial"};
+    await StorageFeature.getInstance.customerStoragesChangeStatus(body:body).then((value) {
+        if(!GetUtils.isNull(value)){
+          if( value.status!.success!){
+            isChangeStatusLoading = false;
+            homeViewModel?.userBoxess.toList()[index!].storageStatus = "${LocalConstance.boxAtHome}";
+            homeViewModel?.update();
+            update();
+            Get.back();
+            Future.delayed(Duration(seconds: 0)).then((value) {
+              Get.bottomSheet(
+                  CheckInBoxWidget(
+                    box: homeViewModel?.userBoxess.toList()[index!],
+                    isUpdate: false,
+                  ),
+                  isScrollControlled: true);
+            });
+
+          }else{
+           snackError(tr.error_occurred, value.status!.message!);
+          }
+        }else{
+          isChangeStatusLoading = false;
+          update();
+        }
+    }).catchError((onError){
+      Logger().d(onError);
+      isChangeStatusLoading = false;
+      update();
+    });
   }
 
   void changeTypeViewLVGV() {

@@ -42,7 +42,7 @@ class StorageCategoriesData {
   String? video;
   String? description;
   num? userPrice;
-  int? quantity;
+  int? quantity = 1;
   int? groupId;
   StorageItem? selectedItem;
   String? selectedDuration;
@@ -297,6 +297,7 @@ class StorageItem {
         "to": to == null ? null : to,
         "monthly_price": monthlyPrice == null ? null : monthlyPrice,
         "yearly_price": yearlyPrice == null ? null : yearlyPrice,
+        "qty" : quantity
       };
     } catch (e) {
       Logger().d(e);

@@ -24,44 +24,41 @@ class ShowOptionsWidget extends StatelessWidget {
   final StorageCategoriesData storageCategoriesData;
   @override
   Widget build(BuildContext context) {
-    return (!GetUtils.isNull(storageItem.options) &&
-            storageItem.options!.length > 0)
-        ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Options",
-                textAlign: TextAlign.start,
-                style: textStyleNormalBlack(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Options",
+          textAlign: TextAlign.start,
+          style: textStyleNormalBlack(),
+        ),
+        SizedBox(
+          height: sizeH7,
+        ),
+        storageCategoriesData.storageCategoryType ==
+                    ConstanceNetwork.itemCategoryType &&
+                !GetUtils.isNull(localBulk!.optionStorageItem?.options)
+            ? localBulk!.optionStorageItem!.options!.isNotEmpty
+                ? ListView(
+                    shrinkWrap: true,
+                    primary: false,
+                    children: localBulk!.optionStorageItem!.options!
+                        .map((e) => ShowOptionItem(
+                              optionTitle: e,
+                            ))
+                        .toList(),
+                  )
+                : const SizedBox()
+            : ListView(
+                shrinkWrap: true,
+                primary: false,
+                children: storageItem.options!
+                    .map((e) => ShowOptionItem(
+                          optionTitle: e,
+                        ))
+                    .toList(),
               ),
-              SizedBox(
-                height: sizeH7,
-              ),
-              storageCategoriesData.storageCategoryType ==
-                          ConstanceNetwork.itemCategoryType &&
-                      !GetUtils.isNull(localBulk!.optionStorageItem?.options)
-                  ? localBulk!.optionStorageItem!.options!.isNotEmpty
-                      ? ListView(
-                          shrinkWrap: true,
-                          primary: false,
-                          children: localBulk!.optionStorageItem!.options!
-                              .map((e) => ShowOptionItem(
-                                    optionTitle: e,
-                                  ))
-                              .toList(),
-                        )
-                      : const SizedBox()
-                  : ListView(
-                      shrinkWrap: true,
-                      primary: false,
-                      children: storageItem.options!
-                          .map((e) => ShowOptionItem(
-                                optionTitle: e,
-                              ))
-                          .toList(),
-                    ),
-            ],
-          )
-        : const SizedBox();
+      ],
+    );
   }
 }

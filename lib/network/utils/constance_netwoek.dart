@@ -3,7 +3,7 @@ import 'package:inbox_clients/util/sh_util.dart';
 
 abstract class ConstanceNetwork {
   ///todo here insert base_url
-  static String imageUrl = "http://50.17.152.72/".trim();
+  static String imageUrl = "http://inbox.ahdtech.com/".trim();
 
   // contsanse for Days Constance 
   static var sunday = "sunday";
@@ -13,7 +13,6 @@ abstract class ConstanceNetwork {
   static var thuersday = "thuersday";
   static var friday = "friday";
   static var saturday = "saturday";
-
   ///todo here insert key Of Request
   
   ///todo this for login request user
@@ -29,6 +28,13 @@ abstract class ConstanceNetwork {
   static var mobileNumberKey = "mobile_number";
   static var countryCodeKey = "country_code";
   ///todo this for add new contact key
+  
+  ///to add here home api End Pointes :
+  static String getCustomerBoxessEndPoint = "inbox_app.api.customer_storages.get_storages";
+  static String getSearchBoxessEndPoint = "inbox_app.search.search.search_box";
+  
+  // to add here my order End Points: 
+  static String getMyOrddersEndPoint = "inbox_app.api.sales_order.get_sales_orders";
 
 
   ///todo here insert end Point
@@ -76,6 +82,27 @@ abstract class ConstanceNetwork {
   static String storageCategoriesApi = "inbox_app.api.storage.categories";
   static String storageCheckQuantity = "inbox_app.api.quantity.quantity";
   static String storageAddOrder = "inbox_app.api.sales_order.sales_order";
+  static String customerStoragesChangeStatus = "inbox_app.api.customer_storages.change_status";
+  static String storageWareHouse = "inbox_app.api.warehouse.warehouse";
+  static String storageAddNewStorage = "inbox_app.api.sales_order.sales_order";
+  static String getTaskEndPoint = "inbox_app.api.task.get_basic_tasks";
+  static String getOrderDetailes = "inbox_app.api.sales_order.get_order";
+
+  // to add here item end pointes :
+
+  static String getBoxBySerialEndPoint = "inbox_app.api.customer_storages.get_box";
+  static String addItemEndPoint = "inbox_app.api.customer_storages.add_item";
+  static String deleteItemEndPoint = "inbox_app.api.customer_storages.item_delete";
+  static String updateItemEndPoint = "inbox_app.api.customer_storages.update_item";
+  
+  // update & delete Box End Point : 
+  static String updatetBoxEndPoint = "inbox_app.api.customer_storages.update_box";
+
+
+  // this for constance network 
+
+  static String page = "page";
+  static String pageSize = "page_size";
 
 
   //todo this for constance type of user
@@ -90,11 +117,12 @@ abstract class ConstanceNetwork {
   static String itemCategoryType = "Item";
   static var quantityCategoryType = "Quantity";
   static var driedCage = "Dried Space";
+  static var serial = "serial";
 
   ///here keys of duration status;
     static var dailyDurationType = "Daily";
-    static var montlyDurationType = "Montly";
-    static var yearlyDurationType = "yearly";
+    static var montlyDurationType = "Monthly";
+    static var yearlyDurationType = "Yearly";
     static var unLimtedDurationType = "unlimited";
     
  //here block and enaeld Folder icons;
@@ -115,7 +143,7 @@ abstract class ConstanceNetwork {
       };
     } else if (typeToken == 2) {
       headers = {
-        //    'Authorization': '${SharedPref.instance.getToken().toString()}',
+           'Authorization': 'Bearer ${SharedPref.instance.getUserToken().toString()}',
       };
     } else if (typeToken == 3) {
       headers = {
