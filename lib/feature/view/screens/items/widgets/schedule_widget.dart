@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
+import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/schedule_pickup_widget.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
@@ -25,7 +26,7 @@ class SchedualWidget extends StatelessWidget {
             SizedBox(
               height: sizeH16,
             ),
-           // SchedulePickup(),
+            SchedulePickup(),
             
           ],
         ),

@@ -8,6 +8,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
+import 'package:logger/logger.dart';
 
 class PickupAddressItem extends StatelessWidget {
   const PickupAddressItem({Key? key, required this.address, this.store})
@@ -21,10 +22,13 @@ class PickupAddressItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        Logger().d("onAddressClick \n${address.toJson()}\n${store?.toJson()}");
         if (store != null) {
           storageViewModel.selectedStore = store;
+          Logger().d("onAddressClick 1");
         } else {
           storageViewModel.selectedAddress = address;
+          Logger().d("onAddressClick 2");
         }
         storageViewModel.update();
       },
@@ -44,7 +48,7 @@ class PickupAddressItem extends StatelessWidget {
               builder: (_) {
                 return Row(
                   children: [
-                    storageViewModel.selectedAddress == address
+                    (store != null && storageViewModel.selectedStore == store) ?SvgPicture.asset("assets/svgs/rec_true.svg") :storageViewModel.selectedAddress == address
                         ? SvgPicture.asset("assets/svgs/rec_true.svg")
                         : SvgPicture.asset("assets/svgs/rec_empty.svg"),
                     SizedBox(

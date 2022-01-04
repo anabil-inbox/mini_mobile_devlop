@@ -46,7 +46,7 @@ class TaskWidgetBS extends StatelessWidget {
           SizedBox(
             height: sizeH14,
           ),
-          getListViewByBoxStatus(),
+          Expanded(child: getListViewByBoxStatus()),
           SizedBox(
             height: sizeH9,
           ),

@@ -1,12 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/view/screens/items/filter_items/filter_item_screen.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/schedule_widget.dart';
+import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/schedule_pickup_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
+import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -16,15 +23,123 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
+import '../../custome_text_view.dart';
 
 
-class RecallStorage extends StatelessWidget {
-  const RecallStorage({Key? key, required this.box,this.index }) : super(key: key);
+
+class RecallStorageSheet extends StatelessWidget {
+  const RecallStorageSheet({Key? key, required this.box,this.index }) : super(key: key);
 
   final Box box;
   final int? index;
   static HomeViewModel _homeViewModel = Get.find<HomeViewModel>();
   static StorageViewModel _storageViewModel = Get.find<StorageViewModel>();
+
+  ///   todo at home = pick up
+  ///   todo at where house  = recall => fetch
+  ///todo 1-	Pick up
+  ///to do بيحدد الصندوق او الصناديق من ضمن الموجود في المنزل ثم
+  ///to do يختار الوقت والتاريخ والعنوان والاضافات
+  ///to do بعدها عملية الدفع
+  ///to do
+  ///todo 2-	Recall
+  ///to do بيحدد الصندوق او الصناديق من ضمن الموجود في المخزن ثم
+  ///to do يختار الوقت والتاريخ والعنوان والاضافات
+  ///to do بعدها عملية الدفع
+  ///to do
+  ///todo 3-	Recall (Fetch item)
+  ///to do  لما بيختار ايتم معينة بيجيه دايلوج شو بدك نجيب الصندوق كامل او نكسر القفل ونجيب الايتم لوقال
+  ///to do Bring the box
+  ///to do يعني هاي 2- عملية بيمشي
+  ///todo لو اختار Break the seal  معناها fetch
+  ///to do المفروض في خطوة هنا اتحليه بظهر ال
+  ///to do items
+  ///to do اللي عمل الها select
+  ///to do ويظهر كم بدو كمية لو ضايف كمية ويختار صورة لكل ايتم من المتوفر ويحط ملاحظات في الاخر بعدها يمشي بسيناريو
+  // يختار الوقت والتاريخ والعنوان والاضافات
+  // بعدها عملية الدفع
+  ///todo 4-Giveaway
+  ///to do في ال
+  ///giveaway
+  ///to do بيختار اول خطوة لاي مؤسسة بدو يتبرع وبعدها لو الصندوق في البيت عندي باعمل خطوة بيختار وقت وتاريخ وعنوان وال
+  ///option
+  ///to do  وبعدها الدفع
+
+  Widget get actionBtn =>  Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      SizedBox(
+        width: sizeW10,
+      ),
+      Expanded(
+        child: PrimaryButton(
+          isExpanded: true,
+          isLoading: false,
+          onClicked: onClickBreakSeal,
+          textButton: "${tr.yes_break_the_seal}",
+        ),
+      ),
+      SizedBox(
+        width: sizeW10,
+      ),
+      Expanded(
+        child: SizedBox(
+          width: double.infinity,
+          child: SeconderyFormButton(
+            buttonText: "${tr.no_bring_the_box}",
+            onClicked: onClickBringBox,
+          ),
+        ),
+      ),
+      SizedBox(
+        width: sizeW10,
+      ),
+    ],
+  );
+
+  Widget get acceptTerms=> GetBuilder<StorageViewModel>(
+    builder: (value) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          InkWell(
+            onTap: () {
+              value.isAccept = !value.isAccept;
+              value.update();
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                value.isAccept
+                    ? SvgPicture.asset("assets/svgs/check.svg")
+                    : SvgPicture.asset("assets/svgs/uncheck.svg",
+                  color: seconderyColor,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                CustomTextView(
+                  txt: "${tr.accept_our} ",
+                  textStyle: textStyle(),
+                )
+              ],
+            ),
+          ),
+          InkWell(
+              onTap: () {
+                //Get.to(() => TermsScreen());
+              },
+              child: CustomTextView(
+                txt: "${tr.company_policy}",
+                textAlign: TextAlign.start,
+                textStyle: textStyleUnderLinePrimary()!.copyWith(
+                    color: colorBlack, fontSize: fontSize14),
+              )),
+        ],
+      );
+    },
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -41,14 +156,32 @@ class RecallStorage extends StatelessWidget {
           ),
           SpacerdColor(),
           SizedBox(
-            height: sizeH30,
+            height: sizeH20,
+          ),
+          CustomTextView(
+            txt:tr.recall_items ,
+            textStyle: textStyleNormalBlack()?.copyWith(fontSize: fontSize17),
+          ),
+          SizedBox(
+            height: sizeH12,
+          ),
+          Padding(
+            padding:  EdgeInsets.symmetric(horizontal: sizeW10!),
+            child: CustomTextView(
+              txt:tr.are_break_sealing ,
+              textAlign: TextAlign.center,
+              textStyle: textStyleNormalBlack()?.copyWith(fontSize: fontSize17),
+            ),
+          ),
+          SizedBox(
+            height: sizeH20,
           ),
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
                 color: scaffoldColor,
                 borderRadius: BorderRadius.circular(padding6!)),
-            margin: EdgeInsets.symmetric(horizontal: sizeH20!),
+            margin: EdgeInsets.symmetric(horizontal: sizeH10!),
             padding: EdgeInsets.symmetric(horizontal: sizeH20!),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,106 +210,26 @@ class RecallStorage extends StatelessWidget {
           SizedBox(
             height: sizeH16,
           ),
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-                color: scaffoldColor,
-                borderRadius: BorderRadius.circular(padding6!)),
-            margin: EdgeInsets.symmetric(horizontal: sizeH20!),
-            padding: EdgeInsets.symmetric(horizontal: sizeH20!),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: sizeH22,
-                ),
-                Text("Order Summary:"),
-                !(GetUtils.isNull(box.options) || box.options!.isEmpty)
-                    ? SizedBox(
-                        height: sizeH16,
-                      )
-                    : const SizedBox(),
-                !(GetUtils.isNull(box.options) || box.options!.isEmpty)
-                    ? Text("${tr.options} :")
-                    : const SizedBox(),
-                !(GetUtils.isNull(box.options) || box.options!.isEmpty)
-                    ? SizedBox(
-                        height: sizeH10,
-                      )
-                    : const SizedBox(),
-                !(GetUtils.isNull(box.options) || box.options!.isEmpty)
-                    ? ListView(
-                        padding: EdgeInsets.symmetric(horizontal: padding10!),
-                        shrinkWrap: true,
-                        children: box.options!.map((e) => Text("$e")).toList(),
-                      )
-                    : const SizedBox(),
-                SizedBox(
-                  height: sizeH22,
-                ),
-                Text("${DateUtility.getChatTime(box.modified.toString())}"),
-                SizedBox(
-                  height: sizeH22,
-                ),
-                Text(
-                    '${box.address?.zone} , ${box.address?.streat} , ${box.address?.buildingNo}'),
-                SizedBox(
-                  height: sizeH4,
-                ),
-                Text("Doha, Qatar"),
-                SizedBox(
-                  height: sizeH22,
-                ),
-              ],
-            ),
-          ),
+          actionBtn,
           SizedBox(
             height: sizeH20,
           ),
-          // if(showQrScanner!)...[
-          //   Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       PrimaryButton(
-          //         isExpanded: false,
-          //         isLoading: false,
-          //         onClicked: () {
-          //           // Get.put(ItemViewModle());
-          //           Get.to(() => QrScreen(isFromAtHome:true ,index:index , storageViewModel:storageViewModel));
-          //           // homeViewModel.startScan();
-          //         },
-          //         textButton: "Scan QR Key",
-          //       ),
-          //       SizedBox(
-          //         width: sizeW12,
-          //       ),
-          //   SizedBox(
-          //     width: sizeW150,
-          //     child: SeconderyFormButton(
-          //       buttonText: "${tr.cancle}",
-          //       onClicked: () {
-          //         Get.back();
-          //       },
-          //     ),
-          //   ),
-          //     ],
-          //   ),
-          // ]else ...[
-          // Padding(
-          //   padding: EdgeInsets.symmetric(horizontal: sizeH20!),
-          //   child: SeconderyFormButton(
-          //     buttonText: "${tr.cancle}",
-          //     onClicked: () {
-          //       Get.back();
-          //     },
-          //   ),
-          // ),
-          // ],
+          acceptTerms,
           SizedBox(
-            height: sizeH20,
+            height: padding32,
           ),
         ],
       ),
     );
+  }
+
+  onClickBreakSeal() {
+    Get.back();
+    Get.to(FilterItemScreen(title: "${tr.filter_by_name}"));
+  }
+
+  onClickBringBox() {
+    Get.back();
+    Get.bottomSheet(RecallBoxProcessSheet(box: box) ,isScrollControlled: true);
   }
 }

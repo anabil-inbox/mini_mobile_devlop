@@ -38,6 +38,11 @@ class StorageViewModel extends BaseController {
   bool? isSelectAllClick = false;
   List<String> listIndexSelected = <String>[];
 
+  //todo this for bottom sheet accept isAccept
+  bool isAccept = true;
+  //todo this for bottom sheet accept
+
+
   //todo this for appbar select btn
 
   //todo this for home page
@@ -62,6 +67,8 @@ class StorageViewModel extends BaseController {
   bool isShowSpaces = false;
 
   bool? isChangeStatusLoading = false;
+
+
   checkDaplication() {
     if (userStorageCategoriesData.length == 0) {
       isShowAll = true;
@@ -1239,6 +1246,16 @@ class StorageViewModel extends BaseController {
     });
   }
 
+  List<String> selectedStringOption = <String>[];
+  addStringOption(var option){
+    if(selectedStringOption.contains(option.toString())){
+      selectedStringOption.remove(option);
+      update();
+    }else{
+      selectedStringOption.add(option);
+      update();
+    }
+  }
   void changeTypeViewLVGV() {
     isListView = !isListView!;
     update();

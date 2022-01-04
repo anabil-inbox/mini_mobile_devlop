@@ -159,5 +159,13 @@
     "hour" : "Hour",
     "minute":"Minute",
     "now":"Now",
-    "befor":"befor"
+    "befor":"befor",
+    "pickup":"Pickup",
+    "company_policy":"Company Policy",
+    "yes_break_the_seal":"Yes, Break the Seal",
+    "no_bring_the_box":"No, Bring the Box",
+    "recall_now":"Recall Now",
+    "recall_items":"Recall Items",
+    "are_break_sealing":"Are you sure you want to break the sealing of the following box?",
+    "charity_name":"Charity Name"
 }
