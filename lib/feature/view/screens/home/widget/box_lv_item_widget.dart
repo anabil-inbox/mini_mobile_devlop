@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/date_time_util.dart';
 
 class HomeLVItemWidget extends StatelessWidget {
-  const HomeLVItemWidget({Key? key, this.boxPath}) : super(key: key);
-  final String? boxPath;
+  const HomeLVItemWidget({Key? key, required this.box}) : super(key: key);
+
+  final Box box;
 
   @override
   Widget build(BuildContext context) {
@@ -25,27 +28,27 @@ class HomeLVItemWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          SvgPicture.asset(
-            boxPath??"assets/svgs/desable_box.svg",
-            width: sizeW50,
-            height: sizeH40,
+          retuenBoxByStatus(storageStatus: box.storageStatus ?? ""),
+          SizedBox(
+            width: sizeW15,
           ),
-          SizedBox(width: sizeW15,),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize:MainAxisSize.min ,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 CustomTextView(
-                  txt: "New Box 01",
+                  txt: "${box.storageName}",
                   maxLine: Constance.maxLineOne,
                   textStyle: textStyleNormalBlack()?.copyWith(height: 1),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: sizeH2,),
+                SizedBox(
+                  height: sizeH2,
+                ),
                 CustomTextView(
-                  txt: "Yesterday",
+                  txt: "${DateUtility.getChatTime(box.modified.toString())}",
                   maxLine: Constance.maxLineOne,
                   textStyle: textStyleNormal()?.copyWith(height: 1),
                   textAlign: TextAlign.center,
@@ -55,15 +58,16 @@ class HomeLVItemWidget extends StatelessWidget {
           ),
           SizedBox(
             width: sizeW40,
-            child: TextButton(
-              onPressed: () {},
-              child: SvgPicture.asset("assets/svgs/InfoCircle.svg"),
+            child: Tooltip(
+              message: "${box.serialNo}",
+              child: TextButton(
+                onPressed: () {},
+                child: SvgPicture.asset("assets/svgs/InfoCircle.svg"),
+              ),
             ),
           ),
-
         ],
       ),
     );
-  
   }
 }

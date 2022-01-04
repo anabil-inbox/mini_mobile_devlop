@@ -5,8 +5,6 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
@@ -382,9 +380,9 @@ class AuthViewModle extends GetxController {
   }
   bool? isAuth = false;
   final LocalAuthentication auth = LocalAuthentication();
-  bool _canCheckBiometrics = false;
-  List<BiometricType>? _availableBiometrics;
-  String _authorized = 'Not Authorized';
+  bool canCheckBiometrics = false;
+  List<BiometricType>? availableBiometrics;
+  String authorized = 'Not Authorized';
 
   Future<void> _checkBiometrics() async {
     bool canCheckBiometrics = false;
@@ -394,7 +392,7 @@ class AuthViewModle extends GetxController {
       print(e);
     }
 
-    _canCheckBiometrics = canCheckBiometrics;
+    canCheckBiometrics = canCheckBiometrics;
     update();
   }
 
@@ -406,7 +404,7 @@ class AuthViewModle extends GetxController {
       print(e);
     }
 
-    _availableBiometrics = availableBiometrics;
+    availableBiometrics = availableBiometrics;
     update();
   }
 
@@ -422,7 +420,7 @@ class AuthViewModle extends GetxController {
     } on PlatformException catch (e) {
       print(e);
     }
-    _authorized = authenticated ? 'Authorized' : 'Not Authorized';
+    authorized = authenticated ? 'Authorized' : 'Not Authorized';
     isAuth = authenticated ? true : false;
     update();
   }
@@ -434,10 +432,12 @@ class AuthViewModle extends GetxController {
     getDeviceDetails();
     getPhonePlatform();
     update();
+   // tdPinCode = TextEditingController();
   }
 
   @override
   void onReady() {
     super.onReady();
   }
+
 }

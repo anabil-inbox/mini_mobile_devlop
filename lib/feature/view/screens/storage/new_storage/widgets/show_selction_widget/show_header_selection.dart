@@ -55,10 +55,13 @@ class ShowHeaderSelection extends StatelessWidget {
           width: sizeW10,
         ),
         InkWell(
-            onTap: () => storageViewModel.showMainStorageBottomSheet(
-                index: index,
-                isUpdate: true,
-                storageCategoriesData: storageCategoriesData),
+            onTap: () {
+//              Get.put(StorageViewModel());
+              storageViewModel.showMainStorageBottomSheet(
+                  index: index,
+                  isUpdate: true,
+                  storageCategoriesData: storageCategoriesData);
+            },
             child: SvgPicture.asset("assets/svgs/update_icon.svg")),
       ],
     );

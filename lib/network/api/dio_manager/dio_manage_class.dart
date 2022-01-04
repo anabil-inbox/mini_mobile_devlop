@@ -35,9 +35,12 @@ class DioManagerClass {
   Future<Response> dioPostMethod(
       {var url,
       Map<String, dynamic>? header,
-      Map<String, dynamic>? body}) async {
+      Map<String, dynamic>? body , 
+      Map<String, dynamic>? queryParameters
+      }) async {
     return await _dio!.post(
       url,
+      queryParameters: queryParameters,
       options: Options(headers: header),
       data: body,
     );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
@@ -50,7 +49,10 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
           LatLng(widget.address.latitude ?? 0, widget.address.longitude ?? 0)
               .toString(),
         ));
-    profileViewModle.kGooglePlex = CameraPosition(target: LatLng(widget.address.latitude ?? 0, widget.address.longitude ?? 0),zoom: 10);
+    profileViewModle.kGooglePlex = CameraPosition(
+        target:
+            LatLng(widget.address.latitude ?? 0, widget.address.longitude ?? 0),
+        zoom: 10);
   }
 
   @override
@@ -62,8 +64,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
           "${tr.edit_address}",
           style: textStyleAppBarTitle(),
         ),
-        isCenterTitle: true, 
-     
+        isCenterTitle: true,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: sizeH16!),
@@ -90,13 +91,13 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                          hintText: "${tr.title}"),
+                      decoration: InputDecoration(hintText: "${tr.title}"),
                     ),
                     SizedBox(
                       height: sizeH10,
                     ),
                     TextFormField(
+                      keyboardType: TextInputType.number,
                       controller: controller.tdBuildingNoEdit,
                       onSaved: (newValue) {
                         controller.tdBuildingNoEdit.text = newValue!;
@@ -108,9 +109,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                          hintText:
-                              "${tr.building_no}"),
+                      decoration:
+                          InputDecoration(hintText: "${tr.building_no}"),
                     ),
                     SizedBox(
                       height: sizeH10,
@@ -127,8 +127,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                          hintText: "${tr.unit_no}"),
+                      decoration: InputDecoration(hintText: "${tr.unit_no}"),
                     ),
                     SizedBox(
                       height: sizeH10,
@@ -145,8 +144,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                          hintText: "${tr.zone}"),
+                      decoration: InputDecoration(hintText: "${tr.zone}"),
                     ),
                     SizedBox(
                       height: sizeH10,
@@ -163,8 +161,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                          hintText: "${tr.street}"),
+                      decoration: InputDecoration(hintText: "${tr.street}"),
                     ),
                     SizedBox(
                       height: sizeH10,
@@ -196,8 +193,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                               ),
                             ),
                             suffixStyle: TextStyle(color: Colors.transparent),
-                            hintText:
-                                "${tr.choose_your_location}"),
+                            hintText: "${tr.choose_your_location}"),
                       ),
                     ),
                     SizedBox(
@@ -209,9 +205,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                         controller.update();
                       },
                       controller: controller.tdExtraDetailesEdit,
-                      decoration: InputDecoration(
-                          hintText:
-                              "${tr.extra_details}"),
+                      decoration:
+                          InputDecoration(hintText: "${tr.extra_details}"),
                     ),
                     SizedBox(
                       height: sizeH25,

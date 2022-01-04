@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bulk_item_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_border_button.dart';

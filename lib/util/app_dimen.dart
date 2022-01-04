@@ -100,6 +100,7 @@ final double? sizeW27 =  27.w;
 final double? sizeW105 =  105.w;
 final double? sizeW40 =  40.w;
 final double? sizeW45 =  45.w;
+final double sizeW44 =  44.w;
 final double? sizeW48 =  48.w;
 final double? sizeW7 =  7.w;
 final double? sizeW65 =  65.w;
@@ -110,6 +111,9 @@ final double? sizeW70 =  70.w;
 final double? sizeW60 =  60.w;
 final double? sizeW50 =  50.w;
 final double sizeW95 = 95.w;
+final double sizeW250 = 250.w;
+final double sizeW240 = 240.w;
+
 
 
 

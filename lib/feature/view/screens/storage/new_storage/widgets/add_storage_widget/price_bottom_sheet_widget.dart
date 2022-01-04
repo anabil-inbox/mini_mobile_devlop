@@ -13,18 +13,23 @@ class PriceBottomSheetWidget extends StatelessWidget {
       {Key? key,
       this.priceTitle,
       this.totalPalance,
+      this.backGroundColor,
       this.isTotalPalnce = false})
       : super(key: key);
 
   final String? priceTitle;
   final num? totalPalance;
   final bool isTotalPalnce;
+  Color? backGroundColor;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return
+     Container(
       width: double.infinity,
       decoration: BoxDecoration(
-          color: scaffoldColor, borderRadius: BorderRadius.circular(padding6!)),
+          color: backGroundColor ?? scaffoldColor,
+          borderRadius: BorderRadius.circular(padding6!)),
       child: Column(
         children: [
           SizedBox(
@@ -41,12 +46,85 @@ class PriceBottomSheetWidget extends StatelessWidget {
                 init: StorageViewModel(),
                 initState: (_) {},
                 builder: (logic) {
-                  return Text(
-                    isTotalPalnce
-                        ? "${logic.totalBalance}"
-                        : "${logic.balance}",
-                    style: textStyleBigPrimaryTextColorSeconderSize(),
-                  );
+                  return totalPalance == null
+                      ? Text(
+                          isTotalPalnce
+                              ? "${formatStringWithCurrency(logic.totalBalance , "")}"
+                              : "${formatStringWithCurrency(logic.balance, "")}",
+                          style: textStyleBigPrimaryTextColorSeconderSize(),
+                        )
+                      : Text("${formatStringWithCurrency(totalPalance, "")}",
+                          style: textStyleBigPrimaryTextColorSeconderSize());
+                },
+              ),
+              // SizedBox(
+              //   width: sizeW4,
+              // ),
+              // Text(
+              //   "QR",
+              //   style: textStyleBigPrimaryTextColorSeconderSize()!
+              //       .copyWith(fontSize: fontSize21),
+              // )
+            ],
+          ),
+          SizedBox(
+            height: sizeH10,
+          ),
+        ],
+      ),
+    );
+  
+  }
+}
+
+
+// ignore: must_be_immutable
+class PriceWidget extends StatelessWidget {
+  PriceWidget(
+      {Key? key,
+      this.priceTitle,
+      this.totalPalance,
+      this.backGroundColor,
+      this.isTotalPalnce = false})
+      : super(key: key);
+
+  final String? priceTitle;
+  final num? totalPalance;
+  final bool isTotalPalnce;
+  Color? backGroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return
+     Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+          color: backGroundColor,
+          borderRadius: BorderRadius.circular(padding6!)),
+      child: Column(
+        children: [
+          SizedBox(
+            height: sizeH16,
+          ),
+          Text( "${tr.total}",
+            style: textStyleSkipButton(),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GetBuilder<StorageViewModel>(
+                init: StorageViewModel(),
+                initState: (_) {},
+                builder: (logic) {
+                  return totalPalance == null
+                      ? Text(
+                          isTotalPalnce
+                              ? "${logic.totalBalance}"
+                              : "${logic.balance}",
+                          style: textStyleBigPrimaryTextColorSeconderSize(),
+                        )
+                      : Text("$totalPalance",
+                          style: textStyleBigPrimaryText());
                 },
               ),
               SizedBox(
@@ -60,10 +138,11 @@ class PriceBottomSheetWidget extends StatelessWidget {
             ],
           ),
           SizedBox(
-            height: sizeH10,
+            height: sizeH16,
           ),
         ],
       ),
     );
+  
   }
 }

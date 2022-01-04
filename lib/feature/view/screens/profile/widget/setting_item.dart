@@ -38,31 +38,21 @@ class SettingItem extends StatelessWidget {
                 )
               : const SizedBox(),
           contentPadding: EdgeInsets.all(0),
-          trailing: trailingTitle.isEmpty
-              ? Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 16,
-                  ),
-              )
-              : Container(
-                  width: sizeW95,
-                  child: Row(
-                    children: [
-                      Text(
-                        "$trailingTitle",
-                        style: TextStyle(color: colorPrimary),
-                      ),
-                      SizedBox(
-                        width: sizeW10,
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                      )
-                    ],
-                  ))),
+          trailing: Container(
+           // color: colorBlack,
+            width: sizeW100,
+            height: sizeH100,
+            child: Row(
+              children: [
+                 const Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                ),
+                SizedBox(width: sizeW10,)
+              ],
+            ),
+          )),
     );
   }
 }

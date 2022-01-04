@@ -42,15 +42,15 @@ class AppFcm {
   }
 
   configuration() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('drawable/icons_app');
+    // const AndroidInitializationSettings initializationSettingsAndroid =
+    // AndroidInitializationSettings('drawable/icons_app');
 
-    final IOSInitializationSettings initializationSettingsIOS =
-    IOSInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-    );
+    // final IOSInitializationSettings initializationSettingsIOS =
+    // IOSInitializationSettings(
+    //   requestAlertPermission: false,
+    //   requestBadgePermission: false,
+    //   requestSoundPermission: false,
+    // );
 
     // final MacOSInitializationSettings initializationSettingsMacOS =
     // MacOSInitializationSettings(
@@ -59,10 +59,10 @@ class AppFcm {
     //   requestSoundPermission: false,
     // );
 
-    final InitializationSettings initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid,
-        iOS: initializationSettingsIOS,
-        macOS: null);
+    // final InitializationSettings initializationSettings = InitializationSettings(
+    //     android: initializationSettingsAndroid,
+    //     iOS: initializationSettingsIOS,
+    //     macOS: null);
 
     // await flutterLocalNotificationsPlugin.initialize(initializationSettings,
       //  onSelectNotification: selectNotification);
@@ -111,7 +111,7 @@ class AppFcm {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification notification = message.notification!;
       //todo this for add badge for app
-      var android = message.data;
+      // var android = message.data;
       if ( Platform.isIOS ||Platform.isAndroid) {
         messages = message;
         //todo this for update ui when recive message

@@ -50,7 +50,7 @@ class GetAddressScreen extends GetWidget<ProfileViewModle> {
                 textButton: "${tr.add_new_address}",
                 isLoading: false,
                 onClicked: () {
-                  Get.to(AddAddressScreen());
+                  Get.to(() => AddAddressScreen());
                 },
                 isExpanded: true),
           )

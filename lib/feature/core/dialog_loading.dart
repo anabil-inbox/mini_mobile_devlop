@@ -1,8 +1,7 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:inbox_clients/feature/core/loading.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/feature/view/widgets/three_size_dot.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -36,7 +35,12 @@ class DialogLoading extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Loading(),
+           // Loading(),
+           ThreeSizeDot(
+             color_1: colorPrimary,
+             color_2: colorPrimary,
+             color_3: colorPrimary,
+           ),
             SizedBox(height: sizeH17,),
             CustomTextView(
               textAlign:TextAlign.center ,

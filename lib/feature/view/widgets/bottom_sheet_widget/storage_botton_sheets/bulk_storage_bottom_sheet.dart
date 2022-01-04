@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/utils.dart';
@@ -34,7 +33,8 @@ class ItemStorageBottomSheet extends StatefulWidget {
 }
 
 class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
-  StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+  static StorageViewModel get storageViewModel => Get.put(StorageViewModel());
+  
   @override
   void initState() {
     super.initState();
@@ -84,7 +84,9 @@ class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
                 SizedBox(
                   height: sizeH16,
                 ),
-                NeedInspectorWidget(),
+                NeedInspectorWidget(
+                  storageCategoriesData: widget.storageCategoriesData,
+                ),
                 SizedBox(
                   height: sizeH16,
                 ),

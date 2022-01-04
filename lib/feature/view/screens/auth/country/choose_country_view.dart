@@ -56,7 +56,8 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
         ),
         title: Text(
           "${tr.choose_country}",
-          style: textStyleLargeText(),
+         style: textStyleAppbar(),
+        //  style : textStyleAppBarTitle(),
         ),
         centerTitle: true,
         backgroundColor: colorBackground,
