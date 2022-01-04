@@ -13,6 +13,8 @@ import 'package:inbox_clients/network/api/feature/item_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
+import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:logger/logger.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -179,7 +181,7 @@ class HomeViewModel extends BaseController {
           Logger().i("${value.toList().length}"),
           for (var item in value)
             {
-              if (item.id != "Fetch_sv") {tasks.add(item)}
+              if (item.id != LocalConstance.fetchId && item.id != LocalConstance.newStorageSv) {tasks.add(item)}
             },
         });
     update();

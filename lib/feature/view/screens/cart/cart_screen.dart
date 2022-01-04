@@ -12,14 +12,14 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Get.bottomSheet(
-          //  // NotifayForNewStorage(),
-          //   isScrollControlled: true
-          // );
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     // Get.bottomSheet(
+      //     //  // NotifayForNewStorage(),
+      //     //   isScrollControlled: true
+      //     // );
+      //   },
+      // ),
       appBar: CustomAppBarWidget(
         isCenterTitle: true,
         titleWidget: CustomTextView(
