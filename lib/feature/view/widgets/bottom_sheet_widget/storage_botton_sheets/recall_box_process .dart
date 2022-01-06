@@ -297,12 +297,22 @@ class RecallBoxProcessSheet extends StatelessWidget {
 
   onClickBreakSeal() {
     Get.back();
+    try {
+      var addressTitle = "${_storageViewModel.selectedStore?.addresses?.first.addressTitle??_storageViewModel.selectedAddress?.addressTitle}";
+      var buildingNo = "${_storageViewModel.selectedStore?.addresses?.first.buildingNo??_storageViewModel.selectedAddress?.buildingNo}";
+      var geoAddress = "${_storageViewModel.selectedStore?.addresses?.first.geoAddress??_storageViewModel.selectedAddress?.geoAddress}";
+      String fullAddress = "$addressTitle,$buildingNo,$geoAddress";
+      String type = "${box.saleOrder}";
+      var date = _storageViewModel.selectedDateTime;
+      _storageViewModel.addNewSealsOrder( box , fullAddress ,type,date);
+    } catch (e) {
+      Logger().d(e);
+    }
   }
 
   onClickBringBox() {
     Get.back();
-
-    // Get.bottomSheet(bottomsheet);
+    Logger().d("onClickBringBox");
   }
 }
 

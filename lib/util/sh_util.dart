@@ -4,6 +4,7 @@ import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/model/language.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,9 +46,12 @@ class SharedPref {
 
   Customer getCurrentUserData() {
     try {
-      var string = _prefs?.getString("$userDataKey");
+      if(getUserLoginState() == null ||getUserLoginState() == ConstanceNetwork.userEnterd){
+        return Customer();
+      }
+      var string = _prefs?.getString("$userDataKey")??"";
       var decode;
-      if (GetUtils.isNull(json.decode(string!)["data"]["Customer"])) {
+      if (GetUtils.isNull(json.decode(string)["data"]["Customer"])) {
         print("get Current user if");
         decode = json.decode(string)["data"];
       } else {

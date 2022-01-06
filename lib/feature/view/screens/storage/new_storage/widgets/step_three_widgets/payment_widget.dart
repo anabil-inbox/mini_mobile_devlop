@@ -12,7 +12,6 @@ import 'package:inbox_clients/util/sh_util.dart';
 class PaymentWidget extends StatelessWidget {
   const PaymentWidget({Key? key}) : super(key: key);
 
-  static List<PaymentMethod> paymentMethod = ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting())).paymentMethod ?? [];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,7 +33,7 @@ class PaymentWidget extends StatelessWidget {
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              children: paymentMethod.map((e) => PaymentItem(paymentMethod: e,)).toList(),
+              children: getPaymentMethod().map((e) => PaymentItem(paymentMethod: e,)).toList(),
             ),
           ),
            SizedBox(

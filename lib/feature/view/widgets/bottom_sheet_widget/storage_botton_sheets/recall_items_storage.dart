@@ -225,7 +225,7 @@ class RecallStorageSheet extends StatelessWidget {
 
   onClickBreakSeal() {
     Get.back();
-    Get.to(FilterItemScreen(title: "${tr.filter_by_name}"));
+    Get.to(FilterItemScreen(title: "${tr.filter_by_name}", box: box,serail: box.serialNo,));
   }
 
   onClickBringBox() {

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/fcm/app_fcm.dart';
 import 'package:inbox_clients/feature/core/app_widget.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
+import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/network/api/dio_manager/dio_manage_class.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -35,5 +36,7 @@ class BindingsController extends Bindings {
     Get.lazyPut(() => StorageViewModel(), fenix: true);
     Get.lazyPut(() => HomeViewModel());
     Get.lazyPut(() => MyOrderViewModle());
+    Get.lazyPut<ItemViewModle>(() => ItemViewModle(), fenix: true,);
+
   }
 }

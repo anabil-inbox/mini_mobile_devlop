@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
+import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/model/my_order/new_sales_order.dart';
 import 'package:inbox_clients/feature/model/my_order/order_sales.dart' as OS;
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
 import 'package:inbox_clients/feature/model/storage/order_item.dart';
@@ -20,8 +22,10 @@ import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_b
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/network/api/feature/order_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
+import 'package:inbox_clients/network/api/model/order_api.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -1259,5 +1263,27 @@ class StorageViewModel extends BaseController {
   void changeTypeViewLVGV() {
     isListView = !isListView!;
     update();
+  }
+
+  void addNewSealsOrder( Box box, String fullAddress, String type, var date) async{
+    var order = Order(
+      itemCode: box.id,
+      deliveryDate: date,
+      groupId: int.tryParse(box.serialNo.toString()),
+      itemParent: int.tryParse(box.serialNo.toString()),
+      needAdviser: 0,
+      qty:0,
+      storageType: type,
+      subscription: "",
+      subscriptionDuration: 0,
+      subscriptionPrice: 0,
+    );
+    var newSalesOrder = NewSalesOrder(salesOrder: [SalesOrderElement(type:type ,address:fullAddress ,order: [order])] );
+   Map<String , dynamic> map = {
+     "sales_order":jsonEncode([newSalesOrder.toJson()["sales_order"]])
+   };
+    await OrderHelper.getInstance.newSalesOrder(body:map).then((value) {
+      Logger().d(value.toJson());
+    });
   }
 }

@@ -37,7 +37,7 @@ class OptionStringItem extends StatelessWidget {
                   SizedBox(
                     width: sizeW10,
                   ),
-                  Text("$option" ?? ""),
+                  Text("$option"),
                   const Spacer(),
                   //PopInfoDialog(title: "${storageFeatures.addedPrice}",),//${/*tr.price*/}
                   //SvgPicture.asset("assets/svgs/InfoCircle.svg"),

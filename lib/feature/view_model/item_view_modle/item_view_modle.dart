@@ -44,6 +44,16 @@ class ItemViewModle extends BaseController {
   Set<String> usesBoxItemsTags = {};
   List<File> images = [];
   File? itemImage;
+  Box? operationsBox;
+
+  bool isUpdateBoxDetails = false;
+
+  @override
+  onInit(){
+    super.onInit();
+  }
+
+
 
   // to update Box Here ::
   Future<void> updateBox({required Box box, required int index}) async {
@@ -360,23 +370,30 @@ class ItemViewModle extends BaseController {
   }
 
   // box Operations Dec ::
-  Box? operationsBox;
+  // Box? operationsBox;
   // to get Box With His Serial No..
   Future<void> getBoxBySerial({required String serial}) async {
-    startLoading();
-    await ItemHelper.getInstance
-        .getBoxBySerial(body: {"serial": serial}).then((value) => {
-              if (value.status!.success!)
-                {
-                  Logger().i("${value.toJson()}"),
-                  operationsBox = Box.fromJson(value.data),
-                }
-              else
-                {
-                  snackError("$error", "${value.status!.message}"),
-                }
-            });
-    endLoading();
+    try {
+      operationsBox = null;
+      startLoading();
+      await ItemHelper.getInstance
+              .getBoxBySerial(body: {"serial": serial}).then((value) => {
+                    if (value.status!.success!)
+                      {
+                        Logger().i("${value.toJson()}"),
+                        operationsBox = Box.fromJson(value.data),
+                        endLoading(),
+                      }
+                    else
+                      {
+                        snackError("$error", "${value.status!.message}"),
+                      }
+                  });
+      endLoading();
+    } catch (e) {
+      Logger().d("${e.toString()}");
+      endLoading();
+    }
   }
 
   // to show Adding item BottomSheet :
@@ -389,9 +406,14 @@ class ItemViewModle extends BaseController {
     );
   }
 
+  changeFlagUpdate(bool isUpdate){
+    isUpdateBoxDetails = isUpdate;
+    update();
+  }
   // to show update Box Bottom Sheet ::
   Future<void> showUpdatBoxBottomSheet(
       {required Box box, required bool isUpdate}) async {
+    changeFlagUpdate(isUpdate);
     Get.bottomSheet(
         CheckInBoxWidget(
           isUpdate: isUpdate,
@@ -490,4 +512,7 @@ class ItemViewModle extends BaseController {
       update();
     }
   }
+
+
+
 }

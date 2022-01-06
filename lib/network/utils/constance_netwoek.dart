@@ -35,6 +35,7 @@ abstract class ConstanceNetwork {
   
   // to add here my order End Points: 
   static String getMyOrddersEndPoint = "inbox_app.api.sales_order.get_sales_orders";
+  static String newSalesOrder = "inbox_app.api.sales_order.create_new_sales_order";
 
 
   ///todo here insert end Point

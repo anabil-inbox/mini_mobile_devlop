@@ -167,5 +167,10 @@
     "recall_now":"Recall Now",
     "recall_items":"Recall Items",
     "are_break_sealing":"Are you sure you want to break the sealing of the following box?",
-    "charity_name":"Charity Name"
+    "charity_name":"Charity Name",
+    "payment_method":"Payment Method",
+    "other_services_eparately":"Other services will be charged separately",
+    "redeem_points":"Redeem my points",
+    "points":"points",
+    "submit":"Submit"
 }

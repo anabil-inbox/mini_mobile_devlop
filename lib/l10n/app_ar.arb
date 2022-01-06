@@ -165,5 +165,10 @@
       "recall_now":"اطلب الآن",
       "recall_items":"اطلب العناصر",
       "are_break_sealing":"هل أنت متأكد أنك تريد كسر ختم الصندوق التالي؟",
-      "charity_name":"اسم المؤسسة الخيرية"
+      "charity_name":"اسم المؤسسة الخيرية",
+      "payment_method":"وسيلة الدفع",
+      "other_services_eparately":"سيتم فرض رسوم على الخدمات الأخرى بشكل منفصل",
+      "redeem_points":"استبدال نقاطي",
+       "points":"نقاط",
+       "submit":"تسليم"
 }

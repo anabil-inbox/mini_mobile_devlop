@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:image/image.dart' as Img;
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
+import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/language_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
@@ -681,3 +682,8 @@ Widget retuenBoxByStatus({required String storageStatus}) {
 
 
 AppLocalizations get tr => AppLocalizations.of(Get.context!)!;
+
+List<PaymentMethod> getPaymentMethod(){
+  List<PaymentMethod> list = ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting())).paymentMethod ?? [];
+  return list;
+}

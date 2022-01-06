@@ -13,6 +13,8 @@ import 'package:inbox_clients/feature/view/screens/storage/details_storage/widge
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/text_with_contanier_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/widget/back_btn_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/giveaway_box_process%20.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
@@ -21,70 +23,101 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 
 // ignore: must_be_immutable
-class FilterItemScreen extends StatelessWidget {
-  const FilterItemScreen({Key? key, required this.title}) : super(key: key);
+class FilterItemScreen extends StatefulWidget {
+  const FilterItemScreen({Key? key, required this.title,required this.serail,required this.box}) : super(key: key);
 
-  static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
   final String title;
+  final String? serail;
+  final Box box;
+
+  @override
+  State<FilterItemScreen> createState() => _FilterItemScreenState();
+}
+
+class _FilterItemScreenState extends State<FilterItemScreen> {
+   // ItemViewModle itemViewModle = Get.put<ItemViewModle>(ItemViewModle());
+    ItemViewModle itemViewModle = Get.find<ItemViewModle>();
+  @override
+  initState(){
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async{
+      await itemViewModle.getBoxBySerial(serial: widget.serail!);
+      itemViewModle.listIndexSelected.clear();
+      itemViewModle.isSelectAllClick = false;
+      itemViewModle.isSelectBtnClick = true;
+      itemViewModle.search = "";
+      itemViewModle.update();
+    });
+  }
+
 
   //todo this for appbar
-  PreferredSizeWidget get appBar => CustomAppBarWidget(
+  PreferredSizeWidget get appBar =>
+      CustomAppBarWidget(
         isCenterTitle: true,
         titleWidget: CustomTextView(
-          txt: "$title",
+          txt: "${widget.title}",
           textStyle: textStyleNormal()?.copyWith(color: colorBlack),
           maxLine: Constance.maxLineOne,
         ),
-        leadingWidget: BackBtnWidget(
-          onTap: () {
-            itemViewModle.isSelectAllClick = false;
-            itemViewModle.isSelectBtnClick = false;
-            itemViewModle.listIndexSelected.clear();
-            itemViewModle.search = "";
-            Get.back();
-            itemViewModle.update();
-          },
-        ),
+        leadingWidget: GetBuilder<ItemViewModle>(
+             // init: ItemViewModle(),
+             // assignId: true,
+            builder: (logic) {
+          return BackBtnWidget(
+            onTap: () {
+              itemViewModle.isSelectAllClick = !itemViewModle.isSelectAllClick/*false*/;
+              itemViewModle.isSelectBtnClick = !itemViewModle.isSelectBtnClick!/*false*/;
+              itemViewModle.listIndexSelected.clear();
+              itemViewModle.search = "";
+              Get.back();
+              itemViewModle.update();
+            },
+          );
+        }),
         actionsWidgets: [
           GetBuilder<ItemViewModle>(
-              init: ItemViewModle(),
+                init: /*ItemViewModle()*/itemViewModle,
+               // assignId: true,
               builder: (logic) {
                 return TextButton(
                   onPressed: () {
-                    logic.updateSelectBtn();
+                    itemViewModle.updateSelectBtn();
                   },
-                  child: logic.isSelectBtnClick!
+                  child: itemViewModle.isSelectBtnClick!
                       ? SizedBox(
-                          width: sizeW40,
-                          child: TextButton(
-                            onPressed: () {
-                              logic.isSelectAllClick = !logic.isSelectAllClick;
-                              logic.update();
-                            },
-                            child: (logic.isSelectAllClick ||
-                                    (logic.listIndexSelected.length ==
-                                        logic.operationsBox!.items!.length))
-                                ? SvgPicture.asset(
-                                    "assets/svgs/storage_check_active.svg")
-                                : SvgPicture.asset(
-                                    "assets/svgs/select_all_no_background.svg"),
-                          ),
-                        )
+                    width: sizeW40,
+                    child: TextButton(
+                      onPressed: () {
+                         itemViewModle.isSelectAllClick = !itemViewModle.isSelectAllClick;
+                        itemViewModle.update();
+                      },
+                      child: (itemViewModle.isSelectAllClick ||
+                          (itemViewModle.listIndexSelected.length ==
+                              itemViewModle.operationsBox!.items!.length))
+                          ? SvgPicture.asset(
+                          "assets/svgs/storage_check_active.svg")
+                          : SvgPicture.asset(
+                          "assets/svgs/select_all_no_background.svg"),
+                    ),
+                  )
                       : CustomTextView(
-                          txt: "${tr.select}",
-                          textStyle:
-                              textStyleNormal()?.copyWith(color: colorRed),
-                          maxLine: Constance.maxLineOne,
-                        ),
+                    txt: "${tr.select}",
+                    textStyle:
+                    textStyleNormal()?.copyWith(color: colorRed),
+                    maxLine: Constance.maxLineOne,
+                  ),
                 );
               }),
         ],
       );
 
   //todo this for search
-  Widget get searchWidget => CustomTextFormFiled(
+  Widget get searchWidget =>
+      CustomTextFormFiled(
         iconSize: sizeRadius20,
         maxLine: Constance.maxLineOne,
         icon: Icons.search,
@@ -104,7 +137,15 @@ class FilterItemScreen extends StatelessWidget {
         label: tr.search,
       );
 
-  Widget get btnActionsWidget => BtnActionWidget();
+  Widget get btnActionsWidget => BtnActionWidget(
+    redBtnText: widget.box.storageStatus == LocalConstance.boxAtHome
+        ? "${tr.pickup}"
+        : "${tr.recall}",
+    onShareBox: onShareBoxClick,
+    onGrayBtnClick: onGrayBtnClick,
+    onRedBtnClick: onRedBtnClick,
+    onDeleteBox: onDeleteBoxClick,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -112,8 +153,16 @@ class FilterItemScreen extends StatelessWidget {
     return Scaffold(
       appBar: appBar,
       body: GetBuilder<ItemViewModle>(
-          init: ItemViewModle(),
+           init: /*ItemViewModle()*/itemViewModle,
+          // assignId: true,
+          initState: (state) {
+            // WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+            //   if(itemViewModle.operationsBox == null)
+            //   itemViewModle.getBoxBySerial(serial: serail!);
+            // });
+          },
           builder: (logic) {
+
             return Column(
               children: [
                 Expanded(
@@ -128,52 +177,53 @@ class FilterItemScreen extends StatelessWidget {
                         SizedBox(
                           height: sizeH20,
                         ),
+                      if(itemViewModle.operationsBox != null)
                         Expanded(
                           child: GroupedListView<BoxItem, String>(
                             elements: itemViewModle.operationsBox!.items!,
                             groupBy: (element) => element.itemName![0],
                             groupSeparatorBuilder: (String groupByValue) =>
                                 Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: sizeH10,
-                                ),
-                                SizedBox(
-                                  width: sizeW30,
-                                  height: sizeH31,
-                                  child: TextContainerWidget(
-                                    colorBackground: colorRedTrans,
-                                    txt: groupByValue,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: sizeH10,
-                                ),
-                              ],
-                            ) /*, Text(groupByValue , textAlign: TextAlign.start,)*/,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: sizeH10,
+                                    ),
+                                    SizedBox(
+                                      width: sizeW30,
+                                      height: sizeH31,
+                                      child: TextContainerWidget(
+                                        colorBackground: colorRedTrans,
+                                        txt: groupByValue,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: sizeH10,
+                                    ),
+                                  ],
+                                ) /*, Text(groupByValue , textAlign: TextAlign.start,)*/,
                             itemBuilder: (context, BoxItem element) {
                               if (itemViewModle.search.isEmpty) {
                                 return ItemsWidget(
                                   box: itemViewModle.operationsBox!,
                                   boxItem: element,
-                                  isSelectedBtnClick: logic.isSelectBtnClick,
+                                  isSelectedBtnClick: itemViewModle.isSelectBtnClick,
                                   onCheckItem: () {
-                                    logic.addIndexToList(
+                                    itemViewModle.addIndexToList(
                                         element.itemName.toString());
                                   },
                                 );
                               } else if (element.itemName!
                                   .toLowerCase()
                                   .contains(
-                                      itemViewModle.search.toLowerCase())) {
+                                  itemViewModle.search.toLowerCase())) {
                                 return ItemsWidget(
                                   box: itemViewModle.operationsBox!,
                                   boxItem: element,
-                                  isSelectedBtnClick: logic.isSelectBtnClick,
+                                  isSelectedBtnClick: itemViewModle.isSelectBtnClick,
                                   onCheckItem: () {
-                                    logic.addIndexToList(
+                                    itemViewModle.addIndexToList(
                                         element.itemName.toString());
                                   },
                                 );
@@ -208,4 +258,31 @@ class FilterItemScreen extends StatelessWidget {
           }),
     );
   }
+   onGrayBtnClick() {
+     Get.bottomSheet(GiveawayBoxProcessSheet(box: widget.box),
+         isScrollControlled: true);
+   }
+
+   onRedBtnClick() {
+     if (widget.box.storageStatus == LocalConstance.boxAtHome) {
+       //todo this if pickup
+       Get.bottomSheet(RecallBoxProcessSheet(box: widget.box),
+           isScrollControlled: true);
+     } else {
+       //todo this if recall
+       Get.bottomSheet(RecallBoxProcessSheet(box: widget.box),
+           isScrollControlled: true);
+       // Get.bottomSheet(RecallStorageSheet(box: widget.box),
+       //     isScrollControlled: true);
+     }
+   }
+
+   onDeleteBoxClick() {
+     // Get.bottomSheet(BottomSheetPaymentWidget(),
+     //     isScrollControlled: true);
+   }
+
+   onShareBoxClick() {
+     itemViewModle.shareBox(box: widget.box);
+   }
 }

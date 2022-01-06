@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
@@ -11,7 +12,9 @@ import 'package:inbox_clients/feature/view/screens/storage/details_storage/widge
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/recent_item_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/text_with_contanier_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/widget/back_btn_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_payment_widaget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/giveaway_box_process%20.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_items_storage.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
@@ -23,12 +26,31 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:logger/logger.dart';
 
 import 'filter_items/filter_item_screen.dart';
 
-class ItemScreen extends StatelessWidget {
-  const ItemScreen({Key? key, required this.box}) : super(key: key);
+class ItemScreen extends StatefulWidget {
+  const ItemScreen({Key? key,required this.box, this.getBoxDataMethod}) : super(key: key);
 
+  //ItemViewModle get itemViewModle => Get.put(ItemViewModle());
+  final Box box;
+  final Function()? getBoxDataMethod;
+
+  @override
+  State<ItemScreen> createState() => _ItemScreenState();
+}
+
+class _ItemScreenState extends State<ItemScreen> {
+   ItemViewModle itemViewModle = Get.find<ItemViewModle>();
+
+   @override
+   initState(){
+   super.initState();
+   WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+     widget.getBoxDataMethod!();
+   });
+ }
   // Search Widget =>
   Widget get searchWidget =>
       CustomTextFormFiled(
@@ -57,7 +79,7 @@ class ItemScreen extends StatelessWidget {
         children: [
           TextButton(
               onPressed: () {
-                itemViewModle.showAddItemBottomSheet(box: box);
+                itemViewModle.showAddItemBottomSheet(box: widget.box);
               },
               child: Row(
                 children: [
@@ -77,9 +99,16 @@ class ItemScreen extends StatelessWidget {
           IconButton(
             padding: const EdgeInsets.all(0),
             onPressed: () {
+              // itemViewModle.listIndexSelected.clear();
+              // itemViewModle.isSelectAllClick = false;
+              // itemViewModle.isSelectBtnClick = true;
+              // itemViewModle.search = "";
+              Get.delete<ItemViewModle>( );
               Get.to(() =>
                   FilterItemScreen(
                     title: "${tr.filter_by_name}",
+                    serail: widget.box.serialNo,
+                      box:widget.box
                   ));
             },
             icon: TextContainerWidget(
@@ -96,23 +125,30 @@ class ItemScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                if (itemViewModle.isLoading) {} else {
+                itemViewModle.isUpdateBoxDetails = true;
+                if (itemViewModle.isLoading) {
+
+                } else {
                   itemViewModle.showUpdatBoxBottomSheet(
-                      box: box, isUpdate: true);
+                      box: widget.box, isUpdate: true);
                 }
               },
               icon: SvgPicture.asset("assets/svgs/update.svg")),
           Center(
-            child: InkWell(
+            child:InkWell(
                 onTap: () {
-                  itemViewModle.listIndexSelected.clear();
-                  itemViewModle.isSelectAllClick = false;
-                  itemViewModle.isSelectBtnClick = true;
-                  itemViewModle.search = "";
-                  Get.to(() =>
+                  // itemViewModle.listIndexSelected.clear();
+                  // itemViewModle.isSelectAllClick = false;
+                  // itemViewModle.isSelectBtnClick = true;
+                  // itemViewModle.search = "";
+                  Get.delete<ItemViewModle>( );
+                  Get.to(/*() =>*/
                       FilterItemScreen(
                         title: "Select Items",
+                        serail: widget.box.serialNo,
+                          box:widget.box
                       ));
+
                 },
                 child: Text(
                   "Select",
@@ -131,12 +167,29 @@ class ItemScreen extends StatelessWidget {
         ),
         centerTitle: true,
         title: GetBuilder<ItemViewModle>(
-          init: ItemViewModle(),
+          // init: ItemViewModle(),
           initState: (_) {
             itemViewModle.operationsBox?.storageName = "";
           },
           builder: (_) {
-            if (GetUtils.isNull(itemViewModle.operationsBox)) {
+            if(!_.isUpdateBoxDetails){
+              return Builder(
+                builder: (_) {
+                  if (GetUtils.isNull(widget.box)) {
+                    return Text("");
+                  } else {
+                    return Text(
+                      "${widget.box.storageName!.isEmpty
+                          ? ""
+                          : widget.box.storageName}",
+                      style: textStyleAppBarTitle(),
+                      maxLines: Constance.maxLineTwo,
+                      textAlign: TextAlign.center,
+                    );
+                  }
+                },
+              );
+            }else if (GetUtils.isNull(itemViewModle.operationsBox)) {
               return Text("");
             } else {
               return Text(
@@ -149,107 +202,133 @@ class ItemScreen extends StatelessWidget {
               );
             }
           },
-        ),
+        )
       );
 
-  Widget get recentlyAddedWidget => Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      CustomTextView(
-        txt: "${tr.recently_added}",
-        textStyle: textStyleNormal()?.copyWith(color: colorBlack),
-        maxLine: Constance.maxLineOne,
-      ),
-      SizedBox(
-        height: sizeH10,
-      ),
+  Widget get recentlyAddedWidget => Align(
+    alignment: isArabicLang() ? Alignment.centerRight:Alignment.centerLeft,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomTextView(
+          txt: "${tr.recently_added}",
+          textStyle: textStyleNormal()?.copyWith(color: colorBlack),
+          maxLine: Constance.maxLineOne,
+        ),
+        SizedBox(
+          height: sizeH10,
+        ),
+        GetBuilder<ItemViewModle>(
+          //assignId: true,
+          //init: controller,
+          initState: (state) {
+
+          },
+          builder: (logi) {
+            try {
+              if (itemViewModle.operationsBox?.items == null)
+                return const SizedBox.shrink();
+              return SizedBox(
+                height: sizeH180,
+                child: ListView.builder(
+                  clipBehavior: Clip.none,
+                  physics: customScrollViewIOS(),
+                  itemCount: itemViewModle.operationsBox!.items!.length >= 5 ? 5 : itemViewModle
+                      .operationsBox?.items?.length,
+                  shrinkWrap: true,
+                  keyboardDismissBehavior:
+                  ScrollViewKeyboardDismissBehavior.onDrag,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    try {
+                      if (itemViewModle.search.isEmpty) {
+                        return RecentlyItemWidget(
+                          box: itemViewModle.operationsBox!,
+                          boxItem: itemViewModle.operationsBox!.items![index],
+                        );
+                      } else if (itemViewModle.operationsBox!.items![index].itemName!
+                          .toLowerCase().contains(itemViewModle.search)) {
+                        return RecentlyItemWidget(
+                          box: itemViewModle.operationsBox!,
+                          boxItem: itemViewModle.operationsBox!.items![index],
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
+                    } catch (e) {
+                      print(e);
+                      Logger().d(e);
+                      return const SizedBox.shrink();
+                    }
+                  },
+                ),
+              );
+            } catch (e) {
+              print(e);
+              Logger().e(e);
+              return const SizedBox.shrink();
+            }
+          },
+        ),
+      ],
+    ),
+  );
+
+  Widget get itemLVWidget =>
       GetBuilder<ItemViewModle>(
         builder: (logic) {
-          return SizedBox(
-            height: sizeH180,
-            child: ListView.builder(
-              clipBehavior: Clip.none,
-              physics: customScrollViewIOS(),
-              itemCount: itemViewModle.operationsBox!.items!.take(5).length,
-              // shrinkWrap: true,
-              keyboardDismissBehavior:
-              ScrollViewKeyboardDismissBehavior.onDrag,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                if (itemViewModle.search.isEmpty) {
-                  return RecentlyItemWidget(
-                    box: itemViewModle.operationsBox!,
-                    boxItem: itemViewModle.operationsBox!.items![index],
-                  );
-                } else if (itemViewModle.operationsBox!.items![index].itemName!.toLowerCase().contains(itemViewModle.search)) {
-                  return RecentlyItemWidget(
-                    box: itemViewModle.operationsBox!,
-                    boxItem: itemViewModle.operationsBox!.items![index],
-                  );
-                } else {
-                  return const SizedBox();
-                }
-
-              },
+          return Expanded(
+            child: Container(
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(sizeRadius10!),
+              ),
+              child: ListView.separated(
+                  shrinkWrap: true,
+                  physics: customScrollViewIOS(),
+                  clipBehavior: Clip.antiAlias,
+                  keyboardDismissBehavior:
+                  ScrollViewKeyboardDismissBehavior.onDrag,
+                  itemBuilder: (context, index) {
+                    if (itemViewModle.search.isEmpty) {
+                      return ItemsWidget(
+                        box: itemViewModle.operationsBox!,
+                        boxItem: itemViewModle.operationsBox!.items![index],
+                      );
+                    } else
+                    if (itemViewModle.operationsBox!.items![index].itemName!
+                        .toLowerCase().contains(itemViewModle.search)) {
+                      return ItemsWidget(
+                        box: itemViewModle.operationsBox!,
+                        boxItem: itemViewModle.operationsBox!.items![index],
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                  separatorBuilder: (context, index) {
+                    if (itemViewModle.search.isEmpty) {
+                      return Divider(
+                        height: sizeH1,
+                      );
+                    } else
+                    if (itemViewModle.operationsBox!.items![index].itemName!
+                        .toLowerCase().contains(
+                        itemViewModle.search.toLowerCase())) {
+                      return Divider(
+                        height: sizeH1,
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                  itemCount:
+                  itemViewModle.operationsBox!.items!.length),
             ),
           );
         },
-      ),
-    ],
-  );
-
-  Widget get itemLVWidget =>  GetBuilder<ItemViewModle>(
-    builder: (logic) {
-      return Expanded(
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(sizeRadius10!),
-          ),
-          child: ListView.separated(
-              shrinkWrap: true,
-              physics: customScrollViewIOS(),
-              clipBehavior: Clip.antiAlias,
-              keyboardDismissBehavior:
-              ScrollViewKeyboardDismissBehavior.onDrag,
-              itemBuilder: (context, index) {
-                if (itemViewModle.search.isEmpty) {
-                  return ItemsWidget(
-                    box: itemViewModle.operationsBox!,
-                    boxItem: itemViewModle.operationsBox!.items![index],
-                  );
-                } else if (itemViewModle.operationsBox!.items![index].itemName!.toLowerCase().contains(itemViewModle.search)) {
-                  return ItemsWidget(
-                    box: itemViewModle.operationsBox!,
-                    boxItem: itemViewModle.operationsBox!.items![index],
-                  );
-                } else {
-                  return const SizedBox();
-                }
-              },
-              separatorBuilder: (context, index) {
-                if (itemViewModle.search.isEmpty) {
-                  return Divider(
-                    height: sizeH1,
-                  );
-                } else if (itemViewModle.operationsBox!.items![index].itemName!.toLowerCase().contains(itemViewModle.search.toLowerCase())) {
-                  return Divider(
-                    height: sizeH1,
-                  );
-                } else {
-                  return const SizedBox();
-                }
-              },
-              itemCount:
-              itemViewModle.operationsBox!.items!.length),
-        ),
       );
-    },
-  );
-
-  final Box box;
-  static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
 
   @override
   Widget build(BuildContext context) {
@@ -260,8 +339,8 @@ class ItemScreen extends StatelessWidget {
         init: ItemViewModle(),
         initState: (_) async {
           WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-            await itemViewModle.getBoxBySerial(serial: box.serialNo ?? "");
-            itemViewModle.update();
+            await itemViewModle.getBoxBySerial(serial: widget.box.serialNo ?? "");
+            //itemViewModle.update();
           });
         },
         builder: (logic) {
@@ -300,23 +379,13 @@ class ItemScreen extends StatelessWidget {
                   ),
                   itemLVWidget,
                   BtnActionWidget(
-                    redBtnText: box.storageStatus == LocalConstance.boxAtHome
+                    redBtnText: widget.box.storageStatus == LocalConstance.boxAtHome
                         ? "${tr.pickup}"
                         : "${tr.recall}",
-                    onShareBox: () {
-                      itemViewModle.shareBox(box: box);
-                    },
-                    onGrayBtnClick: () {
-                      Get.bottomSheet(GiveawayBoxProcessSheet(box: box),
-                          isScrollControlled: true);
-                    },
-                    onRedBtnClick: () {
-                      Get.bottomSheet(RecallStorageSheet(box: box),
-                          isScrollControlled: true);
-                    },
-                    onDeleteBox: () {
-
-                    },
+                    onShareBox: onShareBoxClick,
+                    onGrayBtnClick: onGrayBtnClick,
+                    onRedBtnClick: onRedBtnClick,
+                    onDeleteBox: onDeleteBoxClick,
                   ),
                   SizedBox(
                     height: sizeH10,
@@ -329,4 +398,33 @@ class ItemScreen extends StatelessWidget {
       ),
     );
   }
+
+  onGrayBtnClick() {
+    Get.bottomSheet(GiveawayBoxProcessSheet(box: widget.box),
+        isScrollControlled: true);
+  }
+
+  onRedBtnClick() {
+    if (widget.box.storageStatus == LocalConstance.boxAtHome) {
+      //todo this if pickup
+      Get.bottomSheet(RecallBoxProcessSheet(box: widget.box),
+          isScrollControlled: true);
+    } else {
+      //todo this if recall
+      // Get.bottomSheet(RecallBoxProcessSheet(box: widget.box),
+      //     isScrollControlled: true);
+      Get.bottomSheet(RecallStorageSheet(box: widget.box),
+          isScrollControlled: true);
+    }
+  }
+
+  onDeleteBoxClick() {
+    // Get.bottomSheet(BottomSheetPaymentWidget(),
+    //     isScrollControlled: true);
+  }
+
+  onShareBoxClick() {
+    itemViewModle.shareBox(box: widget.box);
+  }
 }
+
