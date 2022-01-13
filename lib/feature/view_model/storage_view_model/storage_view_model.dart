@@ -43,9 +43,9 @@ class StorageViewModel extends BaseController {
   List<String> listIndexSelected = <String>[];
 
   //todo this for bottom sheet accept isAccept
-  bool isAccept = true;
-  //todo this for bottom sheet accept
+  bool isAccept = false;
 
+  //todo this for bottom sheet accept
 
   //todo this for appbar select btn
 
@@ -71,7 +71,6 @@ class StorageViewModel extends BaseController {
   bool isShowSpaces = false;
 
   bool? isChangeStatusLoading = false;
-
 
   checkDaplication() {
     if (userStorageCategoriesData.length == 0) {
@@ -113,8 +112,10 @@ class StorageViewModel extends BaseController {
 
   // Set<StorageFeatures>? selectedStorageFeaturesArray = {};
   Set<StorageItem> selectedStorageItems = {};
+
   //Set<String> lastItems = {};
   Set<StorageFeatures> selectedFeaures = {};
+
   // Function deepEq = const DeepCollectionEquality().equals;
   StorageItem? lastStorageItem;
   Set<StorageItem> arrayLastStorageItem = {};
@@ -336,7 +337,8 @@ class StorageViewModel extends BaseController {
     update();
   }
 
-  void saveStorageDataToArray({required StorageCategoriesData storageCategoriesData,
+  void saveStorageDataToArray(
+      {required StorageCategoriesData storageCategoriesData,
       bool isUpdate = false,
       int? updateIndex}) async {
     if (storageCategoriesData.storageCategoryType ==
@@ -350,7 +352,7 @@ class StorageViewModel extends BaseController {
           ConstanceNetwork.quantityCategoryType) {
         var resQuantity = await checkQuantity(
             boxCheckedId: "${lastStorageItem?.name}", quntity: quantity);
-            
+
         if (resQuantity.data["item"] != null) {
           Quantity q = Quantity.fromJson(resQuantity.data["item"]);
           if (q.quantityStatus == 0) {
@@ -400,7 +402,7 @@ class StorageViewModel extends BaseController {
     tdX.clear();
     tdY.clear();
     tdSearch.clear();
-    
+
     Get.back();
     update();
   }
@@ -738,8 +740,7 @@ class StorageViewModel extends BaseController {
     bool complete = false;
     await Get.defaultDialog(
         titlePadding: EdgeInsets.all(0),
-
-         title: "${/*tr.amount_of_vacant_boxes_not_enough*/""}",
+        title: "${/*tr.amount_of_vacant_boxes_not_enough*/ ""}",
         middleText: "$message",
         actions: [
           TextButton(
@@ -977,6 +978,7 @@ class StorageViewModel extends BaseController {
       isScrollControlled: true,
     );
   }
+
   // this for payment Selcted::
 
   PaymentMethod? selectedPaymentMethod;
@@ -1086,6 +1088,7 @@ class StorageViewModel extends BaseController {
 
   //---------- to do for new storage Func ---------------
   int currentLevel = 0;
+
   // for bottomSheet Details:
   void detaielsBottomSheet(
       {required StorageCategoriesData storageCategoriesData,
@@ -1207,43 +1210,45 @@ class StorageViewModel extends BaseController {
   @override
   InternalFinalCallback<void> get onDelete;
 
-
   //todo this for customerStoragesChangeStatus api
   //todo i concatenate homeViewModel with storageViewModel
   //todo i get index of list to update it local
-  customerStoragesChangeStatus(var serial,{int? index, HomeViewModel? homeViewModel})async{
-    if(serial == null ){
+  customerStoragesChangeStatus(var serial,
+      {int? index, HomeViewModel? homeViewModel}) async {
+    if (serial == null) {
       Get.back();
       return;
     }
     isChangeStatusLoading = true;
     update();
-    var body = {"${ConstanceNetwork.serial}":"$serial"};
-    await StorageFeature.getInstance.customerStoragesChangeStatus(body:body).then((value) {
-        if(!GetUtils.isNull(value)){
-          if( value.status!.success!){
-            isChangeStatusLoading = false;
-            homeViewModel?.userBoxess.toList()[index!].storageStatus = "${LocalConstance.boxAtHome}";
-            homeViewModel?.update();
-            update();
-            Get.back();
-            Future.delayed(Duration(seconds: 0)).then((value) {
-              Get.bottomSheet(
-                  CheckInBoxWidget(
-                    box: homeViewModel?.userBoxess.toList()[index!],
-                    isUpdate: false,
-                  ),
-                  isScrollControlled: true);
-            });
-
-          }else{
-           snackError(tr.error_occurred, value.status!.message!);
-          }
-        }else{
+    var body = {"${ConstanceNetwork.serial}": "$serial"};
+    await StorageFeature.getInstance
+        .customerStoragesChangeStatus(body: body)
+        .then((value) {
+      if (!GetUtils.isNull(value)) {
+        if (value.status!.success!) {
           isChangeStatusLoading = false;
+          homeViewModel?.userBoxess.toList()[index!].storageStatus =
+              "${LocalConstance.boxAtHome}";
+          homeViewModel?.update();
           update();
+          Get.back();
+          Future.delayed(Duration(seconds: 0)).then((value) {
+            Get.bottomSheet(
+                CheckInBoxWidget(
+                  box: homeViewModel?.userBoxess.toList()[index!],
+                  isUpdate: false,
+                ),
+                isScrollControlled: true);
+          });
+        } else {
+          snackError(tr.error_occurred, value.status!.message!);
         }
-    }).catchError((onError){
+      } else {
+        isChangeStatusLoading = false;
+        update();
+      }
+    }).catchError((onError) {
       Logger().d(onError);
       isChangeStatusLoading = false;
       update();
@@ -1251,38 +1256,52 @@ class StorageViewModel extends BaseController {
   }
 
   List<String> selectedStringOption = <String>[];
-  addStringOption(var option){
-    if(selectedStringOption.contains(option.toString())){
+
+  addStringOption(var option) {
+    if (selectedStringOption.contains(option.toString())) {
       selectedStringOption.remove(option);
       update();
-    }else{
+    } else {
       selectedStringOption.add(option);
       update();
     }
   }
+
   void changeTypeViewLVGV() {
     isListView = !isListView!;
     update();
   }
 
-  void addNewSealsOrder( Box box, String fullAddress, String type, var date) async{
-    var order = Order(
-      itemCode: box.id,
-      deliveryDate: date,
-      groupId: int.tryParse(box.serialNo.toString()),
-      itemParent: int.tryParse(box.serialNo.toString()),
-      needAdviser: 0,
-      qty:0,
-      storageType: type,
-      subscription: "",
-      subscriptionDuration: 0,
-      subscriptionPrice: 0,
-    );
-    var newSalesOrder = NewSalesOrder(salesOrder: [SalesOrderElement(type:type ,address:fullAddress ,order: [order])] );
-   Map<String , dynamic> map = {
-     "sales_order":jsonEncode([newSalesOrder.toJson()["sales_order"]])
-   };
-    await OrderHelper.getInstance.newSalesOrder(body:map).then((value) {
+  void addNewSealsOrder(Box box, String fullAddress, String type, var date, {String? itemCode}) async {
+    List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
+    Logger().d("item_code = $type , serialNo = ${box.serialNo} , saleOrder = ${box.saleOrder}, \n  ${box.toString()}" );
+   //todo item_code == recall id
+   //todo storage_type ==  we not need in recall
+   //todo storage_child_in ==  list of box
+    Map<String, dynamic> orderItem = {
+      "order[0]": [
+        {
+          "item_code": "${box.storageName} $itemCode",
+          "qty": 1,
+          "delivery_date": "$date",
+          "subscription": "Daily",
+          "subscription_duration": 10,
+          "subscription_price": 0,
+          "group_id": 1,
+           "storage_type": "$type",
+          "item_parent": 0,
+          "need_adviser": 0,
+          "storage_child_in":[{"storage":"${box.serialNo}"}]
+        }
+      ],
+      "type[0]": "$itemCode",//New Storage
+      "address[0]": "$fullAddress"
+    };
+    mapSalesOrder.add(orderItem);
+    Map<String, dynamic> map = {
+      "sales_order":jsonEncode(mapSalesOrder)
+    };
+    await OrderHelper.getInstance.newSalesOrder(body: map).then((value) {
       Logger().d(value.toJson());
     });
   }

@@ -15,6 +15,7 @@ import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -24,14 +25,16 @@ import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 import '../../custome_text_view.dart';
+import 'selected_item_bottom_sheet.dart';
 
 
 
 class RecallStorageSheet extends StatelessWidget {
-  const RecallStorageSheet({Key? key, required this.box,this.index }) : super(key: key);
+  const RecallStorageSheet({Key? key, required this.box,this.index, this.isUserSelectItem = false,  }) : super(key: key);
 
   final Box box;
   final int? index;
+  final bool? isUserSelectItem;
   static HomeViewModel _homeViewModel = Get.find<HomeViewModel>();
   static StorageViewModel _storageViewModel = Get.find<StorageViewModel>();
 
@@ -65,6 +68,7 @@ class RecallStorageSheet extends StatelessWidget {
   ///option
   ///to do  وبعدها الدفع
 
+  ///todo if !isUserSelectItem here we will show bottom sheet with  [bring the box , add to cart]
   Widget get actionBtn =>  Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -76,7 +80,7 @@ class RecallStorageSheet extends StatelessWidget {
           isExpanded: true,
           isLoading: false,
           onClicked: onClickBreakSeal,
-          textButton: "${tr.yes_break_the_seal}",
+          textButton:!isUserSelectItem! ?"${tr.bring_the_box}" : "${tr.yes_break_the_seal}",
         ),
       ),
       SizedBox(
@@ -86,7 +90,7 @@ class RecallStorageSheet extends StatelessWidget {
         child: SizedBox(
           width: double.infinity,
           child: SeconderyFormButton(
-            buttonText: "${tr.no_bring_the_box}",
+            buttonText:!isUserSelectItem!? "${tr.add_to_cart}":"${tr.no_bring_the_box}",
             onClicked: onClickBringBox,
           ),
         ),
@@ -224,12 +228,29 @@ class RecallStorageSheet extends StatelessWidget {
   }
 
   onClickBreakSeal() {
-    Get.back();
-    Get.to(FilterItemScreen(title: "${tr.filter_by_name}", box: box,serail: box.serialNo,));
+    if(!isUserSelectItem!){
+      //todo  [bring the box ]
+      Get.back();
+      Get.bottomSheet(RecallBoxProcessSheet(box: box), isScrollControlled: true);
+    }else{
+      //todo  [BreakSeal ]
+      Get.back();
+      //todo change with bottom sheet item & qty
+      Get.bottomSheet(SelectedItemBottomSheet(box: box), isScrollControlled: true);
+      //Get.to(FilterItemScreen(title: "${tr.filter_by_name}", box: box,serail: box.serialNo,));
+    }
+
   }
 
   onClickBringBox() {
-    Get.back();
-    Get.bottomSheet(RecallBoxProcessSheet(box: box) ,isScrollControlled: true);
+
+    if(!isUserSelectItem!){
+      //todo  [ add to cart ]
+      Get.back();
+    }else {
+      //todo  [BringBox ]
+      Get.back();
+      Get.bottomSheet(RecallBoxProcessSheet(box: box), isScrollControlled: true);
+    }
   }
 }

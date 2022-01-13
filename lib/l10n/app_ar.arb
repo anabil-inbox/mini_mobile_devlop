@@ -170,5 +170,8 @@
       "other_services_eparately":"سيتم فرض رسوم على الخدمات الأخرى بشكل منفصل",
       "redeem_points":"استبدال نقاطي",
        "points":"نقاط",
-       "submit":"تسليم"
+       "submit":"تسليم",
+       "bring_the_box":"احضر البوكس",
+       "fetch_item":"إحضار العنصر",
+       "select_item_photo":"حدد صورة العنصر"
 }

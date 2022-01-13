@@ -172,5 +172,8 @@
     "other_services_eparately":"Other services will be charged separately",
     "redeem_points":"Redeem my points",
     "points":"points",
-    "submit":"Submit"
+    "submit":"Submit",
+    "bring_the_box":"Bring the Box",
+    "fetch_item":"Fetch Item",
+    "select_item_photo":"Select item photo"
 }

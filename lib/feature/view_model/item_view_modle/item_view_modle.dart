@@ -436,7 +436,7 @@ class ItemViewModle extends BaseController {
         if (boxItem.itemGallery!.isNotEmpty) {
       strToShare += '\n Item Attachment :';
       for (var item in boxItem.itemGallery!) {
-        strToShare += '\n ${ConstanceNetwork.imageUrl + item["attachment"]}';
+        strToShare += '\n ${ConstanceNetwork.imageUrl + item.attachment!}';
       }
     }
     try {
@@ -491,12 +491,12 @@ class ItemViewModle extends BaseController {
   }
 
   //todo this for add single item to selected List item
-  addIndexToList(var index) {
-    if (listIndexSelected.contains(index)) {
-      listIndexSelected.remove(index);
+  addIndexToList(var itemName) {
+    if (listIndexSelected.contains(itemName)) {
+      listIndexSelected.remove(itemName);
       update();
     } else {
-      listIndexSelected.add(index);
+      listIndexSelected.add(itemName);
       update();
     }
   }

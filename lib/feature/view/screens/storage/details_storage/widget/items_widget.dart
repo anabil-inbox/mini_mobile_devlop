@@ -52,8 +52,8 @@ class ItemsWidget extends StatelessWidget {
                 child: TextButton(
                   onPressed: onCheckItem ?? () {},
                   child: logic.listIndexSelected
-                              .contains(boxItem?.itemName ?? "") ||
-                          logic.isSelectAllClick
+                              .contains(boxItem?.itemName ?? "")/* ||
+                          logic.isSelectAllClick*/
                       ? SvgPicture.asset("assets/svgs/storage_check_active.svg")
                       : SvgPicture.asset(
                           "assets/svgs/storage_check_deactive.svg"),
@@ -67,8 +67,7 @@ class ItemsWidget extends StatelessWidget {
                   url: (GetUtils.isNull(boxItem!.itemGallery) ||
                           boxItem!.itemGallery!.isEmpty)
                       ? urlPlacholder
-                      : ConstanceNetwork.imageUrl +
-                          boxItem?.itemGallery?[0]["attachment"],
+                      : "${ConstanceNetwork.imageUrl}${(boxItem?.itemGallery?[0].attachment ?? urlPlacholder)}",
                   height: sizeH48,
                   width: sizeW45,
                   fit: BoxFit.contain),

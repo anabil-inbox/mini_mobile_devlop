@@ -70,6 +70,7 @@ class HomeGVItemWidget extends StatelessWidget {
                 message: "${box.serialNo}",
                 child: TextButton(
                   onPressed: () {
+
                     Get.bottomSheet(
                       NotifayForNewStorage(box: box),
                       isScrollControlled: true

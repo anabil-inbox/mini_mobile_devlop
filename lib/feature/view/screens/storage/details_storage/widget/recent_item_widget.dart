@@ -55,7 +55,7 @@ class RecentlyItemWidget extends StatelessWidget {
                     child: imageNetwork(
                         url: (GetUtils.isNull(boxItem!.itemGallery) || boxItem!.itemGallery!.isEmpty)
                             ? urlPlacholder
-                            : ConstanceNetwork.imageUrl + boxItem?.itemGallery?[0]["attachment"],
+                            : "${ConstanceNetwork.imageUrl}${(boxItem?.itemGallery?[0].attachment ?? urlPlacholder)}",
                         height: sizeH85,
                         width: sizeW85,
                         fit: BoxFit.contain),

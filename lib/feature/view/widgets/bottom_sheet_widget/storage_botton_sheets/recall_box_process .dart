@@ -13,6 +13,7 @@ import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/a
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/options_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/pickup_address_item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/schedule_pickup_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_payment_widaget.dart';
 import 'package:inbox_clients/feature/view/widgets/option_item_string.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
@@ -23,6 +24,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:logger/logger.dart';
@@ -296,18 +298,20 @@ class RecallBoxProcessSheet extends StatelessWidget {
   }
 
   onClickBreakSeal() {
-    Get.back();
-    try {
-      var addressTitle = "${_storageViewModel.selectedStore?.addresses?.first.addressTitle??_storageViewModel.selectedAddress?.addressTitle}";
-      var buildingNo = "${_storageViewModel.selectedStore?.addresses?.first.buildingNo??_storageViewModel.selectedAddress?.buildingNo}";
-      var geoAddress = "${_storageViewModel.selectedStore?.addresses?.first.geoAddress??_storageViewModel.selectedAddress?.geoAddress}";
-      String fullAddress = "$addressTitle,$buildingNo,$geoAddress";
-      String type = "${box.saleOrder}";
-      var date = _storageViewModel.selectedDateTime;
-      _storageViewModel.addNewSealsOrder( box , fullAddress ,type,date);
-    } catch (e) {
-      Logger().d(e);
-    }
+     Get.back();
+     Get.bottomSheet( BottomSheetPaymentWidget(), isScrollControlled: true);
+    // try {
+    //   var addressTitle = "${_storageViewModel.selectedStore?.addresses?.first.addressTitle??_storageViewModel.selectedAddress?.addressTitle}";
+    //   var buildingNo = "${_storageViewModel.selectedStore?.addresses?.first.buildingNo??_storageViewModel.selectedAddress?.buildingNo}";
+    //   var geoAddress = "${_storageViewModel.selectedStore?.addresses?.first.geoAddress??_storageViewModel.selectedAddress?.geoAddress}";
+    //   String fullAddress = "$addressTitle,$buildingNo,$geoAddress";
+    //   String type = "${box.saleOrder}";
+    //   var date = _storageViewModel.selectedDateTime;
+    //   _storageViewModel.addNewSealsOrder( box , fullAddress ,type,date , itemCode:LocalConstance.recallId);
+    // } catch (e) {
+    //   Logger().d(e);
+    // }
+
   }
 
   onClickBringBox() {

@@ -1,4 +1,5 @@
 import 'package:inbox_clients/feature/model/address_modle.dart';
+import 'package:logger/logger.dart';
 
 class Box {
   Box(
@@ -34,7 +35,8 @@ class Box {
         saleOrder: json["sale_order"],
         storageStatus: json["storage_status"],
         enabled: json["enabled"],
-        modified: json["modified"] == null ? null : DateTime.parse(json["modified"]),
+        modified:
+            json["modified"] == null ? null : DateTime.parse(json["modified"]),
         address:
             json["address"] == null ? null : Address.fromJson(json["address"]),
         options: json["options"] == null
@@ -56,9 +58,9 @@ class Box {
         "storage_status": storageStatus,
         "enabled": enabled,
         "modified": modified?.toIso8601String(),
-       "tags": List<dynamic>.from(tags!.map((x) => x)),
-       "options": List<String>.from(options!.map((e) => e)),
-       "items": List<dynamic>.from(items!.map((x) => x.toJson())),
+        "tags": List<dynamic>.from(tags!.map((x) => x)),
+        "options": List<String>.from(options!.map((e) => e)),
+        "items": List<dynamic>.from(items!.map((x) => x.toJson())),
       };
 
   @override
@@ -67,7 +69,7 @@ class Box {
       other is Box && runtimeType == other.runtimeType && id == other.id;
 
   @override
- int get hashCode => id.hashCode;
+  int get hashCode => id.hashCode;
 
   @override
   String toString() {
@@ -86,29 +88,65 @@ class BoxItem {
   String? itemName;
   String? itemQuantity;
   String? id;
-  List<dynamic>? itemGallery;
+  List<Attachment>? itemGallery;
   List<ItemTag>? itemTags;
 
-  factory BoxItem.fromJson(Map<String, dynamic> json) => BoxItem(
+  factory BoxItem.fromJson(Map<String, dynamic> json) {
+    return BoxItem(
         itemName: json["item_name"],
         itemQuantity: json["item_quantity"],
         id: json["id"],
         itemGallery: json["item_gallery"] == null
             ? []
-            : List<dynamic>.from(json["item_gallery"].map((x) => x)),
+            : List<Attachment>.from(json["item_gallery"].map((x) => Attachment.fromJson(x))),
         itemTags: json["item_tags"] == null
             ? []
             : List<ItemTag>.from(
                 json["item_tags"].map((x) => ItemTag.fromJson(x))),
       );
+  }
 
   Map<String, dynamic> toJson() => {
         "item_name": itemName,
         "item_quantity": itemQuantity,
         "id": id,
-        "item_gallery": List<dynamic>.from(itemGallery!.map((x) => x)),
+        "item_gallery": List<dynamic>.from(itemGallery!.map((x) => x.toJson())),
         "item_tags": List<dynamic>.from(itemTags!.map((x) => x.toJson())),
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BoxItem &&
+          runtimeType == other.runtimeType &&
+          itemName == other.itemName;
+
+  @override
+  int get hashCode => itemName.hashCode;
+}
+
+class Attachment {
+  Attachment({this.type, this.attachment, this.enabled});
+
+  String? attachment;
+  int? enabled;
+  String? type;
+
+  factory Attachment.fromJson(Map<String, dynamic> json) {
+    try {
+      return Attachment(
+            attachment:json["attachment"] == null ? null: json["attachment"],
+            enabled:json["enabled"] == null ? null: json["enabled"],
+            type:json["type"] == null ? null: json["type"]);
+    } catch (e) {
+      print(e);
+      Logger().d(e);
+      return Attachment.fromJson({});
+    }
+  }
+
+  Map<String, dynamic> toJson() =>
+      {"attachment": attachment, "enabled": enabled, "type": type};
 }
 
 // class ReciveBoxItem {
@@ -143,10 +181,6 @@ class BoxItem {
 //         "item_tags": List<dynamic>.from(itemTags!.map((x) => x.toJson())),
 //       };
 // }
-
-
-
-
 
 class ItemTag {
   ItemTag({

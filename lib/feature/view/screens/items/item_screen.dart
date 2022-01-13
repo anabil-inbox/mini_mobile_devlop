@@ -400,20 +400,21 @@ class _ItemScreenState extends State<ItemScreen> {
   }
 
   onGrayBtnClick() {
-    Get.bottomSheet(GiveawayBoxProcessSheet(box: widget.box),
+    Get.bottomSheet(GiveawayBoxProcessSheet(box: itemViewModle.operationsBox??  widget.box),
         isScrollControlled: true);
   }
 
   onRedBtnClick() {
     if (widget.box.storageStatus == LocalConstance.boxAtHome) {
       //todo this if pickup
-      Get.bottomSheet(RecallBoxProcessSheet(box: widget.box),
+      Get.bottomSheet(RecallBoxProcessSheet(box: itemViewModle.operationsBox??  widget.box),
           isScrollControlled: true);
     } else {
       //todo this if recall
       // Get.bottomSheet(RecallBoxProcessSheet(box: widget.box),
       //     isScrollControlled: true);
-      Get.bottomSheet(RecallStorageSheet(box: widget.box),
+      ///todo here we will show bottom sheet with  [bring the box , add to cart]
+      Get.bottomSheet(RecallStorageSheet(box:itemViewModle.operationsBox??  widget.box , isUserSelectItem:false),
           isScrollControlled: true);
     }
   }
@@ -424,7 +425,7 @@ class _ItemScreenState extends State<ItemScreen> {
   }
 
   onShareBoxClick() {
-    itemViewModle.shareBox(box: widget.box);
+    itemViewModle.shareBox(box: itemViewModle.operationsBox??  widget.box);
   }
 }
 

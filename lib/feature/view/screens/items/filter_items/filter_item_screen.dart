@@ -15,6 +15,7 @@ import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.
 import 'package:inbox_clients/feature/view/widgets/appbar/widget/back_btn_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/giveaway_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_items_storage.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
@@ -24,6 +25,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:logger/logger.dart';
 
 // ignore: must_be_immutable
 class FilterItemScreen extends StatefulWidget {
@@ -92,7 +94,17 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
                     width: sizeW40,
                     child: TextButton(
                       onPressed: () {
+                        Logger().d("onCheck all Selected");
                          itemViewModle.isSelectAllClick = !itemViewModle.isSelectAllClick;
+                         if(!itemViewModle.isSelectAllClick) {
+                           itemViewModle.listIndexSelected.clear();
+                         }else{
+                           if(itemViewModle.operationsBox?.items != null){
+                             itemViewModle.operationsBox?.items?.forEach((element) {
+                               itemViewModle.listIndexSelected.add("${element.itemName}");
+                             });
+                           }
+                         }
                         itemViewModle.update();
                       },
                       child: (itemViewModle.isSelectAllClick ||
@@ -116,8 +128,7 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
       );
 
   //todo this for search
-  Widget get searchWidget =>
-      CustomTextFormFiled(
+  Widget get searchWidget => CustomTextFormFiled(
         iconSize: sizeRadius20,
         maxLine: Constance.maxLineOne,
         icon: Icons.search,
@@ -266,11 +277,11 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
    onRedBtnClick() {
      if (widget.box.storageStatus == LocalConstance.boxAtHome) {
        //todo this if pickup
-       Get.bottomSheet(RecallBoxProcessSheet(box: widget.box),
+       Get.bottomSheet(RecallBoxProcessSheet(box: widget.box ,),
            isScrollControlled: true);
      } else {
        //todo this if recall
-       Get.bottomSheet(RecallBoxProcessSheet(box: widget.box),
+       Get.bottomSheet(RecallStorageSheet(box:itemViewModle.operationsBox?? widget.box ,isUserSelectItem: itemViewModle.listIndexSelected.isEmpty ? false:true,),
            isScrollControlled: true);
        // Get.bottomSheet(RecallStorageSheet(box: widget.box),
        //     isScrollControlled: true);

@@ -141,7 +141,7 @@ class AddItemWidget extends StatelessWidget {
                                       .map((e) => PhotoItem(
                                             img: null,
                                             isFromLocal: false,
-                                            url: e["attachment"],
+                                            url: e.attachment,
                                           ))
                                       .toList(),
                                 ),
