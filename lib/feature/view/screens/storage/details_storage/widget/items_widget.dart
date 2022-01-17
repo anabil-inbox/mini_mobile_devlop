@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
-import 'package:inbox_clients/feature/view/screens/items/widgets/add_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
-import 'package:inbox_clients/feature/view/widgets/icon_btn.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -12,6 +10,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 class ItemsWidget extends StatelessWidget {
@@ -55,8 +54,7 @@ class ItemsWidget extends StatelessWidget {
                               .contains(boxItem?.itemName ?? "")/* ||
                           logic.isSelectAllClick*/
                       ? SvgPicture.asset("assets/svgs/storage_check_active.svg")
-                      : SvgPicture.asset(
-                          "assets/svgs/storage_check_deactive.svg"),
+                      : SvgPicture.asset("assets/svgs/storage_check_deactive.svg"),
                 ),
               )
             else
@@ -70,7 +68,7 @@ class ItemsWidget extends StatelessWidget {
                       : "${ConstanceNetwork.imageUrl}${(boxItem?.itemGallery?[0].attachment ?? urlPlacholder)}",
                   height: sizeH48,
                   width: sizeW45,
-                  fit: BoxFit.contain),
+                  fit: BoxFit.cover),
             ),
             SizedBox(
               width: sizeW10,
@@ -91,7 +89,7 @@ class ItemsWidget extends StatelessWidget {
                     height: sizeH4,
                   ),
                   CustomTextView(
-                    txt: "Mar 13, 2012",
+                    txt: DateUtility.getChatTime(boxItem!.createdAt.toString()),
                     textStyle: textStyleHint()?.copyWith(
                         fontSize: fontSize12,
                         fontFamily: Constance.Font_regular,
@@ -101,9 +99,10 @@ class ItemsWidget extends StatelessWidget {
                 ],
               ),
             ),
-            logic.isSelectBtnClick!
-                ? const SizedBox()
-                : IconButton(
+            // logic.isSelectBtnClick!
+            //     ? const SizedBox()
+            //     : 
+                IconButton(
                     onPressed: () {
                       itemViewModle.showOptionOperationBottomSheet(
                           box: box, boxItem: boxItem!);

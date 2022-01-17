@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,12 +21,25 @@ import 'feature/view_model/storage_view_model/storage_view_model.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await AppFcm.fcmInstance. init();
+  await AppFcm.fcmInstance.init();
   await SharedPref.instance.init();
   portraitOrientation();
+  HttpOverrides.global = MyHttpOverrides();
   DioManagerClass.getInstance.init();
   runApp(const AppWidget());
 }
+
+  // to do this for handShiking Cetificate :: 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
+
 
 class BindingsController extends Bindings {
   @override
@@ -36,7 +51,9 @@ class BindingsController extends Bindings {
     Get.lazyPut(() => StorageViewModel(), fenix: true);
     Get.lazyPut(() => HomeViewModel());
     Get.lazyPut(() => MyOrderViewModle());
-    Get.lazyPut<ItemViewModle>(() => ItemViewModle(), fenix: true,);
-
+    Get.lazyPut<ItemViewModle>(
+      () => ItemViewModle(),
+      fenix: true,
+    );
   }
 }

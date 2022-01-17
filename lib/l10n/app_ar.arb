@@ -173,5 +173,9 @@
        "submit":"تسليم",
        "bring_the_box":"احضر البوكس",
        "fetch_item":"إحضار العنصر",
-       "select_item_photo":"حدد صورة العنصر"
+       "select_item_photo":"حدد صورة العنصر" ,
+      "name" : "الاسم",
+    "card_number" : "رقم البطاقة",
+    "expiry_date" : "تاريخ الانتهاء",
+    "add_new_card":"اضافة بطاقة جديدة"
 }

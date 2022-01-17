@@ -1,27 +1,20 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
-import 'package:inbox_clients/feature/view/screens/items/filter_items/filter_item_screen.dart';
-import 'package:inbox_clients/feature/view/screens/items/widgets/schedule_widget.dart';
-import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/schedule_pickup_widget.dart';
+import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
-import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
-import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 import '../../custome_text_view.dart';
@@ -30,14 +23,15 @@ import 'selected_item_bottom_sheet.dart';
 
 
 class RecallStorageSheet extends StatelessWidget {
-  const RecallStorageSheet({Key? key, required this.box,this.index, this.isUserSelectItem = false,  }) : super(key: key);
+  const RecallStorageSheet({Key? key, required this.box,this.index, this.isUserSelectItem = false , required this.task}) : super(key: key);
 
   final Box box;
   final int? index;
   final bool? isUserSelectItem;
   static HomeViewModel _homeViewModel = Get.find<HomeViewModel>();
   static StorageViewModel _storageViewModel = Get.find<StorageViewModel>();
-
+  final Task task;
+  
   ///   todo at home = pick up
   ///   todo at where house  = recall => fetch
   ///todo 1-	Pick up
@@ -231,7 +225,7 @@ class RecallStorageSheet extends StatelessWidget {
     if(!isUserSelectItem!){
       //todo  [bring the box ]
       Get.back();
-      Get.bottomSheet(RecallBoxProcessSheet(box: box), isScrollControlled: true);
+      Get.bottomSheet(RecallBoxProcessSheet(box: box , task: task,), isScrollControlled: true);
     }else{
       //todo  [BreakSeal ]
       Get.back();
@@ -250,7 +244,7 @@ class RecallStorageSheet extends StatelessWidget {
     }else {
       //todo  [BringBox ]
       Get.back();
-      Get.bottomSheet(RecallBoxProcessSheet(box: box), isScrollControlled: true);
+      Get.bottomSheet(RecallBoxProcessSheet(box: box , task: task), isScrollControlled: true);
     }
   }
 }

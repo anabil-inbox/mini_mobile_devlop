@@ -83,33 +83,38 @@ class BoxItem {
       this.itemQuantity,
       this.itemGallery,
       this.itemTags,
+      this.createdAt,
       this.id});
 
   String? itemName;
   String? itemQuantity;
   String? id;
+  String? createdAt;
   List<Attachment>? itemGallery;
   List<ItemTag>? itemTags;
 
   factory BoxItem.fromJson(Map<String, dynamic> json) {
     return BoxItem(
-        itemName: json["item_name"],
-        itemQuantity: json["item_quantity"],
-        id: json["id"],
-        itemGallery: json["item_gallery"] == null
-            ? []
-            : List<Attachment>.from(json["item_gallery"].map((x) => Attachment.fromJson(x))),
-        itemTags: json["item_tags"] == null
-            ? []
-            : List<ItemTag>.from(
-                json["item_tags"].map((x) => ItemTag.fromJson(x))),
-      );
+      itemName: json["item_name"],
+      itemQuantity: json["item_quantity"],
+      id: json["id"],
+      createdAt: json["created_at"],
+      itemGallery: json["item_gallery"] == null
+          ? []
+          : List<Attachment>.from(
+              json["item_gallery"].map((x) => Attachment.fromJson(x))),
+      itemTags: json["item_tags"] == null
+          ? []
+          : List<ItemTag>.from(
+              json["item_tags"].map((x) => ItemTag.fromJson(x))),
+    );
   }
 
   Map<String, dynamic> toJson() => {
         "item_name": itemName,
         "item_quantity": itemQuantity,
         "id": id,
+        "created_at": createdAt,
         "item_gallery": List<dynamic>.from(itemGallery!.map((x) => x.toJson())),
         "item_tags": List<dynamic>.from(itemTags!.map((x) => x.toJson())),
       };
@@ -135,9 +140,9 @@ class Attachment {
   factory Attachment.fromJson(Map<String, dynamic> json) {
     try {
       return Attachment(
-            attachment:json["attachment"] == null ? null: json["attachment"],
-            enabled:json["enabled"] == null ? null: json["enabled"],
-            type:json["type"] == null ? null: json["type"]);
+          attachment: json["attachment"] == null ? null : json["attachment"],
+          enabled: json["enabled"] == null ? null : json["enabled"],
+          type: json["type"] == null ? null : json["type"]);
     } catch (e) {
       print(e);
       Logger().d(e);

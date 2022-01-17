@@ -175,5 +175,9 @@
     "submit":"Submit",
     "bring_the_box":"Bring the Box",
     "fetch_item":"Fetch Item",
-    "select_item_photo":"Select item photo"
+    "select_item_photo":"Select item photo",
+    "name" : "Name",
+    "card_number" : "Card Number",
+    "expiry_date" : "Expiry Date",
+    "add_new_card":"Add New Card"
 }

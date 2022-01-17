@@ -40,7 +40,7 @@ class PickupAddressItem extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: sizeH22,
+              height: sizeH20,
             ),
             GetBuilder<StorageViewModel>(
               init: StorageViewModel(),
@@ -48,7 +48,9 @@ class PickupAddressItem extends StatelessWidget {
               builder: (_) {
                 return Row(
                   children: [
-                    (store != null && storageViewModel.selectedStore == store) ?SvgPicture.asset("assets/svgs/rec_true.svg") :storageViewModel.selectedAddress == address
+                    (store != null && storageViewModel.selectedStore == store) ?
+                    SvgPicture.asset("assets/svgs/rec_true.svg") :
+                    storageViewModel.selectedAddress == address
                         ? SvgPicture.asset("assets/svgs/rec_true.svg")
                         : SvgPicture.asset("assets/svgs/rec_empty.svg"),
                     SizedBox(
@@ -71,7 +73,7 @@ class PickupAddressItem extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: sizeH17,
+              height: sizeH10,
             ),
             const Divider()
           ],

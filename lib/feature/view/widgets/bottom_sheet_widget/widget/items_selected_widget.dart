@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
-import 'package:inbox_clients/feature/view/screens/items/widgets/add_item_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/qty_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
-import 'package:inbox_clients/feature/view/widgets/icon_btn.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -13,9 +11,6 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
-import 'package:inbox_clients/util/font_dimne.dart';
-import 'package:logger/logger.dart';
-
 class ItemsSelectedWidget extends StatelessWidget {
   const ItemsSelectedWidget({
     Key? key, this.onCheckItem, this.boxItem,

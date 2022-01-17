@@ -26,4 +26,6 @@ class LocalConstance{
   static String newStorageSv = "New Storage_sv";
 
 
+  // to add here constance Price :: 
+  static String qrCoin = "QR";
 }

@@ -10,6 +10,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 class RecentlyItemWidget extends StatelessWidget {
@@ -58,7 +59,9 @@ class RecentlyItemWidget extends StatelessWidget {
                             : "${ConstanceNetwork.imageUrl}${(boxItem?.itemGallery?[0].attachment ?? urlPlacholder)}",
                         height: sizeH85,
                         width: sizeW85,
-                        fit: BoxFit.contain),
+
+                        fit: BoxFit.cover
+                        ),
                   ),
                   SizedBox(
                     height: sizeH10,
@@ -75,7 +78,7 @@ class RecentlyItemWidget extends StatelessWidget {
                     height: sizeH4,
                   ),
                   CustomTextView(
-                    txt: "Mar 13, 2018",
+                    txt: DateUtility.getChatTime(boxItem!.createdAt.toString()),
                     textAlign: TextAlign.center,
                     textStyle: textStyleHint()?.copyWith(
                         fontSize: fontSize12,
