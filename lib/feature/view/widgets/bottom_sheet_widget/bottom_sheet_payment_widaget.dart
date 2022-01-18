@@ -20,9 +20,9 @@ import '../primary_button.dart';
 class BottomSheetPaymentWidget extends StatelessWidget {
   final Task task;
   final Box box;
-  final List<Box>? boxes;
+  final List<Box> boxes;
   const BottomSheetPaymentWidget(
-      {Key? key, required this.task, required this.box , this.boxes})
+      {Key? key, required this.task, required this.box, required this.boxes})
       : super(key: key);
 
   static StorageViewModel storageViewModle = Get.find<StorageViewModel>();
@@ -51,7 +51,10 @@ class BottomSheetPaymentWidget extends StatelessWidget {
             GetBuilder<StorageViewModel>(
               builder: (logic) {
                 return CustomTextView(
-                  txt: logic.calculateTaskPrice(task: task),
+                  txt: boxes.length == 0
+                      ? logic.calculateTaskPriceOnceBox(task: task)
+                      : logic.calculateTaskPriceLotBoxess(
+                          task: task, boxess: boxes),
                   textAlign: TextAlign.center,
                   textStyle: textStyleAppBarTitle()
                       ?.copyWith(fontSize: fontSize28, color: colorPrimary),
@@ -194,7 +197,11 @@ class BottomSheetPaymentWidget extends StatelessWidget {
 
   onClickSubmit() {
     if (storageViewModle.selectedPaymentMethod != null) {
-      storageViewModle.pickupBoxRequest(task: task, box: box);
+      if (boxes.length > 0) {
+        storageViewModle.doTaskBoxRequest(task: task, boxes: boxes);
+      } else {
+        storageViewModle.doTaskBoxRequest(task: task, boxes: [box]);
+      }
     } else {
       snackError(
           "${tr.error_occurred}", "${tr.you_have_to_select_payment_method}");

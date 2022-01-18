@@ -185,13 +185,23 @@ class RecallBoxProcessSheet extends StatelessWidget {
                 ],
               )
             : SizedBox(
-                height: sizeH120,
-                child: ListView(
-                  padding: const EdgeInsets.all(0),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  children:
-                      boxes.map((e) => BoxInSalesOrder(box: e)).toList(),
+                height: sizeH114,
+                child: GetBuilder<HomeViewModel>(
+                  init: HomeViewModel(),
+                  initState: (_) {},
+                  builder: (_) {
+                    return ListView(
+                      padding: const EdgeInsets.all(0),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      children: boxes
+                          .map((e) => BoxInSalesOrder(
+                                box: e,
+                                boxess: boxes,
+                              ))
+                          .toList(),
+                    );
+                  },
                 ),
               ),
       );
