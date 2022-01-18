@@ -291,6 +291,7 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
           .searchTaskById(taskId: LocalConstance.pickupId);
       Get.bottomSheet(
           RecallBoxProcessSheet(
+            boxes: [],
             task: enterdTask,
             box: widget.box,
           ),

@@ -1,12 +1,13 @@
 // ignore_for_file: unused_field
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/box_in_sales_order.dart';
+import 'package:inbox_clients/feature/view/screens/profile/address/add_address.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/pickup_address_item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/schedule_pickup_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_payment_widaget.dart';
@@ -24,16 +25,23 @@ import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:logger/logger.dart';
 
+import '../../secondery_button.dart';
+
 class RecallBoxProcessSheet extends StatelessWidget {
   const RecallBoxProcessSheet(
-      {Key? key, required this.box, this.index, required this.task})
+      {Key? key,
+      required this.box,
+      this.index,
+      required this.task,
+      required this.boxes})
       : super(key: key);
 
-  final Box box;
+  final Box? box;
   final int? index;
   static HomeViewModel _homeViewModel = Get.find<HomeViewModel>();
   static StorageViewModel _storageViewModel = Get.find<StorageViewModel>();
   final Task task;
+  final List<Box> boxes;
 
   Widget get actionBtn => Container(
         margin: EdgeInsets.symmetric(horizontal: sizeW10!),
@@ -145,8 +153,51 @@ class RecallBoxProcessSheet extends StatelessWidget {
           ),
         );
 
+  Widget get headerBox => Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+            color: scaffoldColor,
+            borderRadius: BorderRadius.circular(padding6!)),
+        margin: EdgeInsets.symmetric(horizontal: sizeH10!),
+        padding: EdgeInsets.symmetric(horizontal: sizeH20!),
+        child: boxes.length == 0
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: sizeH22,
+                  ),
+                  SvgPicture.asset("assets/svgs/folder_icon.svg"),
+                  SizedBox(
+                    height: sizeH6,
+                  ),
+                  Text("${box?.storageName}"),
+                  SizedBox(
+                    height: sizeH2,
+                  ),
+                  Text(
+                    "${box?.storageStatus}",
+                    style: textStyleHints()!.copyWith(fontSize: fontSize13),
+                  ),
+                  SizedBox(
+                    height: sizeH20,
+                  ),
+                ],
+              )
+            : SizedBox(
+                height: sizeH120,
+                child: ListView(
+                  padding: const EdgeInsets.all(0),
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  children:
+                      boxes.map((e) => BoxInSalesOrder(box: e)).toList(),
+                ),
+              ),
+      );
   @override
   Widget build(BuildContext context) {
+    print("msg_boxess_length ${boxes.length}");
     return Container(
       padding: EdgeInsets.symmetric(horizontal: sizeW15!),
       clipBehavior: Clip.hardEdge,
@@ -167,37 +218,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
             SizedBox(
               height: sizeH30,
             ),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: scaffoldColor,
-                  borderRadius: BorderRadius.circular(padding6!)),
-              margin: EdgeInsets.symmetric(horizontal: sizeH10!),
-              padding: EdgeInsets.symmetric(horizontal: sizeH20!),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: sizeH22,
-                  ),
-                  SvgPicture.asset("assets/svgs/folder_icon.svg"),
-                  SizedBox(
-                    height: sizeH6,
-                  ),
-                  Text("${box.storageName}"),
-                  SizedBox(
-                    height: sizeH2,
-                  ),
-                  Text(
-                    "${box.storageStatus}",
-                    style: textStyleHints()!.copyWith(fontSize: fontSize13),
-                  ),
-                  SizedBox(
-                    height: sizeH20,
-                  ),
-                ],
-              ),
-            ),
+            headerBox,
             SizedBox(
               height: sizeH16,
             ),
@@ -291,6 +312,34 @@ class RecallBoxProcessSheet extends StatelessWidget {
             SizedBox(
               height: sizeH20,
             ),
+            SeconderyButtom(
+                textButton: "${tr.add_new_address}",
+                onClicked: () {
+                  Get.to(() => AddAddressScreen());
+                }),
+            SizedBox(
+              height: sizeH16,
+            ),
+            TextFormField(
+              minLines: 4,
+              maxLines: 4,
+              decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: colorHint2.withOpacity(0.2),
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: colorHint2.withOpacity(0.2),
+                    ),
+                  ),
+                  labelText: "Notes"),
+            ),
+            SizedBox(
+              height: sizeH16,
+            ),
+
             actionBtn,
             SizedBox(
               height: padding32,
@@ -306,7 +355,8 @@ class RecallBoxProcessSheet extends StatelessWidget {
       Get.back();
       Get.bottomSheet(
           BottomSheetPaymentWidget(
-            box: box,
+            boxes: boxes,
+            box: box!,
             task: task,
           ),
           isScrollControlled: true);

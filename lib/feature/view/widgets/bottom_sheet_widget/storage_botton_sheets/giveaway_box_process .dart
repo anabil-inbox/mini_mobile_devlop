@@ -192,7 +192,6 @@ class GiveawayBoxProcessSheet extends StatelessWidget {
 
   onClickAddToCart() {
     Get.back();
-
   }
 
   onClickGiveaway() {

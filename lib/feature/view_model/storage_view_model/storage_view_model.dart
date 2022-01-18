@@ -1408,9 +1408,7 @@ class StorageViewModel extends BaseController {
         "order_to": "${selectedDay?.to}",
         "order_from": "${selectedDay?.from}",
         "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
-        "storage_child_in": [
-          {"storage": "${box.serialNo}"}
-        ]
+        "storage_child_in": "${box.serialNo}"
       }
     ];
     // map["address[0]"] = selectedStore!.id;

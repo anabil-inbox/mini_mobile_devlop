@@ -20,8 +20,9 @@ import '../primary_button.dart';
 class BottomSheetPaymentWidget extends StatelessWidget {
   final Task task;
   final Box box;
+  final List<Box>? boxes;
   const BottomSheetPaymentWidget(
-      {Key? key, required this.task, required this.box})
+      {Key? key, required this.task, required this.box , this.boxes})
       : super(key: key);
 
   static StorageViewModel storageViewModle = Get.find<StorageViewModel>();
