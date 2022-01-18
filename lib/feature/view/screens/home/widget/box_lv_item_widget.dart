@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/notifay_for_new_storage.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -61,7 +63,12 @@ class HomeLVItemWidget extends StatelessWidget {
             child: Tooltip(
               message: "${box.serialNo}",
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.bottomSheet(
+                      NotifayForNewStorage(box: box),
+                      isScrollControlled: true
+                  );
+                },
                 child: SvgPicture.asset("assets/svgs/InfoCircle.svg"),
               ),
             ),

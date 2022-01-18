@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:image/image.dart' as Img;
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
+import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/language_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
@@ -234,7 +235,7 @@ Widget imageNetwork({double? width, double? height, String? url, BoxFit? fit}) {
           // border: Border.all(color: colorBorderLight),
           image: DecorationImage(
             image: CachedNetworkImageProvider(url ?? urlUserPlacholder!),
-            fit: BoxFit.contain,
+            fit: fit ?? BoxFit.contain,
           ),
         ),
       );
@@ -678,6 +679,17 @@ Widget retuenBoxByStatus({required String storageStatus}) {
   //   ));
   // }
 
+String getPriceWithFormate({required num price}){
+  final numberFormatter = NumberFormat("###.00#", "en_US");
+  final num initNumber = 0.00;
+  print("getting Price ${numberFormatter.format(initNumber + price)}");
+  return "${numberFormatter.format(initNumber + price)}" + " ${LocalConstance.qrCoin}";
+}
 
 
 AppLocalizations get tr => AppLocalizations.of(Get.context!)!;
+
+List<PaymentMethod> getPaymentMethod(){
+  List<PaymentMethod> list = ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting())).paymentMethod ?? [];
+  return list;
+}

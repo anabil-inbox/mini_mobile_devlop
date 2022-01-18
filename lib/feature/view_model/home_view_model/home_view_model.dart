@@ -13,6 +13,7 @@ import 'package:inbox_clients/network/api/feature/item_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:logger/logger.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -73,7 +74,8 @@ class HomeViewModel extends BaseController {
   Barcode? result;
   QRViewController? controller;
 
-  onQRViewCreated(QRViewController controller, {bool? isFromAtHome, int? index, StorageViewModel? storageViewModel}) {
+  onQRViewCreated(QRViewController controller,
+      {bool? isFromAtHome, int? index, StorageViewModel? storageViewModel}) {
     try {
       this.controller = controller;
 
@@ -82,25 +84,22 @@ class HomeViewModel extends BaseController {
       }).onData((data) async {
         Logger().i(data.code);
         Logger().i("Serial ${data.code}");
-        if(isFromAtHome!)
-        {
+        if (isFromAtHome!) {
           controller.dispose();
-          await fromAtHome(data.code , index , storageViewModel);
+          await fromAtHome(data.code, index, storageViewModel);
+        } else {
+          await getBoxBySerial(serial: data.code ?? "").then((value) => {
+                if (value.id == null)
+                  {Get.off(() => HomePageHolder())}
+                else
+                  {
+                    Get.off(() => HomePageHolder(
+                          box: value,
+                          isFromScan: true,
+                        ))
+                  }
+              });
         }
-        else
-         {
-           await getBoxBySerial(serial: data.code ?? "").then((value) => {
-             if (value.id == null)
-               {Get.off(() => HomePageHolder())}
-             else
-               {
-                 Get.off(() => HomePageHolder(
-                   box: value,
-                   isFromScan: true,
-                 ))
-               }
-           });
-         }
       });
     } catch (e) {
       Logger().e("$e");
@@ -179,7 +178,9 @@ class HomeViewModel extends BaseController {
           Logger().i("${value.toList().length}"),
           for (var item in value)
             {
-              if (item.id != "Fetch_sv") {tasks.add(item)}
+              if (item.id != LocalConstance.fetchId &&
+                  item.id != LocalConstance.newStorageSv)
+                {tasks.add(item)}
             },
         });
     update();
@@ -194,6 +195,17 @@ class HomeViewModel extends BaseController {
           task: task,
         ),
         isScrollControlled: true);
+  }
+
+  Task searchTaskById({required String taskId}) {
+    Task task = Task();
+    for (var item in tasks) {
+      if (item.id == taskId) {
+        task = item;
+      }
+    }
+
+    return task;
   }
 
   // to change From Grid to List >_<
@@ -257,16 +269,22 @@ class HomeViewModel extends BaseController {
     }
   }
 
-   fromAtHome(String? code, int? index, StorageViewModel? storageViewModel) async{
-    if (code == null)
-    {
+  fromAtHome(
+      String? code, int? index, StorageViewModel? storageViewModel) async {
+    if (code == null) {
       //todo show dialog
-    }
-    else
-    {
-      await storageViewModel?.customerStoragesChangeStatus(code ,index:index , homeViewModel:this);
+    } else {
+      await storageViewModel?.customerStoragesChangeStatus(code,
+          index: index, homeViewModel: this);
       Get.back();
-
     }
   }
+
+  void calculateTaskBalance({required Task task, required Box box}) {
+
+  }
+
+
+
+  
 }

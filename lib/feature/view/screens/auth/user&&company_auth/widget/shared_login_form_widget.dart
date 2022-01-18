@@ -116,7 +116,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                       )
                     : const SizedBox(),
             SizedBox(height: sizeH28),
-            !(GetUtils.isNull(SharedPref.instance.getCurrentUserData().id))
+            !(GetUtils.isNull(SharedPref.instance.getCurrentUserData().id??null))
                 ? Row(
                     children: [
                       GetBuilder<AuthViewModle>(

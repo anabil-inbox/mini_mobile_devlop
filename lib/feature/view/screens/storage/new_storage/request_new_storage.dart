@@ -118,8 +118,7 @@ class _RequestNewStorageScreenState extends State<RequestNewStorageScreen> {
                                   RequestNewStorageScreen
                                       .storageViewModel.currentLevel = 1;
                                   Get.put(ProfileViewModle());
-                                  Get.to(
-                                      () => RequestNewStoragesStepTwoScreen());
+                                  Get.to(() => RequestNewStoragesStepTwoScreen());
                                 }
                               : () {},
                           isExpanded: true),

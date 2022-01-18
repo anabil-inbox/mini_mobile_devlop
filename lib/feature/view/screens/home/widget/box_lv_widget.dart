@@ -17,6 +17,7 @@ class LVWidget extends StatelessWidget {
   const LVWidget({Key? key}) : super(key: key);
 
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+  static ItemViewModle itemViewModel = Get.find<ItemViewModle>();
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +53,9 @@ class LVWidget extends StatelessWidget {
                         isScrollControlled: true
                     );
                   }else{
-                    Get.to(() =>
-                        ItemScreen(box: homeViewModel.userBoxess.toList()[index]));
+                    Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index],getBoxDataMethod: () async{
+                      await itemViewModel.getBoxBySerial(serial: homeViewModel.userBoxess.toList()[index].serialNo!);
+                    },));
                     homeViewModel.update();
                   }
                   // Get.to(() => ItemScreen(

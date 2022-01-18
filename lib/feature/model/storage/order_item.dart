@@ -10,6 +10,11 @@ class OrderItem {
         this.storageType,
         this.itemParent,
         this.needAdviser,
+        this.from,
+        this.to,
+        this.spacex,
+        this.space,
+        this.spacey
     });
 
     String? itemCode;
@@ -22,7 +27,12 @@ class OrderItem {
     String? storageType;
     int? itemParent;
     int? needAdviser;
-
+    String? from;
+    String? to;
+    String? spacex;
+    String? spacey;
+    String? space;
+    
     factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
         itemCode: json["item_code"],
         qty: json["qty"],
@@ -46,6 +56,12 @@ class OrderItem {
         "group_id": groupId,
         "storage_type": storageType == null ? null : storageType,
         "item_parent": itemParent,
+        "order_from" : from,
+        "order_to": to,
+        "order_time" : "$from / $to",
+        "spacex" : spacex,
+        "spacey" : spacey,
+        "space" : int.parse(spacex ?? "0") * int.parse(spacey ?? "0"),
         "need_adviser": needAdviser == null ? null : needAdviser,
     };
 }

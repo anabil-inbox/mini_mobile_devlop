@@ -5,7 +5,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
-import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/pickup_adress_BS.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -15,10 +15,8 @@ import 'package:inbox_clients/util/constance/constance.dart';
 
 import '../box_in_task_widget.dart';
 
-
 class TaskWidgetBS extends StatelessWidget {
-  const TaskWidgetBS({Key? key, required this.task})
-      : super(key: key);
+  const TaskWidgetBS({Key? key, required this.task}) : super(key: key);
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
   final Task task;
 
@@ -63,9 +61,12 @@ class TaskWidgetBS extends StatelessWidget {
                   onClicked: homeViewModel.selctedOperationsBoxess.length > 0
                       ? () {
                           Get.bottomSheet(
-                              PickupAddressBSWidget(
-                                task: task,
-                              ),
+                              RecallBoxProcessSheet(
+                                  box: homeViewModel.selctedOperationsBoxess
+                                      .toList()[0],
+                                  boxes: homeViewModel.selctedOperationsBoxess
+                                      .toList(),
+                                  task: task),
                               isScrollControlled: true);
                         }
                       : () {},

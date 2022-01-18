@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
+import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/my_order/order_sales.dart' as OS;
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
 import 'package:inbox_clients/feature/model/storage/order_item.dart';
@@ -18,18 +20,16 @@ import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bo
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/bulk_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/quantity_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
-import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/network/api/feature/order_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
-import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
-import 'package:inbox_clients/util/string.dart';
 import 'package:logger/logger.dart';
 
 class StorageViewModel extends BaseController {
@@ -37,6 +37,11 @@ class StorageViewModel extends BaseController {
   bool? isSelectBtnClick = false;
   bool? isSelectAllClick = false;
   List<String> listIndexSelected = <String>[];
+
+  //todo this for bottom sheet accept isAccept
+  bool isAccept = false;
+
+  //todo this for bottom sheet accept
 
   //todo this for appbar select btn
 
@@ -62,6 +67,7 @@ class StorageViewModel extends BaseController {
   bool isShowSpaces = false;
 
   bool? isChangeStatusLoading = false;
+
   checkDaplication() {
     if (userStorageCategoriesData.length == 0) {
       isShowAll = true;
@@ -102,8 +108,10 @@ class StorageViewModel extends BaseController {
 
   // Set<StorageFeatures>? selectedStorageFeaturesArray = {};
   Set<StorageItem> selectedStorageItems = {};
+
   //Set<String> lastItems = {};
   Set<StorageFeatures> selectedFeaures = {};
+
   // Function deepEq = const DeepCollectionEquality().equals;
   StorageItem? lastStorageItem;
   Set<StorageItem> arrayLastStorageItem = {};
@@ -325,7 +333,8 @@ class StorageViewModel extends BaseController {
     update();
   }
 
-  void saveStorageDataToArray({required StorageCategoriesData storageCategoriesData,
+  void saveStorageDataToArray(
+      {required StorageCategoriesData storageCategoriesData,
       bool isUpdate = false,
       int? updateIndex}) async {
     if (storageCategoriesData.storageCategoryType ==
@@ -339,7 +348,7 @@ class StorageViewModel extends BaseController {
           ConstanceNetwork.quantityCategoryType) {
         var resQuantity = await checkQuantity(
             boxCheckedId: "${lastStorageItem?.name}", quntity: quantity);
-            
+
         if (resQuantity.data["item"] != null) {
           Quantity q = Quantity.fromJson(resQuantity.data["item"]);
           if (q.quantityStatus == 0) {
@@ -389,7 +398,7 @@ class StorageViewModel extends BaseController {
     tdX.clear();
     tdY.clear();
     tdSearch.clear();
-    
+
     Get.back();
     update();
   }
@@ -537,10 +546,16 @@ class StorageViewModel extends BaseController {
       localBulk.optionStorageItem = null;
 
       update();
+      // storageCategoriesData.storageItem?.forEach((element) {
+      //   if (element.options!.isEmpty &&
+      //       selectedFeaures.isEmpty &&
+      //       element.item == null) {
+      //     localBulk.optionStorageItem = element;
+      //   }
+      // });
+
       storageCategoriesData.storageItem?.forEach((element) {
-        if (element.options!.isEmpty &&
-            selectedFeaures.isEmpty &&
-            element.item == null) {
+        if (element.options!.isEmpty && element.item == null) {
           localBulk.optionStorageItem = element;
         }
       });
@@ -727,8 +742,7 @@ class StorageViewModel extends BaseController {
     bool complete = false;
     await Get.defaultDialog(
         titlePadding: EdgeInsets.all(0),
-
-         title: "${/*tr.amount_of_vacant_boxes_not_enough*/""}",
+        title: "${/*tr.amount_of_vacant_boxes_not_enough*/ ""}",
         middleText: "$message",
         actions: [
           TextButton(
@@ -752,8 +766,7 @@ class StorageViewModel extends BaseController {
 
   Future<void> addNewStorage() async {
     //still this layer will complete when you complete order // refer to =>
-    List<OrderItem> orderIyems = [];
-
+    List<OrderItem> orderItems = [];
     userStorageCategoriesData.forEach((element) {
       OrderItem localOrderItem = OrderItem();
       if (element.storageCategoryType == ConstanceNetwork.itemCategoryType) {
@@ -771,10 +784,14 @@ class StorageViewModel extends BaseController {
               element.numberOfDays! /
               innerElement.quantity!;
           Logger().i("${localOrderItem.toJson()}");
-          print("${orderIyems.length}");
-          orderIyems.add(localOrderItem);
+          print("${orderItems.length}");
+          // localOrderItem.from = selectedDay!.from;
+          // localOrderItem.to = selectedDay!.to;
+          // localOrderItem.spacex = tdX.text;
+          // localOrderItem.spacey = tdY.text;
+          orderItems.add(localOrderItem);
           localOrderItem = OrderItem();
-          print("${orderIyems.length}");
+          print("${orderItems.length}");
         });
 
         if (!GetUtils.isNull(element.localBulk!.optionStorageItem)) {
@@ -787,7 +804,7 @@ class StorageViewModel extends BaseController {
           localOrderItem.storageType = element.storageCategoryType;
           localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
           localOrderItem.itemParent = 0;
-          orderIyems.add(localOrderItem);
+          orderItems.add(localOrderItem);
           localOrderItem = OrderItem();
         }
       } else {
@@ -802,19 +819,31 @@ class StorageViewModel extends BaseController {
         localOrderItem.itemParent = 0;
         localOrderItem.subscriptionPrice =
             element.userPrice! / element.numberOfDays! / element.quantity!;
-        orderIyems.add(localOrderItem);
+        // localOrderItem.from = selectedDay!.from;
+        // localOrderItem.to = selectedDay!.to;
+        // localOrderItem.spacex = tdX.text;
+        // localOrderItem.spacey = tdY.text;
+        orderItems.add(localOrderItem);
         localOrderItem = OrderItem();
       }
     });
     isLoading = true;
     update();
+
+    // Map<String, dynamic> map = {};
+    // map["order[0]"] = jsonEncode(orderItems);
+    // map["type[0]"] = "New Storage_sv";
+    // map["address[0]"] = selectedAddress!.id;
+
     await StorageFeature.getInstance.addNewStorage(body: {
       "shipping_address": "${selectedAddress!.id}",
-      "items_list": jsonEncode(orderIyems),
+      "items_list": jsonEncode(orderItems),
       "order_to": "${selectedDay!.from}",
       "order_from": "${selectedDay!.to}",
       "order_time": "${selectedDay!.from}/${selectedDay!.to}",
-    }).then((value) => {
+    }
+        /*   map*/
+        ).then((value) => {
           if (value.status!.success!)
             {
               isLoading = false,
@@ -837,6 +866,10 @@ class StorageViewModel extends BaseController {
               snackError("${tr.error_occurred}", "${value.status!.message}")
             }
         });
+  }
+
+  void newBoxOperation() {
+    try {} catch (e) {}
   }
 
   // here to getOrderDetailes With Id;
@@ -966,6 +999,7 @@ class StorageViewModel extends BaseController {
       isScrollControlled: true,
     );
   }
+
   // this for payment Selcted::
 
   PaymentMethod? selectedPaymentMethod;
@@ -1075,6 +1109,7 @@ class StorageViewModel extends BaseController {
 
   //---------- to do for new storage Func ---------------
   int currentLevel = 0;
+
   // for bottomSheet Details:
   void detaielsBottomSheet(
       {required StorageCategoriesData storageCategoriesData,
@@ -1196,51 +1231,214 @@ class StorageViewModel extends BaseController {
   @override
   InternalFinalCallback<void> get onDelete;
 
-
   //todo this for customerStoragesChangeStatus api
   //todo i concatenate homeViewModel with storageViewModel
   //todo i get index of list to update it local
-  customerStoragesChangeStatus(var serial,{int? index, HomeViewModel? homeViewModel})async{
-    if(serial == null ){
+  customerStoragesChangeStatus(var serial,
+      {int? index, HomeViewModel? homeViewModel}) async {
+    if (serial == null) {
       Get.back();
       return;
     }
     isChangeStatusLoading = true;
     update();
-    var body = {"${ConstanceNetwork.serial}":"$serial"};
-    await StorageFeature.getInstance.customerStoragesChangeStatus(body:body).then((value) {
-        if(!GetUtils.isNull(value)){
-          if( value.status!.success!){
-            isChangeStatusLoading = false;
-            homeViewModel?.userBoxess.toList()[index!].storageStatus = "${LocalConstance.boxAtHome}";
-            homeViewModel?.update();
-            update();
-            Get.back();
-            Future.delayed(Duration(seconds: 0)).then((value) {
-              Get.bottomSheet(
-                  CheckInBoxWidget(
-                    box: homeViewModel?.userBoxess.toList()[index!],
-                    isUpdate: false,
-                  ),
-                  isScrollControlled: true);
-            });
-
-          }else{
-           snackError(tr.error_occurred, value.status!.message!);
-          }
-        }else{
+    var body = {"${ConstanceNetwork.serial}": "$serial"};
+    await StorageFeature.getInstance
+        .customerStoragesChangeStatus(body: body)
+        .then((value) {
+      if (!GetUtils.isNull(value)) {
+        if (value.status!.success!) {
           isChangeStatusLoading = false;
+          homeViewModel?.userBoxess.toList()[index!].storageStatus =
+              "${LocalConstance.boxAtHome}";
+          homeViewModel?.update();
           update();
+          Get.back();
+          Future.delayed(Duration(seconds: 0)).then((value) {
+            Get.bottomSheet(
+                CheckInBoxWidget(
+                  box: homeViewModel?.userBoxess.toList()[index!],
+                  isUpdate: false,
+                ),
+                isScrollControlled: true);
+          });
+        } else {
+          snackError(tr.error_occurred, value.status!.message!);
         }
-    }).catchError((onError){
+      } else {
+        isChangeStatusLoading = false;
+        update();
+      }
+    }).catchError((onError) {
       Logger().d(onError);
       isChangeStatusLoading = false;
       update();
     });
   }
 
+  List<VAS> selectedStringOption = <VAS>[];
+
+  addStringOption({required VAS vas}) {
+    if (selectedStringOption.contains(vas)) {
+      selectedStringOption.remove(vas);
+      update();
+    } else {
+      selectedStringOption.add(vas);
+      update();
+    }
+  }
+
+  bool searchOperationById({required String vasId}) {
+    for (var item in selectedStringOption) {
+      if (item.id == vasId) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   void changeTypeViewLVGV() {
     isListView = !isListView!;
     update();
+  }
+
+  // start Loaging Function ::
+  void startLoading() {
+    isLoading = true;
+    update();
+  }
+
+  // end Loaging Function ::
+  void endLoading() {
+    isLoading = false;
+    update();
+  }
+
+  void addNewSealsOrder(Box box, String fullAddress, String type, var date,
+      {String? itemCode}) async {
+    List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
+    Logger().d(
+        "item_code = $type , serialNo = ${box.serialNo} , saleOrder = ${box.saleOrder}, \n  ${box.toString()}");
+    //todo item_code == recall id
+    //todo storage_type ==  we not need in recall
+    //todo storage_child_in ==  list of box
+    Map<String, dynamic> orderItem = {
+      "order[0]": [
+        {
+          "item_code": "${box.storageName} $itemCode",
+          "qty": 1,
+          "delivery_date": "$date",
+          "subscription": "Daily",
+          "subscription_duration": 10,
+          "subscription_price": 0,
+          "group_id": 1,
+          "storage_type": "$type",
+          "item_parent": 0,
+          "need_adviser": 0,
+          "storage_child_in": [
+            {"storage": "${box.serialNo}"}
+          ]
+        }
+      ],
+      "type[0]": "$itemCode", //New Storage
+      "address[0]": "$fullAddress"
+    };
+    mapSalesOrder.add(orderItem);
+    Map<String, dynamic> map = {"sales_order": jsonEncode(mapSalesOrder)};
+    await OrderHelper.getInstance.newSalesOrder(body: map).then((value) {
+      Logger().d(value.toJson());
+    });
+  }
+
+  calculateTaskPrice({required Task task}) {
+    num price = 0;
+    if (selectedAddress != null) {
+      for (var item in task.areaZones!) {
+        if (item.id == selectedAddress!.zone) {
+          price += item.price ?? 0;
+          print("options_price ${item.price}");
+        }
+      }
+    }
+
+    for (var item in selectedStringOption) {
+      price += item.price ?? 0;
+      print("area_zone_price ${item.price}");
+    }
+
+    price += task.price!;
+    print("task_price ${task.price!}");
+    print("total_price $price");
+    return getPriceWithFormate(price: price);
+  }
+
+  bool isValidateTask() {
+    if (selectedAddress == null) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
+      return false;
+    } else if (GetUtils.isNull(selectedDateTime)) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_select_date}");
+      return false;
+    } else if (selctedWorksHours!.isEmpty) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_select_time}");
+      return false;
+    } else if (GetUtils.isNull(selectedDay)) {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_select_time}");
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  Future<void> pickupBoxRequest({required Task task, required Box box}) async {
+    startLoading();
+    List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
+    Map<String, dynamic> map = {};
+    if (task.id == LocalConstance.pickupId) {
+      map["type[0]"] = LocalConstance.pickupId;
+    } else if (task.id == LocalConstance.recallId) {
+      map["type[0]"] = LocalConstance.recallId;
+    }
+    map["order[0]"] = [
+      {
+        "item_code": task.id,
+        // "item_code": "",
+        "qty": 1,
+        "delivery_date": "$selectedDateTime",
+        "order_to": "${selectedDay?.to}",
+        "order_from": "${selectedDay?.from}",
+        "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
+        "storage_child_in": "${box.serialNo}"
+      }
+    ];
+    // map["address[0]"] = selectedStore!.id;
+    map["address[0]"] = selectedAddress!.id;
+    mapSalesOrder.add(map);
+    Map<String, dynamic> newMap = {"sales_order": jsonEncode(mapSalesOrder)};
+    await OrderHelper.getInstance.newSalesOrder(body: newMap).then((value) {
+      Logger().d(value.toJson());
+      if (value.status!.success!) {
+        snackSuccess("${tr.success}", value.status!.message!);
+        Get.back();
+        update();
+      } else {
+        snackError("${tr.error_occurred}", value.status!.message!);
+      }
+    });
+    cleanAfterSucces();
+    endLoading();
+  }
+
+  // Future<void> giveawayBoxRequest({required Task task , required Box box}) async{
+  // }
+
+  Future<void> recallBoxRequest({required Task task, required Box box}) async {}
+  cleanAfterSucces() {
+    isAccept = false;
+    selectedPaymentMethod = null;
+    selectedStore = null;
+    selectedAddress = null;
+    selectedDay = null;
+    selectedDateTime = null;
   }
 }

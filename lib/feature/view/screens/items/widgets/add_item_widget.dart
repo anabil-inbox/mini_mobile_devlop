@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/utils.dart';
@@ -141,7 +140,7 @@ class AddItemWidget extends StatelessWidget {
                                       .map((e) => PhotoItem(
                                             img: null,
                                             isFromLocal: false,
-                                            url: e["attachment"],
+                                            url: e.attachment,
                                           ))
                                       .toList(),
                                 ),

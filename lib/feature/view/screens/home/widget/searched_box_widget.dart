@@ -5,12 +5,9 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/search_body_widget.dart';
-import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
-import 'package:inbox_clients/util/app_style.dart';
-import 'package:inbox_clients/util/font_dimne.dart';
 
 class SearchedBoxWidget extends StatelessWidget {
   const SearchedBoxWidget({Key? key}) : super(key: key);

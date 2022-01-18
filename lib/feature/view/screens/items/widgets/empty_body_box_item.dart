@@ -17,7 +17,7 @@ class EmptyBodyBoxItem extends StatelessWidget {
 
   static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
 
-  final Box box;
+  final Box? box;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -56,7 +56,7 @@ class EmptyBodyBoxItem extends StatelessWidget {
                 FloatingActionButton(
                   onPressed: () {
                     itemViewModle.showAddItemBottomSheet(
-                        box: box,);
+                        box: box!,);
                     // Get.bottomSheet(
                     //     AddItemWidget(
                     //       box: box,

@@ -11,6 +11,7 @@ class CartHead extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       decoration: BoxDecoration(
           color: colorBackground,
           borderRadius: BorderRadius.circular(padding6!)),
@@ -21,6 +22,9 @@ class CartHead extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                width: sizeW10,
+              ),
               SvgPicture.asset("assets/svgs/folder_icon.svg"),
               SizedBox(
                 width: sizeW10,
