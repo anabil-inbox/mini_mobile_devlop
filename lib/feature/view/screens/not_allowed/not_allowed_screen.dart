@@ -95,7 +95,9 @@ class NotAllowedScreen extends StatelessWidget {
                         onClicked: () async {
                          // await logic.updateBox(box: box);
                           box.storageName = logic.tdName.text;
-                          Get.off(ItemScreen(box: box));
+                          Get.off(ItemScreen(box: box,getBoxDataMethod: () async{
+                          await logic.getBoxBySerial(serial: box.serialNo!);
+                          },));
                         }, 
                         isExpanded: true);
                   },

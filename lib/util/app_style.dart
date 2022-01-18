@@ -11,21 +11,16 @@ SystemUiOverlayStyle? systemUiOverLayLight() {
       statusBarColor: colorTextWhite, systemNavigationBarColor: colorTextWhite);
 }
 
-  BoxDecoration containerBoxDecoration(){
-    return BoxDecoration(
+BoxDecoration containerBoxDecoration() {
+  return BoxDecoration(
+      color: colorBackground, borderRadius: BorderRadius.circular(padding6!));
+}
+
+BoxDecoration containerBoxDecorationHardEdge() {
+  return BoxDecoration(
       color: colorBackground,
-      borderRadius: BorderRadius.circular(padding6!)
-    );
-  }
-
-  BoxDecoration containerBoxDecorationHardEdge(){
-    return BoxDecoration(
-      color: colorBackground,
-      borderRadius: BorderRadius.vertical(top: Radius.circular(padding30!))
-    );
-  }
-
-
+      borderRadius: BorderRadius.vertical(top: Radius.circular(padding30!)));
+}
 
 TextStyle? textStyle() {
   return TextStyle(
@@ -176,8 +171,6 @@ TextStyle? textStyleNormal() {
       fontFamily: Constance.Font_regular);
 }
 
-
-
 TextStyle? textStyleNormalBlack() {
   return textStyle()?.copyWith(
       color: colorBlack,
@@ -304,12 +297,9 @@ TextStyle? textStylePrimarySmall() {
       color: colorPrimary, fontSize: fontSize15, fontWeight: FontWeight.normal);
 }
 
-TextStyle? textSeconderyButtonUnBold(){
+TextStyle? textSeconderyButtonUnBold() {
   return TextStyle(
-    color: colorPrimary, 
-    fontSize: fontSize14,
-    fontWeight: FontWeight.normal
-  );
+      color: colorPrimary, fontSize: fontSize14, fontWeight: FontWeight.normal);
 }
 
 TextStyle? textStyleHints() {
@@ -320,6 +310,18 @@ TextStyle? textStyleHints() {
 TextStyle? textStyleSkipButton() {
   return TextStyle(
       color: Colors.black, fontSize: fontSize15, fontWeight: FontWeight.normal);
+}
+
+TextStyle textStyleCardPaymentTitle() {
+  return TextStyle(
+      color: colorTextHint1,
+      fontSize: fontSize12,
+      fontWeight: FontWeight.normal);
+}
+
+TextStyle textStyleCardPaymentBody() {
+  return TextStyle(
+      color: colorBlack, fontSize: fontSize15, fontWeight: FontWeight.normal);
 }
 
 BoxShadow? boxShadow() {
@@ -350,9 +352,14 @@ ButtonStyle? get buttonStyle => ButtonStyle(
     shape: MaterialStateProperty.all(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(6))));
 
- ButtonStyle get buttonStyleBackgroundClicable => ButtonStyle(
-     backgroundColor: MaterialStateProperty.all(colorPrimary.withOpacity(0.1)),
- );       
+ButtonStyle get buttonStyleBackgroundClicable => ButtonStyle(
+      backgroundColor: MaterialStateProperty.all(colorPrimary.withOpacity(0.1)),
+    );
+
+ButtonStyle get buttonStyleBackgroundGreen => ButtonStyle(
+      backgroundColor: MaterialStateProperty.all(greenOpcityColor),
+     // textStyle: textStyleHints()
+    );
 
 ButtonStyle? get primaryButtonStyle => ButtonStyle(
     padding:

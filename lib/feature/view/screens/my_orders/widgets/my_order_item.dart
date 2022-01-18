@@ -4,7 +4,9 @@ import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
@@ -18,8 +20,7 @@ class MyOrderItem extends StatelessWidget {
     return InkWell(
       splashColor: colorTrans,
       highlightColor: colorTrans,
-      onTap: () {
-      },
+      onTap: () {},
       child: Column(
         children: [
           Container(
@@ -68,18 +69,31 @@ class MyOrderItem extends StatelessWidget {
                     SizedBox(
                       height: sizeH10,
                     ),
-                    CustomTextView(txt: "${orderSales.totalPrice}  "),
+                    CustomTextView(
+                      txt: "${getPriceWithFormate(price: orderSales.totalPrice ?? 0)} ",
+                      textStyle: textStylePrimarySmall(),
+                    ),
+                    SizedBox(
+                      height: sizeH6,
+                    ),
                     TextButton(
                         clipBehavior: Clip.none,
-                        style: buttonStyleBackgroundClicable,
+                        style: orderSales.status == LocalConstance.orderDraft
+                            ? buttonStyleBackgroundClicable
+                            : buttonStyleBackgroundGreen,
                         onPressed: () {},
                         child: CustomTextView(
                           txt: "${orderSales.status}",
-                          textStyle:
-                              textStyleSmall()?.copyWith(color: colorPrimary),
-                        ))
+                          textStyle: orderSales.status ==
+                                  LocalConstance.orderDraft
+                              ? textStyleSmall()?.copyWith(color: colorPrimary)
+                              : textStyleSmall()?.copyWith(color: colorGreen),
+                        )),
                   ],
                 ),
+                SizedBox(
+                  width: sizeW10,
+                )
               ],
             ),
           ),

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -44,6 +46,14 @@ class ItemViewModle extends BaseController {
   Set<String> usesBoxItemsTags = {};
   List<File> images = [];
   File? itemImage;
+  Box? operationsBox;
+
+  bool isUpdateBoxDetails = false;
+
+  @override
+  onInit() {
+    super.onInit();
+  }
 
   // to update Box Here ::
   Future<void> updateBox({required Box box, required int index}) async {
@@ -360,23 +370,30 @@ class ItemViewModle extends BaseController {
   }
 
   // box Operations Dec ::
-  Box? operationsBox;
+  // Box? operationsBox;
   // to get Box With His Serial No..
   Future<void> getBoxBySerial({required String serial}) async {
-    startLoading();
-    await ItemHelper.getInstance
-        .getBoxBySerial(body: {"serial": serial}).then((value) => {
-              if (value.status!.success!)
-                {
-                  Logger().i("${value.toJson()}"),
-                  operationsBox = Box.fromJson(value.data),
-                }
-              else
-                {
-                  snackError("$error", "${value.status!.message}"),
-                }
-            });
-    endLoading();
+    try {
+      operationsBox = null;
+      startLoading();
+      await ItemHelper.getInstance
+          .getBoxBySerial(body: {"serial": serial}).then((value) => {
+                if (value.status!.success!)
+                  {
+                    Logger().i("${value.toJson()}"),
+                    operationsBox = Box.fromJson(value.data),
+                    endLoading(),
+                  }
+                else
+                  {
+                    snackError("$error", "${value.status!.message}"),
+                  }
+              });
+      endLoading();
+    } catch (e) {
+      Logger().d("${e.toString()}");
+      endLoading();
+    }
   }
 
   // to show Adding item BottomSheet :
@@ -389,32 +406,39 @@ class ItemViewModle extends BaseController {
     );
   }
 
+  changeFlagUpdate(bool isUpdate) {
+    isUpdateBoxDetails = isUpdate;
+    update();
+  }
+
   // to show update Box Bottom Sheet ::
   Future<void> showUpdatBoxBottomSheet(
       {required Box box, required bool isUpdate}) async {
+
+    changeFlagUpdate(isUpdate);
+    tdName.clear();
+    tdName.text = box.storageName ?? "";
     Get.bottomSheet(
         CheckInBoxWidget(
           isUpdate: isUpdate,
           box: box,
         ),
-        isScrollControlled: true);
+        isScrollControlled: true).whenComplete(() => tdName.clear());
   }
 
   Future<void> shareItem({required BoxItem boxItem}) async {
-
-    String strToShare = 'check out my Box Item !' +
-        '\n Item Name : ${boxItem.itemName}' +
+    String strToShare = '\n Item Name : ${boxItem.itemName}' +
         '\n Item Quantity : ${boxItem.itemQuantity} \n';
     if (boxItem.itemTags!.isNotEmpty) {
       strToShare += 'Item Tags : ';
       for (var item in boxItem.itemTags!) {
-        strToShare += '\n ${item.tag ?? ''}';
+        strToShare += '${item.tag ?? ''}';
       }
     }
-        if (boxItem.itemGallery!.isNotEmpty) {
+    if (boxItem.itemGallery!.isNotEmpty) {
       strToShare += '\n Item Attachment :';
       for (var item in boxItem.itemGallery!) {
-        strToShare += '\n ${ConstanceNetwork.imageUrl + item["attachment"]}';
+        strToShare += '\n ${ConstanceNetwork.imageUrl + item.attachment!}';
       }
     }
     try {
@@ -426,11 +450,42 @@ class ItemViewModle extends BaseController {
 
   Future<void> shareBox({required Box box}) async {
     try {
-      Share.share(
-        'check out my Box ! \n' +
-            'Item Name : ${box.storageName}' +
-            '\nQuantity : ${box.options}',
-      );
+      String strToShare = '\n Box Name : ${box.storageName}';
+      if (box.tags!.isNotEmpty) {
+        strToShare += '\n Box Tags : ';
+        for (var item in box.tags!) {
+          strToShare += ' ${item.tag ?? ''} ';
+        }
+      }
+
+      if (box.items!.isNotEmpty) {
+        strToShare += '\n Box Items: ';
+        for (int i = 0; i < box.items!.length; i++) {
+          if (box.items!.isNotEmpty) {
+            strToShare +=
+                '\n  Item [${i + 1}] : \n Item Name : ${box.items![i].itemName}' +
+                    '\n Item Quantity : ${box.items![i].itemQuantity}';
+            if (box.items![i].itemTags!.isNotEmpty) {
+              strToShare += '\n Item Tags : ';
+              for (var item in box.items![i].itemTags!) {
+                strToShare += '${item.tag ?? ''}';
+              }
+            }
+            if (box.items![i].itemGallery!.isNotEmpty) {
+              strToShare += '\n Item Attachment : \n';
+              for (var item in box.items![i].itemGallery!) {
+                strToShare +=
+                    '${ConstanceNetwork.imageUrl + item.attachment!} \n';
+              }
+            } else {
+              strToShare += '\n';
+            }
+          }
+        }
+        strToShare += '\n ';
+      }
+
+      Share.share(strToShare);
     } catch (e) {
       printError();
     }
@@ -469,12 +524,12 @@ class ItemViewModle extends BaseController {
   }
 
   //todo this for add single item to selected List item
-  addIndexToList(var index) {
-    if (listIndexSelected.contains(index)) {
-      listIndexSelected.remove(index);
+  addIndexToList(var itemName) {
+    if (listIndexSelected.contains(itemName)) {
+      listIndexSelected.remove(itemName);
       update();
     } else {
-      listIndexSelected.add(index);
+      listIndexSelected.add(itemName);
       update();
     }
   }

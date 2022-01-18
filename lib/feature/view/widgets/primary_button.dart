@@ -41,6 +41,7 @@ class PrimaryButton extends StatelessWidget {
             ? ThreeSizeDot()
             : Text(
                 "$textButton",
+                textAlign:TextAlign.center ,
                 style: textStylePrimary()!.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: fontSize16,

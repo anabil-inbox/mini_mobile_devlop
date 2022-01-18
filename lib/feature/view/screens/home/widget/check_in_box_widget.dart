@@ -23,6 +23,7 @@ class CheckInBoxWidget extends StatelessWidget {
   static ItemViewModle itemViewModle = Get.put(ItemViewModle());
   HomeViewModel get homeViewModel => Get.find<HomeViewModel>();
   final bool isUpdate;
+
   @override
   Widget build(BuildContext context) {
     return Container(

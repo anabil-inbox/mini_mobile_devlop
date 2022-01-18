@@ -48,10 +48,12 @@ class _HomePageHolderState extends State<HomePageHolder> {
   @override
   void initState() {
     super.initState();
-   Get.put(ProfileViewModle());
+
+    Get.put(ItemViewModle() ,permanent: false);
+    Get.put(ProfileViewModle());
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      Get.put(ItemViewModle());
+      // Get.put(ItemViewModle());
       if (widget.isFromScan ?? false) {
         Get.bottomSheet(
             CheckInBoxWidget(

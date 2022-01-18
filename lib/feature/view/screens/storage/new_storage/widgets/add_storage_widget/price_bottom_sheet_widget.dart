@@ -36,7 +36,7 @@ class PriceBottomSheetWidget extends StatelessWidget {
             height: sizeH10,
           ),
           Text(
-            priceTitle ?? "${tr.price}",
+              priceTitle ?? "${tr.price}",
             style: textStyleSkipButton(),
           ),
           Row(

@@ -23,6 +23,9 @@ class LocalConstance{
   static String giveawayId = "Give Away_sv";
   static String fetchId = "Fetch_sv";
   static String recallId = "Recall_sv";
+  static String newStorageSv = "New Storage_sv";
 
 
+  // to add here constance Price :: 
+  static String qrCoin = "QR";
 }

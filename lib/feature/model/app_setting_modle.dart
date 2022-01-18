@@ -180,19 +180,23 @@ class AreaZone {
   AreaZone({
     this.id,
     this.areaZone,
+    this.price
   });
 
   String? id;
   String? areaZone;
+  num? price;
 
   factory AreaZone.fromJson(Map<String, dynamic> json) => AreaZone(
         id: json["id"] == null ? null : json["id"],
+        price : json["price"] == null ? 0 : json["price"],
         areaZone: json["area_zone"] == null ? null : json["area_zone"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "area_zone": areaZone,
+        "price":price
       };
 }
 
