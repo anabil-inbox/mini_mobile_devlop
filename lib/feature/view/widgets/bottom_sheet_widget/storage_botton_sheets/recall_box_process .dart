@@ -185,13 +185,12 @@ class RecallBoxProcessSheet extends StatelessWidget {
                 ],
               )
             : SizedBox(
-                height: sizeH120,
+                height: sizeH140,
                 child: ListView(
                   padding: const EdgeInsets.all(0),
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  children:
-                      boxes.map((e) => BoxInSalesOrder(box: e)).toList(),
+                  children: boxes.map((e) => BoxInSalesOrder(box: e)).toList(),
                 ),
               ),
       );
