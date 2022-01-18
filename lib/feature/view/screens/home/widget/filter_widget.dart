@@ -5,6 +5,7 @@ import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 
 import 'choice_shape_widget.dart';
 
@@ -47,13 +48,18 @@ class FilterWidget extends StatelessWidget {
                             //reverse: true,
                             scrollDirection: Axis.horizontal,
                             itemCount: logic.tasks.length,
-                            itemBuilder: (context, index) => ChoiceShapeWidget(
-                              onClicked: () {
-                                logic.showTaskBottomSheet(
-                                    task: logic.tasks.toList()[index]);
-                              },
-                              task: logic.tasks.toList()[index],
-                            ),
+                            itemBuilder: (context, index) => logic.tasks
+                                        .toList()[index]
+                                        .id ==
+                                    LocalConstance.fetchId
+                                ? const SizedBox()
+                                : ChoiceShapeWidget(
+                                    onClicked: () {
+                                      logic.showTaskBottomSheet(
+                                          task: logic.tasks.toList()[index]);
+                                    },
+                                    task: logic.tasks.toList()[index],
+                                  ),
                           ),
                         ),
                       );

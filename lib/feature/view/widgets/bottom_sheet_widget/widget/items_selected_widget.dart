@@ -42,7 +42,6 @@ class ItemsSelectedWidget extends StatelessWidget {
            maxLine: Constance.maxLineTwo,
         ),
       ),
-
     ],
   );
   Widget get lvImageSelected => Column(
@@ -92,10 +91,12 @@ class ItemsSelectedWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             itemSelectedName,
             SizedBox(height: sizeH10,),
-            QtyWidget(),
+            QtyWidget(
+              isItemQuantity: true,
+              boxItem: boxItem,
+            ),
             SizedBox(height: sizeH10,),
             lvImageSelected,
             SizedBox(height: sizeH10,),
@@ -123,24 +124,23 @@ class ImageSelectedItem extends StatelessWidget {
               url:  "${ConstanceNetwork.imageUrl}${itemGallery?.attachment??urlPlacholder}",
               height: sizeH80,
               width: sizeW80,
-              fit: BoxFit.contain),
-
-          PositionedDirectional(
-            top: sizeH5,
-            end: sizeW5,
-            width: sizeW36,
-            height: sizeH34,
-            child: TextButton(
-              style: ButtonStyle(padding: MaterialStateProperty.all(EdgeInsets.zero)),
-              onPressed: /*onCheckItem ??*/ () {},
-              child: /*logic.listIndexSelected
-                              .contains(boxItem?.itemName ?? "")*//* ||
-                          logic.isSelectAllClick*//*
-                      ?*/ SvgPicture.asset("assets/svgs/storage_check_active.svg")
-              /*: SvgPicture.asset(
-                          "assets/svgs/storage_check_deactive.svg")*/,
-            ),
-          ),
+              fit: BoxFit.cover),
+          // PositionedDirectional(
+          //   top: sizeH5,
+          //   end: sizeW5,
+          //   width: sizeW36,
+          //   height: sizeH34,
+          //   child: TextButton(
+          //     style: ButtonStyle(padding: MaterialStateProperty.all(EdgeInsets.zero)),
+          //     onPressed: /*onCheckItem ??*/ () {},
+          //     child: /*logic.listIndexSelected
+          //                     .contains(boxItem?.itemName ?? "")*//* ||
+          //                 logic.isSelectAllClick*//*
+          //             ?*/ SvgPicture.asset("assets/svgs/storage_check_active.svg")
+          //     /*: SvgPicture.asset(
+          //                 "assets/svgs/storage_check_deactive.svg")*/,
+          //   ),
+          // ),
         ],
       ),
     );

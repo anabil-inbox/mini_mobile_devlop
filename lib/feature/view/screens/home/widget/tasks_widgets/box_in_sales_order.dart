@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -6,7 +8,7 @@ import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model
 import 'package:inbox_clients/util/app_dimen.dart';
 
 class BoxInSalesOrder extends StatelessWidget {
-  const BoxInSalesOrder({Key? key, required this.box, required this.boxess})
+   BoxInSalesOrder({Key? key, required this.box, required this.boxess})
       : super(key: key);
 
   final Box box;

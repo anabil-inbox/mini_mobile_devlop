@@ -179,5 +179,11 @@
     "name" : "Name",
     "card_number" : "Card Number",
     "expiry_date" : "Expiry Date",
-    "add_new_card":"Add New Card"
+    "add_new_card":"Add New Card",
+    "destory" : "Destory",
+    "terminate":"Terminate",
+    "fetch":"Fetch",
+    "warehouse_address":"Warehouse Address",
+    "you_have_to_accept_our_terms" : "You Have To Accept Our Terms"
+
 }

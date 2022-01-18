@@ -20,10 +20,14 @@ import 'package:inbox_clients/util/font_dimne.dart';
 import '../../custome_text_view.dart';
 import 'selected_item_bottom_sheet.dart';
 
-
-
 class RecallStorageSheet extends StatelessWidget {
-  const RecallStorageSheet({Key? key, required this.box,this.index, this.isUserSelectItem = false , required this.task}) : super(key: key);
+  const RecallStorageSheet(
+      {Key? key,
+      required this.box,
+      this.index,
+      this.isUserSelectItem = false,
+      required this.task})
+      : super(key: key);
 
   final Box box;
   final int? index;
@@ -31,7 +35,7 @@ class RecallStorageSheet extends StatelessWidget {
   static HomeViewModel _homeViewModel = Get.find<HomeViewModel>();
   static StorageViewModel _storageViewModel = Get.find<StorageViewModel>();
   final Task task;
-  
+
   ///   todo at home = pick up
   ///   todo at where house  = recall => fetch
   ///todo 1-	Pick up
@@ -63,81 +67,86 @@ class RecallStorageSheet extends StatelessWidget {
   ///to do  وبعدها الدفع
 
   ///todo if !isUserSelectItem here we will show bottom sheet with  [bring the box , add to cart]
-  Widget get actionBtn =>  Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      SizedBox(
-        width: sizeW10,
-      ),
-      Expanded(
-        child: PrimaryButton(
-          isExpanded: true,
-          isLoading: false,
-          onClicked: onClickBreakSeal,
-          textButton:!isUserSelectItem! ?"${tr.bring_the_box}" : "${tr.yes_break_the_seal}",
-        ),
-      ),
-      SizedBox(
-        width: sizeW10,
-      ),
-      Expanded(
-        child: SizedBox(
-          width: double.infinity,
-          child: SeconderyFormButton(
-            buttonText:!isUserSelectItem!? "${tr.add_to_cart}":"${tr.no_bring_the_box}",
-            onClicked: onClickBringBox,
-          ),
-        ),
-      ),
-      SizedBox(
-        width: sizeW10,
-      ),
-    ],
-  );
-
-  Widget get acceptTerms=> GetBuilder<StorageViewModel>(
-    builder: (value) {
-      return Row(
+  Widget get actionBtn => Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          InkWell(
-            onTap: () {
-              value.isAccept = !value.isAccept;
-              value.update();
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                value.isAccept
-                    ? SvgPicture.asset("assets/svgs/check.svg")
-                    : SvgPicture.asset("assets/svgs/uncheck.svg",
-                  color: seconderyColor,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                CustomTextView(
-                  txt: "${tr.accept_our} ",
-                  textStyle: textStyle(),
-                )
-              ],
+          SizedBox(
+            width: sizeW10,
+          ),
+          Expanded(
+            child: PrimaryButton(
+              isExpanded: true,
+              isLoading: false,
+              onClicked: onClickBreakSeal,
+              textButton: !isUserSelectItem!
+                  ? "${tr.bring_the_box}"
+                  : "${tr.yes_break_the_seal}",
             ),
           ),
-          InkWell(
-              onTap: () {
-                //Get.to(() => TermsScreen());
-              },
-              child: CustomTextView(
-                txt: "${tr.company_policy}",
-                textAlign: TextAlign.start,
-                textStyle: textStyleUnderLinePrimary()!.copyWith(
-                    color: colorBlack, fontSize: fontSize14),
-              )),
+          SizedBox(
+            width: sizeW10,
+          ),
+          Expanded(
+            child: SizedBox(
+              width: double.infinity,
+              child: SeconderyFormButton(
+                buttonText: !isUserSelectItem!
+                    ? "${tr.add_to_cart}"
+                    : "${tr.no_bring_the_box}",
+                onClicked: onClickBringBox,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: sizeW10,
+          ),
         ],
       );
-    },
-  );
+
+  Widget get acceptTerms => GetBuilder<StorageViewModel>(
+        builder: (value) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () {
+                  value.isAccept = !value.isAccept;
+                  value.update();
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    value.isAccept
+                        ? SvgPicture.asset("assets/svgs/check.svg")
+                        : SvgPicture.asset(
+                            "assets/svgs/uncheck.svg",
+                            color: seconderyColor,
+                          ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    CustomTextView(
+                      txt: "${tr.accept_our} ",
+                      textStyle: textStyle(),
+                    )
+                  ],
+                ),
+              ),
+              InkWell(
+                  onTap: () {
+                    //Get.to(() => TermsScreen());
+                  },
+                  child: CustomTextView(
+                    txt: "${tr.company_policy}",
+                    textAlign: TextAlign.start,
+                    textStyle: textStyleUnderLinePrimary()!
+                        .copyWith(color: colorBlack, fontSize: fontSize14),
+                  )),
+            ],
+          );
+        },
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -157,16 +166,16 @@ class RecallStorageSheet extends StatelessWidget {
             height: sizeH20,
           ),
           CustomTextView(
-            txt:tr.recall_items ,
+            txt: tr.recall_items,
             textStyle: textStyleNormalBlack()?.copyWith(fontSize: fontSize17),
           ),
           SizedBox(
             height: sizeH12,
           ),
           Padding(
-            padding:  EdgeInsets.symmetric(horizontal: sizeW10!),
+            padding: EdgeInsets.symmetric(horizontal: sizeW10!),
             child: CustomTextView(
-              txt:tr.are_break_sealing ,
+              txt: tr.are_break_sealing,
               textAlign: TextAlign.center,
               textStyle: textStyleNormalBlack()?.copyWith(fontSize: fontSize17),
             ),
@@ -222,29 +231,44 @@ class RecallStorageSheet extends StatelessWidget {
   }
 
   onClickBreakSeal() {
-    if(!isUserSelectItem!){
-      //todo  [bring the box ]
-      Get.back();
-      Get.bottomSheet(RecallBoxProcessSheet(box: box , task: task, boxes: [],), isScrollControlled: true);
-    }else{
-      //todo  [BreakSeal ]
-      Get.back();
-      //todo change with bottom sheet item & qty
-      Get.bottomSheet(SelectedItemBottomSheet(box: box), isScrollControlled: true);
-      //Get.to(FilterItemScreen(title: "${tr.filter_by_name}", box: box,serail: box.serialNo,));
+    if (_storageViewModel.isAccept) {
+      if (!isUserSelectItem!) {
+        //todo  [bring the box ]
+        Get.back();
+        Get.bottomSheet(
+            RecallBoxProcessSheet(
+              box: box,
+              task: task,
+              boxes: [],
+            ),
+            isScrollControlled: true);
+      } else {
+        //todo  [BreakSeal ]
+        Get.back();
+        //todo change with bottom sheet item & qty
+        Get.bottomSheet(SelectedItemBottomSheet(box: box),
+            isScrollControlled: true);
+        //Get.to(FilterItemScreen(title: "${tr.filter_by_name}", box: box,serail: box.serialNo,));
+      }
+    } else {
+      snackError("${tr.error_occurred}", "${tr.you_have_to_accept_our_terms}");
     }
-
   }
 
   onClickBringBox() {
-
-    if(!isUserSelectItem!){
+    if (!isUserSelectItem!) {
       //todo  [ add to cart ]
       Get.back();
-    }else {
+    } else {
       //todo  [BringBox ]
       Get.back();
-      Get.bottomSheet(RecallBoxProcessSheet(box: box , task: task , boxes: [],), isScrollControlled: true);
+      Get.bottomSheet(
+          RecallBoxProcessSheet(
+            box: box,
+            task: task,
+            boxes: [],
+          ),
+          isScrollControlled: true);
     }
   }
 }

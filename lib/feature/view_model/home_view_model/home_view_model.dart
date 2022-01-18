@@ -147,6 +147,7 @@ class HomeViewModel extends BaseController {
     return box;
   }
 
+  //
   @override
   void onInit() {
     super.onInit();
@@ -155,8 +156,15 @@ class HomeViewModel extends BaseController {
     scrollcontroller.addListener(pagination);
   }
 
-  void changeTab(int index) {
-    _currentIndex = index;
+  // to start work with user And Store Address ::
+  Address? selectedAddres;
+
+  Set<Store> storeAddress = {};
+  bool isLoadingGetAddress = false;
+  // to get Store Address ::
+
+  getStoreAddress() async {
+    isLoadingGetAddress = true;
     update();
   }
 
@@ -178,8 +186,8 @@ class HomeViewModel extends BaseController {
           Logger().i("${value.toList().length}"),
           for (var item in value)
             {
-              if (item.id != LocalConstance.fetchId &&
-                  item.id != LocalConstance.newStorageSv)
+              if (/* item.id != LocalConstance.fetchId && */
+              item.id != LocalConstance.newStorageSv)
                 {tasks.add(item)}
             },
         });
@@ -230,21 +238,21 @@ class HomeViewModel extends BaseController {
   }
 
   // to start work with user And Store Address ::
-  Address? selectedAddres;
+  // Address? selectedAddres;
 
-  Set<Store> storeAddress = {};
-  bool isLoadingGetAddress = false;
-  // to get Store Address ::
+  // Set<Store> storeAddress = {};
+  // bool isLoadingGetAddress = false;
+  // // to get Store Address ::
 
-  getStoreAddress() async {
-    isLoadingGetAddress = true;
-    update();
-    await StorageFeature.getInstance.getStoreAddress().then((value) => {
-          storeAddress = value.toSet(),
-        });
-    isLoadingGetAddress = false;
-    update();
-  }
+  // getStoreAddress() async {
+  //   isLoadingGetAddress = true;
+  //   update();
+  //   await StorageFeature.getInstance.getStoreAddress().then((value) => {
+  //         storeAddress = value.toSet(),
+  //       });
+  //   isLoadingGetAddress = false;
+  //   update();
+  // }
 
   List<Day>? selctedWorksHours = [];
   DateTime? selectedDateTime;
@@ -280,11 +288,10 @@ class HomeViewModel extends BaseController {
     }
   }
 
-  void calculateTaskBalance({required Task task, required Box box}) {
+  void calculateTaskBalance({required Task task, required Box box}) {}
 
+  void changeTab(int index) {
+    _currentIndex = index;
+    update();
   }
-
-
-
-  
 }

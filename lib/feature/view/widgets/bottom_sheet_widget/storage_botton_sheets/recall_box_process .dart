@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,6 +7,7 @@ import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/box_in_sales_order.dart';
+import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/box_item_in_sales_order.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/add_address.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/pickup_address_item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/schedule_pickup_widget.dart';
@@ -28,12 +29,13 @@ import 'package:logger/logger.dart';
 import '../../secondery_button.dart';
 
 class RecallBoxProcessSheet extends StatelessWidget {
-  const RecallBoxProcessSheet(
+  RecallBoxProcessSheet(
       {Key? key,
       required this.box,
       this.index,
       required this.task,
-      required this.boxes})
+      required this.boxes,
+      this.isFetchTask = false})
       : super(key: key);
 
   final Box? box;
@@ -42,6 +44,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
   static StorageViewModel _storageViewModel = Get.find<StorageViewModel>();
   final Task task;
   final List<Box> boxes;
+  bool? isFetchTask;
 
   Widget get actionBtn => Container(
         margin: EdgeInsets.symmetric(horizontal: sizeW10!),
@@ -50,13 +53,18 @@ class RecallBoxProcessSheet extends StatelessWidget {
           children: [
             Expanded(
               child: PrimaryButton(
-                isExpanded: true,
-                isLoading: false,
-                onClicked: onClickBreakSeal,
-                textButton: task.id == LocalConstance.recallId
-                    ? "${tr.recall_now}"
-                    : "${tr.pickup}",
-              ),
+                  isExpanded: true,
+                  isLoading: false,
+                  onClicked: onClickBreakSeal,
+                  textButton: task.id == LocalConstance.recallId
+                      ? "${tr.recall_now}"
+                      : task.id == LocalConstance.pickupId
+                          ? "${tr.pickup}"
+                          : task.id == LocalConstance.destroyId
+                              ? "${tr.destory}"
+                              : task.id == LocalConstance.terminateId
+                                  ? "${tr.terminate}"
+                                  : "${tr.fetch}"),
             ),
             SizedBox(
               width: sizeW10,
@@ -160,7 +168,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
             borderRadius: BorderRadius.circular(padding6!)),
         margin: EdgeInsets.symmetric(horizontal: sizeH10!),
         padding: EdgeInsets.symmetric(horizontal: sizeH20!),
-        child: boxes.length == 0
+        child: (boxes.length == 0)
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -185,26 +193,41 @@ class RecallBoxProcessSheet extends StatelessWidget {
                 ],
               )
             : SizedBox(
-                height: sizeH114,
+                height: sizeH120,
                 child: GetBuilder<HomeViewModel>(
                   init: HomeViewModel(),
                   initState: (_) {},
                   builder: (_) {
-                    return ListView(
-                      padding: const EdgeInsets.all(0),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      children: boxes
-                          .map((e) => BoxInSalesOrder(
-                                box: e,
-                                boxess: boxes,
-                              ))
-                          .toList(),
-                    );
+                    if (isFetchTask!) {
+                      return ListView(
+                        padding: const EdgeInsets.all(0),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        children: boxes[0]
+                            .items!
+                            .map((e) => BoxItemInSalesOrder(
+                                  boxItem: e,
+                                ))
+                            .toList(),
+                      );
+                    } else {
+                      return ListView(
+                        padding: const EdgeInsets.all(0),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        children: boxes
+                            .map((e) => BoxInSalesOrder(
+                                  box: e,
+                                  boxess: boxes,
+                                ))
+                            .toList(),
+                      );
+                    }
                   },
                 ),
               ),
       );
+
   @override
   Widget build(BuildContext context) {
     print("msg_boxess_length ${boxes.length}");
@@ -232,7 +255,6 @@ class RecallBoxProcessSheet extends StatelessWidget {
             SizedBox(
               height: sizeH16,
             ),
-
             Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.only(
@@ -318,15 +340,22 @@ class RecallBoxProcessSheet extends StatelessWidget {
             SizedBox(
               height: sizeH20,
             ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: padding6!),
+              child: SeconderyButtom(
+                  textButton: "${tr.add_new_address}",
+                  onClicked: () {
+                    Get.to(() => AddAddressScreen());
+                  }),
+            ),
+            SizedBox(
+              height: sizeH20,
+            ),
             optionsList,
             SizedBox(
               height: sizeH20,
             ),
-            SeconderyButtom(
-                textButton: "${tr.add_new_address}",
-                onClicked: () {
-                  Get.to(() => AddAddressScreen());
-                }),
+
             SizedBox(
               height: sizeH16,
             ),
@@ -349,7 +378,6 @@ class RecallBoxProcessSheet extends StatelessWidget {
             SizedBox(
               height: sizeH16,
             ),
-
             actionBtn,
             SizedBox(
               height: padding32,

@@ -61,6 +61,7 @@ dependencies:
   chewie: ^1.2.2
   qr_code_scanner: ^0.6.1
   share: ^2.0.4
+  firebase_crashlytics: ^2.4.5
 
 
 dev_dependencies:

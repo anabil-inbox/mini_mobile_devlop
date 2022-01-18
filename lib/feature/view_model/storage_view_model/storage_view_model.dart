@@ -1314,43 +1314,42 @@ class StorageViewModel extends BaseController {
     update();
   }
 
-  void addNewSealsOrder(Box box, String fullAddress, String type, var date,
-      {String? itemCode}) async {
-    List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
-    Logger().d(
-        "item_code = $type , serialNo = ${box.serialNo} , saleOrder = ${box.saleOrder}, \n  ${box.toString()}");
+  // void addNewSealsOrder(Box box, String fullAddress, String type, var date,
+  //     {String? itemCode}) async {
+  //   List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
+  //   Logger().d("item_code = $type , serialNo = ${box.serialNo} , saleOrder = ${box.saleOrder}, \n  ${box.toString()}");
 
-    //todo item_code == recall id
-    //todo storage_type ==  we not need in recall
-    //todo storage_child_in ==  list of box
+  //   //todo item_code == recall id
+  //   //todo storage_type ==  we not need in recall
+  //   //todo storage_child_in ==  list of box
 
-    Map<String, dynamic> orderItem = {
-      "order[0]": [
-        {
-          "item_code": "${box.storageName} $itemCode",
-          "qty": 1,
-          "delivery_date": "$date",
-          "subscription": "Daily",
-          "subscription_duration": 10,
-          "subscription_price": 0,
-          "group_id": 1,
-          "storage_type": "$type",
-          "item_parent": 0,
-          "need_adviser": 0,
-          "storage_child_in": [
-            {"storage": "${box.serialNo}"}
-          ]
-        }
-      ],
-      "type[0]": "$itemCode", //New Storage
-      "address[0]": "$fullAddress"
-    };
-    mapSalesOrder.add(orderItem);
-    Map<String, dynamic> map = {"sales_order": jsonEncode(mapSalesOrder)};
-    await OrderHelper.getInstance.newSalesOrder(body: map).then((value) {
-      Logger().d(value.toJson());
-    });
-  }
+  //   Map<String, dynamic> orderItem = {
+  //     "order[0]": [
+  //       {
+  //         "item_code": "${box.storageName} $itemCode",
+  //         "qty": 1,
+  //         "delivery_date": "$date",
+  //         "subscription": "Daily",
+  //         "subscription_duration": 10,
+  //         "subscription_price": 0,
+  //         "group_id": 1,
+  //         "storage_type": "$type",
+  //         "item_parent": 0,
+  //         "need_adviser": 0,
+  //         "storage_child_in": [
+  //           {"storage": "${box.serialNo}"}
+  //         ]
+  //       }
+  //     ],
+  //     "type[0]": "$itemCode", //New Storage
+  //     "address[0]": "$fullAddress"
+  //   };
+  //   mapSalesOrder.add(orderItem);
+  //   Map<String, dynamic> map = {"sales_order": jsonEncode(mapSalesOrder)};
+  //   await OrderHelper.getInstance.newSalesOrder(body: map).then((value) {
+  //     Logger().d(value.toJson());
+  //   });
+  // }
 
   calculateTaskPriceOnceBox({required Task task}) {
     num price = 0;
@@ -1376,7 +1375,7 @@ class StorageViewModel extends BaseController {
 
   calculateTaskPriceLotBoxess({required Task task, required List<Box> boxess}) {
     print("calculate Task Price Lot Boxess !");
-    num price = 0;
+    num price = 0.00;
     price = task.price! * boxess.length;
     if (selectedAddress != null) {
       for (var item in task.areaZones!) {
@@ -1414,19 +1413,20 @@ class StorageViewModel extends BaseController {
   }
 
   // THIS REGUSET is For Playing WITH Api Tasks you will Add The Task And Boxess
-  //Note :: IF You want to Send Single Box you Will Add One The Box Only in The List Like This [myBox()]
-  Future<void> doTaskBoxRequest(
-      {required Task task, required List<Box> boxes}) async {
+  //Note :: IF You want to Send Single Box you Will Add The Box Only in The List Like This [myBox()]
+  Future<void> doTaskBoxRequest({required Task task, required List<Box> boxes}) async {
     startLoading();
     List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
     Map<String, dynamic> map = {};
 
     for (var i = 0; i < boxes.length; i++) {
-      if (task.id == LocalConstance.pickupId) {
-        map["type[$i]"] = LocalConstance.pickupId;
-      } else if (task.id == LocalConstance.recallId) {
-        map["type[$i]"] = LocalConstance.recallId;
-      }
+      // if (task.id == LocalConstance.pickupId) {
+      //   map["type[$i]"] = LocalConstance.pickupId;
+      // } else if (task.id == LocalConstance.recallId) {
+      //   map["type[$i]"] = LocalConstance.recallId;
+      // }
+      // this Request Will Changed Here !: 
+      map["type[$i]"] = task.id;
       map["order[$i]"] = [
         {
           "item_code": task.id,
@@ -1461,7 +1461,7 @@ class StorageViewModel extends BaseController {
   // Future<void> giveawayBoxRequest({required Task task , required Box box}) async{
   // }
 
-  Future<void> recallBoxRequest({required Task task, required Box box}) async {}
+ // Future<void> recallBoxRequest({required Task task, required Box box}) async {}
   cleanAfterSucces() {
     isAccept = false;
     selectedPaymentMethod = null;
