@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/register/register_company.dart';
-import 'package:inbox_clients/feature/view/screens/auth/auth_company/verfication/company_verfication_code_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_register_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/intro_screens/intro_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
-import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
-import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/feature/view_model/splash_view_modle/splash_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/sh_util.dart';
@@ -27,6 +24,7 @@ class SplashScreen extends GetWidget<SplashViewModle> {
 }
 
 moveToIntro(){  
+  
   String? state = SharedPref.instance.getUserLoginState();
 
   if (state?.toLowerCase() == "${ConstanceNetwork.userEnterd}") {
@@ -40,7 +38,6 @@ moveToIntro(){
     
   }else if(state?.toLowerCase() == "${ConstanceNetwork.userLoginedState}"){
     Get.off(() => HomePageHolder());
-  // Get.off(() => HomeScreen());
   }else{
     Get.off(() => IntroScreen(type: SharedPref.instance.getUserType()));
   }

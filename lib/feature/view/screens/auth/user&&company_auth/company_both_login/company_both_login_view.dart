@@ -47,7 +47,7 @@ class CompanyBothLoginScreen extends GetWidget<AuthViewModle> {
           SharedLoginForm(type: "${ConstanceNetwork.companyType}"),
           SizedBox(height: sizeH20,),
          SharedPref.instance.getUserType() == "${ConstanceNetwork.bothType}" ? Padding(
-            padding: EdgeInsets.symmetric(horizontal: sizeW20!),
+            padding: EdgeInsets.symmetric(horizontal: padding20!),
             child: SeconderyFormButton(
               buttonText: "${tr.login_as_user}",
               onClicked: (){

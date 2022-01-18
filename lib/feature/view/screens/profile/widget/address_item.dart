@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/edit_address.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
@@ -129,7 +126,8 @@ class AddressItem extends StatelessWidget {
                       children: [
                         InkWell(
                             onTap: () {
-                              Get.bottomSheet(GlobalBottomSheet(
+                              Get.bottomSheet(
+                                GlobalBottomSheet(
                                 isTwoBtn: true,
                                 title: "${tr.are_you_sure_you_want_to_delete_address}",
                                 onOkBtnClick: () {

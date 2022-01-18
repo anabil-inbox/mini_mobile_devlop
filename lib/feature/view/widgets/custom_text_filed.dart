@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -122,6 +121,7 @@ class CustomTextFormFiled extends StatelessWidget
 
   InputDecoration inputDecorationWithIcon() {
     return InputDecoration(
+        suffixIconColor: suffixIconColor,
         prefixIcon: Icon(
           icon,
           color: iconColor,
@@ -179,6 +179,7 @@ class CustomTextFormFiled extends StatelessWidget
         counterText: "",
         isDense: true,
         filled: isFill,
+        
         errorStyle: TextStyle(
           /*  height: 0,*/ /*backgroundColor: colorBackground*/
         ),

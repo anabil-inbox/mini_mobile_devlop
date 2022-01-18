@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/utils.dart';
@@ -134,11 +133,6 @@ class HeaderProfileCard extends StatelessWidget {
                   textButton: "${tr.edit_profile}",
                   isLoading: false,
                   onClicked: () {
-                    print(
-                        "msg_here ${GetUtils.isNull(SharedPref.instance.getCurrentUserData().crNumber)}");
-
-                    print(
-                        "msg_2 ${SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty}");
                     if (GetUtils.isNull(SharedPref.instance
                             .getCurrentUserData()
                             .crNumber) ||

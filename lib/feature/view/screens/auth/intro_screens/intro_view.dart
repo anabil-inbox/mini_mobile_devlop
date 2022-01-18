@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/register/register_company.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_register_view.dart';
-import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/intro_active_dot_widget.dart';
 import 'package:inbox_clients/feature/view/screens/auth/splash/splash.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_company/user_company_auth_view.dart';
 import 'package:inbox_clients/feature/view/widgets/intro_body.dart';
@@ -70,6 +69,7 @@ final String type;
                     width: sizeH7,
                   ),
                   SeconderyButtom(
+                    width: sizeW165,
                       textButton:
                           "${tr.sign_up}",
                       onClicked: () {
@@ -78,7 +78,6 @@ final String type;
                         }else if(type == "${ConstanceNetwork.companyType}"){
                           Get.off(() => RegisterCompanyScreen());  
                         }
-                       
                       })
                 ],
               ),

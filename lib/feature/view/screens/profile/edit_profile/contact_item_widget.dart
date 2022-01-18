@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
-import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -50,6 +49,9 @@ class ContactItemWidget extends StatelessWidget {
                       "$prefix",
                       textDirection: TextDirection.ltr,
                     ),
+                         SizedBox(
+                            width: sizeW5,
+                          ),
                     VerticalDivider(),
                   ],
                 ),

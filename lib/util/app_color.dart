@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 //todo this for theme
 var colorPrimary = const Color(0xFFE63331);
@@ -16,6 +14,7 @@ Color seconderyButtonUnSelected = const Color(0xff676771);
 Color colorPrimaryOpcaityColor =  Color(0xffF6E3E5);
 Color colorBtnGray = const Color(0xFFDADBDF);
 Color colorSpacer = const Color(0xff8F92A1);
+Color scaffoldSecondery = const Color(0xffF9F9FF);
 
 //todo this for textField
 var colorBorderTextFiled = Color(0xFF707070);
@@ -37,6 +36,7 @@ var colorPink = Color(0xFFD84B71);
 var colorRed = Color(0xFFE63331);
 var colorRedTrans = Color(0x22E63331);
 var colorGreen = Color(0xFF27D39F);
+final Color greenOpcityColor = Color(0xFFD3ECDD);
 var colorOrangeLight = Color(0xFFF9B20C);
 
 //todo this for containers

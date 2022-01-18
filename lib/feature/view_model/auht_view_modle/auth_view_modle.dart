@@ -1,33 +1,23 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/model/user_model.dart';
 import 'package:inbox_clients/feature/model/user_modle.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/verfication/company_verfication_code_view.dart';
-import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/face.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
-import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/change_mobile/verfication_change_mobile.dart';
-import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
-import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/network/api/feature/auth_helper.dart';
 import 'package:inbox_clients/network/api/feature/country_helper.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
-import 'package:inbox_clients/util/app_color.dart';
-import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
-import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
@@ -295,9 +285,8 @@ class AuthViewModle extends GetxController {
           if (value.status!.success!)
             {
               snackSuccess("${tr.success}", "${value.status!.message}"),
+              Get.offAll(() => HomePageHolder()),
               Get.put(ProfileViewModle()),
-              //Get.off(() => ProfileScreen()),
-              Get.off(() => HomePageHolder()),
             }
           else
             {snackError("${tr.error_occurred}", "${value.status!.message}")}
@@ -340,7 +329,10 @@ class AuthViewModle extends GetxController {
               update(),
               snackError("${tr.error_occurred}", "${value.status!.message}")
             }
-        });
+       
+       
+        }
+        );
   }
 
   //this for Touch/face (Id) Bottom Sheet :
@@ -386,102 +378,11 @@ class AuthViewModle extends GetxController {
       update();
     }
   }
-
-  // void showFingerPrinterDiloag() {
-  //   Get.bottomSheet(Container(
-  //       padding: EdgeInsets.symmetric(horizontal: 16),
-  //       decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.circular(sizeH16!),
-  //         color: colorTextWhite,
-  //       ),
-  //       height: sizeH200,
-  //       child: Column(
-  //         children: [
-  //           SizedBox(
-  //             height: sizeH32,
-  //           ),
-  //           Text(
-  //             "${tr.choose_way_to_sign_in}",
-  //             style: textStyleHint()!.copyWith(color: colorBlack),
-  //           ),
-  //           SizedBox(
-  //             height: sizeH16,
-  //           ),
-  //           GetBuilder<AuthViewModle>(
-  //             init: AuthViewModle(),
-  //             initState: (_) {},
-  //             builder: (_) {
-  //               return PrimaryButton(
-  //                   isExpanded: true,
-  //                   isLoading: isLoading,
-  //                   textButton:
-  //                       "${tr.touch_id}",
-  //                   onClicked: isLoading
-  //                       ? () {}
-  //                       : () async {
-  //                           isLoading = true;
-  //                           update();
-  //                           await _checkBiometrics();
-  //                           await _getAvailableBiometrics();
-  //                           await _authenticate();
-  //                           if (isAuth!) {
-  //                             await signInUser(
-  //                                 user: User(
-  //                                     countryCode:
-  //                                         "${SharedPref.instance.getCurrentUserData().countryCode}",
-  //                                     mobile:
-  //                                         "${SharedPref.instance.getCurrentUserData().mobile}",
-  //                                     udid: "$identifier",
-  //                                     deviceType: "$deviceType",
-  //                                     fcm:
-  //                                         "${SharedPref.instance.getFCMToken()}"));
-  //                           }
-  //                           isLoading = false;
-  //                           update();
-  //                         });
-  //             },
-  //           ),
-  //           SizedBox(
-  //             height: sizeH16,
-  //           ),
-  //           GetBuilder<AuthViewModle>(
-  //             builder: (_) {
-  //               return PrimaryButton(
-  //                   isExpanded: true,
-  //                   isLoading: isLoading,
-  //                   textButton: "${tr.face_id}",
-  //                   onClicked: () async {
-  //                     isLoading = true;
-  //                     // update();
-  //                     // await _checkBiometrics();
-  //                     // await _getAvailableBiometrics();
-  //                     // await _authenticate();
-  //                     // if (isAuth!) {
-  //                     //   await signInUser(
-  //                     //       user: User(
-  //                     //           countryCode:
-  //                     //               "${SharedPref.instance.getCurrentUserData().countryCode}",
-  //                     //           mobile:
-  //                     //               "${SharedPref.instance.getCurrentUserData().mobile}",
-  //                     //           udid: "$identifier",
-  //                     //           deviceType: "$deviceType",
-  //                     //           fcm: "${SharedPref.instance.getFCMToken()}"));
-  //                     // }
-  //                     // isLoading = false;
-  //                     // update();
-  //                       Get.to(()=> FacePage());
-  //                   });
-  //             },
-  //           )
-  //         ],
-  //       )));
-  // }
-
   bool? isAuth = false;
   final LocalAuthentication auth = LocalAuthentication();
-  bool _canCheckBiometrics = false;
-  List<BiometricType>? _availableBiometrics;
-  String _authorized = 'Not Authorized';
+  bool canCheckBiometrics = false;
+  List<BiometricType>? availableBiometrics;
+  String authorized = 'Not Authorized';
 
   Future<void> _checkBiometrics() async {
     bool canCheckBiometrics = false;
@@ -491,7 +392,7 @@ class AuthViewModle extends GetxController {
       print(e);
     }
 
-    _canCheckBiometrics = canCheckBiometrics;
+    canCheckBiometrics = canCheckBiometrics;
     update();
   }
 
@@ -503,7 +404,7 @@ class AuthViewModle extends GetxController {
       print(e);
     }
 
-    _availableBiometrics = availableBiometrics;
+    availableBiometrics = availableBiometrics;
     update();
   }
 
@@ -519,7 +420,7 @@ class AuthViewModle extends GetxController {
     } on PlatformException catch (e) {
       print(e);
     }
-    _authorized = authenticated ? 'Authorized' : 'Not Authorized';
+    authorized = authenticated ? 'Authorized' : 'Not Authorized';
     isAuth = authenticated ? true : false;
     update();
   }
@@ -527,10 +428,16 @@ class AuthViewModle extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    //  startTimer();
     clearAllControllers();
     getDeviceDetails();
     getPhonePlatform();
     update();
+   // tdPinCode = TextEditingController();
   }
+
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
 }

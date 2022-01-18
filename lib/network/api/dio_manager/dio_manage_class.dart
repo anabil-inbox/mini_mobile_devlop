@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:inbox_clients/util/sh_util.dart';
 import 'dart:async';
 
 import 'package:logger/logger.dart';
@@ -25,6 +24,10 @@ class DioManagerClass {
 
   Future<Response> dioGetMethod(
       {var url, Map<String, dynamic>? header, var queryParameters}) async {
+        print("msg_sendde_url $url");
+        print("msg_sendde_header $header");
+        print("msg_sendde_QP ${queryParameters.toString()}");
+
     return await _dio!.get(url,
         options: Options(headers: header), queryParameters: queryParameters);
   }
@@ -32,9 +35,12 @@ class DioManagerClass {
   Future<Response> dioPostMethod(
       {var url,
       Map<String, dynamic>? header,
-      Map<String, dynamic>? body}) async {
+      Map<String, dynamic>? body , 
+      Map<String, dynamic>? queryParameters
+      }) async {
     return await _dio!.post(
       url,
+      queryParameters: queryParameters,
       options: Options(headers: header),
       data: body,
     );

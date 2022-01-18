@@ -19,7 +19,7 @@ class UserBothLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        print("msg_check ${GetUtils.isNull(SharedPref.instance.getCurrentUserData().id)}");
+        print("msg_check ${GetUtils.isNull(SharedPref.instance.getCurrentUserData().id??null)}");
 
     Get.put(AuthViewModle());
     return Scaffold(
@@ -50,7 +50,7 @@ class UserBothLoginScreen extends StatelessWidget {
           SharedLoginForm(type: "${ConstanceNetwork.userType}"),
           SizedBox(height: sizeH20,),
           SharedPref.instance.getUserType() == "${ConstanceNetwork.bothType}" ? Padding(
-            padding: EdgeInsets.symmetric(horizontal: sizeW20!),
+            padding: EdgeInsets.symmetric(horizontal: padding20!),
             child: SeconderyFormButton(
               buttonText: "${tr.login_as_company}",
               onClicked: (){

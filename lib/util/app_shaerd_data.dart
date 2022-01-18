@@ -4,13 +4,16 @@ import 'dart:io';
 import 'dart:math' as Math;
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as Img;
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
+import 'package:inbox_clients/feature/model/app_setting_modle.dart';
+import 'package:inbox_clients/feature/model/storage/payment.dart';
+import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/language_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
@@ -25,8 +28,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'app_color.dart';
 import 'app_style.dart';
-import 'constance.dart';
+import 'constance/constance.dart';
 import 'string.dart';
+import 'package:collection/collection.dart';
 
 String? urlPlacholder =
     "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png";
@@ -86,12 +90,20 @@ passwordValid(String val) {
 }
 
 phoneVaild(String value) {
-  if (value == null || value.isEmpty) {
+  if (value.isEmpty) {
     return tr.fill_your_phone_number;
   } else if (value.length > 10 || value.length < 8) {
     return tr.fill_your_phone_number;
   }
   return null;
+}
+
+phoneVaildAlternativeContact(String value) {
+  if (value.length > 10 || value.length < 8) {
+    return tr.fill_your_phone_number;
+  } else {
+    return;
+  }
 }
 
 emailValid(String val) {
@@ -135,12 +147,29 @@ bool isVideo({required String path}) {
 int getPageCount({required List<String> array}) {
   int count = 0;
   array.forEach((element) {
-    if (element.isNotEmpty && !GetUtils.isNull(element)){
+    if (element.isNotEmpty && !GetUtils.isNull(element)) {
       count++;
     }
   });
   print("number of pages $count");
   return count;
+}
+
+bool areArraysEquales(List<String> listOne, List<StorageFeatures> listTwo) {
+  List<String> localArray = [];
+
+  listTwo.forEach((element) {
+    localArray.add(element.storageFeature!);
+  });
+
+  if (listOne.length != localArray.length) {
+    return false;
+  }
+
+  listOne.sort();
+  localArray.sort();
+  Function eq = const ListEquality().equals;
+  return eq(listOne, localArray);
 }
 
 snackSuccess(String title, String body) {
@@ -206,7 +235,7 @@ Widget imageNetwork({double? width, double? height, String? url, BoxFit? fit}) {
           // border: Border.all(color: colorBorderLight),
           image: DecorationImage(
             image: CachedNetworkImageProvider(url ?? urlUserPlacholder!),
-            fit: BoxFit.contain,
+            fit: fit ?? BoxFit.contain,
           ),
         ),
       );
@@ -403,6 +432,18 @@ double sumStringVal(String? valOne, String? valTwo) {
       convertStringToDouble("${valTwo.toString()}"));
 }
 
+String formatStringWithCurrency(var data, String currency) {
+  try {
+    var number = data.toString().replaceAll("\$", "").replaceAll(",", "");
+    number = "${currency.isEmpty?"QR":currency} ${NumberFormat("#0.00", "en_US").format(double.parse(number))}";
+    //var numbers = "${currency}${double.parse(number).toStringAsFixed(2)}";
+    return number.toString();
+  } catch (e) {
+    print(e);
+    return "0.00";
+  }
+}
+
 updateLanguage(Locale locale) {
   Get.updateLocale(locale);
 }
@@ -503,4 +544,152 @@ bool isArabicLang() {
   // return isRTL;
 }
 
+Future<DateTime?> dateBiker() async {
+  Locale myLocale = Localizations.localeOf(Get.context!);
+  var picker = await showDatePicker(
+    context: Get.context!,
+    initialDate: DateTime.now(),
+    firstDate: DateTime.now(),
+    lastDate: DateTime(2030),
+    locale: myLocale,
+  );
+
+  return picker;
+}
+
+List<Day> getDayByNumber({required DateTime selectedDateTime}) {
+  List<Day>? workTime = [];
+  String dayName = "";
+
+  ApiSettings settings =
+      ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
+
+  print(" ${settings.toJson()} ");
+  if (selectedDateTime.weekday == 0) {
+    dayName = "Sunday";
+    workTime = settings.workingHours?.sunday;
+  } else if (selectedDateTime.weekday == 1) {
+    dayName = "Monday";
+    workTime = settings.workingHours?.monday;
+  } else if (selectedDateTime.weekday == 2) {
+    dayName = "Tuesday";
+    workTime = settings.workingHours?.tuesday;
+  } else if (selectedDateTime.weekday == 3) {
+    dayName = "wednesday";
+    workTime = settings.workingHours?.wednesday;
+  } else if (selectedDateTime.weekday == 4) {
+    dayName = "thuersday";
+    workTime = settings.workingHours?.thuersday;
+  } else if (selectedDateTime.weekday == 5) {
+    dayName = "friday";
+    workTime = settings.workingHours?.friday;
+  } else if (selectedDateTime.weekday == 6) {
+    dayName = "saturday";
+    workTime = settings.workingHours?.saturday;
+  }
+
+  print("dayName : $dayName : dayNumber : ${selectedDateTime.weekday}");
+  if (workTime!.isNotEmpty) {
+    workTime[0].day = dayName;
+  }
+
+  return workTime;
+}
+
+num calculateBalance({required num balance}){
+  return balance;
+}
+
+// Widget return By Box Status
+
+Widget retuenBoxByStatus({required String storageStatus}) {
+  String boxPath = "assets/svgs/desable_box.svg";
+  if (storageStatus == LocalConstance.boxAtHome) {
+    boxPath = "assets/svgs/home_box_red.svg";
+  } else if (storageStatus == LocalConstance.boxinWareHouse) {
+    boxPath = "assets/svgs/box_in_ware_house.svg";
+  } else if (storageStatus == LocalConstance.boxOnTheWay) {
+    boxPath = "assets/svgs/desable_box.svg";
+  }
+  return SvgPicture.asset(
+    boxPath,
+    width: sizeW50,
+    height: sizeH40,
+  );
+}
+
+
+  // void getImageBottomSheet() {
+  //   Get.bottomSheet(
+  //     Container(
+  //     height: sizeH240,
+  //     padding: EdgeInsets.symmetric(horizontal: padding20!),
+  //     decoration: BoxDecoration(
+  //         color: colorTextWhite,
+  //         borderRadius:
+  //             BorderRadius.vertical(top: Radius.circular(padding30!))),
+  //     child: Column(
+  //       children: [
+  //         SizedBox(
+  //           height: sizeH20,
+  //         ),
+  //         Container(
+  //           height: sizeH5,
+  //           width: sizeH50,
+  //           decoration: BoxDecoration(
+  //               color: colorUnSelectedWidget,
+  //               borderRadius: BorderRadius.circular(2.5)),
+  //         ),
+  //         SizedBox(
+  //           height: sizeH20,
+  //         ),
+  //         Text(
+  //           "Select Image",
+  //           style: textStyleAppBarTitle(),
+  //         ),
+  //         SizedBox(
+  //           height: sizeH25,
+  //         ),
+  //         SeconderyButtom(
+  //           buttonTextStyle: textSeconderyButtonUnBold(),
+  //           textButton: "Camera",
+  //           onClicked: () async {
+  //             await getImage(ImageSource.camera);
+  //             Get.back();
+  //           },
+  //           isExpanded: true,
+  //         ),
+  //         SizedBox(
+  //           height: sizeH20,
+  //         ),
+  //         SeconderyButtom(
+  //           buttonTextStyle: textSeconderyButtonUnBold(),
+  //           textButton: "Gallery",
+  //           onClicked: () async {
+  //             await getImage(ImageSource.gallery);
+  //             Get.back();
+  //           },
+  //           isExpanded: true,
+  //         ),
+  //         SizedBox(
+  //           height: sizeH20,
+  //         ),
+  //       ],
+  //     ),
+  //   ));
+  // }
+
+String getPriceWithFormate({required num price}){
+  final numberFormatter = NumberFormat("###.00#", "en_US");
+  final num initNumber = 0.00;
+  print("getting Price ${numberFormatter.format(initNumber + price)}");
+  return "${numberFormatter.format(initNumber + price)}" + " ${LocalConstance.qrCoin}";
+}
+
+
 AppLocalizations get tr => AppLocalizations.of(Get.context!)!;
+
+List<PaymentMethod> getPaymentMethod(){
+  List<PaymentMethod> list = ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting())).paymentMethod ?? [];
+  return list;
+}

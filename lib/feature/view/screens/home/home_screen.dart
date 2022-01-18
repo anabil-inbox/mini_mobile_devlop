@@ -1,28 +1,43 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/view/screens/home/widget/box_gv_item_widget.dart';
+import 'package:inbox_clients/feature/core/dialog_loading.dart';
+import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/view/screens/cart/cart_screen.dart';
+import 'package:inbox_clients/feature/view/screens/home/search_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/box_gv_widget.dart';
+import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/filter_widget.dart';
+import 'package:inbox_clients/feature/view/screens/items/qr_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/empty_state/home_empty_statte.dart';
 import 'package:inbox_clients/feature/view/widgets/icon_btn.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
-import 'package:inbox_clients/util/font_dimne.dart';
 
 import 'widget/box_lv_widget.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+// ignore: must_be_immutable
+class HomeScreen extends StatefulWidget {
+  HomeScreen({Key? key, this.isFromScan, this.box}) : super(key: key);
 
+  static HomeViewModel homeViewModle = Get.find<HomeViewModel>();
+
+  bool? isFromScan = false;
+  Box? box;
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
 //todo this for search
   Widget get searchWidget => Container(
         height: sizeH50,
@@ -68,9 +83,7 @@ class HomeScreen extends StatelessWidget {
             height: sizeH50,
             child: CustomAppBarWidget(
               elevation: 0,
-              appBarColor: (!logic.isStorageCategories.value &&
-                      GetUtils.isNull(logic.storageCategoriesList) &&
-                      logic.storageCategoriesList.length == 0)
+              appBarColor: (HomeScreen.homeViewModle.userBoxess.isEmpty)
                   ? scaffoldColor
                   : colorBackground,
               isCenterTitle: true,
@@ -80,7 +93,9 @@ class HomeScreen extends StatelessWidget {
                 width: sizeW48,
                 height: sizeH48,
                 backgroundColor: colorRed,
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => QrScreen());
+                },
                 borderColor: colorTrans,
                 icon: "assets/svgs/Scan.svg",
               ),
@@ -92,7 +107,9 @@ class HomeScreen extends StatelessWidget {
                   width: sizeW48,
                   height: sizeH48,
                   backgroundColor: colorRedTrans,
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(() => const CartScreen());
+                  },
                   borderColor: colorTrans,
                 ),
               ],
@@ -129,18 +146,32 @@ class HomeScreen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    HomeScreen.homeViewModle.scrollcontroller.addListener(() {
+      HomeScreen.homeViewModle.pagination();
+    });
+
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      if (widget.isFromScan ?? false) {
+        Get.bottomSheet(CheckInBoxWidget(isUpdate: false, ), isScrollControlled: true);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: scaffoldColor,
-      body: GetBuilder<StorageViewModel>(
-        init: StorageViewModel(),
+      body: GetBuilder<HomeViewModel>(
+        init: HomeViewModel(),
         assignId: true,
         builder: (logic) {
-          if (logic.isStorageCategories.value) {
-            return const SizedBox.shrink();
-          } else if (!logic.isStorageCategories.value &&
-              GetUtils.isNull(logic.storageCategoriesList) &&
-              logic.storageCategoriesList.length == 0) {
+          if (logic.isLoading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (logic.userBoxess.isEmpty) {
             return SafeArea(
               child: Stack(
                 children: [
@@ -155,31 +186,38 @@ class HomeScreen extends StatelessWidget {
                 SingleChildScrollView(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: sizeW20!),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: sizeH150,
-                        ),
-                        const FilterWidget(),
-                        SizedBox(
-                          height: sizeH10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                    child: GetBuilder<HomeViewModel>(
+                      init: HomeViewModel(),
+                      initState: (_) {},
+                      builder: (_) {
+                        return Column(
                           children: [
-                            textHintsWidget("${tr.on_the_way}", null),
-                            textHintsWidget(
-                                "${tr.in_warehouse}", boxColorOrange),
-                            textHintsWidget("${tr.at_home}", boxColorRed),
+                            SizedBox(
+                              height: sizeH150,
+                            ),
+                            FilterWidget(
+                            ),
+                            SizedBox(
+                              height: sizeH10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                InkWell(onTap: /*onTheWayClick*/(){},child: textHintsWidget("${tr.on_the_way}", null)),
+                                textHintsWidget(
+                                    "${tr.in_warehouse}", boxColorOrange),
+                                textHintsWidget("${tr.at_home}", boxColorRed),
+                              ],
+                            ),
+                            if (!logic.isListView!) ...[
+                              logic.isLoading ? DialogLoading() : GVWidget(),
+                            ] else ...[
+                              logic.isLoading ? DialogLoading() : LVWidget(),
+                            ],
                           ],
-                        ),
-                        if(!logic.isListView!)...[
-                        GVWidget(),
-                        ]else ...[
-                          LVWidget(),
-                        ],
-                      ],
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -200,5 +238,14 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  void _goToFilterNameView() {}
+  void _goToFilterNameView() {
+    Get.to(() => SearchScreen());
+  }
+
+  // void onTheWayClick() async{
+  //   Get.bottomSheet(
+  //       NotifayForNewStorage(box: Box(),showQrScanner: true,),
+  //       isScrollControlled: true
+  //   );
+  // }
 }

@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/user_model.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_register_view.dart';
-import 'package:inbox_clients/feature/view/screens/auth/auth_user/widget/un_selected_button.dart';
 import 'package:inbox_clients/feature/view/screens/auth/country/choose_country_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/company_both_login/company_both_login_view.dart';
@@ -109,7 +108,8 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 builder: (logic) {
                   return TextFormField(
                       controller:
-                          TextEditingController(text: GetUtils.isNull(logic.companySector!.sectorName) ? "" : logic.companySector!.sectorName),
+                          TextEditingController(text: GetUtils.isNull(logic.companySector?.sectorName) ? "" : 
+                          logic.companySector!.sectorName),
                       readOnly: true,
                       onTap: () {
                         chooseSectorCompany();
@@ -195,6 +195,9 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                                       "${ConstanceNetwork.imageUrl}${controller.defCountry.flag}",
                                   width: 36,
                                   height: 26),
+                                       SizedBox(
+                            width: sizeW5,
+                          ),
                           VerticalDivider(),
                           GetBuilder<AuthViewModle>(
                             init: AuthViewModle(),
@@ -220,7 +223,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                               ),
                               controller: controller.tdMobileNumber,
                               validator: (value) {
-                                phoneVaild(value.toString());
+                               return phoneVaild(value.toString());
                               },
                               keyboardType: TextInputType.number,
                             ),

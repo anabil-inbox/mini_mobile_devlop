@@ -12,7 +12,11 @@ class PrimaryButton extends StatelessWidget {
     required this.textButton,
     required this.isLoading,
     required this.onClicked,
-    required this.isExpanded, this.colorBtn, this.colorText, this.width, this.height,
+    required this.isExpanded,
+    this.colorBtn,
+    this.colorText,
+    this.width,
+    this.height,
   }) : super(key: key);
   final String textButton;
   final Function onClicked;
@@ -37,6 +41,7 @@ class PrimaryButton extends StatelessWidget {
             ? ThreeSizeDot()
             : Text(
                 "$textButton",
+                textAlign:TextAlign.center ,
                 style: textStylePrimary()!.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: fontSize16,

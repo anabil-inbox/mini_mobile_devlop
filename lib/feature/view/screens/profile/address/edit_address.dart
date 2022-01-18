@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
@@ -11,7 +10,6 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'map.dart';
 
@@ -51,7 +49,10 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
           LatLng(widget.address.latitude ?? 0, widget.address.longitude ?? 0)
               .toString(),
         ));
-    profileViewModle.kGooglePlex = CameraPosition(target: LatLng(widget.address.latitude ?? 0, widget.address.longitude ?? 0),zoom: 10);
+    profileViewModle.kGooglePlex = CameraPosition(
+        target:
+            LatLng(widget.address.latitude ?? 0, widget.address.longitude ?? 0),
+        zoom: 10);
   }
 
   @override
@@ -63,8 +64,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
           "${tr.edit_address}",
           style: textStyleAppBarTitle(),
         ),
-        isCenterTitle: true, 
-     
+        isCenterTitle: true,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: sizeH16!),
@@ -87,17 +87,17 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                       controller: controller.tdTitleEdit,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return '${AppLocalizations.of(Get.context!)!.fill_the_title_correctly}';
+                          return '${tr.fill_the_title_correctly}';
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                          hintText: "${AppLocalizations.of(context)!.title}"),
+                      decoration: InputDecoration(hintText: "${tr.title}"),
                     ),
                     SizedBox(
                       height: sizeH10,
                     ),
                     TextFormField(
+                      keyboardType: TextInputType.number,
                       controller: controller.tdBuildingNoEdit,
                       onSaved: (newValue) {
                         controller.tdBuildingNoEdit.text = newValue!;
@@ -105,13 +105,12 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return '${AppLocalizations.of(Get.context!)!.fill_the_building_no_correctly}';
+                          return '${tr.fill_the_building_no_correctly}';
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                          hintText:
-                              "${AppLocalizations.of(context)!.building_no}"),
+                      decoration:
+                          InputDecoration(hintText: "${tr.building_no}"),
                     ),
                     SizedBox(
                       height: sizeH10,
@@ -124,12 +123,11 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return '${AppLocalizations.of(Get.context!)!.fill_the_unit_no_correctly}';
+                          return '${tr.fill_the_unit_no_correctly}';
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                          hintText: "${AppLocalizations.of(context)!.unit_no}"),
+                      decoration: InputDecoration(hintText: "${tr.unit_no}"),
                     ),
                     SizedBox(
                       height: sizeH10,
@@ -142,12 +140,11 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                       controller: controller.tdZoneEdit,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return '${AppLocalizations.of(Get.context!)!.fill_the_zone_correctly}';
+                          return '${tr.fill_the_zone_correctly}';
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                          hintText: "${AppLocalizations.of(context)!.zone}"),
+                      decoration: InputDecoration(hintText: "${tr.zone}"),
                     ),
                     SizedBox(
                       height: sizeH10,
@@ -160,12 +157,11 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                       controller: controller.tdStreetEdit,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return '${AppLocalizations.of(Get.context!)!.fill_the_street_correctly}';
+                          return '${tr.fill_the_street_correctly}';
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                          hintText: "${AppLocalizations.of(context)!.street}"),
+                      decoration: InputDecoration(hintText: "${tr.street}"),
                     ),
                     SizedBox(
                       height: sizeH10,
@@ -182,7 +178,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                         controller: controller.tdLocationEdit,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return '${AppLocalizations.of(Get.context!)!.choose_your_location}';
+                            return '${tr.choose_your_location}';
                           }
                           return null;
                         },
@@ -197,8 +193,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                               ),
                             ),
                             suffixStyle: TextStyle(color: Colors.transparent),
-                            hintText:
-                                "${AppLocalizations.of(context)!.choose_your_location}"),
+                            hintText: "${tr.choose_your_location}"),
                       ),
                     ),
                     SizedBox(
@@ -210,9 +205,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                         controller.update();
                       },
                       controller: controller.tdExtraDetailesEdit,
-                      decoration: InputDecoration(
-                          hintText:
-                              "${AppLocalizations.of(context)!.extra_details}"),
+                      decoration:
+                          InputDecoration(hintText: "${tr.extra_details}"),
                     ),
                     SizedBox(
                       height: sizeH25,
@@ -238,7 +232,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                 width: sizeH10,
                               ),
                               Text(
-                                "${AppLocalizations.of(context)!.make_default_address}",
+                                "${tr.make_default_address}",
                                 style: textStyleHint()!.copyWith(
                                     color: Colors.black.withOpacity(0.6),
                                     fontSize: 14,
@@ -256,7 +250,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                       init: ProfileViewModle(),
                       builder: (_) {
                         return PrimaryButton(
-                            textButton: "${AppLocalizations.of(context)!.save}",
+                            textButton: "${tr.save}",
                             isLoading: controller.isLoading,
                             onClicked: () {
                               if (_formKey.currentState!.validate()) {

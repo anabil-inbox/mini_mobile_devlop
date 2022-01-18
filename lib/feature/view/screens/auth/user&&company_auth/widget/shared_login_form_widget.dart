@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/model/user_model.dart';
@@ -60,6 +58,9 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                                           "${ConstanceNetwork.imageUrl}${controller.defCountry.flag}",
                                       width: 36,
                                       height: 26),
+                                           SizedBox(
+                            width: sizeW5,
+                          ),
                               VerticalDivider(),
                               GetBuilder<AuthViewModle>(
                                 init: AuthViewModle(),
@@ -83,7 +84,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                                   },
                                   controller: controller.tdMobileNumber,
                                   validator: (value) {
-                                    phoneVaild(value.toString());
+                                   return phoneVaild(value.toString());
                                   },
                                   keyboardType: TextInputType.number,
                                 ),
@@ -115,39 +116,40 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                       )
                     : const SizedBox(),
             SizedBox(height: sizeH28),
-            !(GetUtils.isNull(SharedPref.instance.getCurrentUserData().id))
+            !(GetUtils.isNull(SharedPref.instance.getCurrentUserData().id??null))
                 ? Row(
                     children: [
                       GetBuilder<AuthViewModle>(
                         builder: (logic) {
-                          return PrimaryButtonFingerPinter(
-                            isExpanded: false,
-                            textButton: "${tr.continue_form}",
-                            isLoading: controller.isLoading,
-                            onClicked: () {
-                              print("object2");
-                              if (_formKey.currentState!.validate()) {
-                                if (type == "${ConstanceNetwork.userType}") {
-                                  controller.signInUser(
-                                      user: User(
-                                    countryCode:
-                                        "${controller.defCountry.prefix}",
-                                    mobile: controller.tdMobileNumber.text,
-                                    udid: controller.identifier,
-                                    deviceType: controller.deviceType,
-                                    fcm: "${SharedPref.instance.getFCMToken()}",
-                                  ));
-                                } else if (type ==
-                                    "${ConstanceNetwork.companyType}") {
-                                  controller.signInCompany(Company(
-                                      crNumber: logic.tdcrNumber.text,
+                          return Expanded(
+                            child: PrimaryButtonFingerPinter(
+                              isExpanded: false,
+                              textButton: "${tr.continue_form}",
+                              isLoading: controller.isLoading,
+                              onClicked: () {
+                                if (_formKey.currentState!.validate()) {
+                                  if (type == "${ConstanceNetwork.userType}") {
+                                    controller.signInUser(
+                                        user: User(
+                                      countryCode:
+                                          "${controller.defCountry.prefix}",
+                                      mobile: controller.tdMobileNumber.text,
                                       udid: controller.identifier,
                                       deviceType: controller.deviceType,
-                                      fcm:
-                                          "${SharedPref.instance.getFCMToken()}"));
+                                      fcm: "${SharedPref.instance.getFCMToken()}",
+                                    ));
+                                  } else if (type ==
+                                      "${ConstanceNetwork.companyType}") {
+                                    controller.signInCompany(Company(
+                                        crNumber: logic.tdcrNumber.text,
+                                        udid: controller.identifier,
+                                        deviceType: controller.deviceType,
+                                        fcm:
+                                            "${SharedPref.instance.getFCMToken()}"));
+                                  }
                                 }
-                              }
-                            },
+                              },
+                            ),
                           );
                         },
                       ),
@@ -157,8 +159,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                           onPressed: () {
                             controller.logInWithTouchId();
                           },
-                          icon:
-                              SvgPicture.asset("assets/svgs/finger_pinter.svg"))
+                          icon:SvgPicture.asset("assets/svgs/finger_pinter.svg"))
                     ],
                   )
                 : GetBuilder<AuthViewModle>(
@@ -169,7 +170,6 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                         isExpanded: true,
                         onClicked: () {
                           if (_formKey.currentState!.validate()) {
-                            print("object1");
                             if (type == "${ConstanceNetwork.userType}") {
                               controller.signInUser(
                                   user: User(

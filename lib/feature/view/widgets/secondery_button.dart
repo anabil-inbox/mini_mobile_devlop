@@ -2,34 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:inbox_clients/util/font_dimne.dart';
 
+// ignore: must_be_immutable
 class SeconderyButtom extends StatelessWidget {
-  const SeconderyButtom(
-      {Key? key, required this.textButton, required this.onClicked})
+   SeconderyButtom(
+      {Key? key, required this.textButton, required this.onClicked , this.height , this.width})
       : super(key: key);
   final String textButton;
   final Function onClicked;
+  double? height;
+  final double? width;
+  
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: sizeW165,
-      height: sizeH50,
+      width: width??double.infinity,
+      height: height??sizeH55,
       clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          color: colorUnSelectedWidget,
-          blurRadius: 1,
-          offset: Offset(0, 2),
-        ),
-      ], borderRadius: BorderRadius.circular(6)),
+      decoration: BoxDecoration(
+        border: Border.all(color: colorBorderContainer),
+        borderRadius: BorderRadius.circular(padding6!)),
       child: MaterialButton(
+        elevation: 0,
         color: colorBackground,
         textColor: colorPrimary,
         onPressed: () {
           onClicked();
         },
-        child: Text("$textButton" , style: textStylePrimary()!.copyWith(fontWeight: FontWeight.bold , fontSize: fontSize16),),
+        child: Text("$textButton" , style: textStyleBorderButton(),),
       ),
     );
   }
