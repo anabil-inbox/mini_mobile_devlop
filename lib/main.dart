@@ -8,6 +8,7 @@ import 'package:inbox_clients/feature/core/app_widget.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
+import 'package:inbox_clients/local_database/sql_helper.dart';
 import 'package:inbox_clients/network/api/dio_manager/dio_manage_class.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/sh_util.dart';
@@ -23,6 +24,7 @@ void main() async {
   await Firebase.initializeApp();
   await AppFcm.fcmInstance.init();
   await SharedPref.instance.init();
+  await SqlHelper.instance.initDataBase();
   // FirebaseCrashlytics.instance.crash();
   portraitOrientation();
   HttpOverrides.global = MyHttpOverrides();
