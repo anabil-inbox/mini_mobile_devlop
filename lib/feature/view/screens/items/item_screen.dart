@@ -434,9 +434,12 @@ class _ItemScreenState extends State<ItemScreen> {
   }
 
   onDeleteBoxClick() {
-    Get.bottomSheet(DeleteOrTirmnateBottomSheet(), isScrollControlled: true);
+    Get.bottomSheet(
+        DeleteOrTirmnateBottomSheet(
+          box: itemViewModle.operationsBox ?? widget.box,
+        ),
+        isScrollControlled: true);
   }
-
 
   onShareBoxClick() {
     itemViewModle.shareBox(box: itemViewModle.operationsBox ?? widget.box);

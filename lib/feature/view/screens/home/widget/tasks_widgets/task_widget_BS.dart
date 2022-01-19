@@ -5,9 +5,11 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_payment_widaget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
@@ -18,6 +20,8 @@ import '../box_in_task_widget.dart';
 class TaskWidgetBS extends StatelessWidget {
   const TaskWidgetBS({Key? key, required this.task}) : super(key: key);
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+
   final Task task;
 
   @override
@@ -60,17 +64,36 @@ class TaskWidgetBS extends StatelessWidget {
                   isLoading: false,
                   onClicked: homeViewModel.selctedOperationsBoxess.length > 0
                       ? () {
-                          Get.bottomSheet(
-                                  RecallBoxProcessSheet(
-                                      box: homeViewModel.selctedOperationsBoxess
-                                          .toList()[0],
-                                      boxes: homeViewModel
-                                          .selctedOperationsBoxess
-                                          .toList(),
-                                      task: task),
-                                  isScrollControlled: true)
-                              .whenComplete(
-                                  () => homeViewModel.selectedAddres = null);
+                          if ((task.id == LocalConstance.destroyId ||
+                                  task.id == LocalConstance.terminateId ||
+                                  task.id == LocalConstance.giveawayId) &&
+                              !(storageViewModel.doseBoxInHome(
+                                boxess: homeViewModel.selctedOperationsBoxess
+                                    .toList(),
+                              ))) {
+                            Get.bottomSheet(
+                                BottomSheetPaymentWidget(
+                                  box: homeViewModel.selctedOperationsBoxess
+                                      .toList()[0],
+                                  boxes: homeViewModel.selctedOperationsBoxess
+                                      .toList(),
+                                  task: task,
+                                ),
+                                isScrollControlled: true);
+                          } else {
+                            Get.bottomSheet(
+                                    RecallBoxProcessSheet(
+                                        box: homeViewModel
+                                            .selctedOperationsBoxess
+                                            .toList()[0],
+                                        boxes: homeViewModel
+                                            .selctedOperationsBoxess
+                                            .toList(),
+                                        task: task),
+                                    isScrollControlled: true)
+                                .whenComplete(
+                                    () => homeViewModel.selectedAddres = null);
+                          }
                         }
                       : () {},
                   isExpanded: true);

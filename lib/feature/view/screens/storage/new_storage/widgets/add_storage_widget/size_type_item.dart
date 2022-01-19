@@ -106,21 +106,45 @@ class SizeTypeItem extends StatelessWidget {
   }
 
   getWidget() {
+    // if (storageViewModel.isShowAll) {
+    //   return SvgPicture.asset(ConstanceNetwork.enableFolder);
+    // } else if (((storageCategoriesData.storageCategoryType ==
+    //             ConstanceNetwork.quantityCategoryType ||
+    //         storageCategoriesData.storageCategoryType ==
+    //             ConstanceNetwork.itemCategoryType) &&
+    //     storageViewModel.isShowQuantityAndItems)) {
+    //   return SvgPicture.asset(ConstanceNetwork.enableFolder);
+    // } else if (((storageCategoriesData.storageCategoryType ==
+    //             ConstanceNetwork.spaceCategoryType ||
+    //         storageCategoriesData.storageCategoryType ==
+    //             ConstanceNetwork.driedCage ||
+    //         storageCategoriesData.storageCategoryType!
+    //             .toLowerCase()
+    //             .contains("space")) &&
+    //     storageViewModel.isShowSpaces)) {
+    //   return SvgPicture.asset(
+    //     ConstanceNetwork.enableFolder,
+    //     width: sizeW50,
+    //     height: sizeH40,
+    //   );
+    // }
     if (storageViewModel.isShowAll) {
       return SvgPicture.asset(ConstanceNetwork.enableFolder);
     } else if (((storageCategoriesData.storageCategoryType ==
-                ConstanceNetwork.quantityCategoryType ||
-            storageCategoriesData.storageCategoryType ==
-                ConstanceNetwork.itemCategoryType) &&
-        storageViewModel.isShowQuantityAndItems)) {
+            ConstanceNetwork.quantityCategoryType) &&
+        storageViewModel.isShowQuantity)) {
       return SvgPicture.asset(ConstanceNetwork.enableFolder);
     } else if (((storageCategoriesData.storageCategoryType ==
+            ConstanceNetwork.itemCategoryType) &&
+        storageViewModel.isShowItem)) {
+      return SvgPicture.asset(
+        ConstanceNetwork.enableFolder,
+        width: sizeW50,
+        height: sizeH40,
+      );
+    } else if (((storageCategoriesData.storageCategoryType ==
                 ConstanceNetwork.spaceCategoryType ||
-            storageCategoriesData.storageCategoryType ==
-                ConstanceNetwork.driedCage ||
-            storageCategoriesData.storageCategoryType!
-                .toLowerCase()
-                .contains("space")) &&
+            storageCategoriesData.storageCategoryType!.contains("Space")) &&
         storageViewModel.isShowSpaces)) {
       return SvgPicture.asset(
         ConstanceNetwork.enableFolder,

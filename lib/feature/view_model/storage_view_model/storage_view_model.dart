@@ -63,7 +63,8 @@ class StorageViewModel extends BaseController {
 // اما ال space باقدر اختارهم مع بعض
 
   bool isShowAll = true;
-  bool isShowQuantityAndItems = false;
+  bool isShowQuantity = false;
+  bool isShowItem = false;
   bool isShowSpaces = false;
 
   bool? isChangeStatusLoading = false;
@@ -71,23 +72,33 @@ class StorageViewModel extends BaseController {
   checkDaplication() {
     if (userStorageCategoriesData.length == 0) {
       isShowAll = true;
-      isShowQuantityAndItems = false;
+      isShowQuantity = false;
+      isShowItem = false;
       isShowSpaces = false;
       update();
       return;
     }
     for (StorageCategoriesData item in userStorageCategoriesData) {
-      if (item.storageCategoryType == ConstanceNetwork.quantityCategoryType ||
-          item.storageCategoryType == ConstanceNetwork.itemCategoryType) {
-        isShowQuantityAndItems = true;
-        isShowSpaces = false;
+      if (item.storageCategoryType == ConstanceNetwork.quantityCategoryType) {
+        isShowQuantity = true;
         isShowAll = false;
+        isShowItem = false;
+        isShowSpaces = false;
+        update();
+        return;
+      } else if (item.storageCategoryType ==
+          ConstanceNetwork.itemCategoryType) {
+        isShowItem = true;
+        isShowQuantity = false;
+        isShowAll = false;
+        isShowSpaces = false;
         update();
         return;
       } else {
         isShowSpaces = true;
+        isShowItem = false;
+        isShowQuantity = false;
         isShowAll = false;
-        isShowQuantityAndItems = false;
         update();
         return;
       }
@@ -1432,29 +1443,71 @@ class StorageViewModel extends BaseController {
       boxessSeriales += '${boxes[i].serialNo},';
     }
 
+    boxessSeriales = boxessSeriales.substring(0, boxessSeriales.length - 1);
 
+    List data = [];
+    if (selectedAddress != null) {
+      data.add({
+        "item_code": task.id,
+        "qty": 1,
+        "delivery_date": "$selectedDateTime",
+        "item_parent": "0",
+        "group_id": "1",
+        "order_to": "${selectedDay?.to}",
+        "order_from": "${selectedDay?.from}",
+        "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
+        "storage_child_in": "$boxessSeriales"
+      });
 
-    for (var i = 0; i < boxes.length; i++) {
-      // if (task.id == LocalConstance.pickupId) {
-      //   map["type[$i]"] = LocalConstance.pickupId;
-      // } else if (task.id == LocalConstance.recallId) {
-      //   map["type[$i]"] = LocalConstance.recallId;
-      // }
-      // this Request Will Changed Here !:
-      map["type[$i]"] = task.id;
-      map["order[$i]"] = [
-        {
-          "item_code": task.id,
-          "qty": 1,
-          "delivery_date": "$selectedDateTime",
-          "order_to": "${selectedDay?.to}",
-          "order_from": "${selectedDay?.from}",
-          "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
-          "storage_child_in": "$boxessSeriales"
-        }
-      ];
-      map["address[$i]"] = selectedAddress!.id;
+      map["address[0]"] = selectedAddress?.id;
+    } else {
+      data.add({
+        "item_code": task.id,
+        "qty": 1,
+        "delivery_date": DateTime.now().toString(),
+        "item_parent": "0",
+        "group_id": "1",
+        // "order_to": "${selectedDay?.to}",
+        // "order_from": "${selectedDay?.from}",
+        // "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
+        "storage_child_in": "$boxessSeriales"
+      });
+      map["address[0]"] = boxes[0].address?.id;
     }
+
+    for (var item in selectedStringOption) {
+      data.add({
+        "item_code": item.id,
+        "qty": "1",
+        "item_parent": "1",
+        "group_id": "1",
+      });
+    }
+
+    map["type[0]"] = task.id;
+    map["order[0]"] = data;
+
+    // for (var i = 0; i < boxes.length; i++) {
+    //   // if (task.id == LocalConstance.pickupId) {
+    //   //   map["type[$i]"] = LocalConstance.pickupId;
+    //   // } else if (task.id == LocalConstance.recallId) {
+    //   //   map["type[$i]"] = LocalConstance.recallId;
+    //   // }
+    //   // this Request Will Changed Here !:
+    //   map["type[$i]"] = task.id;
+    //   map["order[$i]"] = [
+    //     {
+    //       "item_code": task.id,
+    //       "qty": 1,
+    //       "delivery_date": "$selectedDateTime",
+    //       "order_to": "${selectedDay?.to}",
+    //       "order_from": "${selectedDay?.from}",
+    //       "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
+    //       "storage_child_in": "$boxessSeriales"
+    //     }
+    //   ];
+    //   map["address[$i]"] = selectedAddress!.id;
+    // }
 
     mapSalesOrder.add(map);
     Map<String, dynamic> newMap = {"sales_order": jsonEncode(mapSalesOrder)};

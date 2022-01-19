@@ -84,14 +84,8 @@ class RecallBoxProcessSheet extends StatelessWidget {
         ),
       );
 
-  Widget get addressWidget {
-    if ((task.id == LocalConstance.destroyId ||
-            task.id == LocalConstance.terminateId ||
-            task.id == LocalConstance.giveawayId) &&
-        !(_storageViewModel.doseBoxInHome(boxess: boxes))) {
-      return const SizedBox();
-    } else {
-      return Column(
+  Widget get addressWidget =>
+       Column(
         children: [
           Container(
             alignment: Alignment.center,
@@ -160,8 +154,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
           ),
         ],
       );
-    }
-  }
+  
 
   Widget get optionsList => task.vas?.length == 0
       ? const SizedBox.shrink()
@@ -364,7 +357,6 @@ class RecallBoxProcessSheet extends StatelessWidget {
             //     ],
             //   ),
             // ),
-
             SizedBox(
               height: sizeH20,
             ),
@@ -372,7 +364,6 @@ class RecallBoxProcessSheet extends StatelessWidget {
             SizedBox(
               height: sizeH20,
             ),
-
             SizedBox(
               height: sizeH16,
             ),
