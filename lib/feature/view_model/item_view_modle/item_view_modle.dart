@@ -7,7 +7,10 @@ import 'package:dio/dio.dart' as multiPart;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:inbox_clients/feature/model/address_modle.dart';
+import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/inside_box/item.dart';
 import 'package:inbox_clients/feature/model/inside_box/sended_image.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
@@ -16,6 +19,8 @@ import 'package:inbox_clients/feature/view/screens/items/widgets/items_operation
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/local_database/cart_helper.dart';
+import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
 import 'package:inbox_clients/network/api/feature/item_helper.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -547,5 +552,11 @@ class ItemViewModle extends BaseController {
       listIndexSelected.clear();
       update();
     }
+  }
+
+  //todo this for add to cart [local data]
+  void addToCart(List<Box> boxes ,List<BoxItem> boxItems , Address address ,Task task , Day day , String title){
+    var cartModel = CartModel(task: task, box: boxes, boxItem: boxItems, orderTime: day, address: address, title: "$title");
+    CartHelper.instance.addToCart(cartModel);
   }
 }

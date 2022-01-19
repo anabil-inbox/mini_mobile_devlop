@@ -159,11 +159,12 @@ class WorkingHours {
 }
 
 class Day {
-  Day({this.from, this.to, this.day});
+  Day({this.from, this.to, this.day , this.delivery});
 
   String? from;
   String? to;
   String? day;
+  String? delivery;
 
   factory Day.fromJson(Map<String, dynamic> json) => Day(
         from: json["from"],
