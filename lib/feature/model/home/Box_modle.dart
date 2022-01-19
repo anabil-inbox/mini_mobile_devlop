@@ -84,19 +84,24 @@ class BoxItem {
       this.itemGallery,
       this.itemTags,
       this.createdAt,
+      this.maxQty,
+    //  this.selectedImages,
       this.id});
 
   String? itemName;
   String? itemQuantity;
+  int? maxQty; 
   String? id;
   String? createdAt;
   List<Attachment>? itemGallery;
   List<ItemTag>? itemTags;
+  // List<String>? selectedImages = [];
 
   factory BoxItem.fromJson(Map<String, dynamic> json) {
     return BoxItem(
       itemName: json["item_name"],
       itemQuantity: json["item_quantity"],
+      maxQty: int.parse(json["item_quantity"] ?? "1"),
       id: json["id"],
       createdAt: json["created_at"],
       itemGallery: json["item_gallery"] == null

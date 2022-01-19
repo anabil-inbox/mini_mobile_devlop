@@ -101,10 +101,14 @@ class QtyWidget extends StatelessWidget {
                           icon: SvgPicture.asset("assets/svgs/circle_add.svg"),
                           onPressed: () {
                             if (isItemQuantity) {
-                              int qty = int.parse(boxItem?.itemQuantity ?? "1");
-                              qty++;
-                              boxItem?.itemQuantity = qty.toString();
-                              value.update();
+                              if (int.parse(boxItem!.itemQuantity ?? "1") <
+                                  (boxItem!.maxQty ?? 1)) {
+                                int qty =
+                                    int.parse(boxItem?.itemQuantity ?? "1");
+                                qty++;
+                                boxItem?.itemQuantity = qty.toString();
+                                value.update();
+                              }
                             } else {
                               value.increaseQty();
                             }

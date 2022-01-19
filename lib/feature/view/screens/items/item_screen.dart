@@ -127,23 +127,25 @@ class _ItemScreenState extends State<ItemScreen> {
               }
             },
             icon: SvgPicture.asset("assets/svgs/update.svg")),
-        Center(
-          child: InkWell(
-              onTap: () {
-                // itemViewModle.listIndexSelected.clear();
-                // itemViewModle.isSelectAllClick = false;
-                // itemViewModle.isSelectBtnClick = true;
-                // itemViewModle.search = "";
-                Get.delete<ItemViewModle>();
-                Get.to(/*() =>*/
-                    FilterItemScreen(
-                        title: "Select Items",
-                        serail: widget.box.serialNo,
-                        box: widget.box));
-              },
-              child:
-                  SvgPicture.asset("assets/svgs/select_all_no_background.svg")),
-        ),
+        widget.box.storageStatus == LocalConstance.boxAtHome
+            ? const SizedBox()
+            : Center(
+                child: InkWell(
+                    onTap: () {
+                      // itemViewModle.listIndexSelected.clear();
+                      // itemViewModle.isSelectAllClick = false;
+                      // itemViewModle.isSelectBtnClick = true;
+                      // itemViewModle.search = "";
+                      Get.delete<ItemViewModle>();
+                      Get.to(/*() =>*/
+                          FilterItemScreen(
+                              title: "Select Items",
+                              serail: widget.box.serialNo,
+                              box: widget.box));
+                    },
+                    child: SvgPicture.asset(
+                        "assets/svgs/select_all_no_background.svg")),
+              ),
         SizedBox(
           width: sizeW10,
         ),

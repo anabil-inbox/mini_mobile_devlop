@@ -144,27 +144,45 @@ class SelectedItemBottomSheet extends StatelessWidget {
                         child: ListView.builder(
                             shrinkWrap: true,
                             primary: false,
-                            // physics: NeverScrollableScrollPhysics(),
-                            itemCount: logic.listIndexSelected.length,
+                            itemCount: box.items?.length,
                             itemBuilder: (context, index) {
-                              var where = box.items
-                                  ?.where((element) => logic.listIndexSelected
-                                      .contains(element.itemName))
-                                  .toList();
                               return ItemsSelectedWidget(
-                                boxItem: where?[index],
+                                boxItem: box.items?[index],
                                 onCheckItem: () {
-                                  var i = logic.listIndexSelected.indexOf(
-                                      "${where?[index].itemName.toString()}");
-                                  logic.listIndexSelected
-                                      .removeAt(i == -1 ? 0 : i);
-                                  if (logic.listIndexSelected.isEmpty) {
-                                    Get.back();
+                                  bool isFound = logic.listIndexSelected
+                                      .contains(box.items?[index].itemName);
+                                  if (isFound) {
+                                    logic.listIndexSelected.removeWhere(
+                                        (element) =>
+                                            element ==
+                                            box.items?[index].itemName);
+                                  } else {
+                                    logic.listIndexSelected
+                                        .add(box.items![index].itemName ?? "");
                                   }
                                   logic.update();
                                 },
                               );
                             }),
+                        // itemBuilder: (context, index) {
+                        //   var where = box.items
+                        //       ?.where((element) => logic.listIndexSelected
+                        //           .contains(element.itemName))
+                        //       .toList();
+                        //   return ItemsSelectedWidget(
+                        //     boxItem: where?[index],
+                        //     onCheckItem: () {
+                        //       var i = logic.listIndexSelected.indexOf(
+                        //           "${where?[index].itemName.toString()}");
+                        //       logic.listIndexSelected
+                        //           .removeAt(i == -1 ? 0 : i);
+                        //       if (logic.listIndexSelected.isEmpty) {
+                        //         Get.back();
+                        //       }
+                        //       logic.update();
+                        //     },
+                        //   );
+                        // }),
                       ),
                     ),
                   SizedBox(

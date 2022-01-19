@@ -182,5 +182,6 @@
     "terminate":"انهاء",
     "fetch":"اجلب",
     "warehouse_address":"عنوان المخزن",
-    "you_have_to_accept_our_terms" : "يجب الموافقة على سياسية الخصوصية اولا"
+    "you_have_to_accept_our_terms" : "يجب الموافقة على سياسية الخصوصية اولا",
+    "item_photos":"صور العنصر"
 }
