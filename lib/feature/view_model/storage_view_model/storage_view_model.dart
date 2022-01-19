@@ -1394,11 +1394,18 @@ class StorageViewModel extends BaseController {
     return getPriceWithFormate(price: price);
   }
 
-  bool isValidateTask() {
-    if (selectedAddress == null) {
-      snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
-      return false;
-    } else if (GetUtils.isNull(selectedDateTime)) {
+  bool isValidateTask({required Task task, required List<Box> boxess}) {
+    if (!((task.id == LocalConstance.destroyId ||
+            task.id == LocalConstance.terminateId ||
+            task.id == LocalConstance.giveawayId) &&
+        !(doseBoxInHome(boxess: boxess)))) {
+      if (selectedAddress == null) {
+        snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
+        return false;
+      }
+    }
+
+    if (GetUtils.isNull(selectedDateTime)) {
       snackError("${tr.error_occurred}", "${tr.you_have_to_select_date}");
       return false;
     } else if (selctedWorksHours!.isEmpty) {
@@ -1414,10 +1421,18 @@ class StorageViewModel extends BaseController {
 
   // THIS REGUSET is For Playing WITH Api Tasks you will Add The Task And Boxess
   //Note :: IF You want to Send Single Box you Will Add The Box Only in The List Like This [myBox()]
-  Future<void> doTaskBoxRequest({required Task task, required List<Box> boxes}) async {
+  Future<void> doTaskBoxRequest(
+      {required Task task, required List<Box> boxes}) async {
     startLoading();
     List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
     Map<String, dynamic> map = {};
+    String boxessSeriales = "";
+
+    for (var i = 0; i < boxes.length; i++) {
+      boxessSeriales += '${boxes[i].serialNo},';
+    }
+
+
 
     for (var i = 0; i < boxes.length; i++) {
       // if (task.id == LocalConstance.pickupId) {
@@ -1425,7 +1440,7 @@ class StorageViewModel extends BaseController {
       // } else if (task.id == LocalConstance.recallId) {
       //   map["type[$i]"] = LocalConstance.recallId;
       // }
-      // this Request Will Changed Here !: 
+      // this Request Will Changed Here !:
       map["type[$i]"] = task.id;
       map["order[$i]"] = [
         {
@@ -1435,7 +1450,7 @@ class StorageViewModel extends BaseController {
           "order_to": "${selectedDay?.to}",
           "order_from": "${selectedDay?.from}",
           "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
-          "storage_child_in": "${boxes[i].serialNo}"
+          "storage_child_in": "$boxessSeriales"
         }
       ];
       map["address[$i]"] = selectedAddress!.id;
@@ -1461,7 +1476,7 @@ class StorageViewModel extends BaseController {
   // Future<void> giveawayBoxRequest({required Task task , required Box box}) async{
   // }
 
- // Future<void> recallBoxRequest({required Task task, required Box box}) async {}
+  // Future<void> recallBoxRequest({required Task task, required Box box}) async {}
   cleanAfterSucces() {
     isAccept = false;
     selectedPaymentMethod = null;
@@ -1469,5 +1484,15 @@ class StorageViewModel extends BaseController {
     selectedAddress = null;
     selectedDay = null;
     selectedDateTime = null;
+  }
+
+  // Fun to Test If Ihave Any Box At home ::
+  bool doseBoxInHome({required List<Box> boxess}) {
+    for (var box in boxess) {
+      if (box.storageStatus == LocalConstance.boxAtHome) {
+        return true;
+      }
+    }
+    return false;
   }
 }

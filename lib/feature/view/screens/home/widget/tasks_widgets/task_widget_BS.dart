@@ -61,13 +61,16 @@ class TaskWidgetBS extends StatelessWidget {
                   onClicked: homeViewModel.selctedOperationsBoxess.length > 0
                       ? () {
                           Get.bottomSheet(
-                              RecallBoxProcessSheet(
-                                  box: homeViewModel.selctedOperationsBoxess
-                                      .toList()[0],
-                                  boxes: homeViewModel.selctedOperationsBoxess
-                                      .toList(),
-                                  task: task),
-                              isScrollControlled: true);
+                                  RecallBoxProcessSheet(
+                                      box: homeViewModel.selctedOperationsBoxess
+                                          .toList()[0],
+                                      boxes: homeViewModel
+                                          .selctedOperationsBoxess
+                                          .toList(),
+                                      task: task),
+                                  isScrollControlled: true)
+                              .whenComplete(
+                                  () => homeViewModel.selectedAddres = null);
                         }
                       : () {},
                   isExpanded: true);

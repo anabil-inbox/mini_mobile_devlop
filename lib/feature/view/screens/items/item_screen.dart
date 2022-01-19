@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/delete_or_terminate_bottom_sheer.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/empty_body_box_item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/btn_action_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/items_widget.dart';
@@ -433,9 +434,9 @@ class _ItemScreenState extends State<ItemScreen> {
   }
 
   onDeleteBoxClick() {
-    // Get.bottomSheet(BottomSheetPaymentWidget(),
-    //     isScrollControlled: true);
+    Get.bottomSheet(DeleteOrTirmnateBottomSheet(), isScrollControlled: true);
   }
+
 
   onShareBoxClick() {
     itemViewModle.shareBox(box: itemViewModle.operationsBox ?? widget.box);

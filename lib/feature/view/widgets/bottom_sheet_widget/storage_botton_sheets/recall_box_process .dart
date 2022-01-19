@@ -64,7 +64,9 @@ class RecallBoxProcessSheet extends StatelessWidget {
                               ? "${tr.destory}"
                               : task.id == LocalConstance.terminateId
                                   ? "${tr.terminate}"
-                                  : "${tr.fetch}"),
+                                  : task.id == LocalConstance.giveawayId
+                                      ? "${tr.giveaway}"
+                                      : "${tr.fetch}"),
             ),
             SizedBox(
               width: sizeW10,
@@ -82,59 +84,84 @@ class RecallBoxProcessSheet extends StatelessWidget {
         ),
       );
 
-  Widget get addressWidget => Container(
-        alignment: Alignment.center,
-        padding:
-            EdgeInsets.only(left: sizeW10!, right: sizeW10!, top: sizeH20!),
-        margin: EdgeInsets.symmetric(horizontal: sizeW10!),
-        decoration: BoxDecoration(
-            boxShadow: [boxShadowLight()!],
-            color: colorTextWhite,
-            borderRadius: BorderRadius.circular(sizeRadius10!)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("${tr.pickup_address}"),
-            SizedBox(
-              height: sizeH10,
-            ),
-            GetBuilder<ProfileViewModle>(
-              init: ProfileViewModle(),
-              initState: (_) {},
-              builder: (log) {
-                return GetBuilder<StorageViewModel>(
-                  init: StorageViewModel(),
-                  initState: (_) {
-                    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                      _storageViewModel.selectedDateTime = null;
-                      _storageViewModel.selectedDay = null;
-                      _storageViewModel.selectedStringOption.clear();
-                      _storageViewModel.getStoreAddress();
-                    });
+  Widget get addressWidget {
+    if ((task.id == LocalConstance.destroyId ||
+            task.id == LocalConstance.terminateId ||
+            task.id == LocalConstance.giveawayId) &&
+        !(_storageViewModel.doseBoxInHome(boxess: boxes))) {
+      return const SizedBox();
+    } else {
+      return Column(
+        children: [
+          Container(
+            alignment: Alignment.center,
+            padding:
+                EdgeInsets.only(left: sizeW10!, right: sizeW10!, top: sizeH20!),
+            margin: EdgeInsets.symmetric(horizontal: sizeW10!),
+            decoration: BoxDecoration(
+                boxShadow: [boxShadowLight()!],
+                color: colorTextWhite,
+                borderRadius: BorderRadius.circular(sizeRadius10!)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("${tr.pickup_address}"),
+                SizedBox(
+                  height: sizeH10,
+                ),
+                GetBuilder<ProfileViewModle>(
+                  init: ProfileViewModle(),
+                  initState: (_) {},
+                  builder: (log) {
+                    return GetBuilder<StorageViewModel>(
+                      init: StorageViewModel(),
+                      initState: (_) {
+                        WidgetsBinding.instance
+                            ?.addPostFrameCallback((timeStamp) {
+                          _storageViewModel.selectedDateTime = null;
+                          _storageViewModel.selectedDay = null;
+                          _storageViewModel.selectedStringOption.clear();
+                          _storageViewModel.getStoreAddress();
+                        });
+                      },
+                      builder: (_) {
+                        return log.userAddress.isNotEmpty
+                            ? ListView(
+                                primary: false,
+                                shrinkWrap: true,
+                                children: log.userAddress
+                                    .map((e) => PickupAddressItem(
+                                          address: e,
+                                        ))
+                                    .toList(),
+                              )
+                            : const SizedBox();
+                      },
+                    );
                   },
-                  builder: (_) {
-                    return log.userAddress.isNotEmpty
-                        ? ListView(
-                            primary: false,
-                            shrinkWrap: true,
-                            children: log.userAddress
-                                .map((e) => PickupAddressItem(
-                                      address: e,
-                                    ))
-                                .toList(),
-                          )
-                        : const SizedBox();
-                  },
-                );
-              },
+                ),
+                SizedBox(
+                  height: sizeH20,
+                ),
+              ],
             ),
-            SizedBox(
-              height: sizeH10,
-            ),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: sizeH10,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: padding10!),
+            child: SeconderyButtom(
+                textButton: "${tr.add_new_address}",
+                onClicked: () {
+                  Get.to(() => AddAddressScreen());
+                }),
+          ),
+        ],
       );
+    }
+  }
 
   Widget get optionsList => task.vas?.length == 0
       ? const SizedBox.shrink()
@@ -337,17 +364,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
             //     ],
             //   ),
             // ),
-            SizedBox(
-              height: sizeH20,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: padding6!),
-              child: SeconderyButtom(
-                  textButton: "${tr.add_new_address}",
-                  onClicked: () {
-                    Get.to(() => AddAddressScreen());
-                  }),
-            ),
+
             SizedBox(
               height: sizeH20,
             ),
@@ -389,16 +406,21 @@ class RecallBoxProcessSheet extends StatelessWidget {
   }
 
   onClickBreakSeal() {
-    if (_storageViewModel.isValidateTask()) {
+    if (_storageViewModel.isValidateTask(task: task, boxess: boxes)) {
       Get.back();
       Get.bottomSheet(
-          BottomSheetPaymentWidget(
-            boxes: boxes,
-            box: box!,
-            task: task,
-          ),
-          isScrollControlled: true);
+              BottomSheetPaymentWidget(
+                boxes: boxes,
+                box: box!,
+                task: task,
+              ),
+              isScrollControlled: true)
+          .then((value) => {
+                _storageViewModel.selectedAddress = null,
+              });
     }
+
+    // to do transmit Bottom Sheets to View Models ::
 
     // try {
     //   var addressTitle = "${_storageViewModel.selectedStore?.addresses?.first.addressTitle??_storageViewModel.selectedAddress?.addressTitle}";

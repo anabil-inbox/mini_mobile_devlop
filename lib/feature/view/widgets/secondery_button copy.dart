@@ -23,12 +23,14 @@ class SeconderyButtom extends StatelessWidget {
       width: isExpanded ? double.infinity : sizeW165,
       height: sizeH50,
       clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          color: colorUnSelectedWidget,
-          blurRadius: 1,
-          offset: const Offset(0, 2),
-        ),
+      decoration: BoxDecoration(
+        border: Border.all(color: colorHint2.withOpacity(0.2)),
+        boxShadow: [
+        // BoxShadow(
+        //   color: colorUnSelectedWidget,
+        //   blurRadius: 1,
+        //   offset: const Offset(0, 2),
+        // ),
       ], borderRadius: BorderRadius.circular(6)),
       child: MaterialButton(
         color: colorBackground,
