@@ -1501,6 +1501,12 @@ class StorageViewModel extends BaseController {
   //todo this for add to cart [local data]
   void addToCart(List<Box> boxes ,List<BoxItem> boxItems , Address address ,Task task , Day day , String title){
     var cartModel = CartModel(task: task, box: boxes, boxItem: boxItems, orderTime: day, address: address, title: "$title");
-    CartHelper.instance.addToCart(cartModel);
+    CartHelper.instance.addToCart(cartModel).then((value) {
+      if(value > 1){
+        //todo success state
+      }else{
+        //todo fail state
+      }
+    });
   }
 }
