@@ -14,6 +14,7 @@ import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_vi
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/splash_view_modle/splash_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
+import 'package:inbox_clients/local_database/sql_helper.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/sh_util.dart';
@@ -52,8 +53,10 @@ class _HomePageHolderState extends State<HomePageHolder> {
     Get.put(ItemViewModle() ,permanent: false);
     Get.put(ProfileViewModle());
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async{
       // Get.put(ItemViewModle());
+      if(!GetUtils.isNull(SharedPref.instance.getCurrentUserData()) && !GetUtils.isNull(SharedPref.instance.getCurrentUserData().id))
+        await SqlHelper.instance.initDataBase();
       if (widget.isFromScan ?? false) {
         Get.bottomSheet(
             CheckInBoxWidget(

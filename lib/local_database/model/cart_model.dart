@@ -2,10 +2,12 @@ import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
 class CartModel {
-  int? id;
+  String? id;
+  String? userId;
   Task? task;
   List<Box>? box;
   List<BoxItem>? boxItem;
@@ -14,6 +16,7 @@ class CartModel {
   String? title;
 
   CartModel({this.id,
+      this.userId,
       required this.task,
       required this.box,
       required this.boxItem,
@@ -25,6 +28,7 @@ class CartModel {
     try {
       return CartModel(
               id:json["id"] == null ? null: json["id"],
+              userId:json["userId"] == null ? null: json["userId"],
               address:json["address"] == null ? null:Address.fromJson(json["address"]) ,
               title:json["title"] == null ? null: json["title"],
               orderTime:json["orderTime"] == null ? null:Day.fromJson(json["orderTime"]) ,
@@ -41,6 +45,7 @@ class CartModel {
     try {
       return {
           "id": id??"",
+          "userId":"${SharedPref.instance.getCurrentUserData().id.toString()}",
           "boxItem":List<dynamic>.from(boxItem!.map((x) => x)) ,
           "orderTime":orderTime?.toJson()??{} ,
           "address": address?.toJson()??{},

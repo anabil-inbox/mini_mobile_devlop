@@ -24,7 +24,6 @@ void main() async {
   await Firebase.initializeApp();
   await AppFcm.fcmInstance.init();
   await SharedPref.instance.init();
-  await SqlHelper.instance.initDataBase();
   // FirebaseCrashlytics.instance.crash();
   portraitOrientation();
   HttpOverrides.global = MyHttpOverrides();

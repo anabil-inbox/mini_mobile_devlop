@@ -21,7 +21,8 @@ class SqlHelper {
 
   //todo this is column
    final String tableName = "Cart";
-   final String id = "id_${SharedPref.instance.getCurrentUserData().id.toString()}";
+   final String id = "id";
+   final String userId = "userId";
    final String taskColumn = "task";
    final String boxColumn = "box";
    final String boxItemColumn = "boxItem";
@@ -68,12 +69,13 @@ class SqlHelper {
     return '''
     CREATE TABLE $tableName(
     $id INTEGER PRIMARY KEY AUTOINCREMENT,
+    $userId TEXT,
     $taskColumn Blob NULL,
     $boxColumn Blob NULL,
     $boxItemColumn Blob NULL,
     $orderTimeColumn Blob NULL,
     $addressColumn Blob NULL,
-    $titleColumn TEXT NULL,
+    $titleColumn TEXT NULL
     )
  ''';
   }
@@ -93,7 +95,7 @@ class SqlHelper {
   //todo this for data
   Future<int> updateDataToDatabase(CartModel data) async {
     try {
-      return await _db!.update(tableName, data.toJson(), where: "$id=?", whereArgs: [data.id]);
+      return await _db!.update(tableName, data.toJson(), where: "$id=?,$userId=?", whereArgs: ["${data.id}" , "${SharedPref.instance.getCurrentUserData().id.toString()}"]);
     } catch (e) {
       Logger().d(e);
       snackError(tr.error_occurred, e.toString());
@@ -103,16 +105,16 @@ class SqlHelper {
 
   Future<List<Map<String, Object?>>>? selectAllDataFromDatabase() async {
     try {
-      return await _db!.query(tableName);
+      return await _db!.query(tableName , where:"$userId=?" , whereArgs: ["${SharedPref.instance.getCurrentUserData().id.toString()}"] );
     } catch (e) {
       Logger().d(e);
       throw Exception(e);
     }
   }
 
-  Future<List<Map<String, Object?>>>? selectAllDataFromDatabaseWhere(var userId) async {
+  Future<List<Map<String, Object?>>>? selectAllDataFromDatabaseWhere(var userIdAtt) async {
     try {
-      return await _db!.query(tableName, where: "$id=?", whereArgs: ["$userId"]);
+      return await _db!.query(tableName, where: "$id=?,$userId=?", whereArgs: ["$userIdAtt" , "${SharedPref.instance.getCurrentUserData().id.toString()}"]);
     } catch (e) {
       Logger().d(e);
       throw Exception(e);
@@ -121,7 +123,7 @@ class SqlHelper {
 
   Future<int> deleteDataFromDatabase(CartModel data) async {
     try {
-      return await _db!.delete(tableName, where: "$id=?", whereArgs: [data.id]);
+      return await _db!.delete(tableName, where: "$id=?,$userId=?", whereArgs: ["${data.id}" , "${SharedPref.instance.getCurrentUserData().id.toString()}"]);
     } catch (e) {
       Logger().d(e);
       throw Exception(e);
