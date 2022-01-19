@@ -6,6 +6,7 @@ final double? sizeH1 = 1.h;
 final double? sizeH2 = 2.h;
 final double? sizeH6 = 6.h;
 final double? sizeH16 = 16.h;
+final double? sizeH160 = 160.h;
 final double? sizeH14 = 14.h;
 final double? sizeH17 = 17.h;
 final double? sizeH32 = 32.h;

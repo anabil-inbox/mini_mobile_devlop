@@ -138,6 +138,8 @@
       "you_have_to_add_item":"يجب عليك اختيار عنصر",
        "sorry_there_are_no_work_hours":"نأسف، لا يوجد ساعات عمل في هذا اليوم",
        "add_to_cart":"اضافة الى السلة",
+      "cart":"السلة",
+      "store":"المخزن",
        "you_have_to_add_address":"يجب عليك تحديد عنوان",
      "you_have_to_select_date":"يجب عليك تحديد التاريخ",
      "you_have_to_select_time":"يجب عليك تحديد الوقت",

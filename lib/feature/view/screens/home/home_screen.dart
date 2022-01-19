@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/core/dialog_loading.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
-import 'package:inbox_clients/feature/view/screens/cart/cart_screen.dart';
+import 'package:inbox_clients/feature/view/screens/cart/my_cart/cart_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/search_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/box_gv_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
