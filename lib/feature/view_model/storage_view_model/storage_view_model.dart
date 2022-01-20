@@ -791,9 +791,25 @@ class StorageViewModel extends BaseController {
           // localOrderItem.itemParent = 0;
           localOrderItem.storageType = element.storageCategoryType;
           localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
-          localOrderItem.subscriptionPrice = element.userPrice! /
-              element.numberOfDays! /
-              innerElement.quantity!;
+
+          if (element.selectedDuration ==
+              ConstanceNetwork.dailyDurationType) {
+            localOrderItem.subscriptionPrice =
+                num.parse(innerElement.price ?? "0");
+          } else if (element.selectedDuration ==
+              ConstanceNetwork.montlyDurationType) {
+            localOrderItem.subscriptionPrice =
+                num.parse(innerElement.monthlyPrice ?? "0");
+          } else {
+            localOrderItem.subscriptionPrice =
+                num.parse(innerElement.yearlyPrice ?? "0");
+          }
+
+          // localOrderItem.subscriptionPrice = element.pricePerDay;
+
+          // localOrderItem.subscriptionPrice = element.userPrice! /
+          //     element.numberOfDays! /
+          //     innerElement.quantity!;
           Logger().i("${localOrderItem.toJson()}");
           print("${orderItems.length}");
           // localOrderItem.from = selectedDay!.from;
@@ -804,7 +820,6 @@ class StorageViewModel extends BaseController {
           localOrderItem = OrderItem();
           print("${orderItems.length}");
         });
-
         if (!GetUtils.isNull(element.localBulk!.optionStorageItem)) {
           localOrderItem.itemCode = element.localBulk!.optionStorageItem!.name;
           localOrderItem.deliveryDate = selectedDateTime.toString();

@@ -26,9 +26,9 @@ class GVWidget extends StatelessWidget {
     return Column(
       children: [
         GridView.builder(
-          controller: homeViewModel.scrollcontroller,
+         // controller: homeViewModel.scrollcontroller,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: homeViewModel.userBoxess.toList().length,
+          itemCount: homeViewModel.userBoxess.length,
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
@@ -46,7 +46,6 @@ class GVWidget extends StatelessWidget {
                   );
                   homeViewModel.update();
               }else{
-
                 Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index] ,getBoxDataMethod: () async{
                   await itemViewModel.getBoxBySerial(serial: homeViewModel.userBoxess.toList()[index].serialNo!);
                 },));

@@ -184,6 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return Stack(
               children: [
                 SingleChildScrollView(
+                  controller: logic.scrollcontroller,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: sizeW20!),
                     child: GetBuilder<HomeViewModel>(

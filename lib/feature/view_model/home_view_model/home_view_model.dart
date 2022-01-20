@@ -22,14 +22,17 @@ class HomeViewModel extends BaseController {
   int get currentIndex => _currentIndex;
   //to do for Loading var:
   bool isLoading = false;
+  bool isLoadingPagination = false;
 
   // get Custome Boxes Vars And Functtions ::
   Set<Box> userBoxess = {};
 
   Future<void> getCustomerBoxes() async {
-    startLoading();
+    if (!isLoadingPagination) {
+      startLoading();
+    }
     await HomeHelper.getInstance
-        .getCustomerBoxess(pageSize: 10, page: page)
+        .getCustomerBoxess(pageSize: 15, page: page)
         .then((value) => {
               userBoxess.addAll(value),
               update(),
@@ -61,6 +64,18 @@ class HomeViewModel extends BaseController {
     update();
   }
 
+  // start Loaging Function ::
+  void startLoadingPagination() {
+    isLoadingPagination = true;
+    update();
+  }
+
+  // end Loaging Function ::
+  void endLoadingPagination() {
+    isLoadingPagination = false;
+    update();
+  }
+
   //paginations Vars And Func ::
   var scrollcontroller = ScrollController();
   int page = 1;
@@ -74,11 +89,9 @@ class HomeViewModel extends BaseController {
   Barcode? result;
   QRViewController? controller;
 
-  onQRViewCreated(QRViewController controller,
-      {bool? isFromAtHome, int? index, StorageViewModel? storageViewModel}) {
+  onQRViewCreated(QRViewController controller,{bool? isFromAtHome, int? index, StorageViewModel? storageViewModel}) {
     try {
       this.controller = controller;
-
       controller.scannedDataStream.listen((scanData) {
         result = scanData;
       }).onData((data) async {
@@ -120,11 +133,15 @@ class HomeViewModel extends BaseController {
 
   // this for Pagination :
 
-  void pagination() {
+  void pagination() async {
+    isLoadingPagination = true;
+    startLoadingPagination();
     if ((scrollcontroller.position.pixels ==
         scrollcontroller.position.maxScrollExtent)) {
       page += 1;
+      getCustomerBoxes();
     }
+    endLoadingPagination();
     update();
   }
 

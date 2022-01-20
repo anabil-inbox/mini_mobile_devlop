@@ -57,8 +57,3 @@ class BindingsController extends Bindings {
     );
   }
 }
-
-// hide selection on At Home: <=
-// increase the qty off : 
-// show photos and selections :: 
-// dont hide deselected Items from the Bottom Sheet :
