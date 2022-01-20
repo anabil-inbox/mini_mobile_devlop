@@ -8,6 +8,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 class BtnActionWidget extends StatelessWidget {
   final String? redBtnText, grayBtnText;
   final Function()? onRedBtnClick, onGrayBtnClick, onShareBox, onDeleteBox;
+  final bool isShowingDeleteAndGivaway;
   const BtnActionWidget(
       {Key? key,
       this.redBtnText,
@@ -15,52 +16,83 @@ class BtnActionWidget extends StatelessWidget {
       this.onRedBtnClick,
       this.onShareBox,
       this.onDeleteBox,
+      this.isShowingDeleteAndGivaway = false,
       this.onGrayBtnClick})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        IconBtn(
-          icon: "assets/svgs/share.svg",
-          onPressed: () {
-            onShareBox!();
-          },
-        ),
-        SizedBox(
-          width: sizeW10,
-        ),
-        PrimaryButton(
-            textButton: redBtnText ?? "${tr.recall}",
+
+    if (isShowingDeleteAndGivaway) {
+      return Row(
+        children: [
+          SizedBox(
+            width: sizeW10,
+          ),
+          IconBtn(
+            icon: "assets/svgs/share.svg",
+            onPressed: () {
+              onShareBox!();
+            },
+          ),
+          SizedBox(
+            width: sizeW10,
+          ),
+          Expanded(
+            child: PrimaryButton(
+                textButton: redBtnText ?? "${tr.recall}",
+                isLoading: false,
+                onClicked: onRedBtnClick ?? () {},
+                isExpanded: true),
+          ),
+          SizedBox(
+            width: sizeW10,
+          ),
+          ],
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          IconBtn(
+            icon: "assets/svgs/share.svg",
+            onPressed: () {
+              onShareBox!();
+            },
+          ),
+          SizedBox(
+            width: sizeW10,
+          ),
+          PrimaryButton(
+              textButton: redBtnText ?? "${tr.recall}",
+              isLoading: false,
+              onClicked: onRedBtnClick ?? () {},
+              width: sizeW114,
+              isExpanded: false),
+          SizedBox(
+            width: sizeW5,
+          ),
+          PrimaryButton(
+            textButton: grayBtnText ?? "${tr.giveaway}",
             isLoading: false,
-            onClicked: onRedBtnClick ?? () {},
+            onClicked: onGrayBtnClick ?? () {},
             width: sizeW114,
-            isExpanded: false),
-        SizedBox(
-          width: sizeW5,
-        ),
-        PrimaryButton(
-          textButton: grayBtnText ?? "${tr.giveaway}",
-          isLoading: false,
-          onClicked: onGrayBtnClick ?? () {},
-          width: sizeW114,
-          isExpanded: false,
-          colorBtn: colorBtnGray,
-          colorText: colorTextDark,
-        ),
-        SizedBox(
-          width: sizeW5,
-        ),
-        IconBtn(
-          onPressed: () {
-            onDeleteBox!();
-          },
-        ),
-      ],
-    );
+            isExpanded: false,
+            colorBtn: colorBtnGray,
+            colorText: colorTextDark,
+          ),
+          SizedBox(
+            width: sizeW5,
+          ),
+          IconBtn(
+            onPressed: () {
+              onDeleteBox!();
+            },
+          ),
+        ],
+      );
+    }
   }
 }

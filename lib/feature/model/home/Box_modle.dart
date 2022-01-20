@@ -127,12 +127,10 @@ class BoxItem {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BoxItem &&
-          runtimeType == other.runtimeType &&
-          itemName == other.itemName;
+      other is BoxItem && runtimeType == other.runtimeType && id == other.id;
 
   @override
-  int get hashCode => itemName.hashCode;
+  int get hashCode => id.hashCode;
 }
 
 class Attachment {

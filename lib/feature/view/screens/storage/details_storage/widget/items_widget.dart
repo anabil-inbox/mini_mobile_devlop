@@ -53,9 +53,8 @@ class ItemsWidget extends StatelessWidget {
                       width: sizeW40,
                       child: TextButton(
                         onPressed: onCheckItem ?? () {},
-                        child: logic.listIndexSelected.contains(boxItem
-                                    ?.itemName ??
-                                "") /* ||
+                        child: logic.listIndexSelected.contains(
+                                boxItem) /* ||
                           logic.isSelectAllClick*/
                             ? SvgPicture.asset(
                                 "assets/svgs/storage_check_active.svg")

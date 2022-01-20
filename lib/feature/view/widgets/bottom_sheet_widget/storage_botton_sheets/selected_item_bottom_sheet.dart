@@ -104,6 +104,7 @@ class SelectedItemBottomSheet extends StatelessWidget {
       );
 
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+  static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
 
   @override
   Widget build(BuildContext context) {
@@ -150,15 +151,14 @@ class SelectedItemBottomSheet extends StatelessWidget {
                                 boxItem: box.items?[index],
                                 onCheckItem: () {
                                   bool isFound = logic.listIndexSelected
-                                      .contains(box.items?[index].itemName);
+                                      .contains(box.items?[index]);
                                   if (isFound) {
                                     logic.listIndexSelected.removeWhere(
                                         (element) =>
-                                            element ==
-                                            box.items?[index].itemName);
+                                            element == box.items?[index]);
                                   } else {
                                     logic.listIndexSelected
-                                        .add(box.items![index].itemName ?? "");
+                                        .add(box.items![index]);
                                   }
                                   logic.update();
                                 },
@@ -209,6 +209,7 @@ class SelectedItemBottomSheet extends StatelessWidget {
     Get.back();
     Get.bottomSheet(
         RecallBoxProcessSheet(
+          items: itemViewModle.listIndexSelected,
           box: box,
           task: enterdTask,
           boxes: [box],

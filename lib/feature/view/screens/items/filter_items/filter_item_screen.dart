@@ -9,6 +9,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/delete_or_terminate_bottom_sheer.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/btn_action_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/items_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/text_with_contanier_widget.dart';
@@ -94,7 +95,7 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
                   builder: (logic) {
                     return TextButton(
                         onPressed: () {
-                         // itemViewModle.updateSelectBtn();
+                          // itemViewModle.updateSelectBtn();
                         },
                         child: SizedBox(
                           width: sizeW40,
@@ -111,13 +112,13 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
                                   itemViewModle.operationsBox?.items
                                       ?.forEach((element) {
                                     itemViewModle.listIndexSelected
-                                        .add("${element.itemName}");
+                                        .add(element);
                                   });
                                 }
                               }
                               itemViewModle.update();
                             },
-                            child: (itemViewModle.isSelectAllClick ||
+                            child: (/* itemViewModle.isSelectAllClick || */
                                     (itemViewModle.listIndexSelected.length ==
                                         itemViewModle
                                             .operationsBox?.items?.length))
@@ -164,6 +165,8 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
         redBtnText: widget.box.storageStatus == LocalConstance.boxAtHome
             ? "${tr.pickup}"
             : "${tr.recall}",
+        isShowingDeleteAndGivaway: (itemViewModle.listIndexSelected.length ==
+            itemViewModle.operationsBox?.items?.length),
         onShareBox: onShareBoxClick,
         onGrayBtnClick: onGrayBtnClick,
         onRedBtnClick: onRedBtnClick,
@@ -233,8 +236,7 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
                                     isSelectedBtnClick:
                                         itemViewModle.isSelectBtnClick,
                                     onCheckItem: () {
-                                      itemViewModle.addIndexToList(
-                                          element.itemName.toString());
+                                      itemViewModle.addIndexToList(element);
                                     },
                                   );
                                 } else if (element.itemName!
@@ -247,8 +249,7 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
                                     isSelectedBtnClick:
                                         itemViewModle.isSelectBtnClick,
                                     onCheckItem: () {
-                                      itemViewModle.addIndexToList(
-                                          element.itemName.toString());
+                                      itemViewModle.addIndexToList(element);
                                     },
                                   );
                                 } else {
@@ -300,7 +301,8 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
             box: widget.box,
           ),
           isScrollControlled: true);
-    } else if (widget.box.storageStatus == LocalConstance.boxinWareHouse && itemViewModle.listIndexSelected.isEmpty) {
+    } else if (widget.box.storageStatus == LocalConstance.boxinWareHouse &&
+        itemViewModle.listIndexSelected.isEmpty) {
       //todo this if recall
       final Task enterdTask = FilterItemScreen.homeViewModel
           .searchTaskById(taskId: LocalConstance.recallId);
@@ -333,10 +335,14 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
   onDeleteBoxClick() {
     // Get.bottomSheet(BottomSheetPaymentWidget(),
     //     isScrollControlled: true);
+    Get.bottomSheet(
+        DeleteOrTirmnateBottomSheet(
+          box: itemViewModle.operationsBox ?? widget.box,
+        ),
+        isScrollControlled: true);
   }
 
   onShareBoxClick() {
-    itemViewModle.shareBox(box: widget.box);
+    itemViewModle.shareBox(box: itemViewModle.operationsBox ?? widget.box);
   }
-
 }

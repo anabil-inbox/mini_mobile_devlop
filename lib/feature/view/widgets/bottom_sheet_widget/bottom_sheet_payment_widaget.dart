@@ -21,8 +21,9 @@ class BottomSheetPaymentWidget extends StatelessWidget {
   final Task task;
   final Box box;
   final List<Box> boxes;
+  final List<BoxItem>? items;
   const BottomSheetPaymentWidget(
-      {Key? key, required this.task, required this.box, required this.boxes})
+      {Key? key, required this.task, required this.box, required this.boxes , this.items})
       : super(key: key);
 
   static StorageViewModel storageViewModle = Get.find<StorageViewModel>();
@@ -198,9 +199,9 @@ class BottomSheetPaymentWidget extends StatelessWidget {
   onClickSubmit() {
     if (storageViewModle.selectedPaymentMethod != null) {
       if (boxes.length > 0) {
-        storageViewModle.doTaskBoxRequest(task: task, boxes: boxes);
+        storageViewModle.doTaskBoxRequest(task: task, boxes: boxes , selectedItems: items);
       } else {
-        storageViewModle.doTaskBoxRequest(task: task, boxes: [box]);
+        storageViewModle.doTaskBoxRequest(task: task, boxes: [box], selectedItems: items);
       }
     } else {
       snackError(
