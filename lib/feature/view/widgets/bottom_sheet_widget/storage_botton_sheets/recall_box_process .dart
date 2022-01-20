@@ -37,6 +37,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
       this.index,
       required this.task,
       required this.boxes,
+      this.items,
       this.isFetchTask = false})
       : super(key: key);
 
@@ -47,6 +48,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
   static CartViewModel _cartViewModel = Get.put<CartViewModel>(CartViewModel()) ;
 
   final Task task;
+  final List<BoxItem>? items;
   final List<Box> boxes;
   bool? isFetchTask;
 
@@ -88,8 +90,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
         ),
       );
 
-  Widget get addressWidget =>
-       Column(
+  Widget get addressWidget => Column(
         children: [
           Container(
             alignment: Alignment.center,
@@ -158,7 +159,6 @@ class RecallBoxProcessSheet extends StatelessWidget {
           ),
         ],
       );
-  
 
   Widget get optionsList => task.vas?.length == 0
       ? const SizedBox.shrink()
@@ -405,6 +405,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
       Get.back();
       Get.bottomSheet(
               BottomSheetPaymentWidget(
+                items: items,
                 boxes: boxes,
                 box: box!,
                 task: task,

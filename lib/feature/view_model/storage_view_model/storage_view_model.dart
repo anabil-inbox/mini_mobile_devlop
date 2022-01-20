@@ -38,7 +38,7 @@ class StorageViewModel extends BaseController {
   //todo this for appbar select btn
   bool? isSelectBtnClick = false;
   bool? isSelectAllClick = false;
-  List<String> listIndexSelected = <String>[];
+  List<BoxItem> listIndexSelected = <BoxItem>[];
 
   //todo this for bottom sheet accept isAccept
   bool isAccept = false;
@@ -790,12 +790,28 @@ class StorageViewModel extends BaseController {
           localOrderItem.qty = innerElement.quantity;
           localOrderItem.subscriptionDuration = element.numberOfDays;
           localOrderItem.groupId = element.groupId;
-          localOrderItem.itemParent = 0;
+          // localOrderItem.itemParent = 0;
           localOrderItem.storageType = element.storageCategoryType;
           localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
-          localOrderItem.subscriptionPrice = element.userPrice! /
-              element.numberOfDays! /
-              innerElement.quantity!;
+
+          if (element.selectedDuration ==
+              ConstanceNetwork.dailyDurationType) {
+            localOrderItem.subscriptionPrice =
+                num.parse(innerElement.price ?? "0");
+          } else if (element.selectedDuration ==
+              ConstanceNetwork.montlyDurationType) {
+            localOrderItem.subscriptionPrice =
+                num.parse(innerElement.monthlyPrice ?? "0");
+          } else {
+            localOrderItem.subscriptionPrice =
+                num.parse(innerElement.yearlyPrice ?? "0");
+          }
+
+          // localOrderItem.subscriptionPrice = element.pricePerDay;
+
+          // localOrderItem.subscriptionPrice = element.userPrice! /
+          //     element.numberOfDays! /
+          //     innerElement.quantity!;
           Logger().i("${localOrderItem.toJson()}");
           print("${orderItems.length}");
           // localOrderItem.from = selectedDay!.from;
@@ -806,7 +822,6 @@ class StorageViewModel extends BaseController {
           localOrderItem = OrderItem();
           print("${orderItems.length}");
         });
-
         if (!GetUtils.isNull(element.localBulk!.optionStorageItem)) {
           localOrderItem.itemCode = element.localBulk!.optionStorageItem!.name;
           localOrderItem.deliveryDate = selectedDateTime.toString();
@@ -1061,7 +1076,7 @@ class StorageViewModel extends BaseController {
   }
 
   //todo this for select all item
-  updateSelectAll(List<String> list) {
+  updateSelectAll(List<BoxItem> list) {
     isSelectAllClick = !isSelectAllClick!;
     update();
     insertAllItemToList(list);
@@ -1079,7 +1094,7 @@ class StorageViewModel extends BaseController {
   }
 
   //todo this for add all item to selected List item
-  void insertAllItemToList(List<String> list) {
+  void insertAllItemToList(List<BoxItem> list) {
     if (isSelectAllClick!) {
       listIndexSelected.clear();
       listIndexSelected.addAll(list);
@@ -1435,7 +1450,9 @@ class StorageViewModel extends BaseController {
   // THIS REGUSET is For Playing WITH Api Tasks you will Add The Task And Boxess
   //Note :: IF You want to Send Single Box you Will Add The Box Only in The List Like This [myBox()]
   Future<void> doTaskBoxRequest(
-      {required Task task, required List<Box> boxes}) async {
+      {required Task task,
+      required List<Box> boxes,
+      List<BoxItem>? selectedItems}) async {
     startLoading();
     List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
     Map<String, dynamic> map = {};
@@ -1445,36 +1462,50 @@ class StorageViewModel extends BaseController {
       boxessSeriales += '${boxes[i].serialNo},';
     }
 
+    List data = [];
     boxessSeriales = boxessSeriales.substring(0, boxessSeriales.length - 1);
 
-    List data = [];
-    if (selectedAddress != null) {
-      data.add({
-        "item_code": task.id,
-        "qty": 1,
-        "delivery_date": "$selectedDateTime",
-        "item_parent": "0",
-        "group_id": "1",
-        "order_to": "${selectedDay?.to}",
-        "order_from": "${selectedDay?.from}",
-        "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
-        "storage_child_in": "$boxessSeriales"
-      });
+    if (task.id != LocalConstance.fetchId) {
+      if (selectedAddress != null) {
+        data.add({
+          "item_code": task.id,
+          "qty": 1,
+          "delivery_date": "$selectedDateTime",
+          "item_parent": "0",
+          "group_id": "1",
+          "order_to": "${selectedDay?.to}",
+          "order_from": "${selectedDay?.from}",
+          "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
+          "storage_child_in": "$boxessSeriales"
+        });
 
-      map["address[0]"] = selectedAddress?.id;
+        map["address[0]"] = selectedAddress?.id;
+      } else {
+        data.add({
+          "item_code": task.id,
+          "qty": 1,
+          "delivery_date": DateTime.now().toString(),
+          "item_parent": "0",
+          "group_id": "1",
+          // "order_to": "${selectedDay?.to}",
+          // "order_from": "${selectedDay?.from}",
+          // "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
+          "storage_child_in": "$boxessSeriales"
+        });
+        map["address[0]"] = boxes[0].address?.id;
+      }
     } else {
-      data.add({
-        "item_code": task.id,
-        "qty": 1,
-        "delivery_date": DateTime.now().toString(),
-        "item_parent": "0",
-        "group_id": "1",
-        // "order_to": "${selectedDay?.to}",
-        // "order_from": "${selectedDay?.from}",
-        // "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
-        "storage_child_in": "$boxessSeriales"
-      });
-      map["address[0]"] = boxes[0].address?.id;
+      if (!GetUtils.isNull(selectedItems)) {
+        for (var item in selectedItems!) {
+          data.add({
+            "item_code": item.id,
+            "qty": "${item.itemQuantity}",
+            "item_parent": "0",
+            "group_id": "0",
+          });
+          map["address[0]"] = selectedAddress!.id;
+        }
+      }
     }
 
     for (var item in selectedStringOption) {

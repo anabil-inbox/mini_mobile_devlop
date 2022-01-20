@@ -47,8 +47,8 @@ class _ItemScreenState extends State<ItemScreen> {
   initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      await widget.getBoxDataMethod!();
-      // await itemViewModle.getBoxBySerial(serial: widget.box.serialNo ?? "");
+     // await widget.getBoxDataMethod!();
+      await itemViewModle.getBoxBySerial(serial: widget.box.serialNo ?? "");
     });
   }
 

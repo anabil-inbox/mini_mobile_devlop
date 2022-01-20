@@ -29,10 +29,9 @@ class LVWidget extends StatelessWidget {
         return Column(
           children: [
             ListView.builder(
-              controller: homeViewModel.scrollcontroller,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: homeViewModel.userBoxess.length,
               shrinkWrap: true,
+              itemCount: homeViewModel.userBoxess.length,
               itemBuilder: (context, index) => InkWell(
                 highlightColor: colorTrans,
                 splashColor: colorTrans,

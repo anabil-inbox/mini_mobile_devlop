@@ -50,7 +50,7 @@ class DeleteOrTirmnateBottomSheet extends StatelessWidget {
         textButton: "${tr.terminate}",
         onClicked: () {
           final enterdTask =
-              homeViewModel.searchTaskById(taskId: LocalConstance.destroyId);
+              homeViewModel.searchTaskById(taskId: LocalConstance.terminateId);
           if (box.storageStatus == LocalConstance.boxinWareHouse) {
             Get.bottomSheet(
                 BottomSheetPaymentWidget(

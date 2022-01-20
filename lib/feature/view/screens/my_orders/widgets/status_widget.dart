@@ -10,7 +10,7 @@ class StatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: padding20!),
+     // margin: EdgeInsets.symmetric(horizontal: padding20!),
       decoration: BoxDecoration(
           color: colorBackground,
           borderRadius: BorderRadius.circular(padding6!)),

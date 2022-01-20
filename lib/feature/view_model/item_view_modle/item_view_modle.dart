@@ -513,7 +513,7 @@ class ItemViewModle extends BaseController {
   //todo this for appbar select btn
   bool? isSelectBtnClick = false;
   bool isSelectAllClick = false;
-  List<String> listIndexSelected = <String>[];
+  List<BoxItem> listIndexSelected = <BoxItem>[];
   
   //this is For Selcting an Item Photos in Fetching Task :
   List<String> selectedItmePhotos = [];
@@ -525,14 +525,14 @@ class ItemViewModle extends BaseController {
   }
 
   //todo this for select all item
-  updateSelectAll(List<String> list) {
+  updateSelectAll(List<BoxItem> list) {
     isSelectAllClick = !isSelectAllClick;
     update();
     insertAllItemToList(list);
   }
 
   //todo this for add single item to selected List item
-  addIndexToList(var itemName) {
+  addIndexToList(BoxItem itemName) {
     if (listIndexSelected.contains(itemName)) {
       listIndexSelected.remove(itemName);
       update();
@@ -543,7 +543,7 @@ class ItemViewModle extends BaseController {
   }
 
   //todo this for add all item to selected List item
-  void insertAllItemToList(List<String> list) {
+  void insertAllItemToList(List<BoxItem> list) {
     if (isSelectAllClick) {
       listIndexSelected.clear();
       listIndexSelected.addAll(list);

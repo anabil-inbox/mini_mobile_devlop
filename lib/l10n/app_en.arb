@@ -187,5 +187,6 @@
     "fetch":"Fetch",
     "warehouse_address":"Warehouse Address",
     "you_have_to_accept_our_terms" : "You Have To Accept Our Terms",
-    "item_photos":"item Photos"
+    "item_photos":"item Photos",
+    "address":"Address"
 }

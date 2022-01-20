@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -9,6 +10,8 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
+
+import '../order_details_screen.dart';
 
 class MyOrderItem extends StatelessWidget {
   const MyOrderItem({Key? key, required this.orderSales}) : super(key: key);
@@ -20,7 +23,9 @@ class MyOrderItem extends StatelessWidget {
     return InkWell(
       splashColor: colorTrans,
       highlightColor: colorTrans,
-      onTap: () {},
+      onTap: () {
+        Get.to(() => OrderDetailesScreen(orderSales: orderSales,));
+      },
       child: Column(
         children: [
           Container(
