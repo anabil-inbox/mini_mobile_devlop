@@ -1,5 +1,5 @@
 // import 'dart:io';
-
+//
 // import 'package:flutter/material.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:get/get.dart';
@@ -17,13 +17,13 @@
 // import 'package:inbox_clients/util/app_shaerd_data.dart';
 // import 'package:inbox_clients/util/app_style.dart';
 // import 'package:inbox_clients/util/constance.dart';
-
+//
 // // ignore: must_be_immutable
 // class FilterStorageNameView extends StatelessWidget {
 //   FilterStorageNameView({Key? key}) : super(key: key);
-
+//
 //   static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
-
+//
 //   List<String> list = [
 //     "A firsItem",
 //     "B Second Item",
@@ -34,7 +34,8 @@
 //     "A frstItem",
 //     "B Scound Item",
 //   ];
-
+//
+//
 //   //todo this for appbar
 //   PreferredSizeWidget get appBar => CustomAppBarWidget(
 //         isCenterTitle: true,
@@ -75,7 +76,7 @@
 //               }),
 //         ],
 //       );
-
+//
 //   //todo this for search
 //   Widget get searchWidget => CustomTextFormFiled(
 //         iconSize: sizeRadius20,
@@ -93,9 +94,9 @@
 //         isBorder: true,
 //         label: tr.search,
 //       );
-
+//
 //   Widget get btnActionsWidget => BtnActionWidget();
-
+//
 //   @override
 //   Widget build(BuildContext context) {
 //     screenUtil(context);
@@ -178,4 +179,8 @@
 //           }),
 //     );
 //   }
+//
+//   // void _goToHomePage(){
+//   //
+//   // }
 // }

@@ -48,7 +48,7 @@ class TaskWidgetBS extends StatelessWidget {
           SizedBox(
             height: sizeH14,
           ),
-          getListViewByBoxStatus(),
+          Expanded(child: getListViewByBoxStatus()),
           SizedBox(
             height: sizeH9,
           ),
@@ -114,6 +114,7 @@ class TaskWidgetBS extends StatelessWidget {
       return ListView(
           primary: false,
           shrinkWrap: true,
+          physics: customScrollViewIOS(),
           children: homeViewModel.userBoxess
               .map((e) => BoxInTaskWidget(
                     box: e,
@@ -123,6 +124,7 @@ class TaskWidgetBS extends StatelessWidget {
       return ListView(
           primary: false,
           shrinkWrap: true,
+          physics: customScrollViewIOS(),
           children: homeViewModel.userBoxess
               .map((e) => e.storageStatus == LocalConstance.boxinWareHouse
                   ? BoxInTaskWidget(
@@ -134,6 +136,7 @@ class TaskWidgetBS extends StatelessWidget {
       return ListView(
           primary: false,
           shrinkWrap: true,
+          physics: customScrollViewIOS(),
           children: homeViewModel.userBoxess
               .map((e) => e.storageStatus == LocalConstance.boxAtHome
                   ? BoxInTaskWidget(

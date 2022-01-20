@@ -19,6 +19,7 @@ class CartHelper{
 
   //todo this for insert to myCartTable
   Future<int> addToCart(CartModel data)async{
+    data.toJson().remove("id");
     return await SqlHelper.instance.insertDataToDatabase(data);
   }
 

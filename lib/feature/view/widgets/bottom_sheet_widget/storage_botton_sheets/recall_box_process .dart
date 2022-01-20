@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
+import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/box_in_sales_order.dart';
@@ -15,6 +16,7 @@ import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sh
 import 'package:inbox_clients/feature/view/widgets/option_item_string.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
+import 'package:inbox_clients/feature/view_model/cart_view_model/cart_view_model.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
@@ -42,6 +44,8 @@ class RecallBoxProcessSheet extends StatelessWidget {
   final int? index;
   static HomeViewModel _homeViewModel = Get.find<HomeViewModel>();
   static StorageViewModel _storageViewModel = Get.find<StorageViewModel>();
+  static CartViewModel _cartViewModel = Get.put<CartViewModel>(CartViewModel()) ;
+
   final Task task;
   final List<Box> boxes;
   bool? isFetchTask;
@@ -427,7 +431,10 @@ class RecallBoxProcessSheet extends StatelessWidget {
   }
 
   onClickBringBox() {
-    Get.back();
-    Logger().d("onClickBringBox");
+    final task = _homeViewModel.searchTaskById(taskId: LocalConstance.giveawayId);
+    var selectedDay = _storageViewModel.selectedDay;
+    Day day = Day(to:"${selectedDay?.to}" ,from: "${selectedDay?.from}" ,delivery:"${_storageViewModel.selectedDateTime.toString()}",);
+    _cartViewModel.addToCart((GetUtils.isNull(boxes) || boxes.isEmpty) ? [box!]:boxes, [], _storageViewModel.selectedAddress, task, day, LocalConstance.giveawayId);
+    // Get.back();
   }
 }

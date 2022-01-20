@@ -34,13 +34,12 @@ class ApiSettings {
             : ContactInfo.fromJson(json["contact_info"]),
         companySectors: json["ccompany_sectors"] == []
             ? []
-            : List<CompanySector>.from(json["company_sectors"].map((x) => CompanySector.fromJson(x))),
-       
+            : List<CompanySector>.from(
+                json["company_sectors"].map((x) => CompanySector.fromJson(x))),
         notAllowed: json["not_allowed"] == null || json["not_allowed"] == []
             ? []
-            : List<NotAllowed>.from(json["not_allowed"].map((x) => NotAllowed.fromJson(x))) ,
-       
-       
+            : List<NotAllowed>.from(
+                json["not_allowed"].map((x) => NotAllowed.fromJson(x))),
         languges: List<Language>.from(
             json["languages"].map((x) => Language.fromJson(x))),
         workingHours: WorkingHours.fromJson(json["working_hours"]),
@@ -159,7 +158,7 @@ class WorkingHours {
 }
 
 class Day {
-  Day({this.from, this.to, this.day , this.delivery});
+  Day({this.from, this.to, this.day, this.delivery});
 
   String? from;
   String? to;
@@ -167,22 +166,19 @@ class Day {
   String? delivery;
 
   factory Day.fromJson(Map<String, dynamic> json) => Day(
-        from: json["from"],
-        to: json["to"],
-      );
+      from: json["from"] == null ? null : json["from"],
+      to: json["to"] == null ? null : json["to"],
+      delivery: json["delivery"] == null ? null : json["delivery"]);
 
   Map<String, dynamic> toJson() => {
-        "from": from,
-        "to": to,
+        "from": from == null ? null : from,
+        "to": to == null ? null : to,
+        "delivery": delivery == null ? null : delivery,
       };
 }
 
 class AreaZone {
-  AreaZone({
-    this.id,
-    this.areaZone,
-    this.price
-  });
+  AreaZone({this.id, this.areaZone, this.price});
 
   String? id;
   String? areaZone;
@@ -190,15 +186,12 @@ class AreaZone {
 
   factory AreaZone.fromJson(Map<String, dynamic> json) => AreaZone(
         id: json["id"] == null ? null : json["id"],
-        price : json["price"] == null ? 0 : json["price"],
+        price: json["price"] == null ? 0 : json["price"],
         areaZone: json["area_zone"] == null ? null : json["area_zone"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "area_zone": areaZone,
-        "price":price
-      };
+  Map<String, dynamic> toJson() =>
+      {"id": id, "area_zone": areaZone, "price": price};
 }
 
 class NotAllowed {

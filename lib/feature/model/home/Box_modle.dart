@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:logger/logger.dart';
 
@@ -29,39 +30,38 @@ class Box {
   Address? address;
 
   factory Box.fromJson(Map<String, dynamic> json) => Box(
-        id: json["id"],
-        serialNo: json["serial_no"],
-        storageName: json["storage_name"],
-        saleOrder: json["sale_order"],
-        storageStatus: json["storage_status"],
-        enabled: json["enabled"],
-        modified:
-            json["modified"] == null ? null : DateTime.parse(json["modified"]),
-        address:
-            json["address"] == null ? null : Address.fromJson(json["address"]),
-        options: json["options"] == null
-            ? null
-            : List<String>.from(json["options"].map((x) => x)),
-        tags: json["tags"] == null
-            ? null
-            : List<ItemTag>.from(json["tags"].map((x) => ItemTag.fromJson(x))),
-        items: json["items"] == null
-            ? null
-            : List<BoxItem>.from(json["items"].map((x) => BoxItem.fromJson(x))),
+        id: json["id"] == null ? null: json["id"],
+        serialNo:  json["serial_no"] == null ? null:json["serial_no"],
+        storageName: json["storage_name"] == null ? null: json["storage_name"],
+        saleOrder: json["sale_order"] == null ? null: json["sale_order"],
+        storageStatus: json["storage_status"] == null ? null: json["storage_status"],
+        enabled:json["enabled"] == null ? null:  json["enabled"],
+        modified: json["modified"] == null ? null : DateTime.parse(json["modified"]),
+        address: json["address"] == null ? null : Address.fromJson(json["address"]),
+        options: json["options"] == null ? null : List<String>.from(json["options"].map((x) => x)),
+        tags: json["tags"] == null ? null : List<ItemTag>.from(json["tags"].map((x) => ItemTag.fromJson(x))),
+        items: json["items"] == null ? null : List<BoxItem>.from(json["items"].map((x) => BoxItem.fromJson(x))),
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "serial_no": serialNo,
-        "storage_name": storageName,
-        "sale_order": saleOrder,
-        "storage_status": storageStatus,
-        "enabled": enabled,
-        "modified": modified?.toIso8601String(),
-        "tags": List<dynamic>.from(tags!.map((x) => x)),
-        "options": List<String>.from(options!.map((e) => e)),
-        "items": List<dynamic>.from(items!.map((x) => x.toJson())),
-      };
+  Map<String, dynamic> toJson() {
+    try {
+      return {
+              "id": id,
+               "serial_no": serialNo,
+               "storage_name": storageName,
+               "sale_order": saleOrder,
+               "storage_status": storageStatus,
+               "enabled": enabled,
+               "modified": modified?.toIso8601String(),
+               "tags":(GetUtils.isNull(tags) || tags?.length == 0)? null: List<dynamic>.from(tags!.map((x) => x)),
+                "options":(GetUtils.isNull(options) || options?.length == 0)? null: List<String>.from(options!.map((e) => e)),
+                "items":(GetUtils.isNull(items) || items?.length == 0)? null: List<dynamic>.from(items!.map((x) => x.toJson())),
+            };
+    } catch (e) {
+      Logger().e(e);
+      return {};
+    }
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -203,11 +203,11 @@ class ItemTag {
 
   factory ItemTag.fromJson(Map<String, dynamic> json) => ItemTag(
         tag: json["tag"] == null ? null : json["tag"],
-        enabled: json["enabled"],
+        enabled:json["enabled"] == null ? null: json["enabled"],
       );
 
   Map<String, dynamic> toJson() => {
         "tag": tag == null ? null : tag,
-        "enabled": enabled,
+        "enabled": enabled == null ?0:enabled,
       };
 }

@@ -84,7 +84,9 @@ class SqlHelper {
   Future<int> insertDataToDatabase(CartModel data) async {
     try {
       //todo #[conflictAlgorithm]# to remove duplicate
-      return _db!.insert(tableName, data.toJson(),conflictAlgorithm: ConflictAlgorithm.replace);
+      var remove = data.toJson();
+      remove.remove(id);
+      return _db!.insert(tableName, remove,conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (e) {
       Logger().d(e);
       snackError(tr.error_occurred, e.toString());
