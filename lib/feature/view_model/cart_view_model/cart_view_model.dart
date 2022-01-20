@@ -32,10 +32,10 @@ class CartViewModel extends GetxController{
     CartHelper.instance.addToCart(cartModel).then((value) {
       if(value > 1){
         //todo success state
-        Logger().d("addToCart_2${cartModel.toJson()}");
+        Logger().d("addToCart_1${cartModel.toJson()}");
       }else{
         //todo fail state
-        Logger().d("addToCart_3${cartModel.toJson()}");
+        Logger().d("addToCart_2${cartModel.toJson()}");
       }
     }).catchError((onError){
     });
