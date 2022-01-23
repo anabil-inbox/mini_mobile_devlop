@@ -1482,6 +1482,7 @@ class StorageViewModel extends BaseController {
         data.add({
           "item_code": task.id,
           "qty": 1,
+          "storage_type":"Process",
           "delivery_date": DateTime.now().toString(),
           "item_parent": "0",
           "group_id": "1",
@@ -1498,6 +1499,7 @@ class StorageViewModel extends BaseController {
           data.add({
             "item_code": item.id,
             "qty": "${item.itemQuantity}",
+            "storage_type":"Process",
             "item_parent": "0",
             "group_id": "0",
           });
@@ -1510,6 +1512,7 @@ class StorageViewModel extends BaseController {
       data.add({
         "item_code": item.id,
         "qty": "1",
+        "storage_type":"Process",
         "item_parent": "1",
         "group_id": "1",
       });

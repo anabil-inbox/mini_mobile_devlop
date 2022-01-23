@@ -19,7 +19,9 @@ import 'package:inbox_clients/util/font_dimne.dart';
 import '../qr_screen.dart';
 
 class NotifayForNewStorage extends StatelessWidget {
-  const NotifayForNewStorage({Key? key, required this.box, this.showQrScanner = false,this.index }) : super(key: key);
+  const NotifayForNewStorage(
+      {Key? key, required this.box, this.showQrScanner = false, this.index})
+      : super(key: key);
 
   final Box box;
   final bool? showQrScanner;
@@ -119,22 +121,21 @@ class NotifayForNewStorage extends StatelessWidget {
                 SizedBox(
                   height: sizeH22,
                 ),
-                Text(
-                    '${box.address?.zone} , ${box.address?.streat} , ${box.address?.buildingNo}'),
+                GetUtils.isNull(box.address)
+                    ? Text(
+                        '${box.address?.zone} , ${box.address?.streat} , ${box.address?.buildingNo}')
+                    : const SizedBox(),
                 SizedBox(
                   height: sizeH4,
                 ),
-                Text("Doha, Qatar"),
-                SizedBox(
-                  height: sizeH22,
-                ),
+               
               ],
             ),
           ),
           SizedBox(
             height: sizeH20,
           ),
-          if(showQrScanner!)...[
+          if (showQrScanner!) ...[
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -143,7 +144,10 @@ class NotifayForNewStorage extends StatelessWidget {
                   isLoading: false,
                   onClicked: () {
                     // Get.put(ItemViewModle());
-                    Get.to(() => QrScreen(isFromAtHome:true ,index:index , storageViewModel:storageViewModel));
+                    Get.to(() => QrScreen(
+                        isFromAtHome: true,
+                        index: index,
+                        storageViewModel: storageViewModel));
                     // homeViewModel.startScan();
                   },
                   textButton: "Scan QR Key",
@@ -151,8 +155,20 @@ class NotifayForNewStorage extends StatelessWidget {
                 SizedBox(
                   width: sizeW12,
                 ),
-            SizedBox(
-              width: sizeW150,
+                SizedBox(
+                  width: sizeW150,
+                  child: SeconderyFormButton(
+                    buttonText: "${tr.cancle}",
+                    onClicked: () {
+                      Get.back();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ] else ...[
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: sizeH20!),
               child: SeconderyFormButton(
                 buttonText: "${tr.cancle}",
                 onClicked: () {
@@ -160,18 +176,6 @@ class NotifayForNewStorage extends StatelessWidget {
                 },
               ),
             ),
-              ],
-            ),
-          ]else ...[
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: sizeH20!),
-            child: SeconderyFormButton(
-              buttonText: "${tr.cancle}",
-              onClicked: () {
-                Get.back();
-              },
-            ),
-          ),
           ],
           SizedBox(
             height: sizeH20,

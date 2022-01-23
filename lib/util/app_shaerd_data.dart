@@ -505,7 +505,7 @@ void changeLanguageBottomSheet() {
                     SharedPref.instance
                         .setAppLanguage(Locale(controller.selectedLang!));
                     Get.back();
-                    SplashViewModle().getAppSetting();
+                     SplashViewModle().getAppSetting();
                     controller.update();
                   } catch (e) {}
                 },
