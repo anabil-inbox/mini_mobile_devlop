@@ -26,7 +26,6 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
-import 'package:logger/logger.dart';
 
 import '../../secondery_button.dart';
 
@@ -437,5 +436,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
     Day day = Day(to:"${selectedDay?.to}" ,from: "${selectedDay?.from}" ,delivery:"${_storageViewModel.selectedDateTime.toString()}",);
     _cartViewModel.addToCart((GetUtils.isNull(boxes) || boxes.isEmpty) ? [box!]:boxes, [], _storageViewModel.selectedAddress, task, day, LocalConstance.giveawayId);
     // Get.back();
+
+    _cartViewModel.getMyCart();
   }
 }

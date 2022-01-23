@@ -18,7 +18,7 @@ class GVWidget extends StatelessWidget {
   GVWidget({Key? key}) : super(key: key);
 
   HomeViewModel homeViewModel = Get.find<HomeViewModel>();
-  ItemViewModle itemViewModel = Get.put(ItemViewModle() ,permanent: false);
+  ItemViewModle itemViewModel = Get.put(ItemViewModle(), permanent: false);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class GVWidget extends StatelessWidget {
     return Column(
       children: [
         GridView.builder(
-         // controller: homeViewModel.scrollcontroller,
+          // controller: homeViewModel.scrollcontroller,
           physics: NeverScrollableScrollPhysics(),
           itemCount: homeViewModel.userBoxess.length,
           shrinkWrap: true,
@@ -35,32 +35,52 @@ class GVWidget extends StatelessWidget {
               mainAxisSpacing: sizeW10!,
               crossAxisSpacing: sizeH10!,
               childAspectRatio: (sizeW165! / sizeH150)),
-          itemBuilder: (context, index) => InkWell(
-            onTap: () async{
-              //Get.put(ItemViewModle());
-              Logger().d(homeViewModel.userBoxess.toList()[index].toString());
-              if (homeViewModel.userBoxess.toList()[index].storageStatus == LocalConstance.boxOnTheWay) {
-                  Get.bottomSheet(
-                    NotifayForNewStorage(box: homeViewModel.userBoxess.toList()[index],showQrScanner: true, index:index ),
-                    isScrollControlled: true
-                  );
-                  homeViewModel.update();
-              }else{
-                Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index] ,getBoxDataMethod: () async{
-                  await itemViewModel.getBoxBySerial(serial: homeViewModel.userBoxess.toList()[index].serialNo!);
-                },));
-                homeViewModel.update();
-                itemViewModel.update();
-              }
-              
-              // Get.to(() =>
-              //     ItemScreen(box: homeViewModel.userBoxess.toList()[index]));
-              // homeViewModel.update();
-            },
-            child: HomeGVItemWidget(
-              box: homeViewModel.userBoxess.toList()[index],
-            ),
-          ),
+          itemBuilder: (context, index) => homeViewModel.userBoxess
+                      .toList()[index]
+                      .saleOrder ==
+                  null
+              ? InkWell(
+                  onTap: () async {
+                    //Get.put(ItemViewModle());
+                    Logger()
+                        .d(homeViewModel.userBoxess.toList()[index].toString());
+                    if (homeViewModel.userBoxess
+                            .toList()[index]
+                            .storageStatus ==
+                        LocalConstance.boxOnTheWay) {
+                      Get.bottomSheet(
+                          NotifayForNewStorage(
+                              box: homeViewModel.userBoxess.toList()[index],
+                              showQrScanner: true,
+                              index: index),
+                          isScrollControlled: true);
+                      homeViewModel.update();
+                    } else {
+                      Get.to(() => ItemScreen(
+                            box: homeViewModel.userBoxess.toList()[index],
+                            getBoxDataMethod: () async {
+                              await itemViewModel.getBoxBySerial(
+                                  serial: homeViewModel.userBoxess
+                                      .toList()[index]
+                                      .serialNo!);
+                            },
+                          ));
+                      homeViewModel.update();
+                      itemViewModel.update();
+                    }
+
+                    // Get.to(() =>
+                    //     ItemScreen(box: homeViewModel.userBoxess.toList()[index]));
+                    // homeViewModel.update();
+                  },
+                  child: HomeGVItemWidget(
+                    box: homeViewModel.userBoxess.toList()[index],
+                  ),
+                )
+              : HomeGVItemWidget(
+                  isEnabeld: false,
+                  box: homeViewModel.userBoxess.toList()[index],
+                ),
         ),
       ],
     );

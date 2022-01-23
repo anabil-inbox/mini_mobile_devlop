@@ -1,4 +1,5 @@
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/model/home/beneficiary.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/api/model/home_api.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -48,6 +49,18 @@ class HomeHelper {
     }
   }
 
+
+  Future<List<Beneficiary>> getBeneficiary() async {
+    var appResponse = await HomeApi.getInstance.getBeneficiary(
+        url: "${ConstanceNetwork.getBeneficiaryEndPoint}",
+        header: ConstanceNetwork.header(0));
+    if (appResponse.status?.success == true) {
+       List data = appResponse.data;
+      return data.map((e) => Beneficiary.fromJson(e)).toList();
+    } else {
+      return [];
+    }
+  }
 
 
 

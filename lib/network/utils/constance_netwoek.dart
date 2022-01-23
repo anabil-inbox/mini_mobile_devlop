@@ -95,7 +95,9 @@ abstract class ConstanceNetwork {
   static String addItemEndPoint = "inbox_app.api.customer_storages.add_item";
   static String deleteItemEndPoint = "inbox_app.api.customer_storages.item_delete";
   static String updateItemEndPoint = "inbox_app.api.customer_storages.update_item";
-  
+  static String getBeneficiaryEndPoint = "inbox_app.api.task.get_beneficiary";
+
+
   // update & delete Box End Point : 
   static String updatetBoxEndPoint = "inbox_app.api.customer_storages.update_box";
 

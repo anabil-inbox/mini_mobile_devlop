@@ -16,6 +16,7 @@ import 'package:inbox_clients/feature/view/widgets/empty_state/home_empty_statte
 import 'package:inbox_clients/feature/view/widgets/icon_btn.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
+import 'package:inbox_clients/local_database/cart_helper.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -184,12 +185,13 @@ class _HomeScreenState extends State<HomeScreen> {
             return Stack(
               children: [
                 SingleChildScrollView(
-                  controller: logic.scrollcontroller,
+                 // controller: logic.scrollcontroller,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: sizeW20!),
                     child: GetBuilder<HomeViewModel>(
                       init: HomeViewModel(),
-                      initState: (_) {},
+                      initState: (_) {
+                      },
                       builder: (_) {
                         return Column(
                           children: [

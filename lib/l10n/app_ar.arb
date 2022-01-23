@@ -186,5 +186,8 @@
     "warehouse_address":"عنوان المخزن",
     "you_have_to_accept_our_terms" : "يجب الموافقة على سياسية الخصوصية اولا",
     "item_photos":"صور العنصر",
-    "address":"العنوان"
+    "address":"العنوان",
+    "you_have_to_select_beneficiary" : "اختر المؤسسة الخيرية",
+    "ready_to_pickup":"جاهز للاستلام",
+    "add_your_item_in_box" : "قم باضافة عنصر جديد للصندوق"
 }

@@ -5,17 +5,23 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/schedule_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_payment_widaget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 
 class EmptyBodyBoxItem extends StatelessWidget {
   const EmptyBodyBoxItem({Key? key, required this.box}) : super(key: key);
 
   static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
+  static HomeViewModel _homeViewModel = Get.find<HomeViewModel>();
 
   final Box? box;
   @override
@@ -56,7 +62,8 @@ class EmptyBodyBoxItem extends StatelessWidget {
                 FloatingActionButton(
                   onPressed: () {
                     itemViewModle.showAddItemBottomSheet(
-                        box: box!,);
+                      box: box!,
+                    );
                     // Get.bottomSheet(
                     //     AddItemWidget(
                     //       box: box,
@@ -73,7 +80,7 @@ class EmptyBodyBoxItem extends StatelessWidget {
                   height: sizeH12,
                 ),
                 Text(
-                  "Add you item  in box",
+                  "${tr.add_your_item_in_box}",
                   style: textStyleHints(),
                 ),
                 SizedBox(
@@ -86,9 +93,16 @@ class EmptyBodyBoxItem extends StatelessWidget {
                       isExpanded: false,
                       isLoading: false,
                       onClicked: () {
-                        Get.bottomSheet(SchedualWidget());
+                        final interdTask = _homeViewModel.searchTaskById(
+                            taskId: LocalConstance.pickupId);
+                        Get.bottomSheet(
+                            RecallBoxProcessSheet(
+                                task: interdTask,
+                                box: itemViewModle.operationsBox ?? box!,
+                                boxes: [box!]),
+                            isScrollControlled: true);
                       },
-                      textButton: "Schedule Pickup",
+                      textButton: tr.schedule_pickup,
                     ),
                     SizedBox(
                       width: sizeW12,
@@ -96,8 +110,17 @@ class EmptyBodyBoxItem extends StatelessWidget {
                     SizedBox(
                       width: sizeW150,
                       child: SeconderyFormButton(
-                        buttonText: "Ready to pickup",
-                        onClicked: () {},
+                        buttonText: "${tr.ready_to_pickup}",
+                        onClicked: () {
+                          final interdTask = _homeViewModel.searchTaskById(
+                              taskId: LocalConstance.pickupId);
+                          Get.bottomSheet(
+                              BottomSheetPaymentWidget(
+                                  task: interdTask,
+                                  box: itemViewModle.operationsBox ?? box!,
+                                  boxes: [box!]),
+                              isScrollControlled: true);
+                        },
                       ),
                     ),
                   ],

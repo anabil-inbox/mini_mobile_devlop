@@ -285,7 +285,7 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
   }
 
   onGrayBtnClick() {
-    Get.bottomSheet(GiveawayBoxProcessSheet(box: widget.box),
+    Get.bottomSheet(GiveawayBoxProcessSheet(box: widget.box , boxes: [],),
         isScrollControlled: true);
   }
 
