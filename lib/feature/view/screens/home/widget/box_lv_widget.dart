@@ -32,46 +32,65 @@ class LVWidget extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: homeViewModel.userBoxess.length,
-              itemBuilder: (context, index) => InkWell(
-                highlightColor: colorTrans,
-                splashColor: colorTrans,
-                focusColor: colorTrans,
-                onTap: () {
-                  Get.put(ItemViewModle());
-                  // if (homeViewModel.userBoxess.toList()[index].storageStatus == LocalConstance.boxOnTheWay) {
-                  //     Get.bottomSheet(
-                  //       NotifayForNewStorage(box: homeViewModel.userBoxess.toList()[index],),
-                  //       isScrollControlled: true
-                  //     );
-                  // }else{
-                  //   Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index]));
-                  // }
-                  if (homeViewModel.userBoxess.toList()[index].storageStatus == LocalConstance.boxOnTheWay) {
-                    Get.bottomSheet(
-                        NotifayForNewStorage(box: homeViewModel.userBoxess.toList()[index],showQrScanner: true, index:index ),
-                        isScrollControlled: true
-                    );
-                  }else{
-                    Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index],getBoxDataMethod: () async{
-                      await itemViewModel.getBoxBySerial(serial: homeViewModel.userBoxess.toList()[index].serialNo!);
-                    },));
-                    homeViewModel.update();
-                  }
-                  // Get.to(() => ItemScreen(
-                  //     box: homeViewModel.userBoxess.toList()[index]));
-                  // homeViewModel.update();
+              itemBuilder: (context, index) => homeViewModel.userBoxess
+                          .toList()[index]
+                          .saleOrder ==
+                      null
+                  ? InkWell(
+                      highlightColor: colorTrans,
+                      splashColor: colorTrans,
+                      focusColor: colorTrans,
+                      onTap: () {
+                        Get.put(ItemViewModle());
+                        // if (homeViewModel.userBoxess.toList()[index].storageStatus == LocalConstance.boxOnTheWay) {
+                        //     Get.bottomSheet(
+                        //       NotifayForNewStorage(box: homeViewModel.userBoxess.toList()[index],),
+                        //       isScrollControlled: true
+                        //     );
+                        // }else{
+                        //   Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index]));
+                        // }
+                        if (homeViewModel.userBoxess
+                                .toList()[index]
+                                .storageStatus ==
+                            LocalConstance.boxOnTheWay) {
+                          Get.bottomSheet(
+                              NotifayForNewStorage(
+                                  box: homeViewModel.userBoxess.toList()[index],
+                                  showQrScanner: true,
+                                  index: index),
+                              isScrollControlled: true);
+                        } else {
+                          Get.to(() => ItemScreen(
+                                box: homeViewModel.userBoxess.toList()[index],
+                                getBoxDataMethod: () async {
+                                  await itemViewModel.getBoxBySerial(
+                                      serial: homeViewModel.userBoxess
+                                          .toList()[index]
+                                          .serialNo!);
+                                },
+                              ));
+                          homeViewModel.update();
+                        }
+                        // Get.to(() => ItemScreen(
+                        //     box: homeViewModel.userBoxess.toList()[index]));
+                        // homeViewModel.update();
 
-                  // if (homeViewModel.userBoxess.toList()[index].storageStatus ==
-                  //     LocalConstance.boxOnTheWay) {
-                  //   // Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index],));
-                  //   print("object");
-                  // }
-                  // //   Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index],));
-                },
-                child: HomeLVItemWidget(
-                  box: homeViewModel.userBoxess.toList()[index],
-                ),
-              ),
+                        // if (homeViewModel.userBoxess.toList()[index].storageStatus ==
+                        //     LocalConstance.boxOnTheWay) {
+                        //   // Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index],));
+                        //   print("object");
+                        // }
+                        // //   Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index],));
+                      },
+                      child: HomeLVItemWidget(
+                        box: homeViewModel.userBoxess.toList()[index],
+                      ),
+                    )
+                  : HomeLVItemWidget(
+                      isEnabeld: false,
+                      box: homeViewModel.userBoxess.toList()[index],
+                    ),
             ),
           ],
         );

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/model/home/beneficiary.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
@@ -89,7 +90,8 @@ class HomeViewModel extends BaseController {
   Barcode? result;
   QRViewController? controller;
 
-  onQRViewCreated(QRViewController controller,{bool? isFromAtHome, int? index, StorageViewModel? storageViewModel}) {
+  onQRViewCreated(QRViewController controller,
+      {bool? isFromAtHome, int? index, StorageViewModel? storageViewModel}) {
     try {
       this.controller = controller;
       controller.scannedDataStream.listen((scanData) {
@@ -170,6 +172,7 @@ class HomeViewModel extends BaseController {
     super.onInit();
     getCustomerBoxes();
     getTasks();
+    getBeneficiary();
     scrollcontroller.addListener(pagination);
   }
 
@@ -310,5 +313,15 @@ class HomeViewModel extends BaseController {
   void changeTab(int index) {
     _currentIndex = index;
     update();
+  }
+
+  //here for get Charity Names For GiveAway :
+  List<Beneficiary> beneficiarys = [];
+  Beneficiary? selctedbeneficiary;
+
+  Future<void> getBeneficiary() async {
+    HomeHelper.getInstance.getBeneficiary().then((value) => {
+          beneficiarys = value,
+        });
   }
 }

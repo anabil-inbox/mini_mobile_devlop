@@ -391,7 +391,7 @@ class _ItemScreenState extends State<ItemScreen> {
 
   onGrayBtnClick() {
     Get.bottomSheet(
-        GiveawayBoxProcessSheet(box: itemViewModle.operationsBox ?? widget.box),
+        GiveawayBoxProcessSheet(box: itemViewModle.operationsBox ?? widget.box , boxes: [],),
         isScrollControlled: true);
   }
 

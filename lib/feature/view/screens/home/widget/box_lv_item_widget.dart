@@ -12,10 +12,11 @@ import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/date_time_util.dart';
 
 class HomeLVItemWidget extends StatelessWidget {
-  const HomeLVItemWidget({Key? key, required this.box}) : super(key: key);
+  const HomeLVItemWidget({Key? key, required this.box, this.isEnabeld = true})
+      : super(key: key);
 
   final Box box;
-
+  final bool isEnabeld;
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -30,7 +31,8 @@ class HomeLVItemWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          retuenBoxByStatus(storageStatus: box.storageStatus ?? ""),
+          retuenBoxByStatus(
+              storageStatus: box.storageStatus ?? "", isEnabeld: isEnabeld),
           SizedBox(
             width: sizeW15,
           ),
@@ -64,10 +66,8 @@ class HomeLVItemWidget extends StatelessWidget {
               message: "${box.serialNo}",
               child: TextButton(
                 onPressed: () {
-                  Get.bottomSheet(
-                      NotifayForNewStorage(box: box),
-                      isScrollControlled: true
-                  );
+                  Get.bottomSheet(NotifayForNewStorage(box: box),
+                      isScrollControlled: true);
                 },
                 child: SvgPicture.asset("assets/svgs/InfoCircle.svg"),
               ),

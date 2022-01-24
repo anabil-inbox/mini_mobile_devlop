@@ -13,11 +13,12 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/date_time_util.dart';
 
 class BoxInTaskWidget extends StatelessWidget {
-  const BoxInTaskWidget({Key? key, required this.box}) : super(key: key);
+  const BoxInTaskWidget({Key? key, required this.box, this.isEnabeld = true})
+      : super(key: key);
 
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
   final Box box;
-
+  final bool isEnabeld;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -41,12 +42,22 @@ class BoxInTaskWidget extends StatelessWidget {
                       width: sizeW13,
                     ),
                     logical.selctedOperationsBoxess.contains(box)
-                        ? SvgPicture.asset("assets/svgs/true.svg" ,width: sizeW20, height: sizeH20,)
-                        : SvgPicture.asset("assets/svgs/empty_circle.svg",width: sizeW20, height: sizeH20,),
+                        ? SvgPicture.asset(
+                            "assets/svgs/true.svg",
+                            width: sizeW20,
+                            height: sizeH20,
+                          )
+                        : SvgPicture.asset(
+                            "assets/svgs/empty_circle.svg",
+                            width: sizeW20,
+                            height: sizeH20,
+                          ),
                     SizedBox(
                       width: sizeW10,
                     ),
-                    retuenBoxByStatus(storageStatus: box.storageStatus!),
+                    retuenBoxByStatus(
+                        storageStatus: box.storageStatus!,
+                        isEnabeld: isEnabeld),
                     SizedBox(
                       width: sizeW15,
                     ),

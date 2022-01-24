@@ -6,9 +6,11 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_payment_widaget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/giveaway_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -21,6 +23,7 @@ class TaskWidgetBS extends StatelessWidget {
   const TaskWidgetBS({Key? key, required this.task}) : super(key: key);
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+  static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
 
   final Task task;
 
@@ -64,7 +67,18 @@ class TaskWidgetBS extends StatelessWidget {
                   isLoading: false,
                   onClicked: homeViewModel.selctedOperationsBoxess.length > 0
                       ? () {
-                          if ((task.id == LocalConstance.destroyId ||
+                          if (task.id == LocalConstance.giveawayId) {
+                          
+                              Get.bottomSheet(
+                                  GiveawayBoxProcessSheet(
+                                    box: homeViewModel.selctedOperationsBoxess
+                                        .toList()[0],
+                                    boxes: homeViewModel.selctedOperationsBoxess
+                                        .toList(),
+                                  ),
+                                  isScrollControlled: true);
+                            
+                          } else if ((task.id == LocalConstance.destroyId ||
                                   task.id == LocalConstance.terminateId ||
                                   task.id == LocalConstance.giveawayId) &&
                               !(storageViewModel.doseBoxInHome(
@@ -116,9 +130,11 @@ class TaskWidgetBS extends StatelessWidget {
           shrinkWrap: true,
           physics: customScrollViewIOS(),
           children: homeViewModel.userBoxess
-              .map((e) => BoxInTaskWidget(
-                    box: e,
-                  ))
+              .map((e) => e.saleOrder == null
+                  ? BoxInTaskWidget(
+                      box: e,
+                    )
+                  : const SizedBox())
               .toList());
     } else if (task.id == LocalConstance.recallId) {
       return ListView(
@@ -126,7 +142,8 @@ class TaskWidgetBS extends StatelessWidget {
           shrinkWrap: true,
           physics: customScrollViewIOS(),
           children: homeViewModel.userBoxess
-              .map((e) => e.storageStatus == LocalConstance.boxinWareHouse
+              .map((e) => (e.storageStatus == LocalConstance.boxinWareHouse &&
+                      e.saleOrder == null)
                   ? BoxInTaskWidget(
                       box: e,
                     )
@@ -138,7 +155,8 @@ class TaskWidgetBS extends StatelessWidget {
           shrinkWrap: true,
           physics: customScrollViewIOS(),
           children: homeViewModel.userBoxess
-              .map((e) => e.storageStatus == LocalConstance.boxAtHome
+              .map((e) => (e.storageStatus == LocalConstance.boxAtHome &&
+                      e.saleOrder == null)
                   ? BoxInTaskWidget(
                       box: e,
                     )
@@ -149,3 +167,4 @@ class TaskWidgetBS extends StatelessWidget {
     }
   }
 }
+// if sales Order is == null : enable Operations 

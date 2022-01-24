@@ -505,7 +505,7 @@ void changeLanguageBottomSheet() {
                     SharedPref.instance
                         .setAppLanguage(Locale(controller.selectedLang!));
                     Get.back();
-                    SplashViewModle().getAppSetting();
+                     SplashViewModle().getAppSetting();
                     controller.update();
                   } catch (e) {}
                 },
@@ -602,9 +602,12 @@ num calculateBalance({required num balance}){
 
 // Widget return By Box Status
 
-Widget retuenBoxByStatus({required String storageStatus}) {
+Widget retuenBoxByStatus({required String storageStatus , required bool isEnabeld}) {
+
   String boxPath = "assets/svgs/desable_box.svg";
-  if (storageStatus == LocalConstance.boxAtHome) {
+  if (!isEnabeld) {
+    boxPath = "assets/svgs/block_folder.svg";
+  }else if (storageStatus == LocalConstance.boxAtHome) {
     boxPath = "assets/svgs/home_box_red.svg";
   } else if (storageStatus == LocalConstance.boxinWareHouse) {
     boxPath = "assets/svgs/box_in_ware_house.svg";
