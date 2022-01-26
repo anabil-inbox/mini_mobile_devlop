@@ -33,6 +33,8 @@ class ItemViewModle extends BaseController {
   //to update Get Home View Modle and Update Oprations Box ::
   final HomeViewModel homeViewModel = Get.find<HomeViewModel>();
 
+   ItemViewModle._();
+   factory ItemViewModle() => ItemViewModle._();
   // to decler here search value ::
 
   String search = "";
@@ -414,16 +416,19 @@ class ItemViewModle extends BaseController {
   // to show update Box Bottom Sheet ::
   Future<void> showUpdatBoxBottomSheet(
       {required Box box, required bool isUpdate}) async {
-
     changeFlagUpdate(isUpdate);
     tdName.clear();
     tdName.text = box.storageName ?? "";
     Get.bottomSheet(
-        CheckInBoxWidget(
-          isUpdate: isUpdate,
-          box: box,
-        ),
-        isScrollControlled: true).whenComplete(() => tdName.clear());
+            CheckInBoxWidget(
+              isUpdate: isUpdate,
+              box: box,
+            ),
+            isScrollControlled: true)
+        .whenComplete(() {
+      tdName.clear();
+      getBoxBySerial(serial: box.serialNo ?? "");
+    });
   }
 
   Future<void> shareItem({required BoxItem boxItem}) async {
@@ -509,7 +514,7 @@ class ItemViewModle extends BaseController {
   bool? isSelectBtnClick = false;
   bool isSelectAllClick = false;
   List<BoxItem> listIndexSelected = <BoxItem>[];
-  
+
   //this is For Selcting an Item Photos in Fetching Task :
   List<String> selectedItmePhotos = [];
 
@@ -549,4 +554,8 @@ class ItemViewModle extends BaseController {
     }
   }
 
+  @override
+  InternalFinalCallback<void> get onDelete => super.onDelete;
+
+  
 }

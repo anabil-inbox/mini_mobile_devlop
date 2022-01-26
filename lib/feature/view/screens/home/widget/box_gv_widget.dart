@@ -77,10 +77,49 @@ class GVWidget extends StatelessWidget {
                     box: homeViewModel.userBoxess.toList()[index],
                   ),
                 )
-              : HomeGVItemWidget(
-                  isEnabeld: false,
-                  box: homeViewModel.userBoxess.toList()[index],
+              :
+               InkWell(
+                  onTap: () async {
+                    //Get.put(ItemViewModle());
+                    Logger()
+                        .d(homeViewModel.userBoxess.toList()[index].toString());
+                    if (homeViewModel.userBoxess
+                            .toList()[index]
+                            .storageStatus ==
+                        LocalConstance.boxOnTheWay) {
+                      Get.bottomSheet(
+                          NotifayForNewStorage(
+                              box: homeViewModel.userBoxess.toList()[index],
+                              showQrScanner: true,
+                              index: index),
+                          isScrollControlled: true);
+                      homeViewModel.update();
+                    } else {
+                      Get.to(() => ItemScreen(
+                            isEnabeld: false,
+                            box: homeViewModel.userBoxess.toList()[index],
+                            getBoxDataMethod: () async {
+                              await itemViewModel.getBoxBySerial(
+                                  serial: homeViewModel.userBoxess
+                                      .toList()[index]
+                                      .serialNo!);
+                            },
+                          ));
+                      homeViewModel.update();
+                      itemViewModel.update();
+                    }
+
+                    // Get.to(() =>
+                    //     ItemScreen(box: homeViewModel.userBoxess.toList()[index]));
+                    // homeViewModel.update();
+                  },
+                  child: HomeGVItemWidget(
+                    isEnabeld: false,
+                    box: homeViewModel.userBoxess.toList()[index],
+                  ),
                 ),
+        
+        
         ),
       ],
     );

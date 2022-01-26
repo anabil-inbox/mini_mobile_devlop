@@ -50,7 +50,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
   void initState() {
     super.initState();
 
-    Get.put(ItemViewModle() ,permanent: false);
+    Get.put(ItemViewModle() ,permanent: true);
     Get.put(ProfileViewModle());
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async{

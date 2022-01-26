@@ -404,6 +404,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
       Get.back();
       Get.bottomSheet(
               BottomSheetPaymentWidget(
+                beneficiaryId: "",
                 items: items,
                 boxes: boxes,
                 box: box!,

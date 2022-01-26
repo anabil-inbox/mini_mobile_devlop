@@ -115,6 +115,7 @@ class EmptyBodyBoxItem extends StatelessWidget {
                               taskId: LocalConstance.pickupId);
                           Get.bottomSheet(
                               BottomSheetPaymentWidget(
+                                  beneficiaryId: "",
                                   task: interdTask,
                                   box: itemViewModle.operationsBox ?? box!,
                                   boxes: [box!]),

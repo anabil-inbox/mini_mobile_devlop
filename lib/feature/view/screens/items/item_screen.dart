@@ -28,13 +28,14 @@ import 'package:logger/logger.dart';
 import 'filter_items/filter_item_screen.dart';
 
 class ItemScreen extends StatefulWidget {
-  const ItemScreen({Key? key, required this.box, this.getBoxDataMethod})
+  const ItemScreen({Key? key, required this.box, this.getBoxDataMethod ,  this.isEnabeld = true})
       : super(key: key);
 
-  ItemViewModle get itemViewModle => Get.put(ItemViewModle());
+  ItemViewModle get itemViewModle => Get.put(ItemViewModle(), permanent: true);
   HomeViewModel get homeViewModel => Get.put(HomeViewModel());
   final Box box;
   final Function()? getBoxDataMethod;
+  final bool isEnabeld;
 
   @override
   State<ItemScreen> createState() => _ItemScreenState();
@@ -47,7 +48,8 @@ class _ItemScreenState extends State<ItemScreen> {
   initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-     // await widget.getBoxDataMethod!();
+      // await widget.getBoxDataMethod!();
+      // Get.delete<ItemViewModle>();
       await itemViewModle.getBoxBySerial(serial: widget.box.serialNo ?? "");
     });
   }
@@ -104,6 +106,7 @@ class _ItemScreenState extends State<ItemScreen> {
               // itemViewModle.search = "";
               Get.delete<ItemViewModle>();
               Get.to(() => FilterItemScreen(
+                  isEnable: widget.isEnabeld,
                   title: "${tr.filter_by_name}",
                   serail: widget.box.serialNo,
                   box: widget.box));
@@ -124,7 +127,8 @@ class _ItemScreenState extends State<ItemScreen> {
               itemViewModle.isUpdateBoxDetails = true;
               if (!itemViewModle.isLoading) {
                 itemViewModle.showUpdatBoxBottomSheet(
-                    box: widget.box, isUpdate: true);
+                    box: itemViewModle.operationsBox ?? widget.box,
+                    isUpdate: true);
               }
             },
             icon: SvgPicture.asset("assets/svgs/update.svg")),
@@ -159,6 +163,7 @@ class _ItemScreenState extends State<ItemScreen> {
       centerTitle: true,
       title: GetBuilder<ItemViewModle>(
         // init: ItemViewModle(),
+        autoRemove: false,
         initState: (_) {
           itemViewModle.operationsBox?.storageName = "";
         },
@@ -325,7 +330,7 @@ class _ItemScreenState extends State<ItemScreen> {
       backgroundColor: scaffoldColor,
       appBar: myAppbar,
       body: GetBuilder<ItemViewModle>(
-        init: ItemViewModle(),
+        autoRemove: false,
         initState: (_) async {
           WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
             await itemViewModle.getBoxBySerial(
@@ -367,7 +372,7 @@ class _ItemScreenState extends State<ItemScreen> {
                     height: sizeH10,
                   ),
                   itemLVWidget,
-                  BtnActionWidget(
+                  widget.isEnabeld ? BtnActionWidget(
                     redBtnText:
                         widget.box.storageStatus == LocalConstance.boxAtHome
                             ? "${tr.pickup}"
@@ -376,7 +381,7 @@ class _ItemScreenState extends State<ItemScreen> {
                     onGrayBtnClick: onGrayBtnClick,
                     onRedBtnClick: onRedBtnClick,
                     onDeleteBox: onDeleteBoxClick,
-                  ),
+                  ) : const SizedBox(),
                   SizedBox(
                     height: sizeH10,
                   ),
@@ -391,7 +396,10 @@ class _ItemScreenState extends State<ItemScreen> {
 
   onGrayBtnClick() {
     Get.bottomSheet(
-        GiveawayBoxProcessSheet(box: itemViewModle.operationsBox ?? widget.box , boxes: [],),
+        GiveawayBoxProcessSheet(
+          box: itemViewModle.operationsBox ?? widget.box,
+          boxes: [],
+        ),
         isScrollControlled: true);
   }
 

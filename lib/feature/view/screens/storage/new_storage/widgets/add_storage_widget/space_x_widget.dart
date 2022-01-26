@@ -6,13 +6,18 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
 class SpaceWidget extends StatelessWidget {
-  const SpaceWidget(
-      {Key? key, required this.textEditingController, required this.hint , required this.storageCategoriesData})
+   SpaceWidget(
+      {Key? key,
+      required this.textEditingController,
+      required this.hint,
+      required this.storageCategoriesData})
       : super(key: key);
 
   final TextEditingController textEditingController;
   final String hint;
   final StorageCategoriesData storageCategoriesData;
+  final formKeySpcaeKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<StorageViewModel>(
@@ -30,7 +35,15 @@ class SpaceWidget extends StatelessWidget {
             controller: textEditingController,
             textAlign: TextAlign.center,
             onChanged: (e) {
-              value.doOnChangeSpace(storageCategoriesData: storageCategoriesData);
+              value.doOnChangeSpace(
+                  storageCategoriesData: storageCategoriesData);
+            },
+            validator: (e) {
+              if (e!.isEmpty) {
+                return '';
+              } else {
+                return null;
+              }
             },
             decoration: InputDecoration(
                 filled: true,

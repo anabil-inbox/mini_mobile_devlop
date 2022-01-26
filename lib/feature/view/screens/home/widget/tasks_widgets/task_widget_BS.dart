@@ -68,16 +68,14 @@ class TaskWidgetBS extends StatelessWidget {
                   onClicked: homeViewModel.selctedOperationsBoxess.length > 0
                       ? () {
                           if (task.id == LocalConstance.giveawayId) {
-                          
-                              Get.bottomSheet(
-                                  GiveawayBoxProcessSheet(
-                                    box: homeViewModel.selctedOperationsBoxess
-                                        .toList()[0],
-                                    boxes: homeViewModel.selctedOperationsBoxess
-                                        .toList(),
-                                  ),
-                                  isScrollControlled: true);
-                            
+                            Get.bottomSheet(
+                                GiveawayBoxProcessSheet(
+                                  box: homeViewModel.selctedOperationsBoxess
+                                      .toList()[0],
+                                  boxes: homeViewModel.selctedOperationsBoxess
+                                      .toList(),
+                                ),
+                                isScrollControlled: true);
                           } else if ((task.id == LocalConstance.destroyId ||
                                   task.id == LocalConstance.terminateId ||
                                   task.id == LocalConstance.giveawayId) &&
@@ -87,6 +85,7 @@ class TaskWidgetBS extends StatelessWidget {
                               ))) {
                             Get.bottomSheet(
                                 BottomSheetPaymentWidget(
+                                  beneficiaryId: "",
                                   box: homeViewModel.selctedOperationsBoxess
                                       .toList()[0],
                                   boxes: homeViewModel.selctedOperationsBoxess

@@ -21,10 +21,10 @@ class TagBoxWidget extends StatelessWidget {
           borderRadius: BorderRadius.vertical(top: Radius.circular(padding6!))),
       child: Form(
         child: GetBuilder<ItemViewModle>(
-          init: ItemViewModle(),
+          autoRemove: false,
           initState: (_) {
             Set<String> localSet = {};
-            if(itemViewModle.operationsBox != null) {
+            if (itemViewModle.operationsBox != null) {
               for (var item in itemViewModle.operationsBox!.tags!) {
                 localSet.add(item.tag!);
               }
@@ -53,23 +53,28 @@ class TagBoxWidget extends StatelessWidget {
                 SizedBox(
                   height: sizeH16,
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: padding6!),
-                  height: sizeH30,
-                  child: logic.usesBoxTags.isNotEmpty
-                      ? ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: logic.usesBoxTags
-                              .map((e) => TagItem(
-                                    text: e,
-                                    onTap: () {
-                                      logic.usesBoxTags.remove(e);
-                                      logic.update();
-                                    },
-                                  ))
-                              .toList(),
-                        )
-                      : const SizedBox(),
+                GetBuilder<ItemViewModle>(
+                  autoRemove: false,
+                  builder: (item) {
+                    return Container(
+                      padding: EdgeInsets.symmetric(horizontal: padding6!),
+                      height: sizeH30,
+                      child: item.usesBoxTags.isNotEmpty
+                          ? ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: item.usesBoxTags
+                                  .map((e) => TagItem(
+                                        text: e,
+                                        onTap: () {
+                                          item.usesBoxTags.remove(e);
+                                          item.update();
+                                        },
+                                      ))
+                                  .toList(),
+                            )
+                          : const SizedBox(),
+                    );
+                  },
                 ),
                 SizedBox(
                   height: sizeH16,

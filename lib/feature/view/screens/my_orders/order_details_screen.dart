@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/widgets/my_order_address_widget.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/widgets/my_order_box_item.dart';
-import 'package:inbox_clients/feature/view/screens/my_orders/widgets/order_detailes_widgets/option_detailes.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/price_bottom_sheet_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/util/app_color.dart';

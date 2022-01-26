@@ -28,6 +28,7 @@ class DeleteOrTirmnateBottomSheet extends StatelessWidget {
           if (box.storageStatus == LocalConstance.boxinWareHouse) {
             Get.bottomSheet(
                 BottomSheetPaymentWidget(
+                  beneficiaryId: "",
                   box: box,
                   boxes: [box],
                   task: enterdTask,
@@ -54,6 +55,7 @@ class DeleteOrTirmnateBottomSheet extends StatelessWidget {
           if (box.storageStatus == LocalConstance.boxinWareHouse) {
             Get.bottomSheet(
                 BottomSheetPaymentWidget(
+                  beneficiaryId: "",
                   box: box,
                   boxes: [box],
                   task: enterdTask,

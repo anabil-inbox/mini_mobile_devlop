@@ -12,7 +12,7 @@ class SplashViewModle extends GetxController{
     List<CompanySector> arrCompanySector = [];
     List<String> arrSecName = [];
      
-  getAppSetting()async{
+  getAppSetting() async {
      await SplashHelper.getInstance.getAppSettings().then((value) =>{
         if(!GetUtils.isNull(value)){
           apiSettings = value,

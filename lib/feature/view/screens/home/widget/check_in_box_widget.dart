@@ -17,7 +17,8 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
 class CheckInBoxWidget extends StatelessWidget {
-  const CheckInBoxWidget({Key? key, this.box , required this.isUpdate }) : super(key: key);
+  const CheckInBoxWidget({Key? key, this.box, required this.isUpdate})
+      : super(key: key);
 
   final Box? box;
   static ItemViewModle itemViewModle = Get.put(ItemViewModle());
@@ -71,10 +72,13 @@ class CheckInBoxWidget extends StatelessWidget {
             height: sizeH20!,
           ),
           GetBuilder<ItemViewModle>(
-            init: ItemViewModle(),
-            initState: (_) {
-              itemViewModle.tdName.text = itemViewModle.operationsBox?.storageName ?? "";
-            },
+            assignId: true,
+            autoRemove: false,
+            // init: ItemViewModle(),
+            // initState: (_) {
+            //   itemViewModle.tdName.text =
+            //       itemViewModle.operationsBox?.storageName ?? "";
+            // },
             builder: (_) {
               return TextFormField(
                 controller: itemViewModle.tdName,
@@ -101,24 +105,32 @@ class CheckInBoxWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GetBuilder<ItemViewModle>(
-                init: ItemViewModle(),
-                initState: (_) {},
+                // init: ItemViewModle(),
+                autoRemove: false,
+                // initState: (_) {},
                 builder: (log) {
                   return PrimaryButton(
                     isExpanded: false,
                     isLoading: log.isLoading,
                     onClicked: () async {
-                      if(isUpdate){
-                        homeViewModel.userBoxess.toList().removeAt(homeViewModel.userBoxess.toList().indexOf(box!));
-                        await itemViewModle.updateBox(box: box!  , index:homeViewModel.userBoxess.toList().indexOf(box!));
+                      if (isUpdate) {
+                        homeViewModel.userBoxess.toList().removeAt(
+                            homeViewModel.userBoxess.toList().indexOf(box!));
+                        await itemViewModle.updateBox(
+                            box: box!,
+                            index: homeViewModel.userBoxess
+                                .toList()
+                                .indexOf(box!));
                         // itemViewModle.tdName.text = box?.storageName ?? "";
                         // itemViewModle.update();
-                      }else{
+                      } else {
                         Get.back();
-                        Get.to(NotAllowedScreen(box: box!,));
+                        Get.to(NotAllowedScreen(
+                          box: box!,
+                        ));
                       }
                     },
-                    textButton: isUpdate? "Update-Box" : "Check-in Box",
+                    textButton: isUpdate ? "Update-Box" : "Check-in Box",
                   );
                 },
               ),

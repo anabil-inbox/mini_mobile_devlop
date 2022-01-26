@@ -10,6 +10,7 @@ import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:logger/logger.dart';
 
 import 'box_lv_item_widget.dart';
 
@@ -41,7 +42,7 @@ class LVWidget extends StatelessWidget {
                       splashColor: colorTrans,
                       focusColor: colorTrans,
                       onTap: () {
-                        Get.put(ItemViewModle());
+                        Get.put(ItemViewModle(), permanent: true);
                         // if (homeViewModel.userBoxess.toList()[index].storageStatus == LocalConstance.boxOnTheWay) {
                         //     Get.bottomSheet(
                         //       NotifayForNewStorage(box: homeViewModel.userBoxess.toList()[index],),
@@ -75,7 +76,6 @@ class LVWidget extends StatelessWidget {
                         // Get.to(() => ItemScreen(
                         //     box: homeViewModel.userBoxess.toList()[index]));
                         // homeViewModel.update();
-
                         // if (homeViewModel.userBoxess.toList()[index].storageStatus ==
                         //     LocalConstance.boxOnTheWay) {
                         //   // Get.to(() => ItemScreen(box: homeViewModel.userBoxess.toList()[index],));
@@ -87,9 +87,46 @@ class LVWidget extends StatelessWidget {
                         box: homeViewModel.userBoxess.toList()[index],
                       ),
                     )
-                  : HomeLVItemWidget(
-                      isEnabeld: false,
-                      box: homeViewModel.userBoxess.toList()[index],
+                  : InkWell(
+                      onTap: () async {
+                        //Get.put(ItemViewModle());
+                        Logger().d(homeViewModel.userBoxess
+                            .toList()[index]
+                            .toString());
+                        if (homeViewModel.userBoxess
+                                .toList()[index]
+                                .storageStatus ==
+                            LocalConstance.boxOnTheWay) {
+                          Get.bottomSheet(
+                              NotifayForNewStorage(
+                                  box: homeViewModel.userBoxess.toList()[index],
+                                  showQrScanner: true,
+                                  index: index),
+                              isScrollControlled: true);
+                          homeViewModel.update();
+                        } else {
+                          Get.to(() => ItemScreen(
+                                isEnabeld: false,
+                                box: homeViewModel.userBoxess.toList()[index],
+                                getBoxDataMethod: () async {
+                                  await itemViewModel.getBoxBySerial(
+                                      serial: homeViewModel.userBoxess
+                                          .toList()[index]
+                                          .serialNo!);
+                                },
+                              ));
+                          homeViewModel.update();
+                          itemViewModel.update();
+                        }
+
+                        // Get.to(() =>
+                        //     ItemScreen(box: homeViewModel.userBoxess.toList()[index]));
+                        // homeViewModel.update();
+                      },
+                      child: HomeLVItemWidget(
+                        isEnabeld: false,
+                        box: homeViewModel.userBoxess.toList()[index],
+                      ),
                     ),
             ),
           ],

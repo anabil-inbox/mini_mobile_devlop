@@ -15,7 +15,11 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import '../../primary_button.dart';
 
 class SpaceStorageBottomSheet extends StatefulWidget {
-  const SpaceStorageBottomSheet({Key? key, required this.storageCategoriesData , this.isUpdate = false , required this.index})
+  const SpaceStorageBottomSheet(
+      {Key? key,
+      required this.storageCategoriesData,
+      this.isUpdate = false,
+      required this.index})
       : super(key: key);
 
   final StorageCategoriesData storageCategoriesData;
@@ -103,7 +107,7 @@ class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
                       builder.minasDaysDurations(
                           storageCategoriesData: widget.storageCategoriesData);
                     },
-                   quantityTitle: "${tr.days}",
+                    quantityTitle: "${tr.days}",
                     storageCategoriesData: widget.storageCategoriesData,
                   )
                 else
@@ -121,6 +125,14 @@ class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
                     textButton: "${tr.next}",
                     isLoading: false,
                     onClicked: () {
+                      if (storageViewModel.tdX.text.isEmpty ||
+                          storageViewModel.tdX.text == "0" ||
+                          storageViewModel.tdY.text.isEmpty ||
+                          storageViewModel.tdY.text == "0") {
+                        snackError("${tr.error_occurred}",
+                            "${tr.you_have_to_add_valid_space}");
+                        return;
+                      }
                       storageViewModel.saveStorageDataToArray(
                           updateIndex: widget.index,
                           isUpdate: widget.isUpdate,

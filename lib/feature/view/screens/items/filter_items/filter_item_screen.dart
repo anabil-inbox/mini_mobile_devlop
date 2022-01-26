@@ -33,12 +33,17 @@ import 'package:logger/logger.dart';
 // ignore: must_be_immutable
 class FilterItemScreen extends StatefulWidget {
   const FilterItemScreen(
-      {Key? key, required this.title, required this.serail, required this.box})
+      {Key? key,
+      required this.title,
+      required this.serail,
+      required this.box,
+      this.isEnable = true})
       : super(key: key);
 
   final String title;
   final String? serail;
   final Box box;
+  final bool isEnable;
 
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
 
@@ -161,17 +166,19 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
         label: tr.search,
       );
 
-  Widget get btnActionsWidget => BtnActionWidget(
-        redBtnText: widget.box.storageStatus == LocalConstance.boxAtHome
-            ? "${tr.pickup}"
-            : "${tr.recall}",
-        isShowingDeleteAndGivaway: (itemViewModle.listIndexSelected.length ==
-            itemViewModle.operationsBox?.items?.length),
-        onShareBox: onShareBoxClick,
-        onGrayBtnClick: onGrayBtnClick,
-        onRedBtnClick: onRedBtnClick,
-        onDeleteBox: onDeleteBoxClick,
-      );
+  Widget get btnActionsWidget => widget.isEnable
+      ? BtnActionWidget(
+          redBtnText: widget.box.storageStatus == LocalConstance.boxAtHome
+              ? "${tr.pickup}"
+              : "${tr.recall}",
+          isShowingDeleteAndGivaway: (itemViewModle.listIndexSelected.length ==
+              itemViewModle.operationsBox?.items?.length),
+          onShareBox: onShareBoxClick,
+          onGrayBtnClick: onGrayBtnClick,
+          onRedBtnClick: onRedBtnClick,
+          onDeleteBox: onDeleteBoxClick,
+        )
+      : const SizedBox();
 
   @override
   Widget build(BuildContext context) {
@@ -285,7 +292,11 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
   }
 
   onGrayBtnClick() {
-    Get.bottomSheet(GiveawayBoxProcessSheet(box: widget.box , boxes: [],),
+    Get.bottomSheet(
+        GiveawayBoxProcessSheet(
+          box: widget.box,
+          boxes: [],
+        ),
         isScrollControlled: true);
   }
 

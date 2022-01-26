@@ -22,7 +22,6 @@ class ChoiceShapeWidget extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: sizeW5!),
         clipBehavior: Clip.hardEdge,
-        height: sizeH30,
         padding: EdgeInsets.all(padding7!),
         decoration: BoxDecoration(color: colorUnSelectedWidget, borderRadius: BorderRadius.circular(sizeRadius2!)),
         child: CustomTextView(

@@ -41,7 +41,7 @@ class GiveawayBoxProcessSheet extends StatelessWidget {
               child: PrimaryButton(
                 isExpanded: true,
                 isLoading: false,
-                onClicked: onClickGiveaway,
+                onClicked:  onClickGiveaway ,
                 textButton: "${tr.giveaway}",
               ),
             ),
@@ -217,6 +217,7 @@ class GiveawayBoxProcessSheet extends StatelessWidget {
         if (box.storageStatus == LocalConstance.boxinWareHouse) {
           Get.bottomSheet(
                   BottomSheetPaymentWidget(
+                    beneficiaryId: _homeViewModel.selctedbeneficiary?.id ?? "",
                     box: box,
                     task: interdTask,
                     boxes: [box],
@@ -238,6 +239,7 @@ class GiveawayBoxProcessSheet extends StatelessWidget {
         ))) {
           Get.bottomSheet(
               BottomSheetPaymentWidget(
+                beneficiaryId: _homeViewModel.selctedbeneficiary?.id ?? "",
                 box: _homeViewModel.selctedOperationsBoxess.toList()[0],
                 boxes: _homeViewModel.selctedOperationsBoxess.toList(),
                 task: interdTask,
@@ -257,4 +259,5 @@ class GiveawayBoxProcessSheet extends StatelessWidget {
           "${tr.error_occurred}", "${tr.you_have_to_select_beneficiary}");
     }
   }
+
 }

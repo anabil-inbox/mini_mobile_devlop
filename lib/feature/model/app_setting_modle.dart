@@ -12,7 +12,8 @@ class ApiSettings {
       this.languges,
       this.workingHours,
       this.paymentMethod,
-      this.areaZones});
+      this.areaZones,
+      this.deliveryFactor});
 
   String? customerType;
   String? aboutUs;
@@ -24,32 +25,33 @@ class ApiSettings {
   WorkingHours? workingHours;
   List<PaymentMethod>? paymentMethod;
   List<AreaZone>? areaZones;
+  num? deliveryFactor;
 
   factory ApiSettings.fromJson(Map<String, dynamic> json) => ApiSettings(
-        customerType: json["customer_type"] ?? "both",
-        aboutUs: json["about_us"] == null ? "" : json["about_us"],
-        termOfConditions: json["term_of_conditions"],
-        contactInfo: json["contact_info"] == null
-            ? null
-            : ContactInfo.fromJson(json["contact_info"]),
-        companySectors: json["ccompany_sectors"] == []
-            ? []
-            : List<CompanySector>.from(
-                json["company_sectors"].map((x) => CompanySector.fromJson(x))),
-        notAllowed: json["not_allowed"] == null || json["not_allowed"] == []
-            ? []
-            : List<NotAllowed>.from(
-                json["not_allowed"].map((x) => NotAllowed.fromJson(x))),
-        languges: List<Language>.from(
-            json["languages"].map((x) => Language.fromJson(x))),
-        workingHours: WorkingHours.fromJson(json["working_hours"]),
-        paymentMethod: List<PaymentMethod>.from(
-            json["payment_method"].map((x) => PaymentMethod.fromJson(x))),
-        areaZones: json["area_zones"] == null
-            ? null
-            : List<AreaZone>.from(
-                json["area_zones"].map((x) => AreaZone.fromJson(x))),
-      );
+      customerType: json["customer_type"] ?? "both",
+      aboutUs: json["about_us"] == null ? "" : json["about_us"],
+      termOfConditions: json["term_of_conditions"],
+      contactInfo: json["contact_info"] == null
+          ? null
+          : ContactInfo.fromJson(json["contact_info"]),
+      companySectors: json["ccompany_sectors"] == []
+          ? []
+          : List<CompanySector>.from(
+              json["company_sectors"].map((x) => CompanySector.fromJson(x))),
+      notAllowed: json["not_allowed"] == null || json["not_allowed"] == []
+          ? []
+          : List<NotAllowed>.from(
+              json["not_allowed"].map((x) => NotAllowed.fromJson(x))),
+      languges: List<Language>.from(
+          json["languages"].map((x) => Language.fromJson(x))),
+      workingHours: WorkingHours.fromJson(json["working_hours"]),
+      paymentMethod: List<PaymentMethod>.from(
+          json["payment_method"].map((x) => PaymentMethod.fromJson(x))),
+      areaZones: json["area_zones"] == null
+          ? null
+          : List<AreaZone>.from(
+              json["area_zones"].map((x) => AreaZone.fromJson(x))),
+      deliveryFactor: json["delivery_factor"] ?? "");
 
   Map<String, dynamic> toJson() => {
         "customer_type": customerType,

@@ -30,6 +30,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
 class StorageViewModel extends BaseController {
@@ -40,6 +41,8 @@ class StorageViewModel extends BaseController {
 
   //todo this for bottom sheet accept isAccept
   bool isAccept = false;
+
+  // to do for X And Y Form Keys ::
 
   //todo this for bottom sheet accept
 
@@ -222,12 +225,16 @@ class StorageViewModel extends BaseController {
       // });
       storageCategoriesData.storageItem?.forEach((element) {
         if (areArraysEquales(element.options!, selectedFeaures.toList())) {
-          if (num.parse(element.from ?? "0") <= customSpace &&
-              num.parse(element.to ?? "0") >= customSpace) {
+          Logger().i("true");
+          if (num.parse(element.from ?? "") <= customSpace &&
+              num.parse(element.to ?? "") >= customSpace) {
             lastStorageItem?.x = tdX.text;
             lastStorageItem?.y = tdY.text;
             lastStorageItem = element;
+            return;
           }
+        } else {
+          Logger().i("False");
         }
       });
     }
@@ -359,7 +366,6 @@ class StorageViewModel extends BaseController {
           ConstanceNetwork.quantityCategoryType) {
         var resQuantity = await checkQuantity(
             boxCheckedId: "${lastStorageItem?.name}", quntity: quantity);
-
         if (resQuantity.data["item"] != null) {
           Quantity q = Quantity.fromJson(resQuantity.data["item"]);
           if (q.quantityStatus == 0) {
@@ -422,12 +428,12 @@ class StorageViewModel extends BaseController {
   }
 
   void doOnChangeSpace({required StorageCategoriesData storageCategoriesData}) {
-    if (tdX.text.length > 0 && tdY.text.length > 0) {
-      if (num.parse(tdX.text) * num.parse(tdY.text) > 1) {
+    if ((tdX.text.length > 0) && (tdY.text.length > 0)) {
+      if ((num.parse(tdX.text) * num.parse(tdY.text)) > 1) {
         customSpace = num.parse(tdX.text) * num.parse(tdY.text);
       }
     }
-    lastStorageItem?.to = customSpace.toString();
+    //lastStorageItem?.to = customSpace.toString();
     intialBalance(storageCategoriesData: storageCategoriesData);
   }
 
@@ -659,14 +665,16 @@ class StorageViewModel extends BaseController {
 
 // this for saving Categores Data :
 
-  void saveBulksUser(
-      {required StorageCategoriesData storageCategoriesData,
-      required int index,
-      required bool isUpdate}) {
+  void saveBulksUser({
+    required StorageCategoriesData storageCategoriesData,
+    required int index,
+    required bool isUpdate,
+  }) {
     if (localBulk.endStorageItem.isEmpty && !isNeedingAdviser) {
       snackError("${tr.error_occurred}", "${tr.you_have_to_add_item}");
       return;
     }
+
     StorageCategoriesData newstorageCategoriesData = storageCategoriesData;
     newstorageCategoriesData.groupId = index;
     newstorageCategoriesData.name = storageCategoriesData.name;
@@ -792,8 +800,7 @@ class StorageViewModel extends BaseController {
           localOrderItem.storageType = element.storageCategoryType;
           localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
 
-          if (element.selectedDuration ==
-              ConstanceNetwork.dailyDurationType) {
+          if (element.selectedDuration == ConstanceNetwork.dailyDurationType) {
             localOrderItem.subscriptionPrice =
                 num.parse(innerElement.price ?? "0");
           } else if (element.selectedDuration ==
@@ -1401,19 +1408,30 @@ class StorageViewModel extends BaseController {
 
   calculateTaskPriceLotBoxess({required Task task, required List<Box> boxess}) {
     print("calculate Task Price Lot Boxess !");
+
+    final ApiSettings settings =
+        ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
+
     num price = 0.00;
+
     price = task.price! * boxess.length;
+
     if (selectedAddress != null) {
       for (var item in task.areaZones!) {
         if (item.id == selectedAddress!.zone) {
-          price += item.price ?? 0;
-          print("area_zone_price ${item.price}");
+          Logger().e((boxess.length / settings.deliveryFactor!)
+              .toDouble()
+              .ceilToDouble());
+          price += (item.price ?? 0) *
+              (boxess.length / settings.deliveryFactor!)
+                  .toDouble()
+                  .ceilToDouble();
         }
       }
     }
-
+    Logger().i(price);
     for (var item in selectedStringOption) {
-      price += item.price ?? 0;
+      price += (item.price ?? 0) * boxess.length;
       print("options_price ${item.price}");
     }
 
@@ -1447,42 +1465,92 @@ class StorageViewModel extends BaseController {
 
   // THIS REGUSET is For Playing WITH Api Tasks you will Add The Task And Boxess
   //Note :: IF You want to Send Single Box you Will Add The Box Only in The List Like This [myBox()]
+
+  final HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+
   Future<void> doTaskBoxRequest(
       {required Task task,
       required List<Box> boxes,
-      List<BoxItem>? selectedItems}) async {
+      List<BoxItem>? selectedItems,
+      required String beneficiaryId}) async {
     startLoading();
+    // final appSettings =
+    //     ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting()));
     List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
     Map<String, dynamic> map = {};
     String boxessSeriales = "";
+    String itemSeriales = "";
+    num shivingPrice = 0;
 
     for (var i = 0; i < boxes.length; i++) {
       boxessSeriales += '${boxes[i].serialNo},';
     }
 
+    if (selectedAddress != null) {
+      for (var item in task.areaZones!) {
+        if (item.id == selectedAddress!.zone) {
+          // shivingPrice = (item.price ?? 0) *
+          //     (boxes.length / appSettings.deliveryFactor!)
+          //         .toDouble()
+          //         .ceilToDouble();
+          shivingPrice = (item.price ?? 0);
+        }
+      }
+    }
+
+    Logger().e(shivingPrice);
+
     List data = [];
     boxessSeriales = boxessSeriales.substring(0, boxessSeriales.length - 1);
 
-    if (task.id != LocalConstance.fetchId) {
+    if (task.id == LocalConstance.fetchId) {
+      selectedItems?.forEach((element) {
+        itemSeriales += '${element.id},';
+      });
+
+      itemSeriales = itemSeriales.substring(0, boxessSeriales.length - 1);
+
       if (selectedAddress != null) {
         data.add({
           "item_code": task.id,
-          "qty": 1,
+          "qty": selectedItems?.length,
           "delivery_date": "$selectedDateTime",
           "item_parent": "0",
           "group_id": "1",
           "order_to": "${selectedDay?.to}",
           "order_from": "${selectedDay?.from}",
           "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
-          "storage_child_in": "$boxessSeriales"
+          "storage_child_in": "$itemSeriales"
         });
-
+        data.add({
+          "item_code": "shipping_sv",
+          "qty": selectedItems?.length,
+          "area_zone": "${selectedAddress?.zone}",
+          "delivery_date": "${DateTime.now()}",
+          "subscription": "Daily",
+          "subscription_duration": 1,
+          "subscription_price": shivingPrice,
+          "group_id": 1,
+          "storage_type": "Process",
+          "item_parent": 0,
+          "need_adviser": 0,
+          "order_to": "13:20",
+          "order_from": "14:20",
+          "order_time": "13:20 -- 14:20",
+          "space": 0,
+          "space_xaxis": 0,
+          "space_yaxis": 0,
+          "process_type": "shipping_sv",
+          "storage_child_in": itemSeriales,
+          "items_child_in": []
+        });
         map["address[0]"] = selectedAddress?.id;
+
       } else {
         data.add({
           "item_code": task.id,
-          "qty": 1,
-          "storage_type":"Process",
+          "qty": boxes.length,
+          "storage_type": "Process",
           "delivery_date": DateTime.now().toString(),
           "item_parent": "0",
           "group_id": "1",
@@ -1493,34 +1561,165 @@ class StorageViewModel extends BaseController {
         });
         map["address[0]"] = boxes[0].address?.id;
       }
+    } else if (task.id == LocalConstance.giveawayId) {
+      if (selectedAddress != null) {
+        data.add({
+          "item_code": task.id,
+          "qty": boxes.length,
+          "delivery_date": "$selectedDateTime",
+          "item_parent": "0",
+          "group_id": "1",
+          "area_zone": "${selectedAddress?.zone}",
+          "beneficiary_name_in": homeViewModel.selctedbeneficiary?.id ?? "",
+          "order_to": "${selectedDay?.to}",
+          "order_from": "${selectedDay?.from}",
+          "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
+          "storage_child_in": "$boxessSeriales"
+        });
+        map["address[0]"] = selectedAddress?.id;
+        data.add({
+          "item_code": "shipping_sv",
+          "qty": boxes.length,
+          "area_zone": "${selectedAddress?.zone}",
+          "delivery_date": "${DateTime.now()}",
+          "subscription": "Daily",
+          "subscription_duration": 1,
+          "subscription_price": shivingPrice,
+          "group_id": 1,
+          "storage_type": "Process",
+          "item_parent": 0,
+          "need_adviser": 0,
+          "order_to": "13:20",
+          "order_from": "14:20",
+          "order_time": "13:20 -- 14:20",
+          "space": 0,
+          "space_xaxis": 0,
+          "space_yaxis": 0,
+          "process_type": "shipping_sv",
+          "storage_child_in": boxessSeriales,
+          "items_child_in": []
+        });
+      } else {
+        data.add({
+          "item_code": task.id,
+          "qty": boxes.length,
+          "storage_type": "Process",
+          "beneficiary_name_in": beneficiaryId,
+          "delivery_date": DateTime.now().toString(),
+          "item_parent": "0",
+          "group_id": "1",
+          "storage_child_in": "$boxessSeriales"
+        });
+        data.add({
+          "item_code": "shipping_sv",
+          "qty": boxes.length,
+          "delivery_date": "${DateTime.now()}",
+          "subscription": "Daily",
+          "subscription_duration": 1,
+          "subscription_price": shivingPrice,
+          "group_id": 1,
+          "storage_type": "Process",
+          "item_parent": 0,
+          "need_adviser": 0,
+          "order_to": "13:20",
+          "order_from": "14:20",
+          "order_time": "13:20 -- 14:20",
+          "space": 0,
+          "space_xaxis": 0,
+          "space_yaxis": 0,
+          "process_type": "shipping_sv",
+          "storage_child_in": boxessSeriales,
+          "items_child_in": []
+        });
+        map["address[0]"] = boxes[0].address?.id;
+      }
     } else {
       if (!GetUtils.isNull(selectedItems)) {
         for (var item in selectedItems!) {
           data.add({
             "item_code": item.id,
             "qty": "${item.itemQuantity}",
-            "storage_type":"Process",
+            "storage_type": "Process",
+            "delivery_date": selectedDateTime == null
+                ? DateTime.now().toString()
+                : selectedDateTime.toString(),
             "item_parent": "0",
+            "order_to": "${selectedDay?.to ?? "13:20"}",
+            "order_from": "${selectedDay?.from ?? "14:20"}",
+            "order_time":
+                "${selectedDay?.to ?? "13:20"} -- ${selectedDay?.from ?? "14:20"}",
             "group_id": "0",
           });
           map["address[0]"] = selectedAddress!.id;
         }
       }
+      data.add({
+        "item_code": task.id,
+        "qty": boxes.length,
+        "delivery_date": selectedDateTime == null
+            ? DateTime.now().toString()
+            : selectedDateTime.toString(),
+        "item_parent": "0",
+        "group_id": "1",
+        "beneficiary_name_in": beneficiaryId,
+        "order_to": "${selectedDay?.to ?? "13:20"}",
+        "order_from": "${selectedDay?.from ?? "14:20"}",
+        "order_time":
+            "${selectedDay?.to ?? "13:20"} -- ${selectedDay?.from ?? "14:20"}",
+        "storage_child_in": "$boxessSeriales"
+      });
+      data.add({
+        "item_code": "shipping_sv",
+        "qty": boxes.length,
+        "delivery_date": "${DateTime.now()}",
+        "subscription": "Daily",
+        "subscription_duration": 1,
+        "subscription_price": shivingPrice,
+        "group_id": 1,
+        "storage_type": "Process",
+        "item_parent": 0,
+        "need_adviser": 0,
+        "order_to": "${selectedDay?.to ?? "13:20"}",
+        "order_from": "${selectedDay?.from ?? "14:20"}",
+        "order_time":
+            "${selectedDay?.to ?? "13:20"} -- ${selectedDay?.from ?? "14:20"}",
+        "space": 0,
+        "space_xaxis": 0,
+        "space_yaxis": 0,
+        "process_type": "shipping_sv",
+        "storage_child_in": boxessSeriales,
+        "items_child_in": []
+      });
     }
 
     for (var item in selectedStringOption) {
       data.add({
         "item_code": item.id,
-        "qty": "1",
-        "storage_type":"Process",
-        "item_parent": "1",
-        "group_id": "1",
+        "qty": boxes.length,
+        "delivery_date": "${DateTime.now()}",
+        "subscription": "Daily",
+        "subscription_duration": 1,
+        "subscription_price": item.price,
+        "group_id": 1,
+        "storage_type": "Process",
+        "item_parent": 0,
+        "need_adviser": 0,
+        "order_to": "13:20",
+        "order_from": "14:20",
+        "order_time": "13:20 -- 14:20",
+        "space": 0,
+        "space_xaxis": 0,
+        "space_yaxis": 0,
+        "process_type": item.id,
+        "storage_child_in": boxessSeriales,
+        "items_child_in": []
       });
     }
 
     map["type[0]"] = task.id;
     map["order[0]"] = data;
-
+    map["address[0]"] =
+        selectedAddress == null ? boxes[0].address?.id : selectedAddress?.id;
     // for (var i = 0; i < boxes.length; i++) {
     //   // if (task.id == LocalConstance.pickupId) {
     //   //   map["type[$i]"] = LocalConstance.pickupId;
@@ -1567,6 +1766,7 @@ class StorageViewModel extends BaseController {
   cleanAfterSucces() {
     isAccept = false;
     selectedPaymentMethod = null;
+    selectedStringOption.clear();
     selectedStore = null;
     selectedAddress = null;
     selectedDay = null;
@@ -1582,6 +1782,4 @@ class StorageViewModel extends BaseController {
     }
     return false;
   }
-
-
 }
