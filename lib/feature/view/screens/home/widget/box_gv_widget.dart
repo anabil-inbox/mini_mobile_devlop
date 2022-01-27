@@ -118,8 +118,6 @@ class GVWidget extends StatelessWidget {
                     box: homeViewModel.userBoxess.toList()[index],
                   ),
                 ),
-        
-        
         ),
       ],
     );

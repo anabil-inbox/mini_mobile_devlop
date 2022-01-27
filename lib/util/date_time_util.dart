@@ -55,7 +55,7 @@ class DateUtility {
             msg = '${dur.inDays} ${tr.day}';
             return dur.inDays == 1 ? '${tr.befor} 1 ${tr.day.tr}' : DateFormat("dd MMM",isArabicLang()?'ar':'en').format(dt);
           } else if (dur.inHours > 0) {
-            msg = '${tr.befor}  ${dur.inHours} ${tr.hour.tr}';
+            msg = '${tr.befor} ${dur.inHours} ${tr.hour.tr}';
           } else if (dur.inMinutes > 0) {
             msg = '${tr.befor} ${dur.inMinutes} ${tr.minute.tr}';
           } else if (dur.inSeconds > 0) {

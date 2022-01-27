@@ -35,7 +35,7 @@ class _RequestNewStorageScreenState extends State<RequestNewStorageScreen> {
       RequestNewStorageScreen.storageViewModel.update();
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,8 +74,6 @@ class _RequestNewStorageScreenState extends State<RequestNewStorageScreen> {
                   shrinkWrap: true,
                   children: [
                     GetBuilder<StorageViewModel>(
-                      init: StorageViewModel(),
-                      initState: (_) {},
                       builder: (val) {
                         return RequestNewStorageHeader(
                           currentLevel: val.currentLevel,
@@ -83,8 +81,6 @@ class _RequestNewStorageScreenState extends State<RequestNewStorageScreen> {
                       },
                     ),
                     GetBuilder<StorageViewModel>(
-                      init: StorageViewModel(),
-                      initState: (_) {},
                       builder: (builder) {
                         return StorageSizeType();
                       },
@@ -115,8 +111,7 @@ class _RequestNewStorageScreenState extends State<RequestNewStorageScreen> {
                           onClicked: logical.userStorageCategoriesData.length >
                                   0
                               ? () {
-                                  RequestNewStorageScreen
-                                      .storageViewModel.currentLevel = 1;
+                                  RequestNewStorageScreen.storageViewModel.currentLevel = 1;
                                   Get.put(ProfileViewModle());
                                   Get.to(() => RequestNewStoragesStepTwoScreen());
                                 }

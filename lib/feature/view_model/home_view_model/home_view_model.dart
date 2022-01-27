@@ -208,7 +208,9 @@ class HomeViewModel extends BaseController {
             {
               if (/* item.id != LocalConstance.fetchId && */
               item.id != LocalConstance.newStorageSv)
-                {tasks.add(item)}
+                 {
+                  tasks.add(item)
+                  }
             },
         });
     update();

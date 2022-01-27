@@ -17,13 +17,20 @@ class PickupAddress extends StatelessWidget {
   static ProfileViewModle profileViewModle = Get.find<ProfileViewModle>();
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
 
-  Widget get addressTitle => Text((storageViewModel
-                  .userStorageCategoriesData[0].storageCategoryType ==
-              ConstanceNetwork.itemCategoryType ||
-          storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
-              ConstanceNetwork.quantityCategoryType)
-      ? "${tr.pickup_address}"
-      : "${tr.warehouse_address}");
+  Widget get addressTitle {
+    try {
+      return Text(
+          (storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
+                      ConstanceNetwork.itemCategoryType ||
+                  storageViewModel
+                          .userStorageCategoriesData[0].storageCategoryType ==
+                      ConstanceNetwork.quantityCategoryType)
+              ? "${tr.pickup_address}"
+              : "${tr.warehouse_address}");
+    } catch (e) {
+      return const SizedBox();
+    }
+  }
 
   //  if (storageViewModel.userStorageCategoriesData[0]
   //                               .storageCategoryType ==
@@ -49,12 +56,12 @@ class PickupAddress extends StatelessWidget {
             SizedBox(
               height: sizeH10,
             ),
-            if (storageViewModel
-                        .userStorageCategoriesData[0].storageCategoryType ==
+              if (storageViewModel.userStorageCategoriesData.isNotEmpty)
+            if (storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
                     ConstanceNetwork.itemCategoryType ||
-                storageViewModel
-                        .userStorageCategoriesData[0].storageCategoryType ==
+                storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
                     ConstanceNetwork.quantityCategoryType)
+
               GetBuilder<ProfileViewModle>(
                 initState: (_) {
                   WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {

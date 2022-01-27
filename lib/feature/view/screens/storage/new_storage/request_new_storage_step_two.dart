@@ -26,6 +26,15 @@ class RequestNewStoragesStepTwoScreen extends StatefulWidget {
 class _RequestNewStoragesStepTwoScreenState
     extends State<RequestNewStoragesStepTwoScreen> {
   @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      RequestNewStoragesStepTwoScreen.storageViewModel.currentLevel = 0;
+      RequestNewStoragesStepTwoScreen.storageViewModel.update();
+    });
+  }
+
+  @override
   void initState() {
     super.initState();
     RequestNewStoragesStepTwoScreen.storageViewModel.currentLevel = 1;
@@ -66,8 +75,7 @@ class _RequestNewStoragesStepTwoScreenState
                 SizedBox(
                   height: sizeH16,
                 ),
-                PickupAddress(
-                ),
+                PickupAddress(),
               ],
             ),
             PositionedDirectional(
@@ -85,13 +93,14 @@ class _RequestNewStoragesStepTwoScreenState
                           isLoading: false,
                           textButton: "${tr.next}",
                           onClicked: () {
-                            if (logic.userStorageCategoriesData.isNotEmpty) if 
-                            (logic.isStepTwoValidate(catygoreyType: logic
+                            if (logic.userStorageCategoriesData.isNotEmpty) if (logic
+                                .isStepTwoValidate(
+                                    catygoreyType: logic
                                             .userStorageCategoriesData[0]
                                             .storageCategoryType ??
                                         "")) {
                               logic.currentLevel = 2;
-                              Get.off(() => RequestNewStorageStepThree());
+                              Get.to(() => RequestNewStorageStepThree());
                             }
                           },
                         );

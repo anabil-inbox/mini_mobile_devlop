@@ -68,8 +68,6 @@ class RequestNewStorageStepThree extends StatelessWidget {
                     child: Container(
                         width: sizeW150,
                         child: GetBuilder<StorageViewModel>(
-                          init: StorageViewModel(),
-                          initState: (_) {},
                           builder: (logic) {
                             return PrimaryButton(
                               isExpanded: false,

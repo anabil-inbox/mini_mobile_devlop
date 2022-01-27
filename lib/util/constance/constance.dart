@@ -24,6 +24,10 @@ class LocalConstance{
   static String fetchId = "Fetch_sv";
   static String recallId = "Recall_sv";
   static String newStorageSv = "New Storage_sv";
+  static String newNewStorageSpaceSv = "New Storage Space_sv";
+  static String newStorageItemSv = "New Storage Item_sv";
+
+
 
 
   // to add here constance Price :: 

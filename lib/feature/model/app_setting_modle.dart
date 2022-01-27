@@ -34,7 +34,8 @@ class ApiSettings {
       contactInfo: json["contact_info"] == null
           ? null
           : ContactInfo.fromJson(json["contact_info"]),
-      companySectors: json["ccompany_sectors"] == []
+      companySectors: (json["ccompany_sectors"] == [] ||
+              json["ccompany_sectors"] == null)
           ? []
           : List<CompanySector>.from(
               json["company_sectors"].map((x) => CompanySector.fromJson(x))),
@@ -42,8 +43,10 @@ class ApiSettings {
           ? []
           : List<NotAllowed>.from(
               json["not_allowed"].map((x) => NotAllowed.fromJson(x))),
-      languges: List<Language>.from(
-          json["languages"].map((x) => Language.fromJson(x))),
+      languges: (json["languages"] == [] || json["languages"] == null)
+          ? []
+          : List<Language>.from(
+              json["languages"].map((x) => Language.fromJson(x))),
       workingHours: WorkingHours.fromJson(json["working_hours"]),
       paymentMethod: List<PaymentMethod>.from(
           json["payment_method"].map((x) => PaymentMethod.fromJson(x))),

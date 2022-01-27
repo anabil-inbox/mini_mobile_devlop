@@ -49,9 +49,13 @@ class FilterWidget extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             itemCount: logic.tasks.length,
                             itemBuilder: (context, index) => logic.tasks
-                                        .toList()[index]
-                                        .id ==
-                                    LocalConstance.fetchId
+                                            .toList()[index]
+                                            .id ==
+                                        LocalConstance.fetchId ||
+                                    (logic.tasks.toList()[index].id ==
+                                        LocalConstance.newNewStorageSpaceSv) ||
+                                    (logic.tasks.toList()[index].id ==
+                                        LocalConstance.newStorageItemSv)
                                 ? const SizedBox()
                                 : ChoiceShapeWidget(
                                     onClicked: () {
