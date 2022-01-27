@@ -94,7 +94,7 @@ class SqlHelper {
   //todo this for data
   Future<int> updateDataToDatabase(CartModel data) async {
     try {
-      return await _db!.update(tableName, data.toJson(), where: "$id=?,$userId=?", whereArgs: ["${data.id}" , "${SharedPref.instance.getCurrentUserData().id.toString()}"]);
+      return await _db!.update(tableName, data.toJson(), where: "$id=? AND $userId=?", whereArgs: ["${data.id}" , "${SharedPref.instance.getCurrentUserData().id.toString()}"]);
     } catch (e) {
       Logger().d(e);
       snackError(tr.error_occurred, e.toString());
@@ -113,7 +113,7 @@ class SqlHelper {
 
   Future<List<Map<String, Object?>>>? selectAllDataFromDatabaseWhere(var userIdAtt) async {
     try {
-      return await _db!.query(tableName, where: "$id=?,$userId=?", whereArgs: ["$userIdAtt" , "${SharedPref.instance.getCurrentUserData().id.toString()}"]);
+      return await _db!.query(tableName, where: "$id=? AND $userId=?", whereArgs: ["$userIdAtt" , "${SharedPref.instance.getCurrentUserData().id.toString()}"]);
     } catch (e) {
       Logger().d(e);
       throw Exception(e);
@@ -122,7 +122,11 @@ class SqlHelper {
 
   Future<int> deleteDataFromDatabase(CartModel data) async {
     try {
-      return await _db!.delete(tableName, where: "$id=?,$userId=?", whereArgs: ["${data.id}" , "${SharedPref.instance.getCurrentUserData().id.toString()}"]);
+      // return await _db!.rawDelete("""
+      // DELETE FROM $tableName
+      // WHERE $id = ${data.id} AND $userId= ${SharedPref.instance.getCurrentUserData().id.toString()};
+      // """,[]);
+       return await _db!.delete(tableName, where: "$id=? AND $userId=?", whereArgs: ["${data.id}" , "${SharedPref.instance.getCurrentUserData().id.toString()}"]);
     } catch (e) {
       Logger().d(e);
       throw Exception(e);

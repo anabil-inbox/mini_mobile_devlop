@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: sizeH48,
                   backgroundColor: colorRedTrans,
                   onPressed: () {
-                    Get.to(() => const CartScreen());
+                    Get.to(() =>  CartScreen());
                   },
                   borderColor: colorTrans,
                 ),

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:inbox_clients/feature/view_model/cart_view_model/cart_view_model.dart';
+import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 class CartHead extends StatelessWidget {
-  const CartHead({Key? key}) : super(key: key);
-
+  const CartHead({Key? key, this.cartModel, this.cartViewModel,  }) : super(key: key);
+  final CartModel? cartModel;
+  final CartViewModel? cartViewModel;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,27 +37,42 @@ class CartHead extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text("Recall"),
+                      Text("${cartModel?.title}"),
                       SizedBox(width: sizeW5),
                       Text("100 QR",style: textStylePrimarySmall(),),
                       
                     ],
                   ),
                   Text(
-                    "Wadi Alsail, 950, Building 5",
+                    "${cartModel?.address?.title}",
                     style: textStyleHints()!.copyWith(fontSize: fontSize13),
                   ),
                   Text(
-                    "Mar 13, 2018",
+                    "${cartModel?.orderTime?.delivery}"/*Mar 13, 2018*/,
                     style: textStyleHints()!.copyWith(fontSize: fontSize13),
                   ),
                 ],
-              )
+              ),
+              Spacer(),
+              InkWell(
+                onTap: _deleteCartItem ,
+                child: ClipOval(
+                  child: SvgPicture.asset(
+                    "assets/svgs/delete_box_widget.svg",
+                    fit: BoxFit.cover,
+                    width: sizeW36,
+                  ),
+                ),
+              ),
             ],
           ),
            SizedBox(height: sizeH18,),
         ],
       ),
     );
+  }
+
+  void _deleteCartItem() {
+  cartViewModel?.deleteItemCart(cartModel!);
   }
 }

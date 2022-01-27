@@ -225,8 +225,7 @@ class ProfileViewModle extends BaseController {
                 snackSuccess("${tr.success}", "${value.status!.message}"),
                 isLoading = false,
                 update(),
-                SharedPref.instance
-                    .setUserLoginState("${ConstanceNetwork.userEnterd}"),
+                SharedPref.instance.setUserLoginState("${ConstanceNetwork.userEnterd}"),
                 Get.offAll(() => UserBothLoginScreen()),
               }
             else
