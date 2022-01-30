@@ -47,13 +47,16 @@ class ApiSettings {
           ? []
           : List<Language>.from(
               json["languages"].map((x) => Language.fromJson(x))),
-      workingHours: WorkingHours.fromJson(json["working_hours"]),
-      paymentMethod: List<PaymentMethod>.from(
-          json["payment_method"].map((x) => PaymentMethod.fromJson(x))),
+      workingHours: json["working_hours"] == null
+          ? null
+          : WorkingHours.fromJson(json["working_hours"]),
+      paymentMethod: (json["payment_method"] == [] || json["payment_method"] == null)
+          ? []
+          : List<PaymentMethod>.from(
+              json["payment_method"].map((x) => PaymentMethod.fromJson(x))),
       areaZones: json["area_zones"] == null
           ? null
-          : List<AreaZone>.from(
-              json["area_zones"].map((x) => AreaZone.fromJson(x))),
+          : List<AreaZone>.from(json["area_zones"].map((x) => AreaZone.fromJson(x))),
       deliveryFactor: json["delivery_factor"] ?? "");
 
   Map<String, dynamic> toJson() => {

@@ -93,6 +93,7 @@ class AddItemWidget extends StatelessWidget {
               SizedBox(
                 height: sizeH6,
               ),
+              
               GetBuilder<ItemViewModle>(
                 init: ItemViewModle(),
                 initState: (_) {},
@@ -191,6 +192,8 @@ class AddItemWidget extends StatelessWidget {
                   );
                 },
               ),
+              
+              
               SizedBox(
                 height: sizeH16,
               ),
