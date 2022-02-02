@@ -33,7 +33,7 @@ class HomeViewModel extends BaseController {
       startLoading();
     }
     await HomeHelper.getInstance
-        .getCustomerBoxess(pageSize: 15, page: page)
+        .getCustomerBoxess(pageSize: 30, page: page)
         .then((value) => {
               userBoxess.addAll(value),
               update(),
@@ -136,12 +136,12 @@ class HomeViewModel extends BaseController {
   // this for Pagination :
 
   void pagination() async {
-    isLoadingPagination = true;
+    // isLoadingPagination = true;
     startLoadingPagination();
     if ((scrollcontroller.position.pixels ==
         scrollcontroller.position.maxScrollExtent)) {
       page += 1;
-      getCustomerBoxes();
+      await getCustomerBoxes();
     }
     endLoadingPagination();
     update();
@@ -168,10 +168,10 @@ class HomeViewModel extends BaseController {
 
   //
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
-    getCustomerBoxes();
-    getTasks();
+   await getCustomerBoxes();
+   await getTasks();
     getBeneficiary();
     scrollcontroller.addListener(pagination);
   }
@@ -208,9 +208,7 @@ class HomeViewModel extends BaseController {
             {
               if (/* item.id != LocalConstance.fetchId && */
               item.id != LocalConstance.newStorageSv)
-                 {
-                  tasks.add(item)
-                  }
+                {tasks.add(item)}
             },
         });
     update();

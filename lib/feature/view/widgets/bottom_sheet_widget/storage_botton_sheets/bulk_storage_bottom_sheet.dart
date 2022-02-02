@@ -33,7 +33,7 @@ class ItemStorageBottomSheet extends StatefulWidget {
 }
 
 class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
-  static StorageViewModel get storageViewModel => Get.put(StorageViewModel());
+  static StorageViewModel get storageViewModel => Get.put(StorageViewModel() , permanent: true);
   
   @override
   void initState() {

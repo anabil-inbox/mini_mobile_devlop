@@ -348,6 +348,7 @@ class _ItemScreenState extends State<ItemScreen> {
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: padding20!),
               child: EmptyBodyBoxItem(
+                isEnabel: GetUtils.isNull(itemViewModle.operationsBox?.saleOrder),
                 box: itemViewModle.operationsBox,
               ),
             );

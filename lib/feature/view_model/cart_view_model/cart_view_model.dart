@@ -8,6 +8,7 @@ import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:logger/logger.dart';
 
 class CartViewModel extends GetxController {
+  List<CartModel> cartList = <CartModel>[];
   @override
   void onInit() {
     super.onInit();
@@ -52,6 +53,9 @@ class CartViewModel extends GetxController {
     CartHelper.instance.deleteItemCart(cartModel).then((value) {
       if (value > 1) {
         //todo success state
+        cartList.remove(cartModel);
+        getMyCart();
+        update();
       } else {
         //todo fail state
       }
@@ -69,15 +73,18 @@ class CartViewModel extends GetxController {
     });
   }
 
-  void getMyCart() {
-    CartHelper.instance.getMyCart().then((value) {
+  void getMyCart() async{
+    await CartHelper.instance.getMyCart().then((List<CartModel> value) {
       //todo success state
-
-      for (var item in value) {
-        Logger().e(item.toJson());
-      }
+       cartList = value;
+      // for (var item in value) {
+      //   cartList.add(item);
+      //   Logger().d(item.toJson());
+      // }
+      update();
     }).catchError((onError) {
       //todo fail state
+      Logger().e(onError);
     });
   }
 }

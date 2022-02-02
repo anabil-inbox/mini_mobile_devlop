@@ -11,6 +11,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance.dart';
 
 import 'widgets/show_selction_widget/my_list_widget.dart';
 
@@ -75,7 +76,14 @@ class RequestNewStorageStepThree extends StatelessWidget {
                               textButton: "${tr.request_box}",
                               onClicked: () {
                                 if (logic.isValiedToSaveStorage()) {
-                                  logic.addNewStorage();
+                                  if (logic.selectedPaymentMethod?.id ==
+                                      Constance.cashId) {
+                                    logic.addNewStorage();
+                                  } else {
+                                    logic.goToPaymentMethod(
+                                      amount: logic.totalBalance
+                                    );
+                                  }
                                 }
                               },
                             );

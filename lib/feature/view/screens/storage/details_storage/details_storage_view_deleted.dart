@@ -88,7 +88,7 @@ class StorageDetailsView extends StatelessWidget {
 
   Widget get btnActionsWidget => BtnActionWidget();
 
-  StorageViewModel get viewModel => Get.put(StorageViewModel());
+  StorageViewModel get viewModel => Get.put(StorageViewModel() , permanent: true);
 
   final List<Tag> tags;
 

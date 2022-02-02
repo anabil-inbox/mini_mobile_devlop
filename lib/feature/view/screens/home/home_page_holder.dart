@@ -41,21 +41,22 @@ class _HomePageHolderState extends State<HomePageHolder> {
     const ProfileScreen(),
   ];
 
-  static StorageViewModel get storageViewModel => Get.put(StorageViewModel());
+  static StorageViewModel get storageViewModel =>
+      Get.put(StorageViewModel(), permanent: true);
   static SplashViewModle get splashViewModle => Get.put(SplashViewModle());
   static HomeViewModel get homeViewModle => Get.put(HomeViewModel());
-  
 
   @override
   void initState() {
     super.initState();
-
-    Get.put(ItemViewModle() ,permanent: true);
+    Get.put(HomeViewModel(), permanent: true);
+    Get.put(ItemViewModle(), permanent: true);
     Get.put(ProfileViewModle());
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async{
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       // Get.put(ItemViewModle());
-      if(!GetUtils.isNull(SharedPref.instance.getCurrentUserData()) && !GetUtils.isNull(SharedPref.instance.getCurrentUserData().id))
+      if (!GetUtils.isNull(SharedPref.instance.getCurrentUserData()) &&
+          !GetUtils.isNull(SharedPref.instance.getCurrentUserData().id))
         await SqlHelper.instance.initDataBase();
       if (widget.isFromScan ?? false) {
         Get.bottomSheet(
@@ -86,10 +87,10 @@ class _HomePageHolderState extends State<HomePageHolder> {
           Logger().d(
               "${SharedPref.instance.getCurrentUserData().toJson().toString()}");
           Logger().d("${SharedPref.instance.getUserToken()}");
-        Get.to(() => RequestNewStorageScreen());
-       //  Get.put(ItemViewModle());
-       //  Get.to(() => ItemScreen(box: Box(storageName: "Test")));
-       // Get.to(StorageDetailsView(tags: [],));
+          Get.to(() => RequestNewStorageScreen());
+          //  Get.put(ItemViewModle());
+          //  Get.to(() => ItemScreen(box: Box(storageName: "Test")));
+          // Get.to(StorageDetailsView(tags: [],));
         },
         child: Icon(
           Icons.add,

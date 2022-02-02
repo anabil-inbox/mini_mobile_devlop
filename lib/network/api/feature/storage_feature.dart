@@ -29,7 +29,7 @@ class StorageFeature {
     }
   }
 
-    Future<List<Task>> getTasks() async {
+  Future<List<Task>> getTasks() async {
     try {
       var response = await StorageModel.getInstance.getTasks(
           url: "${ConstanceNetwork.getTaskEndPoint}",
@@ -70,7 +70,6 @@ class StorageFeature {
     }
   }
 
-
   Future<List<Store>> getStoreAddress() async {
     var appResponse = await StorageModel.getInstance.getStoresAddress(
         url: "${ConstanceNetwork.storageWareHouse}",
@@ -83,25 +82,25 @@ class StorageFeature {
     }
   }
 
-
-   Future<AppResponse> addNewStorage({var body}) async {
+  Future<AppResponse> addNewStorage({var body}) async {
     var appResponse = await StorageModel.getInstance.addNewStorage(
         url: "${ConstanceNetwork.storageAddOrder}",
         body: body,
         header: ConstanceNetwork.header(4));
-        Logger().i("${appResponse.toJson()}");
+    Logger().i("${appResponse.toJson()}");
     if (appResponse.status?.success == true) {
       return appResponse;
     } else {
       return appResponse;
     }
   }
-   Future<AppResponse> getOrderDetailes({var body}) async {
+
+  Future<AppResponse> getOrderDetailes({var body}) async {
     var appResponse = await StorageModel.getInstance.getOrderDetailes(
         url: "${ConstanceNetwork.getOrderDetailes}",
         body: body,
         header: ConstanceNetwork.header(4));
-        Logger().i("${appResponse.toJson()}");
+    Logger().i("${appResponse.toJson()}");
     if (appResponse.status?.success == true) {
       return appResponse;
     } else {
@@ -109,12 +108,25 @@ class StorageFeature {
     }
   }
 
-
   Future<AppResponse> customerStoragesChangeStatus({var body}) async {
-    var appResponse = await StorageModel.getInstance.customerStoragesChangeStatus(
-        url: "${ConstanceNetwork.customerStoragesChangeStatus}",
+    var appResponse = await StorageModel.getInstance
+        .customerStoragesChangeStatus(
+            url: "${ConstanceNetwork.customerStoragesChangeStatus}",
+            body: body,
+            header: ConstanceNetwork.header(2));
+    Logger().i("${appResponse.toJson()}");
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
+  Future<AppResponse> payment({var body}) async {
+    var appResponse = await StorageModel.getInstance.paymentMethod(
+        url: "${ConstanceNetwork.paymentEndPoint}",
         body: body,
-        header: ConstanceNetwork.header(2));
+        header: ConstanceNetwork.header(4));
     Logger().i("${appResponse.toJson()}");
     if (appResponse.status?.success == true) {
       return appResponse;

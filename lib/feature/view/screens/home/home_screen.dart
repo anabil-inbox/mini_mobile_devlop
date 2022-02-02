@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: sizeH48,
                   backgroundColor: colorRedTrans,
                   onPressed: () {
-                    Get.to(() => const CartScreen());
+                    Get.to(() => CartScreen());
                   },
                   borderColor: colorTrans,
                 ),
@@ -154,7 +154,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       if (widget.isFromScan ?? false) {
-        Get.bottomSheet(CheckInBoxWidget(isUpdate: false, ), isScrollControlled: true);
+        Get.bottomSheet(
+            CheckInBoxWidget(
+              isUpdate: false,
+            ),
+            isScrollControlled: true);
       }
     });
   }
@@ -163,79 +167,85 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: scaffoldColor,
-      body: GetBuilder<HomeViewModel>(
-        init: HomeViewModel(),
-        assignId: true,
-        builder: (logic) {
-          if (logic.isLoading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (logic.userBoxess.isEmpty) {
-            return SafeArea(
-              child: Stack(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          HomeScreen.homeViewModle.onInit();
+        },
+        child: GetBuilder<HomeViewModel>(
+          init: HomeViewModel(),
+          assignId: true,
+          builder: (logic) {
+            if (logic.isLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (logic.userBoxess.isEmpty) {
+              return SafeArea(
+                child: Stack(
+                  children: [
+                    EmptyHomeWidget(),
+                    appBar,
+                  ],
+                ),
+              );
+            } else {
+              return Stack(
                 children: [
-                  EmptyHomeWidget(),
-                  appBar,
-                ],
-              ),
-            );
-          } else {
-            return Stack(
-              children: [
-                SingleChildScrollView(
-                 // controller: logic.scrollcontroller,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: sizeW20!),
-                    child: GetBuilder<HomeViewModel>(
-                      init: HomeViewModel(),
-                      initState: (_) {
-                      },
-                      builder: (_) {
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: sizeH150,
-                            ),
-                            FilterWidget(
-                            ),
-                            SizedBox(
-                              height: sizeH10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                InkWell(onTap: /*onTheWayClick*/(){},child: textHintsWidget("${tr.on_the_way}", null)),
-                                textHintsWidget(
-                                    "${tr.in_warehouse}", boxColorOrange),
-                                textHintsWidget("${tr.at_home}", boxColorRed),
+                  SingleChildScrollView(
+                    controller: logic.scrollcontroller,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: sizeW20!),
+                      child: GetBuilder<HomeViewModel>(
+                        init: HomeViewModel(),
+                        initState: (_) {},
+                        builder: (_) {
+                          return Column(
+                            children: [
+                              SizedBox(
+                                height: sizeH150,
+                              ),
+                              FilterWidget(),
+                              SizedBox(
+                                height: sizeH10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                      onTap: /*onTheWayClick*/ () {},
+                                      child: textHintsWidget(
+                                          "${tr.on_the_way}", null)),
+                                  textHintsWidget(
+                                      "${tr.in_warehouse}", boxColorOrange),
+                                  textHintsWidget("${tr.at_home}", boxColorRed),
+                                ],
+                              ),
+                              if (!logic.isListView!) ...[
+                                logic.isLoading ? DialogLoading() : GVWidget(),
+                              ] else ...[
+                                logic.isLoading ? DialogLoading() : LVWidget(),
                               ],
-                            ),
-                            if (!logic.isListView!) ...[
-                              logic.isLoading ? DialogLoading() : GVWidget(),
-                            ] else ...[
-                              logic.isLoading ? DialogLoading() : LVWidget(),
                             ],
-                          ],
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                    width: double.infinity,
-                    height: sizeH120,
-                    // padding: EdgeInsets.all(padding10!),
-                    decoration: BoxDecoration(
-                      color: colorBackground,
-                      borderRadius: BorderRadius.circular(sizeRadius5!),
-                    ),
-                    child: appBar),
-              ],
-            );
-          }
-        },
+                  Container(
+                      width: double.infinity,
+                      height: sizeH120,
+                      // padding: EdgeInsets.all(padding10!),
+                      decoration: BoxDecoration(
+                        color: colorBackground,
+                        borderRadius: BorderRadius.circular(sizeRadius5!),
+                      ),
+                      child: appBar),
+                ],
+              );
+            }
+          },
+        ),
       ),
     );
   }

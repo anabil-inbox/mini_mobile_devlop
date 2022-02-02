@@ -28,6 +28,7 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ProfileViewModle extends BaseController {
   bool isAccepteDefoltLocation = true;
@@ -202,8 +203,7 @@ class ProfileViewModle extends BaseController {
   //-- for log out
 
   logOutDiloag() {
-    Get.bottomSheet(
-     GlobalBottomSheet(
+    Get.bottomSheet(GlobalBottomSheet(
       title: "${tr.are_you_sure_you_want_to_log_out}",
       onOkBtnClick: () {
         logOut();
@@ -232,9 +232,11 @@ class ProfileViewModle extends BaseController {
             else
               {
                 isLoading = false,
+                SharedPref.instance
+                    .setUserLoginState("${ConstanceNetwork.userEnterd}"),
+                Get.offAll(() => UserBothLoginScreen()),
                 update(),
-                snackError("${tr.error_occurred}", "${value.status!.message}"),
-               
+               // snackError("${tr.error_occurred}", "${value.status!.message}"),
               }
           });
     } catch (e) {}
@@ -453,10 +455,44 @@ class ProfileViewModle extends BaseController {
   }
 
   Future<void> getCurrentUserLagAndLong({LatLng? latLng}) async {
-    var position = await GeolocatorPlatform.instance
-        .getCurrentPosition(/*desiredAccuracy: LocationAccuracy.high*/);
-    currentPostion = LatLng(latLng?.latitude ?? position.latitude,
-        latLng?.longitude ?? position.longitude);
+    var status = await Permission.location.status;
+    bool isShown = await Permission.contacts.shouldShowRequestRationale;
+
+    Logger().e(status);
+    Logger().e(isShown);
+
+    if (status.isDenied) {
+      if (await Permission.speech.isPermanentlyDenied) {
+        openAppSettings();
+      }
+    } else {
+      var position = await GeolocatorPlatform.instance.getCurrentPosition(
+          /*desiredAccuracy: LocationAccuracy.high*/);
+      currentPostion = LatLng(latLng?.latitude ?? position.latitude,
+          latLng?.longitude ?? position.longitude);
+    }
+
+    final Permission location_permission = Permission.location;
+    bool location_status = false;
+    bool ispermanetelydenied = await location_permission.isPermanentlyDenied;
+    if (ispermanetelydenied) {
+      print("denied");
+      await openAppSettings();
+    } else {
+      var location_statu = await location_permission.request();
+      location_status = location_statu.isGranted;
+      if (location_status) {
+        var position = await GeolocatorPlatform.instance.getCurrentPosition(
+            /*desiredAccuracy: LocationAccuracy.high*/);
+        currentPostion = LatLng(latLng?.latitude ?? position.latitude,
+            latLng?.longitude ?? position.longitude);
+      }
+    }
+
+// You can can also directly ask the permission about its status.
+    if (await Permission.location.isRestricted) {
+      Logger().e(await Permission.location.isRestricted);
+    }
 
     if (!GetUtils.isNull(currentPostion)) {
       kGooglePlex = CameraPosition(

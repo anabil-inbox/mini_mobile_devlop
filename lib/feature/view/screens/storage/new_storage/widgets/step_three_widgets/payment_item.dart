@@ -12,6 +12,7 @@ class PaymentItem extends StatelessWidget {
   const PaymentItem({Key? key, required this.paymentMethod}) : super(key: key);
 
   final PaymentMethod paymentMethod;
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<StorageViewModel>(
@@ -38,7 +39,7 @@ class PaymentItem extends StatelessWidget {
             padding: EdgeInsets.symmetric(
                 vertical: padding9!, horizontal: padding14!),
             child: CustomTextView(txt: "${paymentMethod.name}" , 
-            textStyle:  builder.selectedPaymentMethod == paymentMethod
+            textStyle:  builder.selectedPaymentMethod?.id == paymentMethod.id
                     ? textStylebodyWhite()
                     : textStyleHints()!
                         .copyWith(fontSize: fontSize14, color: colorHint2),),

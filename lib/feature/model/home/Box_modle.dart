@@ -33,7 +33,7 @@ class Box {
         id: json["id"] == null ? null: json["id"],
         serialNo:  json["serial_no"] == null ? null:json["serial_no"],
         storageName: json["storage_name"] == null ? null: json["storage_name"],
-        saleOrder: json["sale_order"] == null ? null: json["sale_order"],
+        saleOrder: json["sales_order"] == null ? null: json["sales_order"],
         storageStatus: json["storage_status"] == null ? null: json["storage_status"],
         enabled:json["enabled"] == null ? null:  json["enabled"],
         modified: json["modified"] == null ? null : DateTime.parse(json["modified"]),

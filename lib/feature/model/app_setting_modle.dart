@@ -57,7 +57,7 @@ class ApiSettings {
       areaZones: json["area_zones"] == null
           ? null
           : List<AreaZone>.from(json["area_zones"].map((x) => AreaZone.fromJson(x))),
-      deliveryFactor: json["delivery_factor"] ?? "");
+      deliveryFactor: json["delivery_factor"] ?? 1);
 
   Map<String, dynamic> toJson() => {
         "customer_type": customerType,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
@@ -15,6 +16,7 @@ import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
+import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/selected_hour_item.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
@@ -22,6 +24,7 @@ import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_b
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/quantity_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/feature/view_model/payment_view_model/payment_view_model.dart';
 import 'package:inbox_clients/network/api/feature/order_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
@@ -33,6 +36,7 @@ import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class StorageViewModel extends BaseController {
   //todo this for appbar select btn
@@ -875,7 +879,8 @@ class StorageViewModel extends BaseController {
       "order_to": "${selectedDay!.from}",
       "order_from": "${selectedDay!.to}",
       "order_time": "${selectedDay!.from}/${selectedDay!.to}",
-      "type": getNewStorageType(storageCategoriesData: storageCategoriesList[0])
+      "type":
+          getNewStorageType(storageCategoriesData: userStorageCategoriesData[0])
     }
         /*   map*/
         ).then((value) => {
@@ -918,6 +923,10 @@ class StorageViewModel extends BaseController {
     } else if (storageCategoriesData.storageCategoryType ==
         ConstanceNetwork.itemCategoryType) {
       return LocalConstance.newStorageItemSv;
+    } else if (storageCategoriesData.storageCategoryType ==
+        ConstanceNetwork.quantityCategoryType) {
+      // return LocalConstance.;
+      return LocalConstance.newStorageSv;
     } else {
       return LocalConstance.newStorageSv;
     }
@@ -1012,6 +1021,7 @@ class StorageViewModel extends BaseController {
     var dt = await dateBiker();
     if (!GetUtils.isNull(dt)) {
       selctedWorksHours = getDayByNumber(selectedDateTime: dt!);
+      Logger().i(selctedWorksHours);
       selectedDateTime = DateTime(dt.year, dt.month, dt.day);
     }
     update();
@@ -1865,5 +1875,32 @@ class StorageViewModel extends BaseController {
       }
     }
     return false;
+  }
+
+  // to do this for payment :
+  Future<void> goToPaymentMethod({required num amount}) async {
+    startLoading();
+    try {
+      await StorageFeature.getInstance.payment(body: {
+        "amount": amount
+      }).then((value) => {
+            if (value.status!.success!)
+              {
+                // snackSuccess("${tr.success}", value.status!.message!),
+                if (GetUtils.isURL(value.data["payment_url"]))
+                  {
+                    Get.put(PaymentViewModel()),
+                    Get.to(() => PaymentScreen(url: value.data["payment_url"])),
+                    endLoading()
+                  }
+              }
+            else
+              {snackError("${tr.error_occurred}", value.status!.message!)}
+          });
+    } catch (e) {
+      printError();
+    }
+
+    endLoading();
   }
 }

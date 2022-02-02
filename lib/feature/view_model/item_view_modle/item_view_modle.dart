@@ -382,8 +382,10 @@ class ItemViewModle extends BaseController {
           .getBoxBySerial(body: {"serial": serial}).then((value) => {
                 if (value.status!.success!)
                   {
-                    Logger().i("${value.toJson()}"),
+                    Logger().e("${value.toJson()}"),
+                    Logger().e("${value.data["saleOrder"]}"),
                     operationsBox = Box.fromJson(value.data),
+                    
                     endLoading(),
                   }
                 else

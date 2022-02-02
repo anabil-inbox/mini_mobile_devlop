@@ -435,7 +435,8 @@ double sumStringVal(String? valOne, String? valTwo) {
 String formatStringWithCurrency(var data, String currency) {
   try {
     var number = data.toString().replaceAll("\$", "").replaceAll(",", "");
-    number = "${currency.isEmpty?"QR":currency} ${NumberFormat("#0.00", "en_US").format(double.parse(number))}";
+    number =
+        "${currency.isEmpty ? "QR" : currency} ${NumberFormat("#0.00", "en_US").format(double.parse(number))}";
     //var numbers = "${currency}${double.parse(number).toStringAsFixed(2)}";
     return number.toString();
   } catch (e) {
@@ -505,7 +506,7 @@ void changeLanguageBottomSheet() {
                     SharedPref.instance
                         .setAppLanguage(Locale(controller.selectedLang!));
                     Get.back();
-                     SplashViewModle().getAppSetting();
+                    SplashViewModle().getAppSetting();
                     controller.update();
                   } catch (e) {}
                 },
@@ -566,13 +567,13 @@ List<Day> getDayByNumber({required DateTime selectedDateTime}) {
 
   print(" ${settings.toJson()} ");
   if (selectedDateTime.weekday == 0) {
-    dayName = "Sunday";
+    dayName = "sunday";
     workTime = settings.workingHours?.sunday;
   } else if (selectedDateTime.weekday == 1) {
-    dayName = "Monday";
+    dayName = "monday";
     workTime = settings.workingHours?.monday;
   } else if (selectedDateTime.weekday == 2) {
-    dayName = "Tuesday";
+    dayName = "tuesday";
     workTime = settings.workingHours?.tuesday;
   } else if (selectedDateTime.weekday == 3) {
     dayName = "wednesday";
@@ -586,6 +587,9 @@ List<Day> getDayByNumber({required DateTime selectedDateTime}) {
   } else if (selectedDateTime.weekday == 6) {
     dayName = "saturday";
     workTime = settings.workingHours?.saturday;
+  } else if (selectedDateTime.weekday == 7) {
+    dayName = "sunday";
+    workTime = settings.workingHours?.sunday;
   }
 
   print("dayName : $dayName : dayNumber : ${selectedDateTime.weekday}");
@@ -596,18 +600,18 @@ List<Day> getDayByNumber({required DateTime selectedDateTime}) {
   return workTime;
 }
 
-num calculateBalance({required num balance}){
+num calculateBalance({required num balance}) {
   return balance;
 }
 
 // Widget return By Box Status
 
-Widget retuenBoxByStatus({required String storageStatus , required bool isEnabeld}) {
-
+Widget retuenBoxByStatus(
+    {required String storageStatus, required bool isEnabeld}) {
   String boxPath = "assets/svgs/desable_box.svg";
   if (!isEnabeld) {
     boxPath = "assets/svgs/block_folder.svg";
-  }else if (storageStatus == LocalConstance.boxAtHome) {
+  } else if (storageStatus == LocalConstance.boxAtHome) {
     boxPath = "assets/svgs/home_box_red.svg";
   } else if (storageStatus == LocalConstance.boxinWareHouse) {
     boxPath = "assets/svgs/box_in_ware_house.svg";
@@ -621,78 +625,80 @@ Widget retuenBoxByStatus({required String storageStatus , required bool isEnabel
   );
 }
 
+// void getImageBottomSheet() {
+//   Get.bottomSheet(
+//     Container(
+//     height: sizeH240,
+//     padding: EdgeInsets.symmetric(horizontal: padding20!),
+//     decoration: BoxDecoration(
+//         color: colorTextWhite,
+//         borderRadius:
+//             BorderRadius.vertical(top: Radius.circular(padding30!))),
+//     child: Column(
+//       children: [
+//         SizedBox(
+//           height: sizeH20,
+//         ),
+//         Container(
+//           height: sizeH5,
+//           width: sizeH50,
+//           decoration: BoxDecoration(
+//               color: colorUnSelectedWidget,
+//               borderRadius: BorderRadius.circular(2.5)),
+//         ),
+//         SizedBox(
+//           height: sizeH20,
+//         ),
+//         Text(
+//           "Select Image",
+//           style: textStyleAppBarTitle(),
+//         ),
+//         SizedBox(
+//           height: sizeH25,
+//         ),
+//         SeconderyButtom(
+//           buttonTextStyle: textSeconderyButtonUnBold(),
+//           textButton: "Camera",
+//           onClicked: () async {
+//             await getImage(ImageSource.camera);
+//             Get.back();
+//           },
+//           isExpanded: true,
+//         ),
+//         SizedBox(
+//           height: sizeH20,
+//         ),
+//         SeconderyButtom(
+//           buttonTextStyle: textSeconderyButtonUnBold(),
+//           textButton: "Gallery",
+//           onClicked: () async {
+//             await getImage(ImageSource.gallery);
+//             Get.back();
+//           },
+//           isExpanded: true,
+//         ),
+//         SizedBox(
+//           height: sizeH20,
+//         ),
+//       ],
+//     ),
+//   ));
+// }
 
-  // void getImageBottomSheet() {
-  //   Get.bottomSheet(
-  //     Container(
-  //     height: sizeH240,
-  //     padding: EdgeInsets.symmetric(horizontal: padding20!),
-  //     decoration: BoxDecoration(
-  //         color: colorTextWhite,
-  //         borderRadius:
-  //             BorderRadius.vertical(top: Radius.circular(padding30!))),
-  //     child: Column(
-  //       children: [
-  //         SizedBox(
-  //           height: sizeH20,
-  //         ),
-  //         Container(
-  //           height: sizeH5,
-  //           width: sizeH50,
-  //           decoration: BoxDecoration(
-  //               color: colorUnSelectedWidget,
-  //               borderRadius: BorderRadius.circular(2.5)),
-  //         ),
-  //         SizedBox(
-  //           height: sizeH20,
-  //         ),
-  //         Text(
-  //           "Select Image",
-  //           style: textStyleAppBarTitle(),
-  //         ),
-  //         SizedBox(
-  //           height: sizeH25,
-  //         ),
-  //         SeconderyButtom(
-  //           buttonTextStyle: textSeconderyButtonUnBold(),
-  //           textButton: "Camera",
-  //           onClicked: () async {
-  //             await getImage(ImageSource.camera);
-  //             Get.back();
-  //           },
-  //           isExpanded: true,
-  //         ),
-  //         SizedBox(
-  //           height: sizeH20,
-  //         ),
-  //         SeconderyButtom(
-  //           buttonTextStyle: textSeconderyButtonUnBold(),
-  //           textButton: "Gallery",
-  //           onClicked: () async {
-  //             await getImage(ImageSource.gallery);
-  //             Get.back();
-  //           },
-  //           isExpanded: true,
-  //         ),
-  //         SizedBox(
-  //           height: sizeH20,
-  //         ),
-  //       ],
-  //     ),
-  //   ));
-  // }
-
-String getPriceWithFormate({required num price}){
+String getPriceWithFormate({required num price}) {
   final numberFormatter = NumberFormat("###.00#", "en_US");
   final num initNumber = 0.00;
   print("getting Price ${numberFormatter.format(initNumber + price)}");
-  return "${numberFormatter.format(initNumber + price)}" + " ${LocalConstance.qrCoin}";
+  return "${numberFormatter.format(initNumber + price)}" +
+      " ${LocalConstance.qrCoin}";
 }
-
 
 AppLocalizations get tr => AppLocalizations.of(Get.context!)!;
 
-List<PaymentMethod> getPaymentMethod(){
-  List<PaymentMethod> list = ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting())).paymentMethod ?? [];
+List<PaymentMethod> getPaymentMethod() {
+  List<PaymentMethod> list =
+      ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()))
+              .paymentMethod ??
+          [];
   return list;
 }
