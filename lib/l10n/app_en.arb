@@ -192,6 +192,7 @@
     "you_have_to_select_beneficiary" : "You Have To Select Beneficiary",
     "ready_to_pickup" : "Ready To Pickup",
      "add_your_item_in_box" : "Add your item  in box",
-    "you_have_to_add_valid_space" : "you Have to Add Valid Space"
+    "you_have_to_add_valid_space" : "you Have to Add Valid Space",
+    "total_price" : "Total Price",
 
 }
