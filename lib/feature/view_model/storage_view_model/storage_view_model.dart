@@ -16,6 +16,7 @@ import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
+import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
 import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/selected_hour_item.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
@@ -898,6 +899,9 @@ class StorageViewModel extends BaseController {
               selectedDay = null,
               Get.close(3),
               userStorageCategoriesData.clear(),
+                // todo this for go to order details
+                //       var SalOorder = value.data["order name"] ,
+              //Get.to(()=>OrderDetailesScreen(orderSales: ,)),
             }
           else
             {

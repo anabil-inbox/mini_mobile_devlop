@@ -286,10 +286,10 @@ class AuthViewModle extends GetxController {
     await AuthHelper.getInstance.checkVerficationCode(params).then((value) => {
           if (value.status!.success!)
             {
-              snackSuccess("${tr.success}", "${value.status!.message}"),
+              // snackSuccess("${tr.success}", "${value.status!.message}"),
               Get.put(ProfileViewModle()),
               //Get.off(() => ProfileScreen()),
-              Get.off(() => HomePageHolder()),
+              Get.offAll(() => HomePageHolder()),
             }
           else
             {snackError("${tr.error_occurred}", "${value.status!.message}")}

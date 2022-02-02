@@ -179,56 +179,77 @@ class _HomeScreenState extends State<HomeScreen> {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (logic.userBoxess.isEmpty) {
-              return SafeArea(
-                child: Stack(
-                  children: [
-                    EmptyHomeWidget(),
-                    appBar,
-                  ],
+            } else if (logic.userBoxess.isNotEmpty) {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  HomeScreen.homeViewModle.onInit();
+                },
+                child: SingleChildScrollView(
+                  physics: customScrollViewIOS(),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: SafeArea(
+                      child: Stack(
+                        children: [
+                          EmptyHomeWidget(),
+                          appBar,
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               );
             } else {
               return Stack(
                 children: [
-                  SingleChildScrollView(
-                    controller: logic.scrollcontroller,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: sizeW20!),
-                      child: GetBuilder<HomeViewModel>(
-                        init: HomeViewModel(),
-                        initState: (_) {},
-                        builder: (_) {
-                          return Column(
-                            children: [
-                              SizedBox(
-                                height: sizeH150,
-                              ),
-                              FilterWidget(),
-                              SizedBox(
-                                height: sizeH10,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                  RefreshIndicator(
+                    onRefresh: ()async{
+                      HomeScreen.homeViewModle.onInit();
+                      await Future.delayed(Duration(seconds: 1));
+                    },
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: SingleChildScrollView(
+                        controller: logic.scrollcontroller,
+                        physics: customScrollViewIOS(),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: sizeW20!),
+                          child: GetBuilder<HomeViewModel>(
+                            init: HomeViewModel(),
+                            initState: (_) {},
+                            builder: (_) {
+                              return Column(
                                 children: [
-                                  InkWell(
-                                      onTap: /*onTheWayClick*/ () {},
-                                      child: textHintsWidget(
-                                          "${tr.on_the_way}", null)),
-                                  textHintsWidget(
-                                      "${tr.in_warehouse}", boxColorOrange),
-                                  textHintsWidget("${tr.at_home}", boxColorRed),
+                                  SizedBox(
+                                    height: sizeH150,
+                                  ),
+                                  FilterWidget(),
+                                  SizedBox(
+                                    height: sizeH10,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                          onTap: /*onTheWayClick*/ () {},
+                                          child: textHintsWidget(
+                                              "${tr.on_the_way}", null)),
+                                      textHintsWidget(
+                                          "${tr.in_warehouse}", boxColorOrange),
+                                      textHintsWidget("${tr.at_home}", boxColorRed),
+                                    ],
+                                  ),
+                                  if (!logic.isListView!) ...[
+                                    logic.isLoading ? DialogLoading() : GVWidget(),
+                                  ] else ...[
+                                    logic.isLoading ? DialogLoading() : LVWidget(),
+                                  ],
                                 ],
-                              ),
-                              if (!logic.isListView!) ...[
-                                logic.isLoading ? DialogLoading() : GVWidget(),
-                              ] else ...[
-                                logic.isLoading ? DialogLoading() : LVWidget(),
-                              ],
-                            ],
-                          );
-                        },
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ),
                   ),

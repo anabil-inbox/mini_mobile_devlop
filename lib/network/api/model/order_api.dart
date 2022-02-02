@@ -35,4 +35,16 @@ class OrderApi {
     }
   }
 
+  Future<AppResponse> getOrderDetails({var url, var header, var body}) async {
+    try {
+      var response = await DioManagerClass.getInstance.dioGetMethod(
+          url: url, header: header, );
+      return AppResponse.fromJson(json.decode(response.toString())??{});
+    } on DioError catch (ex) {
+      var message = json.decode(ex.response.toString());
+      Logger().e(message);
+      return AppResponse.fromJson(message??"");
+    }
+  }
+
 }
