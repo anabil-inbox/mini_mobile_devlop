@@ -97,8 +97,8 @@ class HomeViewModel extends BaseController {
       controller.scannedDataStream.listen((scanData) {
         result = scanData;
       }).onData((data) async {
-        Logger().i(data.code);
-        Logger().i("Serial ${data.code}");
+        controller.dispose();
+        Get.back();
         if (isFromAtHome!) {
           controller.dispose();
           await fromAtHome(data.code, index, storageViewModel);
@@ -168,10 +168,10 @@ class HomeViewModel extends BaseController {
 
   //
   @override
-  void onInit() async{
+  void onInit() async {
     super.onInit();
-   await getCustomerBoxes();
-   await getTasks();
+    await getCustomerBoxes();
+    await getTasks();
     getBeneficiary();
     scrollcontroller.addListener(pagination);
   }
