@@ -190,5 +190,6 @@
     "you_have_to_select_beneficiary" : "اختر المؤسسة الخيرية",
     "ready_to_pickup":"جاهز للاستلام",
     "add_your_item_in_box" : "قم باضافة عنصر جديد للصندوق",
-    "you_have_to_add_valid_space" : "يجب ادخال مساحة صحيحة"
+    "you_have_to_add_valid_space" : "يجب ادخال مساحة صحيحة",
+    "total_price" : "اجمالي السعر"
 }

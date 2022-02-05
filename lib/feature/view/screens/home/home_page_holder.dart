@@ -35,7 +35,8 @@ class _HomePageHolderState extends State<HomePageHolder> {
   int index = 1;
 
   List<Widget> bnbScreens = [
-    HomeScreen(),
+    HomeScreen(
+    ),
     const MyOrdersScreen(),
     NotificationScreen(),
     const ProfileScreen(),
@@ -44,11 +45,12 @@ class _HomePageHolderState extends State<HomePageHolder> {
   static StorageViewModel get storageViewModel =>
       Get.put(StorageViewModel(), permanent: true);
   static SplashViewModle get splashViewModle => Get.put(SplashViewModle());
-  static HomeViewModel get homeViewModle => Get.put(HomeViewModel());
+  static HomeViewModel get homeViewModle => Get.put(HomeViewModel() , permanent: true);
 
   @override
   void initState() {
     super.initState();
+    Get.put(StorageViewModel(), permanent: true);
     Get.put(HomeViewModel(), permanent: true);
     Get.put(ItemViewModle(), permanent: true);
     Get.put(ProfileViewModle());
@@ -133,7 +135,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
                         SizedBox(width: sizeW20),
                         MaterialButton(
                           onPressed: () {
-                            Get.put(MyOrderViewModle());
+                            Get.put(MyOrderViewModle() , permanent: true);
                             logic.changeTab(1);
                             print('Event');
                           },

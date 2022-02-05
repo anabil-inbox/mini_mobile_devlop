@@ -33,10 +33,10 @@ class LVWidget extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: homeViewModel.userBoxess.length,
-              itemBuilder: (context, index) => homeViewModel.userBoxess
+              itemBuilder: (context, index) => (homeViewModel.userBoxess
                           .toList()[index]
-                          .saleOrder ==
-                      null
+                          .allowed ??
+                      false)
                   ? InkWell(
                       highlightColor: colorTrans,
                       splashColor: colorTrans,

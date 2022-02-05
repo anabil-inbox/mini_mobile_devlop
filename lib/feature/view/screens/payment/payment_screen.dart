@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view_model/payment_view_model/payment_view_model.dart';
 import 'package:logger/logger.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 // ignore: must_be_immutable
 class PaymentScreen extends StatelessWidget {
-  PaymentScreen({Key? key, required this.url}) : super(key: key);
+  PaymentScreen(
+      {Key? key,
+      required this.url,
+      required this.isFromNewStorage,
+      this.beneficiaryId,
+      this.boxes,
+      this.task})
+      : super(key: key);
 
   final String url;
+  final bool isFromNewStorage;
+  final Task? task;
+  final List<Box>? boxes;
+  final String? beneficiaryId;
 
   @override
   Widget build(BuildContext context) {
@@ -19,20 +32,38 @@ class PaymentScreen extends StatelessWidget {
           initialUrl: url,
           onProgress: (i) {},
           onPageFinished: (url) {
-            Logger().i(url);
-            payment.readResponse();
+            try {
+              Logger().i("onPageFinished : url $url");
+              String paymentId = url.split("=")[1].split("&")[0];
+              Logger().e(paymentId);
+              payment.paymentId = paymentId;
+              payment.readResponse(
+                  isFromNewStorage: isFromNewStorage,
+                  task: task,
+                  boxes: boxes,
+                  beneficiaryId: beneficiaryId);
+            } catch (e) {
+              print(e);
+            }
           },
           navigationDelegate: (navigation) {
-            payment.readResponse();
-            return NavigationDecision.prevent;
+            payment.readResponse(isFromNewStorage: isFromNewStorage,
+                  task: task,
+                  boxes: boxes,
+                  beneficiaryId: beneficiaryId);
+            return NavigationDecision.navigate;
           },
           onWebViewCreated: (controller) {
             payment.payController = controller;
             payment.update();
-            payment.readResponse();
-            controller.runJavascriptReturningResult(
+            payment.readResponse(isFromNewStorage: isFromNewStorage,
+                  task: task,
+                  boxes: boxes,
+                  beneficiaryId: beneficiaryId);
+            controller
+                .runJavascriptReturningResult(
                     "document.documentElement.innerText")
-                .then((value) => {Logger().e(value)});
+                .then((value) => {});
           },
         );
       },

@@ -74,15 +74,19 @@ class RequestNewStorageStepThree extends StatelessWidget {
                               isExpanded: false,
                               isLoading: logic.isLoading,
                               textButton: "${tr.request_box}",
-                              onClicked: () {
+                              onClicked: () async {
                                 if (logic.isValiedToSaveStorage()) {
                                   if (logic.selectedPaymentMethod?.id ==
                                       Constance.cashId) {
-                                    logic.addNewStorage();
+                                    await logic.addNewStorage();
+                                    logic.isLoading = false;
+                                    logic.update();
                                   } else {
-                                    logic.goToPaymentMethod(
-                                      amount: logic.totalBalance
-                                    );
+                                    await logic.goToPaymentMethod(
+                                        isFromNewStorage: true,
+                                        amount: logic.totalBalance);
+                                    logic.isLoading = false;
+                                    logic.update();
                                   }
                                 }
                               },

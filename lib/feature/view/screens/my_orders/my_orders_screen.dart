@@ -20,7 +20,9 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
   @override
   void initState() {
     super.initState();
-    MyOrdersScreen.myOrderViewModle.getOrdres();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      MyOrdersScreen.myOrderViewModle.getOrdres();
+    });
     MyOrdersScreen.myOrderViewModle.scrollcontroller.addListener(() {
       MyOrdersScreen.myOrderViewModle.pagination();
     });
@@ -29,31 +31,36 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          MyOrderAppBar(),
-          Expanded(
-            child: GetBuilder<MyOrderViewModle>(
-              builder: (logic) {
-                return 
-                // logic.isLoading
-                //     // ? Center(
-                //     //     child: CircularProgressIndicator(),
-                //     //   )
-                //     // : 
-                    ListView(
-                       // controller: logic.scrollcontroller,
-                        shrinkWrap: true,
-                        children: logic.userOrderSales
-                            .map((e) => MyOrderItem(
-                                  orderSales: e,
-                                ))
-                            .toList(),
-                      );
-              },
-            ),
-          )
-        ],
+      body: RefreshIndicator(
+        onRefresh: () async {
+          MyOrdersScreen.myOrderViewModle.userOrderSales.clear();
+          MyOrdersScreen.myOrderViewModle.getOrdres();
+        },
+        child: Column(
+          children: [
+            MyOrderAppBar(),
+            Expanded(
+              child: GetBuilder<MyOrderViewModle>(
+                builder: (logic) {
+                  if (logic.isLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return ListView(
+                      shrinkWrap: true,
+                      children: logic.userOrderSales
+                          .map((e) => MyOrderItem(
+                                orderSales: e,
+                              ))
+                          .toList(),
+                    );
+                  }
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

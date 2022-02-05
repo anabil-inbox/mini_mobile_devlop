@@ -16,6 +16,7 @@ import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
+import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
 import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/selected_hour_item.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
@@ -24,6 +25,7 @@ import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_b
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/quantity_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/payment_view_model/payment_view_model.dart';
 import 'package:inbox_clients/network/api/feature/order_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
@@ -788,124 +790,139 @@ class StorageViewModel extends BaseController {
 
   // this for add storage Order :
 
-  Future<void> addNewStorage() async {
-    //still this layer will complete when you complete order // refer to =>
-    List<OrderItem> orderItems = [];
-    userStorageCategoriesData.forEach((element) {
-      OrderItem localOrderItem = OrderItem();
-      if (element.storageCategoryType == ConstanceNetwork.itemCategoryType) {
-        element.localBulk?.endStorageItem.forEach((innerElement) {
-          localOrderItem.itemCode = innerElement.name;
+  Future<void> addNewStorage({String? paymentId}) async {
+    try {
+      //still this layer will complete when you complete order // refer to =>
+      List<OrderItem> orderItems = [];
+      userStorageCategoriesData.forEach((element) {
+        OrderItem localOrderItem = OrderItem();
+        if (element.storageCategoryType == ConstanceNetwork.itemCategoryType) {
+          element.localBulk?.endStorageItem.forEach((innerElement) {
+            localOrderItem.itemCode = innerElement.name;
+            localOrderItem.deliveryDate = selectedDateTime.toString();
+            localOrderItem.subscription = element.selectedDuration;
+            localOrderItem.qty = innerElement.quantity;
+            localOrderItem.subscriptionDuration = element.numberOfDays;
+            localOrderItem.groupId = element.groupId;
+            // localOrderItem.itemParent = 0;
+            localOrderItem.storageType = element.storageCategoryType;
+            localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
+
+            if (element.selectedDuration ==
+                ConstanceNetwork.dailyDurationType) {
+              localOrderItem.subscriptionPrice =
+                  num.parse(innerElement.price ?? "0");
+            } else if (element.selectedDuration ==
+                ConstanceNetwork.montlyDurationType) {
+              localOrderItem.subscriptionPrice =
+                  num.parse(innerElement.monthlyPrice ?? "0");
+            } else {
+              localOrderItem.subscriptionPrice =
+                  num.parse(innerElement.yearlyPrice ?? "0");
+            }
+
+            // localOrderItem.subscriptionPrice = element.pricePerDay;
+
+            // localOrderItem.subscriptionPrice = element.userPrice! /
+            //     element.numberOfDays! /
+            //     innerElement.quantity!;
+            Logger().i("${localOrderItem.toJson()}");
+            print("${orderItems.length}");
+            // localOrderItem.from = selectedDay!.from;
+            // localOrderItem.to = selectedDay!.to;
+            // localOrderItem.spacex = tdX.text;
+            // localOrderItem.spacey = tdY.text;
+            orderItems.add(localOrderItem);
+            localOrderItem = OrderItem();
+            print("${orderItems.length}");
+          });
+          if (!GetUtils.isNull(element.localBulk!.optionStorageItem)) {
+            localOrderItem.itemCode =
+                element.localBulk!.optionStorageItem!.name;
+            localOrderItem.deliveryDate = selectedDateTime.toString();
+            localOrderItem.subscription = element.selectedDuration;
+            localOrderItem.qty = 1;
+            localOrderItem.subscriptionDuration = element.numberOfDays;
+            localOrderItem.groupId = element.groupId;
+            localOrderItem.storageType = element.storageCategoryType;
+            localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
+            localOrderItem.itemParent = 0;
+            orderItems.add(localOrderItem);
+            localOrderItem = OrderItem();
+          }
+        } else {
+          localOrderItem.itemCode = element.selectedItem!.name;
+          localOrderItem.qty = element.quantity;
           localOrderItem.deliveryDate = selectedDateTime.toString();
           localOrderItem.subscription = element.selectedDuration;
-          localOrderItem.qty = innerElement.quantity;
           localOrderItem.subscriptionDuration = element.numberOfDays;
           localOrderItem.groupId = element.groupId;
-          // localOrderItem.itemParent = 0;
           localOrderItem.storageType = element.storageCategoryType;
           localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
-
-          if (element.selectedDuration == ConstanceNetwork.dailyDurationType) {
-            localOrderItem.subscriptionPrice =
-                num.parse(innerElement.price ?? "0");
-          } else if (element.selectedDuration ==
-              ConstanceNetwork.montlyDurationType) {
-            localOrderItem.subscriptionPrice =
-                num.parse(innerElement.monthlyPrice ?? "0");
-          } else {
-            localOrderItem.subscriptionPrice =
-                num.parse(innerElement.yearlyPrice ?? "0");
-          }
-
-          // localOrderItem.subscriptionPrice = element.pricePerDay;
-
-          // localOrderItem.subscriptionPrice = element.userPrice! /
-          //     element.numberOfDays! /
-          //     innerElement.quantity!;
-          Logger().i("${localOrderItem.toJson()}");
-          print("${orderItems.length}");
+          localOrderItem.itemParent = 0;
+          localOrderItem.subscriptionPrice =
+              element.userPrice! / element.numberOfDays! / element.quantity!;
           // localOrderItem.from = selectedDay!.from;
           // localOrderItem.to = selectedDay!.to;
           // localOrderItem.spacex = tdX.text;
           // localOrderItem.spacey = tdY.text;
           orderItems.add(localOrderItem);
           localOrderItem = OrderItem();
-          print("${orderItems.length}");
-        });
-        if (!GetUtils.isNull(element.localBulk!.optionStorageItem)) {
-          localOrderItem.itemCode = element.localBulk!.optionStorageItem!.name;
-          localOrderItem.deliveryDate = selectedDateTime.toString();
-          localOrderItem.subscription = element.selectedDuration;
-          localOrderItem.qty = 1;
-          localOrderItem.subscriptionDuration = element.numberOfDays;
-          localOrderItem.groupId = element.groupId;
-          localOrderItem.storageType = element.storageCategoryType;
-          localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
-          localOrderItem.itemParent = 0;
-          orderItems.add(localOrderItem);
-          localOrderItem = OrderItem();
         }
-      } else {
-        localOrderItem.itemCode = element.selectedItem!.name;
-        localOrderItem.qty = element.quantity;
-        localOrderItem.deliveryDate = selectedDateTime.toString();
-        localOrderItem.subscription = element.selectedDuration;
-        localOrderItem.subscriptionDuration = element.numberOfDays;
-        localOrderItem.groupId = element.groupId;
-        localOrderItem.storageType = element.storageCategoryType;
-        localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
-        localOrderItem.itemParent = 0;
-        localOrderItem.subscriptionPrice =
-            element.userPrice! / element.numberOfDays! / element.quantity!;
-        // localOrderItem.from = selectedDay!.from;
-        // localOrderItem.to = selectedDay!.to;
-        // localOrderItem.spacex = tdX.text;
-        // localOrderItem.spacey = tdY.text;
-        orderItems.add(localOrderItem);
-        localOrderItem = OrderItem();
+      });
+      isLoading = true;
+      update();
+      // Map<String, dynamic> map = {};
+      // map["order[0]"] = jsonEncode(orderItems);
+      // map["type[0]"] = "New Storage_sv";
+      // map["address[0]"] = selectedAddress!.id;
+
+      await StorageFeature.getInstance.addNewStorage(body: {
+        "shipping_address": "${selectedAddress?.id}",
+        "items_list": jsonEncode(orderItems),
+        "order_to": "${selectedDay?.from}",
+        "payment_method": "${selectedPaymentMethod?.id}",
+        "payment_id": "$paymentId",
+        "order_from": "${selectedDay?.to}",
+        "order_time": "${selectedDay?.from}/${selectedDay?.to}",
+        "type": getNewStorageType(
+            storageCategoriesData: userStorageCategoriesData[0])
       }
-    });
-    isLoading = true;
-    update();
+          /*   map*/
+          ).then((value) => {
+            if (value.status!.success!)
+              {
+                isLoading = false,
+                update(),
+                checkDaplication(),
+                isShowAll = true,
+                snackSuccess("${tr.success}", "${value.status!.message}"),
+                selectedPaymentMethod = null,
+                selectedAddress = null,
+                selectedDateTime = null,
+                selectedStore = null,
+                selectedDay = null,
+                Get.close(3),
+                userStorageCategoriesData.clear(),
+                Get.put(MyOrderViewModle()),
+                Get.off(() => OrderDetailesScreen(
+                      orderId: value.data["order_name"],
+                      isFromPayment: true,
+                    )),
 
-    // Map<String, dynamic> map = {};
-    // map["order[0]"] = jsonEncode(orderItems);
-    // map["type[0]"] = "New Storage_sv";
-    // map["address[0]"] = selectedAddress!.id;
+                // todo this for go to order details
+                //       var SalOorder = value.data["order name"] ,
+                //Get.to(()=> OrderDetailesScreen(orderSales: ,)),
 
-    await StorageFeature.getInstance.addNewStorage(body: {
-      "shipping_address": "${selectedAddress!.id}",
-      "items_list": jsonEncode(orderItems),
-      "order_to": "${selectedDay!.from}",
-      "order_from": "${selectedDay!.to}",
-      "order_time": "${selectedDay!.from}/${selectedDay!.to}",
-      "type":
-          getNewStorageType(storageCategoriesData: userStorageCategoriesData[0])
-    }
-        /*   map*/
-        ).then((value) => {
-          if (value.status!.success!)
-            {
-              isLoading = false,
-              update(),
-              checkDaplication(),
-              isShowAll = true,
-              snackSuccess("${tr.success}", "${value.status!.message}"),
-              selectedPaymentMethod = null,
-              selectedAddress = null,
-              selectedDateTime = null,
-              selectedStore = null,
-              selectedDay = null,
-              Get.close(3),
-              userStorageCategoriesData.clear(),
-            }
-          else
-            {
-              isLoading = false,
-              update(),
-              snackError("${tr.error_occurred}", "${value.status!.message}")
-            }
-        });
+              }
+            else
+              {
+                isLoading = false,
+                update(),
+                snackError("${tr.error_occurred}", "${value.status!.message}")
+              }
+          });
+    } catch (e) {}
   }
 
   void newBoxOperation() {
@@ -1296,7 +1313,7 @@ class StorageViewModel extends BaseController {
   //todo i concatenate homeViewModel with storageViewModel
   //todo i get index of list to update it local
   customerStoragesChangeStatus(var serial,
-      {int? index, HomeViewModel? homeViewModel}) async {
+      {HomeViewModel? homeViewModel}) async {
     if (serial == null) {
       Get.back();
       return;
@@ -1310,19 +1327,21 @@ class StorageViewModel extends BaseController {
       if (!GetUtils.isNull(value)) {
         if (value.status!.success!) {
           isChangeStatusLoading = false;
-          homeViewModel?.userBoxess.toList()[index!].storageStatus =
-              "${LocalConstance.boxAtHome}";
+          // homeViewModel?.userBoxess.toList()[index].storageStatus =
+          //     "${LocalConstance.boxAtHome}";
           homeViewModel?.update();
           update();
           Get.back();
-          Future.delayed(Duration(seconds: 0)).then((value) {
-            Get.bottomSheet(
-                CheckInBoxWidget(
-                  box: homeViewModel?.userBoxess.toList()[index!],
-                  isUpdate: false,
-                ),
-                isScrollControlled: true);
-          });
+          // Future.delayed(Duration(seconds: 0)).then((value) {
+          //   Get.bottomSheet(
+          //       CheckInBoxWidget(
+          //         box: homeViewModel?.userBoxess.toList()[index],
+          //         isUpdate: false,
+          //       ),
+          //       isScrollControlled: true);
+          //   snackSuccess(tr.success, value.status!.message!);
+          // });
+          // snackSuccess(tr.success, value.status!.message!);
         } else {
           snackError(tr.error_occurred, value.status!.message!);
         }
@@ -1494,13 +1513,15 @@ class StorageViewModel extends BaseController {
   // THIS REGUSET is For Playing WITH Api Tasks you will Add The Task And Boxess
   //Note :: IF You want to Send Single Box you Will Add The Box Only in The List Like This [myBox()]
 
-  final HomeViewModel homeViewModel = Get.put(HomeViewModel());
+  final HomeViewModel homeViewModel = Get.put(HomeViewModel(), permanent: true);
 
-  Future<void> doTaskBoxRequest(
-      {required Task task,
-      required List<Box> boxes,
-      List<BoxItem>? selectedItems,
-      required String beneficiaryId}) async {
+  Future<void> doTaskBoxRequest({
+    required Task task,
+    required List<Box> boxes,
+    List<BoxItem>? selectedItems,
+    required String beneficiaryId,
+    String? paymentId,
+  }) async {
     startLoading();
     List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
     Map<String, dynamic> map = {};
@@ -1810,6 +1831,8 @@ class StorageViewModel extends BaseController {
     }
 
     map["type[0]"] = task.id;
+    map["payment_method"] = selectedPaymentMethod?.id ?? "";
+    map["payment_id"] = paymentId ?? "";
     map["order[0]"] = data;
     map["address[0]"] =
         selectedAddress == null ? boxes[0].address?.id : selectedAddress?.id;
@@ -1878,25 +1901,37 @@ class StorageViewModel extends BaseController {
   }
 
   // to do this for payment :
-  Future<void> goToPaymentMethod({required num amount}) async {
+  Future<void> goToPaymentMethod({
+    required num amount,
+    required bool isFromNewStorage,
+    Task? task,
+    List<Box>? boxes,
+    String? beneficiaryId,
+  }) async {
     startLoading();
     try {
-      await StorageFeature.getInstance.payment(body: {
-        "amount": amount
-      }).then((value) => {
-            if (value.status!.success!)
-              {
-                // snackSuccess("${tr.success}", value.status!.message!),
-                if (GetUtils.isURL(value.data["payment_url"]))
+      await StorageFeature.getInstance
+          .payment(body: {"amount": amount}).then((value) => {
+                if (value.status!.success!)
                   {
-                    Get.put(PaymentViewModel()),
-                    Get.to(() => PaymentScreen(url: value.data["payment_url"])),
-                    endLoading()
+                    // snackSuccess("${tr.success}", value.status!.message!),
+                    if (GetUtils.isURL(value.data["payment_url"]))
+                      {
+                        Logger().e(value.data["payment_url"]),
+                        Get.put(PaymentViewModel()),
+                        Get.to(() => PaymentScreen(
+                              beneficiaryId: beneficiaryId,
+                              boxes: boxes,
+                              task: task,
+                              url: value.data["payment_url"],
+                              isFromNewStorage: isFromNewStorage,
+                            )),
+                        endLoading()
+                      }
                   }
-              }
-            else
-              {snackError("${tr.error_occurred}", value.status!.message!)}
-          });
+                else
+                  {snackError("${tr.error_occurred}", value.status!.message!)}
+              });
     } catch (e) {
       printError();
     }

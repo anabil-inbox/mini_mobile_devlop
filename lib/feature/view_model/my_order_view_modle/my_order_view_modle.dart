@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 import 'package:inbox_clients/network/api/feature/order_helper.dart';
 import 'package:inbox_clients/util/base_controller.dart';
+import 'package:inbox_clients/util/constance.dart';
 import 'package:logger/logger.dart';
 
 class MyOrderViewModle extends BaseController {
@@ -13,7 +14,7 @@ class MyOrderViewModle extends BaseController {
     isLoading = true;
     update();
     await OrderHelper.getInstance
-        .getCustomerBoxess(pageSize: 30, page: page)
+        .getCustomerBoxess(pageSize: 40, page: page)
         .then((value) => {
               userOrderSales.addAll(value),
               Logger().i("${userOrderSales.length}"),
@@ -38,8 +39,26 @@ class MyOrderViewModle extends BaseController {
     update();
   }
 
+  OrderSales newOrderSales = OrderSales();
 
-  
+  Future<void> getOrderDetaile({required String orderId}) async {
+    isLoading = true;
+    update();
+   try {
+      await OrderHelper.getInstance.getOrderDetaile(body: {
+        Constance.orderId: orderId,
+      }).then((value) {
+        Logger().e("Msg_Current_Order : ${value.toJson()}");
+        newOrderSales = value;
+        update();
+      });
+    } catch (e) {
+      Logger().e(e);
+    }
+     Logger().e("Msg_newOrderSales_Order : ${newOrderSales.toJson()}");
+    isLoading = false;
+    update();
+  }
 
   @override
   void onInit() {

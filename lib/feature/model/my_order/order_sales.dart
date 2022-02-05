@@ -1,42 +1,38 @@
 class OrderSales {
-  OrderSales(
-      {this.orderId,
-      this.customerId,
-      this.orderType,
-      this.totalPrice,
-      this.deliveryDate,
-      this.status,
-      this.orderItems,
-      this.orderShippingAddress,
-      this.orderWarehouseAddress});
+  OrderSales({
+    this.orderId,
+    this.customerId,
+    this.orderType,
+    this.totalPrice,
+    this.orderShippingAddress,
+    this.orderWarehouseAddress,
+    this.deliveryDate,
+    this.status,
+    this.orderItems,
+  });
 
   String? orderId;
   String? customerId;
   String? orderType;
   num? totalPrice;
+  String? orderShippingAddress;
+  dynamic orderWarehouseAddress;
   DateTime? deliveryDate;
   String? status;
   List<OrderItem>? orderItems;
-  String? orderShippingAddress;
-  String? orderWarehouseAddress;
 
   factory OrderSales.fromJson(Map<String, dynamic> json) => OrderSales(
-        orderId: json["order_id"],
-        customerId: json["customer_id"],
-        orderType: json["order_type"],
-        totalPrice: json["total_price"],
-        deliveryDate: json["delivery_date"] == null
-            ? null
-            : DateTime.parse(json["delivery_date"]),
-        status: json["status"],
-        orderShippingAddress: json["order_shipping_address"] == null
-            ? null
-            : json["order_shipping_address"],
-        orderWarehouseAddress: json["order_warehouse_address"] == null
-            ? null
-            : json["order_warehouse_address"],
-        orderItems: List<OrderItem>.from(
-            json["order_items"].map((x) => OrderItem.fromJson(x))),
+        orderId: json["order_id"] ?? "",
+        customerId: json["customer_id"]?? "",
+        orderType: json["order_type"]?? "",
+        totalPrice: json["total_price"]?? "",
+        orderShippingAddress: json["order_shipping_address"] ?? "",
+        orderWarehouseAddress: json["order_warehouse_address"]?? "",
+        deliveryDate: DateTime.parse(json["delivery_date"]),
+        status: json["status"] ?? "",
+        orderItems: json["order_items"] == null
+            ? []
+            : List<OrderItem>.from(json["order_items"].map((x) => OrderItem.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -44,39 +40,26 @@ class OrderSales {
         "customer_id": customerId,
         "order_type": orderType,
         "total_price": totalPrice,
-        "delivery_date":
-            "${deliveryDate!.year.toString().padLeft(4, '0')}-${deliveryDate!.month.toString().padLeft(2, '0')}-${deliveryDate!.day.toString().padLeft(2, '0')}",
-        "status": status,
         "order_shipping_address": orderShippingAddress,
         "order_warehouse_address": orderWarehouseAddress,
-        "order_items": List<dynamic>.from(orderItems!.map((x) => x.toJson())),
+        "delivery_date":
+            "${deliveryDate?.year.toString().padLeft(4, '0')}-${deliveryDate?.month.toString().padLeft(2, '0')}-${deliveryDate?.day.toString().padLeft(2, '0')}",
+        "status": status,
+        "order_items":  (orderItems == null || orderItems!.isEmpty)
+            ? []
+            : List<dynamic>.from(orderItems!.map((x) => x.toJson())),
       };
+
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is OrderSales &&
           runtimeType == other.runtimeType &&
-          orderId == other.orderId &&
-          customerId == other.customerId &&
-          orderType == other.orderType &&
-          totalPrice == other.totalPrice &&
-          deliveryDate == other.deliveryDate &&
-          status == other.status &&
-  //        orderItems == other.orderItems &&
-          orderShippingAddress == other.orderShippingAddress &&
-          orderWarehouseAddress == other.orderWarehouseAddress;
+          orderId == other.orderId;
 
   @override
-  int get hashCode =>
-      orderId.hashCode ^
-      customerId.hashCode ^
-      orderType.hashCode ^
-      totalPrice.hashCode ^
-      deliveryDate.hashCode ^
-      status.hashCode ^
-      orderShippingAddress.hashCode ^
-      orderWarehouseAddress.hashCode;
+  int get hashCode => orderId.hashCode;
 }
 
 class OrderItem {
@@ -91,6 +74,7 @@ class OrderItem {
     this.itemStatus,
     this.isParent,
     this.itemsList,
+    this.options
   });
 
   String? itemParent;
@@ -100,6 +84,7 @@ class OrderItem {
   num? quantity;
   num? totalPrice;
   String? groupId;
+  List<String>? options;
   String? itemStatus;
   dynamic isParent;
   List<ItemsList>? itemsList;
@@ -109,6 +94,7 @@ class OrderItem {
         item: json["item"],
         needAdviser: json["need_Adviser"],
         price: json["price"],
+        options: json["options"] == null ? [] : List<String>.from(json["options"].map((x) => x)),
         quantity: json["quantity"],
         totalPrice: json["totalPrice"],
         groupId: json["group_id"],
@@ -127,6 +113,7 @@ class OrderItem {
         "price": price,
         "quantity": quantity,
         "totalPrice": totalPrice,
+        "options": options,
         "group_id": groupId,
         "item_status": itemStatus == null ? null : itemStatus,
         "is_parent": isParent,

@@ -17,6 +17,7 @@ import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart
 import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/language_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
+import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/splash_view_modle/splash_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/sh_util.dart';
@@ -449,76 +450,150 @@ updateLanguage(Locale locale) {
   Get.updateLocale(locale);
 }
 
-void changeLanguageBottomSheet() {
-  Get.bottomSheet(Container(
-    height: sizeH350,
-    decoration: BoxDecoration(
-        color: colorTextWhite,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-    padding: EdgeInsets.symmetric(horizontal: sizeH20!),
-    child: GetBuilder<IntroViewModle>(
-      init: IntroViewModle(),
-      builder: (controller) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(height: sizeH42),
-            Text(
-              "${tr.language}",
-              style: textStyleTitle(),
-            ),
-            SizedBox(height: sizeH25),
-            Expanded(
-              child: ListView.builder(
-                itemCount: SharedPref.instance.getAppLanguage()!.length,
-                itemBuilder: (context, index) => Column(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        controller.selectedIndex = index;
-                        controller.temproreySelectedLang =
-                            SharedPref.instance.getAppLanguage()![index].name;
-                        controller.update();
-                      },
-                      child: LanguageItem(
-                          selectedIndex: controller.selectedIndex,
-                          cellIndex: index,
-                          name:
-                              "${SharedPref.instance.getAppLanguage()![index].languageName}"),
-                    ),
-                    SizedBox(
-                      height: sizeH12,
-                    )
-                  ],
+void changeLanguageBottomSheet({required bool isFromINtro}) {
+  if (isFromINtro) {
+    Get.bottomSheet(Container(
+      height: sizeH350,
+      decoration: BoxDecoration(
+          color: colorTextWhite,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      padding: EdgeInsets.symmetric(horizontal: sizeH20!),
+      child: GetBuilder<IntroViewModle>(
+        init: IntroViewModle(),
+        builder: (controller) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: sizeH42),
+              Text(
+                "${tr.language}",
+                style: textStyleTitle(),
+              ),
+              SizedBox(height: sizeH25),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: SharedPref.instance.getAppLanguage()!.length,
+                  itemBuilder: (context, index) => Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          controller.selectedIndex = index;
+                          controller.temproreySelectedLang =
+                              SharedPref.instance.getAppLanguage()![index].name;
+                          controller.update();
+                        },
+                        child: LanguageItem(
+                            selectedIndex: controller.selectedIndex,
+                            cellIndex: index,
+                            name:
+                                "${SharedPref.instance.getAppLanguage()![index].languageName}"),
+                      ),
+                      SizedBox(
+                        height: sizeH12,
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: sizeH18,
-            ),
-            PrimaryButton(
-                isLoading: false,
-                textButton: "${tr.select}",
-                onClicked: () {
-                  try {
-                    controller.selectedLang = controller.temproreySelectedLang;
-                    updateLanguage(Locale(controller.selectedLang!));
-                    SharedPref.instance
-                        .setAppLanguage(Locale(controller.selectedLang!));
-                    Get.back();
-                    SplashViewModle().getAppSetting();
-                    controller.update();
-                  } catch (e) {}
-                },
-                isExpanded: true),
-            SizedBox(
-              height: sizeH34,
-            )
-          ],
-        );
-      },
-    ),
-  ));
+              SizedBox(
+                height: sizeH18,
+              ),
+              PrimaryButton(
+                  isLoading: false,
+                  textButton: "${tr.select}",
+                  onClicked: () {
+                    try {
+                      controller.selectedLang =
+                          controller.temproreySelectedLang;
+                      updateLanguage(Locale(controller.selectedLang!));
+                      SharedPref.instance
+                          .setAppLanguage(Locale(controller.selectedLang!));
+                      Get.back();
+                      SplashViewModle().getAppSetting();
+                      controller.update();
+                    } catch (e) {}
+                  },
+                  isExpanded: true),
+              SizedBox(
+                height: sizeH34,
+              )
+            ],
+          );
+        },
+      ),
+    ));
+  } else {
+    Get.bottomSheet(Container(
+      height: sizeH350,
+      decoration: BoxDecoration(
+          color: colorTextWhite,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      padding: EdgeInsets.symmetric(horizontal: sizeH20!),
+      child: GetBuilder<ProfileViewModle>(
+        init: ProfileViewModle(),
+        builder: (controller) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: sizeH42),
+              Text(
+                "${tr.language}",
+                style: textStyleTitle(),
+              ),
+              SizedBox(height: sizeH25),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: SharedPref.instance.getAppLanguage()!.length,
+                  itemBuilder: (context, index) => Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          controller.selectedIndex = index;
+                          controller.temproreySelectedLang =
+                              SharedPref.instance.getAppLanguage()![index].name;
+                          controller.update();
+                        },
+                        child: LanguageItem(
+                            selectedIndex: controller.selectedIndex,
+                            cellIndex: index,
+                            name:
+                                "${SharedPref.instance.getAppLanguage()![index].languageName}"),
+                      ),
+                      SizedBox(
+                        height: sizeH12,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: sizeH18,
+              ),
+              PrimaryButton(
+                  isLoading: false,
+                  textButton: "${tr.select}",
+                  onClicked: () {
+                    try {
+                      controller.selectedLang =
+                          controller.temproreySelectedLang;
+                      updateLanguage(Locale(controller.selectedLang!));
+                      SharedPref.instance
+                          .setAppLanguage(Locale(controller.selectedLang!));
+                      Get.back();
+                      SplashViewModle().getAppSetting();
+                      controller.update();
+                    } catch (e) {}
+                  },
+                  isExpanded: true),
+              SizedBox(
+                height: sizeH34,
+              )
+            ],
+          );
+        },
+      ),
+    ));
+  }
 }
 
 class CustomMaterialPageRoute extends MaterialPageRoute {
@@ -609,9 +684,11 @@ num calculateBalance({required num balance}) {
 Widget retuenBoxByStatus(
     {required String storageStatus, required bool isEnabeld}) {
   String boxPath = "assets/svgs/desable_box.svg";
-  if (!isEnabeld) {
-    boxPath = "assets/svgs/block_folder.svg";
-  } else if (storageStatus == LocalConstance.boxAtHome) {
+  // if (!true) {
+  //   boxPath = "assets/svgs/block_folder.svg";
+  // } else
+
+  if (storageStatus == LocalConstance.boxAtHome) {
     boxPath = "assets/svgs/home_box_red.svg";
   } else if (storageStatus == LocalConstance.boxinWareHouse) {
     boxPath = "assets/svgs/box_in_ware_house.svg";

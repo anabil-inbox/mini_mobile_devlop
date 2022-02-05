@@ -100,16 +100,17 @@ abstract class ConstanceNetwork {
 
   // update & delete Box End Point : 
   static String updatetBoxEndPoint = "inbox_app.api.customer_storages.update_box";
-
   // to go payment End Points : 
 
   static String paymentEndPoint = "inbox_app.api.get_payment_url.get_skip_cash_settings";
   
   // this for constance network 
-
   static String page = "page";
   static String pageSize = "page_size";
 
+
+  // this for constance Myorder
+  static String myOrderDetailesEndPoint = "inbox_app.api.sales_order.get_order";
 
   //todo this for constance type of user
   static String userType = "user";

@@ -110,7 +110,9 @@ final String type;
                     IconButton(
                       icon: SvgPicture.asset("assets/svgs/language_eye.svg"),
                       onPressed: () {
-                        changeLanguageBottomSheet();
+                        changeLanguageBottomSheet(
+                          isFromINtro: true
+                        );
                       },
                     ),
                     TextButton(

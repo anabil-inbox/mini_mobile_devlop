@@ -39,7 +39,7 @@ class NotAllowedScreen extends StatelessWidget {
                 Row(
                   children: [
                     SizedBox(
-                      width: sizeW20,
+                      width: sizeW4,
                     ),
                     IconButton(
                         onPressed: () {
@@ -66,10 +66,12 @@ class NotAllowedScreen extends StatelessWidget {
                   builder: (_) {
                     return Expanded(
                       child: GridView.builder(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: padding10!, vertical: padding10!),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
-                                  mainAxisSpacing: sizeW10!,
+                                  mainAxisSpacing: sizeW15!,
                                   crossAxisSpacing: sizeH10!,
                                   childAspectRatio: (sizeW165! / sizeH150)),
                           itemCount: notAlwoed?.length,
@@ -93,12 +95,15 @@ class NotAllowedScreen extends StatelessWidget {
                         textButton: "Accept",
                         isLoading: logic.isLoading,
                         onClicked: () async {
-                         // await logic.updateBox(box: box);
+                          // await logic.updateBox(box: box);
                           box.storageName = logic.tdName.text;
-                          Get.off(ItemScreen(box: box,getBoxDataMethod: () async{
-                          await logic.getBoxBySerial(serial: box.serialNo!);
-                          },));
-                        }, 
+                          Get.off(ItemScreen(
+                            box: box,
+                            getBoxDataMethod: () async {
+                              await logic.getBoxBySerial(serial: box.serialNo!);
+                            },
+                          ));
+                        },
                         isExpanded: true);
                   },
                 ))

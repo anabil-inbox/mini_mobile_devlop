@@ -27,7 +27,7 @@ class OrderHelper {
     }
   }
 
-  Future<AppResponse> newSalesOrder( {var body}) async {
+  Future<AppResponse> newSalesOrder({var body}) async {
     var appResponse = await OrderApi.getInstance.newSalesOrder(
         body: body,
         url: "${ConstanceNetwork.newSalesOrder}",
@@ -38,6 +38,20 @@ class OrderHelper {
       return appResponse;
     } else {
       return appResponse;
+    }
+  }
+
+  Future<OrderSales> getOrderDetaile(
+      {required Map<String, String> body}) async {
+    var appResponse = await OrderApi.getInstance.getOrderDetails(
+        body: body,
+        url: "${ConstanceNetwork.myOrderDetailesEndPoint}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      Logger().e(appResponse.data["order"]);
+      return OrderSales.fromJson(appResponse.data["order"]);
+    } else {
+      return appResponse.data;
     }
   }
 }

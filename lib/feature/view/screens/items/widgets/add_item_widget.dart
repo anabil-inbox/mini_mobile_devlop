@@ -124,6 +124,7 @@ class AddItemWidget extends StatelessWidget {
                                           .map((e) => PhotoItem(
                                                 isFromLocal: true,
                                                 img: e,
+                                               
                                               ))
                                           .toList(),
                                     ),

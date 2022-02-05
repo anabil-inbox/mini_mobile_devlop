@@ -365,9 +365,6 @@ class RecallBoxProcessSheet extends StatelessWidget {
             ),
             optionsList,
             SizedBox(
-              height: sizeH20,
-            ),
-            SizedBox(
               height: sizeH16,
             ),
             TextFormField(

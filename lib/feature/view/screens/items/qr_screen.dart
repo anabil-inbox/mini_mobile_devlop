@@ -9,19 +9,19 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 // ignore: must_be_immutable
 class QrScreen extends StatelessWidget {
-   QrScreen({ Key? key, this.isFromAtHome = false, this.storageViewModel, this.index,   }) : super(key: key);
+    QrScreen({ Key? key, this.isFromAtHome = false, required this.storageViewModel , this.index = 0} ) : super(key: key);
   final bool? isFromAtHome;
-  final StorageViewModel? storageViewModel;
-  final int? index;
- static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+  final StorageViewModel storageViewModel;
+  static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
   GlobalKey<FormState> qrKey = GlobalKey<FormState>();
-
+  final int index;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: QRView(
       key: qrKey,
-      onQRViewCreated:(controller) =>  homeViewModel.onQRViewCreated(controller , isFromAtHome:isFromAtHome , storageViewModel:storageViewModel ,index:index),
+      onQRViewCreated:(controller) =>  homeViewModel.onQRViewCreated(controller , isFromAtHome:isFromAtHome , index: index ,storageViewModel: storageViewModel),
       overlay: QrScannerOverlayShape(
           borderColor: colorRed,
           borderRadius: padding10!,
@@ -33,5 +33,4 @@ class QrScreen extends StatelessWidget {
     ),
     );
   }
-  
 }

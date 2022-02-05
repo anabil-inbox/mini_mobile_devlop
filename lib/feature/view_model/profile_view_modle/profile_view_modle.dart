@@ -35,6 +35,10 @@ class ProfileViewModle extends BaseController {
   bool isLoading = false;
   bool isDeleteting = false;
 
+  int selectedIndexLanguage = -1;
+  String? selectedLang;
+  String? temproreySelectedLang;
+
   Address address = Address();
   String? userLat;
   String? userLong;

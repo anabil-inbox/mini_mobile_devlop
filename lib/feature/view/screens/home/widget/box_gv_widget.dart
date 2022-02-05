@@ -35,15 +35,15 @@ class GVWidget extends StatelessWidget {
               mainAxisSpacing: sizeW10!,
               crossAxisSpacing: sizeH10!,
               childAspectRatio: (sizeW165! / sizeH150)),
-          itemBuilder: (context, index) => homeViewModel.userBoxess
+          itemBuilder: (context, index) => 
+          
+          (homeViewModel.userBoxess
                       .toList()[index]
-                      .saleOrder ==
-                  null
+                      .allowed ?? false)
               ? InkWell(
                   onTap: () async {
                     //Get.put(ItemViewModle());
-                    Logger()
-                        .d(homeViewModel.userBoxess.toList()[index].toString());
+                    Logger().d(homeViewModel.userBoxess.toList()[index].toString());
                     if (homeViewModel.userBoxess
                             .toList()[index]
                             .storageStatus ==
@@ -77,8 +77,9 @@ class GVWidget extends StatelessWidget {
                     box: homeViewModel.userBoxess.toList()[index],
                   ),
                 )
-              :
-               InkWell(
+             
+
+              : InkWell(
                   onTap: () async {
                     //Get.put(ItemViewModle());
                     Logger()
@@ -118,6 +119,8 @@ class GVWidget extends StatelessWidget {
                     box: homeViewModel.userBoxess.toList()[index],
                   ),
                 ),
+      
+      
         ),
       ],
     );

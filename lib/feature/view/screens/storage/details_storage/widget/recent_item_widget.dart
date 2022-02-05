@@ -51,6 +51,7 @@ class RecentlyItemWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(height: sizeH20,),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(sizeRadius16!),
                     child: imageNetwork(

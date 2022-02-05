@@ -7,7 +7,9 @@ import 'package:inbox_clients/feature/model/home/beneficiary.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
+import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/task_widget_BS.dart';
+import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
 import 'package:inbox_clients/network/api/feature/item_helper.dart';
@@ -84,38 +86,75 @@ class HomeViewModel extends BaseController {
   // open Scaner Qr :
   var scanArea = (MediaQuery.of(Get.context!).size.width < 400 ||
           MediaQuery.of(Get.context!).size.height < 400)
-      ? 150.0
-      : 300.0;
+      ? 200.0
+      : 500.0;
 
   Barcode? result;
   QRViewController? controller;
 
   onQRViewCreated(QRViewController controller,
-      {bool? isFromAtHome, int? index, StorageViewModel? storageViewModel}) {
+      {bool? isFromAtHome,
+      required StorageViewModel storageViewModel,
+      int index = 0}) {
     try {
+      isLoading = true;
+      update();
+      ItemViewModle itemViewModle = Get.find<ItemViewModle>();
+      itemViewModle.usesBoxItemsTags.clear();
+      itemViewModle.tdTag.clear();
+      itemViewModle.update();
       this.controller = controller;
       controller.scannedDataStream.listen((scanData) {
         result = scanData;
       }).onData((data) async {
         controller.dispose();
         Get.back();
-        if (isFromAtHome!) {
-          controller.dispose();
-          await fromAtHome(data.code, index, storageViewModel);
-        } else {
-          await getBoxBySerial(serial: data.code ?? "").then((value) => {
-                if (value.id == null)
-                  {Get.off(() => HomePageHolder())}
-                else
-                  {
-                    Get.off(() => HomePageHolder(
-                          box: value,
-                          isFromScan: true,
-                        ))
-                  }
-              });
-        }
+        if (isFromAtHome ?? false) {
+          // await fromAtHome(data.code, storageViewModel);
+          update();
+        } else {}
+
+        userBoxess.toList()[index].storageStatus = LocalConstance.boxAtHome;
+        update();
+        await fromAtHome(data.code, storageViewModel);
+        await getBoxBySerial(serial: data.code ?? "")
+            .then((value) => {
+                  Logger().e(value.toJson()),
+                  if (value.id == null)
+                    {
+                      Get.off(() => HomePageHolder()),
+                    }
+                  else
+                    {
+                      Get.off(() => HomePageHolder(
+                            box: value,
+                            isFromScan: true,
+                          )),
+                      itemViewModle.tdName.text = value.storageName ?? "",
+                      value.tags?.forEach((element) {
+                        itemViewModle.usesBoxTags.add(element.tag ?? "");
+                      }),
+                      if (isFromAtHome ?? false)
+                        {
+                          Get.bottomSheet(
+                                  CheckInBoxWidget(box: value, isUpdate: false),
+                                  isScrollControlled: true)
+                              .then((value) => {}),
+                        }else{
+                        userBoxess.forEach((element) {
+                          if (element.id == value.id) {
+                            element.storageStatus = LocalConstance.boxAtHome;
+                          }
+                        }),
+                        getCustomerBoxes()
+                        }
+                    }
+                })
+            .then((value) => {});
+        update();
       });
+      isLoading = false;
+      update();
     } catch (e) {
       Logger().e("$e");
     }
@@ -156,13 +195,14 @@ class HomeViewModel extends BaseController {
     }).then((value) => {
           if (value.status!.success!)
             {
-              box = Box.fromJson(value.data["Storages"]),
+              box = Box.fromJson(value.data),
             }
           else
             {
               snackError("${tr.error_occurred}", "${value.status!.message}"),
             }
         });
+    update();
     return box;
   }
 
@@ -203,7 +243,6 @@ class HomeViewModel extends BaseController {
 
   getTasks() async {
     await StorageFeature.getInstance.getTasks().then((value) => {
-          Logger().i("${value.toList().length}"),
           for (var item in value)
             {
               if (/* item.id != LocalConstance.fetchId && */
@@ -297,13 +336,12 @@ class HomeViewModel extends BaseController {
     }
   }
 
-  fromAtHome(
-      String? code, int? index, StorageViewModel? storageViewModel) async {
+  fromAtHome(String? code, StorageViewModel? storageViewModel) async {
     if (code == null) {
       //todo show dialog
     } else {
       await storageViewModel?.customerStoragesChangeStatus(code,
-          index: index, homeViewModel: this);
+          homeViewModel: this);
       Get.back();
     }
   }

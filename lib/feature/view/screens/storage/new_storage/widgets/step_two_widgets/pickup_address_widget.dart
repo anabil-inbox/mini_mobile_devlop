@@ -19,7 +19,8 @@ class PickupAddress extends StatelessWidget {
 
   Widget get addressTitle {
     try {
-      return Text(
+      if (storageViewModel.userStorageCategoriesData.isNotEmpty){
+        return Text(
           (storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
                       ConstanceNetwork.itemCategoryType ||
                   storageViewModel
@@ -27,6 +28,10 @@ class PickupAddress extends StatelessWidget {
                       ConstanceNetwork.quantityCategoryType)
               ? "${tr.pickup_address}"
               : "${tr.warehouse_address}");
+      }else{
+        return const SizedBox();
+      }
+      
     } catch (e) {
       return const SizedBox();
     }

@@ -52,7 +52,7 @@ class TagBoxItemWidget extends StatelessWidget {
             } else {
               itemViewModle.usesBoxItemsTags.clear();
               WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                itemViewModle.tdName.clear();
+                
               });
               itemViewModle.usesBoxItemsTags.clear();
             }

@@ -29,7 +29,9 @@ class HeaderLogin extends GetWidget<IntroViewModle> {
             top: padding45,
             child: IconButton(
               onPressed: (){
-                changeLanguageBottomSheet();
+                changeLanguageBottomSheet(
+                  isFromINtro: true
+                );
               },
               icon: SvgPicture.asset("assets/svgs/language_eye.svg" ,)),
           ),

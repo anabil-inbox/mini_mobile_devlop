@@ -13,6 +13,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 import '../primary_button.dart';
@@ -23,8 +24,14 @@ class BottomSheetPaymentWidget extends StatelessWidget {
   final List<Box> boxes;
   final List<BoxItem>? items;
   final String beneficiaryId;
+
   const BottomSheetPaymentWidget(
-      {Key? key, required this.task, required this.box, required this.boxes , this.items , required this.beneficiaryId})
+      {Key? key,
+      required this.task,
+      required this.box,
+      required this.boxes,
+      this.items,
+      required this.beneficiaryId})
       : super(key: key);
 
   static StorageViewModel storageViewModle = Get.find<StorageViewModel>();
@@ -171,7 +178,7 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               SizedBox(
                 height: sizeH16,
               ),
-              acceptTerms,
+              // acceptTerms,
               SizedBox(
                 height: sizeH16,
               ),
@@ -199,10 +206,33 @@ class BottomSheetPaymentWidget extends StatelessWidget {
 
   onClickSubmit() {
     if (storageViewModle.selectedPaymentMethod != null) {
-      if (boxes.length > 0) {
-        storageViewModle.doTaskBoxRequest(task: task, boxes: boxes , selectedItems: items ,beneficiaryId: beneficiaryId);
+      if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId) {
+        if (boxes.length > 0) {
+          storageViewModle.doTaskBoxRequest(
+              task: task,
+              boxes: boxes,
+              selectedItems: items,
+              beneficiaryId: beneficiaryId);
+        } else {
+          storageViewModle.doTaskBoxRequest(
+              task: task,
+              boxes: [box],
+              selectedItems: items,
+              beneficiaryId: beneficiaryId);
+        }
       } else {
-        storageViewModle.doTaskBoxRequest(task: task, boxes: [box], selectedItems: items , beneficiaryId: beneficiaryId);
+        storageViewModle.goToPaymentMethod(
+            amount: num.parse(storageViewModle
+                .calculateTaskPriceLotBoxess(
+                  task: task,
+                  boxess: boxes,
+                )
+                .toString()
+                .split(" ")[0]),
+            beneficiaryId: beneficiaryId,
+            task: task,
+            boxes: boxes,
+            isFromNewStorage: false);
       }
     } else {
       snackError(

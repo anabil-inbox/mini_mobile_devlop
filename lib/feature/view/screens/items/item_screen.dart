@@ -28,11 +28,15 @@ import 'package:logger/logger.dart';
 import 'filter_items/filter_item_screen.dart';
 
 class ItemScreen extends StatefulWidget {
-  const ItemScreen({Key? key, required this.box, this.getBoxDataMethod ,  this.isEnabeld = true})
+  const ItemScreen(
+      {Key? key,
+      required this.box,
+      this.getBoxDataMethod,
+      this.isEnabeld = true})
       : super(key: key);
 
   ItemViewModle get itemViewModle => Get.put(ItemViewModle(), permanent: true);
-  HomeViewModel get homeViewModel => Get.put(HomeViewModel());
+  HomeViewModel get homeViewModel => Get.put(HomeViewModel(),  permanent: true);
   final Box box;
   final Function()? getBoxDataMethod;
   final bool isEnabeld;
@@ -167,32 +171,46 @@ class _ItemScreenState extends State<ItemScreen> {
         initState: (_) {
           itemViewModle.operationsBox?.storageName = "";
         },
-        builder: (_) {
-          if (!_.isUpdateBoxDetails) {
-            return Builder(
-              builder: (_) {
-                if (GetUtils.isNull(widget.box)) {
-                  return Text("");
-                } else {
-                  return Text(
-                    "${widget.box.storageName!.isEmpty ? "" : widget.box.storageName}",
-                    style: textStyleAppBarTitle(),
-                    maxLines: Constance.maxLineTwo,
-                    textAlign: TextAlign.center,
-                  );
-                }
-              },
-            );
-          } else if (GetUtils.isNull(itemViewModle.operationsBox)) {
-            return Text("");
+        builder: (build) {
+          if (build.isLoading) {
+            return const SizedBox();
           } else {
             return Text(
-              "${itemViewModle.operationsBox!.storageName!.isEmpty ? "" : itemViewModle.operationsBox!.storageName}",
+              "${build.operationsBox?.storageName ?? widget.box.storageName}",
               style: textStyleAppBarTitle(),
               maxLines: Constance.maxLineTwo,
               textAlign: TextAlign.center,
             );
           }
+
+          // if (!_.isUpdateBoxDetails) {
+          //   return Builder(
+          //     builder: (_) {
+          //       if (GetUtils.isNull(itemViewModle.operationsBox?.storageName )) {
+          //         return Text(itemViewModle.operationsBox?.storageName ?? "");
+          //       }
+          //      else if (GetUtils.isNull(widget.box)) {
+          //         return Text("");
+          //       } else {
+          //         return Text(
+          //           "${widget.box.storageName!.isEmpty ? "" : widget.box.storageName}",
+          //           style: textStyleAppBarTitle(),
+          //           maxLines: Constance.maxLineTwo,
+          //           textAlign: TextAlign.center,
+          //         );
+          //       }
+          //     },
+          //   );
+          // } else if (GetUtils.isNull(itemViewModle.operationsBox)) {
+          //   return Text("");
+          // } else {
+          //   return Text(
+          //     "${itemViewModle.operationsBox!.storageName!.isEmpty ? "" : itemViewModle.operationsBox!.storageName}",
+          //     style: textStyleAppBarTitle(),
+          //     maxLines: Constance.maxLineTwo,
+          //     textAlign: TextAlign.center,
+          //   );
+          // }
         },
       ));
 
@@ -348,7 +366,8 @@ class _ItemScreenState extends State<ItemScreen> {
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: padding20!),
               child: EmptyBodyBoxItem(
-                isEnabel: GetUtils.isNull(itemViewModle.operationsBox?.saleOrder),
+                isEnabel:
+                    GetUtils.isNull(itemViewModle.operationsBox?.saleOrder),
                 box: itemViewModle.operationsBox,
               ),
             );
@@ -373,16 +392,18 @@ class _ItemScreenState extends State<ItemScreen> {
                     height: sizeH10,
                   ),
                   itemLVWidget,
-                  widget.isEnabeld ? BtnActionWidget(
-                    redBtnText:
-                        widget.box.storageStatus == LocalConstance.boxAtHome
-                            ? "${tr.pickup}"
-                            : "${tr.recall}",
-                    onShareBox: onShareBoxClick,
-                    onGrayBtnClick: onGrayBtnClick,
-                    onRedBtnClick: onRedBtnClick,
-                    onDeleteBox: onDeleteBoxClick,
-                  ) : const SizedBox(),
+                  widget.isEnabeld
+                      ? BtnActionWidget(
+                          redBtnText: widget.box.storageStatus ==
+                                  LocalConstance.boxAtHome
+                              ? "${tr.pickup}"
+                              : "${tr.recall}",
+                          onShareBox: onShareBoxClick,
+                          onGrayBtnClick: onGrayBtnClick,
+                          onRedBtnClick: onRedBtnClick,
+                          onDeleteBox: onDeleteBoxClick,
+                        )
+                      : const SizedBox(),
                   SizedBox(
                     height: sizeH10,
                   ),

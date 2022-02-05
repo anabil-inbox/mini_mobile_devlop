@@ -24,7 +24,7 @@ class MyOrderItem extends StatelessWidget {
       splashColor: colorTrans,
       highlightColor: colorTrans,
       onTap: () {
-        Get.to(() => OrderDetailesScreen(orderSales: orderSales,));
+        Get.to(() => OrderDetailesScreen(orderId: orderSales.orderId ?? "", isFromPayment: false,));
       },
       child: Column(
         children: [
@@ -61,9 +61,8 @@ class MyOrderItem extends StatelessWidget {
                       height: sizeH4,
                     ),
                     Text(
-                        "${DateUtility.getChatTime(orderSales.deliveryDate.toString())}",
-                        style:
-                            textStyleHints()!.copyWith(fontSize: fontSize13)),
+                        "${orderSales.deliveryDate.toString().split(" ")[0]}",
+                        style: textStyleHints()!.copyWith(fontSize: fontSize13)),
                   ],
                 ),
                 const Spacer(),

@@ -12,10 +12,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
 import 'feature/view_model/auht_view_modle/auth_view_modle.dart';
-import 'feature/view_model/home_view_model/home_view_model.dart';
-import 'feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'feature/view_model/splash_view_modle/splash_view_modle.dart';
-import 'feature/view_model/storage_view_model/storage_view_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +25,7 @@ void main() async {
   DioManagerClass.getInstance.init();
   runApp(const AppWidget());
 }
+
 
   // to do this for handShiking Cetificate :: 
 class MyHttpOverrides extends HttpOverrides {
@@ -46,12 +44,14 @@ class BindingsController extends Bindings {
     Get.lazyPut(() => IntroViewModle());
     Get.lazyPut(() => AuthViewModle());
     Get.lazyPut(() => ProfileViewModle());
-    Get.lazyPut(() => StorageViewModel(), fenix: true);
-    Get.lazyPut(() => HomeViewModel());
-    Get.lazyPut(() => MyOrderViewModle());
+    // Get.lazyPut(() => HomeViewModel());
+    // Get.lazyPut(() => MyOrderViewModle());
     // Get.lazyPut<ItemViewModle>(
     //   () => ItemViewModle(),
     //   fenix: true,
     // );
   }
 }
+
+// loading after Scan Screen 
+// Add Payment into Payment Pottom Shee

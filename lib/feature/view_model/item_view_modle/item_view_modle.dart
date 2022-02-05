@@ -61,6 +61,7 @@ class ItemViewModle extends BaseController {
   Future<void> updateBox({required Box box, required int index}) async {
     Get.back();
     startLoading();
+   
     List<SendedTag> tags = [];
 
     for (var tag in usesBoxTags) {
@@ -88,7 +89,6 @@ class ItemViewModle extends BaseController {
     // await getBoxBySerial(serial: box.serialNo!);
     tags.clear();
     usesBoxTags.clear();
-    tdName.clear();
     tdTag.clear();
     endLoading();
   }
@@ -121,6 +121,7 @@ class ItemViewModle extends BaseController {
     }
 
     for (var item in images) {
+      compressImage(item);
       innerImages.add(SendedImage(
           attachment: multiPart.MultipartFile.fromFileSync(item.path),
           type: "Image"));
@@ -129,6 +130,7 @@ class ItemViewModle extends BaseController {
       map["image[$i]"] = innerImages[i].attachment;
       map["file[$i]"] = innerImages[i].type;
     }
+
     map["name"] = tdName.text;
     map["storage"] = serialNo;
     map["qty"] = itemQuantity;
@@ -152,7 +154,6 @@ class ItemViewModle extends BaseController {
     images.clear();
     tags.clear();
     usesBoxItemsTags.clear();
-    tdName.clear();
     tdTag.clear();
     itemQuantity = 1;
     update();
@@ -209,7 +210,6 @@ class ItemViewModle extends BaseController {
     images.clear();
     tags.clear();
     usesBoxItemsTags.clear();
-    tdName.clear();
     tdTag.clear();
     itemQuantity = 1;
     update();
@@ -419,7 +419,6 @@ class ItemViewModle extends BaseController {
   Future<void> showUpdatBoxBottomSheet(
       {required Box box, required bool isUpdate}) async {
     changeFlagUpdate(isUpdate);
-    tdName.clear();
     tdName.text = box.storageName ?? "";
     Get.bottomSheet(
             CheckInBoxWidget(
@@ -428,7 +427,6 @@ class ItemViewModle extends BaseController {
             ),
             isScrollControlled: true)
         .whenComplete(() {
-      tdName.clear();
       getBoxBySerial(serial: box.serialNo ?? "");
     });
   }

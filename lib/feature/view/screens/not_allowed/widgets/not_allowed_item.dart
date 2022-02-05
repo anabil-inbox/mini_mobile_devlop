@@ -11,7 +11,8 @@ class NotAllowedItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(padding9!),
+
+      padding: EdgeInsets.all(padding22!),
       decoration: BoxDecoration(
           color: colorBackground,
           borderRadius: BorderRadius.circular(padding6!)),

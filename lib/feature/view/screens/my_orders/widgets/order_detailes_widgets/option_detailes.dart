@@ -5,9 +5,10 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class OptionDeatailes extends StatelessWidget {
-  const OptionDeatailes({Key? key, required this.orderSales}) : super(key: key);
+  const OptionDeatailes({Key? key, required this.orderItem}) : super(key: key);
 
-  final OrderSales orderSales;
+  final OrderItem orderItem;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,14 +20,20 @@ class OptionDeatailes extends StatelessWidget {
           SizedBox(
             height: sizeH10,
           ),
-          SizedBox(width: double.infinity, child: Text(tr.options)),
-          SizedBox(
-            height: sizeH10,
-          ),
+          orderItem.options!.isEmpty
+              ? const SizedBox()
+              : SizedBox(width: double.infinity, child: Text(tr.options)),
+          orderItem.options!.isEmpty
+              ? const SizedBox()
+              : SizedBox(
+                  height: sizeH10,
+                ),
           ListView(
             shrinkWrap: true,
-            children: orderSales.orderItems!
-                .map((e) => ShowOptionItem(optionTitle: e.item ?? "" , isShowingPrice: true, price: e.price.toString(),))
+            primary: false,
+            children: orderItem.options!
+                .map((option) => ShowOptionItem(
+                    optionTitle: option, isShowingPrice: false , price: ""))
                 .toList(),
           )
         ],

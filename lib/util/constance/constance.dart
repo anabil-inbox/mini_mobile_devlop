@@ -32,4 +32,9 @@ class LocalConstance{
 
   // to add here constance Price :: 
   static String qrCoin = "QR";
+
+
+  // to add here payment Methodes : 
+  
+
 }

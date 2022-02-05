@@ -30,13 +30,14 @@ class QuantityStorageBottomSheet extends StatefulWidget {
 
 class _QuantityStorageBottomSheetState
     extends State<QuantityStorageBottomSheet> {
-  static StorageViewModel get storageViewModel => Get.put(StorageViewModel());
+  static StorageViewModel get storageViewModel =>
+      Get.put(StorageViewModel(), permanent: true);
   //  StorageViewModel storageViewModel = Get.find<StorageViewModel>();
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-     // Get.put(StorageViewModel());
+      // Get.put(StorageViewModel());
       storageViewModel.intialBalance(
           storageCategoriesData: widget.storageCategoriesData);
     });

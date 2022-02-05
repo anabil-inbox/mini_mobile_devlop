@@ -20,7 +20,7 @@ import '../qr_screen.dart';
 
 class NotifayForNewStorage extends StatelessWidget {
   const NotifayForNewStorage(
-      {Key? key, required this.box, this.showQrScanner = false, this.index})
+      {Key? key, required this.box, this.showQrScanner = false, this.index = 1})
       : super(key: key);
 
   final Box box;
@@ -128,7 +128,6 @@ class NotifayForNewStorage extends StatelessWidget {
                 SizedBox(
                   height: sizeH4,
                 ),
-               
               ],
             ),
           ),
@@ -145,8 +144,8 @@ class NotifayForNewStorage extends StatelessWidget {
                   onClicked: () {
                     // Get.put(ItemViewModle());
                     Get.to(() => QrScreen(
+                        index: index ?? 1,
                         isFromAtHome: true,
-                        index: index,
                         storageViewModel: storageViewModel));
                     // homeViewModel.startScan();
                   },

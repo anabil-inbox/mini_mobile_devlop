@@ -15,6 +15,7 @@ import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:logger/logger.dart';
 
 class CheckInBoxWidget extends StatelessWidget {
   const CheckInBoxWidget({Key? key, this.box, required this.isUpdate})
@@ -116,15 +117,25 @@ class CheckInBoxWidget extends StatelessWidget {
                       if (isUpdate) {
                         homeViewModel.userBoxess.toList().removeAt(
                             homeViewModel.userBoxess.toList().indexOf(box!));
+
                         await itemViewModle.updateBox(
                             box: box!,
                             index: homeViewModel.userBoxess
                                 .toList()
                                 .indexOf(box!));
+                        
                         // itemViewModle.tdName.text = box?.storageName ?? "";
                         // itemViewModle.update();
                       } else {
                         Get.back();
+                         homeViewModel.userBoxess.toList().removeAt(
+                            homeViewModel.userBoxess.toList().indexOf(box!));
+                       Logger().e(itemViewModle.tdName.text);
+                        await itemViewModle.updateBox(
+                            box: box!,
+                            index: homeViewModel.userBoxess
+                                .toList()
+                                .indexOf(box!));
                         Get.to(NotAllowedScreen(
                           box: box!,
                         ));

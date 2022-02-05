@@ -94,6 +94,7 @@ final double? sizeW12 = 12.w;
 final double? sizeW26 = 26.w;
 final double? sizeW9 = 9.w;
 final double? sizeW20 =  20.w;
+final double sizeW200 = 200.w;
 final double? sizeW24 =  24.w;
 final double? sizeW10 =  10.w;
 final double? sizeW13 =  13.w;

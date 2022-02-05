@@ -3,7 +3,6 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 class OrderDateWidget extends StatelessWidget {
@@ -15,7 +14,6 @@ class OrderDateWidget extends StatelessWidget {
   
     return Container(
       width: double.infinity,
-     // margin: EdgeInsets.symmetric(horizontal: padding20!),
        decoration: BoxDecoration(
           color: colorBackground,
           borderRadius: BorderRadius.circular(padding6!)),
@@ -31,7 +29,7 @@ class OrderDateWidget extends StatelessWidget {
               ),
               Text("${tr.date}"),
               SizedBox(height: sizeH4,),
-              Text("${DateUtility.getChatTime(date.toString())}" , style: textStyleHints()!.copyWith(fontSize: fontSize13),),
+              Text("${date.toString().split(" ")[0]}" , style: textStyleHints()!.copyWith(fontSize: fontSize13),),
               SizedBox(
                 height: sizeH22,
               ),
