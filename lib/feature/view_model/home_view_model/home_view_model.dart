@@ -31,6 +31,7 @@ class HomeViewModel extends BaseController {
   Set<Box> userBoxess = {};
 
   Future<void> getCustomerBoxes() async {
+
     if (!isLoadingPagination) {
       startLoading();
     }
@@ -80,14 +81,14 @@ class HomeViewModel extends BaseController {
   }
 
   //paginations Vars And Func ::
-  var scrollcontroller = ScrollController();
+  final scrollcontroller = ScrollController();
   int page = 1;
 
   // open Scaner Qr :
   var scanArea = (MediaQuery.of(Get.context!).size.width < 400 ||
           MediaQuery.of(Get.context!).size.height < 400)
-      ? 200.0
-      : 500.0;
+      ? 300.0
+      : 300.0;
 
   Barcode? result;
   QRViewController? controller;
@@ -179,7 +180,6 @@ class HomeViewModel extends BaseController {
     startLoadingPagination();
     if ((scrollcontroller.position.pixels ==
         scrollcontroller.position.maxScrollExtent)) {
-      page += 1;
       await getCustomerBoxes();
     }
     endLoadingPagination();

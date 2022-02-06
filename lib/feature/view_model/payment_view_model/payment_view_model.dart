@@ -4,7 +4,6 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
-import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:logger/logger.dart';
@@ -30,20 +29,20 @@ class PaymentViewModel extends GetxController {
           .then((value) => {
                 if (value.contains("success"))
                   {
-                    Future.delayed(Duration(seconds: 5), () {
-                      logger.i("Payment Success");
+                   
+                      logger.i("Payment Success"),
                       if (isFromNewStorage) {
-                        Get.back();
-                        stroageViewModel.addNewStorage(paymentId: paymentId);
+                       // Get.back();
+                        stroageViewModel.addNewStorage(paymentId: paymentId),
                       } else {
                         stroageViewModel.doTaskBoxRequest(
                             paymentId: paymentId,
                             task: task!,
                             boxes: boxes!,
-                            beneficiaryId: beneficiaryId!);
+                            beneficiaryId: beneficiaryId!),
                       }
                       //http://inbox.ahdtech.com/response?id=70219f15-6599-4a66-98e7-a5d5b0a481c5&statusId=2&status=Paid
-                    })
+                    
                   }
                 else if (value.contains("failed"))
                   {

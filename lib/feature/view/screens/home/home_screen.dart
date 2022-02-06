@@ -26,14 +26,13 @@ import 'widget/box_lv_widget.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key, this.isFromScan , this.box}) : super(key: key);
+  HomeScreen({Key? key, this.isFromScan, this.box}) : super(key: key);
 
   static HomeViewModel homeViewModle = Get.find<HomeViewModel>();
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
 
   bool? isFromScan = false;
   Box? box;
-
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -97,9 +96,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: colorRed,
                 onPressed: () {
                   Get.to(() => QrScreen(
-                    index: 0,
-                    storageViewModel: HomeScreen.storageViewModel,
-                  ));
+                        index: 0,
+                        storageViewModel: HomeScreen.storageViewModel,
+                      ));
                 },
                 borderColor: colorTrans,
                 icon: "assets/svgs/Scan.svg",
@@ -188,6 +187,8 @@ class _HomeScreenState extends State<HomeScreen> {
             } else if (logic.userBoxess.isEmpty) {
               return RefreshIndicator(
                 onRefresh: () async {
+                  HomeScreen.homeViewModle.page = 1;
+                  HomeScreen.homeViewModle.userBoxess.clear();
                   HomeScreen.homeViewModle.onInit();
                 },
                 child: SingleChildScrollView(
@@ -209,7 +210,9 @@ class _HomeScreenState extends State<HomeScreen> {
               return Stack(
                 children: [
                   RefreshIndicator(
-                    onRefresh: ()async{
+                    onRefresh: () async {
+                      HomeScreen.homeViewModle.page = 1;
+                      HomeScreen.homeViewModle.userBoxess.clear();
                       HomeScreen.homeViewModle.onInit();
                       await Future.delayed(Duration(seconds: 1));
                     },
@@ -235,7 +238,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       InkWell(
                                           onTap: /*onTheWayClick*/ () {},
@@ -243,13 +247,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                               "${tr.on_the_way}", null)),
                                       textHintsWidget(
                                           "${tr.in_warehouse}", boxColorOrange),
-                                      textHintsWidget("${tr.at_home}", boxColorRed),
+                                      textHintsWidget(
+                                          "${tr.at_home}", boxColorRed),
                                     ],
                                   ),
                                   if (!logic.isListView!) ...[
-                                    logic.isLoading ? DialogLoading() : GVWidget(),
+                                    logic.isLoading
+                                        ? DialogLoading()
+                                        : GVWidget(),
                                   ] else ...[
-                                    logic.isLoading ? DialogLoading() : LVWidget(),
+                                    logic.isLoading
+                                        ? DialogLoading()
+                                        : LVWidget(),
                                   ],
                                 ],
                               );

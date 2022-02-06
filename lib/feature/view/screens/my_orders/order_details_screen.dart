@@ -13,7 +13,7 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'widgets/my_order_time_widget.dart';
 import 'widgets/status_widget.dart';
 
-class OrderDetailesScreen extends StatelessWidget {
+class OrderDetailesScreen extends StatefulWidget {
   const OrderDetailesScreen(
       {Key? key, required this.orderId, required this.isFromPayment})
       : super(key: key);
@@ -23,35 +23,63 @@ class OrderDetailesScreen extends StatelessWidget {
   static MyOrderViewModle myOrderViewModle =
       Get.put(MyOrderViewModle(), permanent: true);
 
+  @override
+  State<OrderDetailesScreen> createState() => _OrderDetailesScreenState();
+}
+
+class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
   Widget get bodyOrderDetailes {
     //to do this when The Status Is An Task :
-    if (GetUtils.isNull(myOrderViewModle.newOrderSales.orderItems) ||
-        GetUtils.isNull(orderId)) {
+    if (GetUtils.isNull(
+            OrderDetailesScreen.myOrderViewModle.newOrderSales.orderItems) ||
+        OrderDetailesScreen.myOrderViewModle.newOrderSales.orderItems?.length ==
+            0 ||
+        GetUtils.isNull(OrderDetailesScreen.myOrderViewModle.newOrderSales)) {
       return const SizedBox();
     } else {
       return GetBuilder<MyOrderViewModle>(
         builder: (myOrder) {
           return ListView(
-              primary: false,
-              shrinkWrap: true,
-              children: myOrder.newOrderSales.orderItems!
-                  .map((e) => MyOrderBoxItem(
-                        orderItem: e,
-                      ))
-                  .toList(),
-            ); 
+            primary: false,
+            shrinkWrap: true,
+            children: myOrder.newOrderSales.orderItems!
+                .map((e) => GetBuilder<MyOrderViewModle>(
+                      builder: (controller) {
+                        return MyOrderBoxItem(
+                          orderItem: e,
+                        );
+                      },
+                    ))
+                .toList(),
+          );
         },
       );
     }
   }
 
   Future<bool> onWillPop() async {
-    if (isFromPayment) {
+    if (widget.isFromPayment) {
       Get.off(HomePageHolder());
     } else {
       Get.back();
     }
     return true;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      await OrderDetailesScreen.myOrderViewModle
+          .getOrderDetaile(orderId: widget.orderId);
+      OrderDetailesScreen.myOrderViewModle.update();
+      setState(() {});
+      // Future.delayed(Duration(milliseconds: 1000)).then(
+      //     (value) async => {
+      //       // OrderDetailesScreen.myOrderViewModle.update(),
+
+      //       });
+    });
   }
 
   @override
@@ -62,19 +90,13 @@ class OrderDetailesScreen extends StatelessWidget {
         appBar: CustomAppBarWidget(
           elevation: 0,
           titleWidget: Text(
-            "$orderId",
+            "${widget.orderId}",
             style: textStyleAppBarTitle(),
           ),
           isCenterTitle: true,
           onBackBtnClick: () => onWillPop(),
         ),
         body: GetBuilder<MyOrderViewModle>(
-          initState: (_) async {
-            WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-              await myOrderViewModle.getOrderDetaile(orderId: orderId);
-              myOrderViewModle.update();
-            });
-          },
           builder: (myOrders) {
             if (myOrders.isLoading) {
               return const Center(
@@ -84,8 +106,6 @@ class OrderDetailesScreen extends StatelessWidget {
               return SingleChildScrollView(
                 primary: true,
                 child: GetBuilder<MyOrderViewModle>(
-                  init: MyOrderViewModle(),
-                  initState: (_) {},
                   builder: (builder) {
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: padding20!),
@@ -133,8 +153,8 @@ class OrderDetailesScreen extends StatelessWidget {
                           GetBuilder<MyOrderViewModle>(
                             builder: (order) {
                               return OrderDateWidget(
-                                date: order.newOrderSales.deliveryDate
-                                    .toString(),
+                                date:
+                                    order.newOrderSales.deliveryDate.toString(),
                               );
                             },
                           ),

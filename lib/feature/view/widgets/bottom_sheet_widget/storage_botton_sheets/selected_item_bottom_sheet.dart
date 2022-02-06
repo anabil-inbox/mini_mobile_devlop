@@ -216,6 +216,7 @@ class SelectedItemBottomSheet extends StatelessWidget {
           isFetchTask: true,
         ),
         isScrollControlled: true);
+      
   }
 
   onClickBringBox() {

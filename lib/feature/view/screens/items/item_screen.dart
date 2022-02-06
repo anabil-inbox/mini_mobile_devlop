@@ -392,7 +392,7 @@ class _ItemScreenState extends State<ItemScreen> {
                     height: sizeH10,
                   ),
                   itemLVWidget,
-                  widget.isEnabeld
+                (itemViewModle.operationsBox?.allowed ?? false) 
                       ? BtnActionWidget(
                           redBtnText: widget.box.storageStatus ==
                                   LocalConstance.boxAtHome

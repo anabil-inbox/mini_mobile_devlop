@@ -14,7 +14,7 @@ class EmptyHomeWidget
       body: Stack(
         children: [
           PositionedDirectional(
-            top: 100,
+            top: 50,
             start: 0,
             end: 0,
             child: SvgPicture.asset(
@@ -25,7 +25,7 @@ class EmptyHomeWidget
           PositionedDirectional(
               start: 20,
               end: 0,
-              bottom: 122,
+              bottom: 200,
               child: Text(
                 "No Storage",
                 style: textStyleIntroTitle(),
@@ -34,7 +34,7 @@ class EmptyHomeWidget
           PositionedDirectional(
               start: 40,
               end: 40,
-              bottom: 71,
+              bottom: 150,
               child: Text(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
                 textAlign: TextAlign.center,

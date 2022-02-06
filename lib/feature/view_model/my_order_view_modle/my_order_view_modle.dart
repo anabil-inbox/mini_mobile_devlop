@@ -44,20 +44,21 @@ class MyOrderViewModle extends BaseController {
   Future<void> getOrderDetaile({required String orderId}) async {
     isLoading = true;
     update();
-   try {
+    try {
       await OrderHelper.getInstance.getOrderDetaile(body: {
         Constance.orderId: orderId,
       }).then((value) {
         Logger().e("Msg_Current_Order : ${value.toJson()}");
         newOrderSales = value;
+        isLoading = false;
         update();
       });
     } catch (e) {
       Logger().e(e);
+      Logger().e("Msg_newOrderSales_Order : ${newOrderSales.toJson()}");
+      isLoading = false;
+      update();
     }
-     Logger().e("Msg_newOrderSales_Order : ${newOrderSales.toJson()}");
-    isLoading = false;
-    update();
   }
 
   @override

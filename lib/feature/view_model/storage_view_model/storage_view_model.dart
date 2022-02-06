@@ -902,18 +902,16 @@ class StorageViewModel extends BaseController {
                 selectedDateTime = null,
                 selectedStore = null,
                 selectedDay = null,
-                Get.close(3),
+                // Get.close(1),
                 userStorageCategoriesData.clear(),
                 Get.put(MyOrderViewModle()),
                 Get.off(() => OrderDetailesScreen(
                       orderId: value.data["order_name"],
                       isFromPayment: true,
                     )),
-
                 // todo this for go to order details
                 //       var SalOorder = value.data["order name"] ,
                 //Get.to(()=> OrderDetailesScreen(orderSales: ,)),
-
               }
             else
               {
@@ -1551,7 +1549,7 @@ class StorageViewModel extends BaseController {
     }
 
     if (itemSeriales.isNotEmpty) {
-      itemSeriales = itemSeriales.substring(0, boxessSeriales.length - 1);
+      itemSeriales = itemSeriales.substring(0, boxessSeriales.length - 2);
     }
 
     // if (task.id == LocalConstance.fetchId) {

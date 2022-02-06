@@ -88,6 +88,7 @@ class ItemViewModle extends BaseController {
         });
     // await getBoxBySerial(serial: box.serialNo!);
     tags.clear();
+    tdName.clear();
     usesBoxTags.clear();
     tdTag.clear();
     endLoading();
@@ -155,6 +156,8 @@ class ItemViewModle extends BaseController {
     tags.clear();
     usesBoxItemsTags.clear();
     tdTag.clear();
+    
+    tdName.clear();
     itemQuantity = 1;
     update();
     Get.close(1);
@@ -209,6 +212,7 @@ class ItemViewModle extends BaseController {
     await getBoxBySerial(serial: serialNo);
     images.clear();
     tags.clear();
+    tdName.clear();
     usesBoxItemsTags.clear();
     tdTag.clear();
     itemQuantity = 1;
