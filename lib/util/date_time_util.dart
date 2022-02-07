@@ -455,4 +455,15 @@ class DateUtility {
       return DateTime.now();
     }
   }
+
+  static dateFormatNamed({String? txtDate, DateTime? date}){
+    initializeDateFormatting(isArabicLang() ? 'ar' : 'en');
+    if(!GetUtils.isNull(date))
+    return DateFormat('MMMM d, y', (isArabicLang() ? "ar" : "en")).format(date!);
+    else
+      return DateFormat('MMMM d, y', (isArabicLang() ? "ar" : "en")).format(DateTime.parse(txtDate!));
+  }
+
 }
+
+

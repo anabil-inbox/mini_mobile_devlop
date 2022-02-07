@@ -48,7 +48,6 @@ class CartScreen extends StatelessWidget {
           init: CartViewModel(),
           initState: (state) {
             cartViewModel.getMyCart();
-
           },
           builder: (logic) {
             return Padding(
