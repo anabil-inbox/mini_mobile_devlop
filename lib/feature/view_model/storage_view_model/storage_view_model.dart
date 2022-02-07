@@ -1870,6 +1870,7 @@ class StorageViewModel extends BaseController {
     });
     cleanAfterSucces();
     Get.close(1);
+    await homeViewModel.refreshHome();
     endLoading();
   }
 

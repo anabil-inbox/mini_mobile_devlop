@@ -187,9 +187,10 @@ class _HomeScreenState extends State<HomeScreen> {
             } else if (logic.userBoxess.isEmpty) {
               return RefreshIndicator(
                 onRefresh: () async {
-                  HomeScreen.homeViewModle.page = 1;
-                  HomeScreen.homeViewModle.userBoxess.clear();
-                  HomeScreen.homeViewModle.onInit();
+                  // HomeScreen.homeViewModle.page = 1;
+                  // HomeScreen.homeViewModle.userBoxess.clear();
+                  // HomeScreen.homeViewModle.onInit();
+                  await HomeScreen.homeViewModle.refreshHome();
                 },
                 child: SingleChildScrollView(
                   physics: customScrollViewIOS(),
@@ -211,10 +212,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   RefreshIndicator(
                     onRefresh: () async {
-                      HomeScreen.homeViewModle.page = 1;
-                      HomeScreen.homeViewModle.userBoxess.clear();
-                      HomeScreen.homeViewModle.onInit();
-                      await Future.delayed(Duration(seconds: 1));
+                      // HomeScreen.homeViewModle.page = 1;
+                      // HomeScreen.homeViewModle.userBoxess.clear();
+                      // HomeScreen.homeViewModle.onInit();
+                      // await Future.delayed(Duration(seconds: 1));
+                      await HomeScreen.homeViewModle.refreshHome();
                     },
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height,

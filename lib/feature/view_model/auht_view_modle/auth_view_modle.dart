@@ -99,7 +99,6 @@ class AuthViewModle extends GetxController {
             {
               isLoading = false,
               update(),
-              snackSuccess("${tr.success}", "${value.status!.message}"),
               Get.to(() => CompanyVerficationCodeScreen(
                   id: value.data["Customer"]["id"],
                   mobileNumber: user.mobile!,
@@ -131,7 +130,6 @@ class AuthViewModle extends GetxController {
                 {
                   isLoading = false,
                   update(),
-                  snackSuccess("${tr.success}", "${value.status!.message}"),
                   Get.to(() => CompanyVerficationCodeScreen(
                       id: value.data["Customer"]["id"],
                       countryCode: company.countryCode!,
@@ -161,7 +159,6 @@ class AuthViewModle extends GetxController {
               Logger().d(value.data["Customer"]),
               isLoading = false,
               update(),
-              snackSuccess("${tr.success}", "${value.status!.message}"),
               Get.to(() => CompanyVerficationCodeScreen(
                   id: value.data["Customer"]["id"],
                   mobileNumber: user.mobile!,
@@ -192,7 +189,6 @@ class AuthViewModle extends GetxController {
               Logger().d(value.data["Customer"]),
               isLoading = false,
               update(),
-              snackSuccess("${tr.success}", "${value.status!.message}"),
               Get.to(() => CompanyVerficationCodeScreen(
                   id: value.data["Customer"]["id"],
                   mobileNumber: value.data["Customer"]["mobile_number"] ?? "",
@@ -319,7 +315,7 @@ class AuthViewModle extends GetxController {
               startTimerCounter = 60,
               startTimer(),
               update(),
-              snackSuccess("${tr.success}", "${value.status!.message}"),
+              // snackSuccess("${tr.success}", "${value.status!.message}"),
               isFromChange ? Get.to(() => VerficationChangeMobilScreen(
                 id: id ?? "",
                 mobileNumber: mobileNumber ?? "",

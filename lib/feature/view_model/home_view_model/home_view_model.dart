@@ -31,7 +31,6 @@ class HomeViewModel extends BaseController {
   Set<Box> userBoxess = {};
 
   Future<void> getCustomerBoxes() async {
-
     if (!isLoadingPagination) {
       startLoading();
     }
@@ -42,6 +41,17 @@ class HomeViewModel extends BaseController {
               update(),
             });
     endLoading();
+  }
+
+  Future<void> refreshHome() async {
+    try {
+      page = 1;
+      userBoxess.clear();
+      onInit();
+      await Future.delayed(Duration(seconds: 1));
+    } catch (e) {
+      printError();
+    }
   }
 
   // search Func And Vars ::
@@ -98,8 +108,8 @@ class HomeViewModel extends BaseController {
       required StorageViewModel storageViewModel,
       int index = 0}) {
     try {
-      isLoading = true;
-      update();
+      startLoading();
+      refresh();
       ItemViewModle itemViewModle = Get.find<ItemViewModle>();
       itemViewModle.usesBoxItemsTags.clear();
       itemViewModle.tdTag.clear();
@@ -111,10 +121,8 @@ class HomeViewModel extends BaseController {
         controller.dispose();
         Get.back();
         if (isFromAtHome ?? false) {
-          // await fromAtHome(data.code, storageViewModel);
           update();
         } else {}
-
         userBoxess.toList()[index].storageStatus = LocalConstance.boxAtHome;
         update();
         await fromAtHome(data.code, storageViewModel);
@@ -141,24 +149,29 @@ class HomeViewModel extends BaseController {
                                   CheckInBoxWidget(box: value, isUpdate: false),
                                   isScrollControlled: true)
                               .then((value) => {}),
-                        }else{
-                        userBoxess.forEach((element) {
-                          if (element.id == value.id) {
-                            element.storageStatus = LocalConstance.boxAtHome;
-                          }
-                        }),
-                        getCustomerBoxes()
+                        }
+                      else
+                        {
+                          userBoxess.forEach((element) {
+                            if (element.id == value.id) {
+                              element.storageStatus = LocalConstance.boxAtHome;
+                            }
+                          }),
+                          getCustomerBoxes()
                         }
                     }
                 })
             .then((value) => {});
         update();
       });
+      refreshHome();
       isLoading = false;
       update();
     } catch (e) {
       Logger().e("$e");
     }
+    endLoading();
+    refresh();
   }
 
   void onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
@@ -176,14 +189,17 @@ class HomeViewModel extends BaseController {
   // this for Pagination :
 
   void pagination() async {
-    // isLoadingPagination = true;
-    startLoadingPagination();
-    if ((scrollcontroller.position.pixels ==
-        scrollcontroller.position.maxScrollExtent)) {
-      await getCustomerBoxes();
+    try {
+      startLoadingPagination();
+      if ((scrollcontroller.position.pixels ==
+          scrollcontroller.position.maxScrollExtent)) {
+        await getCustomerBoxes();
+      }
+      endLoadingPagination();
+      update();
+    } catch (e) {
+      Logger().e("$e");
     }
-    endLoadingPagination();
-    update();
   }
 
   // to get box by his serial ::

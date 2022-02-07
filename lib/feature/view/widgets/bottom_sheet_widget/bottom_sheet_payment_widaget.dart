@@ -15,6 +15,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
+import 'package:logger/logger.dart';
 
 import '../primary_button.dart';
 
@@ -221,6 +222,10 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               beneficiaryId: beneficiaryId);
         }
       } else {
+        Logger().e("${num.parse(storageViewModle.calculateTaskPriceLotBoxess(
+              task: task,
+              boxess: boxes,
+            ).toString().split(" ")[0])}");
         storageViewModle.goToPaymentMethod(
             amount: num.parse(storageViewModle
                 .calculateTaskPriceLotBoxess(

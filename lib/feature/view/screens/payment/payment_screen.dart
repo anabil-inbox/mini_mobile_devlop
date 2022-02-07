@@ -47,19 +47,21 @@ class PaymentScreen extends StatelessWidget {
             }
           },
           navigationDelegate: (navigation) {
-            payment.readResponse(isFromNewStorage: isFromNewStorage,
-                  task: task,
-                  boxes: boxes,
-                  beneficiaryId: beneficiaryId);
+            payment.readResponse(
+                isFromNewStorage: isFromNewStorage,
+                task: task,
+                boxes: boxes,
+                beneficiaryId: beneficiaryId);
             return NavigationDecision.navigate;
           },
           onWebViewCreated: (controller) {
             payment.payController = controller;
             payment.update();
-            payment.readResponse(isFromNewStorage: isFromNewStorage,
-                  task: task,
-                  boxes: boxes,
-                  beneficiaryId: beneficiaryId);
+            payment.readResponse(
+                isFromNewStorage: isFromNewStorage,
+                task: task,
+                boxes: boxes,
+                beneficiaryId: beneficiaryId);
             controller
                 .runJavascriptReturningResult(
                     "document.documentElement.innerText")

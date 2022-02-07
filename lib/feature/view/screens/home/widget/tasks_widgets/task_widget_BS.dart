@@ -129,7 +129,7 @@ class TaskWidgetBS extends StatelessWidget {
           shrinkWrap: true,
           physics: customScrollViewIOS(),
           children: homeViewModel.userBoxess
-              .map((e) => e.saleOrder == null
+              .map((e) => e.allowed ?? false
                   ? BoxInTaskWidget(
                       box: e,
                     )
@@ -142,7 +142,7 @@ class TaskWidgetBS extends StatelessWidget {
           physics: customScrollViewIOS(),
           children: homeViewModel.userBoxess
               .map((e) => (e.storageStatus == LocalConstance.boxinWareHouse &&
-                      e.saleOrder == null)
+                      e.allowed!)
                   ? BoxInTaskWidget(
                       box: e,
                     )
@@ -155,14 +155,14 @@ class TaskWidgetBS extends StatelessWidget {
           physics: customScrollViewIOS(),
           children: homeViewModel.userBoxess
               .map((e) => (e.storageStatus == LocalConstance.boxAtHome &&
-                      e.saleOrder == null)
+                      e.allowed!)
                   ? BoxInTaskWidget(
                       box: e,
                     )
                   : const SizedBox())
               .toList());
     } else {
-      return Text("data");
+      return Text("");
     }
   }
 }
