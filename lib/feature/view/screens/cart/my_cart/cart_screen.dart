@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/cart/store/store_view.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/cart_view_model/cart_view_model.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -62,9 +63,17 @@ class CartScreen extends StatelessWidget {
                     child: ListView.builder(
                       itemCount: logic.cartList.length,
                       shrinkWrap: true,
+                      clipBehavior: Clip.hardEdge,
                       physics: customScrollViewIOS(),
                       itemBuilder: (context, index) => CartHead(cartViewModel:logic,cartModel:logic.cartList[index]),
                     ),
+                  ),
+                  SizedBox(
+                    height: sizeH20,
+                  ),
+                  PrimaryButton(textButton: "${tr.checkout}", isLoading: false, onClicked: (){}, isExpanded: true),
+                  SizedBox(
+                    height: sizeH20,
                   ),
                 ],
               ),
