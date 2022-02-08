@@ -3,14 +3,18 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/widget/items_selected_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:logger/logger.dart';
 
@@ -99,6 +103,8 @@ class SelectedItemBottomSheet extends StatelessWidget {
         },
       );
 
+  static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ItemViewModle>(
@@ -108,7 +114,8 @@ class SelectedItemBottomSheet extends StatelessWidget {
           return Container(
             decoration: BoxDecoration(
               color: colorBackground,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(padding30!)),
+              borderRadius:
+                  BorderRadius.vertical(top: Radius.circular(padding30!)),
             ),
             child: SingleChildScrollView(
               child: Column(
@@ -123,7 +130,8 @@ class SelectedItemBottomSheet extends StatelessWidget {
                   ),
                   CustomTextView(
                     txt: "${tr.fetch_item}",
-                    textStyle: textStyleNormalBlack()?.copyWith(fontSize: fontSize17),
+                    textStyle:
+                        textStyleNormalBlack()?.copyWith(fontSize: fontSize17),
                   ),
                   SizedBox(
                     height: sizeH12,
@@ -136,22 +144,47 @@ class SelectedItemBottomSheet extends StatelessWidget {
                         child: ListView.builder(
                             shrinkWrap: true,
                             primary: false,
-                            // physics: NeverScrollableScrollPhysics(),
-                            itemCount:logic.listIndexSelected.length ,
+                            itemCount: box.items?.length,
                             itemBuilder: (context, index) {
-                              var where = box.items?.where((element) => logic.listIndexSelected.contains(element.itemName)).toList();
                               return ItemsSelectedWidget(
-                                  boxItem: where?[index],
-                                  onCheckItem: () {
-                                    var i = logic.listIndexSelected.indexOf("${where?[index].itemName.toString()}");
-                                    logic.listIndexSelected.removeAt(i == -1 ? 0:i);
-                                    logic.update();
-                                  },
-                                );
+                                boxItem: box.items?[index],
+                                onCheckItem: () {
+                                  bool isFound = logic.listIndexSelected
+                                      .contains(box.items?[index].itemName);
+                                  if (isFound) {
+                                    logic.listIndexSelected.removeWhere(
+                                        (element) =>
+                                            element ==
+                                            box.items?[index].itemName);
+                                  } else {
+                                    logic.listIndexSelected
+                                        .add(box.items![index].itemName ?? "");
+                                  }
+                                  logic.update();
+                                },
+                              );
                             }),
+                        // itemBuilder: (context, index) {
+                        //   var where = box.items
+                        //       ?.where((element) => logic.listIndexSelected
+                        //           .contains(element.itemName))
+                        //       .toList();
+                        //   return ItemsSelectedWidget(
+                        //     boxItem: where?[index],
+                        //     onCheckItem: () {
+                        //       var i = logic.listIndexSelected.indexOf(
+                        //           "${where?[index].itemName.toString()}");
+                        //       logic.listIndexSelected
+                        //           .removeAt(i == -1 ? 0 : i);
+                        //       if (logic.listIndexSelected.isEmpty) {
+                        //         Get.back();
+                        //       }
+                        //       logic.update();
+                        //     },
+                        //   );
+                        // }),
                       ),
                     ),
-
                   SizedBox(
                     height: sizeH16,
                   ),
@@ -171,21 +204,38 @@ class SelectedItemBottomSheet extends StatelessWidget {
   }
 
   onClickBreakSeal() {
+    final Task enterdTask =
+        homeViewModel.searchTaskById(taskId: LocalConstance.fetchId);
     Get.back();
-   // Get.bottomSheet(RecallBoxProcessSheet(box: box , task: ,), isScrollControlled: true);
+    Get.bottomSheet(
+        RecallBoxProcessSheet(
+          box: box,
+          task: enterdTask,
+          boxes: [box],
+          isFetchTask: true,
+        ),
+        isScrollControlled: true);
   }
 
-// onClickBringBox() {
-//
-//   if(!isUserSelectItem!){
-//     //todo  [ add to cart ]
-//     Get.back();
-//   }else {
-//     //todo  [BringBox ]
-//     Get.back();
-//     Get.bottomSheet(RecallBoxProcessSheet(box: box), isScrollControlled: true);
-//   }
-// }
-
-
+  onClickBringBox() {
+    // if(!isUserSelectItem!){
+    //   //todo  [ add to cart ]
+    //   Get.back();
+    // }else {
+    //   //todo  [BringBox ]
+    //   final Task enterdTask = homeViewModel.searchTaskById(taskId: LocalConstance.recallId);
+    //   Get.back();
+    //   Get.bottomSheet(RecallBoxProcessSheet(box: box , boxes: [box],task: ,), isScrollControlled: true);
+    // }
+    final Task enterdTask =
+        homeViewModel.searchTaskById(taskId: LocalConstance.recallId);
+    Get.back();
+    Get.bottomSheet(
+        RecallBoxProcessSheet(
+          box: box,
+          boxes: [box],
+          task: enterdTask,
+        ),
+        isScrollControlled: true);
+  }
 }

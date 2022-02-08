@@ -509,6 +509,9 @@ class ItemViewModle extends BaseController {
   bool? isSelectBtnClick = false;
   bool isSelectAllClick = false;
   List<String> listIndexSelected = <String>[];
+  
+  //this is For Selcting an Item Photos in Fetching Task :
+  List<String> selectedItmePhotos = [];
 
   //todo this for show selection btn
   updateSelectBtn() {

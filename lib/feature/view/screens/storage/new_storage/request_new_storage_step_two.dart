@@ -66,7 +66,8 @@ class _RequestNewStoragesStepTwoScreenState
                 SizedBox(
                   height: sizeH16,
                 ),
-                PickupAddress(),
+                PickupAddress(
+                ),
               ],
             ),
             PositionedDirectional(

@@ -18,67 +18,91 @@ class PickupAddressItem extends StatelessWidget {
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
   final Store? store;
 
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Logger().d("onAddressClick \n${address.toJson()}\n${store?.toJson()}");
-        if (store != null) {
-          storageViewModel.selectedStore = store;
-          Logger().d("onAddressClick 1");
-        } else {
-          storageViewModel.selectedAddress = address;
-          Logger().d("onAddressClick 2");
-        }
-        storageViewModel.update();
-      },
-      child: Container(
-        decoration: BoxDecoration(
-            color: colorTextWhite,
-            borderRadius: BorderRadius.circular(padding6!)),
-        padding: EdgeInsets.symmetric(horizontal: padding16!),
-        child: Column(
-          children: [
-            SizedBox(
-              height: sizeH20,
-            ),
-            GetBuilder<StorageViewModel>(
-              init: StorageViewModel(),
-              initState: (_) {},
-              builder: (_) {
-                return Row(
-                  children: [
-                    (store != null && storageViewModel.selectedStore == store) ?
-                    SvgPicture.asset("assets/svgs/rec_true.svg") :
-                    storageViewModel.selectedAddress == address
-                        ? SvgPicture.asset("assets/svgs/rec_true.svg")
-                        : SvgPicture.asset("assets/svgs/rec_empty.svg"),
-                    SizedBox(
-                      width: sizeW10,
-                    ),
-                    Text("${address.title ?? address.addressTitle ?? ""}"),
-                  ],
-                );
-              },
-            ),
-            SizedBox(
-              height: sizeH6,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: sizeW20,
-                ),
-                Text("${address.streat ?? ""}" , style: textStyleHints()!.copyWith(fontSize: fontSize14),)
-              ],
-            ),
-            SizedBox(
-              height: sizeH10,
-            ),
-            const Divider()
-          ],
-        ),
+  Widget get addressText {
+    String fullAddress = "";
+    if (address.streat != null) {
+      fullAddress =
+          "${address.buildingNo ?? ""} ,  ${address.unitNo ?? ""} , ${address.zone ?? ""} , ${address.streat ?? ""}";
+    } else {
+      fullAddress =
+          "${address.buildingNo ?? ""} ,  ${address.unitNo ?? ""} , ${address.zone ?? ""}";
+    }
+
+    return Expanded(
+      child: Text(
+        fullAddress,
+        style: textStyleHints()!.copyWith(fontSize: fontSize14),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GetUtils.isNull(address.id)
+        ? const SizedBox()
+        : InkWell(
+            onTap: () {
+              Logger().d(
+                  "onAddressClick \n${address.toJson()}\n${store?.toJson()}");
+              if (store != null) {
+                storageViewModel.selectedStore = store;
+                Logger().d("onAddressClick 1");
+              } else {
+                storageViewModel.selectedAddress = address;
+                Logger().d("onAddressClick 2");
+              }
+              storageViewModel.update();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  color: colorTextWhite,
+                  borderRadius: BorderRadius.circular(padding6!)),
+              padding: EdgeInsets.symmetric(horizontal: padding16!),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: sizeH20,
+                  ),
+                  GetBuilder<StorageViewModel>(
+                    init: StorageViewModel(),
+                    initState: (_) {},
+                    builder: (_) {
+                      return Row(
+                        children: [
+                          (store != null &&
+                                  storageViewModel.selectedStore == store)
+                              ? SvgPicture.asset("assets/svgs/rec_true.svg")
+                              : storageViewModel.selectedAddress == address
+                                  ? SvgPicture.asset("assets/svgs/rec_true.svg")
+                                  : SvgPicture.asset(
+                                      "assets/svgs/rec_empty.svg"),
+                          SizedBox(
+                            width: sizeW10,
+                          ),
+                          Text(
+                              "${address.title ?? address.addressTitle ?? ""}"),
+                        ],
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: sizeH6,
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: sizeW36,
+                      ),
+                      addressText
+                    ],
+                  ),
+                  SizedBox(
+                    height: sizeH10,
+                  ),
+                  const Divider()
+                ],
+              ),
+            ),
+          );
   }
 }

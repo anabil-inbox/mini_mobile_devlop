@@ -87,51 +87,55 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
           );
         }),
         actionsWidgets: [
-          GetBuilder<ItemViewModle>(
-              init: /*ItemViewModle()*/ itemViewModle,
-              // assignId: true,
-              builder: (logic) {
-                return TextButton(
-                    onPressed: () {
-                      itemViewModle.updateSelectBtn();
-                    },
-                    child: SizedBox(
-                      width: sizeW40,
-                      child: TextButton(
+          widget.box.storageStatus != LocalConstance.boxAtHome
+              ? GetBuilder<ItemViewModle>(
+                  init: /*ItemViewModle()*/ itemViewModle,
+                  // assignId: true,
+                  builder: (logic) {
+                    return TextButton(
                         onPressed: () {
-                          Logger().d("onCheck all Selected");
-                          itemViewModle.isSelectAllClick =
-                              !itemViewModle.isSelectAllClick;
-                          if (!itemViewModle.isSelectAllClick) {
-                            itemViewModle.listIndexSelected.clear();
-                          } else {
-                            if (itemViewModle.operationsBox?.items != null) {
-                              itemViewModle.operationsBox?.items
-                                  ?.forEach((element) {
-                                itemViewModle.listIndexSelected
-                                    .add("${element.itemName}");
-                              });
-                            }
-                          }
-                          itemViewModle.update();
+                         // itemViewModle.updateSelectBtn();
                         },
-                        child: (itemViewModle.isSelectAllClick ||
-                                (itemViewModle.listIndexSelected.length ==
-                                    itemViewModle.operationsBox?.items?.length))
-                            ? SvgPicture.asset(
-                                "assets/svgs/storage_check_active.svg")
-                            : SvgPicture.asset(
-                                "assets/svgs/select_all_no_background.svg"),
-                      ),
-                    )
-                    //   : CustomTextView(
-                    // txt: "${tr.select}",
-                    // textStyle:
-                    // textStyleNormal()?.copyWith(color: colorRed),
-                    // maxLine: Constance.maxLineOne,
-                    // ),
-                    );
-              }),
+                        child: SizedBox(
+                          width: sizeW40,
+                          child: TextButton(
+                            onPressed: () {
+                              Logger().d("onCheck all Selected");
+                              itemViewModle.isSelectAllClick =
+                                  !itemViewModle.isSelectAllClick;
+                              if (!itemViewModle.isSelectAllClick) {
+                                itemViewModle.listIndexSelected.clear();
+                              } else {
+                                if (itemViewModle.operationsBox?.items !=
+                                    null) {
+                                  itemViewModle.operationsBox?.items
+                                      ?.forEach((element) {
+                                    itemViewModle.listIndexSelected
+                                        .add("${element.itemName}");
+                                  });
+                                }
+                              }
+                              itemViewModle.update();
+                            },
+                            child: (itemViewModle.isSelectAllClick ||
+                                    (itemViewModle.listIndexSelected.length ==
+                                        itemViewModle
+                                            .operationsBox?.items?.length))
+                                ? SvgPicture.asset(
+                                    "assets/svgs/storage_check_active.svg")
+                                : SvgPicture.asset(
+                                    "assets/svgs/select_all_no_background.svg"),
+                          ),
+                        )
+                        //   : CustomTextView(
+                        // txt: "${tr.select}",
+                        // textStyle:
+                        // textStyleNormal()?.copyWith(color: colorRed),
+                        // maxLine: Constance.maxLineOne,
+                        // ),
+                        );
+                  })
+              : const SizedBox(),
         ],
       );
 
@@ -296,6 +300,19 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
             box: widget.box,
           ),
           isScrollControlled: true);
+    } else if (widget.box.storageStatus == LocalConstance.boxinWareHouse && itemViewModle.listIndexSelected.isEmpty) {
+      //todo this if recall
+      final Task enterdTask = FilterItemScreen.homeViewModel
+          .searchTaskById(taskId: LocalConstance.recallId);
+      Get.bottomSheet(
+          RecallBoxProcessSheet(
+            boxes: [],
+            task: enterdTask,
+            box: widget.box,
+          ),
+          isScrollControlled: true);
+      // Get.bottomSheet(RecallStorageSheet(box: widget.box),
+      //     isScrollControlled: true);
     } else {
       //todo this if recall
       final Task enterdTask = FilterItemScreen.homeViewModel
@@ -321,4 +338,5 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
   onShareBoxClick() {
     itemViewModle.shareBox(box: widget.box);
   }
+
 }

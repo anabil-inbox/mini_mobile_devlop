@@ -1314,61 +1314,83 @@ class StorageViewModel extends BaseController {
     update();
   }
 
-  void addNewSealsOrder(Box box, String fullAddress, String type, var date,
-      {String? itemCode}) async {
-    List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
-    Logger().d(
-        "item_code = $type , serialNo = ${box.serialNo} , saleOrder = ${box.saleOrder}, \n  ${box.toString()}");
-    //todo item_code == recall id
-    //todo storage_type ==  we not need in recall
-    //todo storage_child_in ==  list of box
-    Map<String, dynamic> orderItem = {
-      "order[0]": [
-        {
-          "item_code": "${box.storageName} $itemCode",
-          "qty": 1,
-          "delivery_date": "$date",
-          "subscription": "Daily",
-          "subscription_duration": 10,
-          "subscription_price": 0,
-          "group_id": 1,
-          "storage_type": "$type",
-          "item_parent": 0,
-          "need_adviser": 0,
-          "storage_child_in": [
-            {"storage": "${box.serialNo}"}
-          ]
-        }
-      ],
-      "type[0]": "$itemCode", //New Storage
-      "address[0]": "$fullAddress"
-    };
-    mapSalesOrder.add(orderItem);
-    Map<String, dynamic> map = {"sales_order": jsonEncode(mapSalesOrder)};
-    await OrderHelper.getInstance.newSalesOrder(body: map).then((value) {
-      Logger().d(value.toJson());
-    });
-  }
+  // void addNewSealsOrder(Box box, String fullAddress, String type, var date,
+  //     {String? itemCode}) async {
+  //   List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
+  //   Logger().d("item_code = $type , serialNo = ${box.serialNo} , saleOrder = ${box.saleOrder}, \n  ${box.toString()}");
 
-  calculateTaskPrice({required Task task}) {
+  //   //todo item_code == recall id
+  //   //todo storage_type ==  we not need in recall
+  //   //todo storage_child_in ==  list of box
+
+  //   Map<String, dynamic> orderItem = {
+  //     "order[0]": [
+  //       {
+  //         "item_code": "${box.storageName} $itemCode",
+  //         "qty": 1,
+  //         "delivery_date": "$date",
+  //         "subscription": "Daily",
+  //         "subscription_duration": 10,
+  //         "subscription_price": 0,
+  //         "group_id": 1,
+  //         "storage_type": "$type",
+  //         "item_parent": 0,
+  //         "need_adviser": 0,
+  //         "storage_child_in": [
+  //           {"storage": "${box.serialNo}"}
+  //         ]
+  //       }
+  //     ],
+  //     "type[0]": "$itemCode", //New Storage
+  //     "address[0]": "$fullAddress"
+  //   };
+  //   mapSalesOrder.add(orderItem);
+  //   Map<String, dynamic> map = {"sales_order": jsonEncode(mapSalesOrder)};
+  //   await OrderHelper.getInstance.newSalesOrder(body: map).then((value) {
+  //     Logger().d(value.toJson());
+  //   });
+  // }
+
+  calculateTaskPriceOnceBox({required Task task}) {
     num price = 0;
     if (selectedAddress != null) {
       for (var item in task.areaZones!) {
         if (item.id == selectedAddress!.zone) {
           price += item.price ?? 0;
-          print("options_price ${item.price}");
+          print("area_zone_price ${item.price}");
         }
       }
     }
 
     for (var item in selectedStringOption) {
       price += item.price ?? 0;
-      print("area_zone_price ${item.price}");
+      print("options_price ${item.price}");
     }
 
     price += task.price!;
     print("task_price ${task.price!}");
     print("total_price $price");
+    return getPriceWithFormate(price: price);
+  }
+
+  calculateTaskPriceLotBoxess({required Task task, required List<Box> boxess}) {
+    print("calculate Task Price Lot Boxess !");
+    num price = 0.00;
+    price = task.price! * boxess.length;
+    if (selectedAddress != null) {
+      for (var item in task.areaZones!) {
+        if (item.id == selectedAddress!.zone) {
+          price += item.price ?? 0;
+          print("area_zone_price ${item.price}");
+        }
+      }
+    }
+
+    for (var item in selectedStringOption) {
+      price += item.price ?? 0;
+      print("options_price ${item.price}");
+    }
+
     return getPriceWithFormate(price: price);
   }
 
@@ -1390,29 +1412,35 @@ class StorageViewModel extends BaseController {
     }
   }
 
-  Future<void> pickupBoxRequest({required Task task, required Box box}) async {
+  // THIS REGUSET is For Playing WITH Api Tasks you will Add The Task And Boxess
+  //Note :: IF You want to Send Single Box you Will Add The Box Only in The List Like This [myBox()]
+  Future<void> doTaskBoxRequest({required Task task, required List<Box> boxes}) async {
     startLoading();
     List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
     Map<String, dynamic> map = {};
-    if (task.id == LocalConstance.pickupId) {
-      map["type[0]"] = LocalConstance.pickupId;
-    } else if (task.id == LocalConstance.recallId) {
-      map["type[0]"] = LocalConstance.recallId;
+
+    for (var i = 0; i < boxes.length; i++) {
+      // if (task.id == LocalConstance.pickupId) {
+      //   map["type[$i]"] = LocalConstance.pickupId;
+      // } else if (task.id == LocalConstance.recallId) {
+      //   map["type[$i]"] = LocalConstance.recallId;
+      // }
+      // this Request Will Changed Here !: 
+      map["type[$i]"] = task.id;
+      map["order[$i]"] = [
+        {
+          "item_code": task.id,
+          "qty": 1,
+          "delivery_date": "$selectedDateTime",
+          "order_to": "${selectedDay?.to}",
+          "order_from": "${selectedDay?.from}",
+          "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
+          "storage_child_in": "${boxes[i].serialNo}"
+        }
+      ];
+      map["address[$i]"] = selectedAddress!.id;
     }
-    map["order[0]"] = [
-      {
-        "item_code": task.id,
-        // "item_code": "",
-        "qty": 1,
-        "delivery_date": "$selectedDateTime",
-        "order_to": "${selectedDay?.to}",
-        "order_from": "${selectedDay?.from}",
-        "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
-        "storage_child_in": "${box.serialNo}"
-      }
-    ];
-    // map["address[0]"] = selectedStore!.id;
-    map["address[0]"] = selectedAddress!.id;
+
     mapSalesOrder.add(map);
     Map<String, dynamic> newMap = {"sales_order": jsonEncode(mapSalesOrder)};
     await OrderHelper.getInstance.newSalesOrder(body: newMap).then((value) {
@@ -1426,13 +1454,14 @@ class StorageViewModel extends BaseController {
       }
     });
     cleanAfterSucces();
+    Get.close(1);
     endLoading();
   }
 
   // Future<void> giveawayBoxRequest({required Task task , required Box box}) async{
   // }
 
-  Future<void> recallBoxRequest({required Task task, required Box box}) async {}
+ // Future<void> recallBoxRequest({required Task task, required Box box}) async {}
   cleanAfterSucces() {
     isAccept = false;
     selectedPaymentMethod = null;

@@ -10,6 +10,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
@@ -46,17 +47,22 @@ class ItemsWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (isSelectedBtnClick!)
-              SizedBox(
-                width: sizeW40,
-                child: TextButton(
-                  onPressed: onCheckItem ?? () {},
-                  child: logic.listIndexSelected
-                              .contains(boxItem?.itemName ?? "")/* ||
+              box.storageStatus == LocalConstance.boxAtHome
+                  ? const SizedBox()
+                  : SizedBox(
+                      width: sizeW40,
+                      child: TextButton(
+                        onPressed: onCheckItem ?? () {},
+                        child: logic.listIndexSelected.contains(boxItem
+                                    ?.itemName ??
+                                "") /* ||
                           logic.isSelectAllClick*/
-                      ? SvgPicture.asset("assets/svgs/storage_check_active.svg")
-                      : SvgPicture.asset("assets/svgs/storage_check_deactive.svg"),
-                ),
-              )
+                            ? SvgPicture.asset(
+                                "assets/svgs/storage_check_active.svg")
+                            : SvgPicture.asset(
+                                "assets/svgs/storage_check_deactive.svg"),
+                      ),
+                    )
             else
               const SizedBox(),
             ClipRRect(
@@ -101,14 +107,14 @@ class ItemsWidget extends StatelessWidget {
             ),
             // logic.isSelectBtnClick!
             //     ? const SizedBox()
-            //     : 
-                IconButton(
-                    onPressed: () {
-                      itemViewModle.showOptionOperationBottomSheet(
-                          box: box, boxItem: boxItem!);
-                    },
-                    icon: SvgPicture.asset("assets/svgs/three_dot_widget.svg"),
-                  )
+            //     :
+            IconButton(
+              onPressed: () {
+                itemViewModle.showOptionOperationBottomSheet(
+                    box: box, boxItem: boxItem!);
+              },
+              icon: SvgPicture.asset("assets/svgs/three_dot_widget.svg"),
+            )
 
             // PopupMenuButton<int>(
             //     icon: SvgPicture.asset("assets/svgs/three_dot_widget.svg"),
@@ -132,19 +138,19 @@ class ItemsWidget extends StatelessWidget {
             //           }
             //         case 2:
             //           {
-                        // Get.bottomSheet(
-                        //     AddItemWidget(
-                        //       isUpdate: true,
-                        //       box: box,
-                        //       boxItem: boxItem!,
-                        //     ),
-                        //     isScrollControlled: true);
+            // Get.bottomSheet(
+            //     AddItemWidget(
+            //       isUpdate: true,
+            //       box: box,
+            //       boxItem: boxItem!,
+            //     ),
+            //     isScrollControlled: true);
             //             return;
             //           }
             //         case 3:
-                      // {
-                      //   itemViewModle.shareItem(boxItem: boxItem!);
-                      // }
+            // {
+            //   itemViewModle.shareItem(boxItem: boxItem!);
+            // }
             //           return;
             //       }
             //     })

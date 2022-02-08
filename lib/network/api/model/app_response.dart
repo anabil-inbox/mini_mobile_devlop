@@ -11,7 +11,7 @@ class AppResponse {
   factory AppResponse.fromJson(var map) {
     try {
       
-      if (GetUtils.isNull(map["data"])) {
+      if (GetUtils.isNull(map["data"])|| map["data"] == {}) {
         return AppResponse(
           status: Status.fromJson(map["status"]),
         );

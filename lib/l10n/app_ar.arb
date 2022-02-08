@@ -174,8 +174,14 @@
        "bring_the_box":"احضر البوكس",
        "fetch_item":"إحضار العنصر",
        "select_item_photo":"حدد صورة العنصر" ,
-      "name" : "الاسم",
+    "name" : "الاسم",
     "card_number" : "رقم البطاقة",
     "expiry_date" : "تاريخ الانتهاء",
-    "add_new_card":"اضافة بطاقة جديدة"
+    "add_new_card":"اضافة بطاقة جديدة",
+    "destory" : "تدمير",
+    "terminate":"انهاء",
+    "fetch":"اجلب",
+    "warehouse_address":"عنوان المخزن",
+    "you_have_to_accept_our_terms" : "يجب الموافقة على سياسية الخصوصية اولا",
+    "item_photos":"صور العنصر"
 }

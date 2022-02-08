@@ -193,6 +193,13 @@ TextStyle? textStyleBorderButton() {
       fontFamily: Constance.Font_regular);
 }
 
+// TextStyle? textStyleBorderButton() {
+//   return TextStyle(
+//       color: colorPrimary,
+//       fontSize: fontSize15,
+//       fontFamily: Constance.Font_regular);
+// }
+
 TextStyle? textStyleBtn() {
   return textStyle()?.copyWith(
       color: colorTextWhite,
