@@ -183,5 +183,7 @@
     "fetch":"اجلب",
     "warehouse_address":"عنوان المخزن",
     "you_have_to_accept_our_terms" : "يجب الموافقة على سياسية الخصوصية اولا",
-    "item_photos":"صور العنصر"
+    "item_photos":"صور العنصر",
+    "My_Wallet":"محفظتي",
+    "Add_Money":"اضف مال"
 }

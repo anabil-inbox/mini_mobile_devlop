@@ -5,7 +5,7 @@ abstract class ConstanceNetwork {
   ///todo here insert base_url
   static String imageUrl = "http://inbox.ahdtech.com/".trim();
 
-  // contsanse for Days Constance 
+  // contsanse for Days Constance
   static var sunday = "sunday";
   static var monday = "monday";
   static var tuesday = "tuesday";
@@ -13,8 +13,9 @@ abstract class ConstanceNetwork {
   static var thuersday = "thuersday";
   static var friday = "friday";
   static var saturday = "saturday";
+
   ///todo here insert key Of Request
-  
+
   ///todo this for login request user
   static var contryCodeKey = "country_code";
   static var mobileKey = "mobile";
@@ -23,20 +24,22 @@ abstract class ConstanceNetwork {
   static var fcmKey = "fcm";
   static var emailKey = "email";
 
-
   ///todo this for add new contact key
   static var mobileNumberKey = "mobile_number";
   static var countryCodeKey = "country_code";
-  ///todo this for add new contact key
-  
-  ///to add here home api End Pointes :
-  static String getCustomerBoxessEndPoint = "inbox_app.api.customer_storages.get_storages";
-  static String getSearchBoxessEndPoint = "inbox_app.search.search.search_box";
-  
-  // to add here my order End Points: 
-  static String getMyOrddersEndPoint = "inbox_app.api.sales_order.get_sales_orders";
-  static String newSalesOrder = "inbox_app.api.sales_order.create_new_sales_order";
 
+  ///todo this for add new contact key
+
+  ///to add here home api End Pointes :
+  static String getCustomerBoxessEndPoint =
+      "inbox_app.api.customer_storages.get_storages";
+  static String getSearchBoxessEndPoint = "inbox_app.search.search.search_box";
+
+  // to add here my order End Points:
+  static String getMyOrddersEndPoint =
+      "inbox_app.api.sales_order.get_sales_orders";
+  static String newSalesOrder =
+      "inbox_app.api.sales_order.create_new_sales_order";
 
   ///todo here insert end Point
   static String settingeEndPoint = "inbox_app.api.settings.api_settings";
@@ -63,7 +66,8 @@ abstract class ConstanceNetwork {
 
   static String verfiyCodeEndPoint = "inbox_app.api.auth.verfiy";
 
-  static String recendVerficationCodeEndPoint = "inbox_app.api.auth.resend_code";
+  static String recendVerficationCodeEndPoint =
+      "inbox_app.api.auth.resend_code";
 
   static String addAddressEndPoint = "inbox_app.api.address.add";
 
@@ -71,19 +75,23 @@ abstract class ConstanceNetwork {
 
   static String getMyAddressEndPoint = "inbox_app.api.address.get";
 
-  static String deleteAdressEndPoint = "inbox_app.api.address.address_del"; 
+  static String getMyWalletEndPoint = "inbox_app.api.wallet.get_my_wallet";
+
+  static String deleteAdressEndPoint = "inbox_app.api.address.address_del";
 
   static String logOutEndPoint = "inbox_app.api.auth.logout";
 
   static String editProfilEndPoint = "inbox_app.api.auth.edit_profile";
 
-  static String editProfilCompanyEndPoint = "inbox_app.api.auth.company_edit_profile";
+  static String editProfilCompanyEndPoint =
+      "inbox_app.api.auth.company_edit_profile";
 
   //todo this for storage end point
   static String storageCategoriesApi = "inbox_app.api.storage.categories";
   static String storageCheckQuantity = "inbox_app.api.quantity.quantity";
   static String storageAddOrder = "inbox_app.api.sales_order.sales_order";
-  static String customerStoragesChangeStatus = "inbox_app.api.customer_storages.change_status";
+  static String customerStoragesChangeStatus =
+      "inbox_app.api.customer_storages.change_status";
   static String storageWareHouse = "inbox_app.api.warehouse.warehouse";
   static String storageAddNewStorage = "inbox_app.api.sales_order.sales_order";
   static String getTaskEndPoint = "inbox_app.api.task.get_basic_tasks";
@@ -91,27 +99,27 @@ abstract class ConstanceNetwork {
 
   // to add here item end pointes :
 
-  static String getBoxBySerialEndPoint = "inbox_app.api.customer_storages.get_box";
+  static String getBoxBySerialEndPoint =
+      "inbox_app.api.customer_storages.get_box";
   static String addItemEndPoint = "inbox_app.api.customer_storages.add_item";
-  static String deleteItemEndPoint = "inbox_app.api.customer_storages.item_delete";
-  static String updateItemEndPoint = "inbox_app.api.customer_storages.update_item";
-  
-  // update & delete Box End Point : 
-  static String updatetBoxEndPoint = "inbox_app.api.customer_storages.update_box";
+  static String deleteItemEndPoint =
+      "inbox_app.api.customer_storages.item_delete";
+  static String updateItemEndPoint =
+      "inbox_app.api.customer_storages.update_item";
 
+  // update & delete Box End Point :
+  static String updatetBoxEndPoint =
+      "inbox_app.api.customer_storages.update_box";
 
-  // this for constance network 
+  // this for constance network
 
   static String page = "page";
   static String pageSize = "page_size";
-
 
   //todo this for constance type of user
   static String userType = "user";
   static String companyType = "company";
   static String bothType = "both";
-
-
 
   ///here keys of storage category type:
   static String spaceCategoryType = "Space";
@@ -121,15 +129,15 @@ abstract class ConstanceNetwork {
   static var serial = "serial";
 
   ///here keys of duration status;
-    static var dailyDurationType = "Daily";
-    static var montlyDurationType = "Monthly";
-    static var yearlyDurationType = "Yearly";
-    static var unLimtedDurationType = "unlimited";
-    
- //here block and enaeld Folder icons;
+  static var dailyDurationType = "Daily";
+  static var montlyDurationType = "Monthly";
+  static var yearlyDurationType = "Yearly";
+  static var unLimtedDurationType = "unlimited";
+
+  //here block and enaeld Folder icons;
   static String enableFolder = "assets/svgs/folder_icon.svg";
   static String disableFolder = "assets/svgs/clocked_file.svg";
-  
+
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};
     if (typeToken == 0) {
@@ -144,7 +152,8 @@ abstract class ConstanceNetwork {
       };
     } else if (typeToken == 2) {
       headers = {
-           'Authorization': 'Bearer ${SharedPref.instance.getUserToken().toString()}',
+        'Authorization':
+            'Bearer ${SharedPref.instance.getUserToken().toString()}',
       };
     } else if (typeToken == 3) {
       headers = {
@@ -152,7 +161,8 @@ abstract class ConstanceNetwork {
         'Content-Type': 'application/x-www-form-urlencoded'
       };
     } else if (typeToken == 4) {
-      print("msg_get_user_token_on_send_to_header ${SharedPref.instance.getUserToken()}");
+      print(
+          "msg_get_user_token_on_send_to_header ${SharedPref.instance.getUserToken()}");
       headers = {
         'Authorization': 'Bearer ${SharedPref.instance.getUserToken()}',
         'Content-Type': 'application/json',

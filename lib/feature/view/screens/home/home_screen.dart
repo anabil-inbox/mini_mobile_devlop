@@ -15,6 +15,7 @@ import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/empty_state/home_empty_statte.dart';
 import 'package:inbox_clients/feature/view/widgets/icon_btn.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -27,6 +28,9 @@ import 'widget/box_lv_widget.dart';
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key, this.isFromScan, this.box}) : super(key: key);
+
+  // ProfileViewModle get profileViewModel =>
+  //     Get.put<ProfileViewModle>(ProfileViewModle());
 
   static HomeViewModel homeViewModle = Get.find<HomeViewModel>();
 
@@ -154,7 +158,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       if (widget.isFromScan ?? false) {
-        Get.bottomSheet(CheckInBoxWidget(isUpdate: false, ), isScrollControlled: true);
+        Get.bottomSheet(
+            CheckInBoxWidget(
+              isUpdate: false,
+            ),
+            isScrollControlled: true);
       }
     });
   }
@@ -195,8 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(
                               height: sizeH150,
                             ),
-                            FilterWidget(
-                            ),
+                            FilterWidget(),
                             SizedBox(
                               height: sizeH10,
                             ),
@@ -204,7 +211,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                InkWell(onTap: /*onTheWayClick*/(){},child: textHintsWidget("${tr.on_the_way}", null)),
+                                InkWell(
+                                    onTap: /*onTheWayClick*/ () {},
+                                    child: textHintsWidget(
+                                        "${tr.on_the_way}", null)),
                                 textHintsWidget(
                                     "${tr.in_warehouse}", boxColorOrange),
                                 textHintsWidget("${tr.at_home}", boxColorRed),
