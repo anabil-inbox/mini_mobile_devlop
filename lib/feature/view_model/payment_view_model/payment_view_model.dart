@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -26,23 +28,25 @@ class PaymentViewModel extends GetxController {
     try {
       await payController
           ?.evaluateJavascript("document.documentElement.innerHTML")
-          .then((value) => {
+          .then((value) async => {
                 if (value.contains("success"))
                   {
-                   
-                      logger.i("Payment Success"),
-                      if (isFromNewStorage) {
-                       // Get.back();
+                    logger.i("Payment Success"),
+                    if (isFromNewStorage)
+                      {
+                        // Get.back();
                         stroageViewModel.addNewStorage(paymentId: paymentId),
-                      } else {
-                        stroageViewModel.doTaskBoxRequest(
+                      }
+                    else
+                      {
+                        await stroageViewModel.doTaskBoxRequest(
                             paymentId: paymentId,
                             task: task!,
                             boxes: boxes!,
                             beneficiaryId: beneficiaryId!),
+                        Get.back(),
                       }
-                      //http://inbox.ahdtech.com/response?id=70219f15-6599-4a66-98e7-a5d5b0a481c5&statusId=2&status=Paid
-                    
+                    //http://inbox.ahdtech.com/response?id=70219f15-6599-4a66-98e7-a5d5b0a481c5&statusId=2&status=Paid
                   }
                 else if (value.contains("failed"))
                   {

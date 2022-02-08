@@ -59,7 +59,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
 
   Future<bool> onWillPop() async {
     if (widget.isFromPayment) {
-      Get.off(HomePageHolder());
+      Get.off(() => HomePageHolder());
     } else {
       Get.back();
     }
@@ -77,7 +77,6 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
       // Future.delayed(Duration(milliseconds: 1000)).then(
       //     (value) async => {
       //       // OrderDetailesScreen.myOrderViewModle.update(),
-
       //       });
     });
   }

@@ -207,7 +207,8 @@ class BottomSheetPaymentWidget extends StatelessWidget {
 
   onClickSubmit() {
     if (storageViewModle.selectedPaymentMethod != null) {
-      if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId) {
+      if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
+          storageViewModle.selectedPaymentMethod?.id == Constance.walletId) {
         if (boxes.length > 0) {
           storageViewModle.doTaskBoxRequest(
               task: task,

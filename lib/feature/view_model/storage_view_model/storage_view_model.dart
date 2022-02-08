@@ -793,6 +793,7 @@ class StorageViewModel extends BaseController {
   Future<void> addNewStorage({String? paymentId}) async {
     try {
       //still this layer will complete when you complete order // refer to =>
+      Get.put(MyOrderViewModle());
       List<OrderItem> orderItems = [];
       userStorageCategoriesData.forEach((element) {
         OrderItem localOrderItem = OrderItem();
@@ -904,14 +905,10 @@ class StorageViewModel extends BaseController {
                 selectedDay = null,
                 // Get.close(1),
                 userStorageCategoriesData.clear(),
-                Get.put(MyOrderViewModle()),
-                Get.off(() => OrderDetailesScreen(
+                Get.offAll(() => OrderDetailesScreen(
                       orderId: value.data["order_name"],
                       isFromPayment: true,
                     )),
-                // todo this for go to order details
-                //       var SalOorder = value.data["order name"] ,
-                //Get.to(()=> OrderDetailesScreen(orderSales: ,)),
               }
             else
               {

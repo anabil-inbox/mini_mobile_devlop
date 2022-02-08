@@ -89,6 +89,7 @@ class ItemViewModle extends BaseController {
     // await getBoxBySerial(serial: box.serialNo!);
     tags.clear();
     tdName.clear();
+    
     usesBoxTags.clear();
     tdTag.clear();
     endLoading();

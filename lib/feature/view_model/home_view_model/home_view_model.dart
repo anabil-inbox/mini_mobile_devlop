@@ -108,6 +108,7 @@ class HomeViewModel extends BaseController {
       required StorageViewModel storageViewModel,
       int index = 0}) {
     try {
+      int i = 0;
       startLoading();
       refresh();
       ItemViewModle itemViewModle = Get.find<ItemViewModle>();
@@ -118,51 +119,54 @@ class HomeViewModel extends BaseController {
       controller.scannedDataStream.listen((scanData) {
         result = scanData;
       }).onData((data) async {
-        controller.dispose();
-        Get.back();
-        if (isFromAtHome ?? false) {
+        i = i + 1;
+        if (i == 1) {
+          if (isFromAtHome ?? false) {
+            update();
+          } else {}
+          userBoxess.toList()[index].storageStatus = LocalConstance.boxAtHome;
           update();
-        } else {}
-        userBoxess.toList()[index].storageStatus = LocalConstance.boxAtHome;
-        update();
-        await fromAtHome(data.code, storageViewModel);
-        await getBoxBySerial(serial: data.code ?? "")
-            .then((value) => {
-                  Logger().e(value.toJson()),
-                  if (value.id == null)
-                    {
-                      Get.off(() => HomePageHolder()),
-                    }
-                  else
-                    {
-                      Get.off(() => HomePageHolder(
-                            box: value,
-                            isFromScan: true,
-                          )),
-                      itemViewModle.tdName.text = value.storageName ?? "",
-                      value.tags?.forEach((element) {
-                        itemViewModle.usesBoxTags.add(element.tag ?? "");
-                      }),
-                      if (isFromAtHome ?? false)
-                        {
-                          Get.bottomSheet(
-                                  CheckInBoxWidget(box: value, isUpdate: false),
-                                  isScrollControlled: true)
-                              .then((value) => {}),
-                        }
-                      else
-                        {
-                          userBoxess.forEach((element) {
-                            if (element.id == value.id) {
-                              element.storageStatus = LocalConstance.boxAtHome;
-                            }
-                          }),
-                          getCustomerBoxes()
-                        }
-                    }
-                })
-            .then((value) => {});
-        update();
+          await fromAtHome(data.code, storageViewModel);
+          await getBoxBySerial(serial: data.code ?? "")
+              .then((value) async => {
+                    Logger().e(value.toJson()),
+                    if (value.id == null)
+                      {
+                        Get.off(() => HomePageHolder()),
+                      }
+                    else
+                      {
+                        Get.off(() => HomePageHolder(
+                              box: value,
+                              isFromScan: true,
+                            )),
+                        itemViewModle.tdName.text = value.storageName ?? "",
+
+
+                        if (isFromAtHome ?? false)
+                          {
+                            await Get.bottomSheet(
+                                    CheckInBoxWidget(
+                                        box: value, isUpdate: false),
+                                    isScrollControlled: true)
+                                .then((value) => {}),
+                          }
+                        else
+                          {
+                            userBoxess.forEach((element) {
+                              if (element.id == value.id) {
+                                element.storageStatus =
+                                    LocalConstance.boxAtHome;
+                              }
+                            }),
+                            getCustomerBoxes()
+                          }
+                      }
+                  })
+              .then((value) => {});
+          update();
+          // Get.back();
+        }
       });
       refreshHome();
       isLoading = false;

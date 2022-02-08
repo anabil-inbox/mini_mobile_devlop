@@ -123,19 +123,23 @@ class CheckInBoxWidget extends StatelessWidget {
                             index: homeViewModel.userBoxess
                                 .toList()
                                 .indexOf(box!));
-                        
+
                         // itemViewModle.tdName.text = box?.storageName ?? "";
                         // itemViewModle.update();
                       } else {
                         Get.back();
-                         homeViewModel.userBoxess.toList().removeAt(
+                        homeViewModel.userBoxess.toList().removeAt(
                             homeViewModel.userBoxess.toList().indexOf(box!));
-                       Logger().e(itemViewModle.tdName.text);
-                        await itemViewModle.updateBox(
-                            box: box!,
-                            index: homeViewModel.userBoxess
-                                .toList()
-                                .indexOf(box!));
+                        Logger().e(itemViewModle.tdName.text);
+                        await itemViewModle
+                            .updateBox(
+                                box: box!,
+                                index: homeViewModel.userBoxess
+                                    .toList()
+                                    .indexOf(box!))
+                            .whenComplete(() => {
+                                  itemViewModle.tdName.clear(),
+                                });
                         Get.to(NotAllowedScreen(
                           box: box!,
                         ));
