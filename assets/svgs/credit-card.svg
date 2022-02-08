@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="37.25" height="27.5" viewBox="0 0 37.25 27.5">
+  <g id="credit-card" transform="translate(0.75 0.75)">
+    <rect id="Rectangle" width="35.75" height="26" rx="2" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"/>
+    <path id="Path" d="M0,.813H35.75" transform="translate(0 8.938)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"/>
+  </g>
+</svg>

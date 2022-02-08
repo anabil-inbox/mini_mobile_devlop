@@ -1,4 +1,5 @@
 import 'package:get/utils.dart';
+import 'package:inbox_clients/feature/model/profile/get_wallet_model.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/api/model/profile_api.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -72,15 +73,31 @@ class ProfileHelper {
   Future<AppResponse> editProfile(var body) async {
     var appResponse = await ProfileApi.getInstance.editProfile(
         body: body,
-        url:
-            SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty || GetUtils.isNull(SharedPref.instance.getCurrentUserData().crNumber)
-                ? "${ConstanceNetwork.editProfilEndPoint}"
-                : "${ConstanceNetwork.editProfilCompanyEndPoint}",
+        url: SharedPref.instance
+                    .getCurrentUserData()
+                    .crNumber
+                    .toString()
+                    .isEmpty ||
+                GetUtils.isNull(
+                    SharedPref.instance.getCurrentUserData().crNumber)
+            ? "${ConstanceNetwork.editProfilEndPoint}"
+            : "${ConstanceNetwork.editProfilCompanyEndPoint}",
         header: ConstanceNetwork.header(4));
     if (appResponse.status?.success == true) {
       return appResponse;
     } else {
       return appResponse;
+    }
+  }
+
+  Future<GetWallet> getMyWallet() async {
+    var appResponse = await ProfileApi.getInstance.getMyWallet(
+        url: "${ConstanceNetwork.getMyWalletEndPoint}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      return GetWallet.fromJson(appResponse.data);
+    } else {
+      return GetWallet.fromJson(appResponse.data ?? {});
     }
   }
 }

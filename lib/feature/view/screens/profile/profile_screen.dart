@@ -14,6 +14,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 import 'address/get_address.dart';
+import 'my_wallet/my_wallet_screen.dart';
 
 class ProfileScreen extends GetWidget<ProfileViewModle> {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -21,109 +22,113 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          HeaderProfileCard(),
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.all(0),
+      body: GetBuilder<ProfileViewModle>(
+          init: ProfileViewModle(),
+          builder: (logic) {
+            return Column(
               children: [
-                SizedBox(
-                  height: sizeH12,
-                ),
-                SettingItemWithTitle(
-                  onTap: () {},
-                  trailingTitle: "0 QAR",
-                  settingTitle: "${tr.my_wallet}",
-                  iconPath: "assets/svgs/wallet.svg",
-                ),
-                SizedBox(
-                  height: sizeH12,
-                ),
-                SettingItemWithTitle(
-                  onTap: () {
-                    Get.to(() => MyRewardsScreen());
-                  },
-                  trailingTitle: "0 ${tr.point}",
-                  settingTitle: "${tr.my_rewards}",
-                  iconPath: "assets/svgs/rewareds.svg",
-                ),
-                SizedBox(
-                  height: sizeH12,
-                ),
-                SettingItem(
-                  onTap: () {
-                    changeLanguageBottomSheet(
-                      isFromINtro: false
-                    );
-                  },
-                  trailingTitle: "",
-                  settingTitle: "${tr.language}",
-                  iconPath: "assets/svgs/language_profile.svg",
-                ),
-                SizedBox(
-                  height: sizeH12,
-                ),
-                SettingItem(
-                  onTap: () {
-                    Get.to(() => GetAddressScreen());
-                  },
-                  settingTitle: "${tr.my_address}",
-                  trailingTitle: "",
-                  iconPath: "assets/svgs/adress_icon.svg",
-                ),
-                SizedBox(
-                  height: sizeH12,
-                ),
-                SettingItem(
-                  onTap: () {
-                    Get.to(() => PaymentCardScreen());
-                  },
-                  settingTitle: "${tr.payment_card}",
-                  trailingTitle: "",
-                  iconPath: "assets/svgs/payment_card.svg",
-                ),
-                SizedBox(
-                  height: sizeH12,
-                ),
-                SettingItem(
-                  onTap: () {
-                    Get.to(() => LogScreen());
-                  },
-                  settingTitle: "${tr.log}",
-                  trailingTitle: "",
-                  iconPath: "assets/svgs/log_icon.svg",
-                ),
-                SizedBox(
-                  height: sizeH12,
-                ),
-                SettingItem(
-                  onTap: () {
-                    Get.to(() => SettingsScreen());
-                  },
-                  settingTitle: "${tr.setting}",
-                  trailingTitle: "",
-                  iconPath: "assets/svgs/setting.svg",
-                ),
-                SizedBox(
-                  height: sizeH12,
-                ),
-                SettingItem(
-                  onTap: () {
-                    controller.logOutDiloag();
-                  },
-                  settingTitle: "${tr.log_out}",
-                  trailingTitle: "",
-                  iconPath: "assets/svgs/logout.svg",
-                ),
-                SizedBox(
-                  height: sizeH40,
-                ),
+                HeaderProfileCard(),
+                Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.all(0),
+                    children: [
+                      SizedBox(
+                        height: sizeH12,
+                      ),
+                      SettingItemWithTitle(
+                        onTap: () {
+                          Get.to(() => MyWalletScreen());
+                        },
+                        trailingTitle: "0 QAR",
+                        settingTitle: "${tr.my_wallet}",
+                        iconPath: "assets/svgs/wallet.svg",
+                      ),
+                      SizedBox(
+                        height: sizeH12,
+                      ),
+                      SettingItemWithTitle(
+                        onTap: () {
+                          Get.to(() => MyRewardsScreen());
+                        },
+                        trailingTitle: "0 ${tr.point}",
+                        settingTitle: "${tr.my_rewards}",
+                        iconPath: "assets/svgs/rewareds.svg",
+                      ),
+                      SizedBox(
+                        height: sizeH12,
+                      ),
+                      SettingItem(
+                        onTap: () {
+                          changeLanguageBottomSheet();
+                        },
+                        trailingTitle: "",
+                        settingTitle: "${tr.language}",
+                        iconPath: "assets/svgs/language_profile.svg",
+                      ),
+                      SizedBox(
+                        height: sizeH12,
+                      ),
+                      SettingItem(
+                        onTap: () {
+                          Get.to(() => GetAddressScreen());
+                        },
+                        settingTitle: "${tr.my_address}",
+                        trailingTitle: "",
+                        iconPath: "assets/svgs/adress_icon.svg",
+                      ),
+                      SizedBox(
+                        height: sizeH12,
+                      ),
+                      SettingItem(
+                        onTap: () {
+                          Get.to(() => PaymentCardScreen());
+                        },
+                        settingTitle: "${tr.payment_card}",
+                        trailingTitle: "",
+                        iconPath: "assets/svgs/payment_card.svg",
+                      ),
+                      SizedBox(
+                        height: sizeH12,
+                      ),
+                      SettingItem(
+                        onTap: () {
+                          Get.to(() => LogScreen());
+                        },
+                        settingTitle: "${tr.log}",
+                        trailingTitle: "",
+                        iconPath: "assets/svgs/log_icon.svg",
+                      ),
+                      SizedBox(
+                        height: sizeH12,
+                      ),
+                      SettingItem(
+                        onTap: () {
+                          Get.to(() => SettingsScreen());
+                        },
+                        settingTitle: "${tr.setting}",
+                        trailingTitle: "",
+                        iconPath: "assets/svgs/setting.svg",
+                      ),
+                      SizedBox(
+                        height: sizeH12,
+                      ),
+                      SettingItem(
+                        onTap: () {
+                          controller.logOutDiloag();
+                        },
+                        settingTitle: "${tr.log_out}",
+                        trailingTitle: "",
+                        iconPath: "assets/svgs/logout.svg",
+                      ),
+                      SizedBox(
+                        height: sizeH40,
+                      ),
+                    ],
+                  ),
+                )
               ],
-            ),
-          )
-        ],
-      ),
+            );
+          }),
     );
   }
 }

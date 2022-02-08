@@ -5,7 +5,7 @@ abstract class ConstanceNetwork {
   ///todo here insert base_url
   static String imageUrl = "http://inbox.ahdtech.com/".trim();
 
-  // contsanse for Days Constance 
+  // contsanse for Days Constance
   static var sunday = "sunday";
   static var monday = "monday";
   static var tuesday = "tuesday";
@@ -13,8 +13,9 @@ abstract class ConstanceNetwork {
   static var thuersday = "thuersday";
   static var friday = "friday";
   static var saturday = "saturday";
+
   ///todo here insert key Of Request
-  
+
   ///todo this for login request user
   static var contryCodeKey = "country_code";
   static var mobileKey = "mobile";
@@ -23,12 +24,12 @@ abstract class ConstanceNetwork {
   static var fcmKey = "fcm";
   static var emailKey = "email";
 
-
   ///todo this for add new contact key
   static var mobileNumberKey = "mobile_number";
   static var countryCodeKey = "country_code";
+
   ///todo this for add new contact key
-  
+
   ///to add here home api End Pointes :
   static String getCustomerBoxessEndPoint = "inbox_app.api.customer_storages.get_storages";
   static String getSearchBoxessEndPoint = "inbox_app.search.search.search_box";
@@ -71,7 +72,9 @@ abstract class ConstanceNetwork {
 
   static String getMyAddressEndPoint = "inbox_app.api.address.get";
 
-  static String deleteAdressEndPoint = "inbox_app.api.address.address_del"; 
+  static String getMyWalletEndPoint = "inbox_app.api.wallet.get_my_wallet";
+
+  static String deleteAdressEndPoint = "inbox_app.api.address.address_del";
 
   static String logOutEndPoint = "inbox_app.api.auth.logout";
 
@@ -98,9 +101,9 @@ abstract class ConstanceNetwork {
   static String getBeneficiaryEndPoint = "inbox_app.api.task.get_beneficiary";
 
 
-  // update & delete Box End Point : 
+  // update & delete Box End Point :
   static String updatetBoxEndPoint = "inbox_app.api.customer_storages.update_box";
-  // to go payment End Points : 
+  // to go payment End Points :
 
   static String paymentEndPoint = "inbox_app.api.get_payment_url.get_skip_cash_settings";
 
@@ -108,7 +111,7 @@ abstract class ConstanceNetwork {
   static String allOrder = "nbox_app.api.product.get_products";
   static String orderDetails = "inbox_app.api.product.get_product";
 
-  // this for constance network 
+  // this for constance network
   static String page = "page";
   static String pageSize = "page_size";
 

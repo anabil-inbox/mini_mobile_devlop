@@ -198,5 +198,7 @@
      "field_update_cart":"update cart failed. ",
      "success_update_cart":"updated cart.",
      "update":"update",
-     "checkout":"Checkout"
+     "checkout":"Checkout",
+    "item_photos":"item Photos",
+    "add_money":"Add Money"
 }
