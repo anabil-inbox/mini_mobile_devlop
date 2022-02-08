@@ -13,7 +13,6 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
-import 'package:intl/intl.dart';
 
 class CartHead extends StatelessWidget {
   const CartHead({
