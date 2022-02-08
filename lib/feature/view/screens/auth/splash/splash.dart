@@ -15,31 +15,28 @@ class SplashScreen extends GetWidget<SplashViewModle> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 3),() => moveToIntro()); 
-     return Scaffold(
-       body: Center(
-       child: SvgPicture.asset("assets/svgs/logo.svg")
-    ));
+    Future.delayed(Duration(seconds: 3), () => moveToIntro());
+    return Scaffold(
+        body: Center(child: SvgPicture.asset("assets/svgs/logo.svg")));
   }
 }
 
-moveToIntro(){  
-  
+moveToIntro() {
   String? state = SharedPref.instance.getUserLoginState();
 
   if (state?.toLowerCase() == "${ConstanceNetwork.userEnterd}") {
-        if(SharedPref.instance.getUserType() == "${ConstanceNetwork.userType}"){
-            Get.off(() => UserRegisterScreen());
-        }else if(SharedPref.instance.getUserType() == "${ConstanceNetwork.bothType}"){
-            Get.off(() => UserBothLoginScreen());
-        }else if(SharedPref.instance.getUserType() == "${ConstanceNetwork.companyType }"){
-            Get.off(() => RegisterCompanyScreen());
-        }
-    
-  }else if(state?.toLowerCase() == "${ConstanceNetwork.userLoginedState}"){
+    if (SharedPref.instance.getUserType() == "${ConstanceNetwork.userType}") {
+      Get.off(() => UserRegisterScreen());
+    } else if (SharedPref.instance.getUserType() ==
+        "${ConstanceNetwork.bothType}") {
+      Get.off(() => UserBothLoginScreen());
+    } else if (SharedPref.instance.getUserType() ==
+        "${ConstanceNetwork.companyType}") {
+      Get.off(() => RegisterCompanyScreen());
+    }
+  } else if (state?.toLowerCase() == "${ConstanceNetwork.userLoginedState}") {
     Get.off(() => HomePageHolder());
-  }else{
+  } else {
     Get.off(() => IntroScreen(type: SharedPref.instance.getUserType()));
   }
-  
 }

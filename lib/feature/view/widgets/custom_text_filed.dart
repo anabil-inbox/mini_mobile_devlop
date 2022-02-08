@@ -7,8 +7,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/string.dart';
 
-class CustomTextFormFiled extends StatelessWidget
-    /*with AppDimen, AppStyle */{
+class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
   final String? label;
   final TextInputType? keyboardType;
   final bool? obscureText, isBorder, isFill, isInputFormatters;
@@ -57,7 +56,8 @@ class CustomTextFormFiled extends StatelessWidget
     this.nexFocusNode,
     this.hintStyle,
     this.autoFocus = false,
-    this.icon, this.iconSize,
+    this.icon,
+    this.iconSize,
   }) : super(key: key);
 
   @override
@@ -121,7 +121,6 @@ class CustomTextFormFiled extends StatelessWidget
 
   InputDecoration inputDecorationWithIcon() {
     return InputDecoration(
-        suffixIconColor: suffixIconColor,
         prefixIcon: Icon(
           icon,
           color: iconColor,
@@ -130,22 +129,22 @@ class CustomTextFormFiled extends StatelessWidget
         prefixIconConstraints: icon == null
             ? BoxConstraints(maxWidth: 0, minWidth: 0)
             : BoxConstraints(
-          minWidth: 38,
-          minHeight: 25,
-        ),
+                minWidth: 38,
+                minHeight: 25,
+              ),
         counterText: "",
         isDense: true,
         filled: isFill,
         errorStyle: TextStyle(
-          /*  height: 0,*/ /*backgroundColor: colorBackground*/
-        ),
+            /*  height: 0,*/ /*backgroundColor: colorBackground*/
+            ),
         enabledBorder: isFill!
             ? UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeRadius!),
-            borderSide: BorderSide(color: colorTrans))
+                borderRadius: BorderRadius.circular(sizeRadius!),
+                borderSide: BorderSide(color: colorTrans))
             : UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeRadius!),
-            borderSide: BorderSide(color: colorBorderTextFiled)),
+                borderRadius: BorderRadius.circular(sizeRadius!),
+                borderSide: BorderSide(color: colorBorderTextFiled)),
         fillColor: fillColor ?? colorBackground,
         contentPadding: EdgeInsets.only(
             left: isSmallPaddingWidth! ? sizeW10! : sizeW40!,
@@ -154,23 +153,23 @@ class CustomTextFormFiled extends StatelessWidget
             bottom: isSmallPadding! ? sizeW12! : sizeH20!),
         hintText: label,
         hintStyle:
-        hintStyle ?? textInputFiledHint()?.copyWith(color: colorTextHint),
+            hintStyle ?? textInputFiledHint()?.copyWith(color: colorTextHint),
         focusedBorder: isBorder!
             ? UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeRadius!),
-            borderSide:
-            BorderSide(color: fillColor ?? colorPrimary, width: 2))
+                borderRadius: BorderRadius.circular(sizeRadius!),
+                borderSide:
+                    BorderSide(color: fillColor ?? colorPrimary, width: 2))
             : InputBorder.none,
         errorBorder: isBorder!
             ? UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeRadius!),
-            borderSide:
-            BorderSide(color: fillColor ?? colorPrimary, width: 2))
+                borderRadius: BorderRadius.circular(sizeRadius!),
+                borderSide:
+                    BorderSide(color: fillColor ?? colorPrimary, width: 2))
             : InputBorder.none,
         border: isBorder!
             ? UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeRadius!),
-            borderSide: BorderSide(color: colorBorderTextFiled))
+                borderRadius: BorderRadius.circular(sizeRadius!),
+                borderSide: BorderSide(color: colorBorderTextFiled))
             : InputBorder.none);
   }
 
@@ -179,17 +178,16 @@ class CustomTextFormFiled extends StatelessWidget
         counterText: "",
         isDense: true,
         filled: isFill,
-        
         errorStyle: TextStyle(
-          /*  height: 0,*/ /*backgroundColor: colorBackground*/
-        ),
+            /*  height: 0,*/ /*backgroundColor: colorBackground*/
+            ),
         enabledBorder: isFill!
             ? UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeRadius!),
-            borderSide: BorderSide(color: colorTrans))
+                borderRadius: BorderRadius.circular(sizeRadius!),
+                borderSide: BorderSide(color: colorTrans))
             : UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeRadius!),
-            borderSide: BorderSide(color: colorBorderTextFiled)),
+                borderRadius: BorderRadius.circular(sizeRadius!),
+                borderSide: BorderSide(color: colorBorderTextFiled)),
         fillColor: fillColor ?? colorBackground,
         contentPadding: EdgeInsets.only(
             left: isSmallPaddingWidth! ? sizeW10! : sizeW40!,
@@ -200,20 +198,20 @@ class CustomTextFormFiled extends StatelessWidget
         hintStyle: hintStyle ?? textInputFiledHint(),
         errorBorder: isBorder!
             ? UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeRadius!),
-            borderSide:
-            BorderSide(color: fillColor ?? colorPrimary, width: 2))
+                borderRadius: BorderRadius.circular(sizeRadius!),
+                borderSide:
+                    BorderSide(color: fillColor ?? colorPrimary, width: 2))
             : InputBorder.none,
         focusedBorder: isBorder!
             ? UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeRadius!),
-            borderSide:
-            BorderSide(color: fillColor ?? colorPrimary, width: 2))
+                borderRadius: BorderRadius.circular(sizeRadius!),
+                borderSide:
+                    BorderSide(color: fillColor ?? colorPrimary, width: 2))
             : InputBorder.none,
         border: isBorder!
             ? UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeRadius!),
-            borderSide: BorderSide(color: colorBorderTextFiled))
+                borderRadius: BorderRadius.circular(sizeRadius!),
+                borderSide: BorderSide(color: colorBorderTextFiled))
             : InputBorder.none);
   }
 }
