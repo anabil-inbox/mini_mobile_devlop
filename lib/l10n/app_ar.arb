@@ -191,5 +191,11 @@
     "ready_to_pickup":"جاهز للاستلام",
     "add_your_item_in_box" : "قم باضافة عنصر جديد للصندوق",
     "you_have_to_add_valid_space" : "يجب ادخال مساحة صحيحة",
-    "total_price" : "اجمالي السعر"
+    "total_price" : "اجمالي السعر",
+    "success_add_to_cart":"تم الاضافة الى السلة .",
+    "field_add_to_cart":"فشلت عملية الاضافة الى السلة .",
+    "field_update_cart":"فشل تحديث الكارت. ",
+     "success_update_cart":"نجح تحديث الكارت.",
+    "update":"تعديل",
+    "checkout":"شراء"
 }

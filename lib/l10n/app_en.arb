@@ -192,5 +192,11 @@
     "ready_to_pickup" : "Ready To Pickup",
      "add_your_item_in_box" : "Add your item  in box",
     "you_have_to_add_valid_space" : "you Have to Add Valid Space",
-    "total_price" : "Total Price"
+    "total_price" : "Total Price",
+    "success_add_to_cart":"added to cart.",
+     "field_add_to_cart":"Add to cart failed. ",
+     "field_update_cart":"update cart failed. ",
+     "success_update_cart":"updated cart.",
+     "update":"update",
+     "checkout":"Checkout"
 }

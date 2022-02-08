@@ -20,6 +20,7 @@ import 'package:inbox_clients/feature/view_model/cart_view_model/cart_view_model
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
+import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -30,49 +31,54 @@ import 'package:inbox_clients/util/font_dimne.dart';
 import '../../secondery_button.dart';
 
 class RecallBoxProcessSheet extends StatelessWidget {
-  RecallBoxProcessSheet(
-      {Key? key,
-      required this.box,
-      this.index,
-      required this.task,
-      required this.boxes,
-      this.items,
-      this.isFetchTask = false})
-      : super(key: key);
+  RecallBoxProcessSheet({
+    Key? key,
+    required this.box,
+    this.index,
+    required this.task,
+    required this.boxes,
+    this.items,
+    this.isFetchTask = false,
+    this.isFromCart = false,
+    this.cartModel,
+  }) : super(key: key);
 
   final Box? box;
   final int? index;
   static HomeViewModel _homeViewModel = Get.find<HomeViewModel>();
   static StorageViewModel _storageViewModel = Get.find<StorageViewModel>();
-  static CartViewModel _cartViewModel = Get.put<CartViewModel>(CartViewModel()) ;
+  static CartViewModel _cartViewModel = Get.put<CartViewModel>(CartViewModel());
 
   final Task task;
   final List<BoxItem>? items;
   final List<Box> boxes;
   bool? isFetchTask;
+  final bool? isFromCart;
+  final CartModel? cartModel;
 
   Widget get actionBtn => Container(
         margin: EdgeInsets.symmetric(horizontal: sizeW10!),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: PrimaryButton(
-                  isExpanded: true,
-                  isLoading: false,
-                  onClicked: onClickBreakSeal,
-                  textButton: task.id == LocalConstance.recallId
-                      ? "${tr.recall_now}"
-                      : task.id == LocalConstance.pickupId
-                          ? "${tr.pickup}"
-                          : task.id == LocalConstance.destroyId
-                              ? "${tr.destory}"
-                              : task.id == LocalConstance.terminateId
-                                  ? "${tr.terminate}"
-                                  : task.id == LocalConstance.giveawayId
-                                      ? "${tr.giveaway}"
-                                      : "${tr.fetch}"),
-            ),
+            if (!isFromCart!)
+              Expanded(
+                child: PrimaryButton(
+                    isExpanded: true,
+                    isLoading: false,
+                    onClicked: onClickBreakSeal,
+                    textButton: task.id == LocalConstance.recallId
+                        ? "${tr.recall_now}"
+                        : task.id == LocalConstance.pickupId
+                            ? "${tr.pickup}"
+                            : task.id == LocalConstance.destroyId
+                                ? "${tr.destory}"
+                                : task.id == LocalConstance.terminateId
+                                    ? "${tr.terminate}"
+                                    : task.id == LocalConstance.giveawayId
+                                        ? "${tr.giveaway}"
+                                        : "${tr.fetch}"),
+              ),
             SizedBox(
               width: sizeW10,
             ),
@@ -80,7 +86,8 @@ class RecallBoxProcessSheet extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: SeconderyFormButton(
-                  buttonText: "${tr.add_to_cart}",
+                  buttonText:
+                      (!isFromCart!) ? "${tr.add_to_cart}" : "${tr.update}",
                   onClicked: onClickBringBox,
                 ),
               ),
@@ -121,6 +128,16 @@ class RecallBoxProcessSheet extends StatelessWidget {
                           _storageViewModel.selectedDay = null;
                           _storageViewModel.selectedStringOption.clear();
                           _storageViewModel.getStoreAddress();
+                          if (isFromCart!) {
+                            _storageViewModel.selectedDateTime = DateTime.parse(
+                                "${cartModel?.orderTime?.delivery.toString()}");
+                            _storageViewModel.selectedAddress =
+                                cartModel!.address;
+                            _storageViewModel.selectedDay =
+                                cartModel!.orderTime;
+                            task.vas = cartModel?.task?.vas;
+                            task.areaZones = cartModel?.task?.areaZones;
+                          }
                         });
                       },
                       builder: (_) {
@@ -377,11 +394,43 @@ class RecallBoxProcessSheet extends StatelessWidget {
   }
 
   onClickBringBox() {
-    final task = _homeViewModel.searchTaskById(taskId: LocalConstance.giveawayId);
-    var selectedDay = _storageViewModel.selectedDay;
-    Day day = Day(to:"${selectedDay?.to}" ,from: "${selectedDay?.from}" ,delivery:"${_storageViewModel.selectedDateTime.toString()}",);
-    _cartViewModel.addToCart((GetUtils.isNull(boxes) || boxes.isEmpty) ? [box!]:boxes, [], _storageViewModel.selectedAddress, task, day, LocalConstance.giveawayId);
-    // Get.back();
-    _cartViewModel.getMyCart();
+    //here action of add to cart btn
+    if (!isFromCart!) {
+      // final task = _homeViewModel.searchTaskById(taskId: LocalConstance.giveawayId);
+      if (_storageViewModel.isValidateTask(task: task, boxess: boxes)) {
+        var selectedDay = _storageViewModel.selectedDay;
+        Day day = Day(
+          to: "${selectedDay?.to}",
+          from: "${selectedDay?.from}",
+          delivery: "${_storageViewModel.selectedDateTime.toString()}",
+        );
+        _cartViewModel.addToCart(
+            (GetUtils.isNull(boxes) || boxes.isEmpty) ? [box!] : boxes,
+            [],
+            _storageViewModel.selectedAddress,
+            task,
+            day,
+            task.taskName.toString());
+        // Get.back();
+        _cartViewModel.getMyCart();
+      }
+    } else {
+      //here action of update item cart
+      var selectedDay = _storageViewModel.selectedDay;
+      Day day = Day(
+        to: "${selectedDay?.to}",
+        from: "${selectedDay?.from}",
+        delivery: "${_storageViewModel.selectedDateTime.toString()}",
+      );
+      _cartViewModel.updateItemCart(CartModel(
+          id: cartModel?.id,
+          userId: cartModel?.userId,
+          task: task,
+          box: cartModel?.box,
+          boxItem: cartModel?.boxItem,
+          orderTime: day,
+          address: _storageViewModel.selectedAddress,
+          title: cartModel?.task?.taskName));
+    }
   }
 }

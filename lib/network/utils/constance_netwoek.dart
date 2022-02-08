@@ -103,7 +103,11 @@ abstract class ConstanceNetwork {
   // to go payment End Points : 
 
   static String paymentEndPoint = "inbox_app.api.get_payment_url.get_skip_cash_settings";
-  
+
+  //product end point
+  static String allOrder = "nbox_app.api.product.get_products";
+  static String orderDetails = "inbox_app.api.product.get_product";
+
   // this for constance network 
   static String page = "page";
   static String pageSize = "page_size";
@@ -135,7 +139,9 @@ abstract class ConstanceNetwork {
  //here block and enaeld Folder icons;
   static String enableFolder = "assets/svgs/folder_icon.svg";
   static String disableFolder = "assets/svgs/clocked_file.svg";
-  
+
+  //here order keyes
+  static String productId = "product_id";
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};
     if (typeToken == 0) {
