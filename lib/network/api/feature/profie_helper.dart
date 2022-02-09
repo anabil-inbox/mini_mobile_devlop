@@ -100,4 +100,28 @@ class ProfileHelper {
       return GetWallet.fromJson(appResponse.data ?? {});
     }
   }
+
+  Future<AppResponse> depositMoneyToWallet(Map<String, dynamic> body) async {
+    var appResponse = await ProfileApi.getInstance.depositMoneyToWallet(
+        body: body,
+        url: "${ConstanceNetwork.depositMoneyEndPoint}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
+  Future<AppResponse> checkDeposit(Map<String, dynamic> body) async {
+    var appResponse = await ProfileApi.getInstance.checkDeposit(
+        body: body,
+        url: "${ConstanceNetwork.checkDepositEndPoint}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
 }

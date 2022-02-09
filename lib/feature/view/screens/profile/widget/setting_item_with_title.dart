@@ -54,6 +54,7 @@ class SettingItemWithTitle extends StatelessWidget {
                       Text(
                         "$trailingTitle",
                         style: TextStyle(color: colorPrimary),
+                        // overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(
                         width: sizeW10,
@@ -61,7 +62,7 @@ class SettingItemWithTitle extends StatelessWidget {
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        size: 16,
+                        size: 15,
                       ),
                       SizedBox(
                         width: sizeW10,

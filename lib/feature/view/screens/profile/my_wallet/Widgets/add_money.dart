@@ -20,9 +20,7 @@ class AddMoneyItem extends StatelessWidget {
           SizedBox(
             height: sizeH16,
           ),
-          IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset("assets/svgs/credit-card.svg")),
+          SvgPicture.asset("assets/svgs/credit-card.svg"),
           SizedBox(
             height: sizeH16,
           ),

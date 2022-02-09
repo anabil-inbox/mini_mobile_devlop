@@ -9,7 +9,8 @@ String? txtWait = "please wait...";
 String? txtLogout = "Logout";
 String? txtLogoutHint = "are you sure that you want Logout";
 String? txtConnection = " انت بلا انترنت  ";
-String? txtConnectionNote = " كل العمليات التي ستقوم بها سيتم تخزينها على الهاتف وفي حال اتصالك بالانترنت سيتم تنفيذها  ";
+String? txtConnectionNote =
+    " كل العمليات التي ستقوم بها سيتم تخزينها على الهاتف وفي حال اتصالك بالانترنت سيتم تنفيذها  ";
 
 //todo this for login page
 String? txtWelcome = "Welcome,";
@@ -18,14 +19,13 @@ String? txtSignIn = "Sign In";
 String? txtSignInContinue = "Sign in to Continue";
 String? txtName = "Name";
 String? txtEmail = "Email";
-String? txtPassword= "Password";
-String? txtForgotPassword= "Forgot Password?";
-String? txtOr= "-OR-";
-String? txtFacebook= "Sign In with Facebook";
-String? txtGoogle= "Sign In with Google";
-String? txtError= "Error";
-String? txtSuccess= "Success";
-
+String? txtPassword = "Password";
+String? txtForgotPassword = "Forgot Password?";
+String? txtOr = "-OR-";
+String? txtFacebook = "Sign In with Facebook";
+String? txtGoogle = "Sign In with Google";
+String? txtError = "Error";
+String? txtSuccess = "Success";
 
 //todo this for home_data page
 String? txtCategories = "Categories";
@@ -48,24 +48,24 @@ String? txtCards = "Cards";
 String? txtNotifications = "Notifications";
 String? txtLogOut = "Log Out";
 
-
 //todo this for order
 String? txtTrackOrder = "Track Order";
 String? txtOrderSigned = "Order Signed";
 String? txtOrderProcessed = "Order Processed";
-String? txtShipped  = "Shipped ";
-String? txtOutForDelivery  = "Out for delivery ";
-String? txtDelivered  = "Delivered";
-String? txtNEW  = "NEW";
+String? txtShipped = "Shipped ";
+String? txtOutForDelivery = "Out for delivery ";
+String? txtDelivered = "Delivered";
+String? txtNEW = "NEW";
 String? txtADD = "ADD";
-
+String? txtAddAmount = "Add Amount";
 
 //todo this for product details
-String? txtLoremIpsome = """Nike Dri-FIT is a polyester fabric designed to help you keep dry so you can more comfortably work harder, longer.
+String? txtLoremIpsome =
+    """Nike Dri-FIT is a polyester fabric designed to help you keep dry so you can more comfortably work harder, longer.
 Nike Dri-FIT is a polyester fabric designed to help you keep dry so you can more comfortably work harder, longer.
 Nike Dri-FIT is a polyester fabric designed to help you keep dry so you can more comfortably work harder, longer.
 """;
-String? txtDetails ="Details";
-String? txtSize ="Size";
-String? txtColors ="Color";
-String? txtColor ="Select Product Color";
+String? txtDetails = "Details";
+String? txtSize = "Size";
+String? txtColors = "Color";
+String? txtColor = "Select Product Color";

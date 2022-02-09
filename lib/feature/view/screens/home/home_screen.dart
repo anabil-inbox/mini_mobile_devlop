@@ -163,7 +163,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       if (widget.isFromScan ?? false) {
-        Get.bottomSheet(CheckInBoxWidget(isUpdate: false, ), isScrollControlled: true);
+        Get.bottomSheet(
+            CheckInBoxWidget(
+              isUpdate: false,
+            ),
+            isScrollControlled: true);
       }
     });
   }

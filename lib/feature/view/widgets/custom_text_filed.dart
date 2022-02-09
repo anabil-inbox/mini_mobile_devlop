@@ -1,11 +1,10 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:inbox_clients/util/string.dart';
 
 class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
   final String? label;
@@ -15,7 +14,7 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
   final Function(String)? onSubmitted;
   final Function(String)? onChange;
   final TextEditingController? controller;
-  final Color? fillColor, iconColor, suffixIconColor;
+  final Color? fillColor, iconColor, suffixIconColor, enabledBorderColor;
   final VoidCallback? fun;
   final TextInputAction? textInputAction;
   final bool? isSmallPadding, isSmallPaddingWidth, isReadOnly;
@@ -28,37 +27,38 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
   final IconData? icon;
   final double? iconSize;
 
-  CustomTextFormFiled({
-    Key? key,
-    this.label,
-    this.keyboardType,
-    this.obscureText = false,
-    this.customValid,
-    this.controller,
-    this.isBorder = true,
-    this.isFill = false,
-    this.fillColor,
-    this.isInputFormatters = false,
-    this.fun,
-    this.textInputAction,
-    this.isSmallPadding = false,
-    this.maxLine,
-    this.isSmallPaddingWidth = false,
-    this.minLine,
-    this.isReadOnly = false,
-    this.textAlign,
-    this.maxLength,
-    this.onSubmitted,
-    this.iconColor,
-    this.suffixIconColor,
-    this.onChange,
-    this.focusNode,
-    this.nexFocusNode,
-    this.hintStyle,
-    this.autoFocus = false,
-    this.icon,
-    this.iconSize,
-  }) : super(key: key);
+  const CustomTextFormFiled(
+      {Key? key,
+      this.label,
+      this.keyboardType,
+      this.obscureText = false,
+      this.customValid,
+      this.controller,
+      this.isBorder = true,
+      this.isFill = false,
+      this.fillColor,
+      this.isInputFormatters = false,
+      this.fun,
+      this.textInputAction,
+      this.isSmallPadding = false,
+      this.maxLine,
+      this.isSmallPaddingWidth = false,
+      this.minLine,
+      this.isReadOnly = false,
+      this.textAlign,
+      this.maxLength,
+      this.onSubmitted,
+      this.iconColor,
+      this.suffixIconColor,
+      this.onChange,
+      this.focusNode,
+      this.nexFocusNode,
+      this.hintStyle,
+      this.autoFocus = false,
+      this.icon,
+      this.iconSize,
+      this.enabledBorderColor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +84,7 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
       // ignore: missing_return
       validator: (String? value) {
         if (value!.isEmpty || value == "") {
-          return messageFiled?.tr;
+          // return messageFiled?.tr;
         } else if (customValid != null) {
           return customValid!(value);
         } else {
@@ -178,16 +178,20 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
         counterText: "",
         isDense: true,
         filled: isFill,
-        errorStyle: TextStyle(
+        errorStyle: const TextStyle(
             /*  height: 0,*/ /*backgroundColor: colorBackground*/
             ),
-        enabledBorder: isFill!
-            ? UnderlineInputBorder(
+        enabledBorder: enabledBorderColor != null
+            ? OutlineInputBorder(
                 borderRadius: BorderRadius.circular(sizeRadius!),
-                borderSide: BorderSide(color: colorTrans))
-            : UnderlineInputBorder(
-                borderRadius: BorderRadius.circular(sizeRadius!),
-                borderSide: BorderSide(color: colorBorderTextFiled)),
+                borderSide: BorderSide(color: enabledBorderColor!))
+            : isFill!
+                ? UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(sizeRadius!),
+                    borderSide: BorderSide(color: colorTrans))
+                : UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(sizeRadius!),
+                    borderSide: BorderSide(color: colorBorderTextFiled)),
         fillColor: fillColor ?? colorBackground,
         contentPadding: EdgeInsets.only(
             left: isSmallPaddingWidth! ? sizeW10! : sizeW40!,

@@ -19,6 +19,7 @@ import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/model/profile/get_wallet_model.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/widgets/area_zone_widget.dart';
+import 'package:inbox_clients/feature/view/screens/profile/my_wallet/Widgets/deposit_money_to_wallet_webView.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -28,6 +29,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/sh_util.dart';
+import 'package:inbox_clients/util/string.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -208,8 +210,7 @@ class ProfileViewModle extends BaseController {
   //-- for log out
 
   logOutDiloag() {
-    Get.bottomSheet(
-     GlobalBottomSheet(
+    Get.bottomSheet(GlobalBottomSheet(
       title: "${tr.are_you_sure_you_want_to_log_out}",
       onOkBtnClick: () {
         logOut();
@@ -242,7 +243,7 @@ class ProfileViewModle extends BaseController {
                     .setUserLoginState("${ConstanceNetwork.userEnterd}"),
                 Get.offAll(() => UserBothLoginScreen()),
                 update(),
-               // snackError("${tr.error_occurred}", "${value.status!.message}"),
+                // snackError("${tr.error_occurred}", "${value.status!.message}"),
               }
           });
     } catch (e) {}
@@ -600,6 +601,86 @@ class ProfileViewModle extends BaseController {
       isLoading = false;
       update();
       Logger().d("test_3");
+    }
+  }
+
+  TextEditingController amountController = TextEditingController();
+  String? url = "";
+  void depositMoneyToWallet() async {
+    isLoading = true;
+    Map<String, dynamic> map = {
+      "${ConstanceNetwork.amountKey}": "${amountController.text.toString()}",
+    };
+    try {
+      await ProfileHelper.getInstance.depositMoneyToWallet(map).then((value) {
+        if (!GetUtils.isNull(value.data)) {
+          isLoading = false;
+          url = value.data["payment_url"].toString();
+          Logger().d("url : ${value.data["payment_url"].toString()}");
+          amountController.clear();
+          update();
+          Get.off(DepositMoneyToWalletWebView(
+              url: value.data["payment_url"].toString()));
+        } else {
+          isLoading = false;
+          amountController.clear();
+          update();
+        }
+      }).catchError((onError) {
+        Logger().d(onError.toString());
+        isLoading = false;
+        update();
+      });
+    } on Exception catch (e) {
+      // TODO
+      Logger().d(e.toString());
+      isLoading = false;
+      update();
+    }
+  }
+
+  String? depositStatus = "";
+  String? paymentId = "";
+
+  void checkDeposit() async {
+    isLoading = true;
+    if (depositStatus!.contains("Paid")) {
+      depositStatus = 'success';
+    } else {
+      depositStatus = 'fail';
+    }
+    Map<String, dynamic> map = {
+      "${ConstanceNetwork.statusKey}": "${depositStatus.toString()}",
+      "${ConstanceNetwork.idKey}": "${paymentId.toString()}",
+    };
+    try {
+      await ProfileHelper.getInstance.checkDeposit(map).then((value) {
+        if (!GetUtils.isNull(value.data)) {
+          isLoading = false;
+          Logger().d(
+              "deposit Status : ${depositStatus} \n payment Id : ${paymentId}");
+          Logger().d(
+              "depositStatus : ${value.data["_server_messages"].toString()}");
+
+          getMyWallet();
+          snackSuccess("$txtSuccess", "$txtSuccess");
+          Get.back();
+          update();
+        } else {
+          isLoading = false;
+          snackError("$txtError", "$txtError");
+          update();
+        }
+      }).catchError((onError) {
+        Logger().d(onError.toString());
+        isLoading = false;
+        update();
+      });
+    } on Exception catch (e) {
+      // TODO
+      Logger().d(e.toString());
+      isLoading = false;
+      update();
     }
   }
 }
