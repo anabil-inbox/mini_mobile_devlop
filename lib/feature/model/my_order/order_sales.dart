@@ -74,7 +74,8 @@ class OrderItem {
     this.itemStatus,
     this.isParent,
     this.itemsList,
-    this.options
+    this.options,
+    this.boxes
   });
 
   String? itemParent;
@@ -86,6 +87,7 @@ class OrderItem {
   String? groupId;
   List<String>? options;
   String? itemStatus;
+  List<String>? boxes;
   dynamic isParent;
   List<ItemsList>? itemsList;
 
@@ -96,6 +98,7 @@ class OrderItem {
         price: json["price"],
         options: json["options"] == null ? [] : List<String>.from(json["options"].map((x) => x)),
         quantity: json["quantity"],
+        boxes: json["boxes"] == null ? [] : List<String>.from(json["boxes"].map((x) => x)),
         totalPrice: json["totalPrice"],
         groupId: json["group_id"],
         itemStatus: json["item_status"] == null ? null : json["item_status"],

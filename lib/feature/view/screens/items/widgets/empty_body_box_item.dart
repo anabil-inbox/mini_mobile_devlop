@@ -16,7 +16,6 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
-import 'package:logger/logger.dart';
 
 class EmptyBodyBoxItem extends StatelessWidget {
   const EmptyBodyBoxItem({Key? key, required this.box, required this.isEnabel})

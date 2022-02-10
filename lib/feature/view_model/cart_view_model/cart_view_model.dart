@@ -3,14 +3,69 @@ import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/local_database/cart_helper.dart';
 import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
 class CartViewModel extends GetxController {
+  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+
+  bool isLoading = false;
+
+  // start Loaging Function ::
+  void startLoading() {
+    isLoading = true;
+    update();
+  }
+
+  // end Loaging Function ::
+  void endLoading() {
+    isLoading = false;
+    update();
+  }
+
+  Future<void> doOnCheckOut() async {
+    startLoading();
+    try {
+      for (var i = 0; i < cartList.length; i++) {
+       
+        storageViewModel.selectedPaymentMethod?.id = LocalConstance.cash;
+        storageViewModel.selectedAddress = cartList[i].address;
+        await storageViewModel.doTaskBoxRequest(
+          isFromCart: true,
+          task: cartList[i].task!,
+          boxes: cartList[i].box!,
+          beneficiaryId: "",
+          selectedItems: cartList[i].boxItem,
+        );
+        deleteItemCart(cartList[i]);
+      }
+      snackSuccess("", "Checkout Succeffully");
+      Get.back();
+
+      // List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
+      // Map<String, dynamic> map = {};
+      // List data = [];
+      // for (var i = 0; i < cartList.length; i++) {
+      //   for (var i = 0; i < cartList[i].boxItem!.length; i++) {
+      //   }
+      //   map["type[$i]"] = cartList[i].task?.id;
+      //   map["address[$i]"] = cartList[i].address?.id;
+      //   mapSalesOrder.add(map);
+      // }
+    } catch (e) {
+      printError();
+    }
+
+    endLoading();
+  }
+
   List<CartModel> cartList = <CartModel>[];
+
   @override
   void onInit() {
     super.onInit();
@@ -72,27 +127,27 @@ class CartViewModel extends GetxController {
   //todo this for update item from cart [local data]
   void updateItemCart(CartModel cartModel) {
     CartHelper.instance.updateItemCart(cartModel).then((value) {
-      Logger().d("updateCart${value}");
+      Logger().d("updateCart$value");
       if (value >= 1) {
         //todo success state
         Logger().d("updateCart_1${cartModel.toJson()}");
-          snackSuccess(tr.success, tr.success_update_cart);
-          getMyCart();
-          update();
+        snackSuccess(tr.success, tr.success_update_cart);
+        getMyCart();
+        update();
       } else {
         //todo fail state
         Logger().d("updateCart_2${cartModel.toJson()}");
-         snackError(tr.error_occurred, tr.field_update_cart);
+        snackError(tr.error_occurred, tr.field_update_cart);
       }
     }).catchError((onError) {
       Logger().d("updateCart_3${onError.toString()}");
     });
   }
 
-  void getMyCart() async{
+  void getMyCart() async {
     await CartHelper.instance.getMyCart().then((List<CartModel> value) {
       //todo success state
-       cartList = value;
+      cartList = value;
       // for (var item in value) {
       //   cartList.add(item);
       //   Logger().d(item.toJson());

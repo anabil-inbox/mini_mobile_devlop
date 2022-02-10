@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/widgets/my_order_address_widget.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/widgets/my_order_box_item.dart';
+import 'package:inbox_clients/feature/view/screens/my_orders/widgets/new_order_item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/price_bottom_sheet_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
@@ -28,6 +29,7 @@ class OrderDetailesScreen extends StatefulWidget {
 }
 
 class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
+
   Widget get bodyOrderDetailes {
     //to do this when The Status Is An Task :
     if (GetUtils.isNull(
@@ -42,14 +44,35 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
           return ListView(
             primary: false,
             shrinkWrap: true,
+            // home.tasksDone
+            //             .asMap()
+            //             .map((i, element) => MapEntry(
+            //                 i,
+            //                 HomeCard(
+            //                   isFromCompleted: true,
+            //                   index: i,
+            //                   task: element,
+            //                 )))
+            //             .values
+            //             .toList()),
             children: myOrder.newOrderSales.orderItems!
-                .map((e) => GetBuilder<MyOrderViewModle>(
+                .asMap()
+                .map((i, element) => MapEntry(i, GetBuilder<MyOrderViewModle>(
                       builder: (controller) {
-                        return MyOrderBoxItem(
-                          orderItem: e,
-                        );
+                        if (element.item == "shipping_sv") {
+                          return const SizedBox();
+                        } else if (controller.isTask(
+                            orderItem: element.item ?? "")) {
+                          return NewOrderItemTask(
+                            index: i,
+                            orderItem: element,
+                          );
+                        } else {
+                          return MyOrderBoxItem(orderItem: element);
+                        }
                       },
-                    ))
+                    )))
+                .values
                 .toList(),
           );
         },

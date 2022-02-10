@@ -35,6 +35,6 @@ class LocalConstance{
 
 
   // to add here payment Methodes : 
-  
+  static String cash = "Cash";
 
 }

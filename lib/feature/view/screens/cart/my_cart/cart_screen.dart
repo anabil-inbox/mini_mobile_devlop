@@ -21,14 +21,6 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     // Get.bottomSheet(
-      //     //  // NotifayForNewStorage(),
-      //     //   isScrollControlled: true
-      //     // );
-      //   },
-      // ),
       appBar: CustomAppBarWidget(
         isCenterTitle: true,
         titleWidget: CustomTextView(
@@ -51,32 +43,49 @@ class CartScreen extends StatelessWidget {
             cartViewModel.getMyCart();
           },
           builder: (logic) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: sizeH20!),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: sizeH20,
+            return Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: sizeH20!),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: sizeH20,
+                      ),
+                      if (!GetUtils.isNull(logic.cartList) &&
+                          logic.cartList.length != 0)
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: logic.cartList.length,
+                            shrinkWrap: true,
+                            clipBehavior: Clip.hardEdge,
+                            physics: customScrollViewIOS(),
+                            itemBuilder: (context, index) => CartHead(
+                                cartViewModel: logic,
+                                cartModel: logic.cartList[index]),
+                          ),
+                        ),
+                      SizedBox(
+                        height: sizeH20,
+                      ),
+                    ],
                   ),
-                   if(!GetUtils.isNull(logic.cartList)  && logic.cartList.length != 0)
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: logic.cartList.length,
-                      shrinkWrap: true,
-                      clipBehavior: Clip.hardEdge,
-                      physics: customScrollViewIOS(),
-                      itemBuilder: (context, index) => CartHead(cartViewModel:logic,cartModel:logic.cartList[index]),
-                    ),
-                  ),
-                  SizedBox(
-                    height: sizeH20,
-                  ),
-                  PrimaryButton(textButton: "${tr.checkout}", isLoading: false, onClicked: (){}, isExpanded: true),
-                  SizedBox(
-                    height: sizeH20,
-                  ),
-                ],
-              ),
+                ),
+                Positioned(
+                  bottom: padding20,
+                  right: padding20,
+                  left: padding20,
+                  child: PrimaryButton(
+                      textButton: "${tr.checkout}",
+                      isLoading: cartViewModel.isLoading,
+                      onClicked: cartViewModel.cartList.isNotEmpty
+                          ? () async {
+                              await cartViewModel.doOnCheckOut();
+                            }
+                          : () {},
+                      isExpanded: true),
+                )
+              ],
             );
           }),
     );

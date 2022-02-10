@@ -211,12 +211,14 @@ class BottomSheetPaymentWidget extends StatelessWidget {
           storageViewModle.selectedPaymentMethod?.id == Constance.walletId) {
         if (boxes.length > 0) {
           storageViewModle.doTaskBoxRequest(
+              isFromCart: false,
               task: task,
               boxes: boxes,
               selectedItems: items,
               beneficiaryId: beneficiaryId);
         } else {
           storageViewModle.doTaskBoxRequest(
+            isFromCart: false,
               task: task,
               boxes: [box],
               selectedItems: items,
