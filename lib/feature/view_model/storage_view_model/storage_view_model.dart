@@ -15,7 +15,6 @@ import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
-import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
 import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/selected_hour_item.dart';
@@ -38,7 +37,6 @@ import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class StorageViewModel extends BaseController {
   //todo this for appbar select btn
@@ -1512,6 +1510,7 @@ class StorageViewModel extends BaseController {
 
   Future<void> doTaskBoxRequest({
     required Task task,
+    required bool isFromCart,
     required List<Box> boxes,
     List<BoxItem>? selectedItems,
     required String beneficiaryId,
@@ -1541,6 +1540,7 @@ class StorageViewModel extends BaseController {
     }
 
     List data = [];
+
     if (boxessSeriales.isNotEmpty) {
       boxessSeriales = boxessSeriales.substring(0, boxessSeriales.length - 1);
     }
@@ -1858,15 +1858,21 @@ class StorageViewModel extends BaseController {
     await OrderHelper.getInstance.newSalesOrder(body: newMap).then((value) {
       Logger().d(value.toJson());
       if (value.status!.success!) {
-        snackSuccess("${tr.success}", value.status!.message!);
-        Get.back();
-        update();
+        if (!isFromCart) {
+          snackSuccess("${tr.success}", value.status!.message!);
+          Get.back();
+          update();
+        }
       } else {
         snackError("${tr.error_occurred}", value.status!.message!);
       }
     });
+
     cleanAfterSucces();
-    Get.close(1);
+    if (!isFromCart) {
+      Get.close(1);
+    }
+
     await homeViewModel.refreshHome();
     endLoading();
   }

@@ -3,6 +3,7 @@ import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 import 'package:inbox_clients/network/api/feature/order_helper.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:logger/logger.dart';
 
 class MyOrderViewModle extends BaseController {
@@ -59,6 +60,17 @@ class MyOrderViewModle extends BaseController {
       isLoading = false;
       update();
     }
+  }
+
+  bool isTask({required String orderItem}) {
+    if (orderItem == LocalConstance.destroyId ||
+        orderItem == LocalConstance.terminateId ||
+        orderItem == LocalConstance.pickupId ||
+        orderItem == LocalConstance.giveawayId ||
+        orderItem == LocalConstance.fetchId) {
+      return true;
+    }
+    return false;
   }
 
   @override

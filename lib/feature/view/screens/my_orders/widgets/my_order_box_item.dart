@@ -5,6 +5,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/font_dimne.dart';
 
 import 'order_detailes_widgets/option_detailes.dart';
 
@@ -16,8 +17,7 @@ class MyOrderBoxItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: padding10!
-      ),
+      margin: EdgeInsets.only(bottom: padding10!),
       padding: EdgeInsets.symmetric(vertical: padding10!),
       decoration: BoxDecoration(
         color: colorBackground,
@@ -34,7 +34,7 @@ class MyOrderBoxItem extends StatelessWidget {
               SizedBox(
                 width: sizeW10,
               ),
-              SizedBox(width: sizeW150, child: Text(orderItem.item ?? "")),
+              SizedBox(width: sizeW200, child: Text(orderItem.item ?? "")),
               const Spacer(),
               Column(
                 children: [
@@ -49,19 +49,20 @@ class MyOrderBoxItem extends StatelessWidget {
                     padding: EdgeInsets.all(padding7!),
                     child: Text(
                       "X ${orderItem.quantity?.toInt()}",
-                      style: textStylePrimarySmall()!.copyWith(color: colorBlack),
+                      style:
+                          textStylePrimarySmall()!.copyWith(color: colorBlack),
                     ),
                   ),
-                  SizedBox(
-                    height: sizeH16,
-                  ),
-                  Container(
-                    color: colorBackground,
-                    child: Text(
-                      getPriceWithFormate(price: orderItem.totalPrice ?? 0),
-                      style: textStylePrimarySmall(),
-                    ),
-                  ),
+                  // SizedBox(
+                  //   height: sizeH16,
+                  // ),
+                  // Container(
+                  //   color: colorBackground,
+                  //   child: Text(
+                  //     getPriceWithFormate(price: orderItem.totalPrice ?? 0),
+                  //     style: textStylePrimarySmall(),
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(
@@ -75,7 +76,28 @@ class MyOrderBoxItem extends StatelessWidget {
           OptionDeatailes(
             orderItem: orderItem,
           ),
-          
+          SizedBox(
+            height: sizeH10,
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: sizeW15,
+              ),
+              Text("Total:"),
+              const Spacer(),
+              Text(
+                getPriceWithFormate(price: orderItem.totalPrice ?? 0),
+                style: textStylePrimary()!.copyWith(fontSize: fontSize16),
+              ),
+              SizedBox(
+                width: sizeW15,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: sizeH4,
+          )
         ],
       ),
     );

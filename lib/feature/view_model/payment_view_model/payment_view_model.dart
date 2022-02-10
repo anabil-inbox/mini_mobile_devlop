@@ -40,6 +40,7 @@ class PaymentViewModel extends GetxController {
                     else
                       {
                         await stroageViewModel.doTaskBoxRequest(
+                            isFromCart: false,
                             paymentId: paymentId,
                             task: task!,
                             boxes: boxes!,
