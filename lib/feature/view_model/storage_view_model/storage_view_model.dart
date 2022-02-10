@@ -26,6 +26,7 @@ import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_b
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/payment_view_model/payment_view_model.dart';
+import 'package:inbox_clients/network/api/feature/home_helper.dart';
 import 'package:inbox_clients/network/api/feature/order_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
@@ -1017,6 +1018,33 @@ class StorageViewModel extends BaseController {
     } else {
       return true;
     }
+  }
+
+  Future<bool> checkTimeSlot() async {
+    startLoading();
+    bool isValidate = false;
+    try {
+      await HomeHelper.getInstance.checkTimeSlot(body: {
+        "date": selectedDateTime,
+        "from": selectedDay?.from,
+        "to": selectedDay?.to
+      }).then((value) => {
+            if (value.status!.success!)
+              {
+                isValidate = true,
+              }
+            else
+              {
+                snackError('', value.status!.message!),
+                isValidate = false,
+              }
+          });
+    } catch (e) {
+      printError();
+      return false;
+    }
+    endLoading();
+    return isValidate;
   }
 
   // working hours bottom sheet

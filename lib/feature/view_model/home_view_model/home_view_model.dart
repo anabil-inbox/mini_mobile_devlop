@@ -107,6 +107,7 @@ class HomeViewModel extends BaseController {
       {bool? isFromAtHome,
       required StorageViewModel storageViewModel,
       int index = 0}) {
+    Box newBox = Box();
     try {
       int i = 0;
       startLoading();
@@ -121,54 +122,49 @@ class HomeViewModel extends BaseController {
       }).onData((data) async {
         i = i + 1;
         if (i == 1) {
-          if (isFromAtHome ?? false) {
-            update();
-          } else {}
-          userBoxess.toList()[index].storageStatus = LocalConstance.boxAtHome;
-          update();
-          await fromAtHome(data.code, storageViewModel);
-          await getBoxBySerial(serial: data.code ?? "")
-              .then((value) async => {
-                    Logger().e(value.toJson()),
-                    if (value.id == null)
+          await getBoxBySerial(serial: data.code ?? "").then((value) async => {
+                Logger().e(value.toJson()),
+                newBox.id = value.id,
+                if (value.id == null)
+                  {
+                    Get.off(() => HomePageHolder()),
+                  }
+                else
+                  {
+                    userBoxess.toList()[index].storageStatus =
+                        LocalConstance.boxAtHome,
+                    update(),
+                    await fromAtHome(data.code, storageViewModel),
+                    Get.off(() => HomePageHolder(
+                          box: value,
+                          isFromScan: true,
+                        )),
+                    itemViewModle.tdName.text = value.storageName ?? "",
+                    if (isFromAtHome ?? false)
                       {
-                        Get.off(() => HomePageHolder()),
+                        await Get.bottomSheet(
+                            CheckInBoxWidget(box: value, isUpdate: false),
+                            isScrollControlled: true),
                       }
                     else
                       {
-                        Get.off(() => HomePageHolder(
-                              box: value,
-                              isFromScan: true,
-                            )),
-                        itemViewModle.tdName.text = value.storageName ?? "",
-
-
-                        if (isFromAtHome ?? false)
-                          {
-                            await Get.bottomSheet(
-                                    CheckInBoxWidget(
-                                        box: value, isUpdate: false),
-                                    isScrollControlled: true)
-                                .then((value) => {}),
+                        userBoxess.forEach((element) {
+                          if (element.id == value.id) {
+                            element.storageStatus = LocalConstance.boxAtHome;
                           }
-                        else
-                          {
-                            userBoxess.forEach((element) {
-                              if (element.id == value.id) {
-                                element.storageStatus =
-                                    LocalConstance.boxAtHome;
-                              }
-                            }),
-                            getCustomerBoxes()
-                          }
+                        }),
+                        getCustomerBoxes()
                       }
-                  })
-              .then((value) => {});
+                  }
+              });
           update();
           // Get.back();
         }
       });
-      refreshHome();
+      if (newBox.id != null) {
+        refreshHome();
+      }
+
       isLoading = false;
       update();
     } catch (e) {

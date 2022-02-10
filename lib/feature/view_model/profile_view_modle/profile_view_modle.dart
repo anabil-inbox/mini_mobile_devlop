@@ -632,7 +632,6 @@ class ProfileViewModle extends BaseController {
         update();
       });
     } on Exception catch (e) {
-      // TODO
       Logger().d(e.toString());
       isLoading = false;
       update();
@@ -677,7 +676,6 @@ class ProfileViewModle extends BaseController {
         update();
       });
     } on Exception catch (e) {
-      // TODO
       Logger().d(e.toString());
       isLoading = false;
       update();

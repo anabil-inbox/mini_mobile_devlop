@@ -361,8 +361,9 @@ class RecallBoxProcessSheet extends StatelessWidget {
     );
   }
 
-  onClickBreakSeal() {
-    if (_storageViewModel.isValidateTask(task: task, boxess: boxes)) {
+  onClickBreakSeal() async {
+    if (_storageViewModel.isValidateTask(task: task, boxess: boxes) &&
+        await _storageViewModel.checkTimeSlot()) {
       Get.back();
       Get.bottomSheet(
               BottomSheetPaymentWidget(

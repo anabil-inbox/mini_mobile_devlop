@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -14,6 +16,8 @@ import 'package:intl/intl.dart';
 import 'Widgets/add_money.dart';
 
 class MyWalletScreen extends StatelessWidget {
+  MyWalletScreen({Key? key}) : super(key: key);
+
   var myFormat = DateFormat('d-MM-yyyy');
 
   @override

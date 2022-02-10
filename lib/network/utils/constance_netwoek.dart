@@ -100,7 +100,9 @@ abstract class ConstanceNetwork {
   static String storageAddNewStorage = "inbox_app.api.sales_order.sales_order";
   static String getTaskEndPoint = "inbox_app.api.task.get_basic_tasks";
   static String getOrderDetailes = "inbox_app.api.sales_order.get_order";
+  // to check Time Slot Here :
 
+  static String checkTimeSlotEndPoint = "inbox_app.api.sales_order.check_time_slot";
   // to add here item end pointes :
 
   static String getBoxBySerialEndPoint =
