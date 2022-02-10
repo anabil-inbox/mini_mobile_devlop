@@ -200,5 +200,6 @@
     "checkout":"شراء",
     "item_photos":"صور العنصر",
     "My_Wallet":"محفظتي",
-    "Add_Money":"اضف مال"
+    "Add_Money":"اضف مال",
+    "are_you_sure_you_want_to_delete_cart_item" : "هل انت متأكد من انك تريد حذف هذا العنصر؟"
 }

@@ -2,6 +2,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/cart_view_model/cart_view_model.dart';
@@ -9,6 +10,7 @@ import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view
 import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/date_time_util.dart';
@@ -41,21 +43,23 @@ class CartHead extends StatelessWidget {
                 maxLine: Constance.maxLineOne,
                 textStyle: textStyleNormalBlack(),
               ),
-              if(cartModel?.box?[index].items != null && cartModel?.box?[index].items?.length != 0)
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: sizeW10!,vertical: sizeH2!),
-                decoration: BoxDecoration(
-                  color: seconderyButton,
-                  borderRadius: BorderRadius.circular(sizeRadius5!)
+              if (cartModel?.box?[index].items != null &&
+                  cartModel?.box?[index].items?.length != 0)
+                Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: sizeW10!, vertical: sizeH2!),
+                  decoration: BoxDecoration(
+                      color: seconderyButton,
+                      borderRadius: BorderRadius.circular(sizeRadius5!)),
+                  child: CustomTextView(
+                    txt: "${cartModel?.box?[index].items?.length ?? ""}",
+                    maxLine: Constance.maxLineOne,
+                    textStyle: textStyleNormalBlack(),
+                  ),
                 ),
-                child: CustomTextView(
-                  txt: "${cartModel?.box?[index].items?.length??""}",
-                  maxLine: Constance.maxLineOne,
-                  textStyle: textStyleNormalBlack(),
-                ),
-              ),
               CustomTextView(
-                txt: "${storageViewModel.calculateTaskPriceOnceBox(task: cartModel!.task!)}",
+                txt:
+                    "${storageViewModel.calculateTaskPriceOnceBox(task: cartModel!.task!)}",
                 maxLine: Constance.maxLineOne,
                 textStyle: textStyleNormalBlack()?.copyWith(color: colorRed),
               ),
@@ -81,7 +85,7 @@ class CartHead extends StatelessWidget {
                 textStyle: textStyleNormalBlack(),
               ),
               CustomTextView(
-                txt: "${cartModel?.boxItem?[index].itemQuantity??""}",
+                txt: "${cartModel?.boxItem?[index].itemQuantity ?? ""}",
                 maxLine: Constance.maxLineOne,
                 textStyle: textStyleNormalBlack()?.copyWith(color: colorRed),
               ),
@@ -121,26 +125,26 @@ class CartHead extends StatelessWidget {
                       Text("${cartModel?.title}"),
                       SizedBox(width: sizeW5),
                       Text(
-                        "${storageViewModel.calculateTaskPriceLotBoxess(task: cartModel!.task!, boxess: cartModel?.box??[])}",
+                        "${storageViewModel.calculateTaskPriceLotBoxess(task: cartModel!.task!, boxess: cartModel?.box ?? [])}",
                         style: textStylePrimarySmall(),
                       ),
                     ],
                   ),
-                   if(cartModel?.address?.addressTitle != null)
-                  Text(
-                    "${cartModel?.address?.addressTitle}",
-                    style: textStyleHints()!.copyWith(fontSize: fontSize13),
-                  ),
-                   if(cartModel?.orderTime?.delivery != null)
-                  Text(
-                    "${DateUtility.dateFormatNamed(txtDate: "${cartModel?.orderTime?.delivery.toString()}")}",
-                    style: textStyleHints()!.copyWith(fontSize: fontSize13),
-                  ),
+                  if (cartModel?.address?.addressTitle != null)
+                    Text(
+                      "${cartModel?.address?.addressTitle}",
+                      style: textStyleHints()!.copyWith(fontSize: fontSize13),
+                    ),
+                  if (cartModel?.orderTime?.delivery != null)
+                    Text(
+                      "${DateUtility.dateFormatNamed(txtDate: "${cartModel?.orderTime?.delivery.toString()}")}",
+                      style: textStyleHints()!.copyWith(fontSize: fontSize13),
+                    ),
                 ],
               ),
               Spacer(),
               InkWell(
-                onTap:_updateCartItem ,
+                onTap: _updateCartItem,
                 child: ClipOval(
                   child: SvgPicture.asset(
                     "assets/svgs/edit_btn.svg",
@@ -149,7 +153,9 @@ class CartHead extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: sizeW5,),
+              SizedBox(
+                width: sizeW5,
+              ),
               InkWell(
                 onTap: _deleteCartItem,
                 child: ClipOval(
@@ -159,6 +165,9 @@ class CartHead extends StatelessWidget {
                     width: sizeW36,
                   ),
                 ),
+              ),
+              SizedBox(
+                width: sizeW10,
               ),
             ],
           ),
@@ -176,29 +185,39 @@ class CartHead extends StatelessWidget {
                 hasIcon: true,
               ),
             ),
-          SizedBox(
+            SizedBox(
             height: sizeH10,
-          ),
+            ),
         ],
       ),
     );
   }
 
   void _deleteCartItem() {
-    cartViewModel?.deleteItemCart(cartModel!);
-    cartViewModel?.cartList.remove(cartModel);
-    cartViewModel?.update();
+    Get.bottomSheet(GlobalBottomSheet(
+      title: tr.are_you_sure_you_want_to_delete_cart_item,
+      isTwoBtn: true,
+      onCancelBtnClick: () {
+        Get.back();
+      },
+      onOkBtnClick: () {
+        cartViewModel?.deleteItemCart(cartModel!);
+        cartViewModel?.cartList.remove(cartModel);
+        cartViewModel?.update();
+         Get.back();
+      },
+    ));
   }
 
   void _updateCartItem() {
     Get.bottomSheet(
         RecallBoxProcessSheet(
-          boxes: cartModel?.box??[],
+          boxes: cartModel?.box ?? [],
           task: cartModel!.task!,
           box: null,
-          isFromCart:true,
-          cartModel:cartModel,
-          items: cartModel?.boxItem??[],
+          isFromCart: true,
+          cartModel: cartModel,
+          items: cartModel?.boxItem ?? [],
         ),
         isScrollControlled: true);
   }
