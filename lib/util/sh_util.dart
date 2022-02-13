@@ -123,7 +123,7 @@ class SharedPref {
   }
 
   getUserType() {
-    return _prefs!.getString("$customrKey");
+    return _prefs!.getString("$customrKey")??"";
   }
 
   setUserType(String customerType) {

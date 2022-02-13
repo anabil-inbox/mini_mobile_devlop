@@ -1,3 +1,4 @@
+import 'package:inbox_clients/feature/model/product_model.dart';
 import 'package:inbox_clients/network/api/model/product.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:logger/logger.dart';
@@ -8,7 +9,7 @@ class ProductHelper {
   static final ProductHelper getInstance = ProductHelper._();
   var log = Logger();
 
-  Future getAllProduct({required int pageSize, required int page}) async {
+  Future<ProductModel> getAllProduct({required int pageSize, required int page}) async {
     var appResponse = await ProductApi.getInstance.getMyProducts(
         queryParameters: {
           "${ConstanceNetwork.page}": "$page",
@@ -17,10 +18,9 @@ class ProductHelper {
         url: "${ConstanceNetwork.allOrder}",
         header: ConstanceNetwork.header(4));
     if (appResponse.status?.success == true) {
-      List data = appResponse.data["items"];
-      return data/*data.map((e) => ProductSales.fromJson(e)).toSet()*/;
+      return ProductModel.fromJson(appResponse.data??{});
     } else {
-      return {};
+      return ProductModel.fromJson({});
     }
   }
 
