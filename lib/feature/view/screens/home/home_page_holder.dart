@@ -42,10 +42,10 @@ class _HomePageHolderState extends State<HomePageHolder> {
     const ProfileScreen(),
   ];
 
-  static StorageViewModel get storageViewModel =>
-      Get.put(StorageViewModel(), permanent: true);
+  static StorageViewModel get storageViewModel => Get.put(StorageViewModel(), permanent: true);
   static SplashViewModle get splashViewModle => Get.put(SplashViewModle());
   static HomeViewModel get homeViewModle => Get.put(HomeViewModel() , permanent: true);
+  static ProfileViewModle get profileViewModel => Get.put(ProfileViewModle() );
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
     Get.put(StorageViewModel(), permanent: true);
     Get.put(HomeViewModel(), permanent: true);
     Get.put(ItemViewModle(), permanent: true);
-    Get.put(ProfileViewModle());
+    // Get.put(ProfileViewModle());
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       // Get.put(ItemViewModle());
@@ -164,6 +164,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
                         SizedBox(width: sizeW20),
                         MaterialButton(
                           onPressed: () {
+                              profileViewModel.getMyWallet();
                             logic.changeTab(3);
                           },
                           minWidth: sizeW48,

@@ -48,26 +48,33 @@ class SettingItemWithTitle extends StatelessWidget {
                 )
               : Container(
                   width: sizeW95,
-                  child: Row(
-                    children: [
-                      const Spacer(),
-                      Text(
-                        "$trailingTitle",
-                        style: TextStyle(color: colorPrimary),
-                        // overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(
-                        width: sizeW10,
-                      ),
-                      const Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 15,
-                      ),
-                      SizedBox(
-                        width: sizeW10,
-                      ),
-                    ],
+                  child: FittedBox(
+                    fit: BoxFit.fill,
+                    clipBehavior: Clip.hardEdge,
+                    child: Row(
+                      mainAxisSize:MainAxisSize.min ,
+                      children: [
+                         SizedBox(width: sizeW10!,),
+                        Text(
+                          "$trailingTitle",
+                          style: TextStyle(color: colorPrimary),
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                          // overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          width: sizeW10,
+                        ),
+                        // SizedBox(width: sizeW10!,),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 15,
+                        ),
+                        SizedBox(
+                          width: sizeW10,
+                        ),
+                      ],
+                    ),
                   ))),
     );
   }
