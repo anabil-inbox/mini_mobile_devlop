@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/fcm/app_fcm.dart';
 import 'package:inbox_clients/feature/core/app_widget.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
-import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/network/api/dio_manager/dio_manage_class.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/sh_util.dart';
@@ -26,16 +25,15 @@ void main() async {
   runApp(const AppWidget());
 }
 
-
-  // to do this for handShiking Cetificate :: 
+// to do this for handShiking Cetificate ::
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
-
 
 class BindingsController extends Bindings {
   @override
@@ -43,7 +41,7 @@ class BindingsController extends Bindings {
     Get.lazyPut(() => SplashViewModle());
     Get.lazyPut(() => IntroViewModle());
     Get.lazyPut(() => AuthViewModle());
-    Get.lazyPut(() => ProfileViewModle());
+    // Get.lazyPut(() => ProfileViewModle());
     // Get.lazyPut(() => HomeViewModel());
     // Get.lazyPut(() => MyOrderViewModle());
     // Get.lazyPut<ItemViewModle>(
@@ -53,5 +51,5 @@ class BindingsController extends Bindings {
   }
 }
 
-// loading after Scan Screen 
+// loading after Scan Screen
 // Add Payment into Payment Pottom Shee

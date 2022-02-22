@@ -83,6 +83,8 @@ abstract class ConstanceNetwork {
 
   static String editProfilEndPoint = "inbox_app.api.auth.edit_profile";
 
+  static String getLogEndPoint = "inbox_app.api.loyalty_points.get_log";
+  
   static String depositMoneyEndPoint = "inbox_app.api.wallet.get_deposit_url";
 
   static String checkDepositEndPoint = "inbox_app.api.wallet.check_payment";
@@ -100,9 +102,15 @@ abstract class ConstanceNetwork {
   static String storageAddNewStorage = "inbox_app.api.sales_order.sales_order";
   static String getTaskEndPoint = "inbox_app.api.task.get_basic_tasks";
   static String getOrderDetailes = "inbox_app.api.sales_order.get_order";
+
+  // check coupon
+  static String checkCouponEndPoints =
+      "inbox_app.api.loyalty_points.check_coupon";
+
   // to check Time Slot Here :
 
-  static String checkTimeSlotEndPoint = "inbox_app.api.sales_order.check_time_slot";
+  static String checkTimeSlotEndPoint =
+      "inbox_app.api.sales_order.check_time_slot";
   // to add here item end pointes :
 
   static String getBoxBySerialEndPoint =
@@ -132,7 +140,8 @@ abstract class ConstanceNetwork {
 
   // this for constance Myorder
   static String myOrderDetailesEndPoint = "inbox_app.api.sales_order.get_order";
-
+  static String myPointsEndPoint =
+      "inbox_app.api.loyalty_points.get_loyalty_points";
   //todo this for constance Keys
   static String amountKey = "amount";
   static String idKey = "id";

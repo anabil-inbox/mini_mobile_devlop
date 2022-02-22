@@ -59,8 +59,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 height: padding16,
               ),
               TextFormField(
-                                textCapitalization: TextCapitalization.sentences,
-
+                textCapitalization: TextCapitalization.sentences,
                 controller: controller.tdCompanyName,
                 validator: (value) {
                   if (value == null || value.isEmpty) {

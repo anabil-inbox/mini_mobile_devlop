@@ -98,8 +98,7 @@ class _RequestNewStoragesStepTwoScreenState
                                     catygoreyType: logic
                                             .userStorageCategoriesData[0]
                                             .storageCategoryType ??
-                                        "") &
-                                await logic.checkTimeSlot()) {
+                                        "")) {
                               logic.currentLevel = 2;
                               Get.to(() => RequestNewStorageStepThree());
                             }

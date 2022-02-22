@@ -53,7 +53,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
     Get.put(StorageViewModel(), permanent: true);
     Get.put(HomeViewModel(), permanent: true);
     Get.put(ItemViewModle(), permanent: true);
-    Get.put(ProfileViewModle());
+    Get.put(ProfileViewModle() , permanent: true);
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       // Get.put(ItemViewModle());

@@ -26,7 +26,7 @@ import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_b
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/payment_view_model/payment_view_model.dart';
-import 'package:inbox_clients/network/api/feature/home_helper.dart';
+import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/network/api/feature/order_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
@@ -47,6 +47,7 @@ class StorageViewModel extends BaseController {
 
   //todo this for bottom sheet accept isAccept
   bool isAccept = false;
+  bool isUsingPromo = false;
 
   // to do for X And Y Form Keys ::
 
@@ -788,6 +789,8 @@ class StorageViewModel extends BaseController {
   }
 
   // this for add storage Order :
+  ProfileViewModle profileViewModle =
+      Get.put(ProfileViewModle(), permanent: true);
 
   Future<void> addNewStorage({String? paymentId}) async {
     try {
@@ -881,6 +884,8 @@ class StorageViewModel extends BaseController {
         "shipping_address": "${selectedAddress?.id}",
         "items_list": jsonEncode(orderItems),
         "order_to": "${selectedDay?.from}",
+        "coupon_code": "",
+        "points": isAccept ? profileViewModle.myPoints.totalPoints : 0,
         "payment_method": "${selectedPaymentMethod?.id}",
         "payment_id": "$paymentId",
         "order_from": "${selectedDay?.to}",
@@ -902,6 +907,7 @@ class StorageViewModel extends BaseController {
                 selectedDateTime = null,
                 selectedStore = null,
                 selectedDay = null,
+                profileViewModle.getMyPoints(),
                 // Get.close(1),
                 userStorageCategoriesData.clear(),
                 Get.offAll(() => OrderDetailesScreen(
@@ -1020,32 +1026,32 @@ class StorageViewModel extends BaseController {
     }
   }
 
-  Future<bool> checkTimeSlot() async {
-    startLoading();
-    bool isValidate = false;
-    try {
-      await HomeHelper.getInstance.checkTimeSlot(body: {
-        "date": selectedDateTime,
-        "from": selectedDay?.from,
-        "to": selectedDay?.to
-      }).then((value) => {
-            if (value.status!.success!)
-              {
-                isValidate = true,
-              }
-            else
-              {
-                snackError('', value.status!.message!),
-                isValidate = false,
-              }
-          });
-    } catch (e) {
-      printError();
-      return false;
-    }
-    endLoading();
-    return isValidate;
-  }
+  // Future<bool> checkTimeSlot() async {
+  //   startLoading();
+  //   bool isValidate = false;
+  //   try {
+  //     await HomeHelper.getInstance.checkTimeSlot(body: {
+  //       "date": selectedDateTime,
+  //       "from": selectedDay?.from,
+  //       "to": selectedDay?.to
+  //     }).then((value) => {
+  //           if (value.status!.success!)
+  //             {
+  //               isValidate = true,
+  //             }
+  //           else
+  //             {
+  //               snackError('', value.status!.message!),
+  //               isValidate = false,
+  //             }
+  //         });
+  //   } catch (e) {
+  //     printError();
+  //     return false;
+  //   }
+  //   endLoading();
+  //   return isValidate;
+  // }
 
   // working hours bottom sheet
 
@@ -1474,19 +1480,25 @@ class StorageViewModel extends BaseController {
     return getPriceWithFormate(price: price);
   }
 
-  calculateTaskPriceLotBoxess({required Task task, required List<Box> boxess}) {
-    print("calculate Task Price Lot Boxess !");
 
+  calculateTaskPriceLotBoxess(
+      {required Task task,
+      required List<Box> boxess,
+      required bool isFromCart,
+      Address? myAddresss}) {
+    print("calculate Task Price Lot Boxess !");
     final ApiSettings settings =
         ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
-
+    if (isFromCart) {
+      selectedAddress = myAddresss;
+    }
     num price = 0.00;
 
     price = task.price! * boxess.length;
 
     if (selectedAddress != null) {
       for (var item in task.areaZones!) {
-        if (item.id == selectedAddress!.zone) {
+        if (item.id == selectedAddress?.zone) {
           Logger().e((boxess.length / settings.deliveryFactor!)
               .toDouble()
               .ceilToDouble());
@@ -1497,13 +1509,24 @@ class StorageViewModel extends BaseController {
         }
       }
     }
-    Logger().i(price);
-    for (var item in selectedStringOption) {
-      price += (item.price ?? 0) * boxess.length;
-      print("options_price ${item.price}");
-    }
 
+    Logger().i(price);
+    if (isFromCart) {
+      for (var item in task.selectedVas ?? []) {
+        price += (item.price ?? 0) * boxess.length;
+        print("options_price ${item.price}");
+      }
+    } else {
+      for (var item in selectedStringOption) {
+        price += (item.price ?? 0) * boxess.length;
+        print("options_price ${item.price}");
+      }
+    }
     return getPriceWithFormate(price: price);
+  }
+
+  getDiscount() {
+    if (isAccept) {}
   }
 
   bool isValidateTask({required Task task, required List<Box> boxess}) {
@@ -1856,6 +1879,8 @@ class StorageViewModel extends BaseController {
     map["type[0]"] = task.id;
     map["payment_method"] = selectedPaymentMethod?.id ?? "";
     map["payment_id"] = paymentId ?? "";
+    map["points"] = isAccept ? userUsesPoints : 0;
+    map["coupon_code"] = isUsingPromo ? tdCopun.text : "";
     map["order[0]"] = data;
     map["address[0]"] =
         selectedAddress == null ? boxes[0].address?.id : selectedAddress?.id;
@@ -1917,7 +1942,10 @@ class StorageViewModel extends BaseController {
     selectedStore = null;
     selectedAddress = null;
     selectedDay = null;
+    isAccept = false;
+    isUsingPromo = false;
     selectedDateTime = null;
+    profileViewModle.getMyPoints();
   }
 
   // Fun to Test If Ihave Any Box At home ::
@@ -1967,5 +1995,111 @@ class StorageViewModel extends BaseController {
     }
 
     endLoading();
+  }
+
+  AppResponse? checkPromoAppResponse;
+
+  Future<void> checkPromo({required String promoCode}) async {
+    try {
+      await StorageFeature.getInstance
+          .checkPromo(body: {LocalConstance.coupon: promoCode}).then(
+        (value) {
+          checkPromoAppResponse = value;
+          update();
+        },
+      );
+    } catch (e) {
+      printError();
+    }
+  }
+
+  num priceAfterDiscount = 0;
+  num userUsesPoints = 0;
+  final tdCopun = TextEditingController();
+
+  List<dynamic> getPriceWithDiscount({required String oldPrice}) {
+    num price = num.parse(oldPrice);
+    num usesPoints = 0;
+    if (!GetUtils.isNull(checkPromoAppResponse)) {
+      if (checkPromoAppResponse!.status!.success!) {
+        if (checkPromoAppResponse?.data["discount_type"] ==
+            LocalConstance.discountPercentag) {
+          if ((price - (price * checkPromoAppResponse?.data["amount"] / 100)) >
+              0) {
+            price =
+                price - (price * checkPromoAppResponse?.data["amount"] / 100);
+          } else {
+            price = 0;
+          }
+        } else {
+          price = price - checkPromoAppResponse?.data["amount"];
+        }
+      }
+    }
+
+    if (isAccept) {
+      if (price -
+              profileViewModle.myPoints.totalPoints! /
+                  SharedPref.instance.getCurrentUserData().conversionFactor! >
+          0) {
+        price = price -
+            profileViewModle.myPoints.totalPoints! /
+                SharedPref.instance.getCurrentUserData().conversionFactor!;
+        userUsesPoints = profileViewModle.myPoints.totalPoints!;
+      } else {
+        // price = ((price * profileViewModle.myPoints.totalPoints!) - price) /
+        //     SharedPref.instance.getCurrentUserData().conversionFactor!;
+
+        usesPoints = profileViewModle.myPoints.totalPoints! -
+            (price *
+                SharedPref.instance.getCurrentUserData().conversionFactor!);
+        price = 0;
+      }
+    }
+    priceAfterDiscount = price;
+    userUsesPoints = profileViewModle.myPoints.totalPoints! - usesPoints;
+    // if (!GetUtils.isNull(checkPromoAppResponse)) {
+    //   if (checkPromoAppResponse!.status!.success!) {
+    //     if ((price - (price * checkPromoAppResponse?.data["amount"] / 100)) >
+    //         0) {
+    //       price = price - (price * checkPromoAppResponse?.data["amount"] / 100);
+    //     } else {
+    //       price = 0;
+    //     }
+    //   }
+    // }
+    Logger().e("MSG_USER_POINTS = $userUsesPoints");
+    profileViewModle.getMyPoints();
+    return [getPriceWithFormate(price: price), usesPoints];
+  }
+
+  calculateTaskList({required List<Task> tasks, required List<Box> boxes}) {
+    final ApiSettings settings =
+        ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
+
+    num price = 0.00;
+    for (var item in tasks) {
+      price = item.price! * boxes.length;
+      if (selectedAddress != null) {
+        for (var item in item.areaZones!) {
+          if (item.id == selectedAddress!.zone) {
+            Logger().e((boxes.length / settings.deliveryFactor!)
+                .toDouble()
+                .ceilToDouble());
+            price += (item.price ?? 0) *
+                (boxes.length / settings.deliveryFactor!)
+                    .toDouble()
+                    .ceilToDouble();
+          }
+        }
+      }
+      Logger().i(price);
+      for (var item in item.selectedVas!) {
+        price += (item.price ?? 0) * boxes.length;
+        print("options_price ${item.price}");
+      }
+    }
+
+    return getPriceWithFormate(price: price);
   }
 }

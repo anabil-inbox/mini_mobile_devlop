@@ -1,35 +1,38 @@
 class Company {
-    Company({
-        this.crNumber,
-        this.mobile,
-        this.countryCode,
-        this.email,
-        this.companyName,
-        this.companySector,
-        this.applicantName,
-        this.applicantDepartment,
-        this.udid,
-        this.deviceType,
-        this.fcm,
-    });
+  Company({
+    this.crNumber,
+    this.mobile,
+    this.countryCode,
+    this.email,
+    this.companyName,
+    this.companySector,
+    this.applicantName,
+    this.applicantDepartment,
+    this.udid,
+    this.deviceType,
+    this.conversionFactor,
+    this.fcm,
+  });
 
-    String? crNumber;
-    String? mobile;
-    String? countryCode;
-    String? email;
-    String? companyName;
-    String? companySector;
-    String? applicantName;
-    String? applicantDepartment;
-    String? udid;
-    String? deviceType;
-    String? fcm;
+  String? crNumber;
+  String? mobile;
+  String? countryCode;
+  String? email;
+  String? companyName;
+  String? companySector;
+  String? applicantName;
+  String? applicantDepartment;
+  String? udid;
+  String? deviceType;
+  String? conversionFactor;
+  String? fcm;
 
-    factory Company.fromJson(Map<String, dynamic> json) => Company(
+  factory Company.fromJson(Map<String, dynamic> json) => Company(
         crNumber: json["cr_number"] ?? "",
         mobile: json["mobile_number"] ?? "",
         countryCode: json["country_code"] ?? "",
         email: json["email"] ?? "",
+        conversionFactor: json["conversion_factor;"],
         companyName: json["company_name"] ?? "",
         companySector: json["company_sector"] ?? "",
         applicantName: json["applicant_name"] ?? "",
@@ -37,13 +40,14 @@ class Company {
         udid: json["udid"] ?? "",
         deviceType: json["device_type"] ?? "",
         fcm: json["fcm"] ?? "",
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "cr_number": crNumber,
         "mobile_number": mobile,
         "country_code": countryCode,
         "email": email,
+        "conversion_factor": conversionFactor,
         "company_name": companyName,
         "company_sector": companySector,
         "applicant_name": applicantName,
@@ -51,5 +55,5 @@ class Company {
         "udid": udid,
         "device_type": deviceType,
         "fcm": fcm,
-    };
+      };
 }

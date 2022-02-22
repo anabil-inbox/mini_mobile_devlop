@@ -10,15 +10,19 @@ import 'package:inbox_clients/feature/view/screens/storage/details_storage/widge
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 
 class StorageDetailsView extends StatelessWidget {
   const StorageDetailsView({Key? key, required this.tags}) : super(key: key);
+
+  ItemViewModle get itemViewModle => Get.put(ItemViewModle(), permanent: true);
 
   //todo this for appbar
   PreferredSizeWidget get appBar => CustomAppBarWidget(
@@ -43,8 +47,12 @@ class StorageDetailsView extends StatelessWidget {
                   ),
                 );
               }),
-           IconButton(onPressed: (){}, icon: SvgPicture.asset("assets/svgs/update.svg")) ,
-           SizedBox(width: sizeW10,)  
+          IconButton(
+              onPressed: () {},
+              icon: SvgPicture.asset("assets/svgs/update.svg")),
+          SizedBox(
+            width: sizeW10,
+          )
         ],
       );
 
@@ -58,7 +66,6 @@ class StorageDetailsView extends StatelessWidget {
         keyboardType: TextInputType.text,
         onSubmitted: (_) {},
         onChange: (_) {},
-       
         isReadOnly: true,
         isSmallPadding: false,
         isSmallPaddingWidth: true,
@@ -70,7 +77,7 @@ class StorageDetailsView extends StatelessWidget {
 
   //todo this for item titles
   Widget get headItemWidget => Row(
-       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomTextView(
             txt: "${tr.items}",
@@ -86,9 +93,14 @@ class StorageDetailsView extends StatelessWidget {
         ],
       );
 
-  Widget get btnActionsWidget => BtnActionWidget();
+  Widget get btnActionsWidget => BtnActionWidget(
+        isGaveAway: itemViewModle.operationsBox?.storageStatus ==
+            LocalConstance.giveawayId,
+        boxStatus: itemViewModle.operationsBox!.storageStatus ?? "",
+      );
 
-  StorageViewModel get viewModel => Get.put(StorageViewModel() , permanent: true);
+  StorageViewModel get viewModel =>
+      Get.put(StorageViewModel(), permanent: true);
 
   final List<Tag> tags;
 

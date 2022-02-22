@@ -166,21 +166,24 @@ class WorkingHours {
 }
 
 class Day {
-  Day({this.from, this.to, this.day, this.delivery});
+  Day({this.from, this.to, this.day, this.delivery, this.check});
 
   String? from;
   String? to;
   String? day;
   String? delivery;
+  bool? check;
 
   factory Day.fromJson(Map<String, dynamic> json) => Day(
       from: json["from"] == null ? null : json["from"],
       to: json["to"] == null ? null : json["to"],
+      check: json["check"],
       delivery: json["delivery"] == null ? null : json["delivery"]);
 
   Map<String, dynamic> toJson() => {
         "from": from == null ? null : from,
         "to": to == null ? null : to,
+        "check": check,
         "delivery": delivery == null ? null : delivery,
       };
 }

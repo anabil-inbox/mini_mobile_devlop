@@ -17,6 +17,8 @@ import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/model/profile/get_wallet_model.dart';
+import 'package:inbox_clients/feature/model/profile/log_model.dart';
+import 'package:inbox_clients/feature/model/profile/my_point_model.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/widgets/area_zone_widget.dart';
 import 'package:inbox_clients/feature/view/screens/profile/my_wallet/Widgets/deposit_money_to_wallet_webView.dart';
@@ -28,6 +30,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/base_controller.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:inbox_clients/util/string.dart';
 import 'package:logger/logger.dart';
@@ -574,6 +577,7 @@ class ProfileViewModle extends BaseController {
     super.onInit();
     userAddress.clear();
     getMyAddress();
+    getMyPoints();
   }
 
   GetWallet myWallet = GetWallet();
@@ -589,7 +593,6 @@ class ProfileViewModle extends BaseController {
         Logger().d("test_2${value}");
         myWallet = value;
         transaction = value.transactions!;
-
         isLoading = false;
         update();
       }).catchError((onError) {
@@ -605,7 +608,7 @@ class ProfileViewModle extends BaseController {
   }
 
   TextEditingController amountController = TextEditingController();
-  String? url = "";
+  String url = "";
   void depositMoneyToWallet() async {
     isLoading = true;
     Map<String, dynamic> map = {
@@ -638,12 +641,12 @@ class ProfileViewModle extends BaseController {
     }
   }
 
-  String? depositStatus = "";
-  String? paymentId = "";
+  String depositStatus = "";
+  String paymentId = "";
 
   void checkDeposit() async {
     isLoading = true;
-    if (depositStatus!.contains("Paid")) {
+    if (depositStatus.contains("Paid")) {
       depositStatus = 'success';
     } else {
       depositStatus = 'fail';
@@ -680,5 +683,48 @@ class ProfileViewModle extends BaseController {
       isLoading = false;
       update();
     }
+  }
+
+  // to do for points (Rewords)
+
+  // start Loaging Function ::
+  void startLoading() {
+    isLoading = true;
+    update();
+  }
+
+  // end Loaging Function ::
+  void endLoading() {
+    isLoading = false;
+    update();
+  }
+
+  MyPoints myPoints = MyPoints();
+  Future<void> getMyPoints() async {
+    startLoading();
+    try {
+      await ProfileHelper.getInstance.getMyPoints().then((value) => {
+            myPoints = MyPoints.fromJson(value.data),
+            Logger().e(myPoints.toJson())
+          });
+    } catch (e) {
+      printError();
+    }
+    endLoading();
+  }
+
+  String selectedMapType = LocalConstance.mapType;
+  List<Log> userLogs = [];
+
+  Future<void> getUserLog() async {
+    startLoading();
+    try {
+      ProfileHelper.getInstance
+          .getUserLogs()
+          .then((value) => {userLogs = value.toList(), update()});
+    } catch (e) {
+      printError();
+    }
+    endLoading();
   }
 }

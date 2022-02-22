@@ -57,12 +57,12 @@ class CartHead extends StatelessWidget {
                     textStyle: textStyleNormalBlack(),
                   ),
                 ),
-              CustomTextView(
-                txt:
-                    "${storageViewModel.calculateTaskPriceOnceBox(task: cartModel!.task!)}",
-                maxLine: Constance.maxLineOne,
-                textStyle: textStyleNormalBlack()?.copyWith(color: colorRed),
-              ),
+              // CustomTextView(
+              //   txt:
+              //       "${storageViewModel.calculateTaskPriceOnceBox(task: cartModel!.task!)}",
+              //   maxLine: Constance.maxLineOne,
+              //   textStyle: textStyleNormalBlack()?.copyWith(color: colorRed),
+              // ),
             ],
           );
         },
@@ -125,7 +125,7 @@ class CartHead extends StatelessWidget {
                       Text("${cartModel?.title}"),
                       SizedBox(width: sizeW5),
                       Text(
-                        "${storageViewModel.calculateTaskPriceLotBoxess(task: cartModel!.task!, boxess: cartModel?.box ?? [])}",
+                        "${storageViewModel.calculateTaskPriceLotBoxess(task: cartModel!.task!, boxess: cartModel?.box ?? [], isFromCart: true, myAddresss: cartModel?.address)}",
                         style: textStylePrimarySmall(),
                       ),
                     ],
@@ -185,9 +185,9 @@ class CartHead extends StatelessWidget {
                 hasIcon: true,
               ),
             ),
-            SizedBox(
+          SizedBox(
             height: sizeH10,
-            ),
+          ),
         ],
       ),
     );
@@ -204,7 +204,7 @@ class CartHead extends StatelessWidget {
         cartViewModel?.deleteItemCart(cartModel!);
         cartViewModel?.cartList.remove(cartModel);
         cartViewModel?.update();
-         Get.back();
+        Get.back();
       },
     ));
   }

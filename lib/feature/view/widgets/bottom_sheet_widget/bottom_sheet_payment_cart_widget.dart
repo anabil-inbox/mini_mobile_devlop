@@ -14,25 +14,24 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
 import '../primary_button.dart';
 
-class BottomSheetPaymentWidget extends StatelessWidget {
-  final Task task;
-  final Box box;
+class BottomSheetPaymentCartWidget extends StatelessWidget {
+  final List<Task> task;
+  final List<Box> box;
   final List<Box> boxes;
-  final List<BoxItem>? items;
-  final String beneficiaryId;
+  final List<BoxItem> items;
+  final List<String> beneficiaryId;
 
-  const BottomSheetPaymentWidget(
+  const BottomSheetPaymentCartWidget(
       {Key? key,
       required this.task,
       required this.box,
       required this.boxes,
-      this.items,
+      required this.items,
       required this.beneficiaryId})
       : super(key: key);
 
@@ -67,23 +66,22 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomTextView(
-                      txt: storageViewModle.isAccept ||
-                              storageViewModle.isUsingPromo
-                          ? storageViewModle
-                              .getPriceWithDiscount(
-                                  oldPrice: logic
-                                      .calculateTaskPriceLotBoxess(
-                                         isFromCart: false,
-                                          task: task, boxess: boxes)
-                                      .toString()
-                                      .split(" ")[0])[0]
-                              .toString()
-                          : boxes.length == 0
-                              ? logic.calculateTaskPriceOnceBox(task: task)
-                              : logic.calculateTaskPriceLotBoxess(
-
-                                  isFromCart: false,
-                                  task: task, boxess: boxes),
+                      txt: storageViewModle.calculateTaskList(
+                          boxes: boxes, tasks: task),
+                      // storageViewModle.isAccept ||
+                      //         storageViewModle.isUsingPromo
+                      //     ? storageViewModle
+                      //         .getPriceWithDiscount(
+                      //             oldPrice: logic
+                      //                 .calculateTaskPriceLotBoxess(
+                      //                     task: task, boxess: boxes)
+                      //                 .toString()
+                      //                 .split(" ")[0])[0]
+                      //         .toString()
+                      //     : boxes.length == 0
+                      //         ? logic.calculateTaskPriceOnceBox(task: task)
+                      //         : logic.calculateTaskPriceLotBoxess(
+                      //             task: task, boxess: boxes),
                       textStyle: textStyleAppBarTitle()
                           ?.copyWith(fontSize: fontSize28, color: colorPrimary),
                     ),
@@ -95,14 +93,15 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                     if (storageViewModle.isAccept ||
                         storageViewModle.isUsingPromo)
                       CustomTextView(
-                          txt: logic.calculateTaskPriceLotBoxess(
-                             isFromCart: false,
-                              task: task, boxess: boxes),
-                          textAlign: TextAlign.center,
-                          textStyle: textStyleAppBarTitle()?.copyWith(
-                              fontSize: fontSize14,
-                              color: colorPrimary,
-                              decoration: TextDecoration.lineThrough)),
+                        txt: "P",
+                      )
+                    // txt: logic.calculateTaskPriceLotBoxess(
+                    //     task: task, boxess: boxes),
+                    // textAlign: TextAlign.center,
+                    // textStyle: textStyleAppBarTitle()?.copyWith(
+                    //     fontSize: fontSize14,
+                    //     color: colorPrimary,
+                    //     decoration: TextDecoration.lineThrough)),
                   ],
                 );
               },
@@ -294,8 +293,6 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                 height: sizeH16,
               ),
               GetBuilder<StorageViewModel>(
-                init: StorageViewModel(),
-                initState: (_) {},
                 builder: (logic) {
                   return PrimaryButton(
                     isExpanded: true,
@@ -316,94 +313,5 @@ class BottomSheetPaymentWidget extends StatelessWidget {
   }
 
   onClickSubmit() {
-    if (storageViewModle.isAccept || storageViewModle.isUsingPromo) {
-      if (storageViewModle.priceAfterDiscount > 0) {
-        if (storageViewModle.selectedPaymentMethod != null) {
-          if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
-              storageViewModle.selectedPaymentMethod?.id ==
-                  Constance.walletId) {
-            if (boxes.length > 0) {
-              storageViewModle.doTaskBoxRequest(
-                  isFromCart: false,
-                  task: task,
-                  boxes: boxes,
-                  selectedItems: items,
-                  beneficiaryId: beneficiaryId);
-            } else {
-              storageViewModle.doTaskBoxRequest(
-                  isFromCart: false,
-                  task: task,
-                  boxes: [box],
-                  selectedItems: items,
-                  beneficiaryId: beneficiaryId);
-            }
-          } else {
-            storageViewModle.goToPaymentMethod(
-                amount: storageViewModle.priceAfterDiscount,
-                beneficiaryId: beneficiaryId,
-                task: task,
-                boxes: boxes,
-                isFromNewStorage: false);
-          }
-        } else {
-          snackError("${tr.error_occurred}",
-              "${tr.you_have_to_select_payment_method}");
-        }
-      } else {
-        if (boxes.length > 0) {
-          storageViewModle.doTaskBoxRequest(
-              isFromCart: false,
-              task: task,
-              boxes: boxes,
-              selectedItems: items,
-              beneficiaryId: beneficiaryId);
-        } else {
-          storageViewModle.doTaskBoxRequest(
-              isFromCart: false,
-              task: task,
-              boxes: [box],
-              selectedItems: items,
-              beneficiaryId: beneficiaryId);
-        }
-      }
-      return;
-    }
-    if (storageViewModle.selectedPaymentMethod != null) {
-      if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
-          storageViewModle.selectedPaymentMethod?.id == Constance.walletId) {
-        if (boxes.length > 0) {
-          storageViewModle.doTaskBoxRequest(
-              isFromCart: false,
-              task: task,
-              boxes: boxes,
-              selectedItems: items,
-              beneficiaryId: beneficiaryId);
-        } else {
-          storageViewModle.doTaskBoxRequest(
-              isFromCart: false,
-              task: task,
-              boxes: [box],
-              selectedItems: items,
-              beneficiaryId: beneficiaryId);
-        }
-      } else {
-        storageViewModle.goToPaymentMethod(
-            amount: num.parse(storageViewModle
-                .calculateTaskPriceLotBoxess(
-                  isFromCart: false,
-                  task: task,
-                  boxess: boxes,
-                )
-                .toString()
-                .split(" ")[0]),
-            beneficiaryId: beneficiaryId,
-            task: task,
-            boxes: boxes,
-            isFromNewStorage: false);
-      }
-    } else {
-      snackError(
-          "${tr.error_occurred}", "${tr.you_have_to_select_payment_method}");
-    }
   }
 }

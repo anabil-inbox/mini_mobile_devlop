@@ -1,5 +1,6 @@
 import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/model/profile/get_wallet_model.dart';
+import 'package:inbox_clients/feature/model/profile/log_model.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/api/model/profile_api.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -122,6 +123,29 @@ class ProfileHelper {
       return appResponse;
     } else {
       return appResponse;
+    }
+  }
+
+  Future<AppResponse> getMyPoints() async {
+    var appResponse = await ProfileApi.getInstance.getMyPoints(
+        url: "${ConstanceNetwork.myPointsEndPoint}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
+  Future<Set<Log>> getUserLogs() async {
+    var appResponse = await ProfileApi.getInstance.getUserLog(
+        url: "${ConstanceNetwork.getLogEndPoint}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      List data = appResponse.data;
+      return data.map((e) => Log.fromJson(e)).toSet();
+    } else {
+      return {};
     }
   }
 }

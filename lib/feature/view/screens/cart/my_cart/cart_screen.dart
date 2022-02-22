@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view/screens/cart/store/store_view.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_payment_cart_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/cart_view_model/cart_view_model.dart';
@@ -80,7 +83,7 @@ class CartScreen extends StatelessWidget {
                       isLoading: cartViewModel.isLoading,
                       onClicked: cartViewModel.cartList.isNotEmpty
                           ? () async {
-                              await cartViewModel.doOnCheckOut();
+                              setupPaymentCart();
                             }
                           : () {},
                       isExpanded: true),
@@ -93,5 +96,26 @@ class CartScreen extends StatelessWidget {
 
   void _goToStoreView() {
     Get.to(() => StoreView());
+  }
+
+  void setupPaymentCart() {
+    List<Box> boxes = [];
+    List<Task> tasks = [];
+    List<BoxItem> boxItems = [];
+
+    for (var item in cartViewModel.cartList) {
+      tasks.add(item.task!);
+      boxes.addAll(item.box!.toList());
+    }
+
+    Get.bottomSheet(
+        BottomSheetPaymentCartWidget(
+          task: tasks,
+          items: boxItems,
+          beneficiaryId: [],
+          box: [],
+          boxes: boxes,
+        ),
+        isScrollControlled: true);
   }
 }

@@ -122,7 +122,6 @@ class TaskWidgetBS extends StatelessWidget {
 
   Widget getListViewByBoxStatus() {
     if (task.id == LocalConstance.destroyId ||
-        task.id == LocalConstance.giveawayId ||
         task.id == LocalConstance.terminateId) {
       return ListView(
           primary: false,
@@ -154,12 +153,25 @@ class TaskWidgetBS extends StatelessWidget {
           shrinkWrap: true,
           physics: customScrollViewIOS(),
           children: homeViewModel.userBoxess
-              .map((e) => (e.storageStatus == LocalConstance.boxAtHome &&
-                      e.allowed!)
-                  ? BoxInTaskWidget(
-                      box: e,
-                    )
-                  : const SizedBox())
+              .map((e) =>
+                  (e.storageStatus == LocalConstance.boxAtHome && e.allowed!)
+                      ? BoxInTaskWidget(
+                          box: e,
+                        )
+                      : const SizedBox())
+              .toList());
+    } else if (task.id == LocalConstance.giveawayId) {
+      return ListView(
+          primary: false,
+          shrinkWrap: true,
+          physics: customScrollViewIOS(),
+          children: homeViewModel.userBoxess
+              .map((e) =>
+                  (e.storageStatus != LocalConstance.boxAtHome && e.allowed!)
+                      ? BoxInTaskWidget(
+                          box: e,
+                        )
+                      : const SizedBox())
               .toList());
     } else {
       return Text("");

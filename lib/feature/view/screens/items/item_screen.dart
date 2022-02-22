@@ -394,6 +394,8 @@ class _ItemScreenState extends State<ItemScreen> {
                   itemLVWidget,
                 (itemViewModle.operationsBox?.allowed ?? false) 
                       ? BtnActionWidget(
+                          isGaveAway: itemViewModle.operationsBox?.storageStatus == LocalConstance.giveawayId,
+                          boxStatus: itemViewModle.operationsBox!.storageStatus ?? "",
                           redBtnText: widget.box.storageStatus ==
                                   LocalConstance.boxAtHome
                               ? "${tr.pickup}"

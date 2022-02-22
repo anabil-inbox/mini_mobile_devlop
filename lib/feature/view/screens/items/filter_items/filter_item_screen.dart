@@ -168,6 +168,9 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
 
   Widget get btnActionsWidget => widget.isEnable
       ? BtnActionWidget(
+          isGaveAway: itemViewModle.operationsBox?.storageStatus ==
+              LocalConstance.giveawayId,
+          boxStatus: itemViewModle.operationsBox?.storageStatus ?? "",
           redBtnText: widget.box.storageStatus == LocalConstance.boxAtHome
               ? "${tr.pickup}"
               : "${tr.recall}",

@@ -29,12 +29,15 @@ class HeaderRegisterCompany extends GetWidget<IntroViewModle> {
             end: padding20,
             top: padding40,
             child: IconButton(
-                onPressed: () {
-                  changeLanguageBottomSheet(isFromINtro: true);
-                },
-                icon: SvgPicture.asset(
-                  "assets/svgs/language_eye.svg",
-                )),
+              onPressed: () {
+                changeLanguageBottomSheet(isFromINtro: true);
+              },
+              icon: isArabicLang()
+                  ? SvgPicture.asset(
+                      "assets/svgs/language_en.svg",
+                    )
+                  : SvgPicture.asset("assets/svgs/language_eye.svg"),
+            ),
           ),
           PositionedDirectional(
               top: padding40,

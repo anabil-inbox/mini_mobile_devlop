@@ -201,6 +201,8 @@
      "checkout":"Checkout",
     "item_photos":"item Photos",
     "add_money":"Add Money",
-    "are_you_sure_you_want_to_delete_cart_item" : "are you sure you want to Delete Cart Item"
+    "are_you_sure_you_want_to_delete_cart_item" : "are you sure you want to Delete Cart Item",
+      "use_promo_code" : "Use Promo Code",
+       "promo_code" : "Promo Code"
 
 }

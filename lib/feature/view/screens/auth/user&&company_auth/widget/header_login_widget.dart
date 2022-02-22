@@ -6,11 +6,11 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class HeaderLogin extends GetWidget<IntroViewModle> {
-  const HeaderLogin({ Key? key }) : super(key: key);
+  const HeaderLogin({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       height: sizeH200,
       child: Stack(
         children: [
@@ -19,30 +19,34 @@ class HeaderLogin extends GetWidget<IntroViewModle> {
             bottom: padding0,
             start: padding0,
             end: padding0,
-            child: SvgPicture.asset(
-              "assets/svgs/header_background.svg",
-               fit: BoxFit.cover
-            ),
+            child: SvgPicture.asset("assets/svgs/header_background.svg",
+                fit: BoxFit.cover),
           ),
           PositionedDirectional(
             end: padding20,
             top: padding45,
             child: IconButton(
-              onPressed: (){
-                changeLanguageBottomSheet(
-                  isFromINtro: true
-                );
-              },
-              icon: SvgPicture.asset("assets/svgs/language_eye.svg" ,)),
+                onPressed: () {
+                  changeLanguageBottomSheet(isFromINtro: true);
+                },
+                icon: isArabicLang()
+                    ? SvgPicture.asset(
+                        "assets/svgs/language_en.svg",
+                      )
+                    : SvgPicture.asset("assets/svgs/language_eye.svg")
+                    
+                    ),
           ),
           PositionedDirectional(
             start: padding0,
             end: padding0,
             top: padding80,
             bottom: padding40,
-            child: SvgPicture.asset("assets/svgs/logo_horizantal.svg",),
+            child: SvgPicture.asset(
+              "assets/svgs/logo_horizantal.svg",
+            ),
           ),
-          
+
           // PositionedDirectional(
           //     top: padding40,
           //     start:padding20,
@@ -55,7 +59,5 @@ class HeaderLogin extends GetWidget<IntroViewModle> {
         ],
       ),
     );
-  
   }
-
 }

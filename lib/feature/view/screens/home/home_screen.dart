@@ -21,6 +21,8 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/sh_util.dart';
+import 'package:logger/logger.dart';
 
 import 'widget/box_lv_widget.dart';
 
@@ -215,10 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   RefreshIndicator(
                     onRefresh: () async {
-                      // HomeScreen.homeViewModle.page = 1;
-                      // HomeScreen.homeViewModle.userBoxess.clear();
-                      // HomeScreen.homeViewModle.onInit();
-                      // await Future.delayed(Duration(seconds: 1));
+                      Logger().e(SharedPref.instance.getCurrentUserData().conversionFactor);
                       await HomeScreen.homeViewModle.refreshHome();
                     },
                     child: SizedBox(
@@ -251,9 +250,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           child: textHintsWidget(
                                               "${tr.on_the_way}", null)),
                                       textHintsWidget(
-                                          "${tr.in_warehouse}", boxColorOrange),
+                                          "${tr.in_warehouse}", colorInWarhouse),
                                       textHintsWidget(
-                                          "${tr.at_home}", boxColorRed),
+                                          "${tr.at_home}", colorAtHome),
                                     ],
                                   ),
                                   if (!logic.isListView!) ...[

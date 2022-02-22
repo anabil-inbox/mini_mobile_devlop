@@ -83,7 +83,7 @@ class SqlHelper {
       //todo #[conflictAlgorithm]# to remove duplicate
       var remove = data.toJson();
       remove.remove(id);
-      return _db!.insert(tableName, remove,conflictAlgorithm: ConflictAlgorithm.replace);
+      return _db!.insert(tableName, remove,  conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (e) {
       Logger().d(e);
       snackError(tr.error_occurred, e.toString());

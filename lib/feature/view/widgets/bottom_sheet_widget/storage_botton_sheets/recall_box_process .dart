@@ -270,7 +270,6 @@ class RecallBoxProcessSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("msg_boxess_length ${boxes.length}");
     return Container(
       padding: EdgeInsets.symmetric(horizontal: sizeW15!),
       clipBehavior: Clip.hardEdge,
@@ -362,8 +361,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
   }
 
   onClickBreakSeal() async {
-    if (_storageViewModel.isValidateTask(task: task, boxess: boxes) &&
-        await _storageViewModel.checkTimeSlot()) {
+    if (_storageViewModel.isValidateTask(task: task, boxess: boxes)) {
       Get.back();
       Get.bottomSheet(
               BottomSheetPaymentWidget(
@@ -394,7 +392,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
     // }
   }
 
-  onClickBringBox() {
+  onClickBringBox() async {
     //here action of add to cart btn
     if (!isFromCart!) {
       // final task = _homeViewModel.searchTaskById(taskId: LocalConstance.giveawayId);
@@ -405,7 +403,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
           from: "${selectedDay?.from}",
           delivery: "${_storageViewModel.selectedDateTime.toString()}",
         );
-        _cartViewModel.addToCart(
+       await _cartViewModel.addToCart(
             (GetUtils.isNull(boxes) || boxes.isEmpty) ? [box!] : boxes,
             [],
             _storageViewModel.selectedAddress,

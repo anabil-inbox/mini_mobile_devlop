@@ -19,12 +19,15 @@ class SelectedHourItem extends StatelessWidget {
     return Column(
       children: [
         SeconderyButtom(
+            isEnable: day?.check ?? false,
             textButton: "${DateUtility.getLocalhouersFromUtc(day: day!)}",
-            onClicked: () {
-              storageViewModel.selectedDay = day;
-              storageViewModel.update();
-              Get.back();
-            }),
+            onClicked: day?.check ?? false
+                ? () {
+                    storageViewModel.selectedDay = day;
+                    storageViewModel.update();
+                    Get.back();
+                  }
+                : (){}),
         SizedBox(
           height: sizeH10,
         )

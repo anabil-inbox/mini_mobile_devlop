@@ -18,9 +18,9 @@ import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
 class IntroScreen extends GetWidget<IntroViewModle> {
-  IntroScreen({Key? key , required this.type}) : super(key: key);
+  IntroScreen({Key? key, required this.type}) : super(key: key);
 
-final String type;
+  final String type;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,21 +62,23 @@ final String type;
                     isExpanded: false,
                     textButton: "${tr.sign_in}",
                     onClicked: () {
-                      Get.off(() => UserCompanyLoginScreen(type: SharedPref.instance.getUserType(),));
-                      },
+                      Get.off(() => UserCompanyLoginScreen(
+                            type: SharedPref.instance.getUserType(),
+                          ));
+                    },
                   ),
                   SizedBox(
                     width: sizeH7,
                   ),
                   SeconderyButtom(
-                    width: sizeW165,
-                      textButton:
-                          "${tr.sign_up}",
+                      width: sizeW165,
+                      textButton: "${tr.sign_up}",
                       onClicked: () {
-                        if(type == "${ConstanceNetwork.userType}" || type == "${ConstanceNetwork.bothType}"){
+                        if (type == "${ConstanceNetwork.userType}" ||
+                            type == "${ConstanceNetwork.bothType}") {
                           Get.off(() => UserRegisterScreen());
-                        }else if(type == "${ConstanceNetwork.companyType}"){
-                          Get.off(() => RegisterCompanyScreen());  
+                        } else if (type == "${ConstanceNetwork.companyType}") {
+                          Get.off(() => RegisterCompanyScreen());
                         }
                       })
                 ],
@@ -108,30 +110,30 @@ final String type;
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      icon: SvgPicture.asset("assets/svgs/language_eye.svg"),
+                      icon: isArabicLang()
+                          ? SvgPicture.asset(
+                              "assets/svgs/language_en.svg",
+                            )
+                          : SvgPicture.asset("assets/svgs/language_eye.svg"),
                       onPressed: () {
-                        changeLanguageBottomSheet(
-                          isFromINtro: true
-                        );
+                        changeLanguageBottomSheet(isFromINtro: true);
                       },
                     ),
                     TextButton(
                         style: textButtonStyle,
                         onPressed: () {
-                         moveToIntro();
+                          moveToIntro();
                         },
                         child: Text(
                           "${tr.skip}",
-                          style: textStyleIntroBody()!.copyWith(fontSize: fontSize15),
+                          style: textStyleIntroBody()!
+                              .copyWith(fontSize: fontSize15),
                         )),
-
                   ],
                 )),
-
           ],
         ),
       ),
     ));
   }
-
 }
