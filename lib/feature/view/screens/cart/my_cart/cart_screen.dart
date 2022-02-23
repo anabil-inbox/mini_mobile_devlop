@@ -7,6 +7,7 @@ import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sh
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/cart_view_model/cart_view_model.dart';
+import 'package:inbox_clients/feature/view_model/product_view_model/product_view_model.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
@@ -93,6 +94,7 @@ class CartScreen extends StatelessWidget {
   }
 
   void _goToStoreView() {
+    Get.put(ProductViewModel());
     Get.to(() => StoreView());
   }
 
