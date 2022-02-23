@@ -7,6 +7,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
+import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:logger/logger.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -24,6 +25,8 @@ class PaymentViewModel extends GetxController {
     Task? task,
     List<Box>? boxes,
     String? beneficiaryId,
+    required bool isFromCart,
+    required List<CartModel> cartModels,
   }) async {
     try {
       await payController
@@ -36,6 +39,10 @@ class PaymentViewModel extends GetxController {
                       {
                         // Get.back();
                         stroageViewModel.addNewStorage(paymentId: paymentId),
+                      }
+                    else if (isFromCart)
+                      {
+                        stroageViewModel.checkOutCart(cartModels: cartModels),
                       }
                     else
                       {

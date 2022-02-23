@@ -4,36 +4,26 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
-import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_three_widgets/payment_item.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
+import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
 import '../primary_button.dart';
 
 class BottomSheetPaymentCartWidget extends StatelessWidget {
-  final List<Task> task;
-  final List<Box> box;
-  final List<Box> boxes;
-  final List<BoxItem> items;
-  final List<String> beneficiaryId;
-
-  const BottomSheetPaymentCartWidget(
-      {Key? key,
-      required this.task,
-      required this.box,
-      required this.boxes,
-      required this.items,
-      required this.beneficiaryId})
+  const BottomSheetPaymentCartWidget({Key? key, required this.cartModels})
       : super(key: key);
+  final List<CartModel> cartModels;
 
   static StorageViewModel storageViewModle = Get.find<StorageViewModel>();
   static ProfileViewModle profileViewModle =
@@ -66,22 +56,17 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomTextView(
-                      txt: storageViewModle.calculateTaskList(
-                          boxes: boxes, tasks: task),
-                      // storageViewModle.isAccept ||
-                      //         storageViewModle.isUsingPromo
-                      //     ? storageViewModle
-                      //         .getPriceWithDiscount(
-                      //             oldPrice: logic
-                      //                 .calculateTaskPriceLotBoxess(
-                      //                     task: task, boxess: boxes)
-                      //                 .toString()
-                      //                 .split(" ")[0])[0]
-                      //         .toString()
-                      //     : boxes.length == 0
-                      //         ? logic.calculateTaskPriceOnceBox(task: task)
-                      //         : logic.calculateTaskPriceLotBoxess(
-                      //             task: task, boxess: boxes),
+                      // txt: storageViewModle.calculateTasksCart(
+                      //     cartModel: cartModels),
+
+                      txt: storageViewModle
+                          .getPriceWithDiscount(
+                              oldPrice: logic
+                                  .calculateTasksCart(cartModel: cartModels)
+                                  .toString()
+                                  .split(" ")[0])[0]
+                          .toString(),
+
                       textStyle: textStyleAppBarTitle()
                           ?.copyWith(fontSize: fontSize28, color: colorPrimary),
                     ),
@@ -93,15 +78,19 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
                     if (storageViewModle.isAccept ||
                         storageViewModle.isUsingPromo)
                       CustomTextView(
-                        txt: "P",
-                      )
-                    // txt: logic.calculateTaskPriceLotBoxess(
-                    //     task: task, boxess: boxes),
-                    // textAlign: TextAlign.center,
-                    // textStyle: textStyleAppBarTitle()?.copyWith(
-                    //     fontSize: fontSize14,
-                    //     color: colorPrimary,
-                    //     decoration: TextDecoration.lineThrough)),
+                          txt: storageViewModle.calculateTasksCart(
+                              cartModel: cartModels),
+                          // txt:
+                          // logic.getPriceWithDiscount(
+                          //     oldPrice: storageViewModle
+                          //         .calculateTasksCart(cartModel: cartModels)
+                          //         .toString()
+                          //         .split(" ")[0])[0],
+                          textAlign: TextAlign.center,
+                          textStyle: textStyleAppBarTitle()?.copyWith(
+                              fontSize: fontSize14,
+                              color: colorPrimary,
+                              decoration: TextDecoration.lineThrough)),
                   ],
                 );
               },
@@ -282,7 +271,7 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
               SizedBox(
                 height: sizeH16,
               ),
-              promoCode,
+              // promoCode,
               SizedBox(
                 height: sizeH16,
               ),
@@ -313,5 +302,58 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
   }
 
   onClickSubmit() {
+    if (storageViewModle.isAccept || storageViewModle.isUsingPromo) {
+      if (storageViewModle.priceAfterDiscount > 0) {
+        if (storageViewModle.selectedPaymentMethod != null) {
+          if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
+              storageViewModle.selectedPaymentMethod?.id ==
+                  Constance.walletId) {
+            storageViewModle.checkOutCart(cartModels: cartModels);
+          } else {
+            storageViewModle.goToPaymentMethod(
+                cartModels: cartModels,
+                isFromCart: true,
+                amount: num.parse(storageViewModle
+                          .getPriceWithDiscount(
+                              oldPrice: storageViewModle
+                                  .calculateTasksCart(cartModel: cartModels)
+                                  .toString()
+                                  .split(" ")[0])[0].toString().split(" ")[0]
+                          .toString()),
+                beneficiaryId: "",
+                task: Task(),
+                boxes: [],
+                isFromNewStorage: false);
+          }
+        } else {
+          snackError("${tr.error_occurred}",
+              "${tr.you_have_to_select_payment_method}");
+        }
+      } else {
+        storageViewModle.checkOutCart(cartModels: cartModels);
+      }
+      return;
+    }
+    if (storageViewModle.selectedPaymentMethod != null) {
+      if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
+          storageViewModle.selectedPaymentMethod?.id == Constance.walletId) {
+        storageViewModle.checkOutCart(cartModels: cartModels);
+      } else {
+        storageViewModle.goToPaymentMethod(
+            cartModels: cartModels,
+            isFromCart: true,
+            amount: num.parse(storageViewModle
+                .calculateTasksCart(cartModel: cartModels)
+                .toString()
+                .split(" ")[0]),
+            beneficiaryId: "",
+            task: Task(),
+            boxes: [],
+            isFromNewStorage: false);
+      }
+    } else {
+      snackError(
+          "${tr.error_occurred}", "${tr.you_have_to_select_payment_method}");
+    }
   }
 }

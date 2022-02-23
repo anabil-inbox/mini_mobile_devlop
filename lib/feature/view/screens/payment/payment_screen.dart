@@ -3,6 +3,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view_model/payment_view_model/payment_view_model.dart';
+import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:logger/logger.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -14,7 +15,10 @@ class PaymentScreen extends StatelessWidget {
       required this.isFromNewStorage,
       this.beneficiaryId,
       this.boxes,
-      this.task})
+      required this.isFromCart,
+      this.task,
+      required this.cartModels
+      })
       : super(key: key);
 
   final String url;
@@ -22,6 +26,8 @@ class PaymentScreen extends StatelessWidget {
   final Task? task;
   final List<Box>? boxes;
   final String? beneficiaryId;
+  final bool isFromCart;
+  final List<CartModel> cartModels;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +44,8 @@ class PaymentScreen extends StatelessWidget {
               Logger().e(paymentId);
               payment.paymentId = paymentId;
               payment.readResponse(
+                  isFromCart: isFromCart,
+                  cartModels: cartModels,
                   isFromNewStorage: isFromNewStorage,
                   task: task,
                   boxes: boxes,
@@ -48,6 +56,8 @@ class PaymentScreen extends StatelessWidget {
           },
           navigationDelegate: (navigation) {
             payment.readResponse(
+                isFromCart: isFromCart,
+                cartModels: cartModels,
                 isFromNewStorage: isFromNewStorage,
                 task: task,
                 boxes: boxes,
@@ -58,6 +68,8 @@ class PaymentScreen extends StatelessWidget {
             payment.payController = controller;
             payment.update();
             payment.readResponse(
+               isFromCart: isFromCart,
+                cartModels: cartModels,
                 isFromNewStorage: isFromNewStorage,
                 task: task,
                 boxes: boxes,

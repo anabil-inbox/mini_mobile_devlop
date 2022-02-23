@@ -294,8 +294,6 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                 height: sizeH16,
               ),
               GetBuilder<StorageViewModel>(
-                init: StorageViewModel(),
-                initState: (_) {},
                 builder: (logic) {
                   return PrimaryButton(
                     isExpanded: true,
@@ -339,6 +337,8 @@ class BottomSheetPaymentWidget extends StatelessWidget {
             }
           } else {
             storageViewModle.goToPaymentMethod(
+               cartModels: [],
+              isFromCart: false,
                 amount: storageViewModle.priceAfterDiscount,
                 beneficiaryId: beneficiaryId,
                 task: task,
@@ -388,6 +388,8 @@ class BottomSheetPaymentWidget extends StatelessWidget {
         }
       } else {
         storageViewModle.goToPaymentMethod(
+           cartModels: [],
+              isFromCart: false,
             amount: num.parse(storageViewModle
                 .calculateTaskPriceLotBoxess(
                   isFromCart: false,

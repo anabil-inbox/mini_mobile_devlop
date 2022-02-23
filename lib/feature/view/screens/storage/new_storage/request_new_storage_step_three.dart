@@ -105,8 +105,8 @@ class RequestNewStorageStepThree extends StatelessWidget {
                       height: sizeH16,
                     ),
                     PaymentWidget(),
-                    SizedBox(height: sizeH16),
-                    acceptTerms,
+                    // SizedBox(height: sizeH16),
+                    // acceptTerms,
                     SizedBox(
                       height: sizeH100,
                     ),
@@ -135,6 +135,8 @@ class RequestNewStorageStepThree extends StatelessWidget {
                                     logic.update();
                                   } else {
                                     await logic.goToPaymentMethod(
+                                        cartModels: [],
+                                        isFromCart: false,
                                         isFromNewStorage: true,
                                         amount: logic.totalBalance);
                                     logic.isLoading = false;

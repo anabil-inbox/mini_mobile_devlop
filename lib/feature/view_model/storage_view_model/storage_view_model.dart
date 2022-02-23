@@ -27,6 +27,8 @@ import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/payment_view_model/payment_view_model.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
+import 'package:inbox_clients/local_database/cart_helper.dart';
+import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:inbox_clients/network/api/feature/order_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
@@ -1480,7 +1482,6 @@ class StorageViewModel extends BaseController {
     return getPriceWithFormate(price: price);
   }
 
-
   calculateTaskPriceLotBoxess(
       {required Task task,
       required List<Box> boxess,
@@ -1907,6 +1908,7 @@ class StorageViewModel extends BaseController {
     // }
 
     mapSalesOrder.add(map);
+
     Map<String, dynamic> newMap = {"sales_order": jsonEncode(mapSalesOrder)};
     await OrderHelper.getInstance.newSalesOrder(body: newMap).then((value) {
       Logger().d(value.toJson());
@@ -1965,6 +1967,8 @@ class StorageViewModel extends BaseController {
     Task? task,
     List<Box>? boxes,
     String? beneficiaryId,
+    required bool isFromCart,
+    required List<CartModel> cartModels,
   }) async {
     startLoading();
     try {
@@ -1978,6 +1982,8 @@ class StorageViewModel extends BaseController {
                         Logger().e(value.data["payment_url"]),
                         Get.put(PaymentViewModel()),
                         Get.to(() => PaymentScreen(
+                              cartModels: cartModels,
+                              isFromCart: isFromCart,
                               beneficiaryId: beneficiaryId,
                               boxes: boxes,
                               task: task,
@@ -2069,37 +2075,179 @@ class StorageViewModel extends BaseController {
     //   }
     // }
     Logger().e("MSG_USER_POINTS = $userUsesPoints");
+    Logger().e("MSG_USER_POINTS = $price");
     profileViewModle.getMyPoints();
     return [getPriceWithFormate(price: price), usesPoints];
   }
 
-  calculateTaskList({required List<Task> tasks, required List<Box> boxes}) {
+  calculateTasksCart({required List<CartModel> cartModel}) {
     final ApiSettings settings =
         ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
 
     num price = 0.00;
-    for (var item in tasks) {
-      price = item.price! * boxes.length;
+    for (var cartItem in cartModel) {
+      selectedAddress = cartItem.address;
+
+      price += cartItem.task!.price! * cartItem.box!.length;
+
       if (selectedAddress != null) {
-        for (var item in item.areaZones!) {
-          if (item.id == selectedAddress!.zone) {
-            Logger().e((boxes.length / settings.deliveryFactor!)
+        for (var item in cartItem.task!.areaZones!) {
+          if (item.id == selectedAddress?.zone) {
+            Logger().e((cartItem.box!.length / settings.deliveryFactor!)
                 .toDouble()
                 .ceilToDouble());
             price += (item.price ?? 0) *
-                (boxes.length / settings.deliveryFactor!)
+                (cartItem.box!.length / settings.deliveryFactor!)
                     .toDouble()
                     .ceilToDouble();
           }
         }
       }
-      Logger().i(price);
-      for (var item in item.selectedVas!) {
-        price += (item.price ?? 0) * boxes.length;
+
+      for (var item in cartItem.task!.selectedVas!) {
+        price += (item.price ?? 0) * cartItem.box!.length;
         print("options_price ${item.price}");
       }
+      Logger().i(price);
     }
 
     return getPriceWithFormate(price: price);
+  }
+
+  Future<void> checkOutCart({
+    required List<CartModel> cartModels,
+    String? paymentId,
+  }) async {
+    try {
+      startLoading();
+      List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
+
+      for (var i = 0; i < cartModels.length; i++) {
+        selectedAddress = cartModels[i].address;
+        selectedStringOption = cartModels[i].task?.selectedVas ?? [];
+        String boxessSeriales = "";
+        String itemSeriales = "";
+        num shivingPrice = 0;
+        Map<String, dynamic> map = {};
+        for (var j = 0; j < cartModels[i].box!.length; j++) {
+          boxessSeriales += '${cartModels[i].box![j].serialNo},';
+        }
+
+        cartModels[i].boxItem?.forEach((element) {
+          itemSeriales += '${element.id},';
+        });
+
+        if (selectedAddress != null) {
+          for (var item in cartModels[i].task!.areaZones!) {
+            if (item.id == selectedAddress!.zone) {
+              shivingPrice = (item.price ?? 0);
+            }
+          }
+        }
+
+        List data = [];
+
+        if (boxessSeriales.isNotEmpty) {
+          boxessSeriales =
+              boxessSeriales.substring(0, boxessSeriales.length - 1);
+        }
+
+        if (itemSeriales.isNotEmpty) {
+          itemSeriales = itemSeriales.substring(0, boxessSeriales.length - 2);
+        }
+
+        if (cartModels[i].task!.id == LocalConstance.fetchId) {
+          data.add(ApiItem.getApiObjectToSend(
+              itemCode: cartModels[i].task?.id ?? "",
+              qty: cartModels[i].box!.length,
+              subscriptionPrice: cartModels[i].task?.price ?? 0,
+              selectedDateTime: selectedDateTime,
+              groupId: 1,
+              itemParent: 0,
+              selectedDay: selectedDay,
+              beneficiaryNameIn: "",
+              boxessSeriales: boxessSeriales));
+        } else if (cartModels[i].task?.id == LocalConstance.giveawayId) {
+          data.add(ApiItem.getApiObjectToSend(
+              itemCode: cartModels[i].task?.id ?? "",
+              qty: cartModels[i].box!.length,
+              subscriptionPrice: cartModels[i].task?.price ?? 0,
+              selectedDateTime: selectedDateTime,
+              groupId: 1,
+              itemParent: 0,
+              selectedDay: selectedDay,
+              beneficiaryNameIn: homeViewModel.selctedbeneficiary?.id ?? "",
+              boxessSeriales: boxessSeriales));
+        } else {
+          data.add(ApiItem.getApiObjectToSend(
+              itemCode: cartModels[i].task?.id ?? "",
+              qty: cartModels[i].box!.length,
+              subscriptionPrice: cartModels[i].task?.price ?? 0,
+              selectedDateTime: selectedDateTime,
+              groupId: 1,
+              itemParent: 0,
+              selectedDay: selectedDay,
+              boxessSeriales: boxessSeriales,
+              beneficiaryNameIn: null));
+        }
+        data.add(ApiItem.getApiObjectToSend(
+            itemCode: "shipping_sv",
+            qty: cartModels[i].box!.length,
+            subscriptionPrice: shivingPrice,
+            selectedDateTime: selectedDateTime,
+            groupId: 1,
+            itemParent: 0,
+            selectedDay: selectedDay,
+            boxessSeriales: boxessSeriales,
+            beneficiaryNameIn: null));
+
+        for (var item in selectedStringOption) {
+          data.add(ApiItem.getApiObjectToSend(
+              itemCode: item.id ?? "",
+              qty: cartModels[i].box!.length,
+              subscriptionPrice: item.price ?? 0,
+              selectedDateTime: selectedDateTime,
+              groupId: 1,
+              itemParent: 0,
+              selectedDay: selectedDay,
+              beneficiaryNameIn: "",
+              boxessSeriales: boxessSeriales));
+        }
+
+        map["type[$i]"] = cartModels[i].task?.id;
+        map["payment_method"] = selectedPaymentMethod?.id ?? "";
+        map["payment_id"] = paymentId ?? "";
+        map["points"] = isAccept ? userUsesPoints / cartModels.length : 0;
+        map["coupon_code"] = isUsingPromo ? tdCopun.text : "";
+        map["order[$i]"] = data;
+        map["address[$i]"] = selectedAddress == null
+            ? cartModels[i].box![0].address?.id
+            : selectedAddress?.id;
+        mapSalesOrder.add(map);
+      }
+
+      Map<String, dynamic> newMap = {"sales_order": jsonEncode(mapSalesOrder)};
+      await OrderHelper.getInstance
+          .newSalesOrder(body: newMap)
+          .then((value) async {
+        Logger().d(value.toJson());
+        if (value.status!.success!) {
+          if (selectedPaymentMethod?.id == LocalConstance.bankCard) {
+            Get.close(3);
+          } else {
+            Get.close(2);
+          }
+
+          snackSuccess("${tr.success}", value.status!.message!);
+          await CartHelper.instance.deleteDataBase();
+        } else {
+          snackError("${tr.error_occurred}", value.status!.message!);
+        }
+      });
+
+      cleanAfterSucces();
+      await homeViewModel.refreshHome();
+      endLoading();
+    } catch (e) {}
   }
 }

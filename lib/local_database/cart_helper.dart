@@ -42,7 +42,7 @@ class CartHelper{
   }
 
   //todo this for delete item in my cart
-  Future<int> deleteDataBase()async{
+  Future deleteDataBase()async{
     return await SqlHelper.instance.deleteDatabases();
   }
 

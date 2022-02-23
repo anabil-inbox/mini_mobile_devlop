@@ -94,7 +94,7 @@ class CartViewModel extends GetxController {
         title: "$title");
     cartModel.toJson().remove("id");
    await CartHelper.instance.addToCart(cartModel).then((value) {
-      if (value > 1) {
+      if (value >= 1) {
         //todo success state
         Logger().d("addToCart_1${cartModel.toJson()}");
         snackSuccess(tr.success, tr.success_add_to_cart);

@@ -1,73 +1,69 @@
-
 import 'dart:io';
-
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
 class AppFcm {
   AppFcm._();
   static AppFcm fcmInstance = AppFcm._();
-   init(){
+  init() {
     configuration();
     registerNotification();
     getTokenFCM();
   }
-  ValueNotifier<int> notificationCounterValueNotifer =
-  ValueNotifier(0);
-   MethodChannel platform =
-  MethodChannel('dexterx.dev/flutter_local_notifications_example');
+
+  ValueNotifier<int> notificationCounterValueNotifer = ValueNotifier(0);
+  MethodChannel platform =
+      MethodChannel('dexterx.dev/flutter_local_notifications_example');
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
   RemoteMessage messages = RemoteMessage();
   AndroidNotificationChannel channel = AndroidNotificationChannel(
-      'com.ahdtech.filterqueen', // id
-      'com.ahdtech.filterqueen', // title
-      //  'IMPORTANCE_HIGH', // description
+    'com.ahdtech.filterqueen', // id
+    'com.ahdtech.filterqueen', // title
+    //  'IMPORTANCE_HIGH', // description
     importance: Importance.max,
     //showBadge: true,
   );
 
-
-  void updatePages(RemoteMessage message) async{
+  void updatePages(RemoteMessage message) async {
     Future.delayed(Duration(seconds: 3)).then((value) {
       //flutterLocalNotificationsPlugin.cancelAll();
     });
   }
 
   configuration() async {
-    // const AndroidInitializationSettings initializationSettingsAndroid =
-    // AndroidInitializationSettings('drawable/icons_app');
-
-    // final IOSInitializationSettings initializationSettingsIOS =
-    // IOSInitializationSettings(
-    //   requestAlertPermission: false,
-    //   requestBadgePermission: false,
-    //   requestSoundPermission: false,
-    // );
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('drawable/app_icon');
+    final IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
 
     // final MacOSInitializationSettings initializationSettingsMacOS =
-    // MacOSInitializationSettings(
+    //     MacOSInitializationSettings(
     //   requestAlertPermission: false,
     //   requestBadgePermission: false,
     //   requestSoundPermission: false,
     // );
 
-    // final InitializationSettings initializationSettings = InitializationSettings(
-    //     android: initializationSettingsAndroid,
-    //     iOS: initializationSettingsIOS,
-    //     macOS: null);
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS,
+            macOS: null);
 
-    // await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      //  onSelectNotification: selectNotification);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: selectNotification);
     final notificationAppLaunchDetails =
-    await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+        await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
     if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
       await selectNotification(notificationAppLaunchDetails?.payload);
     }
@@ -75,17 +71,16 @@ class AppFcm {
 
   Future selectNotification(String? payload) async {
     try {
-   //   RemoteMessage message = messages;
-   //   goToOrderPage(messages.data);
+      //   RemoteMessage message = messages;
+      //   goToOrderPage(messages.data);
     } catch (e) {
       print(e);
       Logger().d(e);
     }
   }
 
-
   void registerNotification() async {
-   await _firebaseMessaging.requestPermission(
+    await _firebaseMessaging.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
@@ -97,12 +92,13 @@ class AppFcm {
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     /// Update the iOS foreground notification presentation options to allow
     /// heads up notifications.
-    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
       alert: false,
       badge: true,
       sound: true,
@@ -112,7 +108,7 @@ class AppFcm {
       RemoteNotification notification = message.notification!;
       //todo this for add badge for app
       // var android = message.data;
-      if ( Platform.isIOS ||Platform.isAndroid) {
+      if (Platform.isIOS || Platform.isAndroid) {
         messages = message;
         //todo this for update ui when recive message
         updatePages(message);
@@ -127,26 +123,25 @@ class AppFcm {
                 presentSound: true,
                 /* subtitle: message.notification.body,*/
               ),
-              android: AndroidNotificationDetails(
-                  channel.id, channel.name,
+              android: AndroidNotificationDetails(channel.id, channel.name,
                   // channel.description,
                   enableLights: true,
                   enableVibration: true,
                   fullScreenIntent: true,
                   autoCancel: true,
                   importance: Importance.max,
-                  priority:Priority.high ,
-                  color: colorPrimaryDark),
+                  priority: Priority.high,
+                 ),
             ),
             payload: "${message.data}");
       }
     });
   }
 
-  getTokenFCM() async{
-    await _firebaseMessaging.getToken().then((token) async{
+  getTokenFCM() async {
+    await _firebaseMessaging.getToken().then((token) async {
       Logger().d('token fcm : $token');
-       await SharedPref.instance.setFCMToken(token.toString());
+      await SharedPref.instance.setFCMToken(token.toString());
     }).catchError((err) {
       Logger().d(err);
     });

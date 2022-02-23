@@ -5,7 +5,9 @@ import 'package:inbox_clients/feature/core/pop_info_dialog.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
+import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_style.dart';
 
 // ignore: must_be_immutable
 class OptionItem extends StatelessWidget {
@@ -30,13 +32,14 @@ class OptionItem extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                if(storageCategoriesData.storageCategoryType == ConstanceNetwork.itemCategoryType && storageViewModel.isNeedingAdviser){
+                if (storageCategoriesData.storageCategoryType ==
+                        ConstanceNetwork.itemCategoryType &&
+                    storageViewModel.isNeedingAdviser) {
                   return;
                 }
                 storageViewModel.doOnChooseNewFeatures(
                     storageCategoriesData: storageCategoriesData,
-                    storageFeatures: storageFeatures
-                    );
+                    storageFeatures: storageFeatures);
                 storageViewModel.update();
               },
               child: Row(
@@ -49,11 +52,22 @@ class OptionItem extends StatelessWidget {
                   ),
                   Text(storageFeatures.storageFeature ?? ""),
                   const Spacer(),
-                  PopInfoDialog(title: "${storageFeatures.addedPrice}",),//${/*tr.price*/}
+                  // PopInfoDialog(
+                  //   title: "${storageFeatures.addedPrice}",
+                  // ),
+                  
+                   //${/*tr.price*/}
                   //SvgPicture.asset("assets/svgs/InfoCircle.svg"),
                 ],
               ),
             ),
+            Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: padding30!),
+                child: Text(
+                  "Will have ${storageFeatures.addedPrice}QR as extra fees",
+                  style: textStyleSmall()?.copyWith(color: colorHint),
+                )),
             SizedBox(
               height: sizeH25,
             ),
