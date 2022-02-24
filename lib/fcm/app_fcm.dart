@@ -4,6 +4,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
+import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
@@ -71,8 +75,8 @@ class AppFcm {
 
   Future selectNotification(String? payload) async {
     try {
-      //   RemoteMessage message = messages;
-      //   goToOrderPage(messages.data);
+      // RemoteMessage message = messages;
+      goToOrderPage(messages.data);
     } catch (e) {
       print(e);
       Logger().d(e);
@@ -108,9 +112,9 @@ class AppFcm {
       RemoteNotification notification = message.notification!;
       //todo this for add badge for app
       // var android = message.data;
+      Logger().e("MSG_NOT ${messages.data.toString()}");
       if (Platform.isIOS || Platform.isAndroid) {
         messages = message;
-        //todo this for update ui when recive message
         updatePages(message);
         flutterLocalNotificationsPlugin.show(
             notification.hashCode,
@@ -123,15 +127,16 @@ class AppFcm {
                 presentSound: true,
                 /* subtitle: message.notification.body,*/
               ),
-              android: AndroidNotificationDetails(channel.id, channel.name,
-                  // channel.description,
-                  enableLights: true,
-                  enableVibration: true,
-                  fullScreenIntent: true,
-                  autoCancel: true,
-                  importance: Importance.max,
-                  priority: Priority.high,
-                 ),
+              android: AndroidNotificationDetails(
+                channel.id, channel.name,
+                // channel.description,
+                enableLights: true,
+                enableVibration: true,
+                fullScreenIntent: true,
+                autoCancel: true,
+                importance: Importance.max,
+                priority: Priority.high,
+              ),
             ),
             payload: "${message.data}");
       }
@@ -147,10 +152,15 @@ class AppFcm {
     });
   }
 
-  // static void goToOrderPage(Map<String ,dynamic> map){
-  //   var serial = map["data"] ;
-  //   var customerNum = map["body"];
-  //   Get.to(OrderPage(customreNum: customerNum,serial: serial,));
-  // }
-
+  static void goToOrderPage(Map<String, dynamic> map) {
+    var serial = map;
+    Logger().e(map);
+    if (serial[LocalConstance.id] == LocalConstance.submitId) {
+      Get.put(MyOrderViewModle());
+      Get.off(() => OrderDetailesScreen(
+            orderId: serial[LocalConstance.salesOrder],
+            isFromPayment: true,
+          ));
+    }
+  }
 }

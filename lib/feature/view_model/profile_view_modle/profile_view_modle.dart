@@ -578,6 +578,7 @@ class ProfileViewModle extends BaseController {
     userAddress.clear();
     getMyAddress();
     getMyPoints();
+    getMyWallet();
   }
 
   GetWallet myWallet = GetWallet();

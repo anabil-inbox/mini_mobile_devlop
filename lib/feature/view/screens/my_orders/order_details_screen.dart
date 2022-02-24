@@ -96,7 +96,8 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
       await OrderDetailesScreen.myOrderViewModle
           .getOrderDetaile(orderId: widget.orderId);
       OrderDetailesScreen.myOrderViewModle.update();
-      setState(() {});
+      
+       setState(() {});
       // Future.delayed(Duration(milliseconds: 1000)).then(
       //     (value) async => {
       //       // OrderDetailesScreen.myOrderViewModle.update(),

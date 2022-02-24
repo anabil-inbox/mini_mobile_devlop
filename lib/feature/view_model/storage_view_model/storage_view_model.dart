@@ -1948,6 +1948,7 @@ class StorageViewModel extends BaseController {
     isUsingPromo = false;
     selectedDateTime = null;
     profileViewModle.getMyPoints();
+    profileViewModle.getMyWallet();
   }
 
   // Fun to Test If Ihave Any Box At home ::
