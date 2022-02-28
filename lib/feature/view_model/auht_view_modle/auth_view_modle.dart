@@ -7,6 +7,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/fcm/app_fcm.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
@@ -516,6 +517,7 @@ class AuthViewModle extends GetxController {
     super.onInit();
     //  startTimer();
     clearAllControllers();
+    AppFcm.fcmInstance.getTokenFCM();
     getDeviceDetails();
     getPhonePlatform();
     update();

@@ -7,6 +7,7 @@ import 'package:inbox_clients/feature/model/home/beneficiary.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
+import 'package:inbox_clients/feature/view/screens/home/recived_order/recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/task_widget_BS.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
@@ -158,7 +159,6 @@ class HomeViewModel extends BaseController {
                   }
               });
           update();
-          // Get.back();
         }
       });
       if (newBox.id != null) {
@@ -174,6 +174,8 @@ class HomeViewModel extends BaseController {
     refresh();
   }
 
+  // to do here for
+
   void onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
     try {
       if (!p) {
@@ -184,6 +186,37 @@ class HomeViewModel extends BaseController {
     } catch (e) {
       Logger().e("$e");
     }
+  }
+
+  // StorageViewModel storageViewModel =
+  //     Get.put(StorageViewModel(), permanent: true);
+  Set<Box> scaanedBoxes = {};
+
+  createQrOrderOrder(
+      {required QRViewController controller,
+      required StorageViewModel storageViewModel,
+      required bool isBox,
+      required bool isProduct}) {
+    startLoading();
+    try {
+      int i = 0;
+      controller.scannedDataStream.listen((scanData) {
+        result = scanData;
+      }).onData((data) async {
+        i = i + 1;
+        if (i == 1) {
+          await fromAtHome(data.code, storageViewModel);
+          //Get.delete<HomeViewModel>();
+          Logger().e(scaanedBoxes.length);
+          Get.to(() => ReciverOrderScreen(
+            this
+          ));
+        }
+      });
+    } catch (e) {
+      Logger().e("$e");
+    }
+    endLoading();
   }
 
   // this for Pagination :

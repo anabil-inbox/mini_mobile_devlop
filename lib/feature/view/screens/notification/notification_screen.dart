@@ -15,18 +15,16 @@ class NotificationScreen extends StatelessWidget {
         backgroundColor: colorTextWhite,
         toolbarHeight: sizeH90,
         elevation: 1,
-        title: Expanded(
-          child: TextFormField(
-            decoration: InputDecoration(
-                border: UnderlineInputBorder(
-                    borderRadius: BorderRadius.circular(padding6!)),
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.all(18),
-                  child: SvgPicture.asset("assets/svgs/search_icon.svg"),
-                ),
-                filled: true,
-                fillColor: scaffoldColor),
-          ),
+        title: TextFormField(
+          decoration: InputDecoration(
+              border: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(padding6!)),
+              prefixIcon: Padding(
+                padding: const EdgeInsets.all(18),
+                child: SvgPicture.asset("assets/svgs/search_icon.svg"),
+              ),
+              filled: true,
+              fillColor: scaffoldColor),
         ),
       ),
       body: SafeArea(

@@ -1,6 +1,7 @@
 
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/utils.dart';
+import 'package:inbox_clients/fcm/app_fcm.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/network/api/feature/splash_feature_helper.dart';
 import 'package:inbox_clients/util/sh_util.dart';
@@ -29,6 +30,7 @@ class SplashViewModle extends GetxController{
   void onInit() async{
     getAppSetting();
     SharedPref.instance.getUserType();
+    AppFcm.fcmInstance.getTokenFCM();
     super.onInit();
   }
 

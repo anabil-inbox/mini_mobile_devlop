@@ -4,6 +4,7 @@ import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/model/language.dart';
+import 'package:inbox_clients/feature/model/respons/task_response.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,6 +17,7 @@ class SharedPref {
   final String currentUser = "currentUser";
   final String loginKey = "login";
   final String fcmKey = "fcm";
+  final String taskKey = "taskKey";
   final String tokenKey = "token";
   final String customrKey = "customerKey";
   final String userDataKey = "userData";
@@ -24,7 +26,7 @@ class SharedPref {
 
   SharedPref._();
 
-  static late SharedPreferences? _prefs;
+  static SharedPreferences? _prefs;
 
   setAppSetting(var json) async {
     String prfApiSettings = jsonEncode(json);
@@ -46,10 +48,11 @@ class SharedPref {
 
   Customer getCurrentUserData() {
     try {
-      if(getUserLoginState() == null ||getUserLoginState() == ConstanceNetwork.userEnterd){
+      if (getUserLoginState() == null ||
+          getUserLoginState() == ConstanceNetwork.userEnterd) {
         return Customer();
       }
-      var string = _prefs?.getString("$userDataKey")??"";
+      var string = _prefs?.getString("$userDataKey") ?? "";
       var decode;
       if (GetUtils.isNull(json.decode(string)["data"]["Customer"])) {
         print("get Current user if");
@@ -153,8 +156,7 @@ class SharedPref {
 
   setFCMToken(String fcmToken) async {
     try {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setString("$fcmKey", fcmToken);
+      _prefs?.setString("$fcmKey", fcmToken);
     } catch (e) {}
   }
 
@@ -173,10 +175,24 @@ class SharedPref {
 
   getUserToken() {
     try {
-      return SharedPref._prefs!.getString('$tokenKey');
+      return _prefs?.getString('$tokenKey');
     } catch (e) {
       print(e);
       return "";
     }
+  }
+
+  TaskResponse? getCurrentTaskResponse() {
+    try {
+      String? objectStr = _prefs?.getString(taskKey);
+      return TaskResponse.fromJson(json.decode(objectStr!));
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  setCurrentTaskResponse({required String taskResponse}) {
+    _prefs?.setString(taskKey, taskResponse);
   }
 }

@@ -41,11 +41,11 @@ class LocalConstance {
   // discount types :
   static String discountPercentag = "Discount Percentage";
   static String discountAmount = "Discount Amount";
-  
+
   //notification Constance :
   static String submitId = "1";
+  static String scanBoxId = "2";
+  static String scanProductId = "3";
   static String id = "id";
   static String salesOrder = "sales_order";
-
-
 }

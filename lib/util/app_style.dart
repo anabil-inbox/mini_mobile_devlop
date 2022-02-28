@@ -16,6 +16,14 @@ BoxDecoration containerBoxDecoration() {
       color: colorBackground, borderRadius: BorderRadius.circular(padding6!));
 }
 
+TextStyle? textStyleMeduimPrimaryBold() {
+  return TextStyle(
+    color: colorPrimary,
+    fontSize: fontSize20,
+    fontWeight: FontWeight.bold,
+  );
+}
+
 BoxDecoration containerBoxDecorationHardEdge() {
   return BoxDecoration(
       color: colorBackground,

@@ -203,5 +203,13 @@
     "Add_Money":"اضف مال",
     "are_you_sure_you_want_to_delete_cart_item" : "هل انت متأكد من انك تريد حذف هذا العنصر؟",
     "use_promo_code" : "استخدم قسيمة خصم",
-    "promo_code" : "قسيمة خصم"
+    "promo_code" : "قسيمة خصم",
+    "instant_order" : "طلب فوري",
+    "contract_signature" : "توقيع العقد",
+        "id_verification" : "التحقق من الهوية",
+        "scan_box" :"مسح الصناديق",
+        "scan_products" : "مسح المنتجات",
+        "boxes" : "الصناديق",
+        "paid" : "مدفوعة",
+        "amount_due" : "مستحقة للدفع"
 }

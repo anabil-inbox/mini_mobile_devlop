@@ -46,15 +46,19 @@ class SettingItemWithTitle extends StatelessWidget {
                     size: 16,
                   ),
                 )
-              : Container(
-                  width: sizeW95,
+              : 
+            /*  const SizedBox(), */
+              Container(
+                  width: sizeW150,
                   child: Row(
                     children: [
                       const Spacer(),
-                      Text(
-                        "$trailingTitle",
-                        style: TextStyle(color: colorPrimary),
-                        // overflow: TextOverflow.ellipsis,
+                      FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text(
+                          "$trailingTitle",
+                          style: TextStyle(color: colorPrimary),
+                        ),
                       ),
                       SizedBox(
                         width: sizeW10,
@@ -68,7 +72,9 @@ class SettingItemWithTitle extends StatelessWidget {
                         width: sizeW10,
                       ),
                     ],
-                  ))),
+                  ))
+                
+                  ),
     );
   }
 }

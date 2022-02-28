@@ -1341,6 +1341,7 @@ class StorageViewModel extends BaseController {
   //todo this for customerStoragesChangeStatus api
   //todo i concatenate homeViewModel with storageViewModel
   //todo i get index of list to update it local
+
   customerStoragesChangeStatus(var serial,
       {HomeViewModel? homeViewModel}) async {
     if (serial == null) {
@@ -1356,22 +1357,11 @@ class StorageViewModel extends BaseController {
       if (!GetUtils.isNull(value)) {
         if (value.status!.success!) {
           isChangeStatusLoading = false;
-          // homeViewModel?.userBoxess.toList()[index].storageStatus =
-          //     "${LocalConstance.boxAtHome}";
+          homeViewModel?.scaanedBoxes.add(Box.fromJson(value.data));
+          Logger().e(homeViewModel?.scaanedBoxes.length);
           homeViewModel?.update();
           update();
-          Get.back();
-          // Future.delayed(Duration(seconds: 0)).then((value) {
-          //   Get.bottomSheet(
-          //       CheckInBoxWidget(
-          //         box: homeViewModel?.userBoxess.toList()[index],
-          //         isUpdate: false,
-          //       ),
-          //       isScrollControlled: true);
-          //   snackSuccess(tr.success, value.status!.message!);
-          // });
-          // snackSuccess(tr.success, value.status!.message!);
-        } else {
+          Get.back();} else {
           snackError(tr.error_occurred, value.status!.message!);
         }
       } else {

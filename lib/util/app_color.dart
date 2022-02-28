@@ -15,6 +15,8 @@ Color colorPrimaryOpcaityColor =  Color(0xffF6E3E5);
 Color colorBtnGray = const Color(0xFFDADBDF);
 Color colorSpacer = const Color(0xff8F92A1);
 Color scaffoldSecondery = const Color(0xffF9F9FF);
+Color colorSearchBox = const Color(0xFFF7F9FB);
+Color colorGreenText = const Color(0xFF2ED0A5);
 
 //todo this for textField
 var colorBorderTextFiled = Color(0xFF707070);

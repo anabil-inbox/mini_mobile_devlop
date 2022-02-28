@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -5,8 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/model/storage/payment.dart';
+import 'package:inbox_clients/feature/view/screens/home/recived_order/recived_order_screen.dart';
+import 'package:inbox_clients/feature/view/screens/home/recived_order/scan_recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
+import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
@@ -14,6 +20,12 @@ import 'package:logger/logger.dart';
 class AppFcm {
   AppFcm._();
   static AppFcm fcmInstance = AppFcm._();
+
+  static HomeViewModel homeViewModel =
+      Get.put(HomeViewModel(), permanent: true);
+  static StorageViewModel storageViewModel =
+      Get.put(StorageViewModel(), permanent: true);
+
   init() {
     configuration();
     registerNotification();
@@ -28,17 +40,18 @@ class AppFcm {
       FlutterLocalNotificationsPlugin();
   RemoteMessage messages = RemoteMessage();
   AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'com.ahdtech.filterqueen', // id
-    'com.ahdtech.filterqueen', // title
+    'com.inbox.clients', // id
+    'com.inbox.clients', // title
     //  'IMPORTANCE_HIGH', // description
     importance: Importance.max,
     //showBadge: true,
   );
 
   void updatePages(RemoteMessage message) async {
-    Future.delayed(Duration(seconds: 3)).then((value) {
-      //flutterLocalNotificationsPlugin.cancelAll();
-    });
+   await SharedPref.instance
+        .setCurrentTaskResponse(taskResponse: jsonEncode(message.data));
+    homeViewModel.update();
+    storageViewModel.update();
   }
 
   configuration() async {
@@ -76,6 +89,7 @@ class AppFcm {
   Future selectNotification(String? payload) async {
     try {
       // RemoteMessage message = messages;
+      Logger().e(messages);
       goToOrderPage(messages.data);
     } catch (e) {
       print(e);
@@ -112,6 +126,8 @@ class AppFcm {
       RemoteNotification notification = message.notification!;
       //todo this for add badge for app
       // var android = message.data;
+      Logger().e("MSG_MESSAGE $message");
+      Logger().e("MSG_NOT_MESSAGE $messages");
       Logger().e("MSG_NOT ${messages.data.toString()}");
       if (Platform.isIOS || Platform.isAndroid) {
         messages = message;
@@ -130,6 +146,7 @@ class AppFcm {
               android: AndroidNotificationDetails(
                 channel.id, channel.name,
                 // channel.description,
+                styleInformation: BigTextStyleInformation(''),
                 enableLights: true,
                 enableVibration: true,
                 fullScreenIntent: true,
@@ -154,13 +171,31 @@ class AppFcm {
 
   static void goToOrderPage(Map<String, dynamic> map) {
     var serial = map;
-    Logger().e(map);
-    if (serial[LocalConstance.id] == LocalConstance.submitId) {
+    Logger().e("MSG_NOT ${map.toString()}");
+    if (serial[LocalConstance.id].toString() == LocalConstance.submitId) {
       Get.put(MyOrderViewModle());
       Get.off(() => OrderDetailesScreen(
             orderId: serial[LocalConstance.salesOrder],
             isFromPayment: true,
           ));
+    } else if (serial[LocalConstance.id].toString() ==
+        LocalConstance.scanBoxId) {
+      SharedPref.instance.setCurrentTaskResponse(taskResponse: jsonEncode(map));
+      Logger().e(SharedPref.instance.getCurrentTaskResponse());
+      Get.off(ScanRecivedOrderScreen(
+        isBox: true,
+        isProduct: false,
+      ));
+    } else if (serial[LocalConstance.id].toString() ==
+        LocalConstance.scanProductId) {
+      SharedPref.instance.setCurrentTaskResponse(taskResponse: jsonEncode(map));
+      
+      storageViewModel.selectedPaymentMethod = PaymentMethod(
+        id: SharedPref.instance.getCurrentTaskResponse()?.paymentMethod,
+        name: SharedPref.instance.getCurrentTaskResponse()?.paymentMethod,
+      );
+      storageViewModel.update();
+      Get.off(ReciverOrderScreen(homeViewModel));
     }
   }
 }

@@ -6,7 +6,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class PaymentWidget extends StatelessWidget {
   const PaymentWidget({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     return Container(

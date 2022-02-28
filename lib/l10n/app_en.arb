@@ -202,7 +202,14 @@
     "item_photos":"item Photos",
     "add_money":"Add Money",
     "are_you_sure_you_want_to_delete_cart_item" : "are you sure you want to Delete Cart Item",
-      "use_promo_code" : "Use Promo Code",
-       "promo_code" : "Promo Code"
-
+    "use_promo_code" : "Use Promo Code",
+    "promo_code" : "Promo Code",
+    "instant_order" : "Instant Order",
+    "contract_signature" : "Contract Signature",
+    "id_verification" : "ID Verification",
+    "scan_box" :"Scan Box",
+    "scan_products" : "Scan Products",
+    "boxes" : "Boxes",
+    "paid" : "Paid",
+    "amount_due" : "Amount Due"
 }
