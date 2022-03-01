@@ -34,6 +34,7 @@ class _AppWidgetState extends State<AppWidget> {
     // If the message also contains a data property with a "type" of "chat",
     // navigate to a chat screen
     if (initialMessage != null) {
+
       Logger().d("remote message $initialMessage");
       _handleMessage(initialMessage);
     }
@@ -43,7 +44,8 @@ class _AppWidgetState extends State<AppWidget> {
   }
 
   void _handleMessage(RemoteMessage message) {
-    AppFcm.goToOrderPage(message.data);
+    print("MSG_BUG _handleMessage");
+    AppFcm.goToOrderPage(message.data , isFromTerminate : true);
   }
 
   @override

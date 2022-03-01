@@ -46,6 +46,9 @@ class LocalConstance {
   static String submitId = "1";
   static String scanBoxId = "2";
   static String scanProductId = "3";
+  static String orderDeleviredId = "5";
+  static String orderDoneId = "6";
+
   static String id = "id";
   static String salesOrder = "sales_order";
 }

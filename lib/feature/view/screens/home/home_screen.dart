@@ -139,12 +139,12 @@ class _HomeScreenState extends State<HomeScreen> {
           color: color ?? boxColorGray,
         ),
         SizedBox(
-          width: sizeW10,
+          width: sizeW4,
         ),
         CustomTextView(
           txt: text ?? "${tr.on_the_way}",
           maxLine: Constance.maxLineOne,
-          textStyle: textStyleNormal(),
+          textStyle: textStyleNormal()?.copyWith(fontSize: 8),
           textOverflow: TextOverflow.ellipsis,
         ),
         SizedBox(
@@ -253,6 +253,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           "${tr.in_warehouse}", colorInWarhouse),
                                       textHintsWidget(
                                           "${tr.at_home}", colorAtHome),
+                                      textHintsWidget(
+                                          "Pickup", boxColorOrange),
                                     ],
                                   ),
                                   if (!logic.isListView!) ...[

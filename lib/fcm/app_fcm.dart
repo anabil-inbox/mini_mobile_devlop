@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/storage/payment.dart';
+import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/scan_recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
@@ -48,7 +49,7 @@ class AppFcm {
   );
 
   void updatePages(RemoteMessage message) async {
-   await SharedPref.instance
+    await SharedPref.instance
         .setCurrentTaskResponse(taskResponse: jsonEncode(message.data));
     homeViewModel.update();
     storageViewModel.update();
@@ -90,7 +91,7 @@ class AppFcm {
     try {
       // RemoteMessage message = messages;
       Logger().e(messages);
-      goToOrderPage(messages.data);
+      goToOrderPage(messages.data, isFromTerminate: false);
     } catch (e) {
       print(e);
       Logger().d(e);
@@ -169,10 +170,17 @@ class AppFcm {
     });
   }
 
-  static void goToOrderPage(Map<String, dynamic> map) {
+  static void goToOrderPage(Map<String, dynamic> map,
+      {required bool isFromTerminate}) {
+    print("MSG_BUG goToOrderPage $map");
+    if (isFromTerminate) {
+      homeViewModel.onInit();
+    }
     var serial = map;
     Logger().e("MSG_NOT ${map.toString()}");
+
     if (serial[LocalConstance.id].toString() == LocalConstance.submitId) {
+      print("MSG_BUG LocalConstance.submitId $map");
       Get.put(MyOrderViewModle());
       Get.off(() => OrderDetailesScreen(
             orderId: serial[LocalConstance.salesOrder],
@@ -180,6 +188,7 @@ class AppFcm {
           ));
     } else if (serial[LocalConstance.id].toString() ==
         LocalConstance.scanBoxId) {
+      print("MSG_BUG LocalConstance.scanBoxId $map");
       SharedPref.instance.setCurrentTaskResponse(taskResponse: jsonEncode(map));
       Logger().e(SharedPref.instance.getCurrentTaskResponse());
       Get.off(ScanRecivedOrderScreen(
@@ -188,14 +197,29 @@ class AppFcm {
       ));
     } else if (serial[LocalConstance.id].toString() ==
         LocalConstance.scanProductId) {
+      print("MSG_BUG LocalConstance.scanProductId $map");
       SharedPref.instance.setCurrentTaskResponse(taskResponse: jsonEncode(map));
-      
+
+      storageViewModel.selectedPaymentMethod = PaymentMethod(
+        id: SharedPref.instance.getCurrentTaskResponse()?.paymentMethod,
+        name: SharedPref.instance.getCurrentTaskResponse()?.paymentMethod,
+      );
+
+      storageViewModel.update();
+      Get.off(ReciverOrderScreen(homeViewModel));
+    } else if (serial[LocalConstance.id] == LocalConstance.orderDeleviredId) {
+      print("MSG_BUG LocalConstance.orderDeleviredId $map");
+      SharedPref.instance.setCurrentTaskResponse(taskResponse: jsonEncode(map));
       storageViewModel.selectedPaymentMethod = PaymentMethod(
         id: SharedPref.instance.getCurrentTaskResponse()?.paymentMethod,
         name: SharedPref.instance.getCurrentTaskResponse()?.paymentMethod,
       );
       storageViewModel.update();
       Get.off(ReciverOrderScreen(homeViewModel));
+      print("MSG_BUG LocalConstance.endDelvired $map");
+    } else if (serial[LocalConstance.id] == LocalConstance.orderDoneId) {
+      print("MSG_BUG LocalConstance.orderDoneId $map");
+      Get.offAll(() => HomePageHolder());
     }
   }
 }

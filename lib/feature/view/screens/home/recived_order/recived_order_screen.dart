@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/balance_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/contract_signature_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_box_instant_order.dart';
@@ -58,56 +59,67 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
         ),
       );
 
+  Future<bool> onWillPop() async {
+    Get.off(() => HomePageHolder());
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBarWidget(
-        titleWidget: CustomTextView(
-          txt: tr.instant_order,
-          maxLine: Constance.maxLineOne,
-          textStyle: textStyleAppBarTitle(),
+    return WillPopScope(
+      onWillPop: onWillPop,
+      child: Scaffold(
+        appBar: CustomAppBarWidget(
+          titleWidget: CustomTextView(
+            txt: tr.instant_order,
+            maxLine: Constance.maxLineOne,
+            textStyle: textStyleAppBarTitle(),
+          ),
+          isCenterTitle: true,
+          onBackBtnClick: () {
+            Get.off(HomePageHolder());
+          },
         ),
-        isCenterTitle: true,
-      ),
-      body: Stack(
-        children: [
-          GetBuilder<HomeViewModel>(builder: (home) {
-            Logger()
-                .e(SharedPref.instance.getCurrentTaskResponse()?.processType);
-            if (SharedPref.instance.getCurrentTaskResponse()?.processType ==
-                LocalConstance.newStorageSv) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: padding20!),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    SizedBox(height: sizeH27),
-                    const ContractSignature(),
-                    SizedBox(height: sizeH10),
-                    idVerification,
-                    SizedBox(height: sizeH10),
-                    ScanBoxInstantOrder(
-                      homeViewModel: widget.homeViewModel,
-                    ),
-                    SizedBox(height: sizeH10),
-                    const ScanProducts(),
-                    SizedBox(height: sizeH10),
-                    GetBuilder<StorageViewModel>(
-                      builder: (_) {
-                        return Balance();
-                      },
-                    ),
-                    SizedBox(height: sizeH10),
-                    // const CustomerSignatureInstantOrder(),
-                    PaymentWidget(),
-                    SizedBox(height: sizeH10),
-                  ],
-                ),
-              );
-            }
-            return const SizedBox();
-          }),
-        ],
+        body: Stack(
+          children: [
+            GetBuilder<HomeViewModel>(builder: (home) {
+              Logger()
+                  .e(SharedPref.instance.getCurrentTaskResponse()?.processType);
+              if (SharedPref.instance.getCurrentTaskResponse()?.processType ==
+                  LocalConstance.newStorageSv) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: padding20!),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      SizedBox(height: sizeH27),
+                      const ContractSignature(),
+                      SizedBox(height: sizeH10),
+                      idVerification,
+                      SizedBox(height: sizeH10),
+                      ScanBoxInstantOrder(
+                        homeViewModel: widget.homeViewModel,
+                      ),
+                      SizedBox(height: sizeH10),
+                      const ScanProducts(),
+                      SizedBox(height: sizeH10),
+                      GetBuilder<StorageViewModel>(
+                        builder: (_) {
+                          return Balance();
+                        },
+                      ),
+                      SizedBox(height: sizeH10),
+                      // const CustomerSignatureInstantOrder(),
+                      PaymentWidget(),
+                      SizedBox(height: sizeH10),
+                    ],
+                  ),
+                );
+              }
+              return const SizedBox();
+            }),
+          ],
+        ),
       ),
     );
   }
