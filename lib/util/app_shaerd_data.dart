@@ -681,14 +681,15 @@ num calculateBalance({required num balance}) {
 
 // Widget return By Box Status
 
-Widget retuenBoxByStatus(
-    {required String storageStatus, required bool isEnabeld}) {
+Widget returnBoxByStatus(
+    {required String storageStatus, required bool isEnabeld , required bool isPickup}) {
   String boxPath = "assets/svgs/desable_box.svg";
   // if (!true) {
   //   boxPath = "assets/svgs/block_folder.svg";
   // } else
-
-  if (storageStatus == LocalConstance.boxAtHome) {
+  if(isPickup){
+    boxPath = "assets/svgs/box_picked_up.svg";
+  }else if (storageStatus == LocalConstance.boxAtHome) {
     boxPath = "assets/svgs/home_box_red.svg";
   } else if (storageStatus == LocalConstance.boxinWareHouse) {
     boxPath = "assets/svgs/box_in_ware_house.svg";

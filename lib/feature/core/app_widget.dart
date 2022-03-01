@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:inbox_clients/fcm/app_fcm.dart';
 import 'package:inbox_clients/feature/view/screens/auth/splash/splash.dart';

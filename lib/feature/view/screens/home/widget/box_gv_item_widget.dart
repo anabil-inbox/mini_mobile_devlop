@@ -40,7 +40,7 @@ class HomeGVItemWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                retuenBoxByStatus(storageStatus: box.storageStatus ?? "" , isEnabeld: isEnabeld),
+                returnBoxByStatus(storageStatus: box.storageStatus ?? "" , isEnabeld: isEnabeld , isPickup: box.isPickup ?? true),
                 SizedBox(
                   height: sizeH10,
                 ),

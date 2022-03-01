@@ -55,7 +55,8 @@ class BoxInTaskWidget extends StatelessWidget {
                     SizedBox(
                       width: sizeW10,
                     ),
-                    retuenBoxByStatus(
+                    returnBoxByStatus(
+                        isPickup: box.isPickup ?? true,
                         storageStatus: box.storageStatus!,
                         isEnabeld: isEnabeld),
                     SizedBox(

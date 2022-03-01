@@ -31,7 +31,8 @@ class HomeLVItemWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          retuenBoxByStatus(
+          returnBoxByStatus(
+              isPickup: box.isPickup ?? true,
               storageStatus: box.storageStatus ?? "", isEnabeld: isEnabeld),
           SizedBox(
             width: sizeW15,
