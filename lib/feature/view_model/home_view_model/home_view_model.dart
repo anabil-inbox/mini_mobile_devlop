@@ -203,20 +203,20 @@ class HomeViewModel extends BaseController {
       controller.scannedDataStream.listen((scanData) {
         result = scanData;
       }).onData((data) async {
-        i = i + 1;
-        if (i == 1) {
-          await fromAtHome(data.code, storageViewModel);
-          //Get.delete<HomeViewModel>();
-          Logger().e(scaanedBoxes.length);
-          Get.to(() => ReciverOrderScreen(
-            this
-          ));
-        }
+        // i = i + 1;
+        // if (i == 1) {
+        //   await fromAtHome(data.code, storageViewModel);
+        //   //Get.delete<HomeViewModel>();
+        //   Logger().e(scaanedBoxes.length);
+        //   Get.to(() => ReciverOrderScreen(
+        //     this
+        //   ));
+        // }
       });
     } catch (e) {
-      Logger().e("$e");
+     // Logger().e("$e");
     }
-    endLoading();
+  // endLoading();
   }
 
   // this for Pagination :

@@ -22,7 +22,6 @@ class SplashViewModle extends GetxController{
           update()
     }
    });
-   
   }
 
 

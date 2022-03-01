@@ -21,12 +21,12 @@ class ScanRecivedOrderScreen extends StatefulWidget {
 class _ScanRecivedOrderScreenState extends State<ScanRecivedOrderScreen> {
   HomeViewModel? homeViewModel;
   StorageViewModel? storageViewModel;
-  @override
-  void initState() {
-    super.initState();
-    homeViewModel = Get.put(HomeViewModel() , permanent: true);
-    storageViewModel = Get.put(StorageViewModel() , permanent: true);
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   homeViewModel = Get.put(HomeViewModel() , permanent: true);
+  //   storageViewModel = Get.put(StorageViewModel() , permanent: true);
+  // }
 
   GlobalKey<FormState> qrKey = GlobalKey<FormState>();
 
@@ -40,22 +40,27 @@ class _ScanRecivedOrderScreenState extends State<ScanRecivedOrderScreen> {
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
-          body: QRView(
-        key: qrKey,
-        onQRViewCreated: (controller) => homeViewModel?.createQrOrderOrder(
-            controller: controller,
-            storageViewModel: storageViewModel ?? StorageViewModel(),
-            isBox: widget.isBox,
-            isProduct: widget.isProduct),
-        overlay: QrScannerOverlayShape(
-            borderColor: colorRed,
-            borderRadius: padding10!,
-            borderLength: padding30!,
-            borderWidth: padding10!,
-            cutOutSize: homeViewModel?.scanArea),
-        onPermissionSet: (ctrl, p) =>
-            homeViewModel?.onPermissionSet(context, ctrl, p),
-      )),
+          body: Text(""),
+          
+          
+      //     QRView(
+      //   key: qrKey,
+      //   onQRViewCreated: (controller) => homeViewModel?.createQrOrderOrder(
+      //       controller: controller,
+      //       storageViewModel: storageViewModel ?? StorageViewModel(),
+      //       isBox: widget.isBox,
+      //       isProduct: widget.isProduct),
+      //   overlay: QrScannerOverlayShape(
+      //       borderColor: colorRed,
+      //       borderRadius: padding10!,
+      //       borderLength: padding30!,
+      //       borderWidth: padding10!,
+      //       cutOutSize: homeViewModel?.scanArea),
+      //   onPermissionSet: (ctrl, p) =>
+      //       homeViewModel?.onPermissionSet(context, ctrl, p),
+      // )
+      ),
+    
     );
   }
 }
