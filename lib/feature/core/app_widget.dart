@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:inbox_clients/fcm/app_fcm.dart';
 import 'package:inbox_clients/feature/view/screens/auth/splash/splash.dart';
+import 'package:inbox_clients/network/api/feature/splash_feature_helper.dart';
 import 'package:inbox_clients/util/app_color.dart';
 
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -29,6 +31,14 @@ class _AppWidgetState extends State<AppWidget> {
   Future<void> setupInteractedMessage() async {
     // Get any messages which caused the application to open from
     // a terminated state.
+    await SplashHelper.getInstance.getAppSettings().then((value) =>{
+      if(!GetUtils.isNull(value)){
+        // apiSettings = value,
+        // Logger().i(value.workingHours,),
+        SharedPref.instance.setUserType(value.customerType!),
+        // update()
+      }
+    });
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
     // If the message also contains a data property with a "type" of "chat",
@@ -51,7 +61,9 @@ class _AppWidgetState extends State<AppWidget> {
   @override
   void initState() {
     super.initState();
-    setupInteractedMessage();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      setupInteractedMessage();
+    });
   }
 
   @override

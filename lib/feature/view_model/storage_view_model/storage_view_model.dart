@@ -1344,34 +1344,45 @@ class StorageViewModel extends BaseController {
 
   customerStoragesChangeStatus(var serial,
       {HomeViewModel? homeViewModel}) async {
+    print("mes__1");
     if (serial == null) {
+      print("mes__2");
       Get.back();
       return;
     }
+    print("mes__3");
     isChangeStatusLoading = true;
-    update();
+     update();
     var body = {"${ConstanceNetwork.serial}": "$serial"};
+    print("mes__4");
     await StorageFeature.getInstance
         .customerStoragesChangeStatus(body: body)
         .then((value) {
+      print("mes__5");
       if (!GetUtils.isNull(value)) {
+        print("mes__6");
         if (value.status!.success!) {
+          print("mes__8");
           isChangeStatusLoading = false;
           homeViewModel?.scaanedBoxes.add(Box.fromJson(value.data));
           Logger().e(homeViewModel?.scaanedBoxes.length);
-          homeViewModel?.update();
-          update();
-          Get.back();} else {
+           homeViewModel?.update();
+           update();
+          Get.back();
+        } else {
+          print("mes__9");
           snackError(tr.error_occurred, value.status!.message!);
         }
       } else {
+        print("mes__10");
         isChangeStatusLoading = false;
-        update();
+         update();
       }
     }).catchError((onError) {
+      print("mes__11");
       Logger().d(onError);
       isChangeStatusLoading = false;
-      update();
+       update();
     });
   }
 

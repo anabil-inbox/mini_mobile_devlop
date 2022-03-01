@@ -14,11 +14,11 @@ class SplashViewModle extends GetxController{
     List<String> arrSecName = [];
      
   getAppSetting() async {
-     await SplashHelper.getInstance.getAppSettings().then((value) =>{
+     await SplashHelper.getInstance.getAppSettings().then((value)async =>{
         if(!GetUtils.isNull(value)){
           apiSettings = value,
           Logger().i(value.workingHours,),
-          SharedPref.instance.setUserType(value.customerType!),
+          await SharedPref.instance.setUserType(value.customerType!),
           update()
     }
    });
@@ -28,7 +28,7 @@ class SplashViewModle extends GetxController{
 
   @override
   void onInit() async{
-    getAppSetting();
+   await getAppSetting();
     SharedPref.instance.getUserType();
     AppFcm.fcmInstance.getTokenFCM();
     super.onInit();

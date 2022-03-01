@@ -20,12 +20,12 @@ import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
-class ReciverOrderScreen extends StatefulWidget {
+class ReciverOrderScreen extends /*StatefulWidget*/StatelessWidget {
   const ReciverOrderScreen(this.homeViewModel, {Key? key}) : super(key: key);
 
   final HomeViewModel homeViewModel;
 
-  @override
+/*  @override
   State<ReciverOrderScreen> createState() => _ReciverOrderScreenState();
 }
 
@@ -34,7 +34,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
   void initState() {
     super.initState();
     // Get.put(HomeViewModel(), permanent: true);
-  }
+  }*/
 
   Widget get idVerification => Container(
         height: sizeH50,
@@ -60,8 +60,8 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
       );
 
   Future<bool> onWillPop() async {
-    Get.off(() => HomePageHolder());
-    return true;
+    // Get.off(() => HomePageHolder());
+    return false;
   }
 
   @override
@@ -98,7 +98,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                       idVerification,
                       SizedBox(height: sizeH10),
                       ScanBoxInstantOrder(
-                        homeViewModel: widget.homeViewModel,
+                        homeViewModel: /*widget.*/homeViewModel,
                       ),
                       SizedBox(height: sizeH10),
                       const ScanProducts(),
