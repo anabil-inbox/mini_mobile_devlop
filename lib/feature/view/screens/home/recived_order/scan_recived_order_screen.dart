@@ -7,26 +7,26 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-class ScanRecivedOrderScreen extends StatefulWidget {
-  const ScanRecivedOrderScreen(
+class ScanRecivedOrderScreen extends /*StatefulWidget*/StatelessWidget {
+  /*const*/ ScanRecivedOrderScreen(
       {Key? key, required this.isBox, required this.isProduct})
       : super(key: key);
 
   final bool isBox;
   final bool isProduct;
-  @override
+ /* @override
   State<ScanRecivedOrderScreen> createState() => _ScanRecivedOrderScreenState();
 }
 
-class _ScanRecivedOrderScreenState extends State<ScanRecivedOrderScreen> {
-  HomeViewModel? homeViewModel;
-  StorageViewModel? storageViewModel;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   homeViewModel = Get.put(HomeViewModel() , permanent: true);
-  //   storageViewModel = Get.put(StorageViewModel() , permanent: true);
-  // }
+class _ScanRecivedOrderScreenState extends State<ScanRecivedOrderScreen> {*/
+  HomeViewModel? homeViewModel= Get.put(HomeViewModel() , permanent: true);
+  StorageViewModel? storageViewModel = Get.put(StorageViewModel() , permanent: true);
+  /*@override
+  void initState() {
+    // homeViewModel = Get.put(HomeViewModel() , permanent: true);
+    // storageViewModel = Get.put(StorageViewModel() , permanent: true);
+    super.initState();
+  }*/
 
   GlobalKey<FormState> qrKey = GlobalKey<FormState>();
 
@@ -40,27 +40,22 @@ class _ScanRecivedOrderScreenState extends State<ScanRecivedOrderScreen> {
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
-          body: Text(""),
-          
-          
-      //     QRView(
-      //   key: qrKey,
-      //   onQRViewCreated: (controller) => homeViewModel?.createQrOrderOrder(
-      //       controller: controller,
-      //       storageViewModel: storageViewModel ?? StorageViewModel(),
-      //       isBox: widget.isBox,
-      //       isProduct: widget.isProduct),
-      //   overlay: QrScannerOverlayShape(
-      //       borderColor: colorRed,
-      //       borderRadius: padding10!,
-      //       borderLength: padding30!,
-      //       borderWidth: padding10!,
-      //       cutOutSize: homeViewModel?.scanArea),
-      //   onPermissionSet: (ctrl, p) =>
-      //       homeViewModel?.onPermissionSet(context, ctrl, p),
-      // )
-      ),
-    
+          body: QRView(
+        key: qrKey,
+        onQRViewCreated: (controller) => homeViewModel?.createQrOrderOrder(
+            controller: controller,
+            storageViewModel: storageViewModel ?? StorageViewModel(),
+            isBox: /*widget.*/isBox,
+            isProduct: /*widget.*/isProduct),
+        overlay: QrScannerOverlayShape(
+            borderColor: colorRed,
+            borderRadius: padding10!,
+            borderLength: padding30!,
+            borderWidth: padding10!,
+            cutOutSize: homeViewModel?.scanArea),
+        onPermissionSet: (ctrl, p) =>
+            homeViewModel?.onPermissionSet(context, ctrl, p),
+      )),
     );
   }
 }

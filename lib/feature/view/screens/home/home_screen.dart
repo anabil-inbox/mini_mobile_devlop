@@ -240,22 +240,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(
                                     height: sizeH10,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      InkWell(
-                                          onTap: /*onTheWayClick*/ () {},
-                                          child: textHintsWidget(
-                                              "${tr.on_the_way}", null)),
-                                      textHintsWidget(
-                                          "${tr.in_warehouse}", colorInWarhouse),
-                                      textHintsWidget(
-                                          "${tr.at_home}", colorAtHome),
-                                      textHintsWidget(
-                                          "Pickup", boxColorOrange),
-                                    ],
+                                  FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        InkWell(
+                                            onTap: /*onTheWayClick*/ () {},
+                                            child: textHintsWidget(
+                                                "${tr.on_the_way}", null)),
+                                        textHintsWidget(
+                                            "${tr.in_warehouse}", colorInWarhouse),
+                                        textHintsWidget(
+                                            "${tr.at_home}", colorAtHome),
+                                        textHintsWidget(
+                                            "Pickup", boxColorOrange),
+                                      ],
+                                    ),
                                   ),
                                   if (!logic.isListView!) ...[
                                     logic.isLoading

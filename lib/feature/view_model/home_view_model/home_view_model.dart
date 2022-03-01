@@ -197,24 +197,31 @@ class HomeViewModel extends BaseController {
       required StorageViewModel storageViewModel,
       required bool isBox,
       required bool isProduct}) {
+    print("mess_1");
     startLoading();
+    print("mess_2");
     try {
       int i = 0;
+      print("mess_3");
       controller.scannedDataStream.listen((scanData) {
         result = scanData;
+        print("mess_4");
       }).onData((data) async {
-        // i = i + 1;
-        // if (i == 1) {
-        //   await fromAtHome(data.code, storageViewModel);
-        //   //Get.delete<HomeViewModel>();
-        //   Logger().e(scaanedBoxes.length);
-        //   Get.to(() => ReciverOrderScreen(
-        //     this
-        //   ));
-        // }
+        i = i + 1;
+        print("mess_5");
+        if (i == 1) {
+          print("mess_6");
+          await fromAtHome(data.code, storageViewModel);
+          //Get.delete<HomeViewModel>();
+          Logger().e(scaanedBoxes.length);
+          Get.to(() => ReciverOrderScreen(
+            this
+          ));
+        }
       });
     } catch (e) {
-     // Logger().e("$e");
+      Logger().e("$e");
+      print("mess_7_$e");
     }
   // endLoading();
   }
@@ -388,10 +395,14 @@ class HomeViewModel extends BaseController {
   fromAtHome(String? code, StorageViewModel? storageViewModel) async {
     if (code == null) {
       //todo show dialog
+      print("mes__-1");
     } else {
+      print("mes__-2");
       await storageViewModel?.customerStoragesChangeStatus(code,
           homeViewModel: this);
-      Get.back();
+      print("mes__-3");
+       Get.back();
+      print("mes__-4");
     }
   }
 
