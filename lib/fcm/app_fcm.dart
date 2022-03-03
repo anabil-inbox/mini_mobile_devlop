@@ -51,9 +51,18 @@ class AppFcm {
   );
 
   void updatePages(RemoteMessage message) async {
-    await SharedPref.instance
-        .setCurrentTaskResponse(taskResponse: jsonEncode(message.data));
+    await SharedPref.instance.setCurrentTaskResponse(taskResponse: jsonEncode(message.data));
+    // Get.delete<HomeViewModel>();
+    // Get.delete<StorageViewModel>();
+    // homeViewModel =  Get.put(HomeViewModel());
+    // storageViewModel =  Get.put(StorageViewModel());
+    homeViewModel.expandableController.expanded = false;
+    homeViewModel.expandableController.expanded = true;
     storageViewModel.update();
+    homeViewModel.update();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+
+    });
   }
 
   configuration() async {
@@ -130,7 +139,7 @@ class AppFcm {
       // var android = message.data;
       Logger().e("MSG_MESSAGE $message");
       Logger().e("MSG_NOT_MESSAGE $messages");
-      Logger().e("MSG_NOT ${messages.data.toString()}");
+      Logger().e("MSG_NOT ${message.data.toString()}");
       if (Platform.isIOS || Platform.isAndroid) {
         messages = message;
         updatePages(message);
@@ -201,8 +210,7 @@ class AppFcm {
       /*else*/ if (serial[LocalConstance.id].toString() ==
           LocalConstance.scanProductId) {
         print("MSG_BUG LocalConstance.scanProductId $map");
-        SharedPref.instance
-            .setCurrentTaskResponse(taskResponse: jsonEncode(map));
+        SharedPref.instance.setCurrentTaskResponse(taskResponse: jsonEncode(map));
 
         storageViewModel.selectedPaymentMethod = PaymentMethod(
           id: SharedPref.instance.getCurrentTaskResponse()?.paymentMethod,
@@ -233,10 +241,9 @@ class AppFcm {
         Get.offAll(() => HomePageHolder());
         return;
       }
-      if (serial[LocalConstance.id].toString() ==
-          LocalConstance.paymentRequiredId) {
-        await SharedPref.instance
-            .setCurrentTaskResponse(taskResponse: jsonEncode(map));
+      if (serial[LocalConstance.id].toString() == LocalConstance.paymentRequiredId) {
+        await SharedPref.instance.setCurrentTaskResponse(taskResponse: jsonEncode(map));
+        homeViewModel.update();
         Get.off(() => ReciverOrderScreen(
               homeViewModel,
               isNeedToPayment: true,

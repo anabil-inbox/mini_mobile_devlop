@@ -59,6 +59,7 @@ class TaskResponse {
     this.total,
     this.totalPaid,
     this.totalDue,
+    this.notificationId
   });
 
   String? childOrderId;
@@ -75,6 +76,7 @@ class TaskResponse {
   dynamic total;
   dynamic totalPaid;
   dynamic totalDue;
+  dynamic notificationId;
 
   factory TaskResponse.fromJson(Map<String, dynamic> json) => TaskResponse(
         childOrderId: json["child_order_id"],
@@ -93,6 +95,7 @@ class TaskResponse {
         total: json["total"],
         totalPaid: json["total_paid"],
         totalDue: json["total_due"],
+      notificationId : json["id"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -110,6 +113,7 @@ class TaskResponse {
         "total": total,
         "total_paid": totalPaid,
         "total_due": totalDue,
+         "notificationId" : notificationId
       };
 }
 

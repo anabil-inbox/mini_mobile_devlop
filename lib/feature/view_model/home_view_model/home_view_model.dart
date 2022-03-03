@@ -1,3 +1,4 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
@@ -23,6 +24,9 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class HomeViewModel extends BaseController {
   var _currentIndex = 0;
+  //collapse
+  // bool isCollapse = false;
+  ExpandableController expandableController = ExpandableController();
   int get currentIndex => _currentIndex;
   //to do for Loading var:
   bool isLoading = false;

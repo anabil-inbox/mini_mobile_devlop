@@ -23,76 +23,86 @@ class ScanProducts extends StatelessWidget {
         color: colorTextWhite,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: ExpandablePanel(
-        theme: const ExpandableThemeData(
-          hasIcon: false,
-          alignment: Alignment.topLeft,
-          tapHeaderToExpand: true,
-        ),
-        header: Row(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: colorBtnGray.withOpacity(0.4),
-                shape: BoxShape.circle,
-              ),
-              padding: EdgeInsets.all(padding4!),
-              child: Transform.rotate(
-                angle: 180 * math.pi / 180,
-                child: Icon(
-                  Icons.keyboard_arrow_up,
-                  color: colorBlack,
-                  size: 20,
+      child: GetBuilder<HomeViewModel>(
+        // assignId: true,
+        builder: (home) {
+          return ExpandablePanel(
+            controller:home.expandableController,
+            theme: const ExpandableThemeData(
+              hasIcon: false,
+              alignment: Alignment.topLeft,
+              tapHeaderToExpand: true,
+            ),
+            header: Row(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: colorBtnGray.withOpacity(0.4),
+                    shape: BoxShape.circle,
+                  ),
+                  padding: EdgeInsets.all(padding4!),
+                  child: Transform.rotate(
+                    angle: 180 * math.pi / 180,
+                    child: Icon(
+                      Icons.keyboard_arrow_up,
+                      color: colorBlack,
+                      size: 20,
+                    ),
+                  ),
                 ),
-              ),
+                SizedBox(width: sizeW10),
+                CustomTextView(
+                  txt: tr.scan_products,
+                  textStyle: textStyleNormal()?.copyWith(color: colorBlack),
+                ),
+                const Spacer(),
+                // GestureDetector(
+                //   onTap: () {
+                //     // Get.to(() => const ScanScreen(
+                //     //       isBoxSalesScan: false,
+                //     //       isProductScan: true,
+                //     //     ));
+                //   },
+                //   child: SvgPicture.asset("assets/svgs/Scan.svg",
+                //       color: colorRed, width: sizeW20, height: sizeH17),
+                // ),
+              ],
             ),
-            SizedBox(width: sizeW10),
-            CustomTextView(
-              txt: tr.scan_products,
-              textStyle: textStyleNormal()?.copyWith(color: colorBlack),
+            collapsed: const SizedBox.shrink(),
+            expanded:(SharedPref.instance.getCurrentTaskResponse()!.childOrder!.items!.isEmpty) ?
+            const SizedBox()
+                : ListView(
+              shrinkWrap: true,
+              primary: false,
+              children: SharedPref.instance.getCurrentTaskResponse()!.childOrder
+              !.items!.map((e) => ProductOnOrderItem(
+                productModel: e,
+              ))
+                  .toList(),
             ),
-            const Spacer(),
-            // GestureDetector(
-            //   onTap: () {
-            //     // Get.to(() => const ScanScreen(
-            //     //       isBoxSalesScan: false,
-            //     //       isProductScan: true,
-            //     //     ));
+            // Builder(
+            //   builder: (context) {
+            //     try {
+            //       if (SharedPref.instance.getCurrentTaskResponse()!.childOrder!.items!.isEmpty) {
+            //         return const SizedBox();
+            //       } else {
+            //         return ListView(
+            //           shrinkWrap: true,
+            //           primary: false,
+            //           children: SharedPref.instance.getCurrentTaskResponse()!.childOrder
+            //           !.items!.map((e) => ProductOnOrderItem(
+            //                 productModel: e,
+            //               ))
+            //               .toList(),
+            //         );
+            //       }
+            //     } catch (e) {
+            //       return const SizedBox();
+            //     }
             //   },
-            //   child: SvgPicture.asset("assets/svgs/Scan.svg",
-            //       color: colorRed, width: sizeW20, height: sizeH17),
             // ),
-          ],
-        ),
-        collapsed: const SizedBox.shrink(),
-        expanded: GetBuilder<HomeViewModel>(
-          builder: (home) {
-            try {
-              if (SharedPref.instance
-                  .getCurrentTaskResponse()!
-                  .childOrder!
-                  .items!
-                  .isEmpty) {
-                return const SizedBox();
-              } else {
-                return ListView(
-                  shrinkWrap: true,
-                  primary: false,
-                  children: SharedPref.instance
-                  .getCurrentTaskResponse()!
-                  .childOrder!
-                  .items!
-                      .map((e) => ProductOnOrderItem(
-                            productModel: e,
-                          ))
-                      .toList(),
-                );
-              }
-            } catch (e) {
-              return const SizedBox();
-            }
-          },
-        ),
+          );
+        },
       ),
     );
   }

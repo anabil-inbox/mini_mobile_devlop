@@ -22,6 +22,7 @@ import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
 class ReciverOrderScreen extends /*StatefulWidget*/ StatelessWidget {
+
   const ReciverOrderScreen(this.homeViewModel,
       {Key? key, this.isNeedToPayment = false})
       : super(key: key);
@@ -101,10 +102,9 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
         body: Stack(
           children: [
             GetBuilder<HomeViewModel>(builder: (home) {
-              Logger()
-                  .e(SharedPref.instance.getCurrentTaskResponse()?.processType);
-              if (SharedPref.instance.getCurrentTaskResponse()?.processType ==
-                  LocalConstance.newStorageSv) {
+              Logger().e(SharedPref.instance.getCurrentTaskResponse()?.processType);
+              if (SharedPref.instance.getCurrentTaskResponse()?.processType == LocalConstance.newStorageSv ||
+                  SharedPref.instance.getCurrentTaskResponse()?.notificationId == LocalConstance.paymentRequiredId) {
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding20!),
                   child: ListView(

@@ -219,7 +219,8 @@ class SharedPref {
     }
   }
 
-  setCurrentTaskResponse({required String taskResponse}) {
-    _prefs?.setString(taskKey, taskResponse);
+  setCurrentTaskResponse({required String taskResponse}) async{
+    await _prefs?.remove(taskKey);
+    await _prefs?.setString(taskKey, taskResponse);
   }
 }
