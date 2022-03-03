@@ -29,7 +29,6 @@ class OrderDetailesScreen extends StatefulWidget {
 }
 
 class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
-
   Widget get bodyOrderDetailes {
     //to do this when The Status Is An Task :
     if (GetUtils.isNull(
@@ -96,8 +95,8 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
       await OrderDetailesScreen.myOrderViewModle
           .getOrderDetaile(orderId: widget.orderId);
       OrderDetailesScreen.myOrderViewModle.update();
-      
-       setState(() {});
+
+      setState(() {});
       // Future.delayed(Duration(milliseconds: 1000)).then(
       //     (value) async => {
       //       // OrderDetailesScreen.myOrderViewModle.update(),
@@ -130,6 +129,13 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                 primary: true,
                 child: GetBuilder<MyOrderViewModle>(
                   builder: (builder) {
+                    if (OrderDetailesScreen
+                            .myOrderViewModle.newOrderSales.totalPrice ==
+                        null) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: padding20!),
                       child: Column(

@@ -46,6 +46,7 @@ class StorageViewModel extends BaseController {
   bool? isSelectBtnClick = false;
   bool? isSelectAllClick = false;
   List<BoxItem> listIndexSelected = <BoxItem>[];
+  bool isNeedToPayment = false;
 
   //todo this for bottom sheet accept isAccept
   bool isAccept = false;
@@ -1360,14 +1361,14 @@ class StorageViewModel extends BaseController {
         .then((value) {
       print("mes__5");
       if (!GetUtils.isNull(value)) {
-        print("mes__6");
+          print("mes__6");
         if (value.status!.success!) {
           print("mes__8");
           isChangeStatusLoading = false;
           homeViewModel?.scaanedBoxes.add(Box.fromJson(value.data));
-          Logger().e(homeViewModel?.scaanedBoxes.length);
-           homeViewModel?.update();
-           update();
+          SharedPref.instance.setBoxesList(boxes: homeViewModel!.scaanedBoxes.toList());
+          homeViewModel.update();
+          update();
           Get.back();
         } else {
           print("mes__9");

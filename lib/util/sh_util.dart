@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
+import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/language.dart';
 import 'package:inbox_clients/feature/model/respons/task_response.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -21,7 +22,8 @@ class SharedPref {
   final String tokenKey = "token";
   final String customrKey = "customerKey";
   final String userDataKey = "userData";
-
+  final String boxessKey = "boxessKey";
+  
   var log = Logger();
 
   SharedPref._();
@@ -101,7 +103,32 @@ class SharedPref {
     // ignore: unnecessary_statements
     isShow == null ? isShow = false : isShow;
     _prefs?.setBool("$isShowKey", isShow);
+  } 
+
+
+    setBoxesList({required List<Box> boxes}) {
+    removeBoxess();
+    _prefs?.setString(boxessKey, jsonEncode(boxes));
   }
+
+  List<Box> getBoxesList() {
+    try {
+      String? objectStr = _prefs?.getString(boxessKey);
+      return List<Box>.from(
+          json.decode(objectStr!).map((x) => Box.fromJson(x)));
+    } catch (e) {
+      return [];
+    }
+  }
+
+  removeBoxess() async {
+    try {
+      await _prefs?.remove(boxessKey);
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
 
   getShowProgress() {
     try {

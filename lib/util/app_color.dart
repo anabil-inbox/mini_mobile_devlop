@@ -40,6 +40,8 @@ var colorRedTrans = Color(0x22E63331);
 var colorGreen = Color(0xFF27D39F);
 final Color greenOpcityColor = Color(0xFFD3ECDD);
 var colorOrangeLight = Color(0xFFF9B20C);
+const Color successColor = Color(0xFF00C851);
+const Color errorColor = Color(0xFFff4444);
 
 //todo this for containers
 var colorContainerGray = Color(0xFFF5F5F5);

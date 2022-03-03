@@ -173,24 +173,44 @@ bool areArraysEquales(List<String> listOne, List<StorageFeatures> listTwo) {
   return eq(listOne, localArray);
 }
 
-snackSuccess(String title, String body) {
-  Future.delayed(Duration(seconds: 0)).then((value) {
-    Get.snackbar("$title", "$body",
-        colorText: Colors.white,
-        margin: EdgeInsets.all(8),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Color(0xFF10C995));
-  });
+// snackSuccess(String title, String body) {
+//   Future.delayed(Duration(seconds: 0)).then((value) {
+//     Get.snackbar("$title", "$body",
+//         colorText: Colors.white,
+//         margin: EdgeInsets.all(8),
+//         snackPosition: SnackPosition.BOTTOM,
+//         backgroundColor: Color(0xFF10C995));
+//   });
+// }
+
+// snackError(String title, String body) {
+//   Future.delayed(Duration(seconds: 0)).then((value) {
+//     Get.snackbar("$title", "$body",
+//         colorText: Colors.white,
+//         margin: EdgeInsets.all(8),
+//         snackPosition: SnackPosition.BOTTOM,
+//         backgroundColor: Color(0xFFF2AE56).withAlpha(150));
+//   });
+// }
+
+  snackSuccess(String? title, String? body) {
+  mainSnack(body: body ?? "", backgroundColor: successColor);
 }
 
-snackError(String title, String body) {
-  Future.delayed(Duration(seconds: 0)).then((value) {
-    Get.snackbar("$title", "$body",
-        colorText: Colors.white,
-        margin: EdgeInsets.all(8),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Color(0xFFF2AE56).withAlpha(150));
-  });
+snackError(String? title, String? body) {
+  mainSnack(body: body ?? "", backgroundColor: errorColor);
+}
+
+mainSnack({String? title, required String body, Color? backgroundColor}) {
+  Get.showSnackbar(
+    GetSnackBar(
+      backgroundColor: backgroundColor ?? const Color(0xFF303030),
+      message: body,
+      duration: const Duration(seconds: 2),
+      borderRadius: 10,
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+    ),
+  );
 }
 
 snackConnection() {

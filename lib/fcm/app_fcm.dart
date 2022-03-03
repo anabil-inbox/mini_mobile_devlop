@@ -22,10 +22,12 @@ class AppFcm {
   AppFcm._();
   static AppFcm fcmInstance = AppFcm._();
 
-  static HomeViewModel homeViewModel =
-      Get.put(HomeViewModel(), );
-  static StorageViewModel storageViewModel =
-      Get.put(StorageViewModel(), );
+  static HomeViewModel homeViewModel = Get.put(
+    HomeViewModel(),
+  );
+  static StorageViewModel storageViewModel = Get.put(
+    StorageViewModel(),
+  );
 
   init() {
     configuration();
@@ -51,8 +53,7 @@ class AppFcm {
   void updatePages(RemoteMessage message) async {
     await SharedPref.instance
         .setCurrentTaskResponse(taskResponse: jsonEncode(message.data));
-    // homeViewModel.update();
-    // storageViewModel.update();
+    storageViewModel.update();
   }
 
   configuration() async {
@@ -172,7 +173,7 @@ class AppFcm {
 
   static void goToOrderPage(Map<String, dynamic> map,
       {required bool isFromTerminate}) {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       print("MSG_BUG goToOrderPage $map");
       var serial = map;
       Logger().e("MSG_NOT ${map.toString()}");
@@ -181,23 +182,27 @@ class AppFcm {
         print("MSG_BUG LocalConstance.submitId $map");
         Get.put(MyOrderViewModle());
         Get.off(() => OrderDetailesScreen(
-          orderId: serial[LocalConstance.salesOrder],
-          isFromPayment: true,
-        ));
+              orderId: serial[LocalConstance.salesOrder],
+              isFromPayment: true,
+            ));
         return;
-      } /*else*/ if (serial[LocalConstance.id].toString() ==
+      }
+      /*else*/ if (serial[LocalConstance.id].toString() ==
           LocalConstance.scanBoxId) {
         print("MSG_BUG LocalConstance.scanBoxId $map");
-        SharedPref.instance.setCurrentTaskResponse(taskResponse: jsonEncode(map));
+        SharedPref.instance
+            .setCurrentTaskResponse(taskResponse: jsonEncode(map));
         Logger().e(SharedPref.instance.getCurrentTaskResponse());
         Get.off(ScanRecivedOrderScreen(
           isBox: true,
           isProduct: false,
         ));
-      } /*else*/ if (serial[LocalConstance.id].toString() ==
+      }
+      /*else*/ if (serial[LocalConstance.id].toString() ==
           LocalConstance.scanProductId) {
         print("MSG_BUG LocalConstance.scanProductId $map");
-        SharedPref.instance.setCurrentTaskResponse(taskResponse: jsonEncode(map));
+        SharedPref.instance
+            .setCurrentTaskResponse(taskResponse: jsonEncode(map));
 
         storageViewModel.selectedPaymentMethod = PaymentMethod(
           id: SharedPref.instance.getCurrentTaskResponse()?.paymentMethod,
@@ -205,11 +210,14 @@ class AppFcm {
         );
 
         storageViewModel.update();
-        Get.off(ReciverOrderScreen(homeViewModel ));
+        Get.off(ReciverOrderScreen(homeViewModel));
         return;
-      } /*else*/ if (serial[LocalConstance.id].toString()  == LocalConstance.orderDeleviredId) {
+      }
+      /*else*/ if (serial[LocalConstance.id].toString() ==
+          LocalConstance.orderDeleviredId) {
         print("MSG_BUG LocalConstance.orderDeleviredId $map");
-        SharedPref.instance.setCurrentTaskResponse(taskResponse: jsonEncode(map));
+        SharedPref.instance
+            .setCurrentTaskResponse(taskResponse: jsonEncode(map));
         storageViewModel.selectedPaymentMethod = PaymentMethod(
           id: SharedPref.instance.getCurrentTaskResponse()?.paymentMethod,
           name: SharedPref.instance.getCurrentTaskResponse()?.paymentMethod,
@@ -218,12 +226,24 @@ class AppFcm {
         Get.off(ReciverOrderScreen(homeViewModel));
         print("MSG_BUG LocalConstance.endDelvired $map");
         return;
-      } /*else*/ if (serial[LocalConstance.id].toString()  == LocalConstance.orderDoneId) {
+      }
+      /*else*/ if (serial[LocalConstance.id].toString() ==
+          LocalConstance.orderDoneId) {
         print("MSG_BUG LocalConstance.orderDoneId $map");
         Get.offAll(() => HomePageHolder());
         return;
       }
-    });
+      if (serial[LocalConstance.id].toString() ==
+          LocalConstance.paymentRequiredId) {
+        await SharedPref.instance
+            .setCurrentTaskResponse(taskResponse: jsonEncode(map));
+        Get.off(() => ReciverOrderScreen(
+              homeViewModel,
+              isNeedToPayment: true,
+            ));
 
+        return;
+      }
+    });
   }
 }

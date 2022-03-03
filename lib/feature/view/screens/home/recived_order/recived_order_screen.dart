@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:inbox_clients/feature/model/respons/task_response.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/balance_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/contract_signature_widget.dart';
@@ -20,12 +21,15 @@ import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
-class ReciverOrderScreen extends /*StatefulWidget*/StatelessWidget {
-  const ReciverOrderScreen(this.homeViewModel, {Key? key}) : super(key: key);
+class ReciverOrderScreen extends /*StatefulWidget*/ StatelessWidget {
+  const ReciverOrderScreen(this.homeViewModel,
+      {Key? key, this.isNeedToPayment = false})
+      : super(key: key);
 
   final HomeViewModel homeViewModel;
+  final bool isNeedToPayment;
 
-/*  @override
+/*  @override 
   State<ReciverOrderScreen> createState() => _ReciverOrderScreenState();
 }
 
@@ -64,6 +68,20 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
     return false;
   }
 
+  Widget paymentSection({required StorageViewModel storageViewModel}) {
+    TaskResponse currentTask =
+        SharedPref.instance.getCurrentTaskResponse() ?? TaskResponse();
+    if (currentTask.paymentMethod == null) {
+      return const SizedBox();
+    } else if (currentTask.paymentMethod != LocalConstance.application) {
+      return PaymentWidget();
+    } else if (currentTask.paymentMethod == LocalConstance.application) {
+      return Text("Application Section");
+    }
+    storageViewModel.update();
+    return const SizedBox();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -98,7 +116,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                       idVerification,
                       SizedBox(height: sizeH10),
                       ScanBoxInstantOrder(
-                        homeViewModel: /*widget.*/homeViewModel,
+                        homeViewModel: /*widget.*/ homeViewModel,
                       ),
                       SizedBox(height: sizeH10),
                       const ScanProducts(),
@@ -109,8 +127,10 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                         },
                       ),
                       SizedBox(height: sizeH10),
-                      // const CustomerSignatureInstantOrder(),
-                      PaymentWidget(),
+                      GetBuilder<StorageViewModel>(builder: (storageViewModel) {
+                        return paymentSection(
+                            storageViewModel: storageViewModel);
+                      }),
                       SizedBox(height: sizeH10),
                     ],
                   ),

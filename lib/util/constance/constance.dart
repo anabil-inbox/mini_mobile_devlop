@@ -31,6 +31,7 @@ class LocalConstance {
   static String cash = "Cash";
   static String bankCard = "Bank Card";
   static String wallet = "Wallet";
+  static String application = "application";
 
   // to add here Map Types:
   static String mapType = "Map";
@@ -46,6 +47,7 @@ class LocalConstance {
   static String submitId = "1";
   static String scanBoxId = "2";
   static String scanProductId = "3";
+   static String paymentRequiredId = "4";
   static String orderDeleviredId = "5";
   static String orderDoneId = "6";
 
