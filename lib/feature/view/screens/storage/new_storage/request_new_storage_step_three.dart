@@ -151,6 +151,7 @@ class RequestNewStorageStepThree extends StatelessWidget {
                                   } else {
                                     await logic.goToPaymentMethod(
                                         cartModels: [],
+                                        isOrderProductPayment: false,
                                         isFromCart: false,
                                         isFromNewStorage: true,
                                         amount: logic.totalBalance);

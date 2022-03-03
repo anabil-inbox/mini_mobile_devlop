@@ -73,17 +73,16 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                               .getPriceWithDiscount(
                                   oldPrice: logic
                                       .calculateTaskPriceLotBoxess(
-                                         isFromCart: false,
-                                          task: task, boxess: boxes)
+                                          isFromCart: false,
+                                          task: task,
+                                          boxess: boxes)
                                       .toString()
                                       .split(" ")[0])[0]
                               .toString()
                           : boxes.length == 0
                               ? logic.calculateTaskPriceOnceBox(task: task)
                               : logic.calculateTaskPriceLotBoxess(
-
-                                  isFromCart: false,
-                                  task: task, boxess: boxes),
+                                  isFromCart: false, task: task, boxess: boxes),
                       textStyle: textStyleAppBarTitle()
                           ?.copyWith(fontSize: fontSize28, color: colorPrimary),
                     ),
@@ -96,8 +95,7 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                         storageViewModle.isUsingPromo)
                       CustomTextView(
                           txt: logic.calculateTaskPriceLotBoxess(
-                             isFromCart: false,
-                              task: task, boxess: boxes),
+                              isFromCart: false, task: task, boxess: boxes),
                           textAlign: TextAlign.center,
                           textStyle: textStyleAppBarTitle()?.copyWith(
                               fontSize: fontSize14,
@@ -337,8 +335,9 @@ class BottomSheetPaymentWidget extends StatelessWidget {
             }
           } else {
             storageViewModle.goToPaymentMethod(
-               cartModels: [],
-              isFromCart: false,
+                isOrderProductPayment: false,
+                cartModels: [],
+                isFromCart: false,
                 amount: storageViewModle.priceAfterDiscount,
                 beneficiaryId: beneficiaryId,
                 task: task,
@@ -388,8 +387,9 @@ class BottomSheetPaymentWidget extends StatelessWidget {
         }
       } else {
         storageViewModle.goToPaymentMethod(
-           cartModels: [],
-              isFromCart: false,
+            isOrderProductPayment: false,
+            cartModels: [],
+            isFromCart: false,
             amount: num.parse(storageViewModle
                 .calculateTaskPriceLotBoxess(
                   isFromCart: false,

@@ -129,7 +129,8 @@ abstract class ConstanceNetwork {
 
   static String paymentEndPoint =
       "inbox_app.api.get_payment_url.get_skip_cash_settings";
-
+  static String applyPaymentEndPoint = "inbox_app.api.sales_order.submit_payment";
+  
   //product end point
   static String allOrder = "inbox_app.api.product.get_products";
   static String orderDetails = "inbox_app.api.product.get_product";

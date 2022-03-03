@@ -51,6 +51,7 @@ class AppFcm {
   );
 
   void updatePages(RemoteMessage message) async {
+    Logger().e(message.data);
     await SharedPref.instance.setCurrentTaskResponse(taskResponse: jsonEncode(message.data));
     // Get.delete<HomeViewModel>();
     // Get.delete<StorageViewModel>();

@@ -17,8 +17,8 @@ class PaymentScreen extends StatelessWidget {
       this.boxes,
       required this.isFromCart,
       this.task,
-      required this.cartModels
-      })
+      required this.cartModels,
+      required this.isOrderProductPayment})
       : super(key: key);
 
   final String url;
@@ -28,6 +28,7 @@ class PaymentScreen extends StatelessWidget {
   final String? beneficiaryId;
   final bool isFromCart;
   final List<CartModel> cartModels;
+  final bool isOrderProductPayment;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +45,7 @@ class PaymentScreen extends StatelessWidget {
               Logger().e(paymentId);
               payment.paymentId = paymentId;
               payment.readResponse(
+                  isOrderProductPayment: isOrderProductPayment,
                   isFromCart: isFromCart,
                   cartModels: cartModels,
                   isFromNewStorage: isFromNewStorage,
@@ -56,6 +58,7 @@ class PaymentScreen extends StatelessWidget {
           },
           navigationDelegate: (navigation) {
             payment.readResponse(
+                isOrderProductPayment: isOrderProductPayment,
                 isFromCart: isFromCart,
                 cartModels: cartModels,
                 isFromNewStorage: isFromNewStorage,
@@ -68,7 +71,8 @@ class PaymentScreen extends StatelessWidget {
             payment.payController = controller;
             payment.update();
             payment.readResponse(
-               isFromCart: isFromCart,
+                isOrderProductPayment: isOrderProductPayment,
+                isFromCart: isFromCart,
                 cartModels: cartModels,
                 isFromNewStorage: isFromNewStorage,
                 task: task,

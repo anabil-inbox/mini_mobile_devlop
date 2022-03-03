@@ -15,6 +15,7 @@ import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
+import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
 import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/selected_hour_item.dart';
@@ -1353,7 +1354,7 @@ class StorageViewModel extends BaseController {
     }
     print("mes__3");
     isChangeStatusLoading = true;
-     update();
+    update();
     var body = {"${ConstanceNetwork.serial}": "$serial"};
     print("mes__4");
     await StorageFeature.getInstance
@@ -1361,15 +1362,17 @@ class StorageViewModel extends BaseController {
         .then((value) {
       print("mes__5");
       if (!GetUtils.isNull(value)) {
-          print("mes__6");
+        print("mes__6");
         if (value.status!.success!) {
           print("mes__8");
           isChangeStatusLoading = false;
           homeViewModel?.scaanedBoxes.add(Box.fromJson(value.data));
-          SharedPref.instance.setBoxesList(boxes: homeViewModel!.scaanedBoxes.toList());
+          SharedPref.instance
+              .setBoxesList(boxes: homeViewModel!.scaanedBoxes.toList());
           homeViewModel.update();
           update();
           Get.back();
+          snackSuccess(tr.success, value.status!.message!);
         } else {
           print("mes__9");
           snackError(tr.error_occurred, value.status!.message!);
@@ -1377,13 +1380,13 @@ class StorageViewModel extends BaseController {
       } else {
         print("mes__10");
         isChangeStatusLoading = false;
-         update();
+        update();
       }
     }).catchError((onError) {
       print("mes__11");
       Logger().d(onError);
       isChangeStatusLoading = false;
-       update();
+      update();
     });
   }
 
@@ -1972,6 +1975,7 @@ class StorageViewModel extends BaseController {
     String? beneficiaryId,
     required bool isFromCart,
     required List<CartModel> cartModels,
+    required bool isOrderProductPayment,
   }) async {
     startLoading();
     try {
@@ -1985,6 +1989,7 @@ class StorageViewModel extends BaseController {
                         Logger().e(value.data["payment_url"]),
                         Get.put(PaymentViewModel()),
                         Get.to(() => PaymentScreen(
+                              isOrderProductPayment: isOrderProductPayment,
                               cartModels: cartModels,
                               isFromCart: isFromCart,
                               beneficiaryId: beneficiaryId,
@@ -2252,5 +2257,59 @@ class StorageViewModel extends BaseController {
       await homeViewModel.refreshHome();
       endLoading();
     } catch (e) {}
+  }
+
+  Future<void> applyPayment(
+      {required String salesOrderId, required String paymentMethodId}) async {
+    try {
+      await StorageFeature.getInstance.applyPayment(body: {
+        LocalConstance.id: salesOrderId,
+        LocalConstance.paymentMethod: paymentMethodId,
+      }).then((value) => {
+            if (value.status!.success!)
+              {
+                Get.offAll(() => HomePageHolder()),
+                snackSuccess('', value.status?.message)
+              }
+            else
+              {
+                Get.back(),
+                snackError('', value.status?.message)
+                }
+          });
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  Future<void> payApplicationFromWallet(
+      {required num price, required String newSalesOrderId}) async {
+    try {
+      num walletBalance = num.parse(profileViewModle.myWallet.balance ?? "0");
+      if (walletBalance >= price) {
+        await applyPayment(
+            salesOrderId: newSalesOrderId,
+            paymentMethodId: LocalConstance.wallet);
+      } else {
+        snackError("", "Wallet Balance");
+      }
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  Future<void> payApplicationFromPaymentGatewaye({
+    required num price,
+  }) async {
+    try {
+    await goToPaymentMethod(
+          amount: price,
+          isOrderProductPayment: true,
+          isFromNewStorage: false,
+          isFromCart: false,
+          cartModels: []);
+    } catch (e) {
+      printError();
+    }
   }
 }

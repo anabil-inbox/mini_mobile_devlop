@@ -193,7 +193,7 @@ bool areArraysEquales(List<String> listOne, List<StorageFeatures> listTwo) {
 //   });
 // }
 
-  snackSuccess(String? title, String? body) {
+snackSuccess(String? title, String? body) {
   mainSnack(body: body ?? "", backgroundColor: successColor);
 }
 
@@ -202,15 +202,17 @@ snackError(String? title, String? body) {
 }
 
 mainSnack({String? title, required String body, Color? backgroundColor}) {
-  Get.showSnackbar(
-    GetSnackBar(
-      backgroundColor: backgroundColor ?? const Color(0xFF303030),
-      message: body,
-      duration: const Duration(seconds: 2),
-      borderRadius: 10,
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-    ),
-  );
+  Future.delayed(const Duration(seconds: 0)).then((value) {
+    Get.showSnackbar(
+      GetSnackBar(
+        backgroundColor: backgroundColor ?? const Color(0xFF303030),
+        message: body,
+        duration: const Duration(seconds: 2),
+        borderRadius: 10,
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      ),
+    );
+  });
 }
 
 snackConnection() {
@@ -702,14 +704,16 @@ num calculateBalance({required num balance}) {
 // Widget return By Box Status
 
 Widget returnBoxByStatus(
-    {required String storageStatus, required bool isEnabeld , required bool isPickup}) {
+    {required String storageStatus,
+    required bool isEnabeld,
+    required bool isPickup}) {
   String boxPath = "assets/svgs/desable_box.svg";
   // if (!true) {
   //   boxPath = "assets/svgs/block_folder.svg";
   // } else
-  if(isPickup){
+  if (isPickup) {
     boxPath = "assets/svgs/box_picked_up.svg";
-  }else if (storageStatus == LocalConstance.boxAtHome) {
+  } else if (storageStatus == LocalConstance.boxAtHome) {
     boxPath = "assets/svgs/home_box_red.svg";
   } else if (storageStatus == LocalConstance.boxinWareHouse) {
     boxPath = "assets/svgs/box_in_ware_house.svg";
@@ -786,7 +790,6 @@ Widget returnBoxByStatus(
 String getPriceWithFormate({required num price}) {
   final numberFormatter = NumberFormat("##0.00#", "en_US");
   final num initNumber = 0.00;
-  print("getting Price ${numberFormatter.format(initNumber + price)}");
   return "${numberFormatter.format(initNumber + price)}" +
       " ${LocalConstance.qrCoin}";
 }

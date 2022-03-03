@@ -311,6 +311,7 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
             storageViewModle.checkOutCart(cartModels: cartModels);
           } else {
             storageViewModle.goToPaymentMethod(
+              isOrderProductPayment: false,
                 cartModels: cartModels,
                 isFromCart: true,
                 amount: num.parse(storageViewModle
@@ -340,6 +341,7 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
         storageViewModle.checkOutCart(cartModels: cartModels);
       } else {
         storageViewModle.goToPaymentMethod(
+          isOrderProductPayment: false,
             cartModels: cartModels,
             isFromCart: true,
             amount: num.parse(storageViewModle

@@ -24,7 +24,7 @@ class ScanProducts extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: GetBuilder<HomeViewModel>(
-        // assignId: true,
+        assignId: true,
         builder: (home) {
           return ExpandablePanel(
             controller:home.expandableController,

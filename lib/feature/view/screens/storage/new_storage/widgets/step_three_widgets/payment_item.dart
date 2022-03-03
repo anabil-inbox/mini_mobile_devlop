@@ -9,12 +9,17 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 class PaymentItem extends StatelessWidget {
-  const PaymentItem({Key? key, required this.paymentMethod}) : super(key: key);
+  const PaymentItem(
+      {Key? key,
+      required this.paymentMethod,
+      this.isFromApplicationPayment = false})
+      : super(key: key);
 
   final PaymentMethod paymentMethod;
-
+  final bool isFromApplicationPayment;
   @override
   Widget build(BuildContext context) {
     return GetBuilder<StorageViewModel>(
@@ -25,6 +30,27 @@ class PaymentItem extends StatelessWidget {
           onTap: () {
             builder.selectedPaymentMethod = paymentMethod;
             builder.update();
+            if (isFromApplicationPayment) {
+              if (paymentMethod.id == LocalConstance.bankCard) {
+                builder.payApplicationFromPaymentGatewaye(
+                  price: num.tryParse(SharedPref.instance
+                          .getCurrentTaskResponse()
+                          ?.totalDue) ??
+                      0,
+                );
+              } else if (paymentMethod.id == LocalConstance.wallet) {
+                builder.payApplicationFromWallet(
+                    price: num.tryParse(SharedPref.instance
+                            .getCurrentTaskResponse()
+                            ?.totalDue) ??
+                        0,
+                    newSalesOrderId: SharedPref.instance
+                            .getCurrentTaskResponse()
+                            ?.childOrder
+                            ?.id ??
+                        "");
+              }
+            }
           },
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: padding4!),

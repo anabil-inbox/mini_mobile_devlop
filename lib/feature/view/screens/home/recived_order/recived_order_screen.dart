@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inbox_clients/feature/model/respons/task_response.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
+import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/application_payment.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/balance_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/contract_signature_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_box_instant_order.dart';
@@ -77,7 +78,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
     } else if (currentTask.paymentMethod != LocalConstance.application) {
       return PaymentWidget();
     } else if (currentTask.paymentMethod == LocalConstance.application) {
-      return Text("Application Section");
+      return ApplicationPayment();
     }
     storageViewModel.update();
     return const SizedBox();

@@ -148,5 +148,17 @@ class StorageFeature {
     }
   }
 
+    Future<AppResponse> applyPayment({var body}) async {
+    var appResponse = await StorageModel.getInstance.applyPayment(
+        url: "${ConstanceNetwork.applyPaymentEndPoint}",
+        body: body,
+        header: ConstanceNetwork.header(4));
+    Logger().i("${appResponse.toJson()}");
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
 
 }

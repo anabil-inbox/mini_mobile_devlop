@@ -9,6 +9,8 @@ import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -26,6 +28,7 @@ class PaymentViewModel extends GetxController {
     List<Box>? boxes,
     String? beneficiaryId,
     required bool isFromCart,
+    required bool isOrderProductPayment,
     required List<CartModel> cartModels,
   }) async {
     try {
@@ -35,7 +38,16 @@ class PaymentViewModel extends GetxController {
                 if (value.contains("success"))
                   {
                     logger.i("Payment Success"),
-                    if (isFromNewStorage)
+                    if (isOrderProductPayment)
+                      {
+                       await stroageViewModel.applyPayment(
+                            salesOrderId: SharedPref.instance
+                                    .getCurrentTaskResponse()
+                                    ?.salesOrder ??
+                                "",
+                            paymentMethodId: LocalConstance.bankCard),
+                      }
+                    else if (isFromNewStorage)
                       {
                         // Get.back();
                         stroageViewModel.addNewStorage(paymentId: paymentId),
