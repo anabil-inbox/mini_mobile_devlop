@@ -62,12 +62,12 @@ class BluePlateForm extends StatelessWidget {
             profileViewModle.tdUnitNo.text = newValue!;
             profileViewModle.update();
           },
-          validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return '${tr.fill_the_unit_no_correctly}';
-            }
-            return null;
-          },
+          // validator: (value) {
+          //   if (value == null || value.trim().isEmpty) {
+          //     return '${tr.fill_the_unit_no_correctly}';
+          //   }
+          //   return null;
+          // },
           decoration: InputDecoration(hintText: "${tr.unit_no}"),
         ),
         SizedBox(

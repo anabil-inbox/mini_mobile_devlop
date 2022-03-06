@@ -13,10 +13,12 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
 class ScanBoxInstantOrder extends StatelessWidget {
-  const ScanBoxInstantOrder({Key? key , required this.homeViewModel}) : super(key: key);
+  const ScanBoxInstantOrder({Key? key, required this.homeViewModel})
+      : super(key: key);
 
   final HomeViewModel homeViewModel;
   // static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
@@ -85,14 +87,14 @@ class ScanBoxInstantOrder extends StatelessWidget {
               child: GetBuilder<HomeViewModel>(
                 init: homeViewModel,
                 builder: (home) {
-                  Logger().e(homeViewModel.scaanedBoxes.length);
                   if (homeViewModel.scaanedBoxes.isEmpty) {
                     return const SizedBox();
                   } else {
                     return ListView(
                         shrinkWrap: true,
                         primary: false,
-                        children: homeViewModel.scaanedBoxes
+                        children: SharedPref.instance
+                            .getBoxesList()
                             .map((e) => BoxOnOrderItem(
                                   boxModel: e,
                                 ))

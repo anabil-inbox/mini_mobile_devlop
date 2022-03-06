@@ -18,8 +18,6 @@ class AddressItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ProfileViewModle>(
-      init: ProfileViewModle(),
-      initState: (_) {},
       builder: (_) {
         return Column(
           children: [
@@ -40,7 +38,6 @@ class AddressItem extends StatelessWidget {
                           ? InkWell(
                               onTap: () {
                                 print("UnCheck");
-
                                 this.address = Address(
                                   id: address.id,
                                   addressTitle: address.addressTitle,
@@ -116,8 +113,11 @@ class AddressItem extends StatelessWidget {
                   PositionedDirectional(
                     top: sizeH54,
                     start: sizeH54,
-                    child: Text(
-                        "${address.geoAddress}"),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      child: Text(
+                          "${address.geoAddress}"),
+                    ),
                   ),
                   PositionedDirectional(
                     top: sizeH12,

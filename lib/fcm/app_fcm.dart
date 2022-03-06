@@ -62,7 +62,6 @@ class AppFcm {
     storageViewModel.update();
     homeViewModel.update();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-
     });
   }
 

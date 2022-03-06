@@ -136,8 +136,16 @@ class HomeViewModel extends BaseController {
                   }
                 else
                   {
-                    userBoxess.toList()[index].storageStatus =
-                        LocalConstance.boxAtHome,
+                    // userBoxess.toList()[index].storageStatus =
+                    //     LocalConstance.boxAtHome,
+                    for (var item in userBoxess)
+                      {
+                        if (item.serialNo == data.code)
+                          {
+                            item..storageStatus = LocalConstance.boxAtHome,
+                            // item.modified = DateTime.now()
+                          }
+                      },
                     update(),
                     await fromAtHome(data.code, storageViewModel),
                     Get.off(() => HomePageHolder(
@@ -218,16 +226,14 @@ class HomeViewModel extends BaseController {
           await fromAtHome(data.code, storageViewModel);
           //Get.delete<HomeViewModel>();
           Logger().e(scaanedBoxes.length);
-          Get.to(() => ReciverOrderScreen(
-            this
-          ));
+          Get.to(() => ReciverOrderScreen(this));
         }
       });
     } catch (e) {
       Logger().e("$e");
       print("mess_7_$e");
     }
-  // endLoading();
+    // endLoading();
   }
 
   // this for Pagination :
@@ -405,7 +411,7 @@ class HomeViewModel extends BaseController {
       await storageViewModel?.customerStoragesChangeStatus(code,
           homeViewModel: this);
       print("mes__-3");
-       Get.back();
+      Get.back();
       print("mes__-4");
     }
   }

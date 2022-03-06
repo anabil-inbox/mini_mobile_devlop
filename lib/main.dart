@@ -25,7 +25,7 @@ void main() async {
   runApp(const AppWidget());
 }
 
-// to do this for handShiking Cetificate ::
+// to do this for handShiking Certificate ::
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {

@@ -121,12 +121,12 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                         controller.tdUnitNoEdit.text = newValue!;
                         controller.update();
                       },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '${tr.fill_the_unit_no_correctly}';
-                        }
-                        return null;
-                      },
+                      // validator: (value) {
+                      //   if (value == null || value.isEmpty) {
+                      //     return '${tr.fill_the_unit_no_correctly}';
+                      //   }
+                      //   return null;
+                      // },
                       decoration: InputDecoration(hintText: "${tr.unit_no}"),
                     ),
                     SizedBox(

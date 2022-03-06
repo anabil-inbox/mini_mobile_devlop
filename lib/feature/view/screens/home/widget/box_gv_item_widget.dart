@@ -45,7 +45,7 @@ class HomeGVItemWidget extends StatelessWidget {
                   height: sizeH10,
                 ),
                 CustomTextView(
-                  txt: "${box.storageName}",
+                  txt: "${box.serialNo}",
                   maxLine: Constance.maxLineTwo,
                   textStyle: textStyleNormalBlack(),
                   textAlign: TextAlign.center,
@@ -68,7 +68,7 @@ class HomeGVItemWidget extends StatelessWidget {
             child: SizedBox(
               width: sizeW40,
               child: Tooltip(
-                message: "${box.serialNo}",
+                message: "${box.storageName}",
                 child: TextButton(
                   onPressed: () {
                    // if (isEnabeld) {

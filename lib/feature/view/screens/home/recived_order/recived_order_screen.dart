@@ -7,7 +7,6 @@ import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/bal
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/contract_signature_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_box_instant_order.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_products_widget.dart';
-import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_three_widgets/payment_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
@@ -23,7 +22,6 @@ import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
 class ReciverOrderScreen extends /*StatefulWidget*/ StatelessWidget {
-
   const ReciverOrderScreen(this.homeViewModel,
       {Key? key, this.isNeedToPayment = false})
       : super(key: key);
@@ -76,7 +74,8 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
     if (currentTask.paymentMethod == null) {
       return const SizedBox();
     } else if (currentTask.paymentMethod != LocalConstance.application) {
-      return PaymentWidget();
+      // return PaymentWidget();
+      return const SizedBox();
     } else if (currentTask.paymentMethod == LocalConstance.application) {
       return ApplicationPayment();
     }
@@ -103,9 +102,14 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
         body: Stack(
           children: [
             GetBuilder<HomeViewModel>(builder: (home) {
-              Logger().e(SharedPref.instance.getCurrentTaskResponse()?.processType);
-              if (SharedPref.instance.getCurrentTaskResponse()?.processType == LocalConstance.newStorageSv ||
-                  SharedPref.instance.getCurrentTaskResponse()?.notificationId == LocalConstance.paymentRequiredId) {
+              Logger()
+                  .e(SharedPref.instance.getCurrentTaskResponse()?.processType);
+              if (SharedPref.instance.getCurrentTaskResponse()?.processType ==
+                      LocalConstance.newStorageSv ||
+                  SharedPref.instance
+                          .getCurrentTaskResponse()
+                          ?.notificationId ==
+                      LocalConstance.paymentRequiredId) {
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding20!),
                   child: ListView(
