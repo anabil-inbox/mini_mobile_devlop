@@ -141,8 +141,7 @@ abstract class ConstanceNetwork {
 
   // this for constance Myorder
   static String myOrderDetailesEndPoint = "inbox_app.api.sales_order.get_order";
-  static String myPointsEndPoint =
-      "inbox_app.api.loyalty_points.get_loyalty_points";
+  static String myPointsEndPoint = "inbox_app.api.loyalty_points.get_loyalty_points";
   //todo this for constance Keys
   static String amountKey = "amount";
   static String idKey = "id";

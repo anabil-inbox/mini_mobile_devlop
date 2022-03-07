@@ -8,6 +8,7 @@ import 'package:inbox_clients/feature/view/screens/my_orders/my_orders_screen.da
 import 'package:inbox_clients/feature/view/screens/notification/notification_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/request_new_storage.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/signature_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
@@ -19,6 +20,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
+import 'package:signature/signature.dart';
 
 // ignore: must_be_immutable
 class HomePageHolder extends StatefulWidget {
@@ -68,6 +70,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
             ),
             isScrollControlled: true);
       }
+
       homeViewModle.getCustomerBoxes();
       storageViewModel.getStorageCategories();
       splashViewModle.getAppSetting();

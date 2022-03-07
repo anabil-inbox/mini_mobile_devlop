@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/scan_recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/box_on_order_item.dart';
 import 'dart:math' as math;
@@ -95,7 +96,7 @@ class ScanBoxInstantOrder extends StatelessWidget {
                         primary: false,
                         children: SharedPref.instance
                             .getBoxesList()
-                            .map((e) => BoxOnOrderItem(
+                            .map(( e) => BoxOnOrderItem(
                                   boxModel: e,
                                 ))
                             .toList());

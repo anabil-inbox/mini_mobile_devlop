@@ -19,6 +19,7 @@ import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:inbox_clients/util/string.dart';
 import 'package:logger/logger.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -109,7 +110,7 @@ class HomeViewModel extends BaseController {
   QRViewController? controller;
 
   onQRViewCreated(QRViewController controller,
-      {bool? isFromAtHome,
+      {bool? isFromAtHome = false,
       required StorageViewModel storageViewModel,
       int index = 0}) {
     Box newBox = Box();
@@ -127,7 +128,13 @@ class HomeViewModel extends BaseController {
       }).onData((data) async {
         i = i + 1;
         if (i == 1) {
-          await getBoxBySerial(serial: data.code ?? "").then((value) async => {
+          Logger().d("${userBoxess.toList()[index].serialNo} || ${data.code.toString().replaceAll("http://", "")}");
+          if(userBoxess.toList()[index].serialNo != data.code.toString().replaceAll("http://", "") && isFromAtHome!){
+            snackError(tr.error_occurred, tr.box_serial_invalid);
+            update();
+            Get.back();
+          }else{
+          await getBoxBySerial(serial: data.code.toString().replaceAll("http://", "") ?? "").then((value) async => {
                 Logger().e(value.toJson()),
                 newBox.id = value.id,
                 if (value.id == null)
@@ -171,6 +178,7 @@ class HomeViewModel extends BaseController {
                   }
               });
           update();
+          }
         }
       });
       if (newBox.id != null) {

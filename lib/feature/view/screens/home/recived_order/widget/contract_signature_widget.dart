@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/signature_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -21,7 +22,7 @@ class ContractSignature extends StatelessWidget {
             ),
             child: GestureDetector(
               onTap: () {
-
+                SignatureBottomSheet.showSignatureBottomSheet();
               },
               child: Row(
                 children: <Widget>[

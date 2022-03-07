@@ -79,6 +79,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
     } else if (currentTask.paymentMethod == LocalConstance.application) {
       return ApplicationPayment();
     }
+
     storageViewModel.update();
     return const SizedBox();
   }
