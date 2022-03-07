@@ -5,6 +5,7 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_three_widgets/payment_item.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
@@ -15,8 +16,10 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:inbox_clients/util/sh_util.dart';
+import 'package:logger/logger.dart';
 
 import '../primary_button.dart';
 
@@ -258,14 +261,31 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
               ),
               Container(
                 height: sizeH38,
-                child: ListView(
+                child: ListView.builder(
                   shrinkWrap: true,
+                  itemCount: getPaymentMethod().length,
                   scrollDirection: Axis.horizontal,
-                  children: getPaymentMethod()
-                      .map((e) => PaymentItem(
-                            paymentMethod: e,
-                          ))
-                      .toList(),
+                  itemBuilder:  (context, index) {
+                    PaymentMethod? paymentMethod = getPaymentMethod()[index];
+                    var calculateTasksCart = storageViewModle.calculateTasksCart(cartModel: cartModels);
+                    Logger().d("${paymentMethod.name} ${LocalConstance.bankCard}");
+                    if(paymentMethod.name == LocalConstance.bankCard && int.tryParse(calculateTasksCart.toString())?.toInt()  == 0)
+                      {
+                        return const SizedBox.shrink();
+                      }
+                    else{
+                      return PaymentItem(
+                        paymentMethod:paymentMethod,
+                      );
+                    }
+
+                  },
+                  // children: getPaymentMethod()
+                  //     .map((e) {
+                  //       return PaymentItem(
+                  //           paymentMethod: e,
+                  //         );
+                  //     }).toList(),
                 ),
               ),
               SizedBox(

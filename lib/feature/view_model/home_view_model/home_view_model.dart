@@ -134,7 +134,7 @@ class HomeViewModel extends BaseController {
             update();
             Get.back();
           }else{
-          await getBoxBySerial(serial: data.code.toString().replaceAll("http://", "") ?? "").then((value) async => {
+          await getBoxBySerial(serial: data.code.toString().replaceAll("http://", "") ).then((value) async => {
                 Logger().e(value.toJson()),
                 newBox.id = value.id,
                 if (value.id == null)
