@@ -142,7 +142,7 @@ class HomeViewModel extends BaseController {
                       {
                         if (item.serialNo == data.code)
                           {
-                            item..storageStatus = LocalConstance.boxAtHome,
+                            // item..storageStatus = LocalConstance.boxAtHome,
                             // item.modified = DateTime.now()
                           }
                       },
@@ -163,7 +163,7 @@ class HomeViewModel extends BaseController {
                       {
                         userBoxess.forEach((element) {
                           if (element.id == value.id) {
-                            element.storageStatus = LocalConstance.boxAtHome;
+                           // element.storageStatus = LocalConstance.boxAtHome;
                           }
                         }),
                         getCustomerBoxes()
