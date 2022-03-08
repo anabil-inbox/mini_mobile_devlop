@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as multipart;
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
@@ -18,8 +23,11 @@ import 'package:inbox_clients/network/api/feature/item_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
+import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class HomeViewModel extends BaseController {
@@ -27,6 +35,10 @@ class HomeViewModel extends BaseController {
   //collapse
   // bool isCollapse = false;
   ExpandableController expandableController = ExpandableController();
+
+  var selectedSignatureItemModel;
+
+  var signatureOutput;
   int get currentIndex => _currentIndex;
   //to do for Loading var:
   bool isLoading = false;
@@ -109,7 +121,7 @@ class HomeViewModel extends BaseController {
   QRViewController? controller;
 
   onQRViewCreated(QRViewController controller,
-      {bool? isFromAtHome,
+      {bool? isFromAtHome = false,
       required StorageViewModel storageViewModel,
       int index = 0}) {
     Box newBox = Box();
@@ -127,50 +139,62 @@ class HomeViewModel extends BaseController {
       }).onData((data) async {
         i = i + 1;
         if (i == 1) {
-          await getBoxBySerial(serial: data.code ?? "").then((value) async => {
-                Logger().e(value.toJson()),
-                newBox.id = value.id,
-                if (value.id == null)
-                  {
-                    Get.off(() => HomePageHolder()),
-                  }
-                else
-                  {
-                    // userBoxess.toList()[index].storageStatus =
-                    //     LocalConstance.boxAtHome,
-                    for (var item in userBoxess)
-                      {
-                        if (item.serialNo == data.code)
-                          {
-                            // item..storageStatus = LocalConstance.boxAtHome,
-                            // item.modified = DateTime.now()
-                          }
-                      },
-                    update(),
-                    await fromAtHome(data.code, storageViewModel),
-                    Get.off(() => HomePageHolder(
-                          box: value,
-                          isFromScan: true,
-                        )),
-                    itemViewModle.tdName.text = value.storageName ?? "",
-                    if (isFromAtHome ?? false)
-                      {
-                        await Get.bottomSheet(
-                            CheckInBoxWidget(box: value, isUpdate: false),
-                            isScrollControlled: true),
-                      }
-                    else
-                      {
-                        userBoxess.forEach((element) {
-                          if (element.id == value.id) {
-                           // element.storageStatus = LocalConstance.boxAtHome;
-                          }
-                        }),
-                        getCustomerBoxes()
-                      }
-                  }
-              });
-          update();
+          Logger().d(
+              "${userBoxess.toList()[index].serialNo} || ${data.code.toString().replaceAll("http://", "")}");
+          if (userBoxess.toList()[index].serialNo !=
+                  data.code.toString().replaceAll("http://", "") &&
+              isFromAtHome!) {
+            snackError(tr.error_occurred, tr.box_serial_invalid);
+            update();
+            Get.back();
+          } else {
+            await getBoxBySerial(
+                    serial: data.code.toString().replaceAll("http://", ""))
+                .then((value) async => {
+                      Logger().e(value.toJson()),
+                      newBox.id = value.id,
+                      if (value.id == null)
+                        {
+                          Get.off(() => HomePageHolder()),
+                        }
+                      else
+                        {
+                          // userBoxess.toList()[index].storageStatus =
+                          //     LocalConstance.boxAtHome,
+                          for (var item in userBoxess)
+                            {
+                              if (item.serialNo == data.code)
+                                {
+                                  // item..storageStatus = LocalConstance.boxAtHome,
+                                  // item.modified = DateTime.now()
+                                }
+                            },
+                          update(),
+                          await fromAtHome(data.code, storageViewModel),
+                          Get.off(() => HomePageHolder(
+                                box: value,
+                                isFromScan: true,
+                              )),
+                          itemViewModle.tdName.text = value.storageName ?? "",
+                          if (isFromAtHome ?? false)
+                            {
+                              await Get.bottomSheet(
+                                  CheckInBoxWidget(box: value, isUpdate: false),
+                                  isScrollControlled: true),
+                            }
+                          else
+                            {
+                              userBoxess.forEach((element) {
+                                if (element.id == value.id) {
+                                  // element.storageStatus = LocalConstance.boxAtHome;
+                                }
+                              }),
+                              getCustomerBoxes()
+                            }
+                        }
+                    });
+            update();
+          }
         }
       });
       if (newBox.id != null) {
@@ -431,5 +455,47 @@ class HomeViewModel extends BaseController {
     HomeHelper.getInstance.getBeneficiary().then((value) => {
           beneficiarys = value,
         });
+  }
+
+  Future<void> uploadCustomerSignature({required bool isFingerPrint}) async {
+    Map<String, dynamic> body = {};
+    if (isFingerPrint) {
+      body = {
+        Constance.salesOrderUnderScoure:
+            SharedPref.instance.getCurrentTaskResponse()?.salesOrder ?? "",
+      };
+    } else {
+      Uint8List imageInUnit8List = signatureOutput;
+      final tempDir = await getTemporaryDirectory();
+      File file = await File('${tempDir.path}/image.png').create();
+      file.writeAsBytesSync(imageInUnit8List);
+
+      body = {
+        Constance.salesOrderUnderScoure:
+            SharedPref.instance.getCurrentTaskResponse()?.salesOrder ?? "",
+        Constance.image: multipart.MultipartFile.fromFileSync(file.path),
+        Constance.driverToken:
+            SharedPref.instance.getCurrentTaskResponse()?.driverToken ?? ""
+      };
+    }
+
+    try {
+      await HomeHelper.getInstance
+          .uploadCustomerSignature(body: body)
+          .then((value) => {
+                if (value.status!.success!)
+                  {
+                    snackSuccess("", "${value.status!.message}"),
+                    SharedPref.instance.setCurrentTaskResponse(
+                        taskResponse: jsonEncode(value.data))
+                  }
+                else
+                  {
+                    snackError("", "${value.status!.message}"),
+                  }
+              });
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 }

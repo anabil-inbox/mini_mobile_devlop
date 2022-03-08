@@ -206,6 +206,8 @@
     "promo_code" : "قسيمة خصم",
     "instant_order" : "طلب فوري",
     "contract_signature" : "توقيع العقد",
+    "box_serial_invalid":"رقم البوكس غير صالح" ,
+    "add_signature" : "اضف توقيع",
         "id_verification" : "التحقق من الهوية",
         "scan_box" :"مسح الصناديق",
         "scan_products" : "مسح المنتجات",

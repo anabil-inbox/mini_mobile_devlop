@@ -50,9 +50,20 @@ class LocalConstance {
   static String paymentRequiredId = "4";
   static String orderDeleviredId = "5";
   static String orderDoneId = "6";
+  static String signatureOnDrvier = "7";
 
   static String id = "id";
   static String salesOrder = "sales_order";
 
   static String paymentMethod = "payment_method";
+
+  static String onClientSide = "on client side";
+  static String onDriverSide = "on driver side";
+
+  static String orderStatus = "order_status";
+  static String orderStatusDraft = "Draft";
+  static String orderStatusToDeliver = "to Deliver and Bill";
+  static String orderStatusCancelled = "Cancelled";
+  static String orderStatusDone = "Done";
+  
 }

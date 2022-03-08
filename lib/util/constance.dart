@@ -18,4 +18,12 @@ abstract class Constance {
 
   static const String orderId = "order_id";
 
+  static String salesOrderUnderScoure = "sales_order";
+
+  static String image = "image";
+
+  static String onClientSide = "on client side";
+  static String onDriverSide = "Driver Side";
+
+  static String driverToken = "driver_token";
 }

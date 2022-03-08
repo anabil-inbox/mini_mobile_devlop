@@ -84,7 +84,7 @@ abstract class ConstanceNetwork {
   static String editProfilEndPoint = "inbox_app.api.auth.edit_profile";
 
   static String getLogEndPoint = "inbox_app.api.loyalty_points.get_log";
-  
+
   static String depositMoneyEndPoint = "inbox_app.api.wallet.get_deposit_url";
 
   static String checkDepositEndPoint = "inbox_app.api.wallet.check_payment";
@@ -129,8 +129,9 @@ abstract class ConstanceNetwork {
 
   static String paymentEndPoint =
       "inbox_app.api.get_payment_url.get_skip_cash_settings";
-  static String applyPaymentEndPoint = "inbox_app.api.sales_order.submit_payment";
-  
+  static String applyPaymentEndPoint =
+      "inbox_app.api.sales_order.submit_payment";
+
   //product end point
   static String allOrder = "inbox_app.api.product.get_products";
   static String orderDetails = "inbox_app.api.product.get_product";
@@ -143,6 +144,9 @@ abstract class ConstanceNetwork {
   static String myOrderDetailesEndPoint = "inbox_app.api.sales_order.get_order";
   static String myPointsEndPoint =
       "inbox_app.api.loyalty_points.get_loyalty_points";
+
+  static String uploadOrderSignatureEndPoint =
+      "inbox_app.api.sales_order.upload_order_signature";
   //todo this for constance Keys
   static String amountKey = "amount";
   static String idKey = "id";

@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_three_widgets/payment_item.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
@@ -15,6 +16,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
@@ -27,20 +29,20 @@ class BottomSheetPaymentWidget extends StatelessWidget {
   final List<BoxItem>? items;
   final String beneficiaryId;
 
-  const BottomSheetPaymentWidget(
-      {Key? key,
-      required this.task,
-      required this.box,
-      required this.boxes,
-      this.items,
-      required this.beneficiaryId})
+  const BottomSheetPaymentWidget({Key? key,
+    required this.task,
+    required this.box,
+    required this.boxes,
+    this.items,
+    required this.beneficiaryId})
       : super(key: key);
 
   static StorageViewModel storageViewModle = Get.find<StorageViewModel>();
   static ProfileViewModle profileViewModle =
-      Get.put(ProfileViewModle(), permanent: true);
+  Get.put(ProfileViewModle(), permanent: true);
 
-  Widget get priceTotalWidget => Container(
+  Widget get priceTotalWidget =>
+      Container(
         width: double.infinity,
         decoration: BoxDecoration(
             color: scaffoldColor,
@@ -68,21 +70,21 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                   children: [
                     CustomTextView(
                       txt: storageViewModle.isAccept ||
-                              storageViewModle.isUsingPromo
+                          storageViewModle.isUsingPromo
                           ? storageViewModle
-                              .getPriceWithDiscount(
-                                  oldPrice: logic
-                                      .calculateTaskPriceLotBoxess(
-                                          isFromCart: false,
-                                          task: task,
-                                          boxess: boxes)
-                                      .toString()
-                                      .split(" ")[0])[0]
+                          .getPriceWithDiscount(
+                          oldPrice: logic
+                              .calculateTaskPriceLotBoxess(
+                              isFromCart: false,
+                              task: task,
+                              boxess: boxes)
                               .toString()
+                              .split(" ")[0])[0]
+                          .toString()
                           : boxes.length == 0
-                              ? logic.calculateTaskPriceOnceBox(task: task)
-                              : logic.calculateTaskPriceLotBoxess(
-                                  isFromCart: false, task: task, boxess: boxes),
+                          ? logic.calculateTaskPriceOnceBox(task: task)
+                          : logic.calculateTaskPriceLotBoxess(
+                          isFromCart: false, task: task, boxess: boxes),
                       textStyle: textStyleAppBarTitle()
                           ?.copyWith(fontSize: fontSize28, color: colorPrimary),
                     ),
@@ -120,7 +122,8 @@ class BottomSheetPaymentWidget extends StatelessWidget {
         ),
       );
 
-  Widget get acceptTerms => GetBuilder<StorageViewModel>(
+  Widget get acceptTerms =>
+      GetBuilder<StorageViewModel>(
         builder: (value) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -137,9 +140,9 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                     value.isAccept
                         ? SvgPicture.asset("assets/svgs/true.svg")
                         : SvgPicture.asset(
-                            "assets/svgs/uncheck.svg",
-                            color: seconderyColor,
-                          ),
+                      "assets/svgs/uncheck.svg",
+                      color: seconderyColor,
+                    ),
                     SizedBox(
                       width: 10,
                     ),
@@ -152,7 +155,11 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               ),
               CustomTextView(
                 txt:
-                    "${profileViewModle.myPoints.totalPoints} ${tr.points} = ${profileViewModle.myPoints.totalPoints! / SharedPref.instance.getCurrentUserData().conversionFactor!} QR",
+                "${profileViewModle.myPoints.totalPoints} ${tr
+                    .points} = ${profileViewModle.myPoints.totalPoints! /
+                    SharedPref.instance
+                        .getCurrentUserData()
+                        .conversionFactor!} QR",
                 textAlign: TextAlign.start,
                 textStyle: textStyleNormal()!
                     .copyWith(color: colorPrimary, fontSize: fontSize14),
@@ -162,7 +169,8 @@ class BottomSheetPaymentWidget extends StatelessWidget {
         },
       );
 
-  Widget get promoCode => GetBuilder<StorageViewModel>(builder: (builder) {
+  Widget get promoCode =>
+      GetBuilder<StorageViewModel>(builder: (builder) {
         return Column(
           children: [
             Row(
@@ -180,9 +188,9 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                       builder.isUsingPromo
                           ? SvgPicture.asset("assets/svgs/true.svg")
                           : SvgPicture.asset(
-                              "assets/svgs/uncheck.svg",
-                              color: seconderyColor,
-                            ),
+                        "assets/svgs/uncheck.svg",
+                        color: seconderyColor,
+                      ),
                       SizedBox(
                         width: 10,
                       ),
@@ -208,15 +216,15 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                 decoration: InputDecoration(
                     suffixIcon: builder.checkPromoAppResponse != null
                         ? Padding(
-                            padding: EdgeInsets.all(padding12!),
-                            child:
-                                builder.checkPromoAppResponse!.status!.success!
-                                    ? SvgPicture.asset(
-                                        "assets/svgs/icon_big_check.svg")
-                                    : SvgPicture.asset(
-                                        "assets/svgs/cross_big.svg",
-                                      ),
-                          )
+                      padding: EdgeInsets.all(padding12!),
+                      child:
+                      builder.checkPromoAppResponse!.status!.success!
+                          ? SvgPicture.asset(
+                          "assets/svgs/icon_big_check.svg")
+                          : SvgPicture.asset(
+                        "assets/svgs/cross_big.svg",
+                      ),
+                    )
                         : const SizedBox(),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: colorBorderContainer),
@@ -266,18 +274,36 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               SizedBox(
                 height: sizeH16,
               ),
-              Container(
-                height: sizeH38,
-                child: ListView(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  children: getPaymentMethod()
-                      .map((e) => PaymentItem(
-                            paymentMethod: e,
-                          ))
-                      .toList(),
-                ),
-              ),
+              GetBuilder<StorageViewModel>(builder: (logic) {
+                return Container(
+                  height: sizeH38,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: getPaymentMethod().length,
+                    itemBuilder: (context, index) {
+                      PaymentMethod? paymentMethod = getPaymentMethod()[index];
+                      var calculateTasksCart = boxes.length == 0
+                          ? logic.calculateTaskPriceOnceBox(task: task)
+                          : logic.calculateTaskPriceLotBoxess(
+                          isFromCart: false, task: task, boxess: boxes);
+                      if (paymentMethod.name == LocalConstance.bankCard && int.tryParse(calculateTasksCart.toString())?.toInt() == 0) {
+                        return const SizedBox.shrink();
+                      }
+                      else {
+                        return PaymentItem(
+                          paymentMethod: paymentMethod,
+                        );
+                      }
+                    },
+                    // children: getPaymentMethod()
+                    //     .map((e) => PaymentItem(
+                    //           paymentMethod: e,
+                    //         ))
+                    //     .toList(),
+                  ),
+                );
+              }),
               SizedBox(
                 height: sizeH16,
               ),
@@ -392,10 +418,10 @@ class BottomSheetPaymentWidget extends StatelessWidget {
             isFromCart: false,
             amount: num.parse(storageViewModle
                 .calculateTaskPriceLotBoxess(
-                  isFromCart: false,
-                  task: task,
-                  boxess: boxes,
-                )
+              isFromCart: false,
+              task: task,
+              boxess: boxes,
+            )
                 .toString()
                 .split(" ")[0]),
             beneficiaryId: beneficiaryId,

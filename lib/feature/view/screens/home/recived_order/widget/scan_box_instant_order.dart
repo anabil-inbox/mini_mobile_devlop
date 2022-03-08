@@ -94,7 +94,7 @@ class ScanBoxInstantOrder extends StatelessWidget {
                         primary: false,
                         children: SharedPref.instance
                             .getBoxesList()
-                            .map((e) => BoxOnOrderItem(
+                            .map(( e) => BoxOnOrderItem(
                                   boxModel: e,
                                 ))
                             .toList());

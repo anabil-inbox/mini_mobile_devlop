@@ -68,6 +68,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
             ),
             isScrollControlled: true);
       }
+
       homeViewModle.getCustomerBoxes();
       storageViewModel.getStorageCategories();
       splashViewModle.getAppSetting();

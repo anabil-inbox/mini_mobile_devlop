@@ -5,6 +5,7 @@ import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/application_payment.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/balance_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/contract_signature_widget.dart';
+import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/customer_signature_instant_order.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_box_instant_order.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_products_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
@@ -79,6 +80,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
     } else if (currentTask.paymentMethod == LocalConstance.application) {
       return ApplicationPayment();
     }
+
     storageViewModel.update();
     return const SizedBox();
   }
@@ -136,6 +138,8 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                         return paymentSection(
                             storageViewModel: storageViewModel);
                       }),
+                      SizedBox(height: sizeH10),
+                      CustomerSignatureInstantOrder(),
                       SizedBox(height: sizeH10),
                     ],
                   ),

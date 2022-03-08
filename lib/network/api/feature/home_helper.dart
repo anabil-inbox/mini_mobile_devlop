@@ -74,5 +74,17 @@ class HomeHelper {
     }
   }
 
+ Future<AppResponse> uploadCustomerSignature({var body}) async {
+      var appResponse = await HomeApi.getInstance.checkTimeSlot(
+        body: body,
+        url: "${ConstanceNetwork.uploadOrderSignatureEndPoint}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
 
 }
