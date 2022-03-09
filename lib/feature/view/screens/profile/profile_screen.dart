@@ -7,6 +7,7 @@ import 'package:inbox_clients/feature/view/screens/profile/log/log_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/my_rewareds/my_rewards_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/payment_card/payment_card_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/setting/setting_screen.dart';
+import 'package:inbox_clients/feature/view/screens/profile/subscriptions/my_subscription_view.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/header_profile_card.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/setting_item.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/setting_item_with_title.dart';
@@ -87,6 +88,17 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                       settingTitle: "${tr.my_address}",
                       trailingTitle: "",
                       iconPath: "assets/svgs/adress_icon.svg",
+                    ),
+                    SizedBox(
+                      height: sizeH12,
+                    ),
+                    SettingItem(
+                      onTap: () {
+                        Get.to(() => MySubscriptionsView());
+                      },
+                      settingTitle: "${tr.my_subscriptions}",
+                      trailingTitle: "",
+                      iconPath: "assets/svgs/payment_card.svg",
                     ),
                     SizedBox(
                       height: sizeH12,
