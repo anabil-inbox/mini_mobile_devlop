@@ -207,6 +207,7 @@
     "instant_order" : "طلب فوري",
     "contract_signature" : "توقيع العقد",
     "box_serial_invalid":"رقم البوكس غير صالح" ,
+    "my_subscriptions":"اشتراكاتي ",
     "add_signature" : "اضف توقيع",
         "id_verification" : "التحقق من الهوية",
         "scan_box" :"مسح الصناديق",
