@@ -46,10 +46,13 @@ class SignatureItem extends StatelessWidget {
                           homeViewModel.update();
                           onSelected();
                         },
-                        icon: SharedPref.instance
-                                    .getCurrentTaskResponse()
-                                    ?.signatureType ==
-                                title
+                        icon: 
+                        // SharedPref.instance
+                        //                 .getCurrentTaskResponse()
+                        //                 ?.type ==
+                        //             title ||
+                                homeViewModel.selectedSignatureItemModel.title ==
+                                    title
                             ? SvgPicture.asset("assets/svgs/check.svg")
                             : SvgPicture.asset("assets/svgs/uncheck.svg"));
                   },
@@ -74,7 +77,6 @@ class SignatureItem extends StatelessWidget {
                     width: sizeW30,
                     height: sizeH30,
                   ),
-                 
                 Transform(
                   transform:
                       Matrix4.translationValues(isArabicLang() ? -5 : 5, 0, 0),

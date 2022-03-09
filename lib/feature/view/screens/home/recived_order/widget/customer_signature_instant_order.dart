@@ -81,9 +81,7 @@ class CustomerSignatureInstantOrder extends StatelessWidget {
         children: [
           SignatureItem(
             title: Constance.onDriverSide,
-            onSelected: () {
-              
-            },
+            onSelected: () {},
           ),
           SizedBox(height: sizeH10),
           SignatureItem(
@@ -92,118 +90,14 @@ class CustomerSignatureInstantOrder extends StatelessWidget {
               SignatureBottomSheet.showSignatureBottomSheet();
             },
           ),
-
-          // Container(
-          //   height: sizeH50,
-          //   width: double.infinity,
-          //   decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(6),
-          //       color: colorTextWhite,
-          //       border: Border.all(color: colorBtnGray)),
-          //   child: Padding(
-          //     padding: EdgeInsets.symmetric(horizontal: sizeW10!),
-          //     child: Row(
-          //       children: <Widget>[
-          //         Container(
-          //           height: sizeH28,
-          //           decoration: BoxDecoration(
-          //             border: Border.all(color: colorBtnGray, width: 1.3),
-          //             shape: BoxShape.circle,
-          //           ),
-          //           child: Padding(
-          //             padding: const EdgeInsets.all(3),
-          //             child: CircleAvatar(
-          //               backgroundColor: Colors.transparent,
-          //               radius: 20,
-          //               child: Container(
-          //                   decoration: BoxDecoration(
-          //                 shape: BoxShape.circle,
-          //                 color: colorTrans,
-          //               )),
-          //               // backgroundColor: colorRed,
-          //             ),
-          //           ),
-          //         ),
-          //         SizedBox(width: sizeW5),
-          //         CustomTextView(
-          //           txt: txtClientSide.tr,
-          //           textStyle:
-          //               textStyleNormal()?.copyWith(fontSize: fontSize13),
-          //         ),
-          //         const Spacer(),
-          //         Transform(
-          //           transform: Matrix4.translationValues(
-          //               isArabicLang() ? -5 : 5, 0, 0),
-          //           child: Icon(
-          //             Icons.keyboard_arrow_right,
-          //             color: colorBlack,
-          //             size: 20,
-          //           ),
-          //         )
-          //       ],
-          //     ),
-          //   ),
-          // ),
-
           SizedBox(height: sizeH10),
           SignatureItem(
-            title: "Fingerprint",
-            onSelected: () {},
+            title: LocalConstance.fingerprint,
+            onSelected: () {
+              SignatureBottomSheet.homeViewModel.signatureWithTouchId();
+            },
           ),
-          // Container(
-          //   height: sizeH50,
-          //   width: double.infinity,
-          //   decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(6),
-          //       color: colorTextWhite,
-          //       border: Border.all(color: colorBtnGray)),
-          //   child: Padding(
-          //     padding: EdgeInsets.symmetric(horizontal: sizeW10!),
-          //     child: Row(
-          //       children: <Widget>[
-          //         Container(
-          //           height: sizeH28,
-          //           decoration: BoxDecoration(
-          //             border: Border.all(color: colorRed, width: 1.3),
-          //             shape: BoxShape.circle,
-          //           ),
-          //           child: Padding(
-          //             padding: const EdgeInsets.all(3),
-          //             child: CircleAvatar(
-          //               backgroundColor: Colors.transparent,
-          //               radius: 20,
-          //               child: Container(
-          //                   decoration: BoxDecoration(
-          //                 shape: BoxShape.circle,
-          //                 color: colorRed,
-          //               )),
-          //               // backgroundColor: colorRed,
-          //             ),
-          //           ),
-          //         ),
-          //         SizedBox(width: sizeW5),
-          //         CustomTextView(
-          //           txt: txtFingerprint.tr,
-          //           textStyle:
-          //               textStyleNormal()?.copyWith(fontSize: fontSize13),
-          //         ),
-          //         const Spacer(),
-          //         GestureDetector(
-          //             onTap: () {},
-          //             child: SvgPicture.asset('assets/svgs/Finger_print.svg')),
-          //         Transform(
-          //           transform: Matrix4.translationValues(
-          //               isArabicLang() ? -5 : 5, 0, 0),
-          //           child: Icon(
-          //             Icons.keyboard_arrow_right,
-          //             color: colorBlack,
-          //             size: 20,
-          //           ),
-          //         )
-          //       ],
-          //     ),
-          //   ),
-          // ),
+          SizedBox(height: sizeH10),
         ],
       );
 }

@@ -9,6 +9,7 @@ import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/cus
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_box_instant_order.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_products_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/signature_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:get/get.dart';
@@ -22,15 +23,19 @@ import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
-class ReciverOrderScreen extends /*StatefulWidget*/ StatelessWidget {
+class ReciverOrderScreen extends StatefulWidget /*StatelessWidget */ {
   const ReciverOrderScreen(this.homeViewModel,
-      {Key? key, this.isNeedToPayment = false})
+      {Key? key,
+      this.isNeedToPayment = false,
+      this.isNeedSignature = false,
+      this.isNeedFingerprint = false})
       : super(key: key);
 
   final HomeViewModel homeViewModel;
   final bool isNeedToPayment;
-
-/*  @override 
+  final bool isNeedSignature;
+  final bool isNeedFingerprint;
+  @override
   State<ReciverOrderScreen> createState() => _ReciverOrderScreenState();
 }
 
@@ -38,8 +43,14 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
   @override
   void initState() {
     super.initState();
-    // Get.put(HomeViewModel(), permanent: true);
-  }*/
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      if (widget.isNeedSignature) {
+        SignatureBottomSheet.showSignatureBottomSheet();
+      } else if (widget.isNeedFingerprint) {
+       await widget.homeViewModel.signatureWithTouchId();
+      }
+    });
+  }
 
   Widget get idVerification => Container(
         height: sizeH50,
@@ -123,7 +134,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                       idVerification,
                       SizedBox(height: sizeH10),
                       ScanBoxInstantOrder(
-                        homeViewModel: /*widget.*/ homeViewModel,
+                        homeViewModel: widget.homeViewModel,
                       ),
                       SizedBox(height: sizeH10),
                       const ScanProducts(),

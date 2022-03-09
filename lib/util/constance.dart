@@ -22,7 +22,7 @@ abstract class Constance {
 
   static String image = "image";
 
-  static String onClientSide = "on client side";
+  static String onClientSide = "Client Side";
   static String onDriverSide = "Driver Side";
 
   static String driverToken = "driver_token";

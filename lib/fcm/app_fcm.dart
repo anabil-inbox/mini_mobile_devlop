@@ -11,6 +11,7 @@ import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/scan_recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/signature_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
@@ -54,15 +55,42 @@ class AppFcm {
     Logger().e(message.data);
     await SharedPref.instance
         .setCurrentTaskResponse(taskResponse: jsonEncode(message.data));
-    // Get.delete<HomeViewModel>();
-    // Get.delete<StorageViewModel>();
-    // homeViewModel =  Get.put(HomeViewModel());
-    // storageViewModel =  Get.put(StorageViewModel());
     homeViewModel.expandableController.expanded = false;
     homeViewModel.expandableController.expanded = true;
     storageViewModel.update();
     homeViewModel.update();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {});
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      await SharedPref.instance
+          .setCurrentTaskResponse(taskResponse: jsonEncode(message.data));
+      if (message.data["id"] == "8" &&
+          message.data["type"] == LocalConstance.onClientSide) {
+        homeViewModel.selectedSignatureItemModel.title =
+            LocalConstance.onClientSide;
+        SignatureBottomSheet.showSignatureBottomSheet();
+        homeViewModel.update();
+        Get.off(() => ReciverOrderScreen(
+              homeViewModel,
+              isNeedSignature: true,
+            ));
+      } else if (message.data["id"] == "8" &&
+          message.data["type"] == LocalConstance.fingerprint) {
+        homeViewModel.selectedSignatureItemModel.title =
+            LocalConstance.fingerprint;
+        homeViewModel.signatureWithTouchId();
+        homeViewModel.update();
+        Get.off(() => ReciverOrderScreen(
+              homeViewModel,
+              isNeedFingerprint: true,
+            ));
+      } else {
+        homeViewModel.selectedSignatureItemModel.title =
+            LocalConstance.onDriverSide;
+        homeViewModel.update();
+        // Get.off(() => ReciverOrderScreen(
+        //       homeViewModel,
+        //     ));
+      }
+    });
   }
 
   configuration() async {
@@ -257,35 +285,54 @@ class AppFcm {
         homeViewModel.update();
         Get.off(() => ReciverOrderScreen(
               homeViewModel,
-              isNeedToPayment: true,
             ));
 
         return;
       }
-         if (serial[LocalConstance.id].toString() ==
-          "8") {
-        await SharedPref.instance
-            .setCurrentTaskResponse(taskResponse: jsonEncode(map));
-        homeViewModel.update();
-        Get.off(() => ReciverOrderScreen(
-              homeViewModel,
-              isNeedToPayment: true,
-            ));
+
+      if (serial[LocalConstance.id].toString() == LocalConstance.signature) {
+        if (serial["type"] == LocalConstance.onClientSide) {
+          homeViewModel.selectedSignatureItemModel.title =
+              LocalConstance.onClientSide;
+          SignatureBottomSheet.showSignatureBottomSheet();
+          homeViewModel.update();
+          Get.off(() => ReciverOrderScreen(
+                homeViewModel,
+                isNeedSignature: true,
+              ));
+        } else if (serial["type"] == LocalConstance.fingerprint) {
+          homeViewModel.selectedSignatureItemModel.title =
+              LocalConstance.fingerprint;
+          homeViewModel.update();
+          homeViewModel.signatureWithTouchId();
+          Get.off(() => ReciverOrderScreen(
+                homeViewModel,
+                isNeedFingerprint: true,
+              ));
+        } else {
+          homeViewModel.selectedSignatureItemModel.title =
+              LocalConstance.onDriverSide;
+          homeViewModel.update();
+          Get.off(() => ReciverOrderScreen(
+                homeViewModel,
+              ));
+        }
 
         return;
       }
-         if (serial[LocalConstance.id].toString() ==
-          "9") {
-        await SharedPref.instance
-            .setCurrentTaskResponse(taskResponse: jsonEncode(map));
-        homeViewModel.update();
-        Get.off(() => ReciverOrderScreen(
-              homeViewModel,
-              isNeedToPayment: true,
-            ));
 
-        return;
-      }
+      //    if (serial[LocalConstance.id].toString() ==
+      //     "9") {
+      //   await SharedPref.instance
+      //       .setCurrentTaskResponse(taskResponse: jsonEncode(map));
+      //   homeViewModel.update();
+      //   Get.off(() => ReciverOrderScreen(
+      //         homeViewModel,
+      //         isNeedToPayment: true,
+      //       ));
+
+      //   return;
+      // }
     });
   }
 }

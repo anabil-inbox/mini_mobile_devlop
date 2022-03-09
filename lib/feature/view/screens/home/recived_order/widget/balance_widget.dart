@@ -34,8 +34,9 @@ class Balance extends StatelessWidget {
               const Spacer(),
               CustomTextView(
                 txt: getPriceWithFormate(
-                    price: num.parse(
-                        SharedPref.instance.getCurrentTaskResponse()?.total ??
+                    price:
+                     num.parse(
+                        SharedPref.instance.getCurrentTaskResponse()?.total.toString() ??
                             "0")),
                 textStyle: textStyleMeduimPrimaryBold(),
               ),
@@ -52,7 +53,7 @@ class Balance extends StatelessWidget {
               CustomTextView(
                 txt: getPriceWithFormate(
                     price: num.parse(
-                        SharedPref.instance.getCurrentTaskResponse()?.totalPaid ??
+                        SharedPref.instance.getCurrentTaskResponse()?.totalPaid.toString() ??
                             "0")),
                 textStyle: textStyleMeduimPrimaryBold(),
               ),
@@ -69,7 +70,7 @@ class Balance extends StatelessWidget {
               CustomTextView(
                 txt: getPriceWithFormate(
                     price: num.parse(
-                        SharedPref.instance.getCurrentTaskResponse()?.totalDue ??
+                        SharedPref.instance.getCurrentTaskResponse()?.totalDue.toString() ??
                             "0")),
                 textStyle: textStyleMeduimPrimaryBold(),
               ),

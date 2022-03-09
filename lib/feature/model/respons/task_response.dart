@@ -41,7 +41,6 @@
 //       };
 // }
 
-
 import 'dart:convert';
 
 import 'package:inbox_clients/feature/model/home/box_model.dart';
@@ -49,8 +48,8 @@ import 'package:inbox_clients/feature/model/home/box_model.dart';
 class TaskResponse {
   TaskResponse(
       {this.salesOrder,
-     // this.isNew,
-     this.driverToken,
+      this.isNew,
+      this.driverToken,
       this.customerId,
       this.processType,
       this.paymentMethod,
@@ -60,11 +59,12 @@ class TaskResponse {
       this.totalDue,
       this.signatureFile,
       this.signatureType,
-      // this.boxes,
+      this.boxes,
+      this.type,
       this.notificationId});
 
   String? salesOrder;
- // bool? isNew;
+  dynamic isNew;
   String? customerId;
   String? processType;
   String? paymentMethod;
@@ -73,15 +73,16 @@ class TaskResponse {
   String? signatureFile;
   dynamic total;
   dynamic totalPaid;
-  // List<BoxModel>? boxes;
+  List<BoxModel>? boxes;
   dynamic totalDue;
   dynamic notificationId;
   String? driverToken;
+  String? type;
 
   factory TaskResponse.fromJson(Map<String, dynamic> json) => TaskResponse(
       salesOrder: json["sales_order"],
-      
-   //   isNew: json["is_new"],
+      type: json["type"],
+      isNew: json["is_new"],
       customerId: json["customer_id"],
       processType: json["process_type"],
       paymentMethod: json["payment_method"],
@@ -90,7 +91,7 @@ class TaskResponse {
       driverToken: json["driver_token"],
       // boxes: json["boxes"] == null
       //     ? []
-      //     : List<BoxModel>.from(json["boxes"].map((x) => BoxModel.fromJson(x))),
+      //     : List<BoxModel>.from(json["boxes"].map((x) => BoxModel.fromJson(jsonDecode(x)))),
       childOrder: json["child_order"] == null
           ? ChildOrder(items: [])
           : ChildOrder.fromJson(jsonDecode(json["child_order"])),
@@ -101,7 +102,8 @@ class TaskResponse {
 
   Map<String, dynamic> toJson() => {
         "sales_order": salesOrder,
-    //    "is_new": isNew,
+        "is_new": isNew,
+        "type": type,
         "customer_id": customerId,
         "process_type": processType,
         "payment_method": paymentMethod,
@@ -109,7 +111,10 @@ class TaskResponse {
         "total": total,
         "total_paid": totalPaid,
         "total_due": totalDue,
-        "notificationId": notificationId
+        "notificationId": notificationId,
+        // "boxes": (GetUtils.isNull(boxes) || boxes?.length == 0)
+        //     ? null
+        //     : jsonEncode(List<BoxModel>.from(boxes!.map((x) => jsonEncode(x)))),
       };
 }
 

@@ -4,12 +4,14 @@ import 'dart:typed_data';
 
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as multipart;
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/beneficiary.dart';
+import 'package:inbox_clients/feature/model/home/signature_item_model.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
@@ -26,6 +28,7 @@ import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -36,7 +39,7 @@ class HomeViewModel extends BaseController {
   // bool isCollapse = false;
   ExpandableController expandableController = ExpandableController();
 
-  var selectedSignatureItemModel;
+  SignatureItemModel selectedSignatureItemModel = SignatureItemModel();
 
   var signatureOutput;
   int get currentIndex => _currentIndex;
@@ -463,6 +466,8 @@ class HomeViewModel extends BaseController {
       body = {
         Constance.salesOrderUnderScoure:
             SharedPref.instance.getCurrentTaskResponse()?.salesOrder ?? "",
+        Constance.driverToken:
+            SharedPref.instance.getCurrentTaskResponse()?.driverToken ?? ""
       };
     } else {
       Uint8List imageInUnit8List = signatureOutput;
@@ -486,6 +491,7 @@ class HomeViewModel extends BaseController {
                 if (value.status!.success!)
                   {
                     snackSuccess("", "${value.status!.message}"),
+                    Logger().e(value.data),
                     SharedPref.instance.setCurrentTaskResponse(
                         taskResponse: jsonEncode(value.data))
                   }
@@ -497,5 +503,36 @@ class HomeViewModel extends BaseController {
     } catch (e) {
       Logger().e(e);
     }
+  }
+
+  //this for Touch/face (Id) Bottom Sheet :
+  signatureWithTouchId() async {
+    try {
+      await _authenticate();
+      if (isAuth ?? false) {
+        await uploadCustomerSignature(isFingerPrint: true);
+      }
+    } catch (e) {
+      printError();
+    }
+  }
+
+  bool? isAuth = false;
+  final LocalAuthentication auth = LocalAuthentication();
+
+  Future<void> _authenticate() async {
+    bool authenticated = false;
+    try {
+      authenticated = await auth.authenticate(
+        localizedReason: 'Scan your fingerprint to authenticate',
+        useErrorDialogs: true,
+        biometricOnly: true,
+        stickyAuth: false,
+      );
+    } on PlatformException catch (e) {
+      print(e);
+    }
+    isAuth = authenticated ? true : false;
+    update();
   }
 }
