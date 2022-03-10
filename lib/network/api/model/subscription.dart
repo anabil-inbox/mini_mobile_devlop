@@ -9,9 +9,9 @@ class Subscription {
   Subscription._();
   static final Subscription getInstance = Subscription._();
 
-  Future<AppResponse> getSubscriptions({var url , var header})async{
+  Future<AppResponse> getSubscriptions({var url , var header, var map})async{
     try {
-      var response = await DioManagerClass.getInstance.dioGetMethod(url: url, header: header);
+      var response = await DioManagerClass.getInstance.dioGetMethod(url: url, header: header ,queryParameters: map);
       return AppResponse.fromJson(json.decode(response.toString()));
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());

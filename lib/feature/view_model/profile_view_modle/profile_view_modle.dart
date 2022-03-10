@@ -735,13 +735,32 @@ class ProfileViewModle extends BaseController {
     endLoading();
   }
 
+  void filterSubscriptions(var filterType)async{
+    if(filterType == LocalConstance.quantityConst){
+      //this for quantity
+      getUserSubscription(LocalConstance.quantityConst);
+    }else if(filterType == LocalConstance.itemConst){
+      //this for item
+      getUserSubscription(LocalConstance.itemConst);
+    }else if(filterType == LocalConstance.spaceConst){
+      //this for space
+      getUserSubscription(LocalConstance.spaceConst);
+    }else{
+      getUserSubscription("");
+    }
+  }
+
   //this for Subscription
-  Future<void> getUserSubscription() async {
+  Future<void> getUserSubscription( String filterType) async {
     startLoading();
     subscriptions?.clear();
+    Map<String , dynamic> map = {
+      ConstanceNetwork.filter:filterType
+    };
     try {
-      await SubscriptionFeature.getInstance.getSubscriptions().then((value) {
+      await SubscriptionFeature.getInstance.getSubscriptions(filterType.isEmpty ? {}:map).then((value) {
         subscriptions = value;
+        Logger().d(value);
         endLoading();
       });
     } catch (e) {

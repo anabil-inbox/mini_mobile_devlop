@@ -71,5 +71,9 @@ class LocalConstance {
   static String fingerprint = "Fingerprint";
 
   static String subscriptionActive = "Active";
-  
+  //this for filter subscriptions
+  static String quantityConst = "quantity";
+  static String itemConst = "item";
+  static String spaceConst = "space";
+
 }

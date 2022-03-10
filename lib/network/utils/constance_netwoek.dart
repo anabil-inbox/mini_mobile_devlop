@@ -180,6 +180,9 @@ abstract class ConstanceNetwork {
 
   //here order keyes
   static String productId = "product_id";
+
+  static var filter = "filter";
+
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};
     if (typeToken == 0) {
