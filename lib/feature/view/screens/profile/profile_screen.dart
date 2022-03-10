@@ -30,6 +30,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
         WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
           await profileViewModel.getMyWallet();
           await profileViewModel.getMyPoints();
+          await profileViewModel.getUserSubscription();
         });
       }, builder: (logic) {
         if (logic.isLoading) {

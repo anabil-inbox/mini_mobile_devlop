@@ -196,6 +196,7 @@
     "field_add_to_cart":"فشلت عملية الاضافة الى السلة .",
     "field_update_cart":"فشل تحديث الكارت. ",
      "success_update_cart":"نجح تحديث الكارت.",
+     "empty_subscriptions":"لا يوجد اشتراكات",
     "update":"تعديل",
     "checkout":"شراء",
     "item_photos":"صور العنصر",

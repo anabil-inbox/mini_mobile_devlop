@@ -69,5 +69,7 @@ class LocalConstance {
   static String orderStatusDone = "Done";
 
   static String fingerprint = "Fingerprint";
+
+  static String subscriptionActive = "Active";
   
 }

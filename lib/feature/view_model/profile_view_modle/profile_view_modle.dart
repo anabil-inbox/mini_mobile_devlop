@@ -19,11 +19,13 @@ import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/model/profile/get_wallet_model.dart';
 import 'package:inbox_clients/feature/model/profile/log_model.dart';
 import 'package:inbox_clients/feature/model/profile/my_point_model.dart';
+import 'package:inbox_clients/feature/model/subscription_data.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/widgets/area_zone_widget.dart';
 import 'package:inbox_clients/feature/view/screens/profile/my_wallet/Widgets/deposit_money_to_wallet_webView.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
+import 'package:inbox_clients/network/api/feature/subscription_feature.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -93,7 +95,7 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdCompanyMobileNumber = TextEditingController();
 
   List<Map<String, dynamic>> contactMap = [];
-
+  List<SubscriptionData>? subscriptions = [];
   // for address (add , edit ,delete)
 
   clearControllers() {
@@ -720,12 +722,30 @@ class ProfileViewModle extends BaseController {
   Future<void> getUserLog() async {
     startLoading();
     try {
-      ProfileHelper.getInstance
+     await ProfileHelper.getInstance
           .getUserLogs()
           .then((value) => {userLogs = value.toList(), update()});
     } catch (e) {
       printError();
     }
     endLoading();
+  }
+
+
+
+  //this for Subscription
+  Future<void> getUserSubscription()async{
+    startLoading();
+    subscriptions?.clear();
+    try {
+      await SubscriptionFeature.getInstance.getSubscriptions().then((value) {
+            subscriptions = value;
+            endLoading();
+          });
+    } catch (e) {
+      printError();
+      endLoading();
+      Logger().e(e);
+    }
   }
 }
