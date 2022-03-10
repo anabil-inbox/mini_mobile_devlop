@@ -96,6 +96,7 @@ class ProfileViewModle extends BaseController {
 
   List<Map<String, dynamic>> contactMap = [];
   List<SubscriptionData>? subscriptions = [];
+
   // for address (add , edit ,delete)
 
   clearControllers() {
@@ -584,6 +585,7 @@ class ProfileViewModle extends BaseController {
   }
 
   GetWallet myWallet = GetWallet();
+
   // var transaction = <Transactions>[];
   List<Transactions> transaction = <Transactions>[];
 
@@ -612,6 +614,7 @@ class ProfileViewModle extends BaseController {
 
   TextEditingController amountController = TextEditingController();
   String url = "";
+
   void depositMoneyToWallet() async {
     isLoading = true;
     Map<String, dynamic> map = {
@@ -703,6 +706,7 @@ class ProfileViewModle extends BaseController {
   }
 
   MyPoints myPoints = MyPoints();
+
   Future<void> getMyPoints() async {
     startLoading();
     try {
@@ -722,7 +726,7 @@ class ProfileViewModle extends BaseController {
   Future<void> getUserLog() async {
     startLoading();
     try {
-     await ProfileHelper.getInstance
+      await ProfileHelper.getInstance
           .getUserLogs()
           .then((value) => {userLogs = value.toList(), update()});
     } catch (e) {
@@ -731,16 +735,33 @@ class ProfileViewModle extends BaseController {
     endLoading();
   }
 
-
-
   //this for Subscription
-  Future<void> getUserSubscription()async{
+  Future<void> getUserSubscription() async {
     startLoading();
     subscriptions?.clear();
     try {
       await SubscriptionFeature.getInstance.getSubscriptions().then((value) {
+        subscriptions = value;
+        endLoading();
+      });
+    } catch (e) {
+      printError();
+      endLoading();
+      Logger().e(e);
+    }
+  }
+
+  void onTerminateSubscriptions(SubscriptionData? subscriptionsData) async {
+    Map<String, dynamic> map = {
+      ConstanceNetwork.idKey : subscriptionsData?.id.toString()
+    };
+    startLoading();
+    subscriptions?.clear();
+    try {
+      await SubscriptionFeature.getInstance.terminateSubscriptions(map).then((value) {
             subscriptions = value;
             endLoading();
+            Get.back();
           });
     } catch (e) {
       printError();

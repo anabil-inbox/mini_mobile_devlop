@@ -149,6 +149,7 @@ abstract class ConstanceNetwork {
 
   // this for subscriptions
   static String getSubscriptionsEndPoint ="inbox_app.api.subscription.get_subscriptions";
+  static String terminateSubscriptionsEndPoint ="inbox_app.api.subscription.terminate_subscription";
 
   //todo this for constance Keys
   static String amountKey = "amount";
