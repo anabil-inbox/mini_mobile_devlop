@@ -212,7 +212,7 @@ class SharedPref {
   TaskResponse? getCurrentTaskResponse() {
     try {
       String? objectStr = _prefs?.getString(taskKey);
-      return TaskResponse.fromJson(jsonDecode(objectStr!));
+      return TaskResponse.fromJson(jsonDecode(objectStr ?? ""));
     } catch (e) {
       Logger().e(e.toString());
       return null;
