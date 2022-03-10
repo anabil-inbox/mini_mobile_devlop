@@ -149,6 +149,7 @@ abstract class ConstanceNetwork {
 
   // this for subscriptions
   static String getSubscriptionsEndPoint ="inbox_app.api.subscription.get_subscriptions";
+  static String terminateSubscriptionsEndPoint ="inbox_app.api.subscription.terminate_subscription";
 
   //todo this for constance Keys
   static String amountKey = "amount";
@@ -179,6 +180,9 @@ abstract class ConstanceNetwork {
 
   //here order keyes
   static String productId = "product_id";
+
+  static var filter = "filter";
+
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};
     if (typeToken == 0) {

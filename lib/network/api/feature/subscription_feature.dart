@@ -8,11 +8,32 @@ class SubscriptionFeature {
   static final SubscriptionFeature getInstance = SubscriptionFeature._();
   var log = Logger();
 
-  Future<List<SubscriptionData>> getSubscriptions() async {
+  Future<List<SubscriptionData>> getSubscriptions(Map<String, dynamic> map) async {
     try {
       var response = await Subscription.getInstance.getSubscriptions(
           url: "${ConstanceNetwork.getSubscriptionsEndPoint}",
+          map:map,
           header:  ConstanceNetwork.header(2));
+      if (response.status?.success == true) {
+        List data = response.data;
+        var map = data.map((e) => SubscriptionData.fromJson(e)).toList();
+        return map;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      log.d(e.toString());
+      return [];
+    }
+  }
+
+
+  Future<List<SubscriptionData>> terminateSubscriptions(var body) async {
+    try {
+      var response = await Subscription.getInstance.terminateSubscriptions(
+          url: "${ConstanceNetwork.terminateSubscriptionsEndPoint}",
+          header:  ConstanceNetwork.header(2),
+          body:body);
       if (response.status?.success == true) {
         List data = response.data;
         var map = data.map((e) => SubscriptionData.fromJson(e)).toList();

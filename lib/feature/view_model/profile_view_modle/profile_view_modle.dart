@@ -96,6 +96,7 @@ class ProfileViewModle extends BaseController {
 
   List<Map<String, dynamic>> contactMap = [];
   List<SubscriptionData>? subscriptions = [];
+
   // for address (add , edit ,delete)
 
   clearControllers() {
@@ -584,6 +585,7 @@ class ProfileViewModle extends BaseController {
   }
 
   GetWallet myWallet = GetWallet();
+
   // var transaction = <Transactions>[];
   List<Transactions> transaction = <Transactions>[];
 
@@ -612,6 +614,7 @@ class ProfileViewModle extends BaseController {
 
   TextEditingController amountController = TextEditingController();
   String url = "";
+
   void depositMoneyToWallet() async {
     isLoading = true;
     Map<String, dynamic> map = {
@@ -703,6 +706,7 @@ class ProfileViewModle extends BaseController {
   }
 
   MyPoints myPoints = MyPoints();
+
   Future<void> getMyPoints() async {
     startLoading();
     try {
@@ -722,7 +726,7 @@ class ProfileViewModle extends BaseController {
   Future<void> getUserLog() async {
     startLoading();
     try {
-     await ProfileHelper.getInstance
+      await ProfileHelper.getInstance
           .getUserLogs()
           .then((value) => {userLogs = value.toList(), update()});
     } catch (e) {
@@ -731,16 +735,52 @@ class ProfileViewModle extends BaseController {
     endLoading();
   }
 
-
+  void filterSubscriptions(var filterType)async{
+    if(filterType == LocalConstance.quantityConst){
+      //this for quantity
+      getUserSubscription(LocalConstance.quantityConst);
+    }else if(filterType == LocalConstance.itemConst){
+      //this for item
+      getUserSubscription(LocalConstance.itemConst);
+    }else if(filterType == LocalConstance.spaceConst){
+      //this for space
+      getUserSubscription(LocalConstance.spaceConst);
+    }else{
+      getUserSubscription("");
+    }
+  }
 
   //this for Subscription
-  Future<void> getUserSubscription()async{
+  Future<void> getUserSubscription( String filterType) async {
+    startLoading();
+    subscriptions?.clear();
+    Map<String , dynamic> map = {
+      ConstanceNetwork.filter:filterType
+    };
+    try {
+      await SubscriptionFeature.getInstance.getSubscriptions(filterType.isEmpty ? {}:map).then((value) {
+        subscriptions = value;
+        Logger().d(value);
+        endLoading();
+      });
+    } catch (e) {
+      printError();
+      endLoading();
+      Logger().e(e);
+    }
+  }
+
+  void onTerminateSubscriptions(SubscriptionData? subscriptionsData) async {
+    Map<String, dynamic> map = {
+      ConstanceNetwork.idKey : subscriptionsData?.id.toString()
+    };
     startLoading();
     subscriptions?.clear();
     try {
-      await SubscriptionFeature.getInstance.getSubscriptions().then((value) {
+      await SubscriptionFeature.getInstance.terminateSubscriptions(map).then((value) {
             subscriptions = value;
             endLoading();
+            Get.back();
           });
     } catch (e) {
       printError();
