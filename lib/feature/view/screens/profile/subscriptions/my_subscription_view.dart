@@ -81,8 +81,6 @@ class MySubscriptionsView extends StatelessWidget {
                 RefreshIndicator(
                   onRefresh:()=> _onRefresh(logic),
                   child: ListView(
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    //  mainAxisSize: MainAxisSize.max,
                     shrinkWrap: true,
                     children: [
                          SizedBox(height: MediaQuery.of(context).size.height / 3,),
