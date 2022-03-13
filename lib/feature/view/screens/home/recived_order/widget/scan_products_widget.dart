@@ -9,7 +9,6 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:inbox_clients/util/sh_util.dart';
 
 class ScanProducts extends StatelessWidget {
   const ScanProducts({Key? key}) : super(key: key);
@@ -69,12 +68,12 @@ class ScanProducts extends StatelessWidget {
               ],
             ),
             collapsed: const SizedBox.shrink(),
-            expanded:(SharedPref.instance.getCurrentTaskResponse()?.childOrder == null || SharedPref.instance.getCurrentTaskResponse()!.childOrder!.items!.isEmpty) ?
+            expanded:(home.operationTask.childOrder == null || home.operationTask.childOrder!.items!.isEmpty) ?
             const SizedBox()
                 : ListView(
               shrinkWrap: true,
               primary: false,
-              children: SharedPref.instance.getCurrentTaskResponse()!.childOrder
+              children: home.operationTask.childOrder
               !.items!.map((e) => ProductOnOrderItem(
                 productModel: e,
               ))

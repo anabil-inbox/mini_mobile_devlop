@@ -11,11 +11,12 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ScanRecivedOrderScreen extends /*StatefulWidget*/StatelessWidget {
   /*const*/ ScanRecivedOrderScreen(
-      {Key? key, required this.isBox, required this.isProduct})
+      {Key? key, required this.isBox, required this.isProduct,  required this.isScanDeliverdBoxes})
       : super(key: key);
 
   final bool isBox;
   final bool isProduct;
+  final bool isScanDeliverdBoxes;
  /* @override
   State<ScanRecivedOrderScreen> createState() => _ScanRecivedOrderScreenState();
 }
@@ -45,6 +46,7 @@ class _ScanRecivedOrderScreenState extends State<ScanRecivedOrderScreen> {*/
           body: QRView(
         key: qrKey,
         onQRViewCreated: (controller) => homeViewModel?.createQrOrderOrder(
+            isScanDeliverdBox: isScanDeliverdBoxes,
             controller: controller,
             storageViewModel: storageViewModel ?? StorageViewModel(),
             isBox: /*widget.*/isBox,

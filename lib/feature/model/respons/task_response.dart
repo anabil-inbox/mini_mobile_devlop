@@ -1,120 +1,120 @@
-// class TaskResponse {
-//   TaskResponse(
-//       {this.isNew,
-//       this.customerId,
-//       this.total,
-//       this.totalPaid,
-//       this.totalDue,
-//       this.paymentMethod,
-//       this.salesOrder,
-//       this.proccessType});
-
-//   bool? isNew;
-//   String? customerId;
-//   num? total;
-//   num? totalPaid;
-//   num? totalDue;
-//   String? paymentMethod;
-//   String? proccessType;
-//   String? salesOrder;
-
-//   factory TaskResponse.fromJson(Map<String, dynamic> json) => TaskResponse(
-//         isNew: json["is_new"],
-//         customerId: json["customer_id"],
-//         total: json["total"],
-//         salesOrder: json["sales_order"],
-//         proccessType: json["process_type"],
-//         paymentMethod: json["payment_method"],
-//         totalPaid: json["total_paid"],
-//         totalDue: json["total_due"],
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "is_new": isNew,
-//         "customer_id": customerId,
-//         "process_type": proccessType,
-//         "total": total,
-//         "sales_order": salesOrder,
-//         "payment_method": paymentMethod,
-//         "total_paid": totalPaid,
-//         "total_due": totalDue,
-//       };
-// }
+// ignore_for_file: prefer_if_null_operators
 
 import 'dart:convert';
 
 import 'package:inbox_clients/feature/model/home/box_model.dart';
 
+TaskResponse taskResponseFromJson(String str) =>
+    TaskResponse.fromJson(json.decode(str));
+
+String taskResponseToJson(TaskResponse data) => json.encode(data.toJson());
+
 class TaskResponse {
   TaskResponse(
       {this.salesOrder,
       this.isNew,
-      this.driverToken,
       this.customerId,
-      this.processType,
-      this.paymentMethod,
       this.childOrder,
       this.total,
       this.totalPaid,
       this.totalDue,
-      this.signatureFile,
-      this.signatureType,
+      this.paymentMethod,
       this.boxes,
-      this.type,
+      this.scannedBoxes,
+      this.customerScanned,
+      this.driverDelivered,
+      this.customerDelivered,
+      this.signatureType,
+      this.signatureFile,
+      this.processType,
+      this.driverToken,
+      this.taskStatus,
+        this.waitingTime = 0.0,
+        this.lateFees,
       this.notificationId});
 
   String? salesOrder;
-  dynamic isNew;
+  bool? isNew;
   String? customerId;
-  String? processType;
-  String? paymentMethod;
   ChildOrder? childOrder;
-  String? signatureType;
-  String? signatureFile;
-  dynamic total;
-  dynamic totalPaid;
+  num? total;
+  num? totalPaid;
+  num? totalDue;
+  String? paymentMethod;
   List<BoxModel>? boxes;
-  dynamic totalDue;
-  dynamic notificationId;
+  List<BoxModel>? scannedBoxes;
+  List<BoxModel>? customerScanned;
+  List<BoxModel>? driverDelivered;
+  List<BoxModel>? customerDelivered;
+  String? signatureType;
+  dynamic signatureFile;
+  String? processType;
   String? driverToken;
-  String? type;
+  String? taskStatus;
+  String? notificationId;
+  num? waitingTime;
+  List<LateFees>? lateFees;
 
   factory TaskResponse.fromJson(Map<String, dynamic> json) => TaskResponse(
-      salesOrder: json["sales_order"],
-      type: json["type"],
-      isNew: json["is_new"],
-      customerId: json["customer_id"],
-      processType: json["process_type"],
-      paymentMethod: json["payment_method"],
-      signatureType: json["signature_type"],
-      signatureFile: json["signature_file"],
-      driverToken: json["driver_token"],
-      // boxes: json["boxes"] == null
-      //     ? []
-      //     : List<BoxModel>.from(json["boxes"].map((x) => BoxModel.fromJson(jsonDecode(x)))),
-      childOrder: json["child_order"] == null
-          ? ChildOrder(items: [])
-          : ChildOrder.fromJson(jsonDecode(json["child_order"])),
-      total: json["total"],
-      totalPaid: json["total_paid"],
-      totalDue: json["total_due"],
-      notificationId: json["id"]);
+        salesOrder: json["sales_order"],
+        isNew: json["is_new"],
+        customerId: json["customer_id"],
+        childOrder: json["child_order"],
+        total: json["total"],
+        totalPaid: json["total_paid"],
+        totalDue: json["total_due"],
+        paymentMethod: json["payment_method"],
+        notificationId: json["id"],
+        boxes: List<BoxModel>.from(json["boxes"].map((x) => BoxModel.fromJson(x))),
+        lateFees: List<LateFees>.from(json["late_fees"].map((x) => LateFees.fromJson(x))),
+        scannedBoxes: List<BoxModel>.from(
+            json["scanned_boxes"].map((x) => BoxModel.fromJson(x))),
+        customerScanned: List<BoxModel>.from(
+            json["customer_scanned"].map((x) => BoxModel.fromJson(x))),
+        driverDelivered: List<BoxModel>.from(
+            json["driver_delivered"].map((x) => BoxModel.fromJson(x))),
+        customerDelivered: List<BoxModel>.from(
+            json["customer_delivered"].map((x) => BoxModel.fromJson(x))),
+        signatureType: json["signature_type"],
+        signatureFile: json["signature_file"],
+        processType: json["process_type"],
+        driverToken: json["driver_token"],
+        taskStatus: json["task_status"],
+        waitingTime: json["waiting_time"]??0.0,
+      );
 
   Map<String, dynamic> toJson() => {
         "sales_order": salesOrder,
         "is_new": isNew,
-        "type": type,
         "customer_id": customerId,
-        "process_type": processType,
-        "payment_method": paymentMethod,
-        "child_order": childOrder?.toJson(),
+        "waiting_time": waitingTime ??0.0,
+        "child_order": childOrder,
         "total": total,
         "total_paid": totalPaid,
         "total_due": totalDue,
-        "notificationId": notificationId,
-        // "boxes": (GetUtils.isNull(boxes) || boxes?.length == 0)
-        //     ? null
-        //     : jsonEncode(List<BoxModel>.from(boxes!.map((x) => jsonEncode(x)))),
+        "payment_method": paymentMethod,
+        "id": notificationId,
+        "boxes": boxes == null
+            ? []
+            : List<dynamic>.from(boxes!.map((x) => x.toJson())),
+        "scanned_boxes": scannedBoxes == null
+            ? []
+            : List<dynamic>.from(scannedBoxes!.map((x) => x.toJson())),
+        "customer_scanned": customerScanned == null
+            ? []
+            : List<dynamic>.from(customerScanned!.map((x) => x)),
+        "driver_delivered": driverDelivered == null
+            ? []
+            : List<dynamic>.from(driverDelivered!.map((x) => x)),
+        "customer_delivered": customerDelivered == null
+            ? []
+            : List<dynamic>.from(customerDelivered!.map((x) => x)),
+        "late_fees" : lateFees == null ? []:List<dynamic>.from(lateFees!.map((x) => x)),
+        "signature_type": signatureType,
+        "signature_file": signatureFile,
+        "process_type": processType,
+        "driver_token": driverToken,
+        "task_status": taskStatus,
       };
 }
 
@@ -172,4 +172,28 @@ class Item {
         "qty": qty,
         "image": image,
       };
+}
+
+class LateFees {
+  LateFees({
+    this.mFrom,
+    this.mTo,
+    this.fees,
+  });
+
+  int? mFrom;
+  int? mTo;
+  num? fees;
+
+  factory LateFees.fromJson(Map<String, dynamic> json) => LateFees(
+    mFrom:json["m_from"] == null ? null: json["m_from"],
+    mTo:json["m_to"] == null ? null: json["m_to"],
+    fees:json["fees"] == null ? null: json["fees"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "m_from":mFrom == null ? null: mFrom,
+    "m_to":mTo == null ? null: mTo,
+    "fees":fees == null ? null: fees,
+  };
 }

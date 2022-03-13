@@ -150,7 +150,12 @@ abstract class ConstanceNetwork {
   // this for subscriptions
   static String getSubscriptionsEndPoint ="inbox_app.api.subscription.get_subscriptions";
   static String terminateSubscriptionsEndPoint ="inbox_app.api.subscription.terminate_subscription";
+  
 
+  // this for get Task Response:
+
+  static String getCurrentTaskResponeEndPoint = "inbox_app.api.sales_order.get_order_details";
+  
   //todo this for constance Keys
   static String amountKey = "amount";
   static String idKey = "id";

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -13,6 +12,7 @@ import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/beneficiary.dart';
 import 'package:inbox_clients/feature/model/home/signature_item_model.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/model/respons/task_response.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/recived_order_screen.dart';
@@ -27,7 +27,6 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
-import 'package:inbox_clients/util/sh_util.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
@@ -144,7 +143,9 @@ class HomeViewModel extends BaseController {
         if (i == 1) {
           Logger().d(
               "${userBoxess.toList()[index].serialNo} || ${data.code.toString().replaceAll("http://", "")}");
-          if (userBoxess.toList()[index].serialNo != data.code.toString().replaceAll("http://", "") && isFromAtHome!) {
+          if (userBoxess.toList()[index].serialNo !=
+                  data.code.toString().replaceAll("http://", "") &&
+              isFromAtHome!) {
             snackError(tr.error_occurred, tr.box_serial_invalid);
             update();
             Get.back();
@@ -227,12 +228,13 @@ class HomeViewModel extends BaseController {
 
   // StorageViewModel storageViewModel =
   //     Get.put(StorageViewModel(), permanent: true);
-  Set<Box> scaanedBoxes = {};
+  // Set<Box> scaanedBoxes = {};
 
   createQrOrderOrder(
       {required QRViewController controller,
       required StorageViewModel storageViewModel,
       required bool isBox,
+      required bool isScanDeliverdBox,
       required bool isProduct}) {
     print("mess_1");
     startLoading();
@@ -248,9 +250,8 @@ class HomeViewModel extends BaseController {
         print("mess_5");
         if (i == 1) {
           print("mess_6");
-          await fromAtHome(data.code, storageViewModel);
+          await fromAtHome(data.code, storageViewModel , isScanDeliverd: isScanDeliverdBox);
           //Get.delete<HomeViewModel>();
-          Logger().e(scaanedBoxes.length);
           Get.to(() => ReciverOrderScreen(this));
         }
       });
@@ -427,14 +428,14 @@ class HomeViewModel extends BaseController {
     }
   }
 
-  fromAtHome(String? code, StorageViewModel? storageViewModel) async {
+  fromAtHome(String? code, StorageViewModel? storageViewModel , {bool isScanDeliverd = false}) async {
     if (code == null) {
       //todo show dialog
       print("mes__-1");
     } else {
       print("mes__-2");
       await storageViewModel?.customerStoragesChangeStatus(code,
-          homeViewModel: this);
+          homeViewModel: this , isScanDeliverdBox: isScanDeliverd);
       print("mes__-3");
       Get.back();
       print("mes__-4");
@@ -451,6 +452,7 @@ class HomeViewModel extends BaseController {
   //here for get Charity Names For GiveAway :
   List<Beneficiary> beneficiarys = [];
   Beneficiary? selctedbeneficiary;
+  TaskResponse operationTask = TaskResponse();
 
   Future<void> getBeneficiary() async {
     HomeHelper.getInstance.getBeneficiary().then((value) => {
@@ -462,10 +464,8 @@ class HomeViewModel extends BaseController {
     Map<String, dynamic> body = {};
     if (isFingerPrint) {
       body = {
-        Constance.salesOrderUnderScoure:
-            SharedPref.instance.getCurrentTaskResponse()?.salesOrder ?? "",
-        Constance.driverToken:
-            SharedPref.instance.getCurrentTaskResponse()?.driverToken ?? ""
+        Constance.salesOrderUnderScoure: operationTask.salesOrder ?? "",
+        Constance.driverToken: operationTask.driverToken ?? ""
       };
     } else {
       Uint8List imageInUnit8List = signatureOutput;
@@ -474,11 +474,9 @@ class HomeViewModel extends BaseController {
       file.writeAsBytesSync(imageInUnit8List);
 
       body = {
-        Constance.salesOrderUnderScoure:
-            SharedPref.instance.getCurrentTaskResponse()?.salesOrder ?? "",
+        Constance.salesOrderUnderScoure: operationTask.salesOrder ?? "",
         Constance.image: multipart.MultipartFile.fromFileSync(file.path),
-        Constance.driverToken:
-            SharedPref.instance.getCurrentTaskResponse()?.driverToken ?? ""
+        Constance.driverToken: operationTask.driverToken ?? ""
       };
     }
 
@@ -490,8 +488,7 @@ class HomeViewModel extends BaseController {
                   {
                     snackSuccess("", "${value.status!.message}"),
                     Logger().e(value.data),
-                    SharedPref.instance.setCurrentTaskResponse(
-                        taskResponse: jsonEncode(value.data))
+                    operationTask = TaskResponse.fromJson(value.data)
                   }
                 else
                   {
@@ -532,5 +529,25 @@ class HomeViewModel extends BaseController {
     }
     isAuth = authenticated ? true : false;
     update();
+  }
+
+  Future<void> getTaskResponse({required String salersOrder}) async {
+    startLoading();
+    try {
+      await HomeHelper.getInstance.getTaskResponse(body: {
+        LocalConstance.orderId: salersOrder
+      }).then((value) => {
+            if (value.status!.success!)
+              {
+                operationTask = TaskResponse.fromJson(value.data),
+                Logger().i(value.data)
+              }
+            else
+              {snackError("", value.status?.message)}
+          });
+    } catch (e) {
+      Logger().e(e);
+    }
+    endLoading();
   }
 }

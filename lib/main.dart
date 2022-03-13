@@ -50,6 +50,5 @@ class BindingsController extends Bindings {
     // );
   }
 }
-
-// loading after Scan Screen
-// Add Payment into Payment Pottom Shee
+// button In Order Detaiels
+// Instanse Order Screen

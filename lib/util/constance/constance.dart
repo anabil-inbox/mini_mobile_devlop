@@ -55,7 +55,7 @@ class LocalConstance {
   
   static String id = "id";
   static String salesOrder = "sales_order";
-
+  static String orderId = "order_id";
   static String paymentMethod = "payment_method";
 
   static String onClientSide = "Client Side";

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inbox_clients/feature/model/respons/task_response.dart';
-import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/application_payment.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/balance_widget.dart';
+import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/box_need_scanned_item.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/contract_signature_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/customer_signature_instant_order.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_box_instant_order.dart';
+import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_delivered_box.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_products_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/signature_bottom_sheet.dart';
@@ -20,8 +21,6 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
-import 'package:inbox_clients/util/sh_util.dart';
-import 'package:logger/logger.dart';
 
 class ReciverOrderScreen extends StatefulWidget /*StatelessWidget */ {
   const ReciverOrderScreen(this.homeViewModel,
@@ -47,7 +46,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
       if (widget.isNeedSignature) {
         SignatureBottomSheet.showSignatureBottomSheet();
       } else if (widget.isNeedFingerprint) {
-       await widget.homeViewModel.signatureWithTouchId();
+        await widget.homeViewModel.signatureWithTouchId();
       }
     });
   }
@@ -75,14 +74,23 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
         ),
       );
 
+  Widget scanDelivedBoxes({required HomeViewModel homeViewModel}) {
+    if (homeViewModel.operationTask.processType == LocalConstance.newStorageSv ||
+        homeViewModel.operationTask.processType == LocalConstance.fetchId) {
+      return const SizedBox();
+    } else {
+      return const ScanDeliveredBox();
+    }
+  }
+
+
   Future<bool> onWillPop() async {
     // Get.off(() => HomePageHolder());
     return false;
   }
 
   Widget paymentSection({required StorageViewModel storageViewModel}) {
-    TaskResponse currentTask =
-        SharedPref.instance.getCurrentTaskResponse() ?? TaskResponse();
+    TaskResponse currentTask = widget.homeViewModel.operationTask;
     if (currentTask.paymentMethod == null) {
       return const SizedBox();
     } else if (currentTask.paymentMethod != LocalConstance.application) {
@@ -98,69 +106,57 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: onWillPop,
-      child: Scaffold(
-        appBar: CustomAppBarWidget(
-          titleWidget: CustomTextView(
-            txt: tr.instant_order,
-            maxLine: Constance.maxLineOne,
-            textStyle: textStyleAppBarTitle(),
-          ),
-          isCenterTitle: true,
-          onBackBtnClick: () {
-            Get.off(HomePageHolder());
-          },
+    return Scaffold(
+      appBar: CustomAppBarWidget(
+        titleWidget: CustomTextView(
+          txt: tr.instant_order,
+          maxLine: Constance.maxLineOne,
+          textStyle: textStyleAppBarTitle(),
         ),
-        body: Stack(
-          children: [
-            GetBuilder<HomeViewModel>(builder: (home) {
-              Logger().e(SharedPref.instance.getCurrentTaskResponse()?.processType);
-              // if (SharedPref.instance.getCurrentTaskResponse()?.processType ==
-              //         LocalConstance.newStorageSv ||
-              //     SharedPref.instance
-              //             .getCurrentTaskResponse()
-              //             ?.notificationId ==
-              //         LocalConstance.paymentRequiredId) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: padding20!),
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      SizedBox(height: sizeH27),
-                      const ContractSignature(),
-                      SizedBox(height: sizeH10),
-                      idVerification,
-                      SizedBox(height: sizeH10),
-                      ScanBoxInstantOrder(
-                        homeViewModel: widget.homeViewModel,
-                      ),
-                      SizedBox(height: sizeH10),
-                      const ScanProducts(),
-                      SizedBox(height: sizeH10),
-                      GetBuilder<StorageViewModel>(
-                        builder: (_) {
-                          return Balance();
-                        },
-                      ),
-                      SizedBox(height: sizeH10),
-                      GetBuilder<StorageViewModel>(builder: (storageViewModel) {
-                        return paymentSection(
-                            storageViewModel: storageViewModel);
-                      }),
-                      SizedBox(height: sizeH10),
-                      CustomerSignatureInstantOrder(),
-                      SizedBox(height: sizeH10),
-                    ],
+        isCenterTitle: true,
+      ),
+      body: GetBuilder<HomeViewModel>(
+        builder: (home) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: padding20!),
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                   home.operationTask.isNew == true
+                      ? SizedBox(height: sizeH27)
+                      : const SizedBox(),
+                  home.operationTask.isNew == true
+                      ? const ContractSignature()
+                      : const SizedBox(),
+                  SizedBox(height: sizeH10),
+                  home.operationTask.isNew == true
+                      ? idVerification
+                      : const SizedBox(),
+                  SizedBox(height: sizeH10),
+                  const BoxNeedScannedItem(),
+                  SizedBox(height: sizeH10),
+                  ScanBoxInstantOrder(
+                    homeViewModel: widget.homeViewModel,
                   ),
-                );
-              
-              // }
-              // return const SizedBox();
-            }),
-          ],
-        ),
+                  SizedBox(height: sizeH10),
+                  GetBuilder<HomeViewModel>(builder: (homeViewModel) {
+                    return scanDelivedBoxes(homeViewModel: homeViewModel);
+                  }),
+                  SizedBox(height: sizeH10),
+                  const ScanProducts(),
+                  SizedBox(height: sizeH10),
+                  const Balance(),
+                  SizedBox(height: sizeH10),
+                  const CustomerSignatureInstantOrder(),
+                  SizedBox(height: sizeH20),
+
+                ],
+              ),
+            );
+          }        
       ),
     );
   }
+
+
 }

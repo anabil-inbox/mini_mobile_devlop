@@ -13,7 +13,6 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:inbox_clients/util/sh_util.dart';
 
 class ScanBoxInstantOrder extends StatelessWidget {
   const ScanBoxInstantOrder({Key? key, required this.homeViewModel})
@@ -65,6 +64,7 @@ class ScanBoxInstantOrder extends StatelessWidget {
                 Get.to(() => ScanRecivedOrderScreen(
                       isBox: true,
                       isProduct: false,
+                      isScanDeliverdBoxes: false,
                     ));
               },
               child: SvgPicture.asset("assets/svgs/Scan.svg",
@@ -73,38 +73,44 @@ class ScanBoxInstantOrder extends StatelessWidget {
           ],
         ),
         collapsed: const SizedBox.shrink(),
-        expanded: Column(
-          children: [
-            SizedBox(height: sizeH14),
-            Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: sizeW20!, vertical: sizeH17!),
-              decoration: BoxDecoration(
-                color: colorSearchBox,
-                borderRadius: BorderRadius.circular(10),
+        expanded: (homeViewModel.operationTask.customerScanned == null ||
+                homeViewModel.operationTask.customerScanned!.isEmpty)
+            ? const SizedBox()
+            : Column(
+                children: [
+                  SizedBox(height: sizeH14),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: sizeW20!, vertical: sizeH17!),
+                    decoration: BoxDecoration(
+                      color: colorSearchBox,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: GetBuilder<HomeViewModel>(
+                      init: homeViewModel,
+                      builder: (home) {
+                        if (homeViewModel.operationTask.customerScanned ==
+                                null ||
+                            homeViewModel
+                                .operationTask.customerScanned!.isEmpty) {
+                          return const SizedBox();
+                        } else {
+                          return ListView(
+                              shrinkWrap: true,
+                              primary: false,
+                              children:
+                                  homeViewModel.operationTask.customerScanned!
+                                      .map((e) => BoxOnOrderItem(
+                                            boxModel: e,
+                                          ))
+                                      .toList());
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(height: sizeH10),
+                ],
               ),
-              child: GetBuilder<HomeViewModel>(
-                init: homeViewModel,
-                builder: (home) {
-                  if (homeViewModel.scaanedBoxes.isEmpty) {
-                    return const SizedBox();
-                  } else {
-                    return ListView(
-                        shrinkWrap: true,
-                        primary: false,
-                        children: SharedPref.instance
-                            .getBoxesList()
-                            .map(( e) => BoxOnOrderItem(
-                                  boxModel: e,
-                                ))
-                            .toList());
-                  }
-                },
-              ),
-            ),
-            SizedBox(height: sizeH10),
-          ],
-        ),
       ),
     );
   }

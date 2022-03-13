@@ -6,20 +6,21 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
-import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentViewModel extends GetxController {
   final Logger logger = Logger();
   final StorageViewModel stroageViewModel = Get.find<StorageViewModel>();
+  final HomeViewModel homeViewModel  = Get.find<HomeViewModel>();
+  
 
   String paymentId = "";
-
   WebViewController? payController;
 
   void readResponse({
@@ -40,10 +41,9 @@ class PaymentViewModel extends GetxController {
                     logger.i("Payment Success"),
                     if (isOrderProductPayment)
                       {
+                        
                        await stroageViewModel.applyPayment(
-                            salesOrderId: SharedPref.instance
-                                    .getCurrentTaskResponse()
-                                    ?.salesOrder ??
+                            salesOrderId: homeViewModel.operationTask.salesOrder ??
                                 "",
                             paymentMethodId: LocalConstance.bankCard),
                       }

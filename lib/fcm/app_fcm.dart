@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/model/respons/task_response.dart';
 import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/recived_order_screen.dart';
@@ -53,15 +53,13 @@ class AppFcm {
 
   void updatePages(RemoteMessage message) async {
     Logger().e(message.data);
-    await SharedPref.instance
-        .setCurrentTaskResponse(taskResponse: jsonEncode(message.data));
+    homeViewModel.operationTask = TaskResponse.fromJson(message.data);
     homeViewModel.expandableController.expanded = false;
     homeViewModel.expandableController.expanded = true;
     storageViewModel.update();
     homeViewModel.update();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      await SharedPref.instance
-          .setCurrentTaskResponse(taskResponse: jsonEncode(message.data));
+      homeViewModel.operationTask = TaskResponse.fromJson(message.data);
       if (message.data["id"] == "8" &&
           message.data["type"] == LocalConstance.onClientSide) {
         homeViewModel.selectedSignatureItemModel.title =
@@ -227,22 +225,20 @@ class AppFcm {
       /*else*/ if (serial[LocalConstance.id].toString() ==
           LocalConstance.scanBoxId) {
         print("MSG_BUG LocalConstance.scanBoxId $map");
-        SharedPref.instance
-            .setCurrentTaskResponse(taskResponse: jsonEncode(map));
-        Logger().e(SharedPref.instance.getCurrentTaskResponse());
+        homeViewModel.operationTask = TaskResponse.fromJson(map);
         Get.off(ScanRecivedOrderScreen(
+          isScanDeliverdBoxes: false,
           isBox: true,
           isProduct: false,
         ));
       }
       if (serial[LocalConstance.id].toString() ==
           LocalConstance.scanProductId) {
-        SharedPref.instance
-            .setCurrentTaskResponse(taskResponse: jsonEncode(map));
+         homeViewModel.operationTask = TaskResponse.fromJson(map);
 
         storageViewModel.selectedPaymentMethod = PaymentMethod(
-          id: SharedPref.instance.getCurrentTaskResponse()?.paymentMethod,
-          name: SharedPref.instance.getCurrentTaskResponse()?.paymentMethod,
+          id: homeViewModel.operationTask.paymentMethod,
+          name: homeViewModel.operationTask.paymentMethod,
         );
 
         storageViewModel.update();
@@ -251,11 +247,10 @@ class AppFcm {
       }
       if (serial[LocalConstance.id].toString() ==
           LocalConstance.orderDeleviredId) {
-        SharedPref.instance
-            .setCurrentTaskResponse(taskResponse: jsonEncode(map));
+       homeViewModel.operationTask = TaskResponse.fromJson(map);
         storageViewModel.selectedPaymentMethod = PaymentMethod(
-          id: SharedPref.instance.getCurrentTaskResponse()?.paymentMethod,
-          name: SharedPref.instance.getCurrentTaskResponse()?.paymentMethod,
+          id:  homeViewModel.operationTask .paymentMethod,
+          name:  homeViewModel.operationTask .paymentMethod,
         );
         storageViewModel.update();
         Get.off(ReciverOrderScreen(homeViewModel));
@@ -267,8 +262,7 @@ class AppFcm {
       }
       if (serial[LocalConstance.id].toString() ==
           LocalConstance.paymentRequiredId) {
-        await SharedPref.instance
-            .setCurrentTaskResponse(taskResponse: jsonEncode(map));
+         homeViewModel.operationTask = TaskResponse.fromJson(map);
         homeViewModel.update();
         Get.off(() => ReciverOrderScreen(
               homeViewModel,
@@ -280,8 +274,7 @@ class AppFcm {
 
       if (serial[LocalConstance.id].toString() ==
           LocalConstance.signatureOnDrvier) {
-        await SharedPref.instance
-            .setCurrentTaskResponse(taskResponse: jsonEncode(map));
+         homeViewModel.operationTask = TaskResponse.fromJson(map);
         homeViewModel.update();
         Get.off(() => ReciverOrderScreen(
               homeViewModel,

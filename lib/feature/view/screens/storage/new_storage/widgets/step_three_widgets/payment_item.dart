@@ -3,13 +3,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
-import 'package:inbox_clients/util/sh_util.dart';
 
 class PaymentItem extends StatelessWidget {
   const PaymentItem(
@@ -20,6 +20,8 @@ class PaymentItem extends StatelessWidget {
 
   final PaymentMethod paymentMethod;
   final bool isFromApplicationPayment;
+  static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<StorageViewModel>(
@@ -33,20 +35,13 @@ class PaymentItem extends StatelessWidget {
             if (isFromApplicationPayment) {
               if (paymentMethod.id == LocalConstance.bankCard) {
                 builder.payApplicationFromPaymentGatewaye(
-                  price: num.tryParse(SharedPref.instance
-                          .getCurrentTaskResponse()
-                          ?.totalDue) ??
-                      0,
+                  price: homeViewModel.operationTask.totalDue ?? 0
                 );
               } else if (paymentMethod.id == LocalConstance.wallet) {
                 builder.payApplicationFromWallet(
-                    price: num.tryParse(SharedPref.instance
-                            .getCurrentTaskResponse()
-                            ?.totalDue) ??
+                    price: homeViewModel.operationTask.totalDue ??
                         0,
-                    newSalesOrderId: SharedPref.instance
-                            .getCurrentTaskResponse()
-                            ?.childOrder
+                    newSalesOrderId: homeViewModel.operationTask.childOrder
                             ?.id ??
                         "");
               }

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/model/home/box_model.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/my_order/api_item.dart';
 import 'package:inbox_clients/feature/model/my_order/order_sales.dart' as OS;
@@ -1345,7 +1346,7 @@ class StorageViewModel extends BaseController {
   //todo i get index of list to update it local
 
   customerStoragesChangeStatus(var serial,
-      {HomeViewModel? homeViewModel}) async {
+      {HomeViewModel? homeViewModel, bool isScanDeliverdBox = false}) async {
     print("mes__1");
     if (serial == null) {
       print("mes__2");
@@ -1366,10 +1367,18 @@ class StorageViewModel extends BaseController {
         if (value.status!.success!) {
           print("mes__8");
           isChangeStatusLoading = false;
-          homeViewModel?.scaanedBoxes.add(Box.fromJson(value.data));
-          SharedPref.instance
-              .setBoxesList(boxes: homeViewModel!.scaanedBoxes.toList());
-          homeViewModel.update();
+          // homeViewModel?.scaanedBoxes.add();
+          // SharedPref.instance.setBoxesList(boxes: homeViewModel!.scaanedBoxes.toList());
+          if (isScanDeliverdBox) {
+            homeViewModel?.operationTask.customerDelivered
+                ?.add(BoxModel.fromJson(value.data));
+          } else {
+            homeViewModel?.operationTask.scannedBoxes
+                ?.add(BoxModel.fromJson(value.data));
+          }
+
+          homeViewModel?.update();
+
           update();
           Get.back();
           snackSuccess(tr.success, value.status!.message!);
@@ -2272,10 +2281,7 @@ class StorageViewModel extends BaseController {
                 snackSuccess('', value.status?.message)
               }
             else
-              {
-                Get.back(),
-                snackError('', value.status?.message)
-                }
+              {Get.back(), snackError('', value.status?.message)}
           });
     } catch (e) {
       Logger().e(e);
@@ -2302,7 +2308,7 @@ class StorageViewModel extends BaseController {
     required num price,
   }) async {
     try {
-    await goToPaymentMethod(
+      await goToPaymentMethod(
           amount: price,
           isOrderProductPayment: true,
           isFromNewStorage: false,

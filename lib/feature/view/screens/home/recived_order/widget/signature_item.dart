@@ -11,7 +11,6 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
-import 'package:inbox_clients/util/sh_util.dart';
 
 class SignatureItem extends StatelessWidget {
   const SignatureItem({Key? key, required this.title, required this.onSelected})
@@ -46,15 +45,15 @@ class SignatureItem extends StatelessWidget {
                           homeViewModel.update();
                           onSelected();
                         },
-                        icon: 
-                        // SharedPref.instance
-                        //                 .getCurrentTaskResponse()
-                        //                 ?.type ==
-                        //             title ||
-                                homeViewModel.selectedSignatureItemModel.title ==
+                        icon:
+                            // SharedPref.instance
+                            //                 .getCurrentTaskResponse()
+                            //                 ?.type ==
+                            //             title ||
+                            homeViewModel.selectedSignatureItemModel.title ==
                                     title
-                            ? SvgPicture.asset("assets/svgs/check.svg")
-                            : SvgPicture.asset("assets/svgs/uncheck.svg"));
+                                ? SvgPicture.asset("assets/svgs/check.svg")
+                                : SvgPicture.asset("assets/svgs/uncheck.svg"));
                   },
                 ),
                 SizedBox(width: sizeW5),
@@ -64,16 +63,10 @@ class SignatureItem extends StatelessWidget {
                 ),
                 const Spacer(),
                 if (title == Constance.onDriverSide &&
-                    SharedPref.instance
-                            .getCurrentTaskResponse()
-                            ?.signatureFile !=
-                        null)
+                    homeViewModel.operationTask.signatureFile != null)
                   imageNetwork(
                     url: ConstanceNetwork.imageUrl +
-                        (SharedPref.instance
-                                .getCurrentTaskResponse()
-                                ?.signatureFile ??
-                            ""),
+                        (homeViewModel.operationTask.signatureFile ?? ""),
                     width: sizeW30,
                     height: sizeH30,
                   ),

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
+import 'package:inbox_clients/feature/view/screens/home/recived_order/recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/widgets/my_order_address_widget.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/widgets/my_order_box_item.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/widgets/new_order_item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/price_bottom_sheet_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -23,6 +26,7 @@ class OrderDetailesScreen extends StatefulWidget {
   final bool isFromPayment;
   static MyOrderViewModle myOrderViewModle =
       Get.put(MyOrderViewModle(), permanent: true);
+  static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
 
   @override
   State<OrderDetailesScreen> createState() => _OrderDetailesScreenState();
@@ -97,10 +101,6 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
       OrderDetailesScreen.myOrderViewModle.update();
 
       setState(() {});
-      // Future.delayed(Duration(milliseconds: 1000)).then(
-      //     (value) async => {
-      //       // OrderDetailesScreen.myOrderViewModle.update(),
-      //       });
     });
   }
 
@@ -191,6 +191,26 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                             height: sizeH10,
                           ),
                           bodyOrderDetailes,
+                          SizedBox(
+                            height: sizeH32,
+                          ),
+                          (!widget.isFromPayment)
+                              ? GetBuilder<HomeViewModel>(builder: (logic) {
+                                  return PrimaryButton(
+                                      textButton: "Order Detaiels",
+                                      isLoading: logic.isLoading,
+                                      onClicked: () async {
+                                        await OrderDetailesScreen.homeViewModel
+                                            .getTaskResponse(
+                                                salersOrder: myOrders
+                                                        .newOrderSales
+                                                        .orderId ??
+                                                    "");
+                                        Get.to(() => ReciverOrderScreen(logic));
+                                      },
+                                      isExpanded: true);
+                                })
+                              : const SizedBox()
                         ],
                       ),
                     );

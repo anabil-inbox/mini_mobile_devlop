@@ -86,5 +86,16 @@ class HomeHelper {
     }
   }
 
+ Future<AppResponse> getTaskResponse({var body}) async {
+      var appResponse = await HomeApi.getInstance.getTaskResponse(
+        body: body,
+        url: "${ConstanceNetwork.getCurrentTaskResponeEndPoint}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
 
 }

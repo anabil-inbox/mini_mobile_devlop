@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
-import 'package:inbox_clients/util/sh_util.dart';
 
 class Balance extends StatelessWidget {
   const Balance({Key? key}) : super(key: key);
+
+  static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +37,7 @@ class Balance extends StatelessWidget {
               const Spacer(),
               CustomTextView(
                 txt: getPriceWithFormate(
-                    price:
-                     num.parse(
-                        SharedPref.instance.getCurrentTaskResponse()?.total.toString() ??
-                            "0")),
+                    price: homeViewModel.operationTask.total ?? 0),
                 textStyle: textStyleMeduimPrimaryBold(),
               ),
             ],
@@ -52,9 +52,7 @@ class Balance extends StatelessWidget {
               const Spacer(),
               CustomTextView(
                 txt: getPriceWithFormate(
-                    price: num.parse(
-                        SharedPref.instance.getCurrentTaskResponse()?.totalPaid.toString() ??
-                            "0")),
+                    price:  homeViewModel.operationTask.totalPaid ?? 0),
                 textStyle: textStyleMeduimPrimaryBold(),
               ),
             ],
@@ -69,9 +67,7 @@ class Balance extends StatelessWidget {
               const Spacer(),
               CustomTextView(
                 txt: getPriceWithFormate(
-                    price: num.parse(
-                        SharedPref.instance.getCurrentTaskResponse()?.totalDue.toString() ??
-                            "0")),
+                    price: homeViewModel.operationTask.totalDue ?? 0),
                 textStyle: textStyleMeduimPrimaryBold(),
               ),
             ],

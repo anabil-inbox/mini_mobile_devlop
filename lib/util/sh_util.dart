@@ -3,9 +3,7 @@ import 'dart:convert';
 import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
-import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/language.dart';
-import 'package:inbox_clients/feature/model/respons/task_response.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -106,28 +104,28 @@ class SharedPref {
   } 
 
 
-    setBoxesList({required List<Box> boxes}) {
-    removeBoxess();
-    _prefs?.setString(boxessKey, jsonEncode(boxes));
-  }
+  //   setBoxesList({required List<Box> boxes}) {
+  //   removeBoxess();
+  //   _prefs?.setString(boxessKey, jsonEncode(boxes));
+  // }
 
-  List<Box> getBoxesList() {
-    try {
-      String? objectStr = _prefs?.getString(boxessKey);
-      return List<Box>.from(
-          json.decode(objectStr!).map((x) => Box.fromJson(x)));
-    } catch (e) {
-      return [];
-    }
-  }
+  // List<Box> getBoxesList() {
+  //   try {
+  //     String? objectStr = _prefs?.getString(boxessKey);
+  //     return List<Box>.from(
+  //         json.decode(objectStr!).map((x) => Box.fromJson(x)));
+  //   } catch (e) {
+  //     return [];
+  //   }
+  // }
 
-  removeBoxess() async {
-    try {
-      await _prefs?.remove(boxessKey);
-    } catch (e) {
-      Logger().e(e);
-    }
-  }
+  // removeBoxess() async {
+  //   try {
+  //     await _prefs?.remove(boxessKey);
+  //   } catch (e) {
+  //     Logger().e(e);
+  //   }
+  // }
 
 
   getShowProgress() {
@@ -209,18 +207,18 @@ class SharedPref {
     }
   }
 
-  TaskResponse? getCurrentTaskResponse() {
-    try {
-      String? objectStr = _prefs?.getString(taskKey);
-      return TaskResponse.fromJson(jsonDecode(objectStr ?? ""));
-    } catch (e) {
-      Logger().e(e.toString());
-      return null;
-    }
-  }
+  // TaskResponse? getCurrentTaskResponse() {
+  //   try {
+  //     String? objectStr = _prefs?.getString(taskKey);
+  //     return TaskResponse.fromJson(jsonDecode(objectStr ?? ""));
+  //   } catch (e) {
+  //     Logger().e(e.toString());
+  //     return null;
+  //   }
+  // }
 
-  setCurrentTaskResponse({required String taskResponse}) async{
-    await _prefs?.remove(taskKey);
-    await _prefs?.setString(taskKey, taskResponse);
-  }
+  // setCurrentTaskResponse({required String taskResponse}) async{
+  //   await _prefs?.remove(taskKey);
+  //   await _prefs?.setString(taskKey, taskResponse);
+  // }
 }
