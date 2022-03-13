@@ -115,14 +115,13 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
         body: Stack(
           children: [
             GetBuilder<HomeViewModel>(builder: (home) {
-              Logger()
-                  .e(SharedPref.instance.getCurrentTaskResponse()?.processType);
-              if (SharedPref.instance.getCurrentTaskResponse()?.processType ==
-                      LocalConstance.newStorageSv ||
-                  SharedPref.instance
-                          .getCurrentTaskResponse()
-                          ?.notificationId ==
-                      LocalConstance.paymentRequiredId) {
+              Logger().e(SharedPref.instance.getCurrentTaskResponse()?.processType);
+              // if (SharedPref.instance.getCurrentTaskResponse()?.processType ==
+              //         LocalConstance.newStorageSv ||
+              //     SharedPref.instance
+              //             .getCurrentTaskResponse()
+              //             ?.notificationId ==
+              //         LocalConstance.paymentRequiredId) {
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding20!),
                   child: ListView(
@@ -155,8 +154,9 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                     ],
                   ),
                 );
-              }
-              return const SizedBox();
+              
+              // }
+              // return const SizedBox();
             }),
           ],
         ),

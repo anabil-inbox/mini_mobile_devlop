@@ -86,7 +86,7 @@ class ApiItem {
         "space_yaxis": 0,
         "process_type": processType,
         "storage_child_in": storageChildIn,
-        "items_child_in": List<dynamic>.from(itemsChildIn!.map((x) => x)),
+       "items_child_in": List<dynamic>.from(itemsChildIn!.map((x) => x)).toString(),
       };
 
    static Map<String, dynamic> getApiObjectToSend(

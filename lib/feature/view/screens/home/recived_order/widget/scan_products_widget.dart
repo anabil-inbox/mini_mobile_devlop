@@ -69,7 +69,7 @@ class ScanProducts extends StatelessWidget {
               ],
             ),
             collapsed: const SizedBox.shrink(),
-            expanded:(SharedPref.instance.getCurrentTaskResponse()?.childOrder != null || SharedPref.instance.getCurrentTaskResponse()!.childOrder!.items!.isEmpty) ?
+            expanded:(SharedPref.instance.getCurrentTaskResponse()?.childOrder == null || SharedPref.instance.getCurrentTaskResponse()!.childOrder!.items!.isEmpty) ?
             const SizedBox()
                 : ListView(
               shrinkWrap: true,
