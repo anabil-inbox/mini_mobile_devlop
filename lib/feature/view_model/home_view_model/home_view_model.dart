@@ -144,9 +144,7 @@ class HomeViewModel extends BaseController {
         if (i == 1) {
           Logger().d(
               "${userBoxess.toList()[index].serialNo} || ${data.code.toString().replaceAll("http://", "")}");
-          if (userBoxess.toList()[index].serialNo !=
-                  data.code.toString().replaceAll("http://", "") &&
-              isFromAtHome!) {
+          if (userBoxess.toList()[index].serialNo != data.code.toString().replaceAll("http://", "") && isFromAtHome!) {
             snackError(tr.error_occurred, tr.box_serial_invalid);
             update();
             Get.back();
@@ -200,9 +198,9 @@ class HomeViewModel extends BaseController {
           }
         }
       });
-      if (newBox.id != null) {
-        refreshHome();
-      }
+      // if (newBox.id != null) {
+      //   refreshHome();
+      // }
 
       isLoading = false;
       update();
