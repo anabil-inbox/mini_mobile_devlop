@@ -68,6 +68,7 @@ dependencies:
   permission_handler: ^8.3.0
   expandable: ^5.0.1
   signature: ^5.0.0
+  alt_sms_autofill: ^1.0.0
 
   # flutter_webview_plugin: ^0.4.0
 
