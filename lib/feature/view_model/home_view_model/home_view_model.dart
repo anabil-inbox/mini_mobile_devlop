@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -147,7 +148,7 @@ class HomeViewModel extends BaseController {
                   data.code.toString().replaceAll("http://", "") &&
               isFromAtHome!) {
             snackError(tr.error_occurred, tr.box_serial_invalid);
-            update();
+            endLoading();
             Get.back();
           } else {
             await getBoxBySerial(
@@ -192,10 +193,11 @@ class HomeViewModel extends BaseController {
                                   // element.storageStatus = LocalConstance.boxAtHome;
                                 }
                               }),
-                              getCustomerBoxes()
-                            }
-                        }
-                    });
+                              getCustomerBoxes(),
+                            },
+                        },
+              endLoading(),
+            });
             update();
           }
         }
@@ -208,9 +210,10 @@ class HomeViewModel extends BaseController {
       update();
     } catch (e) {
       Logger().e("$e");
+      endLoading();
     }
-    endLoading();
-    refresh();
+
+    // refresh();
   }
 
   // to do here for
@@ -254,12 +257,14 @@ class HomeViewModel extends BaseController {
           print("mess_6");
           await fromAtHome(data.code, storageViewModel , isScanDeliverd: isScanDeliverdBox , homeViewModel: homeViewModel);
           //Get.delete<HomeViewModel>();
+          endLoading();
           Get.to(() => ReciverOrderScreen(this));
         }
       });
     } catch (e) {
       Logger().e("$e");
       print("mess_7_$e");
+      endLoading();
     }
     // endLoading();
   }
@@ -541,8 +546,8 @@ class HomeViewModel extends BaseController {
       }).then((value) => {
             if (value.status!.success!)
               {
+                Logger().i(value.data),
                 operationTask = TaskResponse.fromJson(value.data),
-                Logger().i(value.data)
               }
             else
               {snackError("", value.status?.message)}

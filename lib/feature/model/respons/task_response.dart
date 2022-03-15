@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:inbox_clients/feature/model/home/box_model.dart';
+import 'package:logger/logger.dart';
 
 TaskResponse taskResponseFromJson(String str) =>
     TaskResponse.fromJson(json.decode(str));
@@ -55,47 +56,56 @@ class TaskResponse {
   num? waitingTime;
   List<LateFees>? lateFees;
 
-  factory TaskResponse.fromJson(Map<String, dynamic> json) => TaskResponse(
-        salesOrder: json["sales_order"],
-        isNew: json["is_new"],
-        customerId: json["customer_id"],
-        childOrder: json["child_order"],
-        total: json["total"],
-        totalPaid: json["total_paid"],
-        totalDue: json["total_due"],
-        paymentMethod: json["payment_method"],
-        notificationId: json["id"],
-        boxes: json["boxes"] == null
-            ? []
-            : List<BoxModel>.from(
-                json["boxes"].map((x) => BoxModel.fromJson(x))),
-        lateFees: json["late_fees"] == null
-            ? []
-            : List<LateFees>.from(
-                json["late_fees"].map((x) => LateFees.fromJson(x))),
-        scannedBoxes: json["scanned_boxes"] == null
-            ? []
-            : List<BoxModel>.from(
-                json["scanned_boxes"].map((x) => BoxModel.fromJson(x))),
-        customerScanned: json["customer_scanned"] == null
-            ? []
-            : List<BoxModel>.from(
-                json["customer_scanned"].map((x) => BoxModel.fromJson(x))),
-        driverDelivered: json["driver_delivered"] == null
-            ? []
-            : List<BoxModel>.from(
-                json["driver_delivered"].map((x) => BoxModel.fromJson(x))),
-        customerDelivered: json["customer_delivered"] == null
-            ? []
-            : List<BoxModel>.from(
-                json["customer_delivered"].map((x) => BoxModel.fromJson(x))),
-        signatureType: json["signature_type"],
-        signatureFile: json["signature_file"],
-        processType: json["process_type"],
-        driverToken: json["driver_token"],
-        taskStatus: json["task_status"],
-        waitingTime: json["waiting_time"] ?? 0.0,
-      );
+  factory TaskResponse.fromJson(Map<String, dynamic> json) {
+    try {
+      Logger().d("boxes__${json["boxes"]}");
+      return TaskResponse(
+              salesOrder: json["sales_order"],
+              isNew: json["is_new"] == "false" ? false :json["is_new"] == "true" ? true:false,
+              customerId: json["customer_id"],
+              childOrder: json["child_order"],
+              total: num.tryParse(json["total"].toString()),
+              totalPaid:num.tryParse(json["total_paid"].toString()) ,
+              totalDue:num.tryParse(json["total_due"].toString()),
+              paymentMethod: json["payment_method"],
+              notificationId: json["id"],
+              // boxes: json["boxes"] == null
+              //     ? []
+              //     : List<BoxModel>.from(
+              //         json["boxes"].map((x) => BoxModel.fromJson(jsonDecode(jsonEncode(x))))),
+              // lateFees: json["late_fees"] == null
+              //     ? []
+              //     : List<LateFees>.from(
+              //         json["late_fees"].map((x) => LateFees.fromJson(jsonDecode(x)))),
+              // scannedBoxes: json["scanned_boxes"] == null
+              //     ? []
+              //     : List<BoxModel>.from(
+              //         json["scanned_boxes"].map((x) => BoxModel.fromJson(jsonDecode(x)))),
+              // customerScanned: json["customer_scanned"] == null
+              //     ? []
+              //     : List<BoxModel>.from(
+              //         json["customer_scanned"].map((x) => BoxModel.fromJson(jsonDecode(x)))),
+              // driverDelivered: json["driver_delivered"] == null
+              //     ? []
+              //     : List<BoxModel>.from(
+              //         json["driver_delivered"].map((x) => BoxModel.fromJson(jsonDecode(x)))),
+              // customerDelivered: json["customer_delivered"] == null
+              //     ? []
+              //     : List<BoxModel>.from(
+              //         json["customer_delivered"].map((x) => BoxModel.fromJson(jsonDecode(x)))),
+              signatureType: json["signature_type"],
+              signatureFile: json["signature_file"],
+              processType: json["process_type"],
+              driverToken: json["driver_token"],
+              taskStatus: json["task_status"],
+              waitingTime: json["waiting_time"] ?? 0.0,
+            );
+    } catch (e) {
+      print(e);
+      Logger().e(e);
+      return TaskResponse.fromJson({});
+    }
+  }
 
   Map<String, dynamic> toJson() => {
         "sales_order": salesOrder,
