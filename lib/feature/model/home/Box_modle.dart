@@ -35,7 +35,7 @@ class Box {
 
   factory Box.fromJson(Map<String, dynamic> json) => Box(
         id: json["id"] == null ? null : json["id"],
-        serialNo: json["serial_no"] == null ? null : json["serial_no"],
+        serialNo: json["serial"] == null ? null : json["serial"],
         storageName: json["storage_name"] == null ? null : json["storage_name"],
         saleOrder: json["sales_order"] == null ? null : json["sales_order"],
         allowed: json["allowed"] == null ? false : json["allowed"],
@@ -62,7 +62,7 @@ class Box {
     try {
       return {
         "id": id,
-        "serial_no": serialNo,
+        "serial": serialNo,
         "storage_name": storageName,
         "sale_order": saleOrder,
         "storage_status": storageStatus,

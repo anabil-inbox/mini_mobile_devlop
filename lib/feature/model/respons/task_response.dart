@@ -29,8 +29,8 @@ class TaskResponse {
       this.processType,
       this.driverToken,
       this.taskStatus,
-        this.waitingTime = 0.0,
-        this.lateFees,
+      this.waitingTime = 0.0,
+      this.lateFees,
       this.notificationId});
 
   String? salesOrder;
@@ -65,29 +65,43 @@ class TaskResponse {
         totalDue: json["total_due"],
         paymentMethod: json["payment_method"],
         notificationId: json["id"],
-        boxes: List<BoxModel>.from(json["boxes"].map((x) => BoxModel.fromJson(x))),
-        lateFees: List<LateFees>.from(json["late_fees"].map((x) => LateFees.fromJson(x))),
-        scannedBoxes: List<BoxModel>.from(
-            json["scanned_boxes"].map((x) => BoxModel.fromJson(x))),
-        customerScanned: List<BoxModel>.from(
-            json["customer_scanned"].map((x) => BoxModel.fromJson(x))),
-        driverDelivered: List<BoxModel>.from(
-            json["driver_delivered"].map((x) => BoxModel.fromJson(x))),
-        customerDelivered: List<BoxModel>.from(
-            json["customer_delivered"].map((x) => BoxModel.fromJson(x))),
+        boxes: json["boxes"] == null
+            ? []
+            : List<BoxModel>.from(
+                json["boxes"].map((x) => BoxModel.fromJson(x))),
+        lateFees: json["late_fees"] == null
+            ? []
+            : List<LateFees>.from(
+                json["late_fees"].map((x) => LateFees.fromJson(x))),
+        scannedBoxes: json["scanned_boxes"] == null
+            ? []
+            : List<BoxModel>.from(
+                json["scanned_boxes"].map((x) => BoxModel.fromJson(x))),
+        customerScanned: json["customer_scanned"] == null
+            ? []
+            : List<BoxModel>.from(
+                json["customer_scanned"].map((x) => BoxModel.fromJson(x))),
+        driverDelivered: json["driver_delivered"] == null
+            ? []
+            : List<BoxModel>.from(
+                json["driver_delivered"].map((x) => BoxModel.fromJson(x))),
+        customerDelivered: json["customer_delivered"] == null
+            ? []
+            : List<BoxModel>.from(
+                json["customer_delivered"].map((x) => BoxModel.fromJson(x))),
         signatureType: json["signature_type"],
         signatureFile: json["signature_file"],
         processType: json["process_type"],
         driverToken: json["driver_token"],
         taskStatus: json["task_status"],
-        waitingTime: json["waiting_time"]??0.0,
+        waitingTime: json["waiting_time"] ?? 0.0,
       );
 
   Map<String, dynamic> toJson() => {
         "sales_order": salesOrder,
         "is_new": isNew,
         "customer_id": customerId,
-        "waiting_time": waitingTime ??0.0,
+        "waiting_time": waitingTime ?? 0.0,
         "child_order": childOrder,
         "total": total,
         "total_paid": totalPaid,
@@ -109,7 +123,8 @@ class TaskResponse {
         "customer_delivered": customerDelivered == null
             ? []
             : List<dynamic>.from(customerDelivered!.map((x) => x)),
-        "late_fees" : lateFees == null ? []:List<dynamic>.from(lateFees!.map((x) => x)),
+        "late_fees":
+            lateFees == null ? [] : List<dynamic>.from(lateFees!.map((x) => x)),
         "signature_type": signatureType,
         "signature_file": signatureFile,
         "process_type": processType,
@@ -186,14 +201,14 @@ class LateFees {
   num? fees;
 
   factory LateFees.fromJson(Map<String, dynamic> json) => LateFees(
-    mFrom:json["m_from"] == null ? null: json["m_from"],
-    mTo:json["m_to"] == null ? null: json["m_to"],
-    fees:json["fees"] == null ? null: json["fees"],
-  );
+        mFrom: json["m_from"] == null ? null : json["m_from"],
+        mTo: json["m_to"] == null ? null : json["m_to"],
+        fees: json["fees"] == null ? null : json["fees"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "m_from":mFrom == null ? null: mFrom,
-    "m_to":mTo == null ? null: mTo,
-    "fees":fees == null ? null: fees,
-  };
+        "m_from": mFrom == null ? null : mFrom,
+        "m_to": mTo == null ? null : mTo,
+        "fees": fees == null ? null : fees,
+      };
 }

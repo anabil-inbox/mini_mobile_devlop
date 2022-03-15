@@ -7,7 +7,7 @@ class BoxModel {
   List<BoxOperation>? boxOperations;
   String? serial;
   factory BoxModel.fromJson(Map<String, dynamic> json) => BoxModel(
-        boxId: json["box_id"],
+        boxId: json["serial"],
         serial: json["serial"],
         boxName: json["box_name"],
         boxOperations: json["box_operations"] == null

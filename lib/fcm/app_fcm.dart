@@ -209,10 +209,7 @@ class AppFcm {
   static void goToOrderPage(Map<String, dynamic> map,
       {required bool isFromTerminate}) {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      print("MSG_BUG goToOrderPage $map");
       var serial = map;
-      Logger().e("MSG_NOT ${map.toString()}");
-
       if (serial[LocalConstance.id].toString() == LocalConstance.submitId) {
         print("MSG_BUG LocalConstance.submitId $map");
         Get.put(MyOrderViewModle());

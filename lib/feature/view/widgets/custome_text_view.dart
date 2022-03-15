@@ -13,7 +13,7 @@ class CustomTextView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoSizeText(
-      isUpperCase!?txt!.toUpperCase():txt!,
+      isUpperCase!?txt!.toUpperCase():txt?? "",
       overflow: textOverflow,
       textAlign: textAlign,
       style: textStyle,

@@ -22,7 +22,7 @@ class ScanRecivedOrderScreen extends /*StatefulWidget*/StatelessWidget {
 }
 
 class _ScanRecivedOrderScreenState extends State<ScanRecivedOrderScreen> {*/
-  HomeViewModel? homeViewModel= Get.put(HomeViewModel() , permanent: true);
+  HomeViewModel homeViewModel= Get.put(HomeViewModel() , permanent: true);
   StorageViewModel? storageViewModel = Get.put(StorageViewModel() , permanent: true);
   /*@override
   void initState() {
@@ -34,7 +34,7 @@ class _ScanRecivedOrderScreenState extends State<ScanRecivedOrderScreen> {*/
   GlobalKey<FormState> qrKey = GlobalKey<FormState>();
 
   Future<bool> onWillPop() async {
-    Get.off(() => ReciverOrderScreen(homeViewModel!));
+    Get.off(() => ReciverOrderScreen(homeViewModel));
     return true;
   }
 
@@ -45,7 +45,8 @@ class _ScanRecivedOrderScreenState extends State<ScanRecivedOrderScreen> {*/
       child: Scaffold(
           body: QRView(
         key: qrKey,
-        onQRViewCreated: (controller) => homeViewModel?.createQrOrderOrder(
+        onQRViewCreated: (controller) => homeViewModel.createQrOrderOrder(
+            homeViewModel: homeViewModel,
             isScanDeliverdBox: isScanDeliverdBoxes,
             controller: controller,
             storageViewModel: storageViewModel ?? StorageViewModel(),
@@ -56,9 +57,9 @@ class _ScanRecivedOrderScreenState extends State<ScanRecivedOrderScreen> {*/
             borderRadius: padding10!,
             borderLength: padding30!,
             borderWidth: padding10!,
-            cutOutSize: homeViewModel?.scanArea),
+            cutOutSize: homeViewModel.scanArea),
         onPermissionSet: (ctrl, p) =>
-            homeViewModel?.onPermissionSet(context, ctrl, p),
+            homeViewModel.onPermissionSet(context, ctrl, p),
       )),
     );
   }

@@ -172,8 +172,9 @@ class HomeViewModel extends BaseController {
                                 }
                             },
                           update(),
-                          await fromAtHome(data.code, storageViewModel),
+                          await fromAtHome(data.code, storageViewModel , homeViewModel: this),
                           Get.off(() => HomePageHolder(
+                           
                                 box: value,
                                 isFromScan: true,
                               )),
@@ -234,6 +235,7 @@ class HomeViewModel extends BaseController {
       {required QRViewController controller,
       required StorageViewModel storageViewModel,
       required bool isBox,
+      required HomeViewModel homeViewModel,
       required bool isScanDeliverdBox,
       required bool isProduct}) {
     print("mess_1");
@@ -250,7 +252,7 @@ class HomeViewModel extends BaseController {
         print("mess_5");
         if (i == 1) {
           print("mess_6");
-          await fromAtHome(data.code, storageViewModel , isScanDeliverd: isScanDeliverdBox);
+          await fromAtHome(data.code, storageViewModel , isScanDeliverd: isScanDeliverdBox , homeViewModel: homeViewModel);
           //Get.delete<HomeViewModel>();
           Get.to(() => ReciverOrderScreen(this));
         }
@@ -428,14 +430,14 @@ class HomeViewModel extends BaseController {
     }
   }
 
-  fromAtHome(String? code, StorageViewModel? storageViewModel , {bool isScanDeliverd = false}) async {
+  fromAtHome(String? code, StorageViewModel? storageViewModel , {bool isScanDeliverd = false , required HomeViewModel homeViewModel}) async {
     if (code == null) {
       //todo show dialog
       print("mes__-1");
     } else {
       print("mes__-2");
       await storageViewModel?.customerStoragesChangeStatus(code,
-          homeViewModel: this , isScanDeliverdBox: isScanDeliverd);
+          homeViewModel: homeViewModel , isScanDeliverdBox: isScanDeliverd ,);
       print("mes__-3");
       Get.back();
       print("mes__-4");

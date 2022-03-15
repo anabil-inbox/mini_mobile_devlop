@@ -135,6 +135,7 @@ class _AppWidgetState extends State<AppWidget> {
               TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
             }),
           ),
+          
           home: const SplashScreen()
           // home: ReciverOrderScreen()
           ),

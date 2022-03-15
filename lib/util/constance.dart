@@ -7,7 +7,6 @@ abstract class Constance {
   static const TimeFormat24 = "HH:mm";
   static const TimeFormat12 = "hh:mm aa";
 
-
   static const int maxLineOne = 1;
   static const int maxLineTwo = 2;
   static const int maxLineThree = 3;
@@ -26,4 +25,9 @@ abstract class Constance {
   static String onDriverSide = "Driver Side";
 
   static String driverToken = "driver_token";
+
+  static String defoultImageMarker =
+      "https://drive.google.com/file/d/121FQ8BdhQ_yoYeGaDZ4tvA719tzSL94k/view?usp=sharing";
+
+  static String googleMapKey = "AIzaSyAzBtxE3NluLYNrUajTg9OnG7X_luzESvU";
 }
