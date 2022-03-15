@@ -1,0 +1,17 @@
+<svg id="Folder_-_Shared" data-name="Folder - Shared" xmlns="http://www.w3.org/2000/svg" width="39.93" height="30" viewBox="0 0 39.93 30">
+  <g id="Folder_Shared">
+    <rect id="Base" width="23.524" height="23.524" transform="translate(16.406 4.688)" fill="none"/>
+    <rect id="Rectangle_13" width="39.844" height="26.719" rx="5" transform="translate(0 3.281)" fill="#d0ccc8"/>
+    <path id="Rectangle_14" d="M.938,0H27.656a.938.938,0,0,1,.938.938V2.344H0V.938A.938.938,0,0,1,.938,0Z" transform="translate(5.625)" fill="#d0ccc8"/>
+    <g id="Group_668" transform="translate(28.594 18.281)">
+      <g id="Arrow_Left" transform="translate(0.014 3.821)" opacity="0.347">
+        <path id="Line_89" d="M4.162.234H0" transform="translate(0.278 1.347)" fill="none" stroke="#292724" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="0.5"/>
+        <path id="Path_847" d="M1.582,0,0,1.582l1.582,1.6" fill="none" stroke="#292724" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="0.5"/>
+      </g>
+      <g id="Arrow_Right" transform="translate(1.956 0.441)" opacity="0.347">
+        <path id="Line_90" d="M0,.234H4.162" transform="translate(0 1.347)" fill="none" stroke="#292724" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="0.5"/>
+        <path id="Path_848" d="M0,3.183l1.6-1.6L0,0" transform="translate(2.837)" fill="none" stroke="#292724" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="0.5"/>
+      </g>
+    </g>
+  </g>
+</svg>

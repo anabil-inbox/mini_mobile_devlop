@@ -61,11 +61,16 @@ class ScanBoxInstantOrder extends StatelessWidget {
             const Spacer(),
             GestureDetector(
               onTap: () {
-                Get.to(() => ScanRecivedOrderScreen(
-                      isBox: true,
-                      isProduct: false,
-                      isScanDeliverdBoxes: false,
-                    ));
+                if (homeViewModel.operationTask.boxes?.length ==
+                    homeViewModel.operationTask.customerScanned?.length) {
+                  snackError("", "You Scaned All Boxess Recived");
+                } else {
+                  Get.to(() => ScanRecivedOrderScreen(
+                        isBox: true,
+                        isProduct: false,
+                        isScanDeliverdBoxes: false,
+                      ));
+                }
               },
               child: SvgPicture.asset("assets/svgs/Scan.svg",
                   color: colorRed, width: sizeW20, height: sizeH17),

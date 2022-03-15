@@ -23,7 +23,7 @@ class BoxOnOrderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: padding10!),
+      margin: EdgeInsets.all(padding10!),
       child: InkWell(
         child: Column(
           children: [

@@ -540,7 +540,7 @@ class HomeViewModel extends BaseController {
 
   Future<void> getTaskResponse({required String salersOrder}) async {
     startLoading();
-    try {
+    // try {
       await HomeHelper.getInstance.getTaskResponse(body: {
         LocalConstance.orderId: salersOrder
       }).then((value) => {
@@ -552,9 +552,9 @@ class HomeViewModel extends BaseController {
             else
               {snackError("", value.status?.message)}
           });
-    } catch (e) {
-      Logger().e(e);
-    }
+    // } catch (e) {
+    //   Logger().e(e);
+    // }
     endLoading();
   }
 }

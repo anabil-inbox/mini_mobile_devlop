@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="285" height="33" viewBox="0 0 285 33">
+  <g id="Group_9956" data-name="Group 9956" transform="translate(-20 -16)">
+    <path id="Path_6" data-name="Path 6" d="M0,.5H237" transform="translate(49 32)" fill="none" stroke="#ebebeb" stroke-miterlimit="10" stroke-width="1"/>
+    <path id="Path_6_Copy" data-name="Path 6 Copy" d="M0,.5H106.5" transform="translate(49 32)" fill="none" stroke="#e63331" stroke-miterlimit="10" stroke-width="1"/>
+    <g id="Oval" transform="translate(20 16)" fill="#fff" stroke="#e63331" stroke-miterlimit="10" stroke-width="1">
+      <circle cx="16.5" cy="16.5" r="16.5" stroke="none"/>
+      <circle cx="16.5" cy="16.5" r="16" fill="none"/>
+    </g>
+    <circle id="Oval_Copy_3" data-name="Oval Copy 3" cx="13.5" cy="13.5" r="13.5" transform="translate(23 19)" fill="#e63331"/>
+    <g id="Oval_Copy" data-name="Oval Copy" transform="translate(146 16)" fill="#fff" stroke="#e63331" stroke-miterlimit="10" stroke-width="1">
+      <circle cx="16.5" cy="16.5" r="16.5" stroke="none"/>
+      <circle cx="16.5" cy="16.5" r="16" fill="none"/>
+    </g>
+    <circle id="Oval_Copy_3-2" data-name="Oval Copy 3" cx="13.5" cy="13.5" r="13.5" transform="translate(149 19)" fill="#e63331"/>
+    <g id="Oval_Copy_2" data-name="Oval Copy 2" transform="translate(272 16)" fill="#fff" stroke="#ebebeb" stroke-miterlimit="10" stroke-width="1">
+      <circle cx="16.5" cy="16.5" r="16.5" stroke="none"/>
+      <circle cx="16.5" cy="16.5" r="16" fill="none"/>
+    </g>
+  </g>
+</svg>

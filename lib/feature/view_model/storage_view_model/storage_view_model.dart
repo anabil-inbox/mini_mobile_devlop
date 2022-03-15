@@ -1372,6 +1372,7 @@ class StorageViewModel extends BaseController {
           if (isScanDeliverdBox) {
             homeViewModel?.operationTask.customerDelivered
                 ?.add(BoxModel.fromJson(value.data));
+          
           } else {
             homeViewModel?.operationTask.customerScanned
                 ?.add(BoxModel.fromJson(value.data));

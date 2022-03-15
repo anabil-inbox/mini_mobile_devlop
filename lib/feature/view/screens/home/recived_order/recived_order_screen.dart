@@ -135,11 +135,15 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                   SizedBox(height: sizeH10),
                   const BoxNeedScannedItem(),
                   SizedBox(height: sizeH10),
-                  ScanBoxInstantOrder(
+                 home.operationTask.processType == LocalConstance.pickupId
+                  ? const SizedBox()
+                  : ScanBoxInstantOrder(
                     homeViewModel: widget.homeViewModel,
                   ),
                   SizedBox(height: sizeH10),
-                  GetBuilder<HomeViewModel>(builder: (homeViewModel) {
+                  home.operationTask.processType == LocalConstance.newStorageSv
+                  ? const SizedBox()
+                  : GetBuilder<HomeViewModel>(builder: (homeViewModel) {
                     return scanDelivedBoxes(homeViewModel: homeViewModel);
                   }),
                   SizedBox(height: sizeH10),
