@@ -78,4 +78,6 @@ class LocalConstance {
 
   static var inWarehouse;
 
+  static String completed = "Completed";
+
 }

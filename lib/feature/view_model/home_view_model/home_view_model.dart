@@ -494,7 +494,7 @@ class HomeViewModel extends BaseController {
                   {
                     snackSuccess("", "${value.status!.message}"),
                     Logger().e(value.data),
-                    operationTask = TaskResponse.fromJson(value.data)
+                    operationTask = TaskResponse.fromJson(value.data,isFromNotification: false)
                   }
                 else
                   {
@@ -546,7 +546,7 @@ class HomeViewModel extends BaseController {
             if (value.status!.success!)
               {
                 Logger().i(value.data),
-                operationTask = TaskResponse.fromJson(value.data),
+                operationTask = TaskResponse.fromJson(value.data , isFromNotification: false),
               }
             else
               {snackError("", value.status?.message)}

@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_if_null_operators
 
+import 'dart:convert';
+
 import 'package:inbox_clients/feature/model/home/box_model.dart';
 
 class TaskResponse {
@@ -48,86 +50,133 @@ class TaskResponse {
   num? waitingTime;
   List<LateFees>? lateFees;
 
-  factory TaskResponse.fromJson(Map<String, dynamic> json) {
+  factory TaskResponse.fromJson(Map<String, dynamic> json,
+      {required bool isFromNotification}) {
+    if (isFromNotification) {
       return TaskResponse(
-              salesOrder: json["sales_order"],
-              isNew: json["is_new"] == "false" ? false :json["is_new"] == "true" ? true:false,
-              customerId: json["customer_id"],
-              childOrder: json["child_order"],
-              total: num.tryParse(json["total"].toString()),
-              totalPaid:num.tryParse(json["total_paid"].toString()) ,
-              totalDue:num.tryParse(json["total_due"].toString()),
-              paymentMethod: json["payment_method"],
-              notificationId: json["id"],
-              boxes: json["boxes"] == null
-                  ? []
-                  : List<BoxModel>.from(
-                      json["boxes"].map((x) => BoxModel.fromJson(x))),
-              lateFees: json["late_fees"] == null
-                  ? []
-                  : List<LateFees>.from(
-                      json["late_fees"].map((x) => LateFees.fromJson(x))),
-              scannedBoxes: json["scanned_boxes"] == null
-                  ? []
-                  : List<BoxModel>.from(
-                      json["scanned_boxes"].map((x) => BoxModel.fromJson(x))),
-              customerScanned: json["customer_scanned"] == null
-                  ? []
-                  : List<BoxModel>.from(
-                      json["customer_scanned"].map((x) => BoxModel.fromJson(x))),
-              driverDelivered: json["driver_delivered"] == null
-                  ? []
-                  : List<BoxModel>.from(
-                      json["driver_delivered"].map((x) => BoxModel.fromJson(x))),
-              customerDelivered: json["customer_delivered"] == null
-                  ? []
-                  : List<BoxModel>.from(
-                      json["customer_delivered"].map((x) => BoxModel.fromJson(x))),
-              signatureType: json["signature_type"],
-              signatureFile: json["signature_file"],
-              processType: json["process_type"],
-              driverToken: json["driver_token"],
-              taskStatus: json["task_status"],
-              waitingTime: json["waiting_time"] ?? 0.0,
-            );
+        salesOrder: json["sales_order"],
+        isNew: json["is_new"] == "false"
+            ? false
+            : json["is_new"] == "true"
+                ? true
+                : false,
+        customerId: json["customer_id"],
+        childOrder: json["child_order"],
+        total: num.tryParse(json["total"].toString()),
+        totalPaid: num.tryParse(json["total_paid"].toString()),
+        totalDue: num.tryParse(json["total_due"].toString()),
+        paymentMethod: json["payment_method"],
+        notificationId: json["id"],
+        boxes: json["boxes"] == null
+            ? []
+            : List<BoxModel>.from(
+                jsonDecode(json["boxes"]).map((x) => BoxModel.fromJson(x))).toSet().toList(),
+        lateFees: json["late_fees"] == null
+            ? []
+            : List<LateFees>.from(
+                jsonDecode(json["late_fees"]).map((x) => LateFees.fromJson(x))).toSet().toList(),
+        scannedBoxes: json["scanned_boxes"] == null
+            ? []
+            : List<BoxModel>.from(jsonDecode(json["scanned_boxes"])
+                .map((x) => BoxModel.fromJson(x))).toSet().toList(),
+        customerScanned: json["customer_scanned"] == null
+            ? []
+            : List<BoxModel>.from(jsonDecode(json["customer_scanned"])
+                .map((x) => BoxModel.fromJson(x))).toSet().toList(),
+        driverDelivered: json["driver_delivered"] == null
+            ? []
+            : List<BoxModel>.from(jsonDecode(json["driver_delivered"])
+                .map((x) => BoxModel.fromJson(x))).toSet().toList(),
+        customerDelivered: json["customer_delivered"] == null
+            ? []
+            : List<BoxModel>.from(jsonDecode(json["customer_delivered"])
+                .map((x) => BoxModel.fromJson(x))).toSet().toList(),
+        signatureType: json["signature_type"],
+        signatureFile: json["signature_file"],
+        processType: json["process_type"],
+        driverToken: json["driver_token"],
+        taskStatus: json["task_status"],
+        waitingTime: num.tryParse(json["waiting_time"].toString()) ?? 0.0,
+      );
+    } else {
+      return TaskResponse(
+        salesOrder: json["sales_order"],
+        isNew: json["is_new"] == null ? null : json["is_new"],
+        customerId: json["customer_id"],
+        childOrder: json["child_order"],
+        total: num.tryParse(json["total"].toString()),
+        totalPaid: num.tryParse(json["total_paid"].toString()),
+        totalDue: num.tryParse(json["total_due"].toString()),
+        paymentMethod: json["payment_method"],
+        notificationId: json["id"],
+        boxes: json["boxes"] == null
+            ? []
+            : List<BoxModel>.from(
+                json["boxes"].map((x) => BoxModel.fromJson(x))),
+        lateFees: json["late_fees"] == null
+            ? []
+            : List<LateFees>.from(
+                json["late_fees"].map((x) => LateFees.fromJson(x))),
+        scannedBoxes: json["scanned_boxes"] == null
+            ? []
+            : List<BoxModel>.from(
+                json["scanned_boxes"].map((x) => BoxModel.fromJson(x))),
+        customerScanned: json["customer_scanned"] == null
+            ? []
+            : List<BoxModel>.from(
+                json["customer_scanned"].map((x) => BoxModel.fromJson(x))),
+        driverDelivered: json["driver_delivered"] == null
+            ? []
+            : List<BoxModel>.from(
+                json["driver_delivered"].map((x) => BoxModel.fromJson(x))),
+        customerDelivered: json["customer_delivered"] == null
+            ? []
+            : List<BoxModel>.from(
+                json["customer_delivered"].map((x) => BoxModel.fromJson(x))),
+        signatureType: json["signature_type"],
+        signatureFile: json["signature_file"],
+        processType: json["process_type"],
+        driverToken: json["driver_token"],
+        taskStatus: json["task_status"],
+        waitingTime: num.tryParse(json["waiting_time"].toString()) ?? 0.0,
+      );
+    }
   }
 
-  // Map<String, dynamic> toJson() => {
-  //       "sales_order": salesOrder,
-  //       "is_new": isNew,
-  //       "customer_id": customerId,
-  //       "waiting_time": waitingTime ?? 0.0,
-  //       "child_order": childOrder,
-  //       "total": total,
-  //       "total_paid": totalPaid,
-  //       "total_due": totalDue,
-  //       "payment_method": paymentMethod,
-  //       "id": notificationId,
-  //       "boxes": boxes == null
-  //           ? []
-  //           : List<dynamic>.from(boxes!.map((x) => x.toJson())),
-  //       "scanned_boxes": scannedBoxes == null
-  //           ? []
-  //           : List<dynamic>.from(scannedBoxes!.map((x) => x.toJson())),
-  //       "customer_scanned": customerScanned == null
-  //           ? []
-  //           : List<dynamic>.from(customerScanned!.map((x) => x)),
-  //       "driver_delivered": driverDelivered == null
-  //           ? []
-  //           : List<dynamic>.from(driverDelivered!.map((x) => x)),
-  //       "customer_delivered": customerDelivered == null
-  //           ? []
-  //           : List<dynamic>.from(customerDelivered!.map((x) => x)),
-  //       "late_fees":
-  //           lateFees == null ? [] : List<dynamic>.from(lateFees!.map((x) => x)),
-  //       "signature_type": signatureType,
-  //       "signature_file": signatureFile,
-  //       "process_type": processType,
-  //       "driver_token": driverToken,
-  //       "task_status": taskStatus,
-  //     };
-
-
+  Map<String, dynamic> toJson() => {
+        "sales_order": salesOrder,
+        "is_new": isNew,
+        "customer_id": customerId,
+        "waiting_time": waitingTime ?? 0.0,
+        "child_order": childOrder,
+        "total": total,
+        "total_paid": totalPaid,
+        "total_due": totalDue,
+        "payment_method": paymentMethod,
+        "id": notificationId,
+        "boxes": boxes == null
+            ? []
+            : List<dynamic>.from(boxes!.map((x) => x.toJson())),
+        "scanned_boxes": scannedBoxes == null
+            ? []
+            : List<dynamic>.from(scannedBoxes!.map((x) => x.toJson())),
+        "customer_scanned": customerScanned == null
+            ? []
+            : List<dynamic>.from(customerScanned!.map((x) => x)),
+        "driver_delivered": driverDelivered == null
+            ? []
+            : List<dynamic>.from(driverDelivered!.map((x) => x)),
+        "customer_delivered": customerDelivered == null
+            ? []
+            : List<dynamic>.from(customerDelivered!.map((x) => x)),
+        "late_fees":
+            lateFees == null ? [] : List<dynamic>.from(lateFees!.map((x) => x)),
+        "signature_type": signatureType,
+        "signature_file": signatureFile,
+        "process_type": processType,
+        "driver_token": driverToken,
+        "task_status": taskStatus,
+      };
 }
 
 class ChildOrder {

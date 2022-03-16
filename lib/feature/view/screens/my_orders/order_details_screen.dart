@@ -13,6 +13,7 @@ import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_vi
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 
 import 'widgets/my_order_time_widget.dart';
 import 'widgets/status_widget.dart';
@@ -196,19 +197,24 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                           ),
                           (!widget.isFromPayment)
                               ? GetBuilder<HomeViewModel>(builder: (logic) {
-                                  return PrimaryButton(
-                                      textButton: "Order Detaiels",
-                                      isLoading: logic.isLoading,
-                                      onClicked: () async {
-                                        await OrderDetailesScreen.homeViewModel
-                                            .getTaskResponse(
-                                                salersOrder: myOrders
-                                                        .newOrderSales
-                                                        .orderId ??
-                                                    "");
-                                        Get.to(() => ReciverOrderScreen(logic));
-                                      },
-                                      isExpanded: true);
+                                  return myOrders.newOrderSales.status ==
+                                          LocalConstance.completed
+                                      ? const SizedBox()
+                                      : PrimaryButton(
+                                          textButton: "Order Detaiels",
+                                          isLoading: logic.isLoading,
+                                          onClicked: () async {
+                                            await OrderDetailesScreen
+                                                .homeViewModel
+                                                .getTaskResponse(
+                                                    salersOrder: myOrders
+                                                            .newOrderSales
+                                                            .orderId ??
+                                                        "");
+                                            Get.to(() =>
+                                                ReciverOrderScreen(logic));
+                                          },
+                                          isExpanded: true);
                                 })
                               : const SizedBox()
                         ],

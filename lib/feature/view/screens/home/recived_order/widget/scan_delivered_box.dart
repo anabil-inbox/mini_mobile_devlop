@@ -68,7 +68,6 @@ static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
                       isProduct: false,
                     ));
                 }
-                
               },
               child: SvgPicture.asset("assets/svgs/Scan.svg",
                   color: colorRed, width: sizeW20, height: sizeH17),
@@ -79,14 +78,14 @@ static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
         expanded: (homeViewModel.operationTask.customerDelivered == null ||
                 homeViewModel.operationTask.customerDelivered!.isEmpty)
             ? const SizedBox()
-            : Column(
+            : 
+            Column(
           children: [
             SizedBox(height: sizeH14),
             Container(
               padding:
                   EdgeInsets.symmetric(horizontal: sizeW20!, vertical: sizeH17!),
-              decoration: BoxDecoration(
-                  color: colorSearchBox, borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration( color: colorSearchBox, borderRadius: BorderRadius.circular(10)),
               child: GetBuilder<HomeViewModel>(
                 builder: (home) {
                   if (home.operationTask.customerDelivered == null ||
@@ -110,6 +109,8 @@ static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
             SizedBox(height: sizeH14),
           ],
         ),
+     
+     
       ),
     );
   }

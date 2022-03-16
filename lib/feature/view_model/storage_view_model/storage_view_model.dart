@@ -1377,6 +1377,7 @@ class StorageViewModel extends BaseController {
                 ?.add(BoxModel.fromJson(value.data));
           }
           Logger().e(homeViewModel?.operationTask.customerScanned?.length);
+          Logger().e(homeViewModel?.operationTask.customerDelivered?.length);
           homeViewModel?.update();
 
           update();

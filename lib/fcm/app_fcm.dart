@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -53,13 +54,15 @@ class AppFcm {
 
   void updatePages(RemoteMessage message) async {
     Logger().e(message.data);
-    homeViewModel.operationTask = TaskResponse.fromJson(message.data);
+    homeViewModel.operationTask =
+        TaskResponse.fromJson(message.data, isFromNotification: true);
     homeViewModel.expandableController.expanded = false;
     homeViewModel.expandableController.expanded = true;
     storageViewModel.update();
     homeViewModel.update();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      homeViewModel.operationTask = TaskResponse.fromJson(message.data);
+      homeViewModel.operationTask =
+          TaskResponse.fromJson(message.data, isFromNotification: true);
       if (message.data["id"] == "8" &&
           message.data["type"] == LocalConstance.onClientSide) {
         homeViewModel.selectedSignatureItemModel.title =
@@ -161,6 +164,10 @@ class AppFcm {
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification notification = message.notification!;
+      var d = message.data;
+      Logger().e(d);
+      jsonDecode(jsonEncode(message.data));
+      Logger().e(message.data);
       //todo this for add badge for app
       // var android = message.data;
       // Logger().e("MSG_MESSAGE $message");
@@ -222,7 +229,8 @@ class AppFcm {
       /*else*/ if (serial[LocalConstance.id].toString() ==
           LocalConstance.scanBoxId) {
         print("MSG_BUG LocalConstance.scanBoxId $map");
-        homeViewModel.operationTask = TaskResponse.fromJson(map);
+        homeViewModel.operationTask =
+            TaskResponse.fromJson(map, isFromNotification: true);
         Get.off(ScanRecivedOrderScreen(
           isScanDeliverdBoxes: false,
           isBox: true,
@@ -231,7 +239,8 @@ class AppFcm {
       }
       if (serial[LocalConstance.id].toString() ==
           LocalConstance.scanProductId) {
-         homeViewModel.operationTask = TaskResponse.fromJson(map);
+        homeViewModel.operationTask =
+            TaskResponse.fromJson(map, isFromNotification: true);
 
         storageViewModel.selectedPaymentMethod = PaymentMethod(
           id: homeViewModel.operationTask.paymentMethod,
@@ -244,10 +253,11 @@ class AppFcm {
       }
       if (serial[LocalConstance.id].toString() ==
           LocalConstance.orderDeleviredId) {
-       homeViewModel.operationTask = TaskResponse.fromJson(map);
+        homeViewModel.operationTask =
+            TaskResponse.fromJson(map, isFromNotification: true);
         storageViewModel.selectedPaymentMethod = PaymentMethod(
-          id:  homeViewModel.operationTask .paymentMethod,
-          name:  homeViewModel.operationTask .paymentMethod,
+          id: homeViewModel.operationTask.paymentMethod,
+          name: homeViewModel.operationTask.paymentMethod,
         );
         storageViewModel.update();
         Get.off(ReciverOrderScreen(homeViewModel));
@@ -259,7 +269,8 @@ class AppFcm {
       }
       if (serial[LocalConstance.id].toString() ==
           LocalConstance.paymentRequiredId) {
-         homeViewModel.operationTask = TaskResponse.fromJson(map);
+        homeViewModel.operationTask =
+            TaskResponse.fromJson(map, isFromNotification: true);
         homeViewModel.update();
         Get.off(() => ReciverOrderScreen(
               homeViewModel,
@@ -271,7 +282,8 @@ class AppFcm {
 
       if (serial[LocalConstance.id].toString() ==
           LocalConstance.signatureOnDrvier) {
-         homeViewModel.operationTask = TaskResponse.fromJson(map);
+        homeViewModel.operationTask =
+            TaskResponse.fromJson(map, isFromNotification: true);
         homeViewModel.update();
         Get.off(() => ReciverOrderScreen(
               homeViewModel,
