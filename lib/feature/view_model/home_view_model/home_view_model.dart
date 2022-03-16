@@ -556,4 +556,4 @@ class HomeViewModel extends BaseController {
     // }
     endLoading();
   }
-}
+  }

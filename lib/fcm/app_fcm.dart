@@ -163,9 +163,9 @@ class AppFcm {
       RemoteNotification notification = message.notification!;
       //todo this for add badge for app
       // var android = message.data;
-      Logger().e("MSG_MESSAGE $message");
-      Logger().e("MSG_NOT_MESSAGE $messages");
-      Logger().e("MSG_NOT ${message.data.toString()}");
+      // Logger().e("MSG_MESSAGE $message");
+      // Logger().e("MSG_NOT_MESSAGE $messages");
+      // Logger().e("MSG_NOT ${message.data.toString()}");
       if (Platform.isIOS || Platform.isAndroid) {
         messages = message;
         updatePages(message);

@@ -68,7 +68,7 @@ class _CompanyVerficationCodeScreenState
     // });
   }
 
-  String _commingSms = 'Unknown';
+  // String _commingSms = 'Unknown';
 
   Future<void> initSmsListener() async {
     String? commingSms;

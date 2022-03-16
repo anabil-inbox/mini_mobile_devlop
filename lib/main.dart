@@ -50,5 +50,5 @@ class BindingsController extends Bindings {
     // );
   }
 }
-// button In Order Detaiels
-// Instanse Order Screen
+// start when task operations isnt done :
+// notification on customer scan product and scan box ::

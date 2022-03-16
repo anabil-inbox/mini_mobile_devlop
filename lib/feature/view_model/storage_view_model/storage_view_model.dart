@@ -1679,11 +1679,10 @@ class StorageViewModel extends BaseController {
     map["payment_method"] = selectedPaymentMethod?.id ?? "";
     map["payment_id"] = paymentId ?? "";
     map["points"] = isAccept ? userUsesPoints : 0;
-    map["destroy_status"] = LocalConstance.inWarehouse;
-
-    if (task.id == LocalConstance.destroyId) {
-      map["destroy_status"] = placeDestroy;
-    }
+    // map["destroy_status"] = LocalConstance.inWarehouse;
+    // if (task.id == LocalConstance.destroyId) {
+    //   map["destroy_status"] = placeDestroy;
+    // }
 
     map["coupon_code"] = isUsingPromo ? tdCopun.text : "";
     map["order[0]"] = data;
