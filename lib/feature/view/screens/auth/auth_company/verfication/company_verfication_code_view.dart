@@ -91,7 +91,6 @@ class _CompanyVerficationCodeScreenState
 
   // @override
   // void codeUpdated() {
-  //   // TODO: implement codeUpdated
   //   authViewModle.tdPinCode.text = code!;
   //   authViewModle.update();
   //   Logger().d("codeUpdated_${code!}");
@@ -99,7 +98,6 @@ class _CompanyVerficationCodeScreenState
 
   @override
   void dispose() {
-    // TODO: implement dispose
     // SmsAutoFill().unregisterListener();
     AltSmsAutofill().unregisterListener();
     super.dispose();

@@ -76,4 +76,6 @@ class LocalConstance {
   static String itemConst = "item";
   static String spaceConst = "space";
 
+  static var inWarehouse;
+
 }

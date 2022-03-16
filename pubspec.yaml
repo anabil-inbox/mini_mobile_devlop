@@ -69,7 +69,8 @@ dependencies:
   expandable: ^5.0.1
   signature: ^5.0.0
   alt_sms_autofill: ^1.0.0
-
+  location: ^4.3.0
+  flutter_polyline_points: ^1.0.0
   # flutter_webview_plugin: ^0.4.0
 
 dev_dependencies:

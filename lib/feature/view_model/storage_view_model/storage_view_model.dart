@@ -1372,7 +1372,6 @@ class StorageViewModel extends BaseController {
           if (isScanDeliverdBox) {
             homeViewModel?.operationTask.customerDelivered
                 ?.add(BoxModel.fromJson(value.data));
-          
           } else {
             homeViewModel?.operationTask.customerScanned
                 ?.add(BoxModel.fromJson(value.data));
@@ -1570,6 +1569,8 @@ class StorageViewModel extends BaseController {
     }
   }
 
+  String placeDestroy = "";
+
   // THIS REGUSET is For Playing WITH Api Tasks you will Add The Task And Boxess
   //Note :: IF You want to Send Single Box you Will Add The Box Only in The List Like This [myBox()]
 
@@ -1615,203 +1616,6 @@ class StorageViewModel extends BaseController {
     if (itemSeriales.isNotEmpty) {
       itemSeriales = itemSeriales.substring(0, boxessSeriales.length - 2);
     }
-
-    // if (task.id == LocalConstance.fetchId) {
-    //   if (selectedAddress != null) {
-    //     data.add({
-    //       "item_code": task.id,
-    //       "qty": 1,
-    //       "delivery_date": "$selectedDateTime",
-    //       "item_parent": "0",
-    //       "subscription_price": task.price,
-    //       "storage_type": "Process",
-    //       "subscription": "Daily",
-    //       "subscription_duration": 1,
-    //       "group_id": "1",
-    //       "order_to": "${selectedDay?.to}",
-    //       "order_from": "${selectedDay?.from}",
-    //       "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
-    //       "storage_child_in": "$itemSeriales"
-    //     });
-    //     data.add({
-    //       "item_code": "shipping_sv",
-    //       "qty": selectedItems?.length,
-    //       "area_zone": "${selectedAddress?.zone}",
-    //       "delivery_date": "${DateTime.now()}",
-    //       "subscription": "Daily",
-    //       "subscription_duration": 1,
-    //       "subscription_price": shivingPrice,
-    //       "group_id": 1,
-    //       "storage_type": "Process",
-    //       "item_parent": 1,
-    //       "need_adviser": 0,
-    //       "order_to": "13:20",
-    //       "order_from": "14:20",
-    //       "order_time": "13:20 -- 14:20",
-    //       "space": 0,
-    //       "space_xaxis": 0,
-    //       "space_yaxis": 0,
-    //       "process_type": "shipping_sv",
-    //       "storage_child_in": itemSeriales,
-    //       "items_child_in": []
-    //     });
-    //     map["address[0]"] = selectedAddress?.id;
-    //   } else {
-    //     data.add({
-    //       "item_code": task.id,
-    //       "qty": boxes.length,
-    //       "storage_type": "Process",
-    //       "item_parent": "0",
-    //       "subscription_price": task.price,
-    //       "subscription": "Daily",
-    //       "subscription_duration": 1,
-    //       "group_id": "1",
-    //       "delivery_date": DateTime.now().toString(),
-    //       "storage_child_in": "$boxessSeriales"
-    //     });
-    //     map["address[0]"] = boxes[0].address?.id;
-    //   }
-    // } else if (task.id == LocalConstance.giveawayId) {
-    //   if (selectedAddress != null) {
-    //     data.add({
-    //       "item_code": task.id,
-    //       "qty": boxes.length,
-    //       "delivery_date": "$selectedDateTime",
-    //       "item_parent": "0",
-    //       "group_id": "1",
-    //       "subscription_price": task.price,
-    //       "storage_type": "Process",
-    //       "subscription": "Daily",
-    //       "subscription_duration": 1,
-    //       "area_zone": "${selectedAddress?.zone}",
-    //       "beneficiary_name_in": homeViewModel.selctedbeneficiary?.id ?? "",
-    //       "order_to": "${selectedDay?.to}",
-    //       "order_from": "${selectedDay?.from}",
-    //       "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
-    //       "storage_child_in": "$boxessSeriales"
-    //     });
-    //     map["address[0]"] = selectedAddress?.id;
-    //     data.add({
-    //       "item_code": "shipping_sv",
-    //       "qty": boxes.length,
-    //       "area_zone": "${selectedAddress?.zone}",
-    //       "delivery_date": "${DateTime.now()}",
-    //       "subscription": "Daily",
-    //       "subscription_duration": 1,
-    //       "subscription_price": shivingPrice,
-    //       "group_id": 1,
-    //       "storage_type": "Process",
-    //       "item_parent": 0,
-    //       "need_adviser": 0,
-    //       "order_to": "13:20",
-    //       "order_from": "14:20",
-    //       "order_time": "13:20 -- 14:20",
-    //       "space": 0,
-    //       "space_xaxis": 0,
-    //       "space_yaxis": 0,
-    //       "process_type": "shipping_sv",
-    //       "storage_child_in": boxessSeriales,
-    //       "items_child_in": []
-    //     });
-    //   } else {
-    // data.add({
-    //   "item_code": task.id,
-    //   "qty": boxes.length,
-    //   "storage_type": "Process",
-    //   "beneficiary_name_in": beneficiaryId,
-    //   "delivery_date": DateTime.now().toString(),
-    //   "item_parent": "0",
-    //   "subscription_price": task.price,
-    //   "subscription": "Daily",
-    //   "subscription_duration": 1,
-    //   "group_id": "1",
-    //   "storage_child_in": "$boxessSeriales"
-    // });
-    //     data.add({
-    //       "item_code": "shipping_sv",
-    //       "qty": boxes.length,
-    //       "delivery_date": "${DateTime.now()}",
-    //       "subscription": "Daily",
-    //       "subscription_duration": 1,
-    //       "subscription_price": shivingPrice,
-    //       "group_id": 1,
-    //       "storage_type": "Process",
-    //       "item_parent": 0,
-    //       "need_adviser": 0,
-    //       "order_to": "13:20",
-    //       "order_from": "14:20",
-    //       "order_time": "13:20 -- 14:20",
-    //       "space": 0,
-    //       "space_xaxis": 0,
-    //       "space_yaxis": 0,
-    //       "process_type": "shipping_sv",
-    //       "storage_child_in": boxessSeriales,
-    //       "items_child_in": []
-    //     });
-    //     map["address[0]"] = boxes[0].address?.id;
-    //   }
-    // } else {
-    //   if (!GetUtils.isNull(selectedItems)) {
-    //     for (var item in selectedItems!) {
-    //       data.add({
-    //         "item_code": item.id,
-    //         "qty": "${item.itemQuantity}",
-    //         "storage_type": "Process",
-    //         "delivery_date": selectedDateTime == null
-    //             ? DateTime.now().toString()
-    //             : selectedDateTime.toString(),
-    //         "item_parent": "0",
-    //         "order_to": "${selectedDay?.to ?? "13:20"}",
-    //         "order_from": "${selectedDay?.from ?? "14:20"}",
-    //         "order_time":
-    //             "${selectedDay?.to ?? "13:20"} -- ${selectedDay?.from ?? "14:20"}",
-    //         "group_id": "0",
-    //       });
-    //       map["address[0]"] = selectedAddress!.id;
-    //     }
-    //   }
-    //   data.add({
-    //     "item_code": task.id,
-    //     "qty": boxes.length,
-    //     "delivery_date": selectedDateTime == null
-    //         ? DateTime.now().toString()
-    //         : selectedDateTime.toString(),
-    //     "item_parent": "0",
-    //     "subscription_price": task.price,
-    //     "storage_type": "Process",
-    //     "subscription": "Daily",
-    //     "subscription_duration": 1,
-    //     "group_id": "1",
-    //     "beneficiary_name_in": beneficiaryId,
-    //     "order_to": "${selectedDay?.to ?? "13:20"}",
-    //     "order_from": "${selectedDay?.from ?? "14:20"}",
-    //     "order_time":
-    //         "${selectedDay?.to ?? "13:20"} -- ${selectedDay?.from ?? "14:20"}",
-    //     "storage_child_in": "$boxessSeriales"
-    //   });
-    //   data.add({
-    //     "item_code": "shipping_sv",
-    //     "qty": boxes.length,
-    //     "delivery_date": "${DateTime.now()}",
-    //     "subscription": "Daily",
-    //     "subscription_duration": 1,
-    //     "subscription_price": shivingPrice,
-    //     "group_id": 1,
-    //     "storage_type": "Process",
-    //     "item_parent": 0,
-    //     "need_adviser": 0,
-    //     "order_to": "${selectedDay?.to ?? "13:20"}",
-    //     "order_from": "${selectedDay?.from ?? "14:20"}",
-    //     "order_time":
-    //         "${selectedDay?.to ?? "13:20"} -- ${selectedDay?.from ?? "14:20"}",
-    //     "space": 0,
-    //     "space_xaxis": 0,
-    //     "space_yaxis": 0,
-    //     "process_type": "shipping_sv",
-    //     "storage_child_in": boxessSeriales,
-    //     "items_child_in": []
-    //   });
-    // }
 
     if (task.id == LocalConstance.fetchId) {
       data.add(ApiItem.getApiObjectToSend(
@@ -1869,59 +1673,22 @@ class StorageViewModel extends BaseController {
           selectedDay: selectedDay,
           beneficiaryNameIn: "",
           boxessSeriales: boxessSeriales));
-      // data.add({
-      //   "item_code": item.id,
-      //   "qty": boxes.length,
-      //   "delivery_date": "${DateTime.now()}",
-      //   "subscription": "Daily",
-      //   "subscription_duration": 1,
-      //   "subscription_price": item.price,
-      //   "group_id": 1,
-      //   "storage_type": "Process",
-      //   "item_parent": 0,
-      //   "need_adviser": 0,
-      //   "order_to": "13:20",
-      //   "order_from": "14:20",
-      //   "order_time": "13:20 -- 14:20",
-      //   "space": 0,
-      //   "space_xaxis": 0,
-      //   "space_yaxis": 0,
-      //   "process_type": item.id,
-      //   "storage_child_in": boxessSeriales,
-      //   "items_child_in": []
-      // });
     }
 
     map["type[0]"] = task.id;
     map["payment_method"] = selectedPaymentMethod?.id ?? "";
     map["payment_id"] = paymentId ?? "";
     map["points"] = isAccept ? userUsesPoints : 0;
+    map["destroy_status"] = LocalConstance.inWarehouse;
+
+    if (task.id == LocalConstance.destroyId) {
+      map["destroy_status"] = placeDestroy;
+    }
+
     map["coupon_code"] = isUsingPromo ? tdCopun.text : "";
     map["order[0]"] = data;
     map["address[0]"] =
         selectedAddress == null ? boxes[0].address?.id : selectedAddress?.id;
-    // for (var i = 0; i < boxes.length; i++) {
-    //   // if (task.id == LocalConstance.pickupId) {
-    //   //   map["type[$i]"] = LocalConstance.pickupId;
-    //   // } else if (task.id == LocalConstance.recallId) {
-    //   //   map["type[$i]"] = LocalConstance.recallId;
-    //   // }
-    //   // this Request Will Changed Here !:
-    //   map["type[$i]"] = task.id;
-    //   map["order[$i]"] = [
-    //     {
-    //       "item_code": task.id,
-    //       "qty": 1,
-    //       "delivery_date": "$selectedDateTime",
-    //       "order_to": "${selectedDay?.to}",
-    //       "order_from": "${selectedDay?.from}",
-    //       "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
-    //       "storage_child_in": "$boxessSeriales"
-    //     }
-    //   ];
-    //   map["address[$i]"] = selectedAddress!.id;
-    // }
-
     mapSalesOrder.add(map);
 
     Map<String, dynamic> newMap = {"sales_order": jsonEncode(mapSalesOrder)};
