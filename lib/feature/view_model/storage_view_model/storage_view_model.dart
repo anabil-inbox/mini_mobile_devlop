@@ -1042,6 +1042,7 @@ class StorageViewModel extends BaseController {
       snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
       return false;
     }
+    Logger().d("selectedDateTime_${selectedDateTime?.toUtc()} \t :: DateTimeNowToUtc_${DateTime.now().toUtc()} ");
 
     if (GetUtils.isNull(selectedDateTime)) {
       snackError("${tr.error_occurred}", "${tr.you_have_to_select_date}");
@@ -1052,13 +1053,15 @@ class StorageViewModel extends BaseController {
     } else if (GetUtils.isNull(selectedDay)) {
       snackError("${tr.error_occurred}", "${tr.you_have_to_select_time}");
       return false;
-    } else if (DateTime.now()
-        .isAfter(DateUtility.convertUtcToLocalDateTimeDT(selectedDateTime!))) {
-      snackError("${tr.error_occurred}", "Invalide Selected Date");
+    } else if (DateTime.now().toUtc()
+        .isAfter(selectedDateTime!.add(Duration(hours: 12)).toUtc()/*DateUtility.convertUtcToLocalDateTimeDT(selectedDateTime!)*/)) {
+      snackError("${tr.error_occurred}", "Invalid Selected Date");
+      Logger().d("selectedDateTime_${selectedDateTime?.toUtc()} \t :: DateTimeNowToUtc_${DateTime.now().toUtc()} ");
       return false;
     } else {
       return true;
     }
+
   }
 
   // Future<bool> checkTimeSlot() async {
