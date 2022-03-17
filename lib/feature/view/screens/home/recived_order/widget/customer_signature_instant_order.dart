@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
-import 'package:flutter_svg/svg.dart';
 import 'dart:math' as math;
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/signature_item.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/signature_bottom_sheet.dart';
@@ -52,17 +51,19 @@ class CustomerSignatureInstantOrder extends StatelessWidget {
               txt: "CustomerSignature",
               textStyle: textStyleNormal()?.copyWith(color: colorBlack),
             ),
-            const Spacer(),
-            GestureDetector(
-              onTap: () {
-                // Get.to(() => const ScanScreen(
-                //       isBoxSalesScan: false,
-                //       isProductScan: false,
-                //     ));
-              },
-              child: SvgPicture.asset("assets/svgs/Scan.svg",
-                  color: colorRed, width: sizeW20, height: sizeH17),
-            ),
+            
+            // const Spacer(),
+            // GestureDetector(
+            //   onTap: () {
+            //     // Get.to(() => const ScanScreen(
+            //     //       isBoxSalesScan: false,
+            //     //       isProductScan: false,
+            //     //     ));
+            //   },
+            //   child: SvgPicture.asset("assets/svgs/Scan.svg",
+            //       color: colorRed, width: sizeW20, height: sizeH17),
+            // ),
+          
           ],
         ),
         collapsed: const SizedBox.shrink(),

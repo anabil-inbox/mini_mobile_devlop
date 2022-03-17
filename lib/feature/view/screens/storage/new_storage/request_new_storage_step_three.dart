@@ -68,6 +68,7 @@ class RequestNewStorageStepThree extends StatelessWidget {
       );
 
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,17 +81,15 @@ class RequestNewStorageStepThree extends StatelessWidget {
         ),
       ),
       body: GetBuilder<StorageViewModel>(
-        init: StorageViewModel(),
-        initState: (_) {},
-        builder: (_) {
+        builder: (logical) {
           return SizedBox(
             height: double.infinity,
             child: Stack(
               children: [
                 ListView(
                   padding: EdgeInsets.symmetric(horizontal: 20),
-                  primary: true,
                   shrinkWrap: true,
+                  primary: true,
                   children: [
                     GetBuilder<StorageViewModel>(
                       init: StorageViewModel(),
@@ -132,12 +131,14 @@ class RequestNewStorageStepThree extends StatelessWidget {
                                     await logic.addNewStorage();
                                     logic.isLoading = false;
                                     logic.update();
-                                  } else if ((logic.selectedPaymentMethod?.id ==
+                                  } else if ((logic
+                                          .selectedPaymentMethod?.id ==
                                       Constance.walletId)) {
-                                        Logger().e(num.parse(profileViewModle
-                                            .myWallet.balance
-                                            .toString()));
-                                         Logger().e(storageViewModel.totalBalance.toString());   
+                                    Logger().e(num.parse(profileViewModle
+                                        .myWallet.balance
+                                        .toString()));
+                                    Logger().e(storageViewModel.totalBalance
+                                        .toString());
                                     if (num.parse(profileViewModle
                                             .myWallet.balance
                                             .toString()) >
@@ -145,9 +146,7 @@ class RequestNewStorageStepThree extends StatelessWidget {
                                       await logic.addNewStorage();
                                       logic.isLoading = false;
                                       logic.update();
-                                    } else {
-
-                                    }
+                                    } else {}
                                   } else {
                                     await logic.goToPaymentMethod(
                                         cartModels: [],

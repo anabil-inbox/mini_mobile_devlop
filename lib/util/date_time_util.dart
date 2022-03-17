@@ -225,6 +225,7 @@ class DateUtility {
       dateNew = DateTime.utc(dateNew.year, dateNew.month, (dateNew.day),
           dateNew.hour, dateNew.minute);
       dateNew = dateNew.toLocal();
+      Logger().e("Date Utc :: $dateNew");
       return dateNew;
     } catch (e) {
       print(e);

@@ -48,17 +48,6 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
           return ListView(
             primary: false,
             shrinkWrap: true,
-            // home.tasksDone
-            //             .asMap()
-            //             .map((i, element) => MapEntry(
-            //                 i,
-            //                 HomeCard(
-            //                   isFromCompleted: true,
-            //                   index: i,
-            //                   task: element,
-            //                 )))
-            //             .values
-            //             .toList()),
             children: myOrder.newOrderSales.orderItems!
                 .asMap()
                 .map((i, element) => MapEntry(i, GetBuilder<MyOrderViewModle>(
@@ -195,6 +184,14 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                           SizedBox(
                             height: sizeH32,
                           ),
+                          if (widget.isFromPayment)
+                            PrimaryButton(
+                                textButton: "Back To Home",
+                                isLoading: false,
+                                onClicked: () async {
+                                  Get.off(() => HomePageHolder());
+                                },
+                                isExpanded: true),
                           (!widget.isFromPayment)
                               ? GetBuilder<HomeViewModel>(builder: (logic) {
                                   return myOrders.newOrderSales.status ==

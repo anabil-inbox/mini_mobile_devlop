@@ -40,6 +40,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
@@ -168,6 +169,13 @@ class StorageViewModel extends BaseController {
     userStorageCategoriesData.forEach((element) {
       totalBalance += element.userPrice!;
     });
+  }
+
+  ScrollController myListController = ScrollController();
+
+  void animateToIndex() {
+    myListController.jumpTo(myListController.position.maxScrollExtent + 200);
+    update();
   }
 
 // to do when user choose new option :
@@ -430,6 +438,7 @@ class StorageViewModel extends BaseController {
 
     Get.back();
     update();
+    // animateToIndex();
   }
 
   void intialBalance({required StorageCategoriesData storageCategoriesData}) {
@@ -1005,6 +1014,23 @@ class StorageViewModel extends BaseController {
   bool isStepTwoValidate({required String catygoreyType}) {
     if (catygoreyType == ConstanceNetwork.itemCategoryType ||
         catygoreyType == ConstanceNetwork.quantityCategoryType) {
+      if (selectedDateTime != null && selectedDay != null) {
+        selectedDateTime = DateTime(
+            selectedDateTime!.year,
+            selectedDateTime!.month,
+            selectedDateTime!.day,
+            int.tryParse(DateUtility.getLocalhouersFromUtc(day: selectedDay!)
+                    .split("-")[1]
+                    .split(":")[0]) ??
+                0,
+            int.tryParse(DateUtility.getLocalhouersFromUtc(day: selectedDay!)
+                    .split("-")[1]
+                    .split(":")[1]) ??
+                0);
+
+        Logger().e(selectedDateTime);
+      }
+
       if (GetUtils.isNull(selectedAddress)) {
         snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
         return false;
@@ -1025,6 +1051,10 @@ class StorageViewModel extends BaseController {
       return false;
     } else if (GetUtils.isNull(selectedDay)) {
       snackError("${tr.error_occurred}", "${tr.you_have_to_select_time}");
+      return false;
+    } else if (DateTime.now()
+        .isAfter(DateUtility.convertUtcToLocalDateTimeDT(selectedDateTime!))) {
+      snackError("${tr.error_occurred}", "Invalide Selected Date");
       return false;
     } else {
       return true;
@@ -1273,6 +1303,7 @@ class StorageViewModel extends BaseController {
       ).whenComplete(() => {
             selectedFeaures.clear(),
             selectedDuration = "Daily",
+            animateToIndex(),
             quantity = 1,
             numberOfDays = 1,
             lastStorageItem = null,
@@ -1291,6 +1322,7 @@ class StorageViewModel extends BaseController {
             selectedFeaures.clear(),
             // localBulk = LocalBulk(),
             selectedDuration = "Daily",
+            animateToIndex(),
             quantity = 1,
             numberOfDays = 1,
             lastStorageItem = null,
@@ -1312,6 +1344,7 @@ class StorageViewModel extends BaseController {
             selectedDuration = "Daily",
             quantity = 1,
             numberOfDays = 1,
+            animateToIndex(),
             selectedFeaures.clear(),
             lastStorageItem = null,
             balance = 0,
@@ -1327,14 +1360,17 @@ class StorageViewModel extends BaseController {
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
-      ).whenComplete(() => {
-            selectedDuration = "Daily",
-            quantity = 1,
-            numberOfDays = 1,
-            selectedFeaures.clear(),
-            lastStorageItem = null,
-            balance = 0,
-          });
+      )
+          .whenComplete(() => {
+                selectedDuration = "Daily",
+                quantity = 1,
+                numberOfDays = 1,
+                selectedFeaures.clear(),
+                lastStorageItem = null,
+                balance = 0,
+                animateToIndex()
+              })
+          .then((value) => {animateToIndex()});
     }
   }
 

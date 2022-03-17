@@ -35,15 +35,13 @@ class _RequestNewStorageScreenState extends State<RequestNewStorageScreen> {
       RequestNewStorageScreen.storageViewModel.update();
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: CustomAppBarWidget(
         leadingWidget: GetBuilder<StorageViewModel>(
-          init: StorageViewModel(),
-          initState: (_) {},
           builder: (logic) {
             return BackBtnWidget(
               onTap: () {
@@ -63,65 +61,63 @@ class _RequestNewStorageScreenState extends State<RequestNewStorageScreen> {
       body: GetBuilder<StorageViewModel>(
         init: StorageViewModel(),
         initState: (_) {},
-        builder: (_) {
-          return SizedBox(
-            height: double.infinity,
-            child: Stack(
-              children: [
-                ListView(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  primary: true,
-                  shrinkWrap: true,
-                  children: [
-                    GetBuilder<StorageViewModel>(
-                      builder: (val) {
-                        return RequestNewStorageHeader(
-                          currentLevel: val.currentLevel,
-                        );
-                      },
-                    ),
-                    GetBuilder<StorageViewModel>(
-                      builder: (builder) {
-                        return StorageSizeType();
-                      },
-                    ),
-                    SizedBox(
-                      height: sizeH16,
-                    ),
-                    MyListWidget(),
-                    SizedBox(
-                      height: sizeH50,
-                    ),
-                  ],
-                ),
-                GetBuilder<StorageViewModel>(
-                  init: StorageViewModel(),
-                  initState: (_) {},
-                  builder: (logical) {
-                    return Positioned(
-                      bottom: padding10,
-                      right: padding20,
-                      left: padding20,
-                      child: PrimaryButton(
-                          textButton: "${tr.next}",
-                          isLoading: false,
-                          colorBtn: logical.userStorageCategoriesData.length > 0
-                              ? colorPrimary
-                              : colorUnSelectedWidget,
-                          onClicked: logical.userStorageCategoriesData.length >
-                                  0
-                              ? () {
-                                  RequestNewStorageScreen.storageViewModel.currentLevel = 1;
-                                  Get.put(ProfileViewModle());
-                                  Get.to(() => RequestNewStoragesStepTwoScreen());
-                                }
-                              : () {},
-                          isExpanded: true),
-                    );
-                  },
-                )
-              ],
-            ),
+        builder: (build) {
+          return Stack(
+            children: [
+              ListView(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                controller:
+                    RequestNewStorageScreen.storageViewModel.myListController,
+                shrinkWrap: true,
+                children: [
+                  GetBuilder<StorageViewModel>(
+                    builder: (val) {
+                      return RequestNewStorageHeader(
+                        currentLevel: val.currentLevel,
+                      );
+                    },
+                  ),
+                  GetBuilder<StorageViewModel>(
+                    builder: (builder) {
+                      return StorageSizeType();
+                    },
+                  ),
+                  SizedBox(
+                    height: sizeH16,
+                  ),
+                  MyListWidget(),
+                  SizedBox(
+                    height: sizeH50,
+                  ),
+                ],
+              ),
+              GetBuilder<StorageViewModel>(
+                init: StorageViewModel(),
+                initState: (_) {},
+                builder: (logical) {
+                  return Positioned(
+                    bottom: padding10,
+                    right: padding20,
+                    left: padding20,
+                    child: PrimaryButton(
+                        textButton: "${tr.next}",
+                        isLoading: false,
+                        colorBtn: logical.userStorageCategoriesData.length > 0
+                            ? colorPrimary
+                            : colorUnSelectedWidget,
+                        onClicked: logical.userStorageCategoriesData.length > 0
+                            ? () {
+                                RequestNewStorageScreen
+                                    .storageViewModel.currentLevel = 1;
+                                Get.put(ProfileViewModle());
+                                Get.to(() => RequestNewStoragesStepTwoScreen());
+                              }
+                            : () {},
+                        isExpanded: true),
+                  );
+                },
+              )
+            ],
           );
         },
       ),
