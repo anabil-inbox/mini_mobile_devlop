@@ -21,6 +21,23 @@ class SignatureItem extends StatelessWidget {
   final String title;
   final Function onSelected;
 
+  Widget photoSignature() {
+    if (title == Constance.fingerprint) {
+      return const SizedBox();
+    }
+    if (title == homeViewModel.selectedSignatureItemModel.title &&
+        homeViewModel.operationTask.signatureFile != null) {
+      return imageNetwork(
+        url: ConstanceNetwork.imageUrl +
+            (homeViewModel.operationTask.signatureFile ?? ""),
+        width: sizeW30,
+        height: sizeH30,
+      );
+    }
+
+    return const SizedBox();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,14 +79,7 @@ class SignatureItem extends StatelessWidget {
                   textStyle: textStyleNormal()?.copyWith(fontSize: fontSize13),
                 ),
                 const Spacer(),
-                if (title == Constance.onDriverSide &&
-                    homeViewModel.operationTask.signatureFile != null)
-                  imageNetwork(
-                    url: ConstanceNetwork.imageUrl +
-                        (homeViewModel.operationTask.signatureFile ?? ""),
-                    width: sizeW30,
-                    height: sizeH30,
-                  ),
+                photoSignature(),
                 Transform(
                   transform:
                       Matrix4.translationValues(isArabicLang() ? -5 : 5, 0, 0),

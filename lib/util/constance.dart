@@ -30,4 +30,6 @@ abstract class Constance {
       "https://drive.google.com/file/d/121FQ8BdhQ_yoYeGaDZ4tvA719tzSL94k/view?usp=sharing";
 
   static String googleMapKey = "AIzaSyAzBtxE3NluLYNrUajTg9OnG7X_luzESvU";
+
+  static String fingerprint = "Fingerprint";
 }

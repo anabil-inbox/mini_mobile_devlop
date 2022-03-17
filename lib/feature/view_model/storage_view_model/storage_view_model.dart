@@ -1406,15 +1406,21 @@ class StorageViewModel extends BaseController {
           // homeViewModel?.scaanedBoxes.add();
           // SharedPref.instance.setBoxesList(boxes: homeViewModel!.scaanedBoxes.toList());
           if (isScanDeliverdBox) {
-            homeViewModel?.operationTask.customerDelivered
-                ?.add(BoxModel.fromJson(value.data));
+            if (!homeViewModel!.operationTask.customerDelivered!
+                .contains(BoxModel.fromJson(value.data))) {
+              homeViewModel.operationTask.customerDelivered
+                  ?.add(BoxModel.fromJson(value.data));
+            }
           } else {
-            homeViewModel?.operationTask.customerScanned
-                ?.add(BoxModel.fromJson(value.data));
+            if (!homeViewModel!.operationTask.customerScanned!
+                .contains(BoxModel.fromJson(value.data))) {
+              homeViewModel.operationTask.customerScanned
+                  ?.add(BoxModel.fromJson(value.data));
+            }
           }
-          Logger().e(homeViewModel?.operationTask.customerScanned?.length);
-          Logger().e(homeViewModel?.operationTask.customerDelivered?.length);
-          homeViewModel?.update();
+          Logger().e(homeViewModel.operationTask.customerScanned?.length);
+          Logger().e(homeViewModel.operationTask.customerDelivered?.length);
+          homeViewModel.update();
 
           update();
           Get.back();

@@ -61,7 +61,9 @@ class TaskResponse {
                 ? true
                 : false,
         customerId: json["customer_id"],
-        childOrder: json["child_order"],
+        childOrder: json["child_order"] == null
+            ? null
+            : ChildOrder.fromJson(jsonDecode(json["child_order"])),
         total: num.tryParse(json["total"].toString()),
         totalPaid: num.tryParse(json["total_paid"].toString()),
         totalDue: num.tryParse(json["total_due"].toString()),
@@ -70,11 +72,13 @@ class TaskResponse {
         boxes: json["boxes"] == null
             ? []
             : List<BoxModel>.from(
-                jsonDecode(json["boxes"]).map((x) => BoxModel.fromJson(x))).toSet().toList(),
+                    jsonDecode(json["boxes"]).map((x) => BoxModel.fromJson(x)))
+                .toSet()
+                .toList(),
         lateFees: json["late_fees"] == null
             ? []
-            : List<LateFees>.from(
-                jsonDecode(json["late_fees"]).map((x) => LateFees.fromJson(x))).toSet().toList(),
+            : List<LateFees>.from(jsonDecode(json["late_fees"])
+                .map((x) => LateFees.fromJson(x))).toSet().toList(),
         scannedBoxes: json["scanned_boxes"] == null
             ? []
             : List<BoxModel>.from(jsonDecode(json["scanned_boxes"])
@@ -103,7 +107,9 @@ class TaskResponse {
         salesOrder: json["sales_order"],
         isNew: json["is_new"] == null ? null : json["is_new"],
         customerId: json["customer_id"],
-        childOrder: json["child_order"],
+        childOrder: json["child_order"] == null
+            ? null
+            : ChildOrder.fromJson(json["child_order"]),
         total: num.tryParse(json["total"].toString()),
         totalPaid: num.tryParse(json["total_paid"].toString()),
         totalDue: num.tryParse(json["total_due"].toString()),
