@@ -167,7 +167,7 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               ),
               CustomTextView(
                 txt:
-                    "${profileViewModle.myPoints.totalPoints} ${tr.points} = ${profileViewModle.myPoints.totalPoints! / SharedPref.instance.getCurrentUserData().conversionFactor!} QR",
+                    "${profileViewModle.myPoints.totalPoints} ${tr.points} = ${profileViewModle.myPoints.totalPoints! * SharedPref.instance.getCurrentUserData().conversionFactor!} QR",
                 textAlign: TextAlign.start,
                 textStyle: textStyleNormal()!
                     .copyWith(color: colorPrimary, fontSize: fontSize14),

@@ -1871,12 +1871,11 @@ class StorageViewModel extends BaseController {
     }
 
     if (isAccept) {
-      if (price -
-              profileViewModle.myPoints.totalPoints! /
+      if (price - profileViewModle.myPoints.totalPoints! *
                   SharedPref.instance.getCurrentUserData().conversionFactor! >
           0) {
         price = price -
-            profileViewModle.myPoints.totalPoints! /
+            profileViewModle.myPoints.totalPoints! *
                 SharedPref.instance.getCurrentUserData().conversionFactor!;
         userUsesPoints = profileViewModle.myPoints.totalPoints!;
       } else {
@@ -1884,7 +1883,7 @@ class StorageViewModel extends BaseController {
         //     SharedPref.instance.getCurrentUserData().conversionFactor!;
 
         usesPoints = profileViewModle.myPoints.totalPoints! -
-            (price *
+            (price /
                 SharedPref.instance.getCurrentUserData().conversionFactor!);
         price = 0;
       }
