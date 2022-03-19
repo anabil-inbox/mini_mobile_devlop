@@ -28,7 +28,7 @@ class MyRewardsScreen extends StatelessWidget {
       ),
       body: GetBuilder<ProfileViewModle>(
         initState: (_) async {
-          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
             await profileViewModle.getMyPoints();
           });
         },

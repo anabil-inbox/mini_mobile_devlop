@@ -20,7 +20,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       MyOrdersScreen.myOrderViewModle.getOrdres();
     });
     MyOrdersScreen.myOrderViewModle.scrollcontroller.addListener(() {

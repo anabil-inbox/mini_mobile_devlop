@@ -26,7 +26,7 @@ class PickupUserAddress extends StatelessWidget {
         GetBuilder<StorageViewModel>(
           init: StorageViewModel(),
           initState: (_) {
-            WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
               storageViewModel.getStoreAddress();
             });
           },

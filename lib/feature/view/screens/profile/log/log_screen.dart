@@ -27,7 +27,7 @@ class LogScreen extends StatelessWidget {
         child: GetBuilder<ProfileViewModle>(
           init: ProfileViewModle(),
           initState: (_) async {
-            WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+            WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
               await profileViewModle.getUserLog();
             });
           },

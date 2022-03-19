@@ -85,7 +85,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await OrderDetailesScreen.myOrderViewModle
           .getOrderDetaile(orderId: widget.orderId);
       OrderDetailesScreen.myOrderViewModle.update();

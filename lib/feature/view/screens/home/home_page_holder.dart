@@ -55,7 +55,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
     Get.put(ItemViewModle(), permanent: true);
     Get.put(ProfileViewModle() , permanent: true);
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       // Get.put(ItemViewModle());
       if (!GetUtils.isNull(SharedPref.instance.getCurrentUserData()) &&
           !GetUtils.isNull(SharedPref.instance.getCurrentUserData().id))

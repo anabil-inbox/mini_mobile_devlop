@@ -57,7 +57,7 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
   @override
   initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await itemViewModle.getBoxBySerial(serial: widget.serail!);
       itemViewModle.listIndexSelected.clear();
       itemViewModle.isSelectAllClick = false;

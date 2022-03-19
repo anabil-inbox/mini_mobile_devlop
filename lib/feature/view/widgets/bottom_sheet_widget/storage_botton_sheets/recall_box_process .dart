@@ -123,7 +123,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
                       init: StorageViewModel(),
                       initState: (_) {
                         WidgetsBinding.instance
-                            ?.addPostFrameCallback((timeStamp) {
+                            .addPostFrameCallback((timeStamp) {
                           _storageViewModel.selectedDateTime = null;
                           _storageViewModel.selectedDay = null;
                           _storageViewModel.selectedStringOption.clear();

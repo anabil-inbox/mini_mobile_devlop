@@ -42,7 +42,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if (widget.isNeedSignature) {
         SignatureBottomSheet.showSignatureBottomSheet();
       } else if (widget.isNeedFingerprint) {

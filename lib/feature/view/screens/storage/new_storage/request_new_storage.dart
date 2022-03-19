@@ -29,7 +29,7 @@ class _RequestNewStorageScreenState extends State<RequestNewStorageScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       RequestNewStoragesStepTwoScreen.storageViewModel.currentLevel = 0;
       RequestNewStorageScreen.storageViewModel.getStorageCategories();
       RequestNewStorageScreen.storageViewModel.update();

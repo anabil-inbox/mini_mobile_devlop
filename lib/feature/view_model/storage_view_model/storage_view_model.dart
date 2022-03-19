@@ -1053,7 +1053,7 @@ class StorageViewModel extends BaseController {
       snackError("${tr.error_occurred}", "${tr.you_have_to_select_time}");
       return false;
     } else if (DateTime.now()
-        .isAfter(DateUtility.convertUtcToLocalDateTimeDT(selectedDateTime!))) {
+        .isBefore(DateUtility.convertUtcToLocalDateTimeDT(selectedDateTime!))) {
       snackError("${tr.error_occurred}", "Invalide Selected Date");
       return false;
     } else {

@@ -89,6 +89,7 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
         } else {
           return null;
         }
+        return null;
       },
       onChanged: (value) {
         if (onChange != null) onChange!(value);

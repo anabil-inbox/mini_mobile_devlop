@@ -84,6 +84,7 @@ class SharedPref {
           .companySectors;
     } catch (e) {
       print("e");
+      return null;
     }
   }
 
@@ -94,6 +95,7 @@ class SharedPref {
           .languges;
     } catch (e) {
       print("e");
+       return null;
     }
   }
 

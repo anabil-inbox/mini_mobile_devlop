@@ -42,7 +42,7 @@ class TagBoxItemWidget extends StatelessWidget {
               //     localSet.add(i.tag!);
               //   }
               // }
-              WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                 itemViewModle.tdName.text = boxItem.itemName ?? "";
                 itemViewModle.itemQuantity =
                     int.parse(boxItem.itemQuantity ?? "1");
@@ -51,7 +51,7 @@ class TagBoxItemWidget extends StatelessWidget {
               itemViewModle.usesBoxItemsTags = localSet;
             } else {
               itemViewModle.usesBoxItemsTags.clear();
-              WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                 
               });
               itemViewModle.usesBoxItemsTags.clear();
