@@ -28,7 +28,7 @@ class _RequestNewStoragesStepTwoScreenState
   @override
   void dispose() {
     super.dispose();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       RequestNewStoragesStepTwoScreen.storageViewModel.currentLevel = 0;
       RequestNewStoragesStepTwoScreen.storageViewModel.update();
     });

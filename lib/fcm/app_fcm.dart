@@ -60,7 +60,7 @@ class AppFcm {
     homeViewModel.expandableController.expanded = true;
     storageViewModel.update();
     homeViewModel.update();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       homeViewModel.operationTask =
           TaskResponse.fromJson(message.data, isFromNotification: true);
       if (message.data["id"] == "8" &&
@@ -215,7 +215,7 @@ class AppFcm {
 
   static void goToOrderPage(Map<String, dynamic> map,
       {required bool isFromTerminate}) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       var serial = map;
       if (serial[LocalConstance.id].toString() == LocalConstance.submitId) {
         print("MSG_BUG LocalConstance.submitId $map");

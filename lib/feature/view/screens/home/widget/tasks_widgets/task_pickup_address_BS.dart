@@ -46,7 +46,7 @@ class TaskPickupAddressBS extends StatelessWidget {
       return GetBuilder<HomeViewModel>(
         init: HomeViewModel(),
         initState: (_) {
-          WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
             await homeViewModel.getStoreAddress();
           });
         },

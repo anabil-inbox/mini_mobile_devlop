@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
       HomeScreen.homeViewModle.pagination();
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       if (widget.isFromScan ?? false) {
         Get.bottomSheet(
             CheckInBoxWidget(
