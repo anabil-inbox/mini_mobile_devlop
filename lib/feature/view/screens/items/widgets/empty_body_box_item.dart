@@ -63,6 +63,9 @@ class EmptyBodyBoxItem extends StatelessWidget {
             end: 0,
             child: GetBuilder<ItemViewModle>(
               builder: (item) {
+                if (item.operationsBox == null) {
+                  return const SizedBox();
+                }
                 return Column(
                   children: [
                     FloatingActionButton(
@@ -92,7 +95,8 @@ class EmptyBodyBoxItem extends StatelessWidget {
                     SizedBox(
                       height: sizeH50,
                     ),
-                    (/*item.operationsBox?.saleOrder == null ||*/ item.operationsBox!.allowed!)
+                    (/*item.operationsBox?.saleOrder == null ||*/ item
+                            .operationsBox!.allowed!)
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

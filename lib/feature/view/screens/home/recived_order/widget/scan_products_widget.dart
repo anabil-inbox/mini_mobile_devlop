@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/scan_recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/product_on_order_item.dart';
 import 'dart:math' as math;
@@ -18,7 +17,6 @@ class ScanProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    screenUtil(context);
     screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: sizeW15!, vertical: sizeH13!),

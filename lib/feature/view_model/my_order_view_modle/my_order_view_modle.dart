@@ -15,7 +15,7 @@ class MyOrderViewModle extends BaseController {
     isLoading = true;
     update();
     await OrderHelper.getInstance
-        .getCustomerBoxess(pageSize: 40, page: page)
+        .getCustomerBoxess(pageSize: 50, page: page)
         .then((value) => {
               userOrderSales.addAll(value),
               Logger().i("${userOrderSales.length}"),
@@ -73,8 +73,4 @@ class MyOrderViewModle extends BaseController {
     return false;
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 }

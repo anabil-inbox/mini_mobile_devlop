@@ -22,6 +22,8 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 
+import '../home_page_holder.dart';
+
 class ReciverOrderScreen extends StatefulWidget /*StatelessWidget */ {
   const ReciverOrderScreen(this.homeViewModel,
       {Key? key,
@@ -75,7 +77,8 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
       );
 
   Widget scanDelivedBoxes({required HomeViewModel homeViewModel}) {
-    if (homeViewModel.operationTask.processType == LocalConstance.newStorageSv ||
+    if (homeViewModel.operationTask.processType ==
+            LocalConstance.newStorageSv ||
         homeViewModel.operationTask.processType == LocalConstance.fetchId) {
       return const SizedBox();
     } else {
@@ -83,9 +86,8 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
     }
   }
 
-
   Future<bool> onWillPop() async {
-    // Get.off(() => HomePageHolder());
+    Get.off(() => HomePageHolder());
     return false;
   }
 
@@ -107,61 +109,64 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    return Scaffold(
-      appBar: CustomAppBarWidget(
-        titleWidget: CustomTextView(
-          txt: tr.instant_order,
-          maxLine: Constance.maxLineOne,
-          textStyle: textStyleAppBarTitle(),
+    return WillPopScope(
+      onWillPop: onWillPop,
+      child: Scaffold(
+        appBar: CustomAppBarWidget(
+          titleWidget: CustomTextView(
+            txt: tr.instant_order,
+            maxLine: Constance.maxLineOne,
+            textStyle: textStyleAppBarTitle(),
+          ),
+          isCenterTitle: true,
         ),
-        isCenterTitle: true,
-      ),
-      body: GetBuilder<HomeViewModel>(
-        builder: (home) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: padding20!),
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                   home.operationTask.isNew == true
-                      ? SizedBox(height: sizeH27)
-                      : const SizedBox(),
-                  home.operationTask.isNew == true
-                      ? const ContractSignature()
-                      : const SizedBox(),
-                  SizedBox(height: sizeH10),
-                  home.operationTask.isNew == true
-                      ? idVerification
-                      : const SizedBox(),
-                  SizedBox(height: sizeH10),
-                  const BoxNeedScannedItem(),
-                  SizedBox(height: sizeH10),
-                 (home.operationTask.processType == LocalConstance.pickupId || home.operationTask.processType == LocalConstance.fetchId)
-                  ? const SizedBox()
-                  : ScanBoxInstantOrder(
-                    homeViewModel: widget.homeViewModel,
-                  ),
-                  SizedBox(height: sizeH10),
-                 (home.operationTask.processType == LocalConstance.newStorageSv ||  home.operationTask.processType == LocalConstance.fetchId)
-                  ? const SizedBox()
-                  : GetBuilder<HomeViewModel>(builder: (homeViewModel) {
-                    return scanDelivedBoxes(homeViewModel: homeViewModel);
-                  }),
-                  SizedBox(height: sizeH10),
-                  const ScanProducts(),
-                  SizedBox(height: sizeH10),
-                  const Balance(),
-                  SizedBox(height: sizeH10),
-                  const CustomerSignatureInstantOrder(),
-                  SizedBox(height: sizeH20),
-
-                ],
-              ),
-            );
-          }        
+        body: GetBuilder<HomeViewModel>(builder: (home) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: padding20!),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                home.operationTask.isNew == true
+                    ? SizedBox(height: sizeH27)
+                    : const SizedBox(),
+                home.operationTask.isNew == true
+                    ? const ContractSignature()
+                    : const SizedBox(),
+                SizedBox(height: sizeH10),
+                home.operationTask.isNew == true
+                    ? idVerification
+                    : const SizedBox(),
+                SizedBox(height: sizeH10),
+                const BoxNeedScannedItem(),
+                SizedBox(height: sizeH10),
+                (home.operationTask.processType == LocalConstance.pickupId ||
+                        home.operationTask.processType == LocalConstance.fetchId)
+                    ? const SizedBox()
+                    : ScanBoxInstantOrder(
+                        homeViewModel: widget.homeViewModel,
+                      ),
+                SizedBox(height: sizeH10),
+                (home.operationTask.processType == LocalConstance.newStorageSv ||
+                        home.operationTask.processType ==
+                            LocalConstance.fetchId ||
+                        home.operationTask.processType ==
+                            LocalConstance.destroyId)
+                    ? const SizedBox()
+                    : GetBuilder<HomeViewModel>(builder: (homeViewModel) {
+                        return scanDelivedBoxes(homeViewModel: homeViewModel);
+                      }),
+                SizedBox(height: sizeH10),
+                const ScanProducts(),
+                SizedBox(height: sizeH10),
+                const Balance(),
+                SizedBox(height: sizeH10),
+                const CustomerSignatureInstantOrder(),
+                SizedBox(height: sizeH20),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
-
-
 }
