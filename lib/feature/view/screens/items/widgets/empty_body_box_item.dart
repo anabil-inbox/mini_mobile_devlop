@@ -92,7 +92,7 @@ class EmptyBodyBoxItem extends StatelessWidget {
                     SizedBox(
                       height: sizeH50,
                     ),
-                    item.operationsBox?.saleOrder == null
+                    (/*item.operationsBox?.saleOrder == null ||*/ item.operationsBox!.allowed!)
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

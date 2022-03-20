@@ -264,6 +264,7 @@ class AppFcm {
         return;
       }
       if (serial[LocalConstance.id].toString() == LocalConstance.orderDoneId) {
+        homeViewModel.refreshHome();
         Get.offAll(() => HomePageHolder());
         return;
       }
