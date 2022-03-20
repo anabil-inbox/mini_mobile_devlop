@@ -56,12 +56,12 @@ class ScanProducts extends StatelessWidget {
                 ),
                 const Spacer(),
                 // GestureDetector(
-                //   onTap: () {
-                //     // Get.to(() => const ScanScreen(
-                //     //       isBoxSalesScan: false,
-                //     //       isProductScan: true,
-                //     //     ));
-                //   },
+                  // onTap: () {
+                  //   Get.to(() => const ScanScreen(
+                  //         isBoxSalesScan: false,
+                  //         isProductScan: true,
+                  //       ));
+                  // },
                 //   child: SvgPicture.asset("assets/svgs/Scan.svg",
                 //       color: colorRed, width: sizeW20, height: sizeH17),
                 // ),
