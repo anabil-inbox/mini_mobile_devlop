@@ -36,7 +36,7 @@ class _QuantityStorageBottomSheetState
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       // Get.put(StorageViewModel());
       storageViewModel.intialBalance(
           storageCategoriesData: widget.storageCategoriesData);

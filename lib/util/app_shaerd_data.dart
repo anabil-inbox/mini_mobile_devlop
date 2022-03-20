@@ -43,6 +43,7 @@ screenUtil(BuildContext context) {
       BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width,
           maxHeight: MediaQuery.of(context).size.height),
+          context: context,
       designSize: Size(392.72727272727275, 803.6363636363636),
       orientation: Orientation.portrait);
 }

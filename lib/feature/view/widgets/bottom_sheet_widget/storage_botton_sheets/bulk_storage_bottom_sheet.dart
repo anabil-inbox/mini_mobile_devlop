@@ -39,7 +39,7 @@ class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
   void initState() {
     super.initState();
     if (!GetUtils.isNull(widget.storageCategoriesData.localBulk)) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
         storageViewModel.getBulksBalance(
             localBulk: widget.storageCategoriesData.localBulk!);
       });

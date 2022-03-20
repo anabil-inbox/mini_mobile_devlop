@@ -27,7 +27,7 @@ class StoreView extends StatelessWidget {
       ),
       body: GetBuilder<ProductViewModel>(
         initState: (_) async {
-          WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
             await productViewModel.getMyAllProduct();
           });
         },

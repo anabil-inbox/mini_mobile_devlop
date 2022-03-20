@@ -51,7 +51,7 @@ class _ItemScreenState extends State<ItemScreen> {
   @override
   initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       // await widget.getBoxDataMethod!();
       // Get.delete<ItemViewModle>();
       await itemViewModle.getBoxBySerial(serial: widget.box.serialNo ?? "");
@@ -350,7 +350,7 @@ class _ItemScreenState extends State<ItemScreen> {
       body: GetBuilder<ItemViewModle>(
         autoRemove: false,
         initState: (_) async {
-          WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
             await itemViewModle.getBoxBySerial(
                 serial: widget.box.serialNo ?? "");
             //itemViewModle.update();

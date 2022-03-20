@@ -69,7 +69,7 @@ class PickupAddress extends StatelessWidget {
 
               GetBuilder<ProfileViewModle>(
                 initState: (_) {
-                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                  WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
                     if (storageViewModel.userStorageCategoriesData[0]
                                 .storageCategoryType ==
                             ConstanceNetwork.itemCategoryType ||
@@ -97,7 +97,7 @@ class PickupAddress extends StatelessWidget {
             else
               GetBuilder<StorageViewModel>(
                 initState: (_) {
-                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                  WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
                     if (storageViewModel.userStorageCategoriesData[0]
                                 .storageCategoryType ==
                             ConstanceNetwork.itemCategoryType ||

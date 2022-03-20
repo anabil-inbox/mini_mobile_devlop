@@ -35,7 +35,7 @@ class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       storageViewModel.intialBalance(
           storageCategoriesData: widget.storageCategoriesData);
     });
