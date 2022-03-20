@@ -38,6 +38,7 @@ class _RequestNewStorageScreenState extends State<RequestNewStorageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: CustomAppBarWidget(

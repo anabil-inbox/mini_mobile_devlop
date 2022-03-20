@@ -139,6 +139,7 @@ class GiveawayBoxProcessSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: sizeW15!),
       clipBehavior: Clip.hardEdge,

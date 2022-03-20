@@ -20,6 +20,7 @@ class HomeLVItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return Container(
       width: double.infinity,
       height: sizeH75,

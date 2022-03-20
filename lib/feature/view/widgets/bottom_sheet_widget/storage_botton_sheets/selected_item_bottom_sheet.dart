@@ -108,6 +108,7 @@ class SelectedItemBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<ItemViewModle>(
         init: ItemViewModle(),
         builder: (logic) {

@@ -388,7 +388,6 @@ class ItemViewModle extends BaseController {
                 if (value.status!.success!)
                   {
                     Logger().e("${value.toJson()}"),
-                    Logger().e("${value.data["saleOrder"]}"),
                     operationsBox = Box.fromJson(value.data),
                     
                     endLoading(),

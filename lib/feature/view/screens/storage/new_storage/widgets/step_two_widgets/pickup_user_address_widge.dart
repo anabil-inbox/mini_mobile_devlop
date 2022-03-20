@@ -16,6 +16,7 @@ class PickupUserAddress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

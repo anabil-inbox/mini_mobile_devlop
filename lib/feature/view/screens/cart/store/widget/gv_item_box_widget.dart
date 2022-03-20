@@ -16,6 +16,7 @@ class StoreItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return Container(
       alignment: Alignment.center,
       width: sizeW165,

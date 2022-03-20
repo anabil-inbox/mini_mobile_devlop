@@ -96,6 +96,7 @@ class CartHead extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(

@@ -12,6 +12,7 @@ class MyOrderAddressWidget extends StatelessWidget {
   final String address;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       width: double.infinity,
     //  margin: EdgeInsets.symmetric(horizontal: padding20!),

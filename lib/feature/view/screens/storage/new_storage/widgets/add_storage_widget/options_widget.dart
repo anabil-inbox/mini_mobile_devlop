@@ -13,6 +13,7 @@ class OptionWidget extends StatelessWidget {
   final StorageCategoriesData storageCategoriesData;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: padding16!),

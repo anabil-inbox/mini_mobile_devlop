@@ -11,6 +11,8 @@ import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 
 class MySubscriptionsItem extends StatelessWidget {
   const MySubscriptionsItem({Key? key, this.subscriptions, }) : super(key: key);
@@ -19,6 +21,7 @@ class MySubscriptionsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return InkWell(
       splashColor: colorTrans,
       highlightColor: colorTrans,

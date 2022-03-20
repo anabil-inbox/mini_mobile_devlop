@@ -13,7 +13,7 @@ class Box {
       this.modified,
       this.tags,
       this.items,
-      this.allowed,
+      this.allowed = false,
       this.options,
       this.isPickup,
       this.address});

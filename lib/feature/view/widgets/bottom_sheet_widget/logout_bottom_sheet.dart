@@ -24,6 +24,7 @@ class GlobalBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return Container(
       // height: sizeH300,
       decoration: BoxDecoration(

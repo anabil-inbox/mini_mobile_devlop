@@ -29,6 +29,7 @@ class BtnActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
 
     if (isShowingDeleteAndGivaway) {
       return Row(

@@ -21,6 +21,7 @@ class IntroBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return Stack(
       children: [
         Positioned(

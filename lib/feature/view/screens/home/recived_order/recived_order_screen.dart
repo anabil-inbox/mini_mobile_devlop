@@ -106,6 +106,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       appBar: CustomAppBarWidget(
         titleWidget: CustomTextView(
@@ -135,13 +136,13 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                   SizedBox(height: sizeH10),
                   const BoxNeedScannedItem(),
                   SizedBox(height: sizeH10),
-                 home.operationTask.processType == LocalConstance.pickupId
+                 (home.operationTask.processType == LocalConstance.pickupId || home.operationTask.processType == LocalConstance.fetchId)
                   ? const SizedBox()
                   : ScanBoxInstantOrder(
                     homeViewModel: widget.homeViewModel,
                   ),
                   SizedBox(height: sizeH10),
-                  home.operationTask.processType == LocalConstance.newStorageSv
+                 (home.operationTask.processType == LocalConstance.newStorageSv ||  home.operationTask.processType == LocalConstance.fetchId)
                   ? const SizedBox()
                   : GetBuilder<HomeViewModel>(builder: (homeViewModel) {
                     return scanDelivedBoxes(homeViewModel: homeViewModel);

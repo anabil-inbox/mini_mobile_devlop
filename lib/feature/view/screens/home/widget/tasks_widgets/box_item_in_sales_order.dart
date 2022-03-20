@@ -16,6 +16,7 @@ class BoxItemInSalesOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<HomeViewModel>(
       init: HomeViewModel(),
       initState: (_) {},

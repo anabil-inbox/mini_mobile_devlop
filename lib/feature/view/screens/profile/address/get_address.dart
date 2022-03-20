@@ -15,6 +15,7 @@ class GetAddressScreen extends GetWidget<ProfileViewModle> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: CustomAppBarWidget(

@@ -10,6 +10,7 @@ class NotAllowedItem extends StatelessWidget {
   final NotAllowed? notAllowed;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
 
       padding: EdgeInsets.all(padding22!),

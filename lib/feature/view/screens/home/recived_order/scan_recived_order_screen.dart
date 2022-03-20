@@ -9,6 +9,8 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../../../../../util/app_shaerd_data.dart';
+
 class ScanRecivedOrderScreen extends /*StatefulWidget*/StatelessWidget {
   /*const*/ ScanRecivedOrderScreen(
       {Key? key, required this.isBox, required this.isProduct,  required this.isScanDeliverdBoxes})
@@ -40,6 +42,7 @@ class _ScanRecivedOrderScreenState extends State<ScanRecivedOrderScreen> {*/
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(

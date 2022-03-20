@@ -9,6 +9,7 @@ class PaymentWidget extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: padding16!),
       decoration: BoxDecoration(

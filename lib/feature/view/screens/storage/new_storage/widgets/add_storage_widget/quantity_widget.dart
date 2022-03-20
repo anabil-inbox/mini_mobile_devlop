@@ -6,6 +6,8 @@ import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../../../util/app_shaerd_data.dart';
+
 // ignore: must_be_immutable
 class QuantityWidget extends StatelessWidget {
   QuantityWidget({Key? key, required this.storageCategoriesData , required this.quantityTitle , required this.increasingFunction, required this.mineassingFunction  ,required this.value})
@@ -20,6 +22,7 @@ class QuantityWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return  
     Container(
           height: sizeH50,

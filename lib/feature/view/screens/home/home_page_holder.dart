@@ -20,6 +20,8 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
+import '../../../../util/app_shaerd_data.dart';
+
 // ignore: must_be_immutable
 class HomePageHolder extends StatefulWidget {
   HomePageHolder({Key? key, this.box, this.isFromScan}) : super(key: key);
@@ -77,6 +79,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       body: GetBuilder<HomeViewModel>(
           init: HomeViewModel(),

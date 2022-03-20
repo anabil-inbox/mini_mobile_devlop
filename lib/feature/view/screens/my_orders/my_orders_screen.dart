@@ -6,7 +6,7 @@ import 'package:inbox_clients/feature/view/screens/my_orders/widgets/my_order_ap
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 
 import 'widgets/my_order_item.dart';
-
+import '../../../../../util/app_shaerd_data.dart';
 class MyOrdersScreen extends StatefulWidget {
   const MyOrdersScreen({Key? key}) : super(key: key);
 
@@ -30,6 +30,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {

@@ -6,11 +6,14 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 class SchedulePickupTaskWidget extends StatelessWidget {
   const SchedulePickupTaskWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<HomeViewModel>(
       init: HomeViewModel(),
       initState: (_) {},

@@ -4,6 +4,8 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import '../../../../../util/app_shaerd_data.dart';
+
 class StatusWidget extends StatelessWidget {
   const StatusWidget({Key? key , this.status, this.child, }) : super(key: key);
 
@@ -12,6 +14,7 @@ class StatusWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
      // margin: EdgeInsets.symmetric(horizontal: padding20!),
       decoration: BoxDecoration(

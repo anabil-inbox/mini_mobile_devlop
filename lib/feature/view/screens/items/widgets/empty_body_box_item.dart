@@ -29,6 +29,7 @@ class EmptyBodyBoxItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Padding(
       padding: EdgeInsets.all(0),
       child: Stack(
@@ -91,7 +92,7 @@ class EmptyBodyBoxItem extends StatelessWidget {
                     SizedBox(
                       height: sizeH50,
                     ),
-                    item.operationsBox?.saleOrder == null
+                    (/*item.operationsBox?.saleOrder == null ||*/ item.operationsBox!.allowed!)
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

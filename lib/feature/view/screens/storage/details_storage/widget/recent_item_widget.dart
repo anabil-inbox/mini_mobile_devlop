@@ -30,6 +30,7 @@ class RecentlyItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return GetBuilder<ItemViewModle>(
       assignId: true,
       builder: (logic) {

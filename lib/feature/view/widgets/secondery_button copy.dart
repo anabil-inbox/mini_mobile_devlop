@@ -4,6 +4,8 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
+import '../../../util/app_shaerd_data.dart';
+
 // ignore: must_be_immutable
 class SeconderyButtom extends StatelessWidget {
   SeconderyButtom(
@@ -19,6 +21,7 @@ class SeconderyButtom extends StatelessWidget {
   TextStyle? buttonTextStyle;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       width: isExpanded ? double.infinity : sizeW165,
       height: sizeH50,

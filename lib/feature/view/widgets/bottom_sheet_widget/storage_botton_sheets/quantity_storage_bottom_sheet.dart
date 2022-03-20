@@ -45,6 +45,7 @@ class _QuantityStorageBottomSheetState
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return SingleChildScrollView(
       primary: true,
       child: Container(

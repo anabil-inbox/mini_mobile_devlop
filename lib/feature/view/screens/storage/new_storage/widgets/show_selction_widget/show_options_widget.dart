@@ -8,6 +8,7 @@ import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import '../../../../../../../util/app_shaerd_data.dart';
 import 'show_option_item.dart';
 
 class ShowOptionsWidget extends StatelessWidget {
@@ -24,6 +25,7 @@ class ShowOptionsWidget extends StatelessWidget {
   final StorageCategoriesData storageCategoriesData;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

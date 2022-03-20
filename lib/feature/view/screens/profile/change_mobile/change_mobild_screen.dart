@@ -20,6 +20,7 @@ class ChangeMobileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       body: GetBuilder<AuthViewModle>(

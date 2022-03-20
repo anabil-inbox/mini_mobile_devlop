@@ -40,6 +40,7 @@ class _ChangeMobilScreenState extends State<VerficationChangeMobilScreen> {
   
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       body: ListView(

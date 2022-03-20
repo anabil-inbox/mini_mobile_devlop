@@ -22,6 +22,7 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       appBar: CustomAppBarWidget(
         isCenterTitle: true,

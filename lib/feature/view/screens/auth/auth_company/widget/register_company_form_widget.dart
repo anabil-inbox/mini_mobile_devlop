@@ -29,6 +29,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     Get.put(AuthViewModle());
     return Container(
       padding: EdgeInsets.symmetric(horizontal: padding20!),

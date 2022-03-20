@@ -6,11 +6,14 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 class LogRecallItem extends StatelessWidget {
   const LogRecallItem({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: padding20!),
       decoration: BoxDecoration(

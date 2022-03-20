@@ -136,7 +136,7 @@ class _ItemScreenState extends State<ItemScreen> {
               }
             },
             icon: SvgPicture.asset("assets/svgs/update.svg")),
-        widget.box.storageStatus == LocalConstance.boxAtHome
+        (widget.box.storageStatus == LocalConstance.boxAtHome || !widget.box.allowed!)
             ? const SizedBox()
             : Center(
                 child: InkWell(
@@ -344,6 +344,7 @@ class _ItemScreenState extends State<ItemScreen> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: myAppbar,
@@ -392,7 +393,7 @@ class _ItemScreenState extends State<ItemScreen> {
                     height: sizeH10,
                   ),
                   itemLVWidget,
-                (itemViewModle.operationsBox?.allowed ?? false) 
+                (itemViewModle.operationsBox?.allowed ?? false)
                       ? BtnActionWidget(
                           isGaveAway: itemViewModle.operationsBox?.storageStatus == LocalConstance.giveawayId,
                           boxStatus: itemViewModle.operationsBox!.storageStatus ?? "",

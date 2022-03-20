@@ -3,6 +3,8 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import '../../../../../util/app_shaerd_data.dart';
+
 class HistoryItem extends StatelessWidget {
   const HistoryItem({ Key? key , required this.date , required this.points , required this.title}) : super(key: key);
 
@@ -12,6 +14,7 @@ class HistoryItem extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       height: sizeH65,
       decoration: BoxDecoration(

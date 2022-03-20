@@ -25,8 +25,11 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
-      body: GetBuilder<ProfileViewModle>(initState: (_) {
+      body: GetBuilder<ProfileViewModle>(
+          init: ProfileViewModle(),
+          initState: (_) {
         WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
           await profileViewModel.getMyWallet();
           await profileViewModel.getMyPoints();

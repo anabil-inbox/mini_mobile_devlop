@@ -5,11 +5,14 @@ import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../util/app_shaerd_data.dart';
+
 class BottomSheetBeneficairy extends StatelessWidget {
   const BottomSheetBeneficairy({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       padding:
           EdgeInsets.symmetric(horizontal: padding20!, vertical: padding20!),

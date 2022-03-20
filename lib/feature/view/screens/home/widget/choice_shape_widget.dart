@@ -7,6 +7,8 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
+import '../../../../../util/app_shaerd_data.dart';
+
 class ChoiceShapeWidget extends StatelessWidget {
   const ChoiceShapeWidget({Key? key , required this.task , required this.onClicked}) : super(key: key);
 
@@ -15,6 +17,7 @@ class ChoiceShapeWidget extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
+    screenUtil(context);
     return InkWell(
       onTap: (){
         onClicked();

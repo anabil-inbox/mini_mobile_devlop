@@ -34,6 +34,7 @@ class _MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       appBar: CustomAppBarWidget(
         leadingWidth: sizeW50,

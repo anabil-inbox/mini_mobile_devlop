@@ -150,6 +150,7 @@ class RecallStorageSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       decoration: BoxDecoration(
         color: colorBackground,

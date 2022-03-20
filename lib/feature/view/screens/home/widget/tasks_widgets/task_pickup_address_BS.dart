@@ -12,6 +12,8 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 class TaskPickupAddressBS extends StatelessWidget {
   const TaskPickupAddressBS({Key? key, required this.task}) : super(key: key);
 
@@ -20,6 +22,7 @@ class TaskPickupAddressBS extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     if (task.id == LocalConstance.recallId) {
       return GetBuilder<ProfileViewModle>(
         init: ProfileViewModle(),

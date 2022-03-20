@@ -15,6 +15,7 @@ class MyListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<StorageViewModel>(
         builder: (build) => build.userStorageCategoriesData.isEmpty
             ? const SizedBox()

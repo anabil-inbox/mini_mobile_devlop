@@ -11,6 +11,8 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 
+import '../../../../../../../util/app_shaerd_data.dart';
+
 // ignore: must_be_immutable
 class SizeTypeItem extends StatelessWidget {
   SizeTypeItem(
@@ -23,6 +25,7 @@ class SizeTypeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: colorBorderContainer),

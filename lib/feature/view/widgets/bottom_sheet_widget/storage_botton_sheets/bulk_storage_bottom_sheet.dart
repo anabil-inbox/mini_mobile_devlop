@@ -48,6 +48,7 @@ class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return SingleChildScrollView(
       primary: true,
       child: Container(

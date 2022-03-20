@@ -4,12 +4,15 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 class BoxHeaderWidget extends StatelessWidget {
   const BoxHeaderWidget({ Key? key , required this.boxTitle}) : super(key: key);
 final String boxTitle;
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: padding20! , vertical: padding20!),

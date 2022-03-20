@@ -186,6 +186,7 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return Scaffold(
       appBar: appBar,
       body: GetBuilder<ItemViewModle>(

@@ -20,6 +20,7 @@ class IconBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return Container(
       width: sizeW50,
       height: sizeH50,

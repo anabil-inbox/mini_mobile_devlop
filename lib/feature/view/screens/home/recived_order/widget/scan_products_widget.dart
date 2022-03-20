@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:inbox_clients/feature/view/screens/home/recived_order/scan_recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/product_on_order_item.dart';
 import 'dart:math' as math;
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
@@ -16,6 +19,7 @@ class ScanProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: sizeW15!, vertical: sizeH13!),
       decoration: BoxDecoration(
@@ -23,10 +27,10 @@ class ScanProducts extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: GetBuilder<HomeViewModel>(
-        assignId: true,
+        // assignId: true,
         builder: (home) {
           return ExpandablePanel(
-            controller:home.expandableController,
+            controller: home.expandableController,
             theme: const ExpandableThemeData(
               hasIcon: false,
               alignment: Alignment.topLeft,
@@ -55,30 +59,31 @@ class ScanProducts extends StatelessWidget {
                   textStyle: textStyleNormal()?.copyWith(color: colorBlack),
                 ),
                 const Spacer(),
-                // GestureDetector(
-                  // onTap: () {
-                  //   Get.to(() => const ScanScreen(
-                  //         isBoxSalesScan: false,
-                  //         isProductScan: true,
-                  //       ));
-                  // },
-                //   child: SvgPicture.asset("assets/svgs/Scan.svg",
-                //       color: colorRed, width: sizeW20, height: sizeH17),
-                // ),
+                InkWell(
+                  onTap: () {
+                    Get.to(() => ScanRecivedOrderScreen(
+                        isScanDeliverdBoxes: false,
+                        isProduct: true,
+                        isBox: false));
+                  },
+                  child: SvgPicture.asset("assets/svgs/Scan.svg",
+                      color: colorRed, width: sizeW20, height: sizeH17),
+                ),
               ],
             ),
             collapsed: const SizedBox.shrink(),
-            expanded:(home.operationTask.childOrder == null || home.operationTask.childOrder!.items!.isEmpty) ?
-            const SizedBox()
+            expanded: (home.operationTask.childOrder == null ||
+                    home.operationTask.childOrder!.items!.isEmpty)
+                ? const SizedBox()
                 : ListView(
-              shrinkWrap: true,
-              primary: false,
-              children: home.operationTask.childOrder
-              !.items!.map((e) => ProductOnOrderItem(
-                productModel: e,
-              ))
-                  .toList(),
-            ),
+                    shrinkWrap: true,
+                    primary: false,
+                    children: home.operationTask.childOrder!.items!
+                        .map((e) => ProductOnOrderItem(
+                              productModel: e,
+                            ))
+                        .toList(),
+                  ),
             // Builder(
             //   builder: (context) {
             //     try {

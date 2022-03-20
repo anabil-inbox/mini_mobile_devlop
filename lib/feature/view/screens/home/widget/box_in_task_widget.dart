@@ -21,6 +21,7 @@ class BoxInTaskWidget extends StatelessWidget {
   final bool isEnabeld;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Column(
       children: [
         Container(

@@ -15,6 +15,7 @@ class PhotoItem extends StatelessWidget {
   final bool isFromLocal;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(padding6!),

@@ -31,6 +31,7 @@ class AddItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       decoration: BoxDecoration(
           color: colorBackground,

@@ -4,11 +4,14 @@ import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/s
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../util/app_shaerd_data.dart';
+
 class SchedualWidget extends StatelessWidget {
   const SchedualWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       decoration: BoxDecoration(
           color: colorBackground,

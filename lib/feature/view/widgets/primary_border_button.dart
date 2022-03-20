@@ -3,6 +3,8 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import '../../../util/app_shaerd_data.dart';
+
 class PrimaryBorderButton extends StatelessWidget {
   const PrimaryBorderButton({Key? key , required this.buttonText , required this.function}) : super(key: key);
 
@@ -10,6 +12,7 @@ class PrimaryBorderButton extends StatelessWidget {
   final Function function;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       width: double.infinity,
       height: sizeH40,

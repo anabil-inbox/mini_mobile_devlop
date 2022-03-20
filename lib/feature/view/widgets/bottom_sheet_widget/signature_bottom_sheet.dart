@@ -90,6 +90,7 @@ class _SignatureBottomSheetState extends State<SignatureBottomSheet> {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return SingleChildScrollView(
       primary: true,
       child: Container(

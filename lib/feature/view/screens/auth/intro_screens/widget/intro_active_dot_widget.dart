@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inbox_clients/util/app_color.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
 import 'intro_unactive_dot_widget.dart';
 
 // ignore: must_be_immutable
@@ -13,6 +14,7 @@ class IntroActiveDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
 
     return  Container(
       height: 3,

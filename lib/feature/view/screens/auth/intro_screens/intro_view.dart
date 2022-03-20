@@ -23,6 +23,7 @@ class IntroScreen extends GetWidget<IntroViewModle> {
   final String type;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
         body: SingleChildScrollView(
       physics: customScrollViewIOS(),

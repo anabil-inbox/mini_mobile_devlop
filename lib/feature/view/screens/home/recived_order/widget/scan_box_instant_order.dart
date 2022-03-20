@@ -24,6 +24,7 @@ class ScanBoxInstantOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: sizeW15!, vertical: sizeH13!),
       decoration: BoxDecoration(

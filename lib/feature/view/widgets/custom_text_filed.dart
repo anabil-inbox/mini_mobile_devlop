@@ -62,6 +62,7 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return TextFormField(
       maxLength: maxLength,
       autofocus: autoFocus!,
