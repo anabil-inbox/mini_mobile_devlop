@@ -45,6 +45,7 @@ class SubscriptionsDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       bottomSheet: GetBuilder<ProfileViewModle>(builder: (logic) {
         return Padding(

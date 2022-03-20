@@ -7,11 +7,14 @@ import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_vi
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../util/app_shaerd_data.dart';
+
 class MyOrderAppBar extends StatelessWidget {
   const MyOrderAppBar({ Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<MyOrderViewModle>(builder: (logic) {
         return Container(
           color: colorBackground,

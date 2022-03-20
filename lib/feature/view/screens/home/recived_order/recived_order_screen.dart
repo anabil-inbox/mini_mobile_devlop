@@ -106,6 +106,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       appBar: CustomAppBarWidget(
         titleWidget: CustomTextView(

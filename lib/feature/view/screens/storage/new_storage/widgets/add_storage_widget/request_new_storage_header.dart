@@ -12,6 +12,7 @@ class RequestNewStorageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       padding: EdgeInsets.all(padding16!),
       margin: EdgeInsets.symmetric(vertical: padding20!),

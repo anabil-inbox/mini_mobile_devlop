@@ -9,6 +9,8 @@ import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../util/app_shaerd_data.dart';
+
 class SearchedBoxWidget extends StatelessWidget {
   const SearchedBoxWidget({Key? key}) : super(key: key);
 
@@ -16,6 +18,7 @@ class SearchedBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return SingleChildScrollView(
       child: GetBuilder<HomeViewModel>(
         init: HomeViewModel(),

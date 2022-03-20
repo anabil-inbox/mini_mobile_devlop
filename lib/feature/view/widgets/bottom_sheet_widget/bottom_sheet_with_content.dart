@@ -5,6 +5,7 @@
 
 //   @override
 //   Widget build(BuildContext context) {
+    //screenUtil(context);
 //     // return Get.bottomSheet(Text("data"));
 //     return Text('data');
 //   }

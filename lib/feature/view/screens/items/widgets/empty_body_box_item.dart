@@ -29,6 +29,7 @@ class EmptyBodyBoxItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Padding(
       padding: EdgeInsets.all(0),
       child: Stack(

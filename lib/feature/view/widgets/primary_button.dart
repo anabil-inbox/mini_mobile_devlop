@@ -5,6 +5,8 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
+import '../../../util/app_shaerd_data.dart';
+
 // ignore: must_be_immutable
 class PrimaryButton extends StatelessWidget {
   PrimaryButton({
@@ -27,6 +29,7 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       width: isExpanded ? double.infinity : width??sizeW165,
       height: height??sizeH50,
@@ -69,6 +72,7 @@ class PrimaryButtonOpacityColor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       width: isExpanded ? double.infinity : sizeW165,
       height: sizeH50,

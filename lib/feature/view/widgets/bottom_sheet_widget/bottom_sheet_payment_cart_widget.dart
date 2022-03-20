@@ -225,6 +225,7 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return SingleChildScrollView(
       child: Container(
         decoration: BoxDecoration(

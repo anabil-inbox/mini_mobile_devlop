@@ -100,6 +100,7 @@
 //   @override
 //   Widget build(BuildContext context) {
 //     screenUtil(context);
+//     screenUtil(context);
 //     return Scaffold(
 //       appBar: appBar,
 //       body: GetBuilder<ItemViewModle>(

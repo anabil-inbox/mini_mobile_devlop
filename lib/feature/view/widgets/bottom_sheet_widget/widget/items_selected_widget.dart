@@ -88,6 +88,7 @@ class ItemsSelectedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return GetBuilder<ItemViewModle>(builder: (logic) {
       return Container(
         // height: sizeH200,
@@ -130,6 +131,7 @@ class ImageSelectedItem extends StatelessWidget {
   final Attachment? itemGallery;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: sizeW5!),
       clipBehavior: Clip.hardEdge,

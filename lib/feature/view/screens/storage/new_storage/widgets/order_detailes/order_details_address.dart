@@ -4,6 +4,8 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
+import '../../../../../../../util/app_shaerd_data.dart';
+
 class OrderDetailsAddress extends StatelessWidget {
   const OrderDetailsAddress({Key? key , required this.deliveryAddress , required this.title}) : super(key: key);
 
@@ -11,6 +13,7 @@ class OrderDetailsAddress extends StatelessWidget {
   final String title;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: padding16!),
       width: double.infinity,

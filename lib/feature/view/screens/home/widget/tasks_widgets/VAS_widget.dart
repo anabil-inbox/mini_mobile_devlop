@@ -4,12 +4,15 @@ import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/VAS
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 class VASWidget extends StatelessWidget {
   const VASWidget({Key? key, required this.vas}) : super(key: key);
 
   final List<VAS> vas;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: sizeH20!, vertical: sizeW15!),
       decoration: BoxDecoration(

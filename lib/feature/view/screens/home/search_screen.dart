@@ -17,6 +17,7 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       body: SingleChildScrollView(
         primary: true,

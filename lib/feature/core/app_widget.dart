@@ -18,6 +18,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logger/logger.dart';
 
 import '../../main.dart';
+import '../../util/app_shaerd_data.dart';
 
 class AppWidget extends StatefulWidget {
   const AppWidget({Key? key}) : super(key: key);
@@ -68,6 +69,7 @@ class _AppWidgetState extends State<AppWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // screenUtil(context);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: transparent,
       statusBarIconBrightness: Brightness.dark,
@@ -75,7 +77,9 @@ class _AppWidgetState extends State<AppWidget> {
 
     return ScreenUtilInit(
       designSize: Size(392.72727272727275, 803.6363636363636),
-      builder: () => GetMaterialApp(
+      builder: () {
+        ScreenUtil.setContext(context);
+        return GetMaterialApp(
           smartManagement: SmartManagement.keepFactory,
           title: 'Inbox Clients',
           locale:
@@ -135,10 +139,11 @@ class _AppWidgetState extends State<AppWidget> {
               TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
             }),
           ),
-          
+
           home: const SplashScreen()
           // home: ReciverOrderScreen()
-          ),
+          );
+      },
     );
   }
 }

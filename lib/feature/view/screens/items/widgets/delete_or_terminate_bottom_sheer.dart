@@ -76,6 +76,7 @@ class DeleteOrTirmnateBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       decoration: containerBoxDecoration(),
       padding: EdgeInsets.symmetric(horizontal: padding16!),

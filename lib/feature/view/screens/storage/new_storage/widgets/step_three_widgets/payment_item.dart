@@ -11,6 +11,8 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
+import '../../../../../../../util/app_shaerd_data.dart';
+
 class PaymentItem extends StatelessWidget {
   const PaymentItem(
       {Key? key,
@@ -24,6 +26,7 @@ class PaymentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<StorageViewModel>(
       init: StorageViewModel(),
       initState: (_) {},

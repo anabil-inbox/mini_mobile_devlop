@@ -6,6 +6,8 @@ import 'dart:math' as math show sin, pi;
 
 import 'package:flutter/material.dart';
 
+import '../../../util/app_shaerd_data.dart';
+
 /// following code is a customized widget -- ThreeSizeDot
 /// -- for a demonstration of how it looks in [ProgressButton]
 
@@ -62,6 +64,7 @@ class _ThreeSizeDotState extends State<ThreeSizeDot>
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -122,6 +125,7 @@ class Dot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Center(
       child: Container(
         width: size,

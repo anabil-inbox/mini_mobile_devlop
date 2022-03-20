@@ -10,6 +10,8 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:logger/logger.dart';
 
+import '../../../../../../../util/app_shaerd_data.dart';
+
 class PickupAddressItem extends StatelessWidget {
   const PickupAddressItem({Key? key, required this.address, this.store})
       : super(key: key);
@@ -38,6 +40,7 @@ class PickupAddressItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetUtils.isNull(address.id)
         ? const SizedBox()
         : InkWell(

@@ -34,6 +34,7 @@ class ItemsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return GetBuilder<ItemViewModle>(builder: (logic) {
       return Container(
         height: sizeH75,

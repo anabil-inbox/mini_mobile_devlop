@@ -24,6 +24,7 @@ class PriceBottomSheetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return
      Container(
       width: double.infinity,
@@ -95,6 +96,7 @@ class PriceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return
      Container(
       width: double.infinity,

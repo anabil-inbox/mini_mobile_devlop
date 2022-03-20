@@ -19,6 +19,7 @@ class UserBothLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
         print("msg_check ${GetUtils.isNull(SharedPref.instance.getCurrentUserData().id??null)}");
 
     Get.put(AuthViewModle());

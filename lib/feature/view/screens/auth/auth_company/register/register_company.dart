@@ -14,6 +14,7 @@ class RegisterCompanyScreen extends GetWidget<AuthViewModle> {
   //AuthViewModle get viewModel => Get.find<AuthViewModle>();
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     
     return Scaffold(
       body: SingleChildScrollView(

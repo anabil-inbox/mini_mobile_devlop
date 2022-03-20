@@ -3,11 +3,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 class HeaderVervication extends StatelessWidget {
   const HeaderVervication({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       height: sizeH200,
       child: Stack(

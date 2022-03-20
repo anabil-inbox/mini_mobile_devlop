@@ -21,6 +21,7 @@ class CompanyBothLoginScreen extends GetWidget<AuthViewModle> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return  Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       body: ListView(

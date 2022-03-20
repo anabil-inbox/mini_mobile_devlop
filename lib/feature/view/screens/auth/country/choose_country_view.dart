@@ -40,6 +40,7 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     controller.addPageRequestListener((pageKey) async {
       final data = await repo.getCountries(1 + (pageKey ~/ 10), 250);
       controller.appendPage(data.toList(), pageKey + data.length);

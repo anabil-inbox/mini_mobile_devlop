@@ -10,6 +10,7 @@ class PaymentCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Stack(
       children: [
         Container(

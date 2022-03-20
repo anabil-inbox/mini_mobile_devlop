@@ -15,6 +15,7 @@ class StorageSizeType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       color: colorTextWhite,
       child: ListView(

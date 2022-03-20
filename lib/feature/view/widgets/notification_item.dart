@@ -5,11 +5,14 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import '../../../util/app_shaerd_data.dart';
+
 class NotificationItem extends StatelessWidget {
   const NotificationItem({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       height: sizeH75,
       width: double.infinity,

@@ -7,6 +7,8 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../util/app_shaerd_data.dart';
+
 class VideoPlayer extends StatefulWidget {
   final String? videoUrl;
 
@@ -64,6 +66,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
         color: colorContainerGray,
         height: sizeH320,

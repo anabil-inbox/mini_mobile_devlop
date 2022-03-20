@@ -19,6 +19,7 @@ class ProductOnOrderItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       margin: EdgeInsets.only(bottom: sizeH10!),
       padding: EdgeInsets.symmetric(horizontal: sizeW20!, vertical: sizeH17!),

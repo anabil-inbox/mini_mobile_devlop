@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 
 class LanguageItem extends StatelessWidget {
   const LanguageItem({ Key? key , required this.name , required this.cellIndex,required this.selectedIndex}) : super(key: key);
@@ -13,6 +15,7 @@ class LanguageItem extends StatelessWidget {
   final String name;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       color: colorScaffoldRegistrationBody,
       height: sizeH40,

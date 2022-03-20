@@ -19,6 +19,7 @@ class MyOrderItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return InkWell(
       splashColor: colorTrans,
       highlightColor: colorTrans,

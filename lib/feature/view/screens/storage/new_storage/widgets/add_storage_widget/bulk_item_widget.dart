@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../../../util/app_shaerd_data.dart';
+
 class BulkItemWidget extends StatelessWidget {
   const BulkItemWidget(
       {Key? key,
@@ -17,6 +19,7 @@ class BulkItemWidget extends StatelessWidget {
   final int quantity;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Stack(
       clipBehavior: Clip.none,
       children: [

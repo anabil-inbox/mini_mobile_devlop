@@ -15,6 +15,7 @@ class UserRegisterScreen extends GetWidget<AuthViewModle> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     Get.put(AuthViewModle());
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,

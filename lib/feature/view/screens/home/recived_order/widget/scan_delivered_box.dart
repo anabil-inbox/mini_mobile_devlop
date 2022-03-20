@@ -21,6 +21,7 @@ class ScanDeliveredBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return GetBuilder<HomeViewModel>(
       builder: (_) {
         return Container(

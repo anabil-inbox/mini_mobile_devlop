@@ -21,6 +21,7 @@ class HomeGVItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return Container(
       width: sizeW165,
       height: sizeH150,

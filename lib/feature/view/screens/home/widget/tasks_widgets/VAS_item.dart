@@ -5,12 +5,15 @@ import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 class VASItem extends StatelessWidget {
   const VASItem({Key? key, required this.vas}) : super(key: key);
 
   final VAS vas;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<HomeViewModel>(
       builder: (home) {
         return InkWell(

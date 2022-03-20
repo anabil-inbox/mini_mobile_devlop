@@ -3,12 +3,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:inbox_clients/feature/view/widgets/notification_item.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
+    screenUtil(context);
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: AppBar(

@@ -15,6 +15,7 @@ class FilterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return GetBuilder<HomeViewModel>(builder: (logic) {
       return Container(
         width: double.infinity,

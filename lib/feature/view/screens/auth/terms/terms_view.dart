@@ -18,6 +18,7 @@ class TermsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     ApiSettings settings = ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,

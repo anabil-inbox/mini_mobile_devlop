@@ -4,6 +4,8 @@ import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view
 import 'package:logger/logger.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 class DepositMoneyToWalletWebView extends StatelessWidget {
   const DepositMoneyToWalletWebView({
     Key? key,
@@ -12,6 +14,7 @@ class DepositMoneyToWalletWebView extends StatelessWidget {
   final String? url;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<ProfileViewModle>(
         init: ProfileViewModle(),
         builder: (logic) {

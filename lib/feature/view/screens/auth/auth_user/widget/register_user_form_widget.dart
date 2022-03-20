@@ -26,6 +26,7 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: padding20!),
       child: Form(

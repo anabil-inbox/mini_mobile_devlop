@@ -7,6 +7,8 @@ import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:logger/logger.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../../util/app_shaerd_data.dart';
+
 // ignore: must_be_immutable
 class PaymentScreen extends StatelessWidget {
   PaymentScreen(
@@ -32,6 +34,7 @@ class PaymentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<PaymentViewModel>(
       builder: (payment) {
         return WebView(

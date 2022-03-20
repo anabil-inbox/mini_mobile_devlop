@@ -15,6 +15,7 @@ class NewOrderItemTask extends StatelessWidget {
   final OrderItem orderItem;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: padding16!),

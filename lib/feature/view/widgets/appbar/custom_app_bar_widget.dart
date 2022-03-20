@@ -21,6 +21,7 @@ final double? leadingWidth;
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return AppBar(
       // leadingWidth:leadingWidth?? sizeW90,
      titleSpacing: 10,

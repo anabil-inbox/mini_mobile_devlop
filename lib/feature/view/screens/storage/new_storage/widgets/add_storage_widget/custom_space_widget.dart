@@ -17,6 +17,7 @@ class CustomSpaceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(

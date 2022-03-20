@@ -15,6 +15,7 @@ class SearchBodyWidget extends StatelessWidget {
   final DateTime? date;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

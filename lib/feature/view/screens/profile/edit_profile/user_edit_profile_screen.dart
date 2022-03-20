@@ -41,6 +41,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       appBar: AppBar(

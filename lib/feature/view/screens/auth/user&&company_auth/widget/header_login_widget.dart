@@ -10,6 +10,7 @@ class HeaderLogin extends GetWidget<IntroViewModle> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       height: sizeH200,
       child: Stack(

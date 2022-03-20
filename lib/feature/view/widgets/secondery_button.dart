@@ -3,6 +3,8 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import '../../../util/app_shaerd_data.dart';
+
 // ignore: must_be_immutable
 class SeconderyButtom extends StatelessWidget {
   SeconderyButtom(
@@ -20,6 +22,7 @@ class SeconderyButtom extends StatelessWidget {
   final bool isEnable;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       width: width ?? double.infinity,
       height: height ?? sizeH55,

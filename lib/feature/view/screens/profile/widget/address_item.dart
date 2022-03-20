@@ -17,6 +17,7 @@ class AddressItem extends StatelessWidget {
   Address address;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<ProfileViewModle>(
       builder: (_) {
         return Column(

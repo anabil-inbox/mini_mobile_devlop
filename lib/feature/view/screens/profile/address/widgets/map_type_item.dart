@@ -7,12 +7,15 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 class MapTypeItem extends StatelessWidget {
   const MapTypeItem({Key? key, required this.buttonText}) : super(key: key);
 
   final String buttonText;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<ProfileViewModle>(
       builder: (builder) {
         return InkWell(

@@ -23,6 +23,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Form(

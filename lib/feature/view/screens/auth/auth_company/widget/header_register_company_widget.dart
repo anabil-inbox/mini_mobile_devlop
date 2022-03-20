@@ -13,6 +13,7 @@ class HeaderRegisterCompany extends GetWidget<IntroViewModle> {
   final Function onBackPressed;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       height: height,
       child: Stack(

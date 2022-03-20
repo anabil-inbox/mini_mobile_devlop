@@ -43,6 +43,7 @@ class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return SingleChildScrollView(
       primary: true,
       child: Container(

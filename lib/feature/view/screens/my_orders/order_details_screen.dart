@@ -15,6 +15,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 
+import '../../../../util/app_shaerd_data.dart';
 import 'widgets/my_order_time_widget.dart';
 import 'widgets/status_widget.dart';
 
@@ -96,6 +97,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return WillPopScope(
       onWillPop: () => onWillPop(),
       child: Scaffold(

@@ -42,6 +42,7 @@ class _RequestNewStoragesStepTwoScreenState
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: CustomAppBarWidget(

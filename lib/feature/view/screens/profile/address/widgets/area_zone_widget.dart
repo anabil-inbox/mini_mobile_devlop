@@ -7,6 +7,8 @@ import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 class AreaZoneWidget extends StatelessWidget {
   const AreaZoneWidget({Key? key, required this.areaZone}) : super(key: key);
 
@@ -15,6 +17,7 @@ class AreaZoneWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       padding: EdgeInsets.only(bottom: padding10!),
       child: SeconderyFormButton(

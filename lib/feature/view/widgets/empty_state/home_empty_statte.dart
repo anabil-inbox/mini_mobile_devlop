@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
+import '../../../../util/app_shaerd_data.dart';
+
 class EmptyHomeWidget
     extends StatelessWidget {
   const EmptyHomeWidget
@@ -10,6 +12,7 @@ class EmptyHomeWidget
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       body: Stack(
         children: [
