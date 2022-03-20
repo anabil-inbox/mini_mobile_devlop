@@ -708,7 +708,9 @@ class ProfileViewModle extends BaseController {
   MyPoints myPoints = MyPoints();
 
   Future<void> getMyPoints() async {
-    startLoading();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      startLoading();
+    });
     try {
       await ProfileHelper.getInstance.getMyPoints().then((value) => {
             myPoints = MyPoints.fromJson(value.data),
@@ -717,7 +719,9 @@ class ProfileViewModle extends BaseController {
     } catch (e) {
       printError();
     }
-    endLoading();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      endLoading();
+    });
   }
 
   String selectedMapType = LocalConstance.mapType;
@@ -735,30 +739,30 @@ class ProfileViewModle extends BaseController {
     endLoading();
   }
 
-  void filterSubscriptions(var filterType)async{
-    if(filterType == LocalConstance.quantityConst){
+  void filterSubscriptions(var filterType) async {
+    if (filterType == LocalConstance.quantityConst) {
       //this for quantity
       getUserSubscription(LocalConstance.quantityConst);
-    }else if(filterType == LocalConstance.itemConst){
+    } else if (filterType == LocalConstance.itemConst) {
       //this for item
       getUserSubscription(LocalConstance.itemConst);
-    }else if(filterType == LocalConstance.spaceConst){
+    } else if (filterType == LocalConstance.spaceConst) {
       //this for space
       getUserSubscription(LocalConstance.spaceConst);
-    }else{
+    } else {
       getUserSubscription("");
     }
   }
 
   //this for Subscription
-  Future<void> getUserSubscription( String filterType) async {
+  Future<void> getUserSubscription(String filterType) async {
     startLoading();
     subscriptions?.clear();
-    Map<String , dynamic> map = {
-      ConstanceNetwork.filter:filterType
-    };
+    Map<String, dynamic> map = {ConstanceNetwork.filter: filterType};
     try {
-      await SubscriptionFeature.getInstance.getSubscriptions(filterType.isEmpty ? {}:map).then((value) {
+      await SubscriptionFeature.getInstance
+          .getSubscriptions(filterType.isEmpty ? {} : map)
+          .then((value) {
         subscriptions = value;
         Logger().d(value);
         endLoading();
@@ -772,16 +776,18 @@ class ProfileViewModle extends BaseController {
 
   void onTerminateSubscriptions(SubscriptionData? subscriptionsData) async {
     Map<String, dynamic> map = {
-      ConstanceNetwork.idKey : subscriptionsData?.id.toString()
+      ConstanceNetwork.idKey: subscriptionsData?.id.toString()
     };
     startLoading();
     subscriptions?.clear();
     try {
-      await SubscriptionFeature.getInstance.terminateSubscriptions(map).then((value) {
-            subscriptions = value;
-            endLoading();
-            Get.back();
-          });
+      await SubscriptionFeature.getInstance
+          .terminateSubscriptions(map)
+          .then((value) {
+        subscriptions = value;
+        endLoading();
+        Get.back();
+      });
     } catch (e) {
       printError();
       endLoading();
