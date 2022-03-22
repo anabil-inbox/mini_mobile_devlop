@@ -6,6 +6,7 @@ import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/bal
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/box_need_scanned_item.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/contract_signature_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/customer_signature_instant_order.dart';
+import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/fetched_items.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_box_instant_order.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_delivered_box.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_products_widget.dart';
@@ -118,6 +119,9 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
             maxLine: Constance.maxLineOne,
             textStyle: textStyleAppBarTitle(),
           ),
+          onBackBtnClick: () {
+            onWillPop();
+          },
           isCenterTitle: true,
         ),
         body: GetBuilder<HomeViewModel>(builder: (home) {
@@ -137,16 +141,22 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                     ? idVerification
                     : const SizedBox(),
                 SizedBox(height: sizeH10),
+                  if (home.operationTask.processType != LocalConstance.fetchId) ...[
                 const BoxNeedScannedItem(),
+              ] else ...[
+                const FetchedItems(),
+              ],
                 SizedBox(height: sizeH10),
                 (home.operationTask.processType == LocalConstance.pickupId ||
-                        home.operationTask.processType == LocalConstance.fetchId)
+                        home.operationTask.processType ==
+                            LocalConstance.fetchId)
                     ? const SizedBox()
                     : ScanBoxInstantOrder(
                         homeViewModel: widget.homeViewModel,
                       ),
                 SizedBox(height: sizeH10),
-                (home.operationTask.processType == LocalConstance.newStorageSv ||
+                (home.operationTask.processType ==
+                            LocalConstance.newStorageSv ||
                         home.operationTask.processType ==
                             LocalConstance.fetchId ||
                         home.operationTask.processType ==

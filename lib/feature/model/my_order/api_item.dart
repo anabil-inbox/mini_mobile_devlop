@@ -1,28 +1,27 @@
 import '../app_setting_modle.dart';
 
 class ApiItem {
-  ApiItem({
-    this.itemCode,
-    this.qty,
-    this.deliveryDate,
-    this.subscription,
-    this.subscriptionDuration,
-    this.subscriptionPrice,
-    this.groupId,
-    this.storageType,
-    this.itemParent,
-    this.needAdviser,
-    this.orderTo,
-    this.orderFrom,
-    this.orderTime,
-    this.space,
-    this.spaceXaxis,
-    this.spaceYaxis,
-    this.processType,
-    this.storageChildIn,
-    this.itemsChildIn,
-    this.beneficiaryNameIn
-  });
+  ApiItem(
+      {this.itemCode,
+      this.qty,
+      this.deliveryDate,
+      this.subscription,
+      this.subscriptionDuration,
+      this.subscriptionPrice,
+      this.groupId,
+      this.storageType,
+      this.itemParent,
+      this.needAdviser,
+      this.orderTo,
+      this.orderFrom,
+      this.orderTime,
+      this.space,
+      this.spaceXaxis,
+      this.spaceYaxis,
+      this.processType,
+      this.storageChildIn,
+      this.itemsChildIn,
+      this.beneficiaryNameIn});
 
   String? itemCode;
   int? qty;
@@ -42,7 +41,7 @@ class ApiItem {
   int? spaceYaxis;
   String? processType;
   String? storageChildIn;
-  List<dynamic>? itemsChildIn;
+  String? itemsChildIn;
   String? beneficiaryNameIn;
 
   factory ApiItem.fromJson(Map<String, dynamic> json) => ApiItem(
@@ -64,7 +63,7 @@ class ApiItem {
         spaceYaxis: json["space_yaxis"],
         processType: json["process_type"],
         storageChildIn: json["storage_child_in"],
-        itemsChildIn: List<dynamic>.from(json["items_child_in"].map((x) => x)),
+        itemsChildIn: json["items_child_in"].map((x) => x),
       );
 
   Map<String, dynamic> toJson() => {
@@ -86,42 +85,44 @@ class ApiItem {
         "space_yaxis": 0,
         "process_type": processType,
         "storage_child_in": storageChildIn,
-       "items_child_in": List<dynamic>.from(itemsChildIn!.map((x) => x)).toString(),
+        "items_child_in": itemsChildIn,
       };
 
-   static Map<String, dynamic> getApiObjectToSend(
-      {required String itemCode,
-      required int qty,
-      required num subscriptionPrice,
-      required DateTime? selectedDateTime,
-      required int? groupId,
-      required int? itemParent,
-      required Day? selectedDay,
-      required String? boxessSeriales,
-      required String? beneficiaryNameIn
-      }) {
+  static Map<String, dynamic> getApiObjectToSend({
+    required String itemCode,
+    required int qty,
+    required num subscriptionPrice,
+    required DateTime? selectedDateTime,
+    required int? groupId,
+    required int? itemParent,
+    required Day? selectedDay,
+    required String? boxessSeriales,
+    required String? beneficiaryNameIn,
+    required String? itemsChildIn,
+  }) {
     return ApiItem(
-      itemCode: itemCode,
-      qty: qty,
-      deliveryDate: selectedDateTime == null
-          ? DateTime.now().toString()
-          : selectedDateTime.toString(),
-      itemParent: itemParent ?? 0,
-      subscriptionPrice : subscriptionPrice, 
-       storageType: "Process",
-      subscription: "Daily",
-      subscriptionDuration: 1,
-      groupId: groupId ?? 1,
-      needAdviser: 0,
-      orderTo: "${selectedDay?.to ?? "13:20"}",
-      orderFrom: "${selectedDay?.from ?? "14:20"}",
-      orderTime:"${selectedDay?.to ?? "13:20"} -- ${selectedDay?.from ?? "14:20"}",
-      storageChildIn: boxessSeriales,
-      itemsChildIn: [],
-      space: 0,
-      spaceXaxis: 0,
-      spaceYaxis: 0,
-      beneficiaryNameIn: beneficiaryNameIn
-    ).toJson();
+            itemCode: itemCode,
+            qty: qty,
+            deliveryDate: selectedDateTime == null
+                ? DateTime.now().toString()
+                : selectedDateTime.toString(),
+            itemParent: itemParent ?? 0,
+            subscriptionPrice: subscriptionPrice,
+            storageType: "Process",
+            subscription: "Daily",
+            subscriptionDuration: 1,
+            groupId: groupId ?? 1,
+            needAdviser: 0,
+            orderTo: "${selectedDay?.to ?? "13:20"}",
+            orderFrom: "${selectedDay?.from ?? "14:20"}",
+            orderTime:
+                "${selectedDay?.to ?? "13:20"} -- ${selectedDay?.from ?? "14:20"}",
+            storageChildIn: boxessSeriales,
+            itemsChildIn: itemsChildIn,
+            space: 0,
+            spaceXaxis: 0,
+            spaceYaxis: 0,
+            beneficiaryNameIn: beneficiaryNameIn)
+        .toJson();
   }
 }

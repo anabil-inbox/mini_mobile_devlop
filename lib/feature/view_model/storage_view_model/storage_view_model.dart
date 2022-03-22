@@ -1042,7 +1042,8 @@ class StorageViewModel extends BaseController {
       snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
       return false;
     }
-    Logger().d("selectedDateTime_${selectedDateTime?.toUtc()} \t :: DateTimeNowToUtc_${DateTime.now().toUtc()} ");
+    Logger().d(
+        "selectedDateTime_${selectedDateTime?.toUtc()} \t :: DateTimeNowToUtc_${DateTime.now().toUtc()} ");
 
     if (GetUtils.isNull(selectedDateTime)) {
       snackError("${tr.error_occurred}", "${tr.you_have_to_select_date}");
@@ -1053,15 +1054,16 @@ class StorageViewModel extends BaseController {
     } else if (GetUtils.isNull(selectedDay)) {
       snackError("${tr.error_occurred}", "${tr.you_have_to_select_time}");
       return false;
-    } else if (DateTime.now().toUtc()
-        .isAfter(selectedDateTime!.add(Duration(hours: 12)).toUtc()/*DateUtility.convertUtcToLocalDateTimeDT(selectedDateTime!)*/)) {
+    } else if (DateTime.now().toUtc().isAfter(selectedDateTime!
+        .add(Duration(hours: 12))
+        .toUtc() /*DateUtility.convertUtcToLocalDateTimeDT(selectedDateTime!)*/)) {
       snackError("${tr.error_occurred}", "Invalid Selected Date");
-      Logger().d("selectedDateTime_${selectedDateTime?.toUtc()} \t :: DateTimeNowToUtc_${DateTime.now().toUtc()} ");
+      Logger().d(
+          "selectedDateTime_${selectedDateTime?.toUtc()} \t :: DateTimeNowToUtc_${DateTime.now().toUtc()} ");
       return false;
     } else {
       return true;
     }
-
   }
 
   // Future<bool> checkTimeSlot() async {
@@ -1560,9 +1562,6 @@ class StorageViewModel extends BaseController {
     if (selectedAddress != null) {
       for (var item in task.areaZones!) {
         if (item.id == selectedAddress?.zone) {
-          Logger().e((boxess.length / settings.deliveryFactor!)
-              .toDouble()
-              .ceilToDouble());
           price += (item.price ?? 0) *
               (boxess.length / settings.deliveryFactor!)
                   .toDouble()
@@ -1573,12 +1572,12 @@ class StorageViewModel extends BaseController {
 
     Logger().i(price);
     if (isFromCart) {
-      for (var item in task.selectedVas ?? []) {
+      for (VAS item in task.selectedVas ?? []) {
         price += (item.price ?? 0) * boxess.length;
         print("options_price ${item.price}");
       }
     } else {
-      for (var item in selectedStringOption) {
+      for (VAS item in selectedStringOption) {
         price += (item.price ?? 0) * boxess.length;
         print("options_price ${item.price}");
       }
@@ -1660,9 +1659,9 @@ class StorageViewModel extends BaseController {
     }
 
     if (itemSeriales.isNotEmpty) {
-      itemSeriales = itemSeriales.substring(0, boxessSeriales.length - 2);
+      itemSeriales = itemSeriales.substring(0, itemSeriales.length - 1);
     }
-
+    Logger().e(itemSeriales);
     if (task.id == LocalConstance.fetchId) {
       data.add(ApiItem.getApiObjectToSend(
           itemCode: task.id ?? "",
@@ -1671,6 +1670,7 @@ class StorageViewModel extends BaseController {
           selectedDateTime: selectedDateTime,
           groupId: 1,
           itemParent: 0,
+          itemsChildIn: itemSeriales,
           selectedDay: selectedDay,
           beneficiaryNameIn: "",
           boxessSeriales: boxessSeriales));
@@ -1683,12 +1683,14 @@ class StorageViewModel extends BaseController {
           groupId: 1,
           itemParent: 0,
           selectedDay: selectedDay,
+          itemsChildIn: itemSeriales,
           beneficiaryNameIn: homeViewModel.selctedbeneficiary?.id ?? "",
           boxessSeriales: boxessSeriales));
     } else {
       data.add(ApiItem.getApiObjectToSend(
           itemCode: task.id ?? "",
           qty: boxes.length,
+          itemsChildIn: itemSeriales,
           subscriptionPrice: task.price ?? 0,
           selectedDateTime: selectedDateTime,
           groupId: 1,
@@ -1702,6 +1704,7 @@ class StorageViewModel extends BaseController {
         qty: boxes.length,
         subscriptionPrice: shivingPrice,
         selectedDateTime: selectedDateTime,
+        itemsChildIn: itemSeriales,
         groupId: 1,
         itemParent: 0,
         selectedDay: selectedDay,
@@ -1715,6 +1718,7 @@ class StorageViewModel extends BaseController {
           subscriptionPrice: item.price ?? 0,
           selectedDateTime: selectedDateTime,
           groupId: 1,
+          itemsChildIn: itemSeriales,
           itemParent: 0,
           selectedDay: selectedDay,
           beneficiaryNameIn: "",
@@ -1754,7 +1758,11 @@ class StorageViewModel extends BaseController {
     if (!isFromCart) {
       Get.close(1);
     }
-
+    if(task.id == LocalConstance.destroyId){
+      Get.back();
+    }
+    // await homeViewModel.getBoxBySerial(serial: );
+    // homeViewModel.;
     await homeViewModel.refreshHome();
     endLoading();
   }
@@ -1874,7 +1882,8 @@ class StorageViewModel extends BaseController {
     }
 
     if (isAccept) {
-      if (price - profileViewModle.myPoints.totalPoints! *
+      if (price -
+              profileViewModle.myPoints.totalPoints! *
                   SharedPref.instance.getCurrentUserData().conversionFactor! >
           0) {
         price = price -
@@ -1991,6 +2000,7 @@ class StorageViewModel extends BaseController {
               qty: cartModels[i].box!.length,
               subscriptionPrice: cartModels[i].task?.price ?? 0,
               selectedDateTime: selectedDateTime,
+              itemsChildIn: itemSeriales,
               groupId: 1,
               itemParent: 0,
               selectedDay: selectedDay,
@@ -2000,6 +2010,7 @@ class StorageViewModel extends BaseController {
           data.add(ApiItem.getApiObjectToSend(
               itemCode: cartModels[i].task?.id ?? "",
               qty: cartModels[i].box!.length,
+              itemsChildIn: itemSeriales,
               subscriptionPrice: cartModels[i].task?.price ?? 0,
               selectedDateTime: selectedDateTime,
               groupId: 1,
@@ -2011,6 +2022,7 @@ class StorageViewModel extends BaseController {
           data.add(ApiItem.getApiObjectToSend(
               itemCode: cartModels[i].task?.id ?? "",
               qty: cartModels[i].box!.length,
+              itemsChildIn: itemSeriales,
               subscriptionPrice: cartModels[i].task?.price ?? 0,
               selectedDateTime: selectedDateTime,
               groupId: 1,
@@ -2023,6 +2035,7 @@ class StorageViewModel extends BaseController {
             itemCode: "shipping_sv",
             qty: cartModels[i].box!.length,
             subscriptionPrice: shivingPrice,
+            itemsChildIn: itemSeriales,
             selectedDateTime: selectedDateTime,
             groupId: 1,
             itemParent: 0,
@@ -2034,6 +2047,7 @@ class StorageViewModel extends BaseController {
           data.add(ApiItem.getApiObjectToSend(
               itemCode: item.id ?? "",
               qty: cartModels[i].box!.length,
+              itemsChildIn: itemSeriales,
               subscriptionPrice: item.price ?? 0,
               selectedDateTime: selectedDateTime,
               groupId: 1,

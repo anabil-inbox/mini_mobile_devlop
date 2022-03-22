@@ -172,9 +172,9 @@ class HomeViewModel extends BaseController {
                                 }
                             },
                           update(),
-                          await fromAtHome(data.code, storageViewModel , homeViewModel: this),
+                          await fromAtHome(data.code, storageViewModel,
+                              homeViewModel: this),
                           Get.off(() => HomePageHolder(
-                           
                                 box: value,
                                 isFromScan: true,
                               )),
@@ -195,8 +195,8 @@ class HomeViewModel extends BaseController {
                               getCustomerBoxes(),
                             },
                         },
-              endLoading(),
-            });
+                      endLoading(),
+                    });
             update();
           }
         }
@@ -254,7 +254,8 @@ class HomeViewModel extends BaseController {
         print("mess_5");
         if (i == 1) {
           print("mess_6");
-          await fromAtHome(data.code, storageViewModel , isScanDeliverd: isScanDeliverdBox , homeViewModel: homeViewModel);
+          await fromAtHome(data.code, storageViewModel,
+              isScanDeliverd: isScanDeliverdBox, homeViewModel: homeViewModel);
           //Get.delete<HomeViewModel>();
           endLoading();
           Get.to(() => ReciverOrderScreen(this));
@@ -273,10 +274,13 @@ class HomeViewModel extends BaseController {
   void pagination() async {
     try {
       startLoadingPagination();
-      if ((scrollcontroller.position.pixels ==
-          scrollcontroller.position.maxScrollExtent)) {
-        await getCustomerBoxes();
+      if (scrollcontroller.hasClients) {
+        if ((scrollcontroller.position.pixels ==
+            scrollcontroller.position.maxScrollExtent)) {
+          await getCustomerBoxes();
+        }
       }
+
       endLoadingPagination();
       update();
     } catch (e) {
@@ -434,14 +438,19 @@ class HomeViewModel extends BaseController {
     }
   }
 
-  fromAtHome(String? code, StorageViewModel? storageViewModel , {bool isScanDeliverd = false , required HomeViewModel homeViewModel}) async {
+  fromAtHome(String? code, StorageViewModel? storageViewModel,
+      {bool isScanDeliverd = false,
+      required HomeViewModel homeViewModel}) async {
     if (code == null) {
       //todo show dialog
       print("mes__-1");
     } else {
       print("mes__-2");
-      await storageViewModel?.customerStoragesChangeStatus(code,
-          homeViewModel: homeViewModel , isScanDeliverdBox: isScanDeliverd ,);
+      await storageViewModel?.customerStoragesChangeStatus(
+        code,
+        homeViewModel: homeViewModel,
+        isScanDeliverdBox: isScanDeliverd,
+      );
       print("mes__-3");
       Get.back();
       print("mes__-4");
@@ -494,7 +503,8 @@ class HomeViewModel extends BaseController {
                   {
                     snackSuccess("", "${value.status!.message}"),
                     Logger().e(value.data),
-                    operationTask = TaskResponse.fromJson(value.data,isFromNotification: false)
+                    operationTask = TaskResponse.fromJson(value.data,
+                        isFromNotification: false)
                   }
                 else
                   {
@@ -540,20 +550,21 @@ class HomeViewModel extends BaseController {
   Future<void> getTaskResponse({required String salersOrder}) async {
     startLoading();
     // try {
-      await HomeHelper.getInstance.getTaskResponse(body: {
-        LocalConstance.orderId: salersOrder
-      }).then((value) => {
-            if (value.status!.success!)
-              {
-                Logger().i(value.data),
-                operationTask = TaskResponse.fromJson(value.data , isFromNotification: false),
-              }
-            else
-              {snackError("", value.status?.message)}
-          });
+    await HomeHelper.getInstance.getTaskResponse(body: {
+      LocalConstance.orderId: salersOrder
+    }).then((value) => {
+          if (value.status!.success!)
+            {
+              Logger().i(value.data),
+              operationTask =
+                  TaskResponse.fromJson(value.data, isFromNotification: false),
+            }
+          else
+            {snackError("", value.status?.message)}
+        });
     // } catch (e) {
     //   Logger().e(e);
     // }
     endLoading();
   }
-  }
+}

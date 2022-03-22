@@ -26,6 +26,7 @@ class TaskResponse {
       this.taskStatus,
       this.waitingTime = 0.0,
       this.lateFees,
+      this.items,
       this.notificationId});
 
   String? salesOrder;
@@ -49,6 +50,7 @@ class TaskResponse {
   String? notificationId;
   num? waitingTime;
   List<LateFees>? lateFees;
+  List<FetchedItem>? items;
 
   factory TaskResponse.fromJson(Map<String, dynamic> json,
       {required bool isFromNotification}) {
@@ -68,6 +70,10 @@ class TaskResponse {
         totalPaid: num.tryParse(json["total_paid"].toString()),
         totalDue: num.tryParse(json["total_due"].toString()),
         paymentMethod: json["payment_method"],
+        items: json["items"] == null
+            ? null
+            : List<FetchedItem>.from(
+                jsonDecode(json["items"]).map((x) => FetchedItem.fromJson(x))),
         notificationId: json["id"],
         boxes: json["boxes"] == null
             ? []
@@ -115,6 +121,10 @@ class TaskResponse {
         totalDue: num.tryParse(json["total_due"].toString()),
         paymentMethod: json["payment_method"],
         notificationId: json["id"],
+        items: json["items"] == null
+            ? null
+            : List<FetchedItem>.from(
+                json["items"].map((x) => FetchedItem.fromJson(x))),
         boxes: json["boxes"] == null
             ? []
             : List<BoxModel>.from(
@@ -262,5 +272,29 @@ class LateFees {
         "m_from": mFrom == null ? null : mFrom,
         "m_to": mTo == null ? null : mTo,
         "fees": fees == null ? null : fees,
+      };
+}
+
+class FetchedItem {
+  FetchedItem({
+    this.id,
+    this.itemName,
+    this.itemGallery,
+  });
+
+  String? id;
+  String? itemName;
+  List<dynamic>? itemGallery;
+
+  factory FetchedItem.fromJson(Map<String, dynamic> json) => FetchedItem(
+        id: json["id"],
+        itemName: json["item_name"],
+        itemGallery: List<dynamic>.from(json["item_gallery"].map((x) => x)),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "item_name": itemName,
+        "item_gallery": List<dynamic>.from(itemGallery!.map((x) => x)),
       };
 }
