@@ -13,6 +13,8 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 
+import '../../../widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
+
 class SubscriptionsDetailsView extends StatelessWidget {
   const SubscriptionsDetailsView({
     Key? key,
@@ -50,7 +52,7 @@ class SubscriptionsDetailsView extends StatelessWidget {
       bottomSheet: GetBuilder<ProfileViewModle>(builder: (logic) {
         return Padding(
           padding: const EdgeInsets.all(16.0),
-          child: PrimaryButton(
+          child: subscriptions?.status  != LocalConstance.subscriptionActive ? const SizedBox.shrink() : PrimaryButton(
               textButton: tr.terminate,
               isLoading: logic.isLoading,
               onClicked: () => _onTerminateClick(logic),
@@ -127,6 +129,16 @@ class SubscriptionsDetailsView extends StatelessWidget {
   }
 
   _onTerminateClick(ProfileViewModle logic) {
-    logic.onTerminateSubscriptions(subscriptions);
+    Get.bottomSheet(GlobalBottomSheet(
+      title: tr.subscriptions_terminate,
+      subTitle: tr.subscriptions_terminate_message,
+      isTwoBtn: true,
+      onCancelBtnClick: ()=> Get.back(),
+      onOkBtnClick: () {
+        Get.back();
+        logic.onTerminateSubscriptions(subscriptions);
+      },
+    ));
+
   }
 }

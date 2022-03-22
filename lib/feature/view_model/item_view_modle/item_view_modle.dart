@@ -13,7 +13,7 @@ import 'package:inbox_clients/feature/model/inside_box/sended_image.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/chooce_add_method_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/items_operations_widget_BS.dart';
-import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';

@@ -218,5 +218,7 @@
         "scan_products" : "مسح المنتجات",
         "boxes" : "الصناديق",
         "paid" : "مدفوعة",
-        "amount_due" : "مستحقة للدفع"
+        "amount_due" : "مستحقة للدفع",
+        "subscriptions_terminate":"الغاء الاشتراك",
+        "subscriptions_terminate_message":"؟ هل انت نتاكد من انك تريد انهاء الاشتراك"
 }

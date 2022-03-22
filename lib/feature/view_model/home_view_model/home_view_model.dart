@@ -22,7 +22,9 @@ import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
 import 'package:inbox_clients/network/api/feature/item_helper.dart';
+import 'package:inbox_clients/network/api/feature/order_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance.dart';
@@ -34,6 +36,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class HomeViewModel extends BaseController {
   var _currentIndex = 0;
+
   //collapse
   // bool isCollapse = false;
   ExpandableController expandableController = ExpandableController();
@@ -41,7 +44,9 @@ class HomeViewModel extends BaseController {
   SignatureItemModel selectedSignatureItemModel = SignatureItemModel();
 
   var signatureOutput;
+
   int get currentIndex => _currentIndex;
+
   //to do for Loading var:
   bool isLoading = false;
   bool isLoadingPagination = false;
@@ -76,6 +81,7 @@ class HomeViewModel extends BaseController {
   // search Func And Vars ::
   TextEditingController tdSearch = TextEditingController();
   Set<Box> searchedBoxess = {};
+
   Future<void> searchForBox({required String searchText}) async {
     await HomeHelper.getInstance
         .getBoxessWithSearch(serchText: "$searchText")
@@ -172,9 +178,9 @@ class HomeViewModel extends BaseController {
                                 }
                             },
                           update(),
-                          await fromAtHome(data.code, storageViewModel , homeViewModel: this),
+                          await fromAtHome(data.code, storageViewModel,
+                              homeViewModel: this),
                           Get.off(() => HomePageHolder(
-                           
                                 box: value,
                                 isFromScan: true,
                               )),
@@ -195,8 +201,8 @@ class HomeViewModel extends BaseController {
                               getCustomerBoxes(),
                             },
                         },
-              endLoading(),
-            });
+                      endLoading(),
+                    });
             update();
           }
         }
@@ -254,7 +260,8 @@ class HomeViewModel extends BaseController {
         print("mess_5");
         if (i == 1) {
           print("mess_6");
-          await fromAtHome(data.code, storageViewModel , isScanDeliverd: isScanDeliverdBox , homeViewModel: homeViewModel);
+          await fromAtHome(data.code, storageViewModel,
+              isScanDeliverd: isScanDeliverdBox, homeViewModel: homeViewModel);
           //Get.delete<HomeViewModel>();
           endLoading();
           Get.to(() => ReciverOrderScreen(this));
@@ -319,6 +326,7 @@ class HomeViewModel extends BaseController {
 
   Set<Store> storeAddress = {};
   bool isLoadingGetAddress = false;
+
   // to get Store Address ::
 
   getStoreAddress() async {
@@ -434,14 +442,19 @@ class HomeViewModel extends BaseController {
     }
   }
 
-  fromAtHome(String? code, StorageViewModel? storageViewModel , {bool isScanDeliverd = false , required HomeViewModel homeViewModel}) async {
+  fromAtHome(String? code, StorageViewModel? storageViewModel,
+      {bool isScanDeliverd = false,
+      required HomeViewModel homeViewModel}) async {
     if (code == null) {
       //todo show dialog
       print("mes__-1");
     } else {
       print("mes__-2");
-      await storageViewModel?.customerStoragesChangeStatus(code,
-          homeViewModel: homeViewModel , isScanDeliverdBox: isScanDeliverd ,);
+      await storageViewModel?.customerStoragesChangeStatus(
+        code,
+        homeViewModel: homeViewModel,
+        isScanDeliverdBox: isScanDeliverd,
+      );
       print("mes__-3");
       Get.back();
       print("mes__-4");
@@ -494,7 +507,8 @@ class HomeViewModel extends BaseController {
                   {
                     snackSuccess("", "${value.status!.message}"),
                     Logger().e(value.data),
-                    operationTask = TaskResponse.fromJson(value.data,isFromNotification: false)
+                    operationTask = TaskResponse.fromJson(value.data,
+                        isFromNotification: false)
                   }
                 else
                   {
@@ -540,20 +554,36 @@ class HomeViewModel extends BaseController {
   Future<void> getTaskResponse({required String salersOrder}) async {
     startLoading();
     // try {
-      await HomeHelper.getInstance.getTaskResponse(body: {
-        LocalConstance.orderId: salersOrder
-      }).then((value) => {
-            if (value.status!.success!)
-              {
-                Logger().i(value.data),
-                operationTask = TaskResponse.fromJson(value.data , isFromNotification: false),
-              }
-            else
-              {snackError("", value.status?.message)}
-          });
+    await HomeHelper.getInstance.getTaskResponse(body: {
+      LocalConstance.orderId: salersOrder
+    }).then((value) => {
+          if (value.status!.success!)
+            {
+              Logger().i(value.data),
+              operationTask =
+                  TaskResponse.fromJson(value.data, isFromNotification: false),
+            }
+          else
+            {snackError("", value.status?.message)}
+        });
     // } catch (e) {
     //   Logger().e(e);
     // }
     endLoading();
   }
+
+
+  Future<void> applyPayment() async {
+    Map<String, String> map = {
+      ConstanceNetwork.idKey: 'SAL-ORD-2022-00348',
+      ConstanceNetwork.paymentMethodKey: 'Wallet',
+      ConstanceNetwork.paymentIdKey: '',
+      ConstanceNetwork.extraFeesKey: '10',
+      ConstanceNetwork.reasonKey: ''
+    };
+    startLoading();
+    await OrderHelper.getInstance.applyPayment(body: map).then((value) {
+      endLoading();
+    });
   }
+}
