@@ -218,5 +218,7 @@
     "scan_products" : "Scan Products",
     "boxes" : "Boxes",
     "paid" : "Paid",
-    "amount_due" : "Amount Due"
+    "amount_due" : "Amount Due",
+    "subscriptions_terminate":"Subscriptions Terminate",
+    "subscriptions_terminate_message":"Are you sure you want terminate subscriptions ?"
 }

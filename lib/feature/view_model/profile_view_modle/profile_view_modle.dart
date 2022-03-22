@@ -23,7 +23,8 @@ import 'package:inbox_clients/feature/model/subscription_data.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/widgets/area_zone_widget.dart';
 import 'package:inbox_clients/feature/view/screens/profile/my_wallet/Widgets/deposit_money_to_wallet_webView.dart';
-import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
 import 'package:inbox_clients/network/api/feature/subscription_feature.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -764,7 +765,6 @@ class ProfileViewModle extends BaseController {
           .getSubscriptions(filterType.isEmpty ? {} : map)
           .then((value) {
         subscriptions = value;
-        Logger().d(value);
         endLoading();
       });
     } catch (e) {
@@ -779,14 +779,24 @@ class ProfileViewModle extends BaseController {
       ConstanceNetwork.idKey: subscriptionsData?.id.toString()
     };
     startLoading();
-    subscriptions?.clear();
+
     try {
       await SubscriptionFeature.getInstance
           .terminateSubscriptions(map)
           .then((value) {
-        subscriptions = value;
-        endLoading();
-        Get.back();
+            if(value.status?.success??false ){
+              subscriptions?.clear();
+              List data = value.data;
+              List<SubscriptionData> map = data.map((e) => SubscriptionData.fromJson(e)).toList();
+              subscriptions = map;
+              endLoading();
+              Get.back();
+              Get.find<HomeViewModel>().getCustomerBoxes();
+            }else{
+              snackError(error?.tr,value.status?.code == 403 ?"not allow" : value.status?.message??"");
+              endLoading();
+            }
+
       });
     } catch (e) {
       printError();

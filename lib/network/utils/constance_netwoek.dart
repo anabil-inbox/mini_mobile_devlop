@@ -143,6 +143,7 @@ abstract class ConstanceNetwork {
   // this for constance Myorder
   static String myOrderDetailesEndPoint = "inbox_app.api.sales_order.get_order";
   static String myPointsEndPoint = "inbox_app.api.loyalty_points.get_loyalty_points";
+  static String submitPaymentEndPoint = "inbox_app.api.sales_order.submit_payment";
 
   static String uploadOrderSignatureEndPoint =
       "inbox_app.api.sales_order.upload_order_signature";
@@ -159,6 +160,10 @@ abstract class ConstanceNetwork {
   //todo this for constance Keys
   static String amountKey = "amount";
   static String idKey = "id";
+  static String paymentMethodKey = "payment_method";
+  static String paymentIdKey = "payment_id";
+  static String extraFeesKey = "extra_fees";
+  static String reasonKey = "reason";
   static String statusKey = "status";
 
   //todo this for constance type of user

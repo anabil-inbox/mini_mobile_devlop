@@ -22,7 +22,9 @@ import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
 import 'package:inbox_clients/network/api/feature/item_helper.dart';
+import 'package:inbox_clients/network/api/feature/order_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance.dart';
@@ -34,6 +36,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class HomeViewModel extends BaseController {
   var _currentIndex = 0;
+
   //collapse
   // bool isCollapse = false;
   ExpandableController expandableController = ExpandableController();
@@ -41,7 +44,9 @@ class HomeViewModel extends BaseController {
   SignatureItemModel selectedSignatureItemModel = SignatureItemModel();
 
   var signatureOutput;
+
   int get currentIndex => _currentIndex;
+
   //to do for Loading var:
   bool isLoading = false;
   bool isLoadingPagination = false;
@@ -76,6 +81,7 @@ class HomeViewModel extends BaseController {
   // search Func And Vars ::
   TextEditingController tdSearch = TextEditingController();
   Set<Box> searchedBoxess = {};
+
   Future<void> searchForBox({required String searchText}) async {
     await HomeHelper.getInstance
         .getBoxessWithSearch(serchText: "$searchText")
@@ -323,6 +329,7 @@ class HomeViewModel extends BaseController {
 
   Set<Store> storeAddress = {};
   bool isLoadingGetAddress = false;
+
   // to get Store Address ::
 
   getStoreAddress() async {
@@ -566,5 +573,20 @@ class HomeViewModel extends BaseController {
     //   Logger().e(e);
     // }
     endLoading();
+  }
+
+
+  Future<void> applyPayment() async {
+    Map<String, String> map = {
+      ConstanceNetwork.idKey: 'SAL-ORD-2022-00348',
+      ConstanceNetwork.paymentMethodKey: 'Wallet',
+      ConstanceNetwork.paymentIdKey: '',
+      ConstanceNetwork.extraFeesKey: '10',
+      ConstanceNetwork.reasonKey: ''
+    };
+    startLoading();
+    await OrderHelper.getInstance.applyPayment(body: map).then((value) {
+      endLoading();
+    });
   }
 }
