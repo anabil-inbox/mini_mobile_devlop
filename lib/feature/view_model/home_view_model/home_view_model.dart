@@ -321,6 +321,9 @@ class HomeViewModel extends BaseController {
     await getCustomerBoxes();
     await getTasks();
     getBeneficiary();
+    scrollcontroller.addListener(() {
+      pagination();
+    });
   }
 
   // to start work with user And Store Address ::

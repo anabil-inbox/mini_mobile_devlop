@@ -5,10 +5,8 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
-import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_payment_widaget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
-import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -97,50 +95,65 @@ class EmptyBodyBoxItem extends StatelessWidget {
                     ),
                     (/*item.operationsBox?.saleOrder == null ||*/ item
                             .operationsBox!.allowed!)
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              PrimaryButton(
-                                isExpanded: false,
-                                isLoading: false,
-                                onClicked: () {
-                                  final interdTask =
-                                      _homeViewModel.searchTaskById(
-                                          taskId: LocalConstance.pickupId);
-                                  Get.bottomSheet(
-                                      RecallBoxProcessSheet(
-                                          task: interdTask,
-                                          box: itemViewModle.operationsBox ??
-                                              box!,
-                                          boxes: [box!]),
-                                      isScrollControlled: true);
-                                },
-                                textButton: tr.schedule_pickup,
-                              ),
-                              SizedBox(
-                                width: sizeW12,
-                              ),
-                              SizedBox(
-                                width: sizeW150,
-                                child: SeconderyFormButton(
-                                  buttonText: "${tr.ready_to_pickup}",
-                                  onClicked: () {
-                                    final interdTask =
-                                        _homeViewModel.searchTaskById(
-                                            taskId: LocalConstance.pickupId);
-                                    Get.bottomSheet(
-                                        BottomSheetPaymentWidget(
-                                            beneficiaryId: "",
-                                            task: interdTask,
-                                            box: itemViewModle.operationsBox ??
-                                                box!,
-                                            boxes: [box!]),
-                                        isScrollControlled: true);
-                                  },
-                                ),
-                              ),
-                            ],
+                        ? PrimaryButton(
+                            isExpanded: false,
+                            isLoading: false,
+                            onClicked: () {
+                              final interdTask = _homeViewModel.searchTaskById(
+                                  taskId: LocalConstance.pickupId);
+                              Get.bottomSheet(
+                                  RecallBoxProcessSheet(
+                                      task: interdTask,
+                                      box: itemViewModle.operationsBox ?? box!,
+                                      boxes: [box!]),
+                                  isScrollControlled: true);
+                            },
+                            textButton: tr.schedule_pickup,
                           )
+                        //  Row(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        // PrimaryButton(
+                        //   isExpanded: false,
+                        //   isLoading: false,
+                        //   onClicked: () {
+                        //     final interdTask =
+                        //         _homeViewModel.searchTaskById(
+                        //             taskId: LocalConstance.pickupId);
+                        //     Get.bottomSheet(
+                        //         RecallBoxProcessSheet(
+                        //             task: interdTask,
+                        //             box: itemViewModle.operationsBox ??
+                        //                 box!,
+                        //             boxes: [box!]),
+                        //         isScrollControlled: true);
+                        //   },
+                        //   textButton: tr.schedule_pickup,
+                        // ),
+                        //       SizedBox(
+                        //         width: sizeW12,
+                        //       ),
+                        //       SizedBox(
+                        //         width: sizeW150,
+                        //         child: SeconderyFormButton(
+                        //           buttonText: "${tr.ready_to_pickup}",
+                        //           onClicked: () {
+                        //             final interdTask =
+                        //                 _homeViewModel.searchTaskById(
+                        //                     taskId: LocalConstance.pickupId);
+                        //             Get.bottomSheet(
+                        //                 BottomSheetPaymentWidget(
+                        //                     beneficiaryId: "",
+                        //                     task: interdTask,
+                        //                     box: itemViewModle.operationsBox ??
+                        //                         box!,
+                        //                     boxes: [box!]),
+                        //                 isScrollControlled: true);
+                        //           },
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   )
                         : const SizedBox(),
                   ],
                 );

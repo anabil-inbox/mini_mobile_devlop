@@ -255,6 +255,7 @@ class RecallStorageSheet extends StatelessWidget {
     } else {
       snackError("${tr.error_occurred}", "${tr.you_have_to_accept_our_terms}");
     }
+
   }
 
   onClickBringBox() {

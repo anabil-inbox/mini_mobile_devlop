@@ -16,6 +16,7 @@ import '../../../../../../../util/app_shaerd_data.dart';
 class PaymentItem extends StatelessWidget {
   const PaymentItem(
       {Key? key,
+      this.isRecivedOrderPayment = false,
       required this.paymentMethod,
       this.isFromApplicationPayment = false})
       : super(key: key);
@@ -23,6 +24,8 @@ class PaymentItem extends StatelessWidget {
   final PaymentMethod paymentMethod;
   final bool isFromApplicationPayment;
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+  final bool isRecivedOrderPayment;
 
   @override
   Widget build(BuildContext context) {
@@ -35,34 +38,10 @@ class PaymentItem extends StatelessWidget {
           onTap: () {
             builder.selectedPaymentMethod = paymentMethod;
             builder.update();
+            if (isRecivedOrderPayment) {
+              doOnRecivedOrderPayment();
+            }
 
-            if (isFromApplicationPayment) {
-              if (paymentMethod.id == LocalConstance.bankCard) {
-                builder.payApplicationFromPaymentGatewaye(
-                    price: homeViewModel.operationTask.totalDue ?? 0);
-              } else if (paymentMethod.id == LocalConstance.wallet) {
-                builder.payApplicationFromWallet(
-                    price: homeViewModel.operationTask.totalDue ?? 0,
-                    newSalesOrderId:
-                        homeViewModel.operationTask.childOrder?.id ?? "");
-              }
-            }
-            
-            if (paymentMethod.name == LocalConstance.cash) {
-              homeViewModel.applyPayment(
-                  salesOrder: homeViewModel.operationTask.salesOrder ?? "",
-                  paymentMethod: paymentMethod.name ?? "",
-                  paymentId: "",
-                  extraFees: homeViewModel.operationTask.waittingFees ?? 0,
-                  reason: "wfml");
-            } else if (paymentMethod.name == LocalConstance.wallet) {
-              homeViewModel.applyPayment(
-                  salesOrder: homeViewModel.operationTask.salesOrder ?? "",
-                  paymentMethod: paymentMethod.name ?? "",
-                  paymentId: "",
-                  extraFees: homeViewModel.operationTask.waittingFees ?? 0,
-                  reason: "ewf");
-            }
           },
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: padding4!),
@@ -118,5 +97,37 @@ class PaymentItem extends StatelessWidget {
         );
       },
     );
+  }
+
+  void doOnRecivedOrderPayment() async {
+    // if (isFromApplicationPayment) {
+    //   if (paymentMethod.id == LocalConstance.bankCard) {
+    // storageViewModel.payApplicationFromPaymentGatewaye(
+    //     price: homeViewModel.operationTask.totalDue ?? 0);
+    //   } else if (paymentMethod.id == LocalConstance.wallet) {
+    //     storageViewModel.payApplicationFromWallet(
+    //         price: homeViewModel.operationTask.totalDue ?? 0,
+    //         newSalesOrderId: homeViewModel.operationTask.childOrder?.id ?? "");
+    //   }
+    // }
+
+    if (paymentMethod.name == LocalConstance.cash) {
+      homeViewModel.applyPayment(
+          salesOrder: homeViewModel.operationTask.salesOrder ?? "",
+          paymentMethod: paymentMethod.name ?? "",
+          paymentId: "",
+          extraFees: homeViewModel.operationTask.waittingFees ?? 0,
+          reason: "");
+    } else if (paymentMethod.name == LocalConstance.wallet) {
+      homeViewModel.applyPayment(
+          salesOrder: homeViewModel.operationTask.salesOrder ?? "",
+          paymentMethod: paymentMethod.name ?? "",
+          paymentId: "",
+          extraFees: homeViewModel.operationTask.waittingFees ?? 0,
+          reason: "");
+    } else if (paymentMethod.name == LocalConstance.bankCard) {
+       await  storageViewModel.payApplicationFromPaymentGatewaye(
+          price: homeViewModel.operationTask.totalDue ?? 0); 
+    }
   }
 }

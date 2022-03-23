@@ -158,9 +158,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     Get.put(StorageViewModel(), permanent: true);
-    HomeScreen.homeViewModle.scrollcontroller.addListener(() {
-      HomeScreen.homeViewModle.pagination();
-    });
+    // HomeScreen.homeViewModle.scrollcontroller.addListener(() {
+    //   HomeScreen.homeViewModle.pagination();
+    // });
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       if (widget.isFromScan ?? false) {

@@ -105,6 +105,7 @@ class SelectedItemBottomSheet extends StatelessWidget {
 
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
   static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
+  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -208,6 +209,7 @@ class SelectedItemBottomSheet extends StatelessWidget {
     final Task enterdTask =
         homeViewModel.searchTaskById(taskId: LocalConstance.fetchId);
     Get.back();
+    storageViewModel.isAccept = false;
     Get.bottomSheet(
         RecallBoxProcessSheet(
           items: itemViewModle.listIndexSelected,
@@ -217,7 +219,6 @@ class SelectedItemBottomSheet extends StatelessWidget {
           isFetchTask: true,
         ),
         isScrollControlled: true);
-      
   }
 
   onClickBringBox() {

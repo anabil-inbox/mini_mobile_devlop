@@ -94,10 +94,10 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                                       .toString()
                                       .split(" ")[0])[0]
                               .toString()
+                              
                           : boxes.length == 0
                               ? logic.calculateTaskPriceOnceBox(task: task)
-                              : logic.calculateTaskPriceLotBoxess(
-                                  isFromCart: false, task: task, boxess: boxes),
+                              : logic.calculateTaskPriceLotBoxess(isFromCart: false, task: task, boxess: boxes),
                       textStyle: textStyleAppBarTitle()
                           ?.copyWith(fontSize: fontSize28, color: colorPrimary),
                     ),

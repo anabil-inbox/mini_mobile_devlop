@@ -31,6 +31,7 @@ class PaymentWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               children: getPaymentMethod().map((e) {
                 return PaymentItem(
+                  isRecivedOrderPayment: true,
                   paymentMethod: e,
                 );
               }).toList(),

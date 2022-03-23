@@ -5,10 +5,8 @@ import 'package:inbox_clients/util/font_dimne.dart';
 
 import '../../../../util/app_shaerd_data.dart';
 
-class EmptyHomeWidget
-    extends StatelessWidget {
-  const EmptyHomeWidget
-      ({Key? key}) : super(key: key);
+class EmptyHomeWidget extends StatelessWidget {
+  const EmptyHomeWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,7 @@ class EmptyHomeWidget
             start: 0,
             end: 0,
             child: SvgPicture.asset(
-              "assets/svgs/empty_widget.svg",
+              "assets/svgs/box_empty.svg",
               fit: BoxFit.cover,
             ),
           ),
@@ -39,13 +37,13 @@ class EmptyHomeWidget
               end: 40,
               bottom: 150,
               child: Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+                "You have no storage",
                 textAlign: TextAlign.center,
-                style: textStyleHint()!.copyWith(fontSize: fontSize15 , fontWeight: FontWeight.normal),
+                style: textStyleHint()!.copyWith(
+                    fontSize: fontSize15, fontWeight: FontWeight.normal),
               ))
         ],
       ),
     );
   }
 }
-

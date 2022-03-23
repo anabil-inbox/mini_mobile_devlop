@@ -130,22 +130,20 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
             child: ListView(
               shrinkWrap: true,
               children: [
-                home.operationTask.isNew == true
-                    ? SizedBox(height: sizeH27)
-                    : const SizedBox(),
-                home.operationTask.isNew == true
-                    ? const ContractSignature()
-                    : const SizedBox(),
+                if (home.operationTask.isNew ?? false) ...[
+                  SizedBox(height: sizeH27),
+                  const ContractSignature(),
+                  SizedBox(height: sizeH10),
+                  idVerification
+                ],
+                
                 SizedBox(height: sizeH10),
-                home.operationTask.isNew == true
-                    ? idVerification
-                    : const SizedBox(),
-                SizedBox(height: sizeH10),
-                  if (home.operationTask.processType != LocalConstance.fetchId) ...[
-                const BoxNeedScannedItem(),
-              ] else ...[
-                const FetchedItems(),
-              ],
+                if (home.operationTask.processType !=
+                    LocalConstance.fetchId) ...[
+                  const BoxNeedScannedItem(),
+                ] else ...[
+                  const FetchedItems(),
+                ],
                 SizedBox(height: sizeH10),
                 (home.operationTask.processType == LocalConstance.pickupId ||
                         home.operationTask.processType ==
