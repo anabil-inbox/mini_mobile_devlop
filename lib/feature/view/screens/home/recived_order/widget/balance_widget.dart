@@ -7,6 +7,8 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import '../../../storage/new_storage/widgets/step_three_widgets/payment_widget.dart';
+
 class Balance extends StatelessWidget {
   const Balance({Key? key}) : super(key: key);
 
@@ -14,7 +16,6 @@ class Balance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    screenUtil(context);
     screenUtil(context);
     return GetBuilder<HomeViewModel>(
       builder: (_) {
@@ -77,7 +78,7 @@ class Balance extends StatelessWidget {
                 ],
               ),
               SizedBox(height: sizeH22),
-              // const PaymentWidget(),
+              const PaymentWidget(),
             ],
           ),
         );

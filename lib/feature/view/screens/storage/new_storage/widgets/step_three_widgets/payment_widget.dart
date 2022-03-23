@@ -6,7 +6,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class PaymentWidget extends StatelessWidget {
   const PaymentWidget({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -30,11 +30,13 @@ class PaymentWidget extends StatelessWidget {
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               children: getPaymentMethod().map((e) {
-                return PaymentItem(paymentMethod: e,);
+                return PaymentItem(
+                  paymentMethod: e,
+                );
               }).toList(),
             ),
           ),
-           SizedBox(
+          SizedBox(
             height: sizeH25,
           ),
         ],

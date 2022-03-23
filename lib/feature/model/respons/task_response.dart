@@ -27,6 +27,7 @@ class TaskResponse {
       this.waitingTime = 0.0,
       this.lateFees,
       this.items,
+      this.waittingFees,
       this.notificationId});
 
   String? salesOrder;
@@ -51,6 +52,7 @@ class TaskResponse {
   num? waitingTime;
   List<LateFees>? lateFees;
   List<FetchedItem>? items;
+  num? waittingFees;
 
   factory TaskResponse.fromJson(Map<String, dynamic> json,
       {required bool isFromNotification}) {
@@ -63,6 +65,7 @@ class TaskResponse {
                 ? true
                 : false,
         customerId: json["customer_id"],
+        waittingFees:  num.tryParse(json["waiting_fees"].toString()),
         childOrder: json["child_order"] == null
             ? null
             : ChildOrder.fromJson(jsonDecode(json["child_order"])),
@@ -113,6 +116,7 @@ class TaskResponse {
         salesOrder: json["sales_order"],
         isNew: json["is_new"] == null ? null : json["is_new"],
         customerId: json["customer_id"],
+        waittingFees: num.tryParse(json["waiting_fees"].toString()),
         childOrder: json["child_order"] == null
             ? null
             : ChildOrder.fromJson(json["child_order"]),

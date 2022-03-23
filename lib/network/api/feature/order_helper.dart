@@ -55,7 +55,7 @@ class OrderHelper {
     }
   }
 
-  Future<AppResponse> applyPayment({required Map<String, String> body}) async {
+  Future<AppResponse> applyPayment({required Map<String, dynamic> body}) async {
     var appResponse = await OrderApi.getInstance.applyPayment(
         body: body,
         url: "${ConstanceNetwork.submitPaymentEndPoint}",

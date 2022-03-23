@@ -321,7 +321,6 @@ class HomeViewModel extends BaseController {
     await getCustomerBoxes();
     await getTasks();
     getBeneficiary();
-    scrollcontroller.addListener(pagination);
   }
 
   // to start work with user And Store Address ::
@@ -575,14 +574,19 @@ class HomeViewModel extends BaseController {
     endLoading();
   }
 
-
-  Future<void> applyPayment() async {
-    Map<String, String> map = {
-      ConstanceNetwork.idKey: 'SAL-ORD-2022-00348',
-      ConstanceNetwork.paymentMethodKey: 'Wallet',
-      ConstanceNetwork.paymentIdKey: '',
-      ConstanceNetwork.extraFeesKey: '10',
-      ConstanceNetwork.reasonKey: ''
+  Future<void> applyPayment({
+    required String salesOrder,
+    required String paymentMethod,
+    required String paymentId,
+    required num extraFees,
+    required String reason,
+  }) async {
+    Map<String, dynamic> map = {
+      ConstanceNetwork.idKey: salesOrder,
+      ConstanceNetwork.paymentMethodKey: paymentMethod,
+      ConstanceNetwork.paymentIdKey: paymentId,
+      ConstanceNetwork.extraFeesKey: extraFees,
+      ConstanceNetwork.reasonKey: reason
     };
     startLoading();
     await OrderHelper.getInstance.applyPayment(body: map).then((value) {
