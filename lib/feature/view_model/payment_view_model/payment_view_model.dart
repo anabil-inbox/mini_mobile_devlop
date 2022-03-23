@@ -17,11 +17,12 @@ import 'package:webview_flutter/webview_flutter.dart';
 class PaymentViewModel extends GetxController {
   final Logger logger = Logger();
   final StorageViewModel stroageViewModel = Get.find<StorageViewModel>();
-  final HomeViewModel homeViewModel  = Get.find<HomeViewModel>();
-  
+  final HomeViewModel homeViewModel = Get.find<HomeViewModel>();
 
   String paymentId = "";
   WebViewController? payController;
+  num sendedWattingFeesOrCancellation = -1;
+  String sendedWattingFeesOrCancellationReson = "";
 
   void readResponse({
     required bool isFromNewStorage,
@@ -41,11 +42,38 @@ class PaymentViewModel extends GetxController {
                     logger.i("Payment Success"),
                     if (isOrderProductPayment)
                       {
+                        if ((homeViewModel.operationTask.waitingTime ?? 0) > 0)
+                          {
+                            sendedWattingFeesOrCancellation =
+                                homeViewModel.operationTask.waitingTime ?? 0,
+                            sendedWattingFeesOrCancellationReson =
+                                "waiting_fees",
+                          }
+                        else if ((homeViewModel
+                                    .operationTask.cancellationFees ??
+                                0) >
+                            0)
+                          {
+                            sendedWattingFeesOrCancellation =
+                                homeViewModel.operationTask.cancellationFees ??
+                                    0,
+                            sendedWattingFeesOrCancellationReson =
+                                "cancellation",
+                          },
+
+                        await homeViewModel.applyPayment(
+                            salesOrder:
+                                homeViewModel.operationTask.salesOrder ?? "",
+                            paymentMethod: LocalConstance.bankCard,
+                            paymentId: paymentId,
+                            extraFees: sendedWattingFeesOrCancellation,
+                            reason: sendedWattingFeesOrCancellationReson),
                         
-                       await stroageViewModel.applyPayment(
-                            salesOrderId: homeViewModel.operationTask.salesOrder ??
-                                "",
-                            paymentMethodId: LocalConstance.bankCard),
+                        Get.back()
+                        //  await stroageViewModel.applyPayment(
+                        //       salesOrderId: homeViewModel.operationTask.salesOrder ??
+                        //           "",
+                        //       paymentMethodId: LocalConstance.bankCard),
                       }
                     else if (isFromNewStorage)
                       {

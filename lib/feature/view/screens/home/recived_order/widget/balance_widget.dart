@@ -78,7 +78,9 @@ class Balance extends StatelessWidget {
                 ],
               ),
               SizedBox(height: sizeH22),
-              const PaymentWidget(),
+              const PaymentWidget(
+                isRecivedOrderPayment: true,
+              ),
             ],
           ),
         );

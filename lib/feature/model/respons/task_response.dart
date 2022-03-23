@@ -28,6 +28,8 @@ class TaskResponse {
       this.lateFees,
       this.items,
       this.waittingFees,
+      this.cancellationFees,
+      this.hasTimeRequest,
       this.notificationId});
 
   String? salesOrder;
@@ -37,6 +39,8 @@ class TaskResponse {
   num? total;
   num? totalPaid;
   num? totalDue;
+  num? cancellationFees;
+  bool? hasTimeRequest;
   String? paymentMethod;
   List<BoxModel>? boxes;
   List<BoxModel>? scannedBoxes;
@@ -64,8 +68,13 @@ class TaskResponse {
             : json["is_new"] == "true"
                 ? true
                 : false,
+        hasTimeRequest: json["has_time_request"] == "false"
+            ? false
+            : json["has_time_request"] == "true"
+                ? true
+                : false,
         customerId: json["customer_id"],
-        waittingFees:  num.tryParse(json["waiting_fees"].toString()),
+        waittingFees: num.tryParse(json["waiting_fees"].toString()),
         childOrder: json["child_order"] == null
             ? null
             : ChildOrder.fromJson(jsonDecode(json["child_order"])),
@@ -110,11 +119,15 @@ class TaskResponse {
         driverToken: json["driver_token"],
         taskStatus: json["task_status"],
         waitingTime: num.tryParse(json["waiting_time"].toString()) ?? 0.0,
+        cancellationFees:
+            num.tryParse(json["cancellation_fees"].toString()) ?? 0.0,
       );
     } else {
       return TaskResponse(
         salesOrder: json["sales_order"],
         isNew: json["is_new"] == null ? null : json["is_new"],
+        hasTimeRequest:
+            json["has_time_request"] == null ? null : json["has_time_request"],
         customerId: json["customer_id"],
         waittingFees: num.tryParse(json["waiting_fees"].toString()),
         childOrder: json["child_order"] == null
@@ -158,6 +171,8 @@ class TaskResponse {
         processType: json["process_type"],
         driverToken: json["driver_token"],
         taskStatus: json["task_status"],
+        cancellationFees:
+            num.tryParse(json["cancellation_fees"].toString()) ?? 0.0,
         waitingTime: num.tryParse(json["waiting_time"].toString()) ?? 0.0,
       );
     }

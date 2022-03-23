@@ -5,8 +5,9 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class PaymentWidget extends StatelessWidget {
-  const PaymentWidget({Key? key}) : super(key: key);
+  const PaymentWidget({Key? key , required this.isRecivedOrderPayment}) : super(key: key);
 
+  final bool isRecivedOrderPayment;
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -31,7 +32,7 @@ class PaymentWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               children: getPaymentMethod().map((e) {
                 return PaymentItem(
-                  isRecivedOrderPayment: true,
+                  isRecivedOrderPayment: isRecivedOrderPayment,
                   paymentMethod: e,
                 );
               }).toList(),

@@ -41,7 +41,6 @@ class PaymentItem extends StatelessWidget {
             if (isRecivedOrderPayment) {
               doOnRecivedOrderPayment();
             }
-
           },
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: padding4!),
@@ -100,34 +99,33 @@ class PaymentItem extends StatelessWidget {
   }
 
   void doOnRecivedOrderPayment() async {
-    // if (isFromApplicationPayment) {
-    //   if (paymentMethod.id == LocalConstance.bankCard) {
-    // storageViewModel.payApplicationFromPaymentGatewaye(
-    //     price: homeViewModel.operationTask.totalDue ?? 0);
-    //   } else if (paymentMethod.id == LocalConstance.wallet) {
-    //     storageViewModel.payApplicationFromWallet(
-    //         price: homeViewModel.operationTask.totalDue ?? 0,
-    //         newSalesOrderId: homeViewModel.operationTask.childOrder?.id ?? "");
-    //   }
-    // }
+    num sendedWattingFeesOrCancellation = -1;
+    String sendedWattingFeesOrCancellationReson = "";
 
-    if (paymentMethod.name == LocalConstance.cash) {
-      homeViewModel.applyPayment(
+    if ((homeViewModel.operationTask.waitingTime ?? 0) > 0) {
+      sendedWattingFeesOrCancellation =
+          homeViewModel.operationTask.waitingTime ?? 0;
+      sendedWattingFeesOrCancellationReson = "waiting_fees";
+    } else if ((homeViewModel.operationTask.cancellationFees ?? 0) > 0) {
+      sendedWattingFeesOrCancellation =
+          homeViewModel.operationTask.cancellationFees ?? 0;
+      sendedWattingFeesOrCancellationReson = "cancellation";
+    }
+
+    if (paymentMethod.name == LocalConstance.cash ||
+        paymentMethod.name == LocalConstance.wallet) {
+       homeViewModel.applyPayment(
           salesOrder: homeViewModel.operationTask.salesOrder ?? "",
           paymentMethod: paymentMethod.name ?? "",
           paymentId: "",
-          extraFees: homeViewModel.operationTask.waittingFees ?? 0,
-          reason: "");
-    } else if (paymentMethod.name == LocalConstance.wallet) {
-      homeViewModel.applyPayment(
-          salesOrder: homeViewModel.operationTask.salesOrder ?? "",
-          paymentMethod: paymentMethod.name ?? "",
-          paymentId: "",
-          extraFees: homeViewModel.operationTask.waittingFees ?? 0,
-          reason: "");
+          extraFees: sendedWattingFeesOrCancellation,
+          reason: sendedWattingFeesOrCancellationReson);
     } else if (paymentMethod.name == LocalConstance.bankCard) {
-       await  storageViewModel.payApplicationFromPaymentGatewaye(
-          price: homeViewModel.operationTask.totalDue ?? 0); 
+      await storageViewModel.payApplicationFromPaymentGatewaye(
+          price: homeViewModel.operationTask.totalDue ?? 0);
+          
     }
   }
 }
+// watting fees > 0 watting fees::
+// canclation fees > 0 canclation::

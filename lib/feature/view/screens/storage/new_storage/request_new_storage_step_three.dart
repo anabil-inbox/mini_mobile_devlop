@@ -105,7 +105,9 @@ class RequestNewStorageStepThree extends StatelessWidget {
                     SizedBox(
                       height: sizeH16,
                     ),
-                    PaymentWidget(),
+                    PaymentWidget(
+                      isRecivedOrderPayment : false
+                    ),
                     // SizedBox(height: sizeH16),
                     // acceptTerms,
                     SizedBox(
