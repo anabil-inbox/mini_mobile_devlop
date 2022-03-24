@@ -1683,14 +1683,14 @@ class StorageViewModel extends BaseController {
           groupId: 1,
           itemParent: 0,
           selectedDay: selectedDay,
-          itemsChildIn: itemSeriales,
+          itemsChildIn: "",
           beneficiaryNameIn: homeViewModel.selctedbeneficiary?.id ?? "",
           boxessSeriales: boxessSeriales));
     } else {
       data.add(ApiItem.getApiObjectToSend(
           itemCode: task.id ?? "",
           qty: boxes.length,
-          itemsChildIn: itemSeriales,
+          itemsChildIn: "",
           subscriptionPrice: task.price ?? 0,
           selectedDateTime: selectedDateTime,
           groupId: 1,
@@ -1704,9 +1704,9 @@ class StorageViewModel extends BaseController {
         qty: boxes.length,
         subscriptionPrice: shivingPrice,
         selectedDateTime: selectedDateTime,
-        itemsChildIn: itemSeriales,
         groupId: 1,
         itemParent: 0,
+         itemsChildIn: "",
         selectedDay: selectedDay,
         boxessSeriales: boxessSeriales,
         beneficiaryNameIn: null));
@@ -1718,7 +1718,7 @@ class StorageViewModel extends BaseController {
           subscriptionPrice: item.price ?? 0,
           selectedDateTime: selectedDateTime,
           groupId: 1,
-          itemsChildIn: itemSeriales,
+           itemsChildIn: "",
           itemParent: 0,
           selectedDay: selectedDay,
           beneficiaryNameIn: "",
@@ -1736,7 +1736,8 @@ class StorageViewModel extends BaseController {
 
     map["coupon_code"] = isUsingPromo ? tdCopun.text : "";
     map["order[0]"] = data;
-    map["address[0]"] = selectedAddress == null ? boxes[0].address?.id : selectedAddress?.id;
+    map["address[0]"] =
+        selectedAddress == null ? boxes[0].address?.id : selectedAddress?.id;
     mapSalesOrder.add(map);
 
     Map<String, dynamic> newMap = {"sales_order": jsonEncode(mapSalesOrder)};
@@ -1757,10 +1758,12 @@ class StorageViewModel extends BaseController {
     if (!isFromCart) {
       Get.close(1);
     }
-    if(task.id == LocalConstance.destroyId){
+    if (task.id == LocalConstance.destroyId) {
       Get.back();
     }
-    // await homeViewModel.getBoxBySerial(serial: );
+    // if (boxes.isNotEmpty) {
+    //   await homeViewModel.getBoxBySerial(serial: boxes[0].serialNo ?? "");
+    // }
     // homeViewModel.;
     await homeViewModel.refreshHome();
     endLoading();
@@ -2009,7 +2012,7 @@ class StorageViewModel extends BaseController {
           data.add(ApiItem.getApiObjectToSend(
               itemCode: cartModels[i].task?.id ?? "",
               qty: cartModels[i].box!.length,
-              itemsChildIn: itemSeriales,
+              itemsChildIn: "",
               subscriptionPrice: cartModels[i].task?.price ?? 0,
               selectedDateTime: selectedDateTime,
               groupId: 1,
@@ -2021,7 +2024,7 @@ class StorageViewModel extends BaseController {
           data.add(ApiItem.getApiObjectToSend(
               itemCode: cartModels[i].task?.id ?? "",
               qty: cartModels[i].box!.length,
-              itemsChildIn: itemSeriales,
+              itemsChildIn: "",
               subscriptionPrice: cartModels[i].task?.price ?? 0,
               selectedDateTime: selectedDateTime,
               groupId: 1,
@@ -2034,7 +2037,7 @@ class StorageViewModel extends BaseController {
             itemCode: "shipping_sv",
             qty: cartModels[i].box!.length,
             subscriptionPrice: shivingPrice,
-            itemsChildIn: itemSeriales,
+            itemsChildIn: "",
             selectedDateTime: selectedDateTime,
             groupId: 1,
             itemParent: 0,
@@ -2046,7 +2049,7 @@ class StorageViewModel extends BaseController {
           data.add(ApiItem.getApiObjectToSend(
               itemCode: item.id ?? "",
               qty: cartModels[i].box!.length,
-              itemsChildIn: itemSeriales,
+              itemsChildIn: "",
               subscriptionPrice: item.price ?? 0,
               selectedDateTime: selectedDateTime,
               groupId: 1,

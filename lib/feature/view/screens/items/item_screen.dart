@@ -444,18 +444,8 @@ class _ItemScreenState extends State<ItemScreen> {
           ),
           isScrollControlled: true);
     } else {
-      //todo this if recall
-      // Get.bottomSheet(RecallBoxProcessSheet(box: widget.box),
-      //     isScrollControlled: true);
-      ///todo here we will show bottom sheet with  [bring the box , add to cart]
       final Task enterdTask =
           widget.homeViewModel.searchTaskById(taskId: LocalConstance.recallId);
-      // Get.bottomSheet(
-      //     RecallStorageSheet(
-      //         task: enterdTask,
-      //         box: itemViewModle.operationsBox ?? widget.box,
-      //         isUserSelectItem: false),
-      //     isScrollControlled: true);
       Get.bottomSheet(
           RecallBoxProcessSheet(
             boxes: [],

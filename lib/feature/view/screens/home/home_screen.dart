@@ -224,13 +224,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height,
                       child: SingleChildScrollView(
-                        controller: logic.scrollcontroller,
+                        controller: logic.homeScrollcontroller,
                         physics: customScrollViewIOS(),
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: sizeW20!),
                           child: GetBuilder<HomeViewModel>(
-                            init: HomeViewModel(),
-                            initState: (_) {},
                             builder: (_) {
                               return Column(
                                 children: [

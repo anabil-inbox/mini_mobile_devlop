@@ -17,7 +17,6 @@ class CustomerSignatureInstantOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: sizeW15!, vertical: sizeH13!),
       decoration: BoxDecoration(
@@ -49,7 +48,7 @@ class CustomerSignatureInstantOrder extends StatelessWidget {
             ),
             SizedBox(width: sizeW10),
             CustomTextView(
-              txt: "CustomerSignature",
+              txt: "Customer Signature",
               textStyle: textStyleNormal()?.copyWith(color: colorBlack),
             ),
             

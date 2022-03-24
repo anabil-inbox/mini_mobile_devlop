@@ -43,7 +43,7 @@ screenUtil(BuildContext context) {
       BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width,
           maxHeight: MediaQuery.of(context).size.height),
-          context: context,
+      context: context,
       designSize: Size(392.72727272727275, 803.6363636363636),
       orientation: Orientation.portrait);
 }
@@ -249,25 +249,35 @@ showAnimatedDialog(dialog) {
   );
 }
 
+var paymentError = "https://cdn-icons-png.flaticon.com/512/189/189715.png";
 var urlProduct =
     "https://images.unsplash.com/photo-1613177794106-be20802b11d3?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xvY2slMjBoYW5kc3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80";
-Widget imageNetwork({double? width, double? height, String? url, BoxFit? fit}) {
+Widget imageNetwork(
+    {double? width,
+    double? height,
+    String? url,
+    BoxFit? fit,
+    bool isPayment = false}) {
   return CachedNetworkImage(
     imageBuilder: (context, imageProvider) {
       return Container(
         decoration: BoxDecoration(
-          // border: Border.all(color: colorBorderLight),
           image: DecorationImage(
-            image: CachedNetworkImageProvider(url ?? urlUserPlacholder!),
+            image: CachedNetworkImageProvider(url != null
+                ? url
+                : isPayment
+                    ? paymentError
+                    : urlUserPlacholder!),
             fit: fit ?? BoxFit.contain,
           ),
         ),
       );
     },
-    imageUrl: urlUserPlacholder!,
+    imageUrl: isPayment ? paymentError : urlUserPlacholder!,
     errorWidget: (context, url, error) {
       return CachedNetworkImage(
-          imageUrl: urlUserPlacholder!, fit: BoxFit.contain);
+          imageUrl: isPayment ? paymentError : urlUserPlacholder!,
+          fit: BoxFit.contain);
     },
     width: width ?? 74,
     height: height ?? 74,

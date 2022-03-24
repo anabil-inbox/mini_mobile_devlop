@@ -23,6 +23,8 @@ import 'dart:ui' as ui;
 
 import 'package:logger/logger.dart';
 
+import '../../../network/firebase/sales_order.dart';
+
 class MapViewModel extends GetxController {
   Completer<GoogleMapController>? controller = Completer();
   GoogleMapController? mapController;
@@ -65,7 +67,7 @@ class MapViewModel extends GetxController {
   // }
 
   onMapCreated(GoogleMapController controllerMap,
-      /*{required SalesOrder salesOrder}*/) async {
+      {required SalesOrder salesOrder}) async {
     if (!controller!.isCompleted) {
       controller?.complete(controllerMap);
     }
@@ -74,7 +76,7 @@ class MapViewModel extends GetxController {
     //todo me = driver
     await getMyCurrentPosition();
     getStreamLocation();
-   // getUserMarkers(salesOrder: salesOrder);
+    // getUserMarkers(salesOrder: salesOrder);
     Future.delayed(const Duration(seconds: 0)).then((value) async {
       await foucCameraOnUsers(
           /*controllerMap*/
@@ -358,7 +360,7 @@ class MapViewModel extends GetxController {
     // num a = 0.5 -
     //     cos((lat2 - lat1) * p) / 2 +
     //     cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
-   // Logger().e("msg_Map : From $lat1 , $lon1 to $lat2 , $lon2");
+    // Logger().e("msg_Map : From $lat1 , $lon1 to $lat2 , $lon2");
     // Logger().e("msg_Map : The distance is : ${12742 * asin(sqrt(a))}");
     // Logger().e(
     //     "msg_Map : The distance From GeoLoacator : ${Geolocator.distanceBetween(lat1, lon1, lat2, lon2) / 1000}");
@@ -377,10 +379,10 @@ class MapViewModel extends GetxController {
     try {
       if (settings.deliveryFactor! >
           calculateDistance(lat1: lat1, lon1: lon1, lat2: lat2, lon2: lon2)) {
-       // Logger().e("msg_Map : isAllow to Dilivery true");
+        // Logger().e("msg_Map : isAllow to Dilivery true");
         return true;
       } else {
-       // Logger().e("msg_Map : isAllow to Dilivery false");
+        // Logger().e("msg_Map : isAllow to Dilivery false");
         return false;
       }
     } catch (e) {
@@ -391,11 +393,25 @@ class MapViewModel extends GetxController {
 
   // to do here Refresh the Map Position
   LocationData? currentLocation;
-  
+
   refreshMapPosition() async {
     Position currentPosition = await Geolocator.getCurrentPosition();
     if (currentLocation != null) {
       myLatLng = LatLng(currentPosition.latitude, currentPosition.longitude);
     }
   }
+
+  // Stream<void> getDriverLocation(
+  //     {required String driverId, required String salesOrder}) async* {
+  //   try {
+  //     yield FirebaseClint.instance
+  //         .getTrackLocation(driverId, salesOrder)
+  //         .takeWhile((element) {
+  //           Logger().e("msg_Map : getDriverLocation $element");
+  //       return true;
+  //     });
+  //   } catch (e) {
+  //     debugPrint("msg_Map : getDriverLocationError : $e");
+  //   }
+  // }
 }

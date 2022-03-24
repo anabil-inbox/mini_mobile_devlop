@@ -116,7 +116,7 @@ class HomeViewModel extends BaseController {
   }
 
   //paginations Vars And Func ::
-  final scrollcontroller = ScrollController();
+  final homeScrollcontroller = ScrollController();
   int page = 1;
 
   // open Scaner Qr :
@@ -280,9 +280,9 @@ class HomeViewModel extends BaseController {
   void pagination() async {
     try {
       startLoadingPagination();
-      if (scrollcontroller.hasClients) {
-        if ((scrollcontroller.position.pixels ==
-            scrollcontroller.position.maxScrollExtent)) {
+      if (homeScrollcontroller.hasClients) {
+        if ((homeScrollcontroller.position.pixels ==
+            homeScrollcontroller.position.maxScrollExtent)) {
           await getCustomerBoxes();
         }
       }
@@ -322,10 +322,9 @@ class HomeViewModel extends BaseController {
     await getTasks();
     getBeneficiary();
 
-    scrollcontroller.addListener(() {
+    homeScrollcontroller.addListener(() {
       pagination();
     });
-    
   }
 
   // to start work with user And Store Address ::
@@ -567,8 +566,7 @@ class HomeViewModel extends BaseController {
           if (value.status!.success!)
             {
               Logger().i(value.data),
-              operationTask =
-                  TaskResponse.fromJson(value.data, isFromNotification: false),
+              operationTask = TaskResponse.fromJson(value.data, isFromNotification: false),
             }
           else
             {snackError("", value.status?.message)}
@@ -591,7 +589,8 @@ class HomeViewModel extends BaseController {
       ConstanceNetwork.paymentMethodKey: paymentMethod,
       ConstanceNetwork.paymentIdKey: paymentId,
       ConstanceNetwork.extraFeesKey: extraFees,
-      ConstanceNetwork.reasonKey: reason
+      ConstanceNetwork.reasonKey: reason,
+      Constance.driverToken: operationTask.driverToken ?? ""
     };
     startLoading();
     await OrderHelper.getInstance.applyPayment(body: map).then((value) {

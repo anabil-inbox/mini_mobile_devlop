@@ -119,6 +119,7 @@ class QtyWidget extends StatelessWidget {
                         );
                       },
                     )),
+              
               ],
             ),
           ),

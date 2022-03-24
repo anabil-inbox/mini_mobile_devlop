@@ -7,6 +7,7 @@ import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_vi
 
 import 'widgets/my_order_item.dart';
 import '../../../../../util/app_shaerd_data.dart';
+
 class MyOrdersScreen extends StatefulWidget {
   const MyOrdersScreen({Key? key}) : super(key: key);
 
@@ -20,12 +21,16 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      MyOrdersScreen.myOrderViewModle.getOrdres();
+      MyOrdersScreen.myOrderViewModle.getOrdres(
+        isFromPagination: false,
+      
+      );
     });
-    MyOrdersScreen.myOrderViewModle.scrollcontroller.addListener(() {
-      MyOrdersScreen.myOrderViewModle.pagination();
-    });
+    // MyOrdersScreen.myOrderViewModle.scrollcontroller.addListener(() {
+    //   MyOrdersScreen.myOrderViewModle.pagination();
+    // });
   }
 
   @override
@@ -35,7 +40,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
       body: RefreshIndicator(
         onRefresh: () async {
           MyOrdersScreen.myOrderViewModle.userOrderSales.clear();
-          MyOrdersScreen.myOrderViewModle.getOrdres();
+          MyOrdersScreen.myOrderViewModle.getOrdres(isFromPagination: false);
         },
         child: Column(
           children: [
@@ -49,6 +54,8 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                     );
                   } else {
                     return ListView(
+                      // controller:
+                      //     MyOrdersScreen.myOrderViewModle.scrollcontroller,
                       shrinkWrap: true,
                       children: logic.userOrderSales
                           .map((e) => MyOrderItem(
