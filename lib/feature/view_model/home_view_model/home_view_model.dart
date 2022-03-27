@@ -122,8 +122,8 @@ class HomeViewModel extends BaseController {
   // open Scaner Qr :
   var scanArea = (MediaQuery.of(Get.context!).size.width < 400 ||
           MediaQuery.of(Get.context!).size.height < 400)
-      ? 150
-      : 150;
+      ? 150.0
+      : 150.0;
 
   Barcode? result;
   QRViewController? controller;
