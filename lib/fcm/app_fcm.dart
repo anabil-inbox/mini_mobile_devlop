@@ -48,7 +48,7 @@ class AppFcm {
     'com.inbox.clients', // id
     'com.inbox.clients', // title
     //  'IMPORTANCE_HIGH', // description
-    importance: Importance.max,
+    importance: Importance.defaultImportance,
     //showBadge: true,
   );
 
@@ -195,7 +195,7 @@ class AppFcm {
                 enableVibration: true,
                 fullScreenIntent: true,
                 autoCancel: true,
-                importance: Importance.max,
+                importance: Importance.defaultImportance,
                 priority: Priority.high,
               ),
             ),

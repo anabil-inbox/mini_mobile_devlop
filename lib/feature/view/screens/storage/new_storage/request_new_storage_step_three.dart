@@ -105,9 +105,7 @@ class RequestNewStorageStepThree extends StatelessWidget {
                     SizedBox(
                       height: sizeH16,
                     ),
-                    PaymentWidget(
-                      isRecivedOrderPayment : false
-                    ),
+                    PaymentWidget(isRecivedOrderPayment: false),
                     // SizedBox(height: sizeH16),
                     // acceptTerms,
                     SizedBox(
@@ -134,8 +132,7 @@ class RequestNewStorageStepThree extends StatelessWidget {
                                     await logic.addNewStorage();
                                     logic.isLoading = false;
                                     logic.update();
-                                  } else if ((logic
-                                          .selectedPaymentMethod?.id ==
+                                  } else if ((logic.selectedPaymentMethod?.id ==
                                       Constance.walletId)) {
                                     Logger().e(num.parse(profileViewModle
                                         .myWallet.balance
@@ -149,7 +146,10 @@ class RequestNewStorageStepThree extends StatelessWidget {
                                       await logic.addNewStorage();
                                       logic.isLoading = false;
                                       logic.update();
-                                    } else {}
+                                    } else {
+                                      snackError(
+                                          "", "Wallet Balance is not enough");
+                                    }
                                   } else {
                                     await logic.goToPaymentMethod(
                                         cartModels: [],

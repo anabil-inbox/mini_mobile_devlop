@@ -16,6 +16,7 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 
 import '../../../../util/app_shaerd_data.dart';
+import '../../../model/my_order/order_sales.dart';
 import 'widgets/my_order_time_widget.dart';
 import 'widgets/status_widget.dart';
 
@@ -194,28 +195,37 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                                   Get.off(() => HomePageHolder());
                                 },
                                 isExpanded: true),
-                          (!widget.isFromPayment)
-                              ? GetBuilder<HomeViewModel>(builder: (logic) {
-                                  return myOrders.newOrderSales.status ==
-                                          LocalConstance.completed
-                                      ? const SizedBox()
-                                      : PrimaryButton(
-                                          textButton: "Order Detaiels",
-                                          isLoading: logic.isLoading,
-                                          onClicked: () async {
-                                            await OrderDetailesScreen
-                                                .homeViewModel
-                                                .getTaskResponse(
-                                                    salersOrder: myOrders
-                                                            .newOrderSales
-                                                            .orderId ??
-                                                        "");
-                                            Get.to(() =>
-                                                ReciverOrderScreen(logic));
-                                          },
-                                          isExpanded: true);
-                                })
-                              : const SizedBox()
+                          if (!widget.isFromPayment) ...[
+                            GetBuilder<HomeViewModel>(builder: (logic) {
+                              bool isHaveDetailes = true;
+                              for (OrderItem item
+                                  in myOrders.newOrderSales.orderItems ?? []) {
+                                if (item.item!.toLowerCase().contains("cage") ||
+                                    item.item!
+                                        .toLowerCase()
+                                        .contains("space")) {
+                                  isHaveDetailes = false;
+                                }
+                              }
+                              return (myOrders.newOrderSales.status ==
+                                          LocalConstance.completed ||
+                                      isHaveDetailes == false)
+                                  ? const SizedBox()
+                                  : PrimaryButton(
+                                      textButton: "Order Detaiels",
+                                      isLoading: logic.isLoading,
+                                      onClicked: () async {
+                                        await OrderDetailesScreen.homeViewModel
+                                            .getTaskResponse(
+                                                salersOrder: myOrders
+                                                        .newOrderSales
+                                                        .orderId ??
+                                                    "");
+                                        Get.to(() => ReciverOrderScreen(logic));
+                                      },
+                                      isExpanded: true);
+                            })
+                          ]
                         ],
                       ),
                     );

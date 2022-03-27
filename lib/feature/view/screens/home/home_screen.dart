@@ -183,8 +183,6 @@ class _HomeScreenState extends State<HomeScreen> {
           HomeScreen.homeViewModle.onInit();
         },
         child: GetBuilder<HomeViewModel>(
-          init: HomeViewModel(),
-          assignId: true,
           builder: (logic) {
             if (logic.isLoading) {
               return Center(
@@ -218,7 +216,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   RefreshIndicator(
                     onRefresh: () async {
-                      Logger().e(SharedPref.instance.getCurrentUserData().conversionFactor);
+                      Logger().e(SharedPref.instance
+                          .getCurrentUserData()
+                          .conversionFactor);
                       await HomeScreen.homeViewModle.refreshHome();
                     },
                     child: SizedBox(
@@ -233,16 +233,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               return Column(
                                 children: [
                                   SizedBox(
-                                    height: sizeH150,
+                                    height: 150,
                                   ),
                                   FilterWidget(),
                                   SizedBox(
-                                    height: sizeH10,
+                                    height: 10,
                                   ),
                                   FittedBox(
                                     fit: BoxFit.fill,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
@@ -250,8 +251,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             onTap: /*onTheWayClick*/ () {},
                                             child: textHintsWidget(
                                                 "${tr.on_the_way}", null)),
-                                        textHintsWidget(
-                                            "${tr.in_warehouse}", colorInWarhouse),
+                                        textHintsWidget("${tr.in_warehouse}",
+                                            colorInWarhouse),
                                         textHintsWidget(
                                             "${tr.at_home}", colorAtHome),
                                         textHintsWidget(
@@ -278,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Container(
                       width: double.infinity,
-                      height: sizeH120,
+                      height: 120,
                       // padding: EdgeInsets.all(padding10!),
                       decoration: BoxDecoration(
                         color: colorBackground,

@@ -236,11 +236,10 @@ class ProfileViewModle extends BaseController {
             Logger().i("${value.status!.message}"),
             if (value.status!.success!)
               {
-                snackSuccess("${tr.success}", "${value.status!.message}"),
+                // snackSuccess("${tr.success}", "${value.status!.message}"),
                 isLoading = false,
                 update(),
-                SharedPref.instance
-                    .setUserLoginState("${ConstanceNetwork.userEnterd}"),
+                SharedPref.instance.setUserLoginState("${ConstanceNetwork.userEnterd}"),
                 Get.offAll(() => UserBothLoginScreen()),
               }
             else
@@ -784,19 +783,23 @@ class ProfileViewModle extends BaseController {
       await SubscriptionFeature.getInstance
           .terminateSubscriptions(map)
           .then((value) {
-            if(value.status?.success??false ){
-              subscriptions?.clear();
-              List data = value.data;
-              List<SubscriptionData> map = data.map((e) => SubscriptionData.fromJson(e)).toList();
-              subscriptions = map;
-              endLoading();
-              Get.back();
-              Get.find<HomeViewModel>().getCustomerBoxes();
-            }else{
-              snackError(error?.tr,value.status?.code == 403 ?"not allow" : value.status?.message??"");
-              endLoading();
-            }
-
+        if (value.status?.success ?? false) {
+          subscriptions?.clear();
+          List data = value.data;
+          List<SubscriptionData> map =
+              data.map((e) => SubscriptionData.fromJson(e)).toList();
+          subscriptions = map;
+          endLoading();
+          Get.back();
+          Get.find<HomeViewModel>().getCustomerBoxes();
+        } else {
+          snackError(
+              error?.tr,
+              value.status?.code == 403
+                  ? "not allow"
+                  : value.status?.message ?? "");
+          endLoading();
+        }
       });
     } catch (e) {
       printError();

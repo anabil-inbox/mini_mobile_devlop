@@ -21,16 +21,11 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       MyOrdersScreen.myOrderViewModle.getOrdres(
         isFromPagination: false,
-      
       );
     });
-    // MyOrdersScreen.myOrderViewModle.scrollcontroller.addListener(() {
-    //   MyOrdersScreen.myOrderViewModle.pagination();
-    // });
   }
 
   @override
@@ -53,15 +48,19 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    return ListView(
+                    return ListView.builder(
+                      itemCount: logic.userOrderSales.length,
+                      itemBuilder: (context, index) => MyOrderItem(
+                        orderSales: logic.userOrderSales.toList()[index],
+                      ),
                       // controller:
                       //     MyOrdersScreen.myOrderViewModle.scrollcontroller,
                       shrinkWrap: true,
-                      children: logic.userOrderSales
-                          .map((e) => MyOrderItem(
-                                orderSales: e,
-                              ))
-                          .toList(),
+                      // children: logic.userOrderSales
+                      //     .map((e) => MyOrderItem(
+                      //           orderSales: e,
+                      //         ))
+                      //     .toList(),
                     );
                   }
                 },
