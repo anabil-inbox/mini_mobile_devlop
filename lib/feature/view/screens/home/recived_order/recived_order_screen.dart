@@ -130,7 +130,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
             child: ListView(
               shrinkWrap: true,
               children: [
-                if (home.operationTask.isNew ?? false) ...[
+                if ((home.operationTask.isNew ?? false)) ...[
                   SizedBox(height: sizeH27),
                   const ContractSignature(),
                   SizedBox(height: sizeH10),
