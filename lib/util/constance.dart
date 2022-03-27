@@ -11,6 +11,8 @@ abstract class Constance {
   static const int maxLineTwo = 2;
   static const int maxLineThree = 3;
   static const int maxLineSaven = 7;
+  static const int maxLineTen = 10;
+  static const int maxLineTwenty = 20;
 
   static const String cashId = "Cash";
   static const String walletId = "Wallet";

@@ -220,5 +220,13 @@
     "paid" : "Paid",
     "amount_due" : "Amount Due",
     "subscriptions_terminate":"Subscriptions Terminate",
-    "subscriptions_terminate_message":"Are you sure you want terminate subscriptions ?"
+    "subscriptions_terminate_message":"Are you sure you want terminate subscriptions ?",
+    "txtWriteHer": "Write here…",
+    "txtHelpCenter":"Help Center",
+    "txtTirms":"Terms & Conditions",
+    "txtFollow":"Follow us on social media",
+    "txtTechnicalSupport":"You can send a direct message to technical support",
+    "txt_about_inbox":"About Inbox",
+    "send":"Send",
+    "txtFullNameScreen": "Full Name"
 }
