@@ -347,6 +347,7 @@ class HomeViewModel extends BaseController {
   @override
   void dispose() {
     controller?.dispose();
+    homeScrollcontroller.dispose();
     super.dispose();
   }
 
