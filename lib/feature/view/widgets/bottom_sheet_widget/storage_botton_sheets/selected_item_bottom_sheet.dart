@@ -18,6 +18,7 @@ import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:logger/logger.dart';
 
+import '../../../screens/auth/terms/terms_view.dart';
 import '../../custome_text_view.dart';
 
 class SelectedItemBottomSheet extends StatelessWidget {
@@ -66,18 +67,23 @@ class SelectedItemBottomSheet extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  value.isAccept = !value.isAccept;
-                  value.update();
+                  Get.to(() => TermsScreen());
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    value.isAccept
-                        ? SvgPicture.asset("assets/svgs/check.svg")
-                        : SvgPicture.asset(
-                            "assets/svgs/uncheck.svg",
-                            color: seconderyColor,
-                          ),
+                    InkWell(
+                      onTap: () {
+                        value.isAccept = !value.isAccept;
+                        value.update();
+                      },
+                      child: value.isAccept
+                          ? SvgPicture.asset("assets/svgs/check.svg")
+                          : SvgPicture.asset(
+                              "assets/svgs/uncheck.svg",
+                              color: seconderyColor,
+                            ),
+                    ),
                     SizedBox(
                       width: 10,
                     ),
@@ -89,9 +95,7 @@ class SelectedItemBottomSheet extends StatelessWidget {
                 ),
               ),
               InkWell(
-                  onTap: () {
-                    //Get.to(() => TermsScreen());
-                  },
+                  onTap: () {},
                   child: CustomTextView(
                     txt: "${tr.company_policy}",
                     textAlign: TextAlign.start,

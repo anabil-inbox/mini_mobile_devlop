@@ -131,7 +131,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
             child: ListView(
               shrinkWrap: true,
               children: [
-                if (home.operationTask.isNew ?? false) ...[
+                if ((home.operationTask.isNew ?? false)) ...[
                   SizedBox(height: sizeH27),
                   const ContractSignature(),
                   SizedBox(height: sizeH10),
@@ -144,6 +144,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                 ] else ...[
                   const FetchedItems(),
                 ],
+                
                 SizedBox(height: sizeH10),
                 (home.operationTask.processType == LocalConstance.fetchId)
                     ? const SizedBox()
