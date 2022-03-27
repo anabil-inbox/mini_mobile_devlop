@@ -327,6 +327,24 @@ TextStyle? textStyleSkipButton() {
       color: Colors.black, fontSize: fontSize15, fontWeight: FontWeight.normal);
 }
 
+TextStyle? textHelp() {
+  return TextStyle(
+      color: colorBlack, fontSize: fontSize14, fontWeight: FontWeight.normal);
+}
+
+TextStyle? textHelpFollow() {
+  return TextStyle(
+      color: colorBlack, fontSize: fontSize14, fontWeight: FontWeight.normal);
+}
+TextStyle? textStyleSitting() {
+  return TextStyle(
+    color: colorTextDark,
+    wordSpacing: 2.4,
+    height: 2.2,
+    fontFamily: Constance.Font_regular,
+    fontSize: fontSize16,
+  );
+}
 TextStyle textStyleCardPaymentTitle() {
   return TextStyle(
       color: colorTextHint1,

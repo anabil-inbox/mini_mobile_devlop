@@ -37,6 +37,7 @@ class ReciverOrderScreen extends StatefulWidget /*StatelessWidget */ {
   final bool isNeedToPayment;
   final bool isNeedSignature;
   final bool isNeedFingerprint;
+
   @override
   State<ReciverOrderScreen> createState() => _ReciverOrderScreenState();
 }
@@ -136,7 +137,6 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                   SizedBox(height: sizeH10),
                   idVerification
                 ],
-                
                 SizedBox(height: sizeH10),
                 if (home.operationTask.processType !=
                     LocalConstance.fetchId) ...[
@@ -144,10 +144,9 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                 ] else ...[
                   const FetchedItems(),
                 ],
+                
                 SizedBox(height: sizeH10),
-                (home.operationTask.processType == LocalConstance.pickupId ||
-                        home.operationTask.processType ==
-                            LocalConstance.fetchId)
+                (home.operationTask.processType == LocalConstance.fetchId)
                     ? const SizedBox()
                     : ScanBoxInstantOrder(
                         homeViewModel: widget.homeViewModel,
@@ -155,6 +154,8 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                 SizedBox(height: sizeH10),
                 (home.operationTask.processType ==
                             LocalConstance.newStorageSv ||
+                        home.operationTask.processType ==
+                            LocalConstance.pickupId ||
                         home.operationTask.processType ==
                             LocalConstance.fetchId ||
                         home.operationTask.processType ==

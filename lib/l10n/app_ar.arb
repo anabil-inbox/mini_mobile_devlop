@@ -220,5 +220,13 @@
         "paid" : "مدفوعة",
         "amount_due" : "مستحقة للدفع",
         "subscriptions_terminate":"الغاء الاشتراك",
-        "subscriptions_terminate_message":"؟ هل انت نتاكد من انك تريد انهاء الاشتراك"
+        "subscriptions_terminate_message":"؟ هل انت نتاكد من انك تريد انهاء الاشتراك",
+        "txtWriteHer": "اكتب النص هنا…",
+        "txtHelpCenter":"مركز المساعدة",
+            "txtTirms":"الشروط والاحكام",
+            "txtFollow":"تابعنا على منصات التواصل الإجتماعي",
+            "txtTechnicalSupport":"بامكانك ارسـال رسالة مباشرة للدعم الفني",
+            "txt_about_inbox": "عن Inbox",
+            "send":"ارسال",
+        "txtFullNameScreen": "الاسم كامل"
 }

@@ -280,7 +280,7 @@ class HomeViewModel extends BaseController {
   void pagination() async {
     try {
       startLoadingPagination();
-      if (homeScrollcontroller.hasClients) {
+      if (homeScrollcontroller.hasClients && homeScrollcontroller.positions.length != 1) {
         if ((homeScrollcontroller.position.pixels ==
             homeScrollcontroller.position.maxScrollExtent)) {
           await getCustomerBoxes();
