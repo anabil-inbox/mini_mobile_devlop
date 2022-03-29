@@ -16,11 +16,10 @@
     android:name="android.hardware.fingerprint"
     android:required="false" />
    <application
+       android:allowBackup="false"
        android:usesCleartextTraffic="true"
         android:label="INBOX"
-        allowBackup="false" 
         android:icon="@mipmap/ic_launcher">
-        
          <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyAzBtxE3NluLYNrUajTg9OnG7X_luzESvU"/>
                <meta-data
