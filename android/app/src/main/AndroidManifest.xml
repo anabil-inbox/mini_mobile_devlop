@@ -19,7 +19,7 @@
        android:allowBackup="false"
        android:usesCleartextTraffic="true"
         android:label="INBOX"
-        allowBackup="false" 
+
         android:icon="@mipmap/ic_launcher">
         
          <meta-data android:name="com.google.android.geo.API_KEY"
