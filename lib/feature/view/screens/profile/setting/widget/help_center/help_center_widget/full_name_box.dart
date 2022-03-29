@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 import '../../../../../../../../util/app_color.dart';
 import '../../../../../../../../util/app_dimen.dart';

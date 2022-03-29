@@ -24,7 +24,7 @@ class AboutInBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ApiSettings settings =
+    // ApiSettings settings =
         ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
     return Scaffold(
         backgroundColor: colorScaffoldRegistrationBody,
