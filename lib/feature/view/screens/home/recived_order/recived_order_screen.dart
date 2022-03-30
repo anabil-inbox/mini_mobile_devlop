@@ -95,20 +95,20 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
     return false;
   }
 
-  Widget paymentSection({required StorageViewModel storageViewModel}) {
-    TaskResponse currentTask = widget.homeViewModel.operationTask;
-    if (currentTask.paymentMethod == null) {
-      return const SizedBox();
-    } else if (currentTask.paymentMethod != LocalConstance.application) {
-      // return PaymentWidget();
-      return const SizedBox();
-    } else if (currentTask.paymentMethod == LocalConstance.application) {
-      return ApplicationPayment();
-    }
-
-    storageViewModel.update();
-    return const SizedBox();
-  }
+  // Widget paymentSection({required StorageViewModel storageViewModel}) {
+  //   TaskResponse currentTask = widget.homeViewModel.operationTask;
+  //   if (currentTask.paymentMethod == null) {
+  //     return const SizedBox();
+  //   } else if (currentTask.paymentMethod != LocalConstance.application) {
+  //     // return PaymentWidget();
+  //     return const SizedBox();
+  //   } else if (currentTask.paymentMethod == LocalConstance.application) {
+  //     return ApplicationPayment();
+  //   }
+  //
+  //   storageViewModel.update();
+  //   return const SizedBox();
+  // }
 
   @override
   Widget build(BuildContext context) {

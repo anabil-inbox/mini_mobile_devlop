@@ -28,7 +28,7 @@ class EmptyHomeWidget extends StatelessWidget {
               end: 0,
               bottom: 200,
               child: Text(
-                "No Storage",
+                tr.no_storage,
                 style: textStyleIntroTitle(),
                 textAlign: TextAlign.center,
               )),
@@ -37,7 +37,7 @@ class EmptyHomeWidget extends StatelessWidget {
               end: 40,
               bottom: 150,
               child: Text(
-                "You have no storage",
+                tr.you_have_no_storag,
                 textAlign: TextAlign.center,
                 style: textStyleHint()!.copyWith(
                     fontSize: fontSize15, fontWeight: FontWeight.normal),

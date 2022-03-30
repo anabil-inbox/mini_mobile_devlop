@@ -193,6 +193,8 @@ abstract class ConstanceNetwork {
 
   static var filter = "filter";
 
+  static var smsKey = "sms";
+
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};
     if (typeToken == 0) {

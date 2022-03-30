@@ -24,7 +24,7 @@ class OrderDerailesScreen extends StatelessWidget {
       appBar: CustomAppBarWidget(
         isCenterTitle: true,
         titleWidget: Text(
-          "Order Details",
+         tr.order_details,
           style: textStyleAppBarTitle(),
         ),
       ),
@@ -50,7 +50,7 @@ class OrderDerailesScreen extends StatelessWidget {
                     height: sizeH16,
                   ),
                   OrderDetailsAddress(
-                    title: "Delivery Address",
+                    title: tr.delivery_address,
                     deliveryAddress: storageViewModel
                             .returnedOrderSales?.orderShippingAddress ??
                         storageViewModel
@@ -61,7 +61,7 @@ class OrderDerailesScreen extends StatelessWidget {
                     height: sizeH16,
                   ),
                   OrderDetailsAddress(
-                    title: "Schedule Delivery",
+                    title: tr.schedule_delivery,
                     deliveryAddress:
                         " ${storageViewModel.returnedOrderSales?.deliveryDate}",
                   ),
