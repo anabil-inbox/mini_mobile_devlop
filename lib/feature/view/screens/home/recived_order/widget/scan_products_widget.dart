@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/view/screens/home/recived_order/scan_recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/product_on_order_item.dart';
 import 'dart:math' as math;
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
@@ -56,17 +54,7 @@ class ScanProducts extends StatelessWidget {
                   txt: tr.scan_products,
                   textStyle: textStyleNormal()?.copyWith(color: colorBlack),
                 ),
-                const Spacer(),
-                InkWell(
-                  onTap: () {
-                    Get.to(() => ScanRecivedOrderScreen(
-                        isScanDeliverdBoxes: false,
-                        isProduct: true,
-                        isBox: false));
-                  },
-                  child: SvgPicture.asset("assets/svgs/Scan.svg",
-                      color: colorRed, width: sizeW20, height: sizeH17),
-                ),
+               
               ],
             ),
             collapsed: const SizedBox.shrink(),

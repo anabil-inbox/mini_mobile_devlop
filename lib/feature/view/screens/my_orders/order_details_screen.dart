@@ -10,6 +10,7 @@ import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
+import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
@@ -17,6 +18,7 @@ import 'package:inbox_clients/util/constance/constance.dart';
 
 import '../../../../util/app_shaerd_data.dart';
 import '../../../model/my_order/order_sales.dart';
+import '../../../model/storage/payment.dart';
 import 'widgets/my_order_time_widget.dart';
 import 'widgets/status_widget.dart';
 
@@ -30,6 +32,7 @@ class OrderDetailesScreen extends StatefulWidget {
   static MyOrderViewModle myOrderViewModle =
       Get.put(MyOrderViewModle(), permanent: true);
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
 
   @override
   State<OrderDetailesScreen> createState() => _OrderDetailesScreenState();
@@ -203,13 +206,18 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                                 if (item.item!.toLowerCase().contains("cage") ||
                                     item.item!
                                         .toLowerCase()
-                                        .contains("space")) {
+                                        .contains("space") ||
+                                    item.item!.toLowerCase().contains("bulk") ||
+                                    myOrders.newOrderSales.proccessType ==
+                                        LocalConstance.productSv) {
                                   isHaveDetailes = false;
                                 }
                               }
                               return (myOrders.newOrderSales.status ==
                                           LocalConstance.completed ||
-                                      isHaveDetailes == false)
+                                      isHaveDetailes == false ||
+                                      myOrders.newOrderSales.proccessType ==
+                                          LocalConstance.productSv)
                                   ? const SizedBox()
                                   : PrimaryButton(
                                       textButton: "Order Detaiels",
@@ -221,11 +229,15 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                                                         .newOrderSales
                                                         .orderId ??
                                                     "");
+                                        setupPaymentMethod();
                                         Get.to(() => ReciverOrderScreen(logic));
                                       },
                                       isExpanded: true);
                             })
-                          ]
+                          ],
+                          SizedBox(
+                            height: sizeH32,
+                          ),
                         ],
                       ),
                     );
@@ -237,5 +249,13 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
         ),
       ),
     );
+  }
+
+  setupPaymentMethod() {
+    OrderDetailesScreen.storageViewModel.selectedPaymentMethod = PaymentMethod(
+      id: OrderDetailesScreen.homeViewModel.operationTask.paymentMethod,
+      name: OrderDetailesScreen.homeViewModel.operationTask.paymentMethod,
+    );
+    OrderDetailesScreen.storageViewModel.update();
   }
 }

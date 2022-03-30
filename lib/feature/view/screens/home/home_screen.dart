@@ -21,8 +21,6 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
-import 'package:inbox_clients/util/sh_util.dart';
-import 'package:logger/logger.dart';
 
 import 'widget/box_lv_widget.dart';
 
@@ -158,9 +156,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     Get.put(StorageViewModel(), permanent: true);
-    // HomeScreen.homeViewModle.scrollcontroller.addListener(() {
-    //   HomeScreen.homeViewModle.pagination();
-    // });
+    HomeScreen.homeViewModle.homeScrollcontroller.addListener(() {
+      HomeScreen.homeViewModle.pagination();
+    });
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       if (widget.isFromScan ?? false) {
@@ -172,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -216,9 +214,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   RefreshIndicator(
                     onRefresh: () async {
-                      Logger().e(SharedPref.instance
-                          .getCurrentUserData()
-                          .conversionFactor);
                       await HomeScreen.homeViewModle.refreshHome();
                     },
                     child: SizedBox(

@@ -280,9 +280,10 @@ class HomeViewModel extends BaseController {
   void pagination() async {
     try {
       startLoadingPagination();
-      if (homeScrollcontroller.hasClients && homeScrollcontroller.positions.length != 1) {
+      if (homeScrollcontroller.hasClients &&
+          homeScrollcontroller.positions.length != 1) {
         if ((homeScrollcontroller.position.pixels ==
-            homeScrollcontroller.position.maxScrollExtent)) {
+            homeScrollcontroller.positions.last.pixels)) {
           await getCustomerBoxes();
         }
       }
@@ -322,9 +323,9 @@ class HomeViewModel extends BaseController {
     await getTasks();
     getBeneficiary();
 
-    homeScrollcontroller.addListener(() {
-      pagination();
-    });
+    // homeScrollcontroller.addListener(() {
+    //   pagination();
+    // });
   }
 
   // to start work with user And Store Address ::
@@ -567,7 +568,8 @@ class HomeViewModel extends BaseController {
           if (value.status!.success!)
             {
               Logger().i(value.data),
-              operationTask = TaskResponse.fromJson(value.data, isFromNotification: false),
+              operationTask =
+                  TaskResponse.fromJson(value.data, isFromNotification: false),
             }
           else
             {snackError("", value.status?.message)}

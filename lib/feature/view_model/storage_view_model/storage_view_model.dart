@@ -1394,22 +1394,15 @@ class StorageViewModel extends BaseController {
       Get.back();
       return;
     }
-    print("mes__3");
     isChangeStatusLoading = true;
     update();
     var body = {"${ConstanceNetwork.serial}": "$serial"};
-    print("mes__4");
     await StorageFeature.getInstance
         .customerStoragesChangeStatus(body: body)
         .then((value) {
-      print("mes__5");
       if (!GetUtils.isNull(value)) {
-        print("mes__6");
         if (value.status!.success!) {
-          print("mes__8");
           isChangeStatusLoading = false;
-          // homeViewModel?.scaanedBoxes.add();
-          // SharedPref.instance.setBoxesList(boxes: homeViewModel!.scaanedBoxes.toList());
           if (isScanDeliverdBox) {
             if (!homeViewModel!.operationTask.customerDelivered!
                 .contains(BoxModel.fromJson(value.data))) {
@@ -1706,7 +1699,7 @@ class StorageViewModel extends BaseController {
         selectedDateTime: selectedDateTime,
         groupId: 1,
         itemParent: 0,
-         itemsChildIn: "",
+        itemsChildIn: "",
         selectedDay: selectedDay,
         boxessSeriales: boxessSeriales,
         beneficiaryNameIn: null));
@@ -1718,7 +1711,7 @@ class StorageViewModel extends BaseController {
           subscriptionPrice: item.price ?? 0,
           selectedDateTime: selectedDateTime,
           groupId: 1,
-           itemsChildIn: "",
+          itemsChildIn: "",
           itemParent: 0,
           selectedDay: selectedDay,
           beneficiaryNameIn: "",
@@ -1758,9 +1751,10 @@ class StorageViewModel extends BaseController {
     if (!isFromCart) {
       Get.close(1);
     }
-    if (task.id == LocalConstance.destroyId) {
-      Get.back();
-    }
+    // if (task.id == LocalConstance.destroyId) {
+    //   Get.back();
+    // }
+    Get.back();
     // if (boxes.isNotEmpty) {
     //   await homeViewModel.getBoxBySerial(serial: boxes[0].serialNo ?? "");
     // }

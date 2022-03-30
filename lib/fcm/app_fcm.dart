@@ -216,6 +216,12 @@ class AppFcm {
   static void goToOrderPage(Map<String, dynamic> map,
       {required bool isFromTerminate}) {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      storageViewModel.selectedPaymentMethod = PaymentMethod(
+        id: homeViewModel.operationTask.paymentMethod,
+        name: homeViewModel.operationTask.paymentMethod,
+      );
+      storageViewModel.update();
+      
       var serial = map;
       if (serial[LocalConstance.id].toString() == LocalConstance.submitId) {
         print("MSG_BUG LocalConstance.submitId $map");
@@ -255,11 +261,7 @@ class AppFcm {
           LocalConstance.orderDeleviredId) {
         homeViewModel.operationTask =
             TaskResponse.fromJson(map, isFromNotification: true);
-        storageViewModel.selectedPaymentMethod = PaymentMethod(
-          id: homeViewModel.operationTask.paymentMethod,
-          name: homeViewModel.operationTask.paymentMethod,
-        );
-        storageViewModel.update();
+
         Get.off(ReciverOrderScreen(homeViewModel));
         return;
       }

@@ -89,6 +89,8 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
   }
 
   Future<bool> onWillPop() async {
+    // if () {
+    // }
     Get.off(() => HomePageHolder());
     return false;
   }
@@ -144,26 +146,24 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                 ] else ...[
                   const FetchedItems(),
                 ],
-                
                 SizedBox(height: sizeH10),
-                (home.operationTask.processType == LocalConstance.fetchId)
-                    ? const SizedBox()
-                    : ScanBoxInstantOrder(
-                        homeViewModel: widget.homeViewModel,
-                      ),
+                if (home.operationTask.processType !=
+                    LocalConstance.fetchId) ...[
+                  ScanBoxInstantOrder(
+                    homeViewModel: widget.homeViewModel,
+                  ),
+                ],
                 SizedBox(height: sizeH10),
-                (home.operationTask.processType ==
-                            LocalConstance.newStorageSv ||
-                        home.operationTask.processType ==
-                            LocalConstance.pickupId ||
-                        home.operationTask.processType ==
-                            LocalConstance.fetchId ||
-                        home.operationTask.processType ==
-                            LocalConstance.destroyId)
-                    ? const SizedBox()
-                    : GetBuilder<HomeViewModel>(builder: (homeViewModel) {
-                        return scanDelivedBoxes(homeViewModel: homeViewModel);
-                      }),
+                if (!(home.operationTask.processType ==
+                        LocalConstance.newStorageSv ||
+                    home.operationTask.processType == LocalConstance.pickupId ||
+                    home.operationTask.processType == LocalConstance.fetchId ||
+                    home.operationTask.processType ==
+                        LocalConstance.destroyId)) ...[
+                  GetBuilder<HomeViewModel>(builder: (homeViewModel) {
+                    return scanDelivedBoxes(homeViewModel: homeViewModel);
+                  })
+                ],
                 SizedBox(height: sizeH10),
                 const ScanProducts(),
                 SizedBox(height: sizeH10),

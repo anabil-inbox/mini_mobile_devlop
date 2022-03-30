@@ -81,4 +81,6 @@ class LocalConstance {
 
   static String completed = "Completed";
 
+  static String productSv = "Product_sv";
+
 }

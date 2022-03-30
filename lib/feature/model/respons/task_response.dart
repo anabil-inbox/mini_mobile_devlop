@@ -308,7 +308,9 @@ class FetchedItem {
   factory FetchedItem.fromJson(Map<String, dynamic> json) => FetchedItem(
         id: json["id"],
         itemName: json["item_name"],
-        itemGallery: List<dynamic>.from(json["item_gallery"].map((x) => x)),
+        itemGallery: json["item_gallery"] == null
+            ? []
+            : List<dynamic>.from(json["item_gallery"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {

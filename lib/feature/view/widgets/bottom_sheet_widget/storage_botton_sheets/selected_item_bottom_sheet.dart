@@ -61,15 +61,20 @@ class SelectedItemBottomSheet extends StatelessWidget {
 
   Widget get acceptTerms => GetBuilder<StorageViewModel>(
         builder: (value) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () {
-                  Get.to(() => TermsScreen());
-                },
-                child: Row(
+          return TextButton(
+            style: TextButton.styleFrom(
+              primary: Colors.transparent,
+              shadowColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
+            ),
+            onPressed: () {
+              Get.to(() => TermsScreen());
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
@@ -93,16 +98,14 @@ class SelectedItemBottomSheet extends StatelessWidget {
                     )
                   ],
                 ),
-              ),
-              InkWell(
-                  onTap: () {},
-                  child: CustomTextView(
-                    txt: "${tr.company_policy}",
-                    textAlign: TextAlign.start,
-                    textStyle: textStyleUnderLinePrimary()!
-                        .copyWith(color: colorBlack, fontSize: fontSize14),
-                  )),
-            ],
+                CustomTextView(
+                  txt: "${tr.company_policy}",
+                  textAlign: TextAlign.start,
+                  textStyle: textStyleUnderLinePrimary()!
+                      .copyWith(color: colorBlack, fontSize: fontSize14),
+                ),
+              ],
+            ),
           );
         },
       );
