@@ -236,6 +236,19 @@
     "wallet_balance_is_not_enough": "Wallet Balance is not enough",
     "choose_destroy_place": "Choose Destroy Place",
     "no_storage": "No Storage",
-    "you_have_no_storag": "You have no storag"
+    "you_have_no_storag": "You have no storag",
+    "not_authorized": "Not Authorized",
+    "scan_to_auth": "Scan your fingerprint to authenticate",
+    "authorized": "Authorized",
+    "checkout_successfully": "Checkout Successfully",
+    "no_permission": "no Permission",
+    "want_delete": "Are You Share You Want To Delete This Item ?",
+    "select_image": "Select Image",
+    "camera": "Camera",
+    "gallery": "Gallery",
+    "payment_failed": "Payment Failed",
+    "sorry_area_available": "Sorry , No Zone Area Available",
+    "select_time_zone": "Select Your Time Zone",
+    "want_delete_order": "Are You Sure You want to delete This Order ?",
 
 }

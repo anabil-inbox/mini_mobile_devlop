@@ -167,7 +167,7 @@ class ProfileViewModle extends BaseController {
     update();
     try {
       await ProfileHelper.getInstance.deleteAddress(body: {
-        "id": "$addressId"
+        ConstanceNetwork.idKey: "$addressId"
       }).then((value) => {
             Logger().i("${value.status!.message}"),
             if (value.status!.success!)
@@ -239,7 +239,8 @@ class ProfileViewModle extends BaseController {
                 // snackSuccess("${tr.success}", "${value.status!.message}"),
                 isLoading = false,
                 update(),
-                SharedPref.instance.setUserLoginState("${ConstanceNetwork.userEnterd}"),
+                SharedPref.instance
+                    .setUserLoginState("${ConstanceNetwork.userEnterd}"),
                 Get.offAll(() => UserBothLoginScreen()),
               }
             else
@@ -272,8 +273,7 @@ class ProfileViewModle extends BaseController {
                     color: colorBackground,
                     borderRadius: BorderRadius.vertical(
                         top: Radius.circular(padding30!))),
-                child: Text("Sorrey , No Zone Area Available",
-                    style: textStyleTitle()))
+                child: Text(tr.sorry_area_available, style: textStyleTitle()))
             : Container(
                 decoration: BoxDecoration(
                     color: colorBackground,
@@ -287,7 +287,7 @@ class ProfileViewModle extends BaseController {
                       height: sizeH20,
                     ),
                     Text(
-                      "Select Your Time Zone ",
+                      tr.select_time_zone,
                       style: textStyleTitle()!.copyWith(color: colorPrimary),
                     ),
                     SizedBox(
@@ -321,28 +321,29 @@ class ProfileViewModle extends BaseController {
     if (SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty ||
         GetUtils.isNull(SharedPref.instance.getCurrentUserData().crNumber)) {
       myMap = {
-        "email": "${tdUserEmailEdit.text}",
-        "full_name": "${tdUserFullNameEdit.text}",
-        "image": myImg != null
+        ConstanceNetwork.emailKey: "${tdUserEmailEdit.text}",
+        ConstanceNetwork.fullNameKey: "${tdUserFullNameEdit.text}",
+        ConstanceNetwork.imageSmallKey: myImg != null
             ? multiPart.MultipartFile.fromFileSync(myImg!.path)
             : "",
-        "contact_number": jsonEncode(contactMap),
-        "udid": identidire,
+        ConstanceNetwork.contactNumberkey: jsonEncode(contactMap),
+        ConstanceNetwork.udidKey: identidire,
       };
     } else {
       myMap = {
-        "email": "${tdCompanyEmailEdit.text}",
-        "company_name": "${tdCompanyNameEdit.text}",
-        "image": myImg != null
+        ConstanceNetwork.emailKey: "${tdCompanyEmailEdit.text}",
+        ConstanceNetwork.companyNameKey: "${tdCompanyNameEdit.text}",
+        ConstanceNetwork.imageSmallKey: myImg != null
             ? multiPart.MultipartFile.fromFileSync(myImg!.path)
             : "",
-        "contact_number": jsonEncode(contactMap),
-        "company_sector": companySector!.name,
-        "applicant_name": tdCompanyNameOfApplicationEdit.text,
-        "applicant_department": tdCompanyApplicantDepartment.text,
+        ConstanceNetwork.contactNumberkey: jsonEncode(contactMap),
+        ConstanceNetwork.companySectorKey: companySector!.name,
+        ConstanceNetwork.applicantNameKey: tdCompanyNameOfApplicationEdit.text,
+        ConstanceNetwork.applicantDepartmentKey:
+            tdCompanyApplicantDepartment.text,
         "${ConstanceNetwork.mobileNumberKey}": tdCompanyMobileNumber.text,
-        "country_code": defCountry.prefix,
-        "udid": identidire,
+        ConstanceNetwork.contryCodeKey: defCountry.prefix,
+        ConstanceNetwork.udidKey: identidire,
       };
     }
     try {
@@ -796,7 +797,7 @@ class ProfileViewModle extends BaseController {
           snackError(
               error?.tr,
               value.status?.code == 403
-                  ? "not allow"
+                  ? tr.no_permission
                   : value.status?.message ?? "");
           endLoading();
         }

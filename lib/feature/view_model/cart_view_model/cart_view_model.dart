@@ -43,7 +43,7 @@ class CartViewModel extends GetxController {
         );
         deleteItemCart(cartList[i]);
       }
-      snackSuccess("", "Checkout Succeffully");
+      snackSuccess("", tr.checkout_successfully );
       Get.back();
 
       // List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];

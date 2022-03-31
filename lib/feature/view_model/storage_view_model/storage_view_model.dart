@@ -1152,7 +1152,7 @@ class StorageViewModel extends BaseController {
   void deleteCategoreyDataBottomSheet(
       {required StorageCategoriesData storageCategoriesData}) {
     Get.bottomSheet(GlobalBottomSheet(
-      title: "Are You Sure You want to delete This Order ?",
+      title: tr.want_delete_order,
       onOkBtnClick: () {
         userStorageCategoriesData.remove(storageCategoriesData);
         totalBalance -= storageCategoriesData.userPrice ?? 0;
