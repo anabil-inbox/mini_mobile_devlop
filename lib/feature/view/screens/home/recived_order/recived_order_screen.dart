@@ -154,12 +154,19 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                   ),
                 ],
                 SizedBox(height: sizeH10),
-                if (!(home.operationTask.processType ==
-                        LocalConstance.newStorageSv ||
-                    home.operationTask.processType == LocalConstance.pickupId ||
-                    home.operationTask.processType == LocalConstance.fetchId ||
-                    home.operationTask.processType ==
-                        LocalConstance.destroyId)) ...[
+                // if (!(home.operationTask.processType ==
+                //         LocalConstance.newStorageSv ||
+                //     home.operationTask.processType == LocalConstance.pickupId ||
+                //     home.operationTask.processType == LocalConstance.fetchId ||
+                //     home.operationTask.processType ==
+                //         LocalConstance.destroyId)) ...[
+                //   GetBuilder<HomeViewModel>(builder: (homeViewModel) {
+                //     return scanDelivedBoxes(homeViewModel: homeViewModel);
+                //   })
+                // ],
+                if (home.operationTask.processType == LocalConstance.recallId ||
+                    (home.operationTask.processType == LocalConstance.terminateId &&
+                        (home.operationTask.hasDeliveredScan ?? false))) ...[
                   GetBuilder<HomeViewModel>(builder: (homeViewModel) {
                     return scanDelivedBoxes(homeViewModel: homeViewModel);
                   })
