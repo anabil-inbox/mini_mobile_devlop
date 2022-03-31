@@ -99,7 +99,7 @@ class PaymentViewModel extends GetxController {
                 else if (value.contains("failed"))
                   {
                     Future.delayed(Duration(seconds: 5), () {
-                      snackError("${tr.error_occurred}", "Payment Failed");
+                      snackError("${tr.error_occurred}", tr.payment_failed);
                     })
                   }
               });

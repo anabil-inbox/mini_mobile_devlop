@@ -152,7 +152,7 @@ class _CompanyVerficationCodeScreenState
                           udid: authViewModle.identifier,
                           // countryCode: countryCode,
                           // mobileNumber: mobileNumber,
-                          target: "email"
+                          target: ConstanceNetwork.emailKey
                       );
                     } else {
                       print("msg_Blocked ${authViewModle.startTimerCounter}");
@@ -207,8 +207,8 @@ class _CompanyVerficationCodeScreenState
                               countryCode: widget.countryCode,
                               target: ConstanceNetwork.userType ==
                                   "${widget.type}"
-                                  ? "sms"
-                                  : "eamil",
+                                  ? ConstanceNetwork.smsKey//"sms"
+                                  : ConstanceNetwork.emailKey,//"eamil"
                               mobileNumber: widget.mobileNumber,
                               udid: value.identifier,
                             );

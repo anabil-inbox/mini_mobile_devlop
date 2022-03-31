@@ -18,6 +18,7 @@ abstract class ConstanceNetwork {
 
   ///todo this for login request user
   static var contryCodeKey = "country_code";
+  static var codeKey = "code";
   static var mobileKey = "mobile";
   static var udidKey = "udid";
   static var deviceTypeKey = "device_type";
@@ -139,6 +140,7 @@ abstract class ConstanceNetwork {
   // this for constance network
   static String page = "page";
   static String pageSize = "page_size";
+  static String customerKey = "Customer";
 
   // this for constance Myorder
   static String myOrderDetailesEndPoint = "inbox_app.api.sales_order.get_order";
@@ -192,6 +194,40 @@ abstract class ConstanceNetwork {
   static String productId = "product_id";
 
   static var filter = "filter";
+
+  static var smsKey = "sms";
+
+  static var targetKey = "target";
+
+  static var nameKey = "name";
+
+  static var qtyKey = "qty";
+
+  static var newNameKey = "new_name";
+
+  static var tagsKey = "tags";
+
+  static var dataKey = "data";
+
+  static var imageKey = "Image";
+
+  static var storageKey = "storage";
+
+  static var gallerykey = "gallery";
+
+  static var fullNameKey = "full_name";
+
+  static var imageSmallKey = "image";
+
+  static var contactNumberkey ="contact_number";
+
+  static var companyNameKey = "company_name";
+
+  static var companySectorKey = "company_sector";
+
+  static var applicantNameKey = "applicant_name";
+
+  static var applicantDepartmentKey = "applicant_department";//small
 
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};

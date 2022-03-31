@@ -23,7 +23,7 @@ class ApplicationPayment extends StatelessWidget {
           SizedBox(
             height: sizeH12,
           ),
-          Text("Choose Payment Method"),
+          Text(tr.choose_payment_method),
           SizedBox(
             height: sizeH12,
           ),
@@ -36,8 +36,7 @@ class ApplicationPayment extends StatelessWidget {
                 isFromApplicationPayment: true,
               ),
               PaymentItem(
-                paymentMethod:
-                    PaymentMethod(id: "Bank Card", name: "Bank Card"),
+                paymentMethod: PaymentMethod(id: "Bank Card", name: "Bank Card"),
                 isFromApplicationPayment: true,
               )
             ],

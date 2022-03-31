@@ -106,7 +106,7 @@ class _SignatureBottomSheetState extends State<SignatureBottomSheet> {
             SvgPicture.asset('assets/svgs/Indicator.svg'),
             SizedBox(height: sizeH20),
             CustomTextView(
-              txt: "Add Signature",
+              txt: tr.add_signature,
               textStyle: textStyleNormal()
                   ?.copyWith(fontSize: fontSize18, color: colorBlack),
             ),

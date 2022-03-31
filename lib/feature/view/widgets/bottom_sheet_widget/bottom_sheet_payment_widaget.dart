@@ -49,7 +49,7 @@ class BottomSheetPaymentWidget extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: sizeH12,),
-        Text("Choose Destroy Place"),
+        Text(tr.choose_destroy_place),
         SizedBox(height: sizeH12,),
         ],
     );

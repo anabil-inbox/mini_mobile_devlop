@@ -29,6 +29,7 @@ class TaskResponse {
       this.items,
       this.waittingFees,
       this.cancellationFees,
+        this.hasDeliveredScan,
       this.hasTimeRequest,
       this.notificationId});
 
@@ -57,6 +58,7 @@ class TaskResponse {
   List<LateFees>? lateFees;
   List<FetchedItem>? items;
   num? waittingFees;
+  bool? hasDeliveredScan;
 
   factory TaskResponse.fromJson(Map<String, dynamic> json,
       {required bool isFromNotification}) {
@@ -121,6 +123,9 @@ class TaskResponse {
         waitingTime: num.tryParse(json["waiting_time"].toString()) ?? 0.0,
         cancellationFees:
             num.tryParse(json["cancellation_fees"].toString()) ?? 0.0,
+    hasDeliveredScan: json["has_delivered_scan"] == "false"
+    ? false
+        : json["has_delivered_scan"] == "true",
       );
     } else {
       return TaskResponse(
@@ -174,6 +179,9 @@ class TaskResponse {
         cancellationFees:
             num.tryParse(json["cancellation_fees"].toString()) ?? 0.0,
         waitingTime: num.tryParse(json["waiting_time"].toString()) ?? 0.0,
+    hasDeliveredScan: json["has_delivered_scan"] == null
+    ? null
+        : json["has_delivered_scan"],
       );
     }
   }

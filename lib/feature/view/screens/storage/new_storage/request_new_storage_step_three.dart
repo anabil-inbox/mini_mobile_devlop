@@ -147,8 +147,7 @@ class RequestNewStorageStepThree extends StatelessWidget {
                                       logic.isLoading = false;
                                       logic.update();
                                     } else {
-                                      snackError(
-                                          "", "Wallet Balance is not enough");
+                                      snackError("", tr.wallet_balance_is_not_enough);
                                     }
                                   } else {
                                     await logic.goToPaymentMethod(

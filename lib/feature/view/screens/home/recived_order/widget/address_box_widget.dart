@@ -56,7 +56,7 @@ class AddressBox extends StatelessWidget {
                   height: sizeH13,
                 ),
                 CustomTextView(
-                  txt: "Delivery Address",
+                  txt: tr.delivery_address/*"Delivery Address"*/,
                   maxLine: Constance.maxLineOne,
                   textStyle: textStyleNormal()?.copyWith(color: colorBlack),
                 ),

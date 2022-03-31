@@ -227,7 +227,7 @@ class HomeViewModel extends BaseController {
     try {
       if (!p) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('no Permission')),
+           SnackBar(content: Text(tr.no_permission)),
         );
       }
     } catch (e) {
@@ -300,7 +300,7 @@ class HomeViewModel extends BaseController {
   Future<Box> getBoxBySerial({required String serial}) async {
     Box box = Box();
     await ItemHelper.getInstance.getBoxBySerial(body: {
-      "serial": serial
+     ConstanceNetwork.serial: serial
     }).then((value) => {
           if (value.status!.success!)
             {
@@ -547,7 +547,7 @@ class HomeViewModel extends BaseController {
     bool authenticated = false;
     try {
       authenticated = await auth.authenticate(
-        localizedReason: 'Scan your fingerprint to authenticate',
+        localizedReason: tr.scan_to_auth,
         useErrorDialogs: true,
         biometricOnly: true,
         stickyAuth: false,

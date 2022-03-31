@@ -95,20 +95,20 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
     return false;
   }
 
-  Widget paymentSection({required StorageViewModel storageViewModel}) {
-    TaskResponse currentTask = widget.homeViewModel.operationTask;
-    if (currentTask.paymentMethod == null) {
-      return const SizedBox();
-    } else if (currentTask.paymentMethod != LocalConstance.application) {
-      // return PaymentWidget();
-      return const SizedBox();
-    } else if (currentTask.paymentMethod == LocalConstance.application) {
-      return ApplicationPayment();
-    }
-
-    storageViewModel.update();
-    return const SizedBox();
-  }
+  // Widget paymentSection({required StorageViewModel storageViewModel}) {
+  //   TaskResponse currentTask = widget.homeViewModel.operationTask;
+  //   if (currentTask.paymentMethod == null) {
+  //     return const SizedBox();
+  //   } else if (currentTask.paymentMethod != LocalConstance.application) {
+  //     // return PaymentWidget();
+  //     return const SizedBox();
+  //   } else if (currentTask.paymentMethod == LocalConstance.application) {
+  //     return ApplicationPayment();
+  //   }
+  //
+  //   storageViewModel.update();
+  //   return const SizedBox();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -154,12 +154,19 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                   ),
                 ],
                 SizedBox(height: sizeH10),
-                if (!(home.operationTask.processType ==
-                        LocalConstance.newStorageSv ||
-                    home.operationTask.processType == LocalConstance.pickupId ||
-                    home.operationTask.processType == LocalConstance.fetchId ||
-                    home.operationTask.processType ==
-                        LocalConstance.destroyId)) ...[
+                // if (!(home.operationTask.processType ==
+                //         LocalConstance.newStorageSv ||
+                //     home.operationTask.processType == LocalConstance.pickupId ||
+                //     home.operationTask.processType == LocalConstance.fetchId ||
+                //     home.operationTask.processType ==
+                //         LocalConstance.destroyId)) ...[
+                //   GetBuilder<HomeViewModel>(builder: (homeViewModel) {
+                //     return scanDelivedBoxes(homeViewModel: homeViewModel);
+                //   })
+                // ],
+                if (home.operationTask.processType == LocalConstance.recallId ||
+                    (home.operationTask.processType == LocalConstance.terminateId &&
+                        (home.operationTask.hasDeliveredScan ?? false))) ...[
                   GetBuilder<HomeViewModel>(builder: (homeViewModel) {
                     return scanDelivedBoxes(homeViewModel: homeViewModel);
                   })
