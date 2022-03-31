@@ -1729,8 +1729,7 @@ class StorageViewModel extends BaseController {
 
     map["coupon_code"] = isUsingPromo ? tdCopun.text : "";
     map["order[0]"] = data;
-    map["address[0]"] =
-        selectedAddress == null ? boxes[0].address?.id : selectedAddress?.id;
+    map["address[0]"] = selectedAddress == null ? boxes[0].address?.id : selectedAddress?.id;
     mapSalesOrder.add(map);
 
     Map<String, dynamic> newMap = {"sales_order": jsonEncode(mapSalesOrder)};
