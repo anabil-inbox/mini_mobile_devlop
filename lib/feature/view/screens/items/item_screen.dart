@@ -51,6 +51,8 @@ class _ItemScreenState extends State<ItemScreen> {
   @override
   initState() {
     super.initState();
+    Logger().d(widget.box.toJson());
+    Logger().d(itemViewModle.operationsBox?.toJson());
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       // await widget.getBoxDataMethod!();
       // Get.delete<ItemViewModle>();
@@ -136,7 +138,7 @@ class _ItemScreenState extends State<ItemScreen> {
               }
             },
             icon: SvgPicture.asset("assets/svgs/update.svg")),
-        (widget.box.storageStatus == LocalConstance.boxAtHome || !widget.box.allowed!)
+        (widget.box.storageStatus == LocalConstance.boxAtHome || itemViewModle.operationsBox?.storageStatus == LocalConstance.boxAtHome||  !widget.box.allowed!)
             ? const SizedBox()
             : Center(
                 child: InkWell(
@@ -345,6 +347,7 @@ class _ItemScreenState extends State<ItemScreen> {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    Logger().d("test_${widget.box.storageStatus}");
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: myAppbar,

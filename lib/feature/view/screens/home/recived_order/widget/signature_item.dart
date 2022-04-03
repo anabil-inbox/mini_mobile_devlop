@@ -11,6 +11,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
+import 'package:logger/logger.dart';
 
 class SignatureItem extends StatelessWidget {
   const SignatureItem({Key? key, required this.title, required this.onSelected})
@@ -22,10 +23,22 @@ class SignatureItem extends StatelessWidget {
   final Function onSelected;
 
   Widget photoSignature() {
+    Logger().d("test_title:$title");
+    Logger().d("test_Constanse:${Constance.fingerprint}");
+    Logger().d("test_Selected:${homeViewModel.selectedSignatureItemModel.title}");
+    Logger().d("test_get:${homeViewModel.operationTask.signatureFile}");
+    Logger().d("test_task:${homeViewModel.operationTask.toJson()}");
+    Logger().d("test_type:${homeViewModel.operationTask.signatureType}");
+    Logger().d("test_selected_type:${homeViewModel.selectedSignatureItemModel.toString()}");
     if (title == Constance.fingerprint) {
       return const SizedBox();
     }
-    if (title == homeViewModel.selectedSignatureItemModel.title &&
+    /*if ( title ==
+        homeViewModel.selectedSignatureItemModel.title &&
+        homeViewModel.operationTask.signatureFile != null)*/
+      if ( title == homeViewModel.operationTask.signatureType &&
+          homeViewModel.operationTask.signatureType ==
+        homeViewModel.selectedSignatureItemModel.title &&
         homeViewModel.operationTask.signatureFile != null) {
       return imageNetwork(
         url: ConstanceNetwork.imageUrl +
@@ -33,9 +46,9 @@ class SignatureItem extends StatelessWidget {
         width: sizeW30,
         height: sizeH30,
       );
+    }else {
+      return const SizedBox();
     }
-
-    return const SizedBox();
   }
 
   @override
@@ -80,6 +93,8 @@ class SignatureItem extends StatelessWidget {
                   textStyle: textStyleNormal()?.copyWith(fontSize: fontSize13),
                 ),
                 const Spacer(),
+                // if(homeViewModel.operationTask.signatureType ==
+                //     homeViewModel.selectedSignatureItemModel.title )
                 photoSignature(),
                 Transform(
                   transform:

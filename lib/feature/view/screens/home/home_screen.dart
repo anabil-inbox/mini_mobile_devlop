@@ -251,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         textHintsWidget(
                                             "${tr.at_home}", colorAtHome),
                                         textHintsWidget(
-                                            "Pickup", boxColorOrange),
+                                            tr.pickup, boxColorOrange),
                                       ],
                                     ),
                                   ),
