@@ -167,11 +167,8 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                           GetBuilder<MyOrderViewModle>(
                             builder: (controller) {
                               return MyOrderAddressWidget(
-                                address: controller
-                                        .newOrderSales.orderShippingAddress ??
-                                    controller
-                                        .newOrderSales.orderWarehouseAddress ??
-                                    "",
+                                newOrderSales:controller.newOrderSales,
+
                               );
                             },
                           ),

@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_null_aware_operators
 
-import 'dart:convert';
+import 'dart:convert' as j;
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inbox_clients/network/firebase/driver_modle.dart';
 import 'package:inbox_clients/network/firebase/sales_order.dart';
+import 'package:logger/logger.dart';
 
 class TrackModel {
 
@@ -14,10 +15,13 @@ class TrackModel {
   Driver? serialOrderDriverData;
   LatLng ?serialOrderDriverLocation;
 
-  factory TrackModel.fromJson(Map<String, dynamic> json)=> TrackModel(
-        serialOrderData:json["serialOrderData"] == null ? null:SalesOrder.fromJson(jsonDecode(json["serialOrderData"])),
-        serialOrderDriverData:json["serialOrderDriverData"] == null ? null:Driver.fromJson(jsonDecode(json["serialOrderDriverData"])),
-        serialOrderDriverLocation:json["serialOrderDriverLocation"] == null ? null:LatLng.fromJson(json["serialOrderDriverLocation"]),);
+  factory TrackModel.fromJson(var json) {
+    return TrackModel(
+        serialOrderData:json["serialOrderData"] == null ? null:SalesOrder.fromJson(j.json.decode(json["serialOrderData"])),
+        serialOrderDriverData:json["serialOrderDriverData"] == null ? null:Driver.fromJson(j.json.decode(json["serialOrderDriverData"])),
+        serialOrderDriverLocation:json["serialOrderDriverLocation"] == null ? null:LatLng.fromJson(json["serialOrderDriverLocation"]),
+    );
+  }
 
   Map<String, dynamic> toJson() =>{
     "serialOrderData": serialOrderData == null ?null :serialOrderData?.toJson(),

@@ -2,6 +2,7 @@
 //  import 'package:inbox_driver/network/firebase/track_model.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:inbox_clients/feature/view_model/map_view_model/map_view_model.dart';
 import 'package:inbox_clients/network/firebase/track_model.dart';
 import 'package:logger/logger.dart';
 
@@ -44,7 +45,7 @@ class FirebaseClint {
   }
 
   // this for get driver tracking
-  Stream<TrackModel> getTrackLocation(var customerId  , var serial) async* {
+  Stream getTrackLocation(var customerId  , var serial, MapViewModel mapViewModel) async* {
     try {
       ///  in _diverTrack we will get [customerId]
       ///  in customerId we will get [_serialOrder]
@@ -52,11 +53,16 @@ class FirebaseClint {
       ///  in serial we will get [bodyData]
       var documentReference =  FirebaseFirestore.instance.collection("$_diverTrack").doc(customerId)
           .collection(_serialOrder.toString()).doc(serial);
-      var querySnapshot = await documentReference.get();
-      yield TrackModel.fromJson(querySnapshot.data()??{}) ;
+      var querySnapshot =  documentReference.snapshots().where((event) => !event.metadata.isFromCache);
+
+      yield   querySnapshot.map((event) {
+        mapViewModel.updateDriverLocations(TrackModel.fromJson(event.data()));
+        return TrackModel.fromJson(event.data());
+      } ).last;
+
     } catch (e) {
       Logger().d(e);
-      throw "e";
+      throw e;
     }
   }
 

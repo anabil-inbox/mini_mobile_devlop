@@ -1,5 +1,6 @@
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/beneficiary.dart';
+import 'package:inbox_clients/feature/model/home/notification_data.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/api/model/home_api.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -19,6 +20,18 @@ class HomeHelper {
     if (appResponse.status?.success == true) {
       List data = appResponse.data["Storages"];
       return data.map((e) => Box.fromJson(e)).toList();
+    } else {
+      return [];
+    }
+  }
+
+  Future<List<NotificationData>> getNotifications() async {
+    var appResponse = await HomeApi.getInstance.getNotifications(
+        url: "${ConstanceNetwork.getNotificationsApi}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      List data = appResponse.data;
+      return data.map((e) => NotificationData.fromJson(e)).toList();
     } else {
       return [];
     }

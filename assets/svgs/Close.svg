@@ -1,0 +1,4 @@
+<svg id="Close" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+  <rect id="view-box" width="30" height="30" rx="15" fill="#e63331" opacity="0.18"/>
+  <path id="Shape" d="M10.546,11.75,6,7.2,1.454,11.75a.851.851,0,0,1-1.2-1.2L4.8,6,.249,1.454a.851.851,0,0,1,1.2-1.2L6,4.8,10.546.249a.851.851,0,0,1,1.2,1.2L7.2,6l4.546,4.546a.851.851,0,1,1-1.2,1.2Z" transform="translate(9 9)" fill="#e63331"/>
+</svg>
