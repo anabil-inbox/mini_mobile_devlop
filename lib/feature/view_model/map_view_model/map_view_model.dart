@@ -155,10 +155,13 @@ class MapViewModel extends GetxController {
 
   getMyCurrentMarkers() async {
     // markers.clear();
+    Logger().d(SharedPref.instance.getCurrentUserData().image);
     final Marker marker = Marker(
       markerId: MarkerId("${SharedPref.instance.getCurrentUserData().id}"),
       icon: await _getMarkerImageFromUrl(
-          "${SharedPref.instance.getCurrentUserData().image ?? Constance.defoultImageMarker}",
+          SharedPref.instance.getCurrentUserData().image == null
+      ? Constance.defoultImageMarker
+          : SharedPref.instance.getCurrentUserData().image.toString().length >10  ?(ConstanceNetwork.imageUrl + (SharedPref.instance.getCurrentUserData().image ?? "")):Constance.defoultImageMarker,
           targetWidth: 180,
           color: colorTrans),
       position: myLatLng,
@@ -274,7 +277,7 @@ class MapViewModel extends GetxController {
         .then((Position value) async {
       myLatLng = LatLng(value.latitude, value.longitude);
       //if we need we can make animate for camera
-      //await getMyCurrentMarkers();
+      await getMyCurrentMarkers();
       update();
     });
   }
@@ -283,26 +286,16 @@ class MapViewModel extends GetxController {
 
   getStreamLocation(var salesOrderId) async {
     FirebaseClint.instance.getTrackLocation(SharedPref.instance.getCurrentUserData().id,
-        salesOrderId).listen((TrackModel event) {
-          // Logger().d(event.toJson());
-          if( event.serialOrderDriverLocation != null)
-          customerLatLng = event.serialOrderDriverLocation!;
-          if(event.serialOrderData != null)
-           getUserMarkers(salesOrder: event.serialOrderData!);
-    });
-    // try {
-    //   Geolocator.getPositionStream().listen((event) {
-    //     myLatLng = LatLng(event.latitude, event.longitude);
-    //     isAllowToDeliver(
-    //         lat1: myLatLng.latitude,
-    //         lon1: myLatLng.longitude,
-    //         lat2: customerLatLng.latitude,
-    //         lon2: customerLatLng.longitude);
-    //     update();
-    //   });
-    // } catch (e) {
-    //   printError();
-    // }
+        salesOrderId , this).listen((event) { });
+  }
+
+  updateDriverLocations(TrackModel trackModel){
+    Logger().d(trackModel.toJson());
+    if( trackModel.serialOrderDriverLocation != null)
+      customerLatLng = trackModel.serialOrderDriverLocation!;
+    if(trackModel.serialOrderData != null)
+      getUserMarkers(salesOrder: trackModel.serialOrderData!);
+    update();
   }
 
   PolylinePoints polylinePoints = PolylinePoints();

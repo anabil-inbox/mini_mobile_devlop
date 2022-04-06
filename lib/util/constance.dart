@@ -30,6 +30,7 @@ abstract class Constance {
 
   static String defoultImageMarker =
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdIUAt46mfuRdSQLjr-sghJMj2kw7PVx1ftQ&usqp=CAU";
+      // "https://upload.wikimedia.org/wikipedia/commons/f/f2/678111-map-marker-512.png";
 
   static String googleMapKey = "AIzaSyAzBtxE3NluLYNrUajTg9OnG7X_luzESvU";
 
