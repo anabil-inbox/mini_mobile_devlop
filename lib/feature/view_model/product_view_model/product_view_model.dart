@@ -1,35 +1,28 @@
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/model/product_model.dart';
+import 'package:inbox_clients/feature/model/store/product_item.dart';
 import 'package:inbox_clients/network/api/feature/product_helper.dart';
 import 'package:logger/logger.dart';
 
 class ProductViewModel extends GetxController {
- // ProductModel? productModel;
+  // ProductModel? productModel;
   var pageSize = 30;
   var pageNum = 1;
   var isLoadingProduct = false;
-  List<ItemElement>? productItems = <ItemElement>[];
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onClose() {}
-
-  @override
-  void onReady() {}
+  List<ProductItem> productItems = <ProductItem>[];
 
   getMyAllProduct() async {
     try {
       isLoadingProduct = true;
       update();
-      await ProductHelper.getInstance.getAllProduct(pageSize: pageSize, page: pageNum).then((value) {
-        pageNum = value.currentPage!;
-        Logger().d(value.toJson());
-        if(value.items != null && value.items!.isNotEmpty) {
-          productItems?.addAll(value.items!);
-        }
+      await ProductHelper.getInstance
+          .getAllProduct(pageSize: pageSize, page: pageNum)
+          .then((value) {
+        // pageNum = value.currentPage!;
+        // Logger().d(value.toJson());
+        // if(value.items != null && value.items!.isNotEmpty) {
+        //  productItems.addAll(value.items!);
+        // }
+        productItems.addAll(value);
         isLoadingProduct = false;
         update();
       }).catchError((onError) {

@@ -16,15 +16,17 @@ class SharedPref {
   final String currentUser = "currentUser";
   final String loginKey = "login";
   final String fcmKey = "fcm";
+  final String taskKey = "taskKey";
   final String tokenKey = "token";
   final String customrKey = "customerKey";
   final String userDataKey = "userData";
-
+  final String boxessKey = "boxessKey";
+  
   var log = Logger();
 
   SharedPref._();
 
-  static late SharedPreferences? _prefs;
+  static SharedPreferences? _prefs;
 
   setAppSetting(var json) async {
     String prfApiSettings = jsonEncode(json);
@@ -46,10 +48,11 @@ class SharedPref {
 
   Customer getCurrentUserData() {
     try {
-      if(getUserLoginState() == null ||getUserLoginState() == ConstanceNetwork.userEnterd){
+      if (getUserLoginState() == null ||
+          getUserLoginState() == ConstanceNetwork.userEnterd) {
         return Customer();
       }
-      var string = _prefs?.getString("$userDataKey")??"";
+      var string = _prefs?.getString("$userDataKey") ?? "";
       var decode;
       if (GetUtils.isNull(json.decode(string)["data"]["Customer"])) {
         print("get Current user if");
@@ -81,6 +84,7 @@ class SharedPref {
           .companySectors;
     } catch (e) {
       print("e");
+      return null;
     }
   }
 
@@ -91,6 +95,7 @@ class SharedPref {
           .languges;
     } catch (e) {
       print("e");
+       return null;
     }
   }
 
@@ -98,7 +103,32 @@ class SharedPref {
     // ignore: unnecessary_statements
     isShow == null ? isShow = false : isShow;
     _prefs?.setBool("$isShowKey", isShow);
-  }
+  } 
+
+
+  //   setBoxesList({required List<Box> boxes}) {
+  //   removeBoxess();
+  //   _prefs?.setString(boxessKey, jsonEncode(boxes));
+  // }
+
+  // List<Box> getBoxesList() {
+  //   try {
+  //     String? objectStr = _prefs?.getString(boxessKey);
+  //     return List<Box>.from(
+  //         json.decode(objectStr!).map((x) => Box.fromJson(x)));
+  //   } catch (e) {
+  //     return [];
+  //   }
+  // }
+
+  // removeBoxess() async {
+  //   try {
+  //     await _prefs?.remove(boxessKey);
+  //   } catch (e) {
+  //     Logger().e(e);
+  //   }
+  // }
+
 
   getShowProgress() {
     try {
@@ -153,8 +183,7 @@ class SharedPref {
 
   setFCMToken(String fcmToken) async {
     try {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setString("$fcmKey", fcmToken);
+      _prefs?.setString("$fcmKey", fcmToken);
     } catch (e) {}
   }
 
@@ -173,10 +202,25 @@ class SharedPref {
 
   getUserToken() {
     try {
-      return SharedPref._prefs!.getString('$tokenKey');
+      return _prefs?.getString('$tokenKey');
     } catch (e) {
       print(e);
       return "";
     }
   }
+
+  // TaskResponse? getCurrentTaskResponse() {
+  //   try {
+  //     String? objectStr = _prefs?.getString(taskKey);
+  //     return TaskResponse.fromJson(jsonDecode(objectStr ?? ""));
+  //   } catch (e) {
+  //     Logger().e(e.toString());
+  //     return null;
+  //   }
+  // }
+
+  // setCurrentTaskResponse({required String taskResponse}) async{
+  //   await _prefs?.remove(taskKey);
+  //   await _prefs?.setString(taskKey, taskResponse);
+  // }
 }

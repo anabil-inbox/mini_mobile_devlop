@@ -13,8 +13,9 @@ class Box {
       this.modified,
       this.tags,
       this.items,
-      this.allowed,
+      this.allowed = false,
       this.options,
+      this.isPickup,
       this.address});
 
   String? id;
@@ -30,13 +31,15 @@ class Box {
   List<String>? options;
   Address? address;
   bool? allowed;
+  bool? isPickup;
 
   factory Box.fromJson(Map<String, dynamic> json) => Box(
         id: json["id"] == null ? null : json["id"],
-        serialNo: json["serial_no"] == null ? null : json["serial_no"],
+        serialNo: json["serial"] == null ? null : json["serial"],
         storageName: json["storage_name"] == null ? null : json["storage_name"],
         saleOrder: json["sales_order"] == null ? null : json["sales_order"],
         allowed: json["allowed"] == null ? false : json["allowed"],
+        isPickup: json["is_pickup"],
         storageStatus:
             json["storage_status"] == null ? null : json["storage_status"],
         enabled: json["enabled"] == null ? null : json["enabled"],
@@ -59,11 +62,12 @@ class Box {
     try {
       return {
         "id": id,
-        "serial_no": serialNo,
+        "serial": serialNo,
         "storage_name": storageName,
         "sale_order": saleOrder,
         "storage_status": storageStatus,
         "enabled": enabled,
+        "is_pickup": isPickup,
         "modified": modified?.toIso8601String(),
         "tags": (GetUtils.isNull(tags) || tags?.length == 0)
             ? null

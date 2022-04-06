@@ -7,6 +7,8 @@ import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../util/app_shaerd_data.dart';
+
 class TagBoxWidget extends StatelessWidget {
   const TagBoxWidget({Key? key}) : super(key: key);
 
@@ -14,6 +16,7 @@ class TagBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       decoration: BoxDecoration(
           color: colorBackground,

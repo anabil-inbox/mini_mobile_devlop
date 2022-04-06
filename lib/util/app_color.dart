@@ -15,6 +15,8 @@ Color colorPrimaryOpcaityColor =  Color(0xffF6E3E5);
 Color colorBtnGray = const Color(0xFFDADBDF);
 Color colorSpacer = const Color(0xff8F92A1);
 Color scaffoldSecondery = const Color(0xffF9F9FF);
+Color colorSearchBox = const Color(0xFFF7F9FB);
+Color colorGreenText = const Color(0xFF2ED0A5);
 
 //todo this for textField
 var colorBorderTextFiled = Color(0xFF707070);
@@ -38,6 +40,8 @@ var colorRedTrans = Color(0x22E63331);
 var colorGreen = Color(0xFF27D39F);
 final Color greenOpcityColor = Color(0xFFD3ECDD);
 var colorOrangeLight = Color(0xFFF9B20C);
+const Color successColor = Color(0xFF00C851);
+const Color errorColor = Color(0xFFff4444);
 
 //todo this for containers
 var colorContainerGray = Color(0xFFF5F5F5);
@@ -46,6 +50,7 @@ var scaffoldColor = Color(0xFFF7F9FB);
 var boxColorGray = Color(0xFFDDDBD7);
 var boxColorOrange = Color(0xFFF9AC19);
 var boxColorRed = Color(0xFFE63331);
-
+final Color colorInWarhouse =  Color(0xFF0091FF);
+final Color colorAtHome = Color(0XFF1DCD9F);
 //todo trasparent color
 var transparent = Color(0x00000000);

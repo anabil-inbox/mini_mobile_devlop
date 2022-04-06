@@ -43,6 +43,8 @@ screenUtil(BuildContext context) {
       BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width,
           maxHeight: MediaQuery.of(context).size.height),
+      context: Get.context,
+      minTextAdapt: true,
       designSize: Size(392.72727272727275, 803.6363636363636),
       orientation: Orientation.portrait);
 }
@@ -173,23 +175,45 @@ bool areArraysEquales(List<String> listOne, List<StorageFeatures> listTwo) {
   return eq(listOne, localArray);
 }
 
-snackSuccess(String title, String body) {
-  Future.delayed(Duration(seconds: 0)).then((value) {
-    Get.snackbar("$title", "$body",
-        colorText: Colors.white,
-        margin: EdgeInsets.all(8),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Color(0xFF10C995));
-  });
+// snackSuccess(String title, String body) {
+//   Future.delayed(Duration(seconds: 0)).then((value) {
+//     Get.snackbar("$title", "$body",
+//         colorText: Colors.white,
+//         margin: EdgeInsets.all(8),
+//         snackPosition: SnackPosition.BOTTOM,
+//         backgroundColor: Color(0xFF10C995));
+//   });
+// }
+
+// snackError(String title, String body) {
+//   Future.delayed(Duration(seconds: 0)).then((value) {
+//     Get.snackbar("$title", "$body",
+//         colorText: Colors.white,
+//         margin: EdgeInsets.all(8),
+//         snackPosition: SnackPosition.BOTTOM,
+//         backgroundColor: Color(0xFFF2AE56).withAlpha(150));
+//   });
+// }
+
+snackSuccess(String? title, String? body) {
+  mainSnack(body: body ?? "", backgroundColor: successColor);
 }
 
-snackError(String title, String body) {
-  Future.delayed(Duration(seconds: 0)).then((value) {
-    Get.snackbar("$title", "$body",
-        colorText: Colors.white,
-        margin: EdgeInsets.all(8),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Color(0xFFF2AE56).withAlpha(150));
+snackError(String? title, String? body) {
+  mainSnack(body: body ?? "", backgroundColor: errorColor);
+}
+
+mainSnack({String? title, required String body, Color? backgroundColor}) {
+  Future.delayed(const Duration(seconds: 0)).then((value) {
+    Get.showSnackbar(
+      GetSnackBar(
+        backgroundColor: backgroundColor ?? const Color(0xFF303030),
+        message: body,
+        duration: const Duration(seconds: 2),
+        borderRadius: 10,
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      ),
+    );
   });
 }
 
@@ -226,25 +250,35 @@ showAnimatedDialog(dialog) {
   );
 }
 
+var paymentError = "https://cdn-icons-png.flaticon.com/512/189/189715.png";
 var urlProduct =
     "https://images.unsplash.com/photo-1613177794106-be20802b11d3?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xvY2slMjBoYW5kc3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80";
-Widget imageNetwork({double? width, double? height, String? url, BoxFit? fit}) {
+Widget imageNetwork(
+    {double? width,
+    double? height,
+    String? url,
+    BoxFit? fit,
+    bool isPayment = false}) {
   return CachedNetworkImage(
     imageBuilder: (context, imageProvider) {
       return Container(
         decoration: BoxDecoration(
-          // border: Border.all(color: colorBorderLight),
           image: DecorationImage(
-            image: CachedNetworkImageProvider(url ?? urlUserPlacholder!),
+            image: CachedNetworkImageProvider(url != null
+                ? url
+                : isPayment
+                    ? paymentError
+                    : urlUserPlacholder!),
             fit: fit ?? BoxFit.contain,
           ),
         ),
       );
     },
-    imageUrl: urlUserPlacholder!,
+    imageUrl: isPayment ? paymentError : urlUserPlacholder!,
     errorWidget: (context, url, error) {
       return CachedNetworkImage(
-          imageUrl: urlUserPlacholder!, fit: BoxFit.contain);
+          imageUrl: isPayment ? paymentError : urlUserPlacholder!,
+          fit: BoxFit.contain);
     },
     width: width ?? 74,
     height: height ?? 74,
@@ -681,14 +715,17 @@ num calculateBalance({required num balance}) {
 
 // Widget return By Box Status
 
-Widget retuenBoxByStatus(
-    {required String storageStatus, required bool isEnabeld}) {
+Widget returnBoxByStatus(
+    {required String storageStatus,
+    required bool isEnabeld,
+    required bool isPickup}) {
   String boxPath = "assets/svgs/desable_box.svg";
   // if (!true) {
   //   boxPath = "assets/svgs/block_folder.svg";
   // } else
-
-  if (storageStatus == LocalConstance.boxAtHome) {
+  if (isPickup) {
+    boxPath = "assets/svgs/box_picked_up.svg";
+  } else if (storageStatus == LocalConstance.boxAtHome) {
     boxPath = "assets/svgs/home_box_red.svg";
   } else if (storageStatus == LocalConstance.boxinWareHouse) {
     boxPath = "assets/svgs/box_in_ware_house.svg";
@@ -763,9 +800,8 @@ Widget retuenBoxByStatus(
 // }
 
 String getPriceWithFormate({required num price}) {
-  final numberFormatter = NumberFormat("###.00#", "en_US");
+  final numberFormatter = NumberFormat("##0.00#", "en_US");
   final num initNumber = 0.00;
-  print("getting Price ${numberFormatter.format(initNumber + price)}");
   return "${numberFormatter.format(initNumber + price)}" +
       " ${LocalConstance.qrCoin}";
 }

@@ -32,7 +32,6 @@ class CartViewModel extends GetxController {
     startLoading();
     try {
       for (var i = 0; i < cartList.length; i++) {
-       
         storageViewModel.selectedPaymentMethod?.id = LocalConstance.cash;
         storageViewModel.selectedAddress = cartList[i].address;
         await storageViewModel.doTaskBoxRequest(
@@ -44,7 +43,7 @@ class CartViewModel extends GetxController {
         );
         deleteItemCart(cartList[i]);
       }
-      snackSuccess("", "Checkout Succeffully");
+      snackSuccess("", tr.checkout_successfully );
       Get.back();
 
       // List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
@@ -82,8 +81,9 @@ class CartViewModel extends GetxController {
   }
 
   //todo this for add to cart [local data]
-  void addToCart(List<Box>? boxes, List<BoxItem>? boxItems, Address? address,
-      Task task, Day day, String title) {
+  Future<void> addToCart(List<Box>? boxes, List<BoxItem>? boxItems, Address? address,
+      Task task, Day day, String title) async {
+    task.selectedVas = storageViewModel.selectedStringOption;
     var cartModel = CartModel(
         userId: SharedPref.instance.getCurrentUserData().id.toString(),
         task: task,
@@ -93,8 +93,8 @@ class CartViewModel extends GetxController {
         address: address,
         title: "$title");
     cartModel.toJson().remove("id");
-    CartHelper.instance.addToCart(cartModel).then((value) {
-      if (value > 1) {
+   await CartHelper.instance.addToCart(cartModel).then((value) {
+      if (value >= 1) {
         //todo success state
         Logger().d("addToCart_1${cartModel.toJson()}");
         snackSuccess(tr.success, tr.success_add_to_cart);
@@ -106,8 +106,16 @@ class CartViewModel extends GetxController {
     }).catchError((onError) {
       Logger().d("addToCart_3${onError.toString()}");
     });
-
-    getMyCart();
+    cartModel = CartModel(
+      task: null,
+      userId: null,
+      box: [],
+      boxItem: null,
+      title: null,
+      address: null,
+      orderTime: null,
+    );
+   // getMyCart();
   }
 
   //todo this for delete item from cart [local data]

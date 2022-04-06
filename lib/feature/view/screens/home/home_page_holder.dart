@@ -20,6 +20,8 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
+import '../../../../util/app_shaerd_data.dart';
+
 // ignore: must_be_immutable
 class HomePageHolder extends StatefulWidget {
   HomePageHolder({Key? key, this.box, this.isFromScan}) : super(key: key);
@@ -42,10 +44,10 @@ class _HomePageHolderState extends State<HomePageHolder> {
     const ProfileScreen(),
   ];
 
-  static StorageViewModel get storageViewModel => Get.put(StorageViewModel(), permanent: true);
+  static StorageViewModel get storageViewModel =>
+      Get.put(StorageViewModel(), permanent: true);
   static SplashViewModle get splashViewModle => Get.put(SplashViewModle());
   static HomeViewModel get homeViewModle => Get.put(HomeViewModel() , permanent: true);
-  static ProfileViewModle get profileViewModel => Get.put(ProfileViewModle() );
 
   @override
   void initState() {
@@ -53,7 +55,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
     Get.put(StorageViewModel(), permanent: true);
     Get.put(HomeViewModel(), permanent: true);
     Get.put(ItemViewModle(), permanent: true);
-    // Get.put(ProfileViewModle());
+    Get.put(ProfileViewModle() , permanent: true);
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       // Get.put(ItemViewModle());
@@ -68,6 +70,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
             ),
             isScrollControlled: true);
       }
+
       homeViewModle.getCustomerBoxes();
       storageViewModel.getStorageCategories();
       splashViewModle.getAppSetting();
@@ -76,6 +79,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       body: GetBuilder<HomeViewModel>(
           init: HomeViewModel(),
@@ -164,7 +168,6 @@ class _HomePageHolderState extends State<HomePageHolder> {
                         SizedBox(width: sizeW20),
                         MaterialButton(
                           onPressed: () {
-                              profileViewModel.getMyWallet();
                             logic.changeTab(3);
                           },
                           minWidth: sizeW48,

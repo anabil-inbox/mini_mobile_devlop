@@ -54,4 +54,17 @@ class OrderHelper {
       return appResponse.data;
     }
   }
+
+  Future<AppResponse> applyPayment({required Map<String, dynamic> body}) async {
+    var appResponse = await OrderApi.getInstance.applyPayment(
+        body: body,
+        url: "${ConstanceNetwork.submitPaymentEndPoint}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      Logger().e(appResponse.data);
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
 }

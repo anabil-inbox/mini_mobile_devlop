@@ -17,6 +17,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
 import '../box_in_task_widget.dart';
 
 class TaskWidgetBS extends StatelessWidget {
@@ -29,6 +30,7 @@ class TaskWidgetBS extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: padding20!),
       decoration: containerBoxDecoration().copyWith(
@@ -63,7 +65,7 @@ class TaskWidgetBS extends StatelessWidget {
                   colorBtn: homeViewModel.selctedOperationsBoxess.length > 0
                       ? colorPrimary
                       : colorUnSelectedWidget,
-                  textButton: "Next",
+                  textButton: tr.next,
                   isLoading: false,
                   onClicked: homeViewModel.selctedOperationsBoxess.length > 0
                       ? () {
@@ -122,7 +124,6 @@ class TaskWidgetBS extends StatelessWidget {
 
   Widget getListViewByBoxStatus() {
     if (task.id == LocalConstance.destroyId ||
-        task.id == LocalConstance.giveawayId ||
         task.id == LocalConstance.terminateId) {
       return ListView(
           primary: false,
@@ -154,12 +155,25 @@ class TaskWidgetBS extends StatelessWidget {
           shrinkWrap: true,
           physics: customScrollViewIOS(),
           children: homeViewModel.userBoxess
-              .map((e) => (e.storageStatus == LocalConstance.boxAtHome &&
-                      e.allowed!)
-                  ? BoxInTaskWidget(
-                      box: e,
-                    )
-                  : const SizedBox())
+              .map((e) =>
+                  (e.storageStatus == LocalConstance.boxAtHome && e.allowed!)
+                      ? BoxInTaskWidget(
+                          box: e,
+                        )
+                      : const SizedBox())
+              .toList());
+    } else if (task.id == LocalConstance.giveawayId) {
+      return ListView(
+          primary: false,
+          shrinkWrap: true,
+          physics: customScrollViewIOS(),
+          children: homeViewModel.userBoxess
+              .map((e) =>
+                  (e.storageStatus != LocalConstance.boxAtHome && e.allowed!)
+                      ? BoxInTaskWidget(
+                          box: e,
+                        )
+                      : const SizedBox())
               .toList());
     } else {
       return Text("");

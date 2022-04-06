@@ -51,6 +51,8 @@ class _ItemScreenState extends State<ItemScreen> {
   @override
   initState() {
     super.initState();
+    Logger().d(widget.box.toJson());
+    Logger().d(itemViewModle.operationsBox?.toJson());
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       // await widget.getBoxDataMethod!();
       // Get.delete<ItemViewModle>();
@@ -136,7 +138,7 @@ class _ItemScreenState extends State<ItemScreen> {
               }
             },
             icon: SvgPicture.asset("assets/svgs/update.svg")),
-        widget.box.storageStatus == LocalConstance.boxAtHome
+        (widget.box.storageStatus == LocalConstance.boxAtHome || itemViewModle.operationsBox?.storageStatus == LocalConstance.boxAtHome||  !widget.box.allowed!)
             ? const SizedBox()
             : Center(
                 child: InkWell(
@@ -344,6 +346,8 @@ class _ItemScreenState extends State<ItemScreen> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
+    Logger().d("test_${widget.box.storageStatus}");
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: myAppbar,
@@ -392,8 +396,10 @@ class _ItemScreenState extends State<ItemScreen> {
                     height: sizeH10,
                   ),
                   itemLVWidget,
-                (itemViewModle.operationsBox?.allowed ?? false) 
+                (itemViewModle.operationsBox?.allowed ?? false)
                       ? BtnActionWidget(
+                          isGaveAway: itemViewModle.operationsBox?.storageStatus == LocalConstance.giveawayId,
+                          boxStatus: itemViewModle.operationsBox!.storageStatus ?? "",
                           redBtnText: widget.box.storageStatus ==
                                   LocalConstance.boxAtHome
                               ? "${tr.pickup}"
@@ -441,18 +447,8 @@ class _ItemScreenState extends State<ItemScreen> {
           ),
           isScrollControlled: true);
     } else {
-      //todo this if recall
-      // Get.bottomSheet(RecallBoxProcessSheet(box: widget.box),
-      //     isScrollControlled: true);
-      ///todo here we will show bottom sheet with  [bring the box , add to cart]
       final Task enterdTask =
           widget.homeViewModel.searchTaskById(taskId: LocalConstance.recallId);
-      // Get.bottomSheet(
-      //     RecallStorageSheet(
-      //         task: enterdTask,
-      //         box: itemViewModle.operationsBox ?? widget.box,
-      //         isUserSelectItem: false),
-      //     isScrollControlled: true);
       Get.bottomSheet(
           RecallBoxProcessSheet(
             boxes: [],

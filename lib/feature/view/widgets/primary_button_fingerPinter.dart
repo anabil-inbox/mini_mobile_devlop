@@ -4,6 +4,8 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import '../../../util/app_shaerd_data.dart';
+
 // ignore: must_be_immutable
 class PrimaryButtonFingerPinter extends StatelessWidget {
    PrimaryButtonFingerPinter({ Key? key ,
@@ -18,6 +20,7 @@ class PrimaryButtonFingerPinter extends StatelessWidget {
   final bool isExpanded;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       width: !isExpanded ? sizeW290 : double.infinity,
       height: sizeH50,

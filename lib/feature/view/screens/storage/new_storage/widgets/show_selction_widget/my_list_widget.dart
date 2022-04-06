@@ -15,6 +15,7 @@ class MyListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<StorageViewModel>(
         builder: (build) => build.userStorageCategoriesData.isEmpty
             ? const SizedBox()
@@ -24,6 +25,7 @@ class MyListWidget extends StatelessWidget {
                     color: colorTextWhite,
                     borderRadius: BorderRadius.circular(padding6!)),
                 child: ListView(
+                  physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   primary: false,
                   children: [

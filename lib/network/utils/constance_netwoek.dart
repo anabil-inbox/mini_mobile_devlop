@@ -18,6 +18,7 @@ abstract class ConstanceNetwork {
 
   ///todo this for login request user
   static var contryCodeKey = "country_code";
+  static var codeKey = "code";
   static var mobileKey = "mobile";
   static var udidKey = "udid";
   static var deviceTypeKey = "device_type";
@@ -83,12 +84,13 @@ abstract class ConstanceNetwork {
 
   static String editProfilEndPoint = "inbox_app.api.auth.edit_profile";
 
+  static String getLogEndPoint = "inbox_app.api.loyalty_points.get_log";
+
   static String depositMoneyEndPoint = "inbox_app.api.wallet.get_deposit_url";
 
   static String checkDepositEndPoint = "inbox_app.api.wallet.check_payment";
 
-  static String editProfilCompanyEndPoint =
-      "inbox_app.api.auth.company_edit_profile";
+  static String editProfilCompanyEndPoint = "inbox_app.api.auth.company_edit_profile";
 
   //todo this for storage end point
   static String storageCategoriesApi = "inbox_app.api.storage.categories";
@@ -100,9 +102,15 @@ abstract class ConstanceNetwork {
   static String storageAddNewStorage = "inbox_app.api.sales_order.sales_order";
   static String getTaskEndPoint = "inbox_app.api.task.get_basic_tasks";
   static String getOrderDetailes = "inbox_app.api.sales_order.get_order";
+
+  // check coupon
+  static String checkCouponEndPoints =
+      "inbox_app.api.loyalty_points.check_coupon";
+
   // to check Time Slot Here :
 
-  static String checkTimeSlotEndPoint = "inbox_app.api.sales_order.check_time_slot";
+  static String checkTimeSlotEndPoint =
+      "inbox_app.api.sales_order.check_time_slot";
   // to add here item end pointes :
 
   static String getBoxBySerialEndPoint =
@@ -121,6 +129,8 @@ abstract class ConstanceNetwork {
 
   static String paymentEndPoint =
       "inbox_app.api.get_payment_url.get_skip_cash_settings";
+  static String applyPaymentEndPoint =
+      "inbox_app.api.sales_order.submit_payment";
 
   //product end point
   static String allOrder = "inbox_app.api.product.get_products";
@@ -129,13 +139,36 @@ abstract class ConstanceNetwork {
   // this for constance network
   static String page = "page";
   static String pageSize = "page_size";
+  static String customerKey = "Customer";
 
   // this for constance Myorder
   static String myOrderDetailesEndPoint = "inbox_app.api.sales_order.get_order";
+  static String myPointsEndPoint = "inbox_app.api.loyalty_points.get_loyalty_points";
+  static String submitPaymentEndPoint = "inbox_app.api.sales_order.submit_payment";
 
+  static String uploadOrderSignatureEndPoint =
+      "inbox_app.api.sales_order.upload_order_signature";
+
+  // this for subscriptions
+  static String getSubscriptionsEndPoint ="inbox_app.api.subscription.get_subscriptions";
+  static String terminateSubscriptionsEndPoint ="inbox_app.api.subscription.terminate_subscription";
+  
+
+  // this for get Task Response:
+
+  static String getCurrentTaskResponeEndPoint = "inbox_app.api.sales_order.get_order_details";
+
+  // this for notifcation
+  static String getNotificationsApi="inbox_app.api.loyalty_points.get_notifications";
+
+  
   //todo this for constance Keys
   static String amountKey = "amount";
   static String idKey = "id";
+  static String paymentMethodKey = "payment_method";
+  static String paymentIdKey = "payment_id";
+  static String extraFeesKey = "extra_fees";
+  static String reasonKey = "reason";
   static String statusKey = "status";
 
   //todo this for constance type of user
@@ -162,6 +195,43 @@ abstract class ConstanceNetwork {
 
   //here order keyes
   static String productId = "product_id";
+
+  static var filter = "filter";
+
+  static var smsKey = "sms";
+
+  static var targetKey = "target";
+
+  static var nameKey = "name";
+
+  static var qtyKey = "qty";
+
+  static var newNameKey = "new_name";
+
+  static var tagsKey = "tags";
+
+  static var dataKey = "data";
+
+  static var imageKey = "Image";
+
+  static var storageKey = "storage";
+
+  static var gallerykey = "gallery";
+
+  static var fullNameKey = "full_name";
+
+  static var imageSmallKey = "image";
+
+  static var contactNumberkey ="contact_number";
+
+  static var companyNameKey = "company_name";
+
+  static var companySectorKey = "company_sector";
+
+  static var applicantNameKey = "applicant_name";
+
+  static var applicantDepartmentKey = "applicant_department";//small
+
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};
     if (typeToken == 0) {

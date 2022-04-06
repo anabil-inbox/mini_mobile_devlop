@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import '../../../../../util/app_shaerd_data.dart';
+
 class StatusWidget extends StatelessWidget {
-  const StatusWidget({Key? key , this.status}) : super(key: key);
+  const StatusWidget({Key? key , this.status, this.child, }) : super(key: key);
 
   final String? status;
+  final Widget? child;
+
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
      // margin: EdgeInsets.symmetric(horizontal: padding20!),
       decoration: BoxDecoration(
@@ -26,10 +32,14 @@ class StatusWidget extends StatelessWidget {
               ),
               Text("Status"),
               const Spacer(),
-              TextButton(
-                  style: buttonStyleBackgroundClicable,
-                  onPressed: () {},
-                  child: Text("$status")),
+              if(GetUtils.isNull(child))...[
+                TextButton(
+                    style: buttonStyleBackgroundClicable,
+                    onPressed: () {},
+                    child: Text("$status"))
+              ]else ...[
+               child!,
+              ],
               SizedBox(
                 width: sizeW24,
               ),

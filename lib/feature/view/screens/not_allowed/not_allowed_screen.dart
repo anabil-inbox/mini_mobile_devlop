@@ -17,6 +17,8 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
+import '../../../../util/app_shaerd_data.dart';
+
 class NotAllowedScreen extends StatelessWidget {
   const NotAllowedScreen({Key? key, required this.box}) : super(key: key);
 
@@ -25,6 +27,7 @@ class NotAllowedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       backgroundColor: scaffoldColor,
       body: Padding(

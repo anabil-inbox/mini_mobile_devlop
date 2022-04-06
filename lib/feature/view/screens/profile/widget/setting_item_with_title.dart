@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../util/app_shaerd_data.dart';
+
 class SettingItemWithTitle extends StatelessWidget {
   const SettingItemWithTitle(
       {Key? key,
@@ -19,6 +21,7 @@ class SettingItemWithTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: sizeH20!),
       clipBehavior: Clip.hardEdge,
@@ -46,36 +49,35 @@ class SettingItemWithTitle extends StatelessWidget {
                     size: 16,
                   ),
                 )
-              : Container(
-                  width: sizeW95,
-                  child: FittedBox(
-                    fit: BoxFit.fill,
-                    clipBehavior: Clip.hardEdge,
-                    child: Row(
-                      mainAxisSize:MainAxisSize.min ,
-                      children: [
-                         SizedBox(width: sizeW10!,),
-                        Text(
+              : 
+            /*  const SizedBox(), */
+              Container(
+                  width: sizeW150,
+                  child: Row(
+                    children: [
+                      const Spacer(),
+                      FittedBox(
+                        fit: BoxFit.fill,
+                        child: Text(
                           "$trailingTitle",
                           style: TextStyle(color: colorPrimary),
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: true,
-                          // overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(
-                          width: sizeW10,
-                        ),
-                        // SizedBox(width: sizeW10!,),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 15,
-                        ),
-                        SizedBox(
-                          width: sizeW10,
-                        ),
-                      ],
-                    ),
-                  ))),
+                      ),
+                      SizedBox(
+                        width: sizeW10,
+                      ),
+                      const Spacer(),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 15,
+                      ),
+                      SizedBox(
+                        width: sizeW10,
+                      ),
+                    ],
+                  ))
+                
+                  ),
     );
   }
 }

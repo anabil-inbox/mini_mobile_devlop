@@ -31,6 +31,7 @@ class AddItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       decoration: BoxDecoration(
           color: colorBackground,
@@ -60,6 +61,7 @@ class AddItemWidget extends StatelessWidget {
                   if (e!.trim().length < 1) {
                     return "${tr.fill_your_name}";
                   }
+                  return null;
                 },
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(

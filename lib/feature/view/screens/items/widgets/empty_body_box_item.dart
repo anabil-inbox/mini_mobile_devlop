@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
-import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_payment_widaget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
-import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -29,6 +27,7 @@ class EmptyBodyBoxItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Padding(
       padding: EdgeInsets.all(0),
       child: Stack(
@@ -62,6 +61,9 @@ class EmptyBodyBoxItem extends StatelessWidget {
             end: 0,
             child: GetBuilder<ItemViewModle>(
               builder: (item) {
+                if (item.operationsBox == null) {
+                  return const SizedBox();
+                }
                 return Column(
                   children: [
                     FloatingActionButton(
@@ -91,51 +93,67 @@ class EmptyBodyBoxItem extends StatelessWidget {
                     SizedBox(
                       height: sizeH50,
                     ),
-                    item.operationsBox?.saleOrder == null
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              PrimaryButton(
-                                isExpanded: false,
-                                isLoading: false,
-                                onClicked: () {
-                                  final interdTask =
-                                      _homeViewModel.searchTaskById(
-                                          taskId: LocalConstance.pickupId);
-                                  Get.bottomSheet(
-                                      RecallBoxProcessSheet(
-                                          task: interdTask,
-                                          box: itemViewModle.operationsBox ??
-                                              box!,
-                                          boxes: [box!]),
-                                      isScrollControlled: true);
-                                },
-                                textButton: tr.schedule_pickup,
-                              ),
-                              SizedBox(
-                                width: sizeW12,
-                              ),
-                              SizedBox(
-                                width: sizeW150,
-                                child: SeconderyFormButton(
-                                  buttonText: "${tr.ready_to_pickup}",
-                                  onClicked: () {
-                                    final interdTask =
-                                        _homeViewModel.searchTaskById(
-                                            taskId: LocalConstance.pickupId);
-                                    Get.bottomSheet(
-                                        BottomSheetPaymentWidget(
-                                            beneficiaryId: "",
-                                            task: interdTask,
-                                            box: itemViewModle.operationsBox ??
-                                                box!,
-                                            boxes: [box!]),
-                                        isScrollControlled: true);
-                                  },
-                                ),
-                              ),
-                            ],
+                    (/*item.operationsBox?.saleOrder == null ||*/ item
+                            .operationsBox!.allowed!)
+                        ? PrimaryButton(
+                            isExpanded: false,
+                            isLoading: false,
+                            onClicked: () {
+                              final interdTask = _homeViewModel.searchTaskById(
+                                  taskId: LocalConstance.pickupId);
+                              Get.bottomSheet(
+                                  RecallBoxProcessSheet(
+                                      task: interdTask,
+                                      box: itemViewModle.operationsBox ?? box!,
+                                      boxes: [box!]),
+                                  isScrollControlled: true);
+                            },
+                            textButton: tr.schedule_pickup,
                           )
+                        //  Row(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        // PrimaryButton(
+                        //   isExpanded: false,
+                        //   isLoading: false,
+                        //   onClicked: () {
+                        //     final interdTask =
+                        //         _homeViewModel.searchTaskById(
+                        //             taskId: LocalConstance.pickupId);
+                        //     Get.bottomSheet(
+                        //         RecallBoxProcessSheet(
+                        //             task: interdTask,
+                        //             box: itemViewModle.operationsBox ??
+                        //                 box!,
+                        //             boxes: [box!]),
+                        //         isScrollControlled: true);
+                        //   },
+                        //   textButton: tr.schedule_pickup,
+                        // ),
+                        //       SizedBox(
+                        //         width: sizeW12,
+                        //       ),
+                        //       SizedBox(
+                        //         width: sizeW150,
+                        //         child: SeconderyFormButton(
+                        //           buttonText: "${tr.ready_to_pickup}",
+                        //           onClicked: () {
+                        //             final interdTask =
+                        //                 _homeViewModel.searchTaskById(
+                        //                     taskId: LocalConstance.pickupId);
+                        //             Get.bottomSheet(
+                        //                 BottomSheetPaymentWidget(
+                        //                     beneficiaryId: "",
+                        //                     task: interdTask,
+                        //                     box: itemViewModle.operationsBox ??
+                        //                         box!,
+                        //                     boxes: [box!]),
+                        //                 isScrollControlled: true);
+                        //           },
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   )
                         : const SizedBox(),
                   ],
                 );

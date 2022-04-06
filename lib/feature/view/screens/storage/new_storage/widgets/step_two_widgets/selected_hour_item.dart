@@ -8,6 +8,8 @@ import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/date_time_util.dart';
 
+import '../../../../../../../util/app_shaerd_data.dart';
+
 class SelectedHourItem extends StatelessWidget {
   SelectedHourItem({Key? key, required this.day}) : super(key: key);
 
@@ -16,15 +18,19 @@ class SelectedHourItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Column(
       children: [
         SeconderyButtom(
+            isEnable: day?.check ?? false,
             textButton: "${DateUtility.getLocalhouersFromUtc(day: day!)}",
-            onClicked: () {
-              storageViewModel.selectedDay = day;
-              storageViewModel.update();
-              Get.back();
-            }),
+            onClicked: day?.check ?? false
+                ? () {
+                    storageViewModel.selectedDay = day;
+                    storageViewModel.update();
+                    Get.back();
+                  }
+                : (){}),
         SizedBox(
           height: sizeH10,
         )

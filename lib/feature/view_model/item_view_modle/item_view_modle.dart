@@ -13,7 +13,7 @@ import 'package:inbox_clients/feature/model/inside_box/sended_image.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/chooce_add_method_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/items_operations_widget_BS.dart';
-import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
@@ -69,17 +69,17 @@ class ItemViewModle extends BaseController {
     }
 
     await HomeHelper.getInstance.updateBox(body: {
-      "name": box.storageName,
-      "serial": box.serialNo,
-      "qty": itemQuantity,
-      "new_name": tdName.text,
-      "tags": jsonEncode(tags),
+      ConstanceNetwork.nameKey : box.storageName,
+      ConstanceNetwork.serial: box.serialNo,
+      ConstanceNetwork.qtyKey: itemQuantity,
+      ConstanceNetwork.newNameKey: tdName.text,
+      ConstanceNetwork.tagsKey: jsonEncode(tags),
     }).then((value) => {
           if (value.status!.success!)
             {
               // homeViewModel.getCustomerBoxes(),
               snackSuccess("${tr.success}", "${value.status?.message}"),
-              operationsBox = Box.fromJson(value.data["data"]),
+              operationsBox = Box.fromJson(value.data[ConstanceNetwork.dataKey]),
               homeViewModel.userBoxess.clear(),
               homeViewModel.getCustomerBoxes(),
             }
@@ -126,23 +126,23 @@ class ItemViewModle extends BaseController {
       compressImage(item);
       innerImages.add(SendedImage(
           attachment: multiPart.MultipartFile.fromFileSync(item.path),
-          type: "Image"));
+          type: ConstanceNetwork.imageKey));
     }
     for (var i = 0; i < innerImages.length; i++) {
       map["image[$i]"] = innerImages[i].attachment;
       map["file[$i]"] = innerImages[i].type;
     }
 
-    map["name"] = tdName.text;
-    map["storage"] = serialNo;
-    map["qty"] = itemQuantity;
-    map["tags"] = jsonEncode(tags);
+    map[ConstanceNetwork.nameKey] = tdName.text;
+    map[ConstanceNetwork.storageKey] = serialNo;
+    map[ConstanceNetwork.qtyKey] = itemQuantity;
+    map[ConstanceNetwork.tagsKey] = jsonEncode(tags);
 
     await ItemHelper.getInstance.addItem(body: map).then((value) => {
           if (value.status!.success!)
             {
-              Logger().i("${value.data["data"]}"),
-              operationsBox?.items?.add(BoxItem.fromJson(value.data["data"])),
+              Logger().i("${value.data[ConstanceNetwork.dataKey]}"),
+              operationsBox?.items?.add(BoxItem.fromJson(value.data[ConstanceNetwork.dataKey])),
               snackSuccess("${tr.success}", "${value.status!.message}"),
               Get.back(),
               endLoading()
@@ -182,7 +182,7 @@ class ItemViewModle extends BaseController {
     for (var item in images) {
       innerImages.add(SendedImage(
           attachment: multiPart.MultipartFile.fromFileSync(item.path),
-          type: "Image"));
+          type: ConstanceNetwork.imageKey));
     }
 
     for (var i = 0; i < innerImages.length; i++) {
@@ -190,11 +190,11 @@ class ItemViewModle extends BaseController {
       map["file[$i]"] = innerImages[i].type;
     }
 
-    map["id"] = itemId;
-    map["new_name"] = tdName.text;
-    map["qty"] = itemQuantity;
-    map["tags"] = jsonEncode(tags);
-    map["gallery"] = jsonEncode(gallary);
+    map[ConstanceNetwork.idKey] = itemId;
+    map[ConstanceNetwork.newNameKey] = tdName.text;
+    map[ConstanceNetwork.qtyKey] = itemQuantity;
+    map[ConstanceNetwork.tagsKey] = jsonEncode(tags);
+    map[ConstanceNetwork.gallerykey] = jsonEncode(gallary);
 
     await ItemHelper.getInstance.updateItem(body: map).then((value) => {
           if (value.status!.success!)
@@ -225,17 +225,17 @@ class ItemViewModle extends BaseController {
     Get.back();
     startLoading();
     await ItemHelper.getInstance.addItem(body: {
-      "storage": "$serialNo",
+      ConstanceNetwork.storageKey: "$serialNo",
       "image[0]": itemImage != null
           ? multiPart.MultipartFile.fromFileSync(itemImage!.path)
           : [],
-      "file[0]": "Image",
+      "file[0]": ConstanceNetwork.imageKey,
       LocalConstance.quantity: 1,
     }).then((value) => {
           if (value.status!.success!)
             {
               snackSuccess("${tr.success}", "${value.status!.message}"),
-              operationsBox?.items?.add(BoxItem.fromJson(value.data["data"])),
+              operationsBox?.items?.add(BoxItem.fromJson(value.data[ConstanceNetwork.dataKey])),
               endLoading()
             }
           else
@@ -255,7 +255,7 @@ class ItemViewModle extends BaseController {
       {required String serialNo, required String id}) async {
     await Get.bottomSheet(GlobalBottomSheet(
       isTwoBtn: true,
-      title: "Are You Share You Want To Delete This Item ?",
+      title: tr.want_delete,
       onOkBtnClick: () async {
         Get.close(2);
         await deleteItem(serialNo: serialNo, id: id);
@@ -269,7 +269,7 @@ class ItemViewModle extends BaseController {
   Future<void> deleteItem(
       {required String serialNo, required String id}) async {
     startLoading();
-    await ItemHelper.getInstance.deleteItem(body: {"id": id}).then((value) => {
+    await ItemHelper.getInstance.deleteItem(body: {ConstanceNetwork.idKey: id}).then((value) => {
           if (value.status!.success!)
             {
               Logger().i("${value.toJson()}"),
@@ -312,7 +312,7 @@ class ItemViewModle extends BaseController {
             height: sizeH20,
           ),
           Text(
-            "Select Image",
+            tr.select_image,
             style: textStyleAppBarTitle(),
           ),
           SizedBox(
@@ -320,7 +320,7 @@ class ItemViewModle extends BaseController {
           ),
           SeconderyButtom(
             buttonTextStyle: textSeconderyButtonUnBold(),
-            textButton: "Camera",
+            textButton: tr.camera,
             onClicked: () async {
               await getImage(ImageSource.camera);
               Get.back();
@@ -332,7 +332,7 @@ class ItemViewModle extends BaseController {
           ),
           SeconderyButtom(
             buttonTextStyle: textSeconderyButtonUnBold(),
-            textButton: "Gallery",
+            textButton: tr.gallery,
             onClicked: () async {
               await getImage(ImageSource.gallery);
               Get.back();
@@ -384,11 +384,10 @@ class ItemViewModle extends BaseController {
       operationsBox = null;
       startLoading();
       await ItemHelper.getInstance
-          .getBoxBySerial(body: {"serial": serial}).then((value) => {
+          .getBoxBySerial(body: {ConstanceNetwork.serial: serial}).then((value) => {
                 if (value.status!.success!)
                   {
                     Logger().e("${value.toJson()}"),
-                    Logger().e("${value.data["saleOrder"]}"),
                     operationsBox = Box.fromJson(value.data),
                     
                     endLoading(),

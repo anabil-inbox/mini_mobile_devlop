@@ -57,6 +57,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       appBar: AppBar(

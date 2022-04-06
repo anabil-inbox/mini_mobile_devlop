@@ -13,6 +13,7 @@ class NeedInspectorWidget extends StatelessWidget {
  final StorageCategoriesData storageCategoriesData;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<StorageViewModel>(
       init: StorageViewModel(),
       initState: (_) {},

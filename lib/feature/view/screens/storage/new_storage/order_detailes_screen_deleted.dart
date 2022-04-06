@@ -9,6 +9,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import '../../../../../util/app_shaerd_data.dart';
 import 'widgets/order_detailes/order_details_address.dart';
 
 class OrderDerailesScreen extends StatelessWidget {
@@ -18,11 +19,12 @@ class OrderDerailesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       appBar: CustomAppBarWidget(
         isCenterTitle: true,
         titleWidget: Text(
-          "Order Details",
+         tr.order_details,
           style: textStyleAppBarTitle(),
         ),
       ),
@@ -48,7 +50,7 @@ class OrderDerailesScreen extends StatelessWidget {
                     height: sizeH16,
                   ),
                   OrderDetailsAddress(
-                    title: "Delivery Address",
+                    title: tr.delivery_address,
                     deliveryAddress: storageViewModel
                             .returnedOrderSales?.orderShippingAddress ??
                         storageViewModel
@@ -59,7 +61,7 @@ class OrderDerailesScreen extends StatelessWidget {
                     height: sizeH16,
                   ),
                   OrderDetailsAddress(
-                    title: "Schedule Delivery",
+                    title: tr.schedule_delivery,
                     deliveryAddress:
                         " ${storageViewModel.returnedOrderSales?.deliveryDate}",
                   ),

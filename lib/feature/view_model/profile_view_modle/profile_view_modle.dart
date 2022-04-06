@@ -17,17 +17,23 @@ import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/model/profile/get_wallet_model.dart';
+import 'package:inbox_clients/feature/model/profile/log_model.dart';
+import 'package:inbox_clients/feature/model/profile/my_point_model.dart';
+import 'package:inbox_clients/feature/model/subscription_data.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/widgets/area_zone_widget.dart';
 import 'package:inbox_clients/feature/view/screens/profile/my_wallet/Widgets/deposit_money_to_wallet_webView.dart';
-import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
+import 'package:inbox_clients/network/api/feature/subscription_feature.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/base_controller.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:inbox_clients/util/string.dart';
 import 'package:logger/logger.dart';
@@ -90,6 +96,7 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdCompanyMobileNumber = TextEditingController();
 
   List<Map<String, dynamic>> contactMap = [];
+  List<SubscriptionData>? subscriptions = [];
 
   // for address (add , edit ,delete)
 
@@ -160,7 +167,7 @@ class ProfileViewModle extends BaseController {
     update();
     try {
       await ProfileHelper.getInstance.deleteAddress(body: {
-        "id": "$addressId"
+        ConstanceNetwork.idKey: "$addressId"
       }).then((value) => {
             Logger().i("${value.status!.message}"),
             if (value.status!.success!)
@@ -229,12 +236,14 @@ class ProfileViewModle extends BaseController {
             Logger().i("${value.status!.message}"),
             if (value.status!.success!)
               {
-                snackSuccess("${tr.success}", "${value.status!.message}"),
+                // snackSuccess("${tr.success}", "${value.status!.message}"),
                 isLoading = false,
                 update(),
                 SharedPref.instance
                     .setUserLoginState("${ConstanceNetwork.userEnterd}"),
                 Get.offAll(() => UserBothLoginScreen()),
+                Get.find<HomeViewModel>().userBoxess.clear(),
+                Get.find<HomeViewModel>().changeTab(0),
               }
             else
               {
@@ -243,6 +252,8 @@ class ProfileViewModle extends BaseController {
                     .setUserLoginState("${ConstanceNetwork.userEnterd}"),
                 Get.offAll(() => UserBothLoginScreen()),
                 update(),
+                Get.find<HomeViewModel>().userBoxess.clear(),
+                Get.find<HomeViewModel>().changeTab(0),
                 // snackError("${tr.error_occurred}", "${value.status!.message}"),
               }
           });
@@ -266,8 +277,7 @@ class ProfileViewModle extends BaseController {
                     color: colorBackground,
                     borderRadius: BorderRadius.vertical(
                         top: Radius.circular(padding30!))),
-                child: Text("Sorrey , No Zone Area Available",
-                    style: textStyleTitle()))
+                child: Text(tr.sorry_area_available, style: textStyleTitle()))
             : Container(
                 decoration: BoxDecoration(
                     color: colorBackground,
@@ -281,7 +291,7 @@ class ProfileViewModle extends BaseController {
                       height: sizeH20,
                     ),
                     Text(
-                      "Select Your Time Zone ",
+                      tr.select_time_zone,
                       style: textStyleTitle()!.copyWith(color: colorPrimary),
                     ),
                     SizedBox(
@@ -315,28 +325,29 @@ class ProfileViewModle extends BaseController {
     if (SharedPref.instance.getCurrentUserData().crNumber.toString().isEmpty ||
         GetUtils.isNull(SharedPref.instance.getCurrentUserData().crNumber)) {
       myMap = {
-        "email": "${tdUserEmailEdit.text}",
-        "full_name": "${tdUserFullNameEdit.text}",
-        "image": myImg != null
+        ConstanceNetwork.emailKey: "${tdUserEmailEdit.text}",
+        ConstanceNetwork.fullNameKey: "${tdUserFullNameEdit.text}",
+        ConstanceNetwork.imageSmallKey: myImg != null
             ? multiPart.MultipartFile.fromFileSync(myImg!.path)
             : "",
-        "contact_number": jsonEncode(contactMap),
-        "udid": identidire,
+        ConstanceNetwork.contactNumberkey: jsonEncode(contactMap),
+        ConstanceNetwork.udidKey: identidire,
       };
     } else {
       myMap = {
-        "email": "${tdCompanyEmailEdit.text}",
-        "company_name": "${tdCompanyNameEdit.text}",
-        "image": myImg != null
+        ConstanceNetwork.emailKey: "${tdCompanyEmailEdit.text}",
+        ConstanceNetwork.companyNameKey: "${tdCompanyNameEdit.text}",
+        ConstanceNetwork.imageSmallKey: myImg != null
             ? multiPart.MultipartFile.fromFileSync(myImg!.path)
             : "",
-        "contact_number": jsonEncode(contactMap),
-        "company_sector": companySector!.name,
-        "applicant_name": tdCompanyNameOfApplicationEdit.text,
-        "applicant_department": tdCompanyApplicantDepartment.text,
+        ConstanceNetwork.contactNumberkey: jsonEncode(contactMap),
+        ConstanceNetwork.companySectorKey: companySector!.name,
+        ConstanceNetwork.applicantNameKey: tdCompanyNameOfApplicationEdit.text,
+        ConstanceNetwork.applicantDepartmentKey:
+            tdCompanyApplicantDepartment.text,
         "${ConstanceNetwork.mobileNumberKey}": tdCompanyMobileNumber.text,
-        "country_code": defCountry.prefix,
-        "udid": identidire,
+        ConstanceNetwork.contryCodeKey: defCountry.prefix,
+        ConstanceNetwork.udidKey: identidire,
       };
     }
     try {
@@ -574,9 +585,12 @@ class ProfileViewModle extends BaseController {
     super.onInit();
     userAddress.clear();
     getMyAddress();
+    getMyPoints();
+    getMyWallet();
   }
 
   GetWallet myWallet = GetWallet();
+
   // var transaction = <Transactions>[];
   List<Transactions> transaction = <Transactions>[];
 
@@ -589,7 +603,6 @@ class ProfileViewModle extends BaseController {
         Logger().d("test_2${value}");
         myWallet = value;
         transaction = value.transactions!;
-
         isLoading = false;
         update();
       }).catchError((onError) {
@@ -605,7 +618,8 @@ class ProfileViewModle extends BaseController {
   }
 
   TextEditingController amountController = TextEditingController();
-  String? url = "";
+  String url = "";
+
   void depositMoneyToWallet() async {
     isLoading = true;
     Map<String, dynamic> map = {
@@ -638,12 +652,12 @@ class ProfileViewModle extends BaseController {
     }
   }
 
-  String? depositStatus = "";
-  String? paymentId = "";
+  String depositStatus = "";
+  String paymentId = "";
 
   void checkDeposit() async {
     isLoading = true;
-    if (depositStatus!.contains("Paid")) {
+    if (depositStatus.contains("Paid")) {
       depositStatus = 'success';
     } else {
       depositStatus = 'fail';
@@ -679,6 +693,123 @@ class ProfileViewModle extends BaseController {
       Logger().d(e.toString());
       isLoading = false;
       update();
+    }
+  }
+
+  // to do for points (Rewords)
+
+  // start Loaging Function ::
+  void startLoading() {
+    isLoading = true;
+    update();
+  }
+
+  // end Loaging Function ::
+  void endLoading() {
+    isLoading = false;
+    update();
+  }
+
+  MyPoints myPoints = MyPoints();
+
+  Future<void> getMyPoints() async {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      startLoading();
+    });
+    try {
+      await ProfileHelper.getInstance.getMyPoints().then((value) => {
+            myPoints = MyPoints.fromJson(value.data),
+            Logger().e(myPoints.toJson())
+          });
+    } catch (e) {
+      printError();
+    }
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      endLoading();
+    });
+  }
+
+  String selectedMapType = LocalConstance.mapType;
+  List<Log> userLogs = [];
+
+  Future<void> getUserLog() async {
+    startLoading();
+    try {
+      await ProfileHelper.getInstance
+          .getUserLogs()
+          .then((value) => {userLogs = value.toList(), update()});
+    } catch (e) {
+      printError();
+    }
+    endLoading();
+  }
+
+  void filterSubscriptions(var filterType) async {
+    if (filterType == LocalConstance.quantityConst) {
+      //this for quantity
+      getUserSubscription(LocalConstance.quantityConst);
+    } else if (filterType == LocalConstance.itemConst) {
+      //this for item
+      getUserSubscription(LocalConstance.itemConst);
+    } else if (filterType == LocalConstance.spaceConst) {
+      //this for space
+      getUserSubscription(LocalConstance.spaceConst);
+    } else {
+      getUserSubscription("");
+    }
+  }
+
+  //this for Subscription
+  Future<void> getUserSubscription(String filterType) async {
+    startLoading();
+    subscriptions?.clear();
+    Map<String, dynamic> map = {ConstanceNetwork.filter: filterType};
+    try {
+      await SubscriptionFeature.getInstance
+          .getSubscriptions(filterType.isEmpty ? {} : map)
+          .then((value) {
+        subscriptions = value;
+        endLoading();
+      });
+    } catch (e) {
+      printError();
+      endLoading();
+      Logger().e(e);
+    }
+  }
+
+  void onTerminateSubscriptions(SubscriptionData? subscriptionsData) async {
+    Map<String, dynamic> map = {
+      ConstanceNetwork.idKey: subscriptionsData?.id.toString()
+    };
+    startLoading();
+
+    try {
+      await SubscriptionFeature.getInstance
+          .terminateSubscriptions(map)
+          .then((value) {
+        if (value.status?.success ?? false) {
+          subscriptions?.clear();
+          List data = value.data;
+          List<SubscriptionData> map =
+              data.map((e) => SubscriptionData.fromJson(e)).toList();
+          subscriptions = map;
+          endLoading();
+          Get.back();
+          Get.find<HomeViewModel>().getCustomerBoxes();
+        } else {
+          snackError(
+              error?.tr,
+              value.status?.code == 403
+                  ? tr.no_permission
+                  : value.status?.message ?? "");
+          endLoading();
+        }
+      });
+    } catch (e) {
+      printError();
+      endLoading();
+      Logger().e(e);
     }
   }
 }

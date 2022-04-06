@@ -3,6 +3,7 @@ class OrderSales {
     this.orderId,
     this.customerId,
     this.orderType,
+    this.proccessType,
     this.totalPrice,
     this.orderShippingAddress,
     this.orderWarehouseAddress,
@@ -19,37 +20,40 @@ class OrderSales {
   dynamic orderWarehouseAddress;
   DateTime? deliveryDate;
   String? status;
+  String? proccessType;
   List<OrderItem>? orderItems;
 
   factory OrderSales.fromJson(Map<String, dynamic> json) => OrderSales(
         orderId: json["order_id"] ?? "",
-        customerId: json["customer_id"]?? "",
-        orderType: json["order_type"]?? "",
-        totalPrice: json["total_price"]?? "",
+        customerId: json["customer_id"] ?? "",
+        proccessType: json["process"] ?? "",
+        orderType: json["order_type"] ?? "",
+        totalPrice: json["total_price"] ?? "",
         orderShippingAddress: json["order_shipping_address"] ?? "",
-        orderWarehouseAddress: json["order_warehouse_address"]?? "",
+        orderWarehouseAddress: json["order_warehouse_address"] ?? "",
         deliveryDate: DateTime.parse(json["delivery_date"]),
         status: json["status"] ?? "",
         orderItems: json["order_items"] == null
             ? []
-            : List<OrderItem>.from(json["order_items"].map((x) => OrderItem.fromJson(x))),
+            : List<OrderItem>.from(
+                json["order_items"].map((x) => OrderItem.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "order_id": orderId,
         "customer_id": customerId,
         "order_type": orderType,
+        "process" : proccessType,
         "total_price": totalPrice,
         "order_shipping_address": orderShippingAddress,
         "order_warehouse_address": orderWarehouseAddress,
         "delivery_date":
             "${deliveryDate?.year.toString().padLeft(4, '0')}-${deliveryDate?.month.toString().padLeft(2, '0')}-${deliveryDate?.day.toString().padLeft(2, '0')}",
         "status": status,
-        "order_items":  (orderItems == null || orderItems!.isEmpty)
+        "order_items": (orderItems == null || orderItems!.isEmpty)
             ? []
             : List<dynamic>.from(orderItems!.map((x) => x.toJson())),
       };
-
 
   @override
   bool operator ==(Object other) =>
@@ -63,20 +67,19 @@ class OrderSales {
 }
 
 class OrderItem {
-  OrderItem({
-    this.itemParent,
-    this.item,
-    this.needAdviser,
-    this.price,
-    this.quantity,
-    this.totalPrice,
-    this.groupId,
-    this.itemStatus,
-    this.isParent,
-    this.itemsList,
-    this.options,
-    this.boxes
-  });
+  OrderItem(
+      {this.itemParent,
+      this.item,
+      this.needAdviser,
+      this.price,
+      this.quantity,
+      this.totalPrice,
+      this.groupId,
+      this.itemStatus,
+      this.isParent,
+      this.itemsList,
+      this.options,
+      this.boxes});
 
   String? itemParent;
   String? item;
@@ -96,9 +99,13 @@ class OrderItem {
         item: json["item"],
         needAdviser: json["need_Adviser"],
         price: json["price"],
-        options: json["options"] == null ? [] : List<String>.from(json["options"].map((x) => x)),
+        options: json["options"] == null
+            ? []
+            : List<String>.from(json["options"].map((x) => x)),
         quantity: json["quantity"],
-        boxes: json["boxes"] == null ? [] : List<String>.from(json["boxes"].map((x) => x)),
+        boxes: json["boxes"] == null
+            ? []
+            : List<String>.from(json["boxes"].map((x) => x)),
         totalPrice: json["totalPrice"],
         groupId: json["group_id"],
         itemStatus: json["item_status"] == null ? null : json["item_status"],

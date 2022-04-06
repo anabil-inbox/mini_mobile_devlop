@@ -20,6 +20,7 @@ class HomeLVItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return Container(
       width: double.infinity,
       height: sizeH75,
@@ -31,7 +32,8 @@ class HomeLVItemWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          retuenBoxByStatus(
+          returnBoxByStatus(
+              isPickup: box.isPickup ?? true,
               storageStatus: box.storageStatus ?? "", isEnabeld: isEnabeld),
           SizedBox(
             width: sizeW15,
@@ -43,7 +45,7 @@ class HomeLVItemWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 CustomTextView(
-                  txt: "${box.storageName}",
+                  txt: "${box.serialNo}",
                   maxLine: Constance.maxLineOne,
                   textStyle: textStyleNormalBlack()?.copyWith(height: 1),
                   textAlign: TextAlign.center,

@@ -31,7 +31,7 @@ class ProductApi {
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
-      return AppResponse.fromJson(message??"");
+      return AppResponse.fromJson(message??{});
     }
   }
 

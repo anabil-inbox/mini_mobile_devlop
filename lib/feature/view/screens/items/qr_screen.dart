@@ -7,6 +7,8 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../../../../util/app_shaerd_data.dart';
+
 // ignore: must_be_immutable
 class QrScreen extends StatelessWidget {
     QrScreen({ Key? key, this.isFromAtHome = false, required this.storageViewModel , this.index = 0} ) : super(key: key);
@@ -18,6 +20,7 @@ class QrScreen extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       body: QRView(
       key: qrKey,

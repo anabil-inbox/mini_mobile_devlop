@@ -1,6 +1,7 @@
 
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/utils.dart';
+import 'package:inbox_clients/fcm/app_fcm.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/network/api/feature/splash_feature_helper.dart';
 import 'package:inbox_clients/util/sh_util.dart';
@@ -13,22 +14,22 @@ class SplashViewModle extends GetxController{
     List<String> arrSecName = [];
      
   getAppSetting() async {
-     await SplashHelper.getInstance.getAppSettings().then((value) =>{
+     await SplashHelper.getInstance.getAppSettings().then((value)async =>{
         if(!GetUtils.isNull(value)){
           apiSettings = value,
           Logger().i(value.workingHours,),
-          SharedPref.instance.setUserType(value.customerType!),
+          await SharedPref.instance.setUserType(value.customerType!),
           update()
     }
    });
-   
   }
 
 
   @override
   void onInit() async{
-    getAppSetting();
+   await getAppSetting();
     SharedPref.instance.getUserType();
+    AppFcm.fcmInstance.getTokenFCM();
     super.onInit();
   }
 

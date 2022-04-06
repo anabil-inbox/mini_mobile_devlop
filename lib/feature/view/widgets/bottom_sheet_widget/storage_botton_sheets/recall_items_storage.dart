@@ -17,6 +17,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
+import '../../../screens/auth/terms/terms_view.dart';
 import '../../custome_text_view.dart';
 import 'selected_item_bottom_sheet.dart';
 
@@ -135,7 +136,7 @@ class RecallStorageSheet extends StatelessWidget {
               ),
               InkWell(
                   onTap: () {
-                    //Get.to(() => TermsScreen());
+                    Get.to(() => TermsScreen());
                   },
                   child: CustomTextView(
                     txt: "${tr.company_policy}",
@@ -150,6 +151,7 @@ class RecallStorageSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       decoration: BoxDecoration(
         color: colorBackground,
@@ -253,6 +255,7 @@ class RecallStorageSheet extends StatelessWidget {
     } else {
       snackError("${tr.error_occurred}", "${tr.you_have_to_accept_our_terms}");
     }
+
   }
 
   onClickBringBox() {

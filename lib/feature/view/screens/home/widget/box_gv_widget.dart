@@ -23,6 +23,7 @@ class GVWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return Column(
       children: [
         GridView.builder(

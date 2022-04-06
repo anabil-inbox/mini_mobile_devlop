@@ -26,7 +26,7 @@ class DioManagerClass {
       {var url, Map<String, dynamic>? header, var queryParameters}) async {
         print("msg_sendde_url $url");
         print("msg_sendde_header $header");
-        print("msg_sendde_QP ${queryParameters.toString()}");
+        print("msg_sendde_queryـParameters ${queryParameters.toString()}");
 
     return await _dio!.get(url,
         options: Options(headers: header), queryParameters: queryParameters);

@@ -21,6 +21,7 @@ class HomeGVItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return Container(
       width: sizeW165,
       height: sizeH150,
@@ -40,12 +41,12 @@ class HomeGVItemWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                retuenBoxByStatus(storageStatus: box.storageStatus ?? "" , isEnabeld: isEnabeld),
+                returnBoxByStatus(storageStatus: box.storageStatus ?? "" , isEnabeld: isEnabeld , isPickup: box.isPickup ?? true),
                 SizedBox(
                   height: sizeH10,
                 ),
                 CustomTextView(
-                  txt: "${box.storageName}",
+                  txt: "${box.serialNo}",
                   maxLine: Constance.maxLineTwo,
                   textStyle: textStyleNormalBlack(),
                   textAlign: TextAlign.center,
@@ -68,7 +69,7 @@ class HomeGVItemWidget extends StatelessWidget {
             child: SizedBox(
               width: sizeW40,
               child: Tooltip(
-                message: "${box.serialNo}",
+                message: "${box.storageName}",
                 child: TextButton(
                   onPressed: () {
                    // if (isEnabeld) {

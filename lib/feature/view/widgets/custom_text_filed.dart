@@ -62,6 +62,7 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return TextFormField(
       maxLength: maxLength,
       autofocus: autoFocus!,
@@ -89,6 +90,7 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
         } else {
           return null;
         }
+        return null;
       },
       onChanged: (value) {
         if (onChange != null) onChange!(value);

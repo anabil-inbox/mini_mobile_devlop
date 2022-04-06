@@ -134,4 +134,31 @@ class StorageFeature {
       return appResponse;
     }
   }
+
+    Future<AppResponse> checkPromo({var body}) async {
+    var appResponse = await StorageModel.getInstance.checkPromo(
+        url: "${ConstanceNetwork.checkCouponEndPoints}",
+        body: body,
+        header: ConstanceNetwork.header(4));
+    Logger().i("${appResponse.toJson()}");
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
+    Future<AppResponse> applyPayment({var body}) async {
+    var appResponse = await StorageModel.getInstance.applyPayment(
+        url: "${ConstanceNetwork.applyPaymentEndPoint}",
+        body: body,
+        header: ConstanceNetwork.header(4));
+    Logger().i("${appResponse.toJson()}");
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
 }

@@ -11,11 +11,14 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:inbox_clients/util/string.dart';
 
+import '../../../../util/app_shaerd_data.dart';
+
 class AddMoneyBottomSheet extends StatelessWidget {
   const AddMoneyBottomSheet({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return SingleChildScrollView(
         primary: true,
         child: GetBuilder<ProfileViewModle>(

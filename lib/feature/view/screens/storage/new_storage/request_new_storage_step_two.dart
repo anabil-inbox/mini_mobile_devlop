@@ -42,6 +42,7 @@ class _RequestNewStoragesStepTwoScreenState
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: CustomAppBarWidget(
@@ -93,13 +94,13 @@ class _RequestNewStoragesStepTwoScreenState
                           isLoading: false,
                           textButton: "${tr.next}",
                           onClicked: () async {
-                            if (logic.userStorageCategoriesData
-                                .isNotEmpty) if (logic.isStepTwoValidate(
+                            if (logic.userStorageCategoriesData.isNotEmpty) if (
+                            logic
+                                .isStepTwoValidate(
                                     catygoreyType: logic
                                             .userStorageCategoriesData[0]
                                             .storageCategoryType ??
-                                        "") &
-                                await logic.checkTimeSlot()) {
+                                        "")) {
                               logic.currentLevel = 2;
                               Get.to(() => RequestNewStorageStepThree());
                             }

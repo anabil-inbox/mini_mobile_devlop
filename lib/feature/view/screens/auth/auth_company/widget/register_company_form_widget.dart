@@ -29,6 +29,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     Get.put(AuthViewModle());
     return Container(
       padding: EdgeInsets.symmetric(horizontal: padding20!),
@@ -59,8 +60,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                 height: padding16,
               ),
               TextFormField(
-                                textCapitalization: TextCapitalization.sentences,
-
+                textCapitalization: TextCapitalization.sentences,
                 controller: controller.tdCompanyName,
                 validator: (value) {
                   if (value == null || value.isEmpty) {

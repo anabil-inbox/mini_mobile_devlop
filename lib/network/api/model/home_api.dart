@@ -22,6 +22,18 @@ class HomeApi {
     }
   }
 
+  Future<AppResponse> getNotifications({var url, var header,  var queryParameters}) async {
+    try {
+      var response = await DioManagerClass.getInstance
+          .dioGetMethod(url: url, header: header, queryParameters: queryParameters);
+      return AppResponse.fromJson(json.decode(response.toString()));
+    } on DioError catch (ex) {
+      var message = json.decode(ex.response.toString());
+      Logger().e(message);
+      return AppResponse.fromJson(message);
+    }
+  }
+
  Future<AppResponse> getSearchBoxes({var url, var header, var body}) async {
     try {
       var response = await DioManagerClass.getInstance
@@ -70,6 +82,16 @@ class HomeApi {
     }
   }
 
-
+     Future<AppResponse> getTaskResponse({var url, var header, var body}) async {
+    try {
+      var response = await DioManagerClass.getInstance
+          .dioPostFormMethod(url: url, header: header , body: body);
+      return AppResponse.fromJson(json.decode(response.toString()));
+    } on DioError catch (ex) {
+      var message = json.decode(ex.response.toString());
+      Logger().e(message);
+      return AppResponse.fromJson(message);
+    }
+  }
   
   }

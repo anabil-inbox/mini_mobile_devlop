@@ -137,12 +137,12 @@ class _HomeScreenState extends State<HomeScreen> {
           color: color ?? boxColorGray,
         ),
         SizedBox(
-          width: sizeW10,
+          width: sizeW4,
         ),
         CustomTextView(
           txt: text ?? "${tr.on_the_way}",
           maxLine: Constance.maxLineOne,
-          textStyle: textStyleNormal(),
+          textStyle: textStyleNormal()?.copyWith(fontSize: 8),
           textOverflow: TextOverflow.ellipsis,
         ),
         SizedBox(
@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     Get.put(StorageViewModel(), permanent: true);
-    HomeScreen.homeViewModle.scrollcontroller.addListener(() {
+    HomeScreen.homeViewModle.homeScrollcontroller.addListener(() {
       HomeScreen.homeViewModle.pagination();
     });
 
@@ -170,9 +170,10 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       backgroundColor: scaffoldColor,
       body: RefreshIndicator(
@@ -180,8 +181,6 @@ class _HomeScreenState extends State<HomeScreen> {
           HomeScreen.homeViewModle.onInit();
         },
         child: GetBuilder<HomeViewModel>(
-          init: HomeViewModel(),
-          assignId: true,
           builder: (logic) {
             if (logic.isLoading) {
               return Center(
@@ -215,46 +214,46 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   RefreshIndicator(
                     onRefresh: () async {
-                      // HomeScreen.homeViewModle.page = 1;
-                      // HomeScreen.homeViewModle.userBoxess.clear();
-                      // HomeScreen.homeViewModle.onInit();
-                      // await Future.delayed(Duration(seconds: 1));
                       await HomeScreen.homeViewModle.refreshHome();
                     },
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height,
                       child: SingleChildScrollView(
-                        controller: logic.scrollcontroller,
+                        controller: logic.homeScrollcontroller,
                         physics: customScrollViewIOS(),
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: sizeW20!),
                           child: GetBuilder<HomeViewModel>(
-                            init: HomeViewModel(),
-                            initState: (_) {},
                             builder: (_) {
                               return Column(
                                 children: [
                                   SizedBox(
-                                    height: sizeH150,
+                                    height: 150,
                                   ),
                                   FilterWidget(),
                                   SizedBox(
-                                    height: sizeH10,
+                                    height: 10,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      InkWell(
-                                          onTap: /*onTheWayClick*/ () {},
-                                          child: textHintsWidget(
-                                              "${tr.on_the_way}", null)),
-                                      textHintsWidget(
-                                          "${tr.in_warehouse}", boxColorOrange),
-                                      textHintsWidget(
-                                          "${tr.at_home}", boxColorRed),
-                                    ],
+                                  FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        InkWell(
+                                            onTap: /*onTheWayClick*/ () {},
+                                            child: textHintsWidget(
+                                                "${tr.on_the_way}", null)),
+                                        textHintsWidget("${tr.in_warehouse}",
+                                            colorInWarhouse),
+                                        textHintsWidget(
+                                            "${tr.at_home}", colorAtHome),
+                                        textHintsWidget(
+                                            tr.pickup, boxColorOrange),
+                                      ],
+                                    ),
                                   ),
                                   if (!logic.isListView!) ...[
                                     logic.isLoading
@@ -275,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Container(
                       width: double.infinity,
-                      height: sizeH120,
+                      height: 120,
                       // padding: EdgeInsets.all(padding10!),
                       decoration: BoxDecoration(
                         color: colorBackground,

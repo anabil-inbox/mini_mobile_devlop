@@ -21,6 +21,7 @@ class BoxInTaskWidget extends StatelessWidget {
   final bool isEnabeld;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Column(
       children: [
         Container(
@@ -55,7 +56,8 @@ class BoxInTaskWidget extends StatelessWidget {
                     SizedBox(
                       width: sizeW10,
                     ),
-                    retuenBoxByStatus(
+                    returnBoxByStatus(
+                        isPickup: box.isPickup ?? true,
                         storageStatus: box.storageStatus!,
                         isEnabeld: isEnabeld),
                     SizedBox(

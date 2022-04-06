@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/model/home/box_model.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/my_order/api_item.dart';
 import 'package:inbox_clients/feature/model/my_order/order_sales.dart' as OS;
@@ -15,18 +16,21 @@ import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/model/storage/quantity_modle.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
+import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
 import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/selected_hour_item.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
-import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/bulk_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/quantity_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/space_storage_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/payment_view_model/payment_view_model.dart';
-import 'package:inbox_clients/network/api/feature/home_helper.dart';
+import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
+import 'package:inbox_clients/local_database/cart_helper.dart';
+import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:inbox_clients/network/api/feature/order_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
@@ -36,6 +40,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
@@ -44,9 +49,11 @@ class StorageViewModel extends BaseController {
   bool? isSelectBtnClick = false;
   bool? isSelectAllClick = false;
   List<BoxItem> listIndexSelected = <BoxItem>[];
+  bool isNeedToPayment = false;
 
   //todo this for bottom sheet accept isAccept
   bool isAccept = false;
+  bool isUsingPromo = false;
 
   // to do for X And Y Form Keys ::
 
@@ -162,6 +169,13 @@ class StorageViewModel extends BaseController {
     userStorageCategoriesData.forEach((element) {
       totalBalance += element.userPrice!;
     });
+  }
+
+  ScrollController myListController = ScrollController();
+
+  void animateToIndex() {
+    myListController.jumpTo(myListController.position.maxScrollExtent + 200);
+    update();
   }
 
 // to do when user choose new option :
@@ -424,6 +438,7 @@ class StorageViewModel extends BaseController {
 
     Get.back();
     update();
+    // animateToIndex();
   }
 
   void intialBalance({required StorageCategoriesData storageCategoriesData}) {
@@ -788,6 +803,8 @@ class StorageViewModel extends BaseController {
   }
 
   // this for add storage Order :
+  ProfileViewModle profileViewModle =
+      Get.put(ProfileViewModle(), permanent: true);
 
   Future<void> addNewStorage({String? paymentId}) async {
     try {
@@ -881,6 +898,8 @@ class StorageViewModel extends BaseController {
         "shipping_address": "${selectedAddress?.id}",
         "items_list": jsonEncode(orderItems),
         "order_to": "${selectedDay?.from}",
+        "coupon_code": "",
+        "points": isAccept ? profileViewModle.myPoints.totalPoints : 0,
         "payment_method": "${selectedPaymentMethod?.id}",
         "payment_id": "$paymentId",
         "order_from": "${selectedDay?.to}",
@@ -902,6 +921,7 @@ class StorageViewModel extends BaseController {
                 selectedDateTime = null,
                 selectedStore = null,
                 selectedDay = null,
+                profileViewModle.getMyPoints(),
                 // Get.close(1),
                 userStorageCategoriesData.clear(),
                 Get.offAll(() => OrderDetailesScreen(
@@ -994,6 +1014,23 @@ class StorageViewModel extends BaseController {
   bool isStepTwoValidate({required String catygoreyType}) {
     if (catygoreyType == ConstanceNetwork.itemCategoryType ||
         catygoreyType == ConstanceNetwork.quantityCategoryType) {
+      if (selectedDateTime != null && selectedDay != null) {
+        selectedDateTime = DateTime(
+            selectedDateTime!.year,
+            selectedDateTime!.month,
+            selectedDateTime!.day,
+            int.tryParse(DateUtility.getLocalhouersFromUtc(day: selectedDay!)
+                    .split("-")[1]
+                    .split(":")[0]) ??
+                0,
+            int.tryParse(DateUtility.getLocalhouersFromUtc(day: selectedDay!)
+                    .split("-")[1]
+                    .split(":")[1]) ??
+                0);
+
+        Logger().e(selectedDateTime);
+      }
+
       if (GetUtils.isNull(selectedAddress)) {
         snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
         return false;
@@ -1005,6 +1042,8 @@ class StorageViewModel extends BaseController {
       snackError("${tr.error_occurred}", "${tr.you_have_to_add_address}");
       return false;
     }
+    Logger().d(
+        "selectedDateTime_${selectedDateTime?.toUtc()} \t :: DateTimeNowToUtc_${DateTime.now().toUtc()} ");
 
     if (GetUtils.isNull(selectedDateTime)) {
       snackError("${tr.error_occurred}", "${tr.you_have_to_select_date}");
@@ -1015,37 +1054,44 @@ class StorageViewModel extends BaseController {
     } else if (GetUtils.isNull(selectedDay)) {
       snackError("${tr.error_occurred}", "${tr.you_have_to_select_time}");
       return false;
+    } else if (DateTime.now().toUtc().isAfter(selectedDateTime!
+        .add(Duration(hours: 12))
+        .toUtc() /*DateUtility.convertUtcToLocalDateTimeDT(selectedDateTime!)*/)) {
+      snackError("${tr.error_occurred}", "Invalid Selected Date");
+      Logger().d(
+          "selectedDateTime_${selectedDateTime?.toUtc()} \t :: DateTimeNowToUtc_${DateTime.now().toUtc()} ");
+      return false;
     } else {
       return true;
     }
   }
 
-  Future<bool> checkTimeSlot() async {
-    startLoading();
-    bool isValidate = false;
-    try {
-      await HomeHelper.getInstance.checkTimeSlot(body: {
-        "date": selectedDateTime,
-        "from": selectedDay?.from,
-        "to": selectedDay?.to
-      }).then((value) => {
-            if (value.status!.success!)
-              {
-                isValidate = true,
-              }
-            else
-              {
-                snackError('', value.status!.message!),
-                isValidate = false,
-              }
-          });
-    } catch (e) {
-      printError();
-      return false;
-    }
-    endLoading();
-    return isValidate;
-  }
+  // Future<bool> checkTimeSlot() async {
+  //   startLoading();
+  //   bool isValidate = false;
+  //   try {
+  //     await HomeHelper.getInstance.checkTimeSlot(body: {
+  //       "date": selectedDateTime,
+  //       "from": selectedDay?.from,
+  //       "to": selectedDay?.to
+  //     }).then((value) => {
+  //           if (value.status!.success!)
+  //             {
+  //               isValidate = true,
+  //             }
+  //           else
+  //             {
+  //               snackError('', value.status!.message!),
+  //               isValidate = false,
+  //             }
+  //         });
+  //   } catch (e) {
+  //     printError();
+  //     return false;
+  //   }
+  //   endLoading();
+  //   return isValidate;
+  // }
 
   // working hours bottom sheet
 
@@ -1106,7 +1152,7 @@ class StorageViewModel extends BaseController {
   void deleteCategoreyDataBottomSheet(
       {required StorageCategoriesData storageCategoriesData}) {
     Get.bottomSheet(GlobalBottomSheet(
-      title: "Are You Sure You want to delete This Order ?",
+      title: tr.want_delete_order,
       onOkBtnClick: () {
         userStorageCategoriesData.remove(storageCategoriesData);
         totalBalance -= storageCategoriesData.userPrice ?? 0;
@@ -1262,6 +1308,7 @@ class StorageViewModel extends BaseController {
       ).whenComplete(() => {
             selectedFeaures.clear(),
             selectedDuration = "Daily",
+            animateToIndex(),
             quantity = 1,
             numberOfDays = 1,
             lastStorageItem = null,
@@ -1280,6 +1327,7 @@ class StorageViewModel extends BaseController {
             selectedFeaures.clear(),
             // localBulk = LocalBulk(),
             selectedDuration = "Daily",
+            animateToIndex(),
             quantity = 1,
             numberOfDays = 1,
             lastStorageItem = null,
@@ -1301,6 +1349,7 @@ class StorageViewModel extends BaseController {
             selectedDuration = "Daily",
             quantity = 1,
             numberOfDays = 1,
+            animateToIndex(),
             selectedFeaures.clear(),
             lastStorageItem = null,
             balance = 0,
@@ -1316,14 +1365,17 @@ class StorageViewModel extends BaseController {
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
-      ).whenComplete(() => {
-            selectedDuration = "Daily",
-            quantity = 1,
-            numberOfDays = 1,
-            selectedFeaures.clear(),
-            lastStorageItem = null,
-            balance = 0,
-          });
+      )
+          .whenComplete(() => {
+                selectedDuration = "Daily",
+                quantity = 1,
+                numberOfDays = 1,
+                selectedFeaures.clear(),
+                lastStorageItem = null,
+                balance = 0,
+                animateToIndex()
+              })
+          .then((value) => {animateToIndex()});
     }
   }
 
@@ -1333,9 +1385,12 @@ class StorageViewModel extends BaseController {
   //todo this for customerStoragesChangeStatus api
   //todo i concatenate homeViewModel with storageViewModel
   //todo i get index of list to update it local
+
   customerStoragesChangeStatus(var serial,
-      {HomeViewModel? homeViewModel}) async {
+      {HomeViewModel? homeViewModel, bool isScanDeliverdBox = false}) async {
+    print("mes__1");
     if (serial == null) {
+      print("mes__2");
       Get.back();
       return;
     }
@@ -1348,29 +1403,37 @@ class StorageViewModel extends BaseController {
       if (!GetUtils.isNull(value)) {
         if (value.status!.success!) {
           isChangeStatusLoading = false;
-          // homeViewModel?.userBoxess.toList()[index].storageStatus =
-          //     "${LocalConstance.boxAtHome}";
-          homeViewModel?.update();
+          if (isScanDeliverdBox) {
+            if (!homeViewModel!.operationTask.customerDelivered!
+                .contains(BoxModel.fromJson(value.data))) {
+              homeViewModel.operationTask.customerDelivered
+                  ?.add(BoxModel.fromJson(value.data));
+            }
+          } else {
+            if (!homeViewModel!.operationTask.customerScanned!
+                .contains(BoxModel.fromJson(value.data))) {
+              homeViewModel.operationTask.customerScanned
+                  ?.add(BoxModel.fromJson(value.data));
+            }
+          }
+          Logger().e(homeViewModel.operationTask.customerScanned?.length);
+          Logger().e(homeViewModel.operationTask.customerDelivered?.length);
+          homeViewModel.update();
+
           update();
           Get.back();
-          // Future.delayed(Duration(seconds: 0)).then((value) {
-          //   Get.bottomSheet(
-          //       CheckInBoxWidget(
-          //         box: homeViewModel?.userBoxess.toList()[index],
-          //         isUpdate: false,
-          //       ),
-          //       isScrollControlled: true);
-          //   snackSuccess(tr.success, value.status!.message!);
-          // });
-          // snackSuccess(tr.success, value.status!.message!);
+          snackSuccess(tr.success, value.status!.message!);
         } else {
+          print("mes__9");
           snackError(tr.error_occurred, value.status!.message!);
         }
       } else {
+        print("mes__10");
         isChangeStatusLoading = false;
         update();
       }
     }).catchError((onError) {
+      print("mes__11");
       Logger().d(onError);
       isChangeStatusLoading = false;
       update();
@@ -1474,22 +1537,24 @@ class StorageViewModel extends BaseController {
     return getPriceWithFormate(price: price);
   }
 
-  calculateTaskPriceLotBoxess({required Task task, required List<Box> boxess}) {
+  calculateTaskPriceLotBoxess(
+      {required Task task,
+      required List<Box> boxess,
+      required bool isFromCart,
+      Address? myAddresss}) {
     print("calculate Task Price Lot Boxess !");
-
     final ApiSettings settings =
         ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
-
+    if (isFromCart) {
+      selectedAddress = myAddresss;
+    }
     num price = 0.00;
 
     price = task.price! * boxess.length;
 
     if (selectedAddress != null) {
       for (var item in task.areaZones!) {
-        if (item.id == selectedAddress!.zone) {
-          Logger().e((boxess.length / settings.deliveryFactor!)
-              .toDouble()
-              .ceilToDouble());
+        if (item.id == selectedAddress?.zone) {
           price += (item.price ?? 0) *
               (boxess.length / settings.deliveryFactor!)
                   .toDouble()
@@ -1497,13 +1562,24 @@ class StorageViewModel extends BaseController {
         }
       }
     }
-    Logger().i(price);
-    for (var item in selectedStringOption) {
-      price += (item.price ?? 0) * boxess.length;
-      print("options_price ${item.price}");
-    }
 
+    Logger().i(price);
+    if (isFromCart) {
+      for (VAS item in task.selectedVas ?? []) {
+        price += (item.price ?? 0) * boxess.length;
+        print("options_price ${item.price}");
+      }
+    } else {
+      for (VAS item in selectedStringOption) {
+        price += (item.price ?? 0) * boxess.length;
+        print("options_price ${item.price}");
+      }
+    }
     return getPriceWithFormate(price: price);
+  }
+
+  getDiscount() {
+    if (isAccept) {}
   }
 
   bool isValidateTask({required Task task, required List<Box> boxess}) {
@@ -1530,6 +1606,8 @@ class StorageViewModel extends BaseController {
       return true;
     }
   }
+
+  String placeDestroy = "";
 
   // THIS REGUSET is For Playing WITH Api Tasks you will Add The Task And Boxess
   //Note :: IF You want to Send Single Box you Will Add The Box Only in The List Like This [myBox()]
@@ -1574,206 +1652,9 @@ class StorageViewModel extends BaseController {
     }
 
     if (itemSeriales.isNotEmpty) {
-      itemSeriales = itemSeriales.substring(0, boxessSeriales.length - 2);
+      itemSeriales = itemSeriales.substring(0, itemSeriales.length - 1);
     }
-
-    // if (task.id == LocalConstance.fetchId) {
-    //   if (selectedAddress != null) {
-    //     data.add({
-    //       "item_code": task.id,
-    //       "qty": 1,
-    //       "delivery_date": "$selectedDateTime",
-    //       "item_parent": "0",
-    //       "subscription_price": task.price,
-    //       "storage_type": "Process",
-    //       "subscription": "Daily",
-    //       "subscription_duration": 1,
-    //       "group_id": "1",
-    //       "order_to": "${selectedDay?.to}",
-    //       "order_from": "${selectedDay?.from}",
-    //       "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
-    //       "storage_child_in": "$itemSeriales"
-    //     });
-    //     data.add({
-    //       "item_code": "shipping_sv",
-    //       "qty": selectedItems?.length,
-    //       "area_zone": "${selectedAddress?.zone}",
-    //       "delivery_date": "${DateTime.now()}",
-    //       "subscription": "Daily",
-    //       "subscription_duration": 1,
-    //       "subscription_price": shivingPrice,
-    //       "group_id": 1,
-    //       "storage_type": "Process",
-    //       "item_parent": 1,
-    //       "need_adviser": 0,
-    //       "order_to": "13:20",
-    //       "order_from": "14:20",
-    //       "order_time": "13:20 -- 14:20",
-    //       "space": 0,
-    //       "space_xaxis": 0,
-    //       "space_yaxis": 0,
-    //       "process_type": "shipping_sv",
-    //       "storage_child_in": itemSeriales,
-    //       "items_child_in": []
-    //     });
-    //     map["address[0]"] = selectedAddress?.id;
-    //   } else {
-    //     data.add({
-    //       "item_code": task.id,
-    //       "qty": boxes.length,
-    //       "storage_type": "Process",
-    //       "item_parent": "0",
-    //       "subscription_price": task.price,
-    //       "subscription": "Daily",
-    //       "subscription_duration": 1,
-    //       "group_id": "1",
-    //       "delivery_date": DateTime.now().toString(),
-    //       "storage_child_in": "$boxessSeriales"
-    //     });
-    //     map["address[0]"] = boxes[0].address?.id;
-    //   }
-    // } else if (task.id == LocalConstance.giveawayId) {
-    //   if (selectedAddress != null) {
-    //     data.add({
-    //       "item_code": task.id,
-    //       "qty": boxes.length,
-    //       "delivery_date": "$selectedDateTime",
-    //       "item_parent": "0",
-    //       "group_id": "1",
-    //       "subscription_price": task.price,
-    //       "storage_type": "Process",
-    //       "subscription": "Daily",
-    //       "subscription_duration": 1,
-    //       "area_zone": "${selectedAddress?.zone}",
-    //       "beneficiary_name_in": homeViewModel.selctedbeneficiary?.id ?? "",
-    //       "order_to": "${selectedDay?.to}",
-    //       "order_from": "${selectedDay?.from}",
-    //       "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
-    //       "storage_child_in": "$boxessSeriales"
-    //     });
-    //     map["address[0]"] = selectedAddress?.id;
-    //     data.add({
-    //       "item_code": "shipping_sv",
-    //       "qty": boxes.length,
-    //       "area_zone": "${selectedAddress?.zone}",
-    //       "delivery_date": "${DateTime.now()}",
-    //       "subscription": "Daily",
-    //       "subscription_duration": 1,
-    //       "subscription_price": shivingPrice,
-    //       "group_id": 1,
-    //       "storage_type": "Process",
-    //       "item_parent": 0,
-    //       "need_adviser": 0,
-    //       "order_to": "13:20",
-    //       "order_from": "14:20",
-    //       "order_time": "13:20 -- 14:20",
-    //       "space": 0,
-    //       "space_xaxis": 0,
-    //       "space_yaxis": 0,
-    //       "process_type": "shipping_sv",
-    //       "storage_child_in": boxessSeriales,
-    //       "items_child_in": []
-    //     });
-    //   } else {
-    // data.add({
-    //   "item_code": task.id,
-    //   "qty": boxes.length,
-    //   "storage_type": "Process",
-    //   "beneficiary_name_in": beneficiaryId,
-    //   "delivery_date": DateTime.now().toString(),
-    //   "item_parent": "0",
-    //   "subscription_price": task.price,
-    //   "subscription": "Daily",
-    //   "subscription_duration": 1,
-    //   "group_id": "1",
-    //   "storage_child_in": "$boxessSeriales"
-    // });
-    //     data.add({
-    //       "item_code": "shipping_sv",
-    //       "qty": boxes.length,
-    //       "delivery_date": "${DateTime.now()}",
-    //       "subscription": "Daily",
-    //       "subscription_duration": 1,
-    //       "subscription_price": shivingPrice,
-    //       "group_id": 1,
-    //       "storage_type": "Process",
-    //       "item_parent": 0,
-    //       "need_adviser": 0,
-    //       "order_to": "13:20",
-    //       "order_from": "14:20",
-    //       "order_time": "13:20 -- 14:20",
-    //       "space": 0,
-    //       "space_xaxis": 0,
-    //       "space_yaxis": 0,
-    //       "process_type": "shipping_sv",
-    //       "storage_child_in": boxessSeriales,
-    //       "items_child_in": []
-    //     });
-    //     map["address[0]"] = boxes[0].address?.id;
-    //   }
-    // } else {
-    //   if (!GetUtils.isNull(selectedItems)) {
-    //     for (var item in selectedItems!) {
-    //       data.add({
-    //         "item_code": item.id,
-    //         "qty": "${item.itemQuantity}",
-    //         "storage_type": "Process",
-    //         "delivery_date": selectedDateTime == null
-    //             ? DateTime.now().toString()
-    //             : selectedDateTime.toString(),
-    //         "item_parent": "0",
-    //         "order_to": "${selectedDay?.to ?? "13:20"}",
-    //         "order_from": "${selectedDay?.from ?? "14:20"}",
-    //         "order_time":
-    //             "${selectedDay?.to ?? "13:20"} -- ${selectedDay?.from ?? "14:20"}",
-    //         "group_id": "0",
-    //       });
-    //       map["address[0]"] = selectedAddress!.id;
-    //     }
-    //   }
-    //   data.add({
-    //     "item_code": task.id,
-    //     "qty": boxes.length,
-    //     "delivery_date": selectedDateTime == null
-    //         ? DateTime.now().toString()
-    //         : selectedDateTime.toString(),
-    //     "item_parent": "0",
-    //     "subscription_price": task.price,
-    //     "storage_type": "Process",
-    //     "subscription": "Daily",
-    //     "subscription_duration": 1,
-    //     "group_id": "1",
-    //     "beneficiary_name_in": beneficiaryId,
-    //     "order_to": "${selectedDay?.to ?? "13:20"}",
-    //     "order_from": "${selectedDay?.from ?? "14:20"}",
-    //     "order_time":
-    //         "${selectedDay?.to ?? "13:20"} -- ${selectedDay?.from ?? "14:20"}",
-    //     "storage_child_in": "$boxessSeriales"
-    //   });
-    //   data.add({
-    //     "item_code": "shipping_sv",
-    //     "qty": boxes.length,
-    //     "delivery_date": "${DateTime.now()}",
-    //     "subscription": "Daily",
-    //     "subscription_duration": 1,
-    //     "subscription_price": shivingPrice,
-    //     "group_id": 1,
-    //     "storage_type": "Process",
-    //     "item_parent": 0,
-    //     "need_adviser": 0,
-    //     "order_to": "${selectedDay?.to ?? "13:20"}",
-    //     "order_from": "${selectedDay?.from ?? "14:20"}",
-    //     "order_time":
-    //         "${selectedDay?.to ?? "13:20"} -- ${selectedDay?.from ?? "14:20"}",
-    //     "space": 0,
-    //     "space_xaxis": 0,
-    //     "space_yaxis": 0,
-    //     "process_type": "shipping_sv",
-    //     "storage_child_in": boxessSeriales,
-    //     "items_child_in": []
-    //   });
-    // }
-
+    Logger().e(itemSeriales);
     if (task.id == LocalConstance.fetchId) {
       data.add(ApiItem.getApiObjectToSend(
           itemCode: task.id ?? "",
@@ -1782,6 +1663,7 @@ class StorageViewModel extends BaseController {
           selectedDateTime: selectedDateTime,
           groupId: 1,
           itemParent: 0,
+          itemsChildIn: itemSeriales,
           selectedDay: selectedDay,
           beneficiaryNameIn: "",
           boxessSeriales: boxessSeriales));
@@ -1794,12 +1676,14 @@ class StorageViewModel extends BaseController {
           groupId: 1,
           itemParent: 0,
           selectedDay: selectedDay,
+          itemsChildIn: "",
           beneficiaryNameIn: homeViewModel.selctedbeneficiary?.id ?? "",
           boxessSeriales: boxessSeriales));
     } else {
       data.add(ApiItem.getApiObjectToSend(
           itemCode: task.id ?? "",
           qty: boxes.length,
+          itemsChildIn: "",
           subscriptionPrice: task.price ?? 0,
           selectedDateTime: selectedDateTime,
           groupId: 1,
@@ -1815,6 +1699,7 @@ class StorageViewModel extends BaseController {
         selectedDateTime: selectedDateTime,
         groupId: 1,
         itemParent: 0,
+        itemsChildIn: "",
         selectedDay: selectedDay,
         boxessSeriales: boxessSeriales,
         beneficiaryNameIn: null));
@@ -1826,62 +1711,27 @@ class StorageViewModel extends BaseController {
           subscriptionPrice: item.price ?? 0,
           selectedDateTime: selectedDateTime,
           groupId: 1,
+          itemsChildIn: "",
           itemParent: 0,
           selectedDay: selectedDay,
           beneficiaryNameIn: "",
           boxessSeriales: boxessSeriales));
-      // data.add({
-      //   "item_code": item.id,
-      //   "qty": boxes.length,
-      //   "delivery_date": "${DateTime.now()}",
-      //   "subscription": "Daily",
-      //   "subscription_duration": 1,
-      //   "subscription_price": item.price,
-      //   "group_id": 1,
-      //   "storage_type": "Process",
-      //   "item_parent": 0,
-      //   "need_adviser": 0,
-      //   "order_to": "13:20",
-      //   "order_from": "14:20",
-      //   "order_time": "13:20 -- 14:20",
-      //   "space": 0,
-      //   "space_xaxis": 0,
-      //   "space_yaxis": 0,
-      //   "process_type": item.id,
-      //   "storage_child_in": boxessSeriales,
-      //   "items_child_in": []
-      // });
     }
 
     map["type[0]"] = task.id;
     map["payment_method"] = selectedPaymentMethod?.id ?? "";
     map["payment_id"] = paymentId ?? "";
-    map["order[0]"] = data;
-    map["address[0]"] =
-        selectedAddress == null ? boxes[0].address?.id : selectedAddress?.id;
-    // for (var i = 0; i < boxes.length; i++) {
-    //   // if (task.id == LocalConstance.pickupId) {
-    //   //   map["type[$i]"] = LocalConstance.pickupId;
-    //   // } else if (task.id == LocalConstance.recallId) {
-    //   //   map["type[$i]"] = LocalConstance.recallId;
-    //   // }
-    //   // this Request Will Changed Here !:
-    //   map["type[$i]"] = task.id;
-    //   map["order[$i]"] = [
-    //     {
-    //       "item_code": task.id,
-    //       "qty": 1,
-    //       "delivery_date": "$selectedDateTime",
-    //       "order_to": "${selectedDay?.to}",
-    //       "order_from": "${selectedDay?.from}",
-    //       "order_time": "${selectedDay?.to} -- ${selectedDay?.from}",
-    //       "storage_child_in": "$boxessSeriales"
-    //     }
-    //   ];
-    //   map["address[$i]"] = selectedAddress!.id;
+    map["points"] = isAccept ? userUsesPoints : 0;
+    // map["destroy_status"] = LocalConstance.inWarehouse;
+    // if (task.id == LocalConstance.destroyId) {
+    //   map["destroy_status"] = placeDestroy;
     // }
 
+    map["coupon_code"] = isUsingPromo ? tdCopun.text : "";
+    map["order[0]"] = data;
+    map["address[0]"] = selectedAddress == null ? boxes[0].address?.id : selectedAddress?.id;
     mapSalesOrder.add(map);
+
     Map<String, dynamic> newMap = {"sales_order": jsonEncode(mapSalesOrder)};
     await OrderHelper.getInstance.newSalesOrder(body: newMap).then((value) {
       Logger().d(value.toJson());
@@ -1900,7 +1750,14 @@ class StorageViewModel extends BaseController {
     if (!isFromCart) {
       Get.close(1);
     }
-
+    // if (task.id == LocalConstance.destroyId) {
+    //   Get.back();
+    // }
+    Get.back();
+    // if (boxes.isNotEmpty) {
+    //   await homeViewModel.getBoxBySerial(serial: boxes[0].serialNo ?? "");
+    // }
+    // homeViewModel.;
     await homeViewModel.refreshHome();
     endLoading();
   }
@@ -1917,7 +1774,11 @@ class StorageViewModel extends BaseController {
     selectedStore = null;
     selectedAddress = null;
     selectedDay = null;
+    isAccept = false;
+    isUsingPromo = false;
     selectedDateTime = null;
+    profileViewModle.getMyPoints();
+    profileViewModle.getMyWallet();
   }
 
   // Fun to Test If Ihave Any Box At home ::
@@ -1937,6 +1798,9 @@ class StorageViewModel extends BaseController {
     Task? task,
     List<Box>? boxes,
     String? beneficiaryId,
+    required bool isFromCart,
+    required List<CartModel> cartModels,
+    required bool isOrderProductPayment,
   }) async {
     startLoading();
     try {
@@ -1950,6 +1814,9 @@ class StorageViewModel extends BaseController {
                         Logger().e(value.data["payment_url"]),
                         Get.put(PaymentViewModel()),
                         Get.to(() => PaymentScreen(
+                              isOrderProductPayment: isOrderProductPayment,
+                              cartModels: cartModels,
+                              isFromCart: isFromCart,
                               beneficiaryId: beneficiaryId,
                               boxes: boxes,
                               task: task,
@@ -1967,5 +1834,309 @@ class StorageViewModel extends BaseController {
     }
 
     endLoading();
+  }
+
+  AppResponse? checkPromoAppResponse;
+
+  Future<void> checkPromo({required String promoCode}) async {
+    try {
+      await StorageFeature.getInstance
+          .checkPromo(body: {LocalConstance.coupon: promoCode}).then(
+        (value) {
+          checkPromoAppResponse = value;
+          update();
+        },
+      );
+    } catch (e) {
+      printError();
+    }
+  }
+
+  num priceAfterDiscount = 0;
+  num userUsesPoints = 0;
+  final tdCopun = TextEditingController();
+
+  List<dynamic> getPriceWithDiscount({required String oldPrice}) {
+    num price = num.parse(oldPrice);
+    num usesPoints = 0;
+    if (!GetUtils.isNull(checkPromoAppResponse)) {
+      if (checkPromoAppResponse!.status!.success!) {
+        if (checkPromoAppResponse?.data["discount_type"] ==
+            LocalConstance.discountPercentag) {
+          if ((price - (price * checkPromoAppResponse?.data["amount"] / 100)) >
+              0) {
+            price =
+                price - (price * checkPromoAppResponse?.data["amount"] / 100);
+          } else {
+            price = 0;
+          }
+        } else {
+          price = price - checkPromoAppResponse?.data["amount"];
+        }
+      }
+    }
+
+    if (isAccept) {
+      if (price -
+              profileViewModle.myPoints.totalPoints! *
+                  SharedPref.instance.getCurrentUserData().conversionFactor! >
+          0) {
+        price = price -
+            profileViewModle.myPoints.totalPoints! *
+                SharedPref.instance.getCurrentUserData().conversionFactor!;
+        userUsesPoints = profileViewModle.myPoints.totalPoints!;
+      } else {
+        // price = ((price * profileViewModle.myPoints.totalPoints!) - price) /
+        //     SharedPref.instance.getCurrentUserData().conversionFactor!;
+
+        usesPoints = profileViewModle.myPoints.totalPoints! -
+            (price /
+                SharedPref.instance.getCurrentUserData().conversionFactor!);
+        price = 0;
+      }
+    }
+    priceAfterDiscount = price;
+    userUsesPoints = profileViewModle.myPoints.totalPoints! - usesPoints;
+    // if (!GetUtils.isNull(checkPromoAppResponse)) {
+    //   if (checkPromoAppResponse!.status!.success!) {
+    //     if ((price - (price * checkPromoAppResponse?.data["amount"] / 100)) >
+    //         0) {
+    //       price = price - (price * checkPromoAppResponse?.data["amount"] / 100);
+    //     } else {
+    //       price = 0;
+    //     }
+    //   }
+    // }
+    Logger().e("MSG_USER_POINTS = $userUsesPoints");
+    Logger().e("MSG_USER_POINTS = $price");
+    profileViewModle.getMyPoints();
+    return [getPriceWithFormate(price: price), usesPoints];
+  }
+
+  calculateTasksCart({required List<CartModel> cartModel}) {
+    final ApiSettings settings =
+        ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
+
+    num price = 0.00;
+    for (var cartItem in cartModel) {
+      selectedAddress = cartItem.address;
+
+      price += cartItem.task!.price! * cartItem.box!.length;
+
+      if (selectedAddress != null) {
+        for (var item in cartItem.task!.areaZones!) {
+          if (item.id == selectedAddress?.zone) {
+            Logger().e((cartItem.box!.length / settings.deliveryFactor!)
+                .toDouble()
+                .ceilToDouble());
+            price += (item.price ?? 0) *
+                (cartItem.box!.length / settings.deliveryFactor!)
+                    .toDouble()
+                    .ceilToDouble();
+          }
+        }
+      }
+
+      for (var item in cartItem.task!.selectedVas!) {
+        price += (item.price ?? 0) * cartItem.box!.length;
+        print("options_price ${item.price}");
+      }
+      Logger().i(price);
+    }
+
+    return getPriceWithFormate(price: price);
+  }
+
+  Future<void> checkOutCart({
+    required List<CartModel> cartModels,
+    String? paymentId,
+  }) async {
+    try {
+      startLoading();
+      List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
+
+      for (var i = 0; i < cartModels.length; i++) {
+        selectedAddress = cartModels[i].address;
+        selectedStringOption = cartModels[i].task?.selectedVas ?? [];
+        String boxessSeriales = "";
+        String itemSeriales = "";
+        num shivingPrice = 0;
+        Map<String, dynamic> map = {};
+        for (var j = 0; j < cartModels[i].box!.length; j++) {
+          boxessSeriales += '${cartModels[i].box![j].serialNo},';
+        }
+
+        cartModels[i].boxItem?.forEach((element) {
+          itemSeriales += '${element.id},';
+        });
+
+        if (selectedAddress != null) {
+          for (var item in cartModels[i].task!.areaZones!) {
+            if (item.id == selectedAddress!.zone) {
+              shivingPrice = (item.price ?? 0);
+            }
+          }
+        }
+
+        List data = [];
+
+        if (boxessSeriales.isNotEmpty) {
+          boxessSeriales =
+              boxessSeriales.substring(0, boxessSeriales.length - 1);
+        }
+
+        if (itemSeriales.isNotEmpty) {
+          itemSeriales = itemSeriales.substring(0, boxessSeriales.length - 2);
+        }
+
+        if (cartModels[i].task!.id == LocalConstance.fetchId) {
+          data.add(ApiItem.getApiObjectToSend(
+              itemCode: cartModels[i].task?.id ?? "",
+              qty: cartModels[i].box!.length,
+              subscriptionPrice: cartModels[i].task?.price ?? 0,
+              selectedDateTime: selectedDateTime,
+              itemsChildIn: itemSeriales,
+              groupId: 1,
+              itemParent: 0,
+              selectedDay: selectedDay,
+              beneficiaryNameIn: "",
+              boxessSeriales: boxessSeriales));
+        } else if (cartModels[i].task?.id == LocalConstance.giveawayId) {
+          data.add(ApiItem.getApiObjectToSend(
+              itemCode: cartModels[i].task?.id ?? "",
+              qty: cartModels[i].box!.length,
+              itemsChildIn: "",
+              subscriptionPrice: cartModels[i].task?.price ?? 0,
+              selectedDateTime: selectedDateTime,
+              groupId: 1,
+              itemParent: 0,
+              selectedDay: selectedDay,
+              beneficiaryNameIn: homeViewModel.selctedbeneficiary?.id ?? "",
+              boxessSeriales: boxessSeriales));
+        } else {
+          data.add(ApiItem.getApiObjectToSend(
+              itemCode: cartModels[i].task?.id ?? "",
+              qty: cartModels[i].box!.length,
+              itemsChildIn: "",
+              subscriptionPrice: cartModels[i].task?.price ?? 0,
+              selectedDateTime: selectedDateTime,
+              groupId: 1,
+              itemParent: 0,
+              selectedDay: selectedDay,
+              boxessSeriales: boxessSeriales,
+              beneficiaryNameIn: null));
+        }
+        data.add(ApiItem.getApiObjectToSend(
+            itemCode: "shipping_sv",
+            qty: cartModels[i].box!.length,
+            subscriptionPrice: shivingPrice,
+            itemsChildIn: "",
+            selectedDateTime: selectedDateTime,
+            groupId: 1,
+            itemParent: 0,
+            selectedDay: selectedDay,
+            boxessSeriales: boxessSeriales,
+            beneficiaryNameIn: null));
+
+        for (var item in selectedStringOption) {
+          data.add(ApiItem.getApiObjectToSend(
+              itemCode: item.id ?? "",
+              qty: cartModels[i].box!.length,
+              itemsChildIn: "",
+              subscriptionPrice: item.price ?? 0,
+              selectedDateTime: selectedDateTime,
+              groupId: 1,
+              itemParent: 0,
+              selectedDay: selectedDay,
+              beneficiaryNameIn: "",
+              boxessSeriales: boxessSeriales));
+        }
+
+        map["type[$i]"] = cartModels[i].task?.id;
+        map["payment_method"] = selectedPaymentMethod?.id ?? "";
+        map["payment_id"] = paymentId ?? "";
+        map["points"] = isAccept ? userUsesPoints / cartModels.length : 0;
+        map["coupon_code"] = isUsingPromo ? tdCopun.text : "";
+        map["order[$i]"] = data;
+        map["address[$i]"] = selectedAddress == null
+            ? cartModels[i].box![0].address?.id
+            : selectedAddress?.id;
+        mapSalesOrder.add(map);
+      }
+
+      Map<String, dynamic> newMap = {"sales_order": jsonEncode(mapSalesOrder)};
+      await OrderHelper.getInstance
+          .newSalesOrder(body: newMap)
+          .then((value) async {
+        Logger().d(value.toJson());
+        if (value.status!.success!) {
+          if (selectedPaymentMethod?.id == LocalConstance.bankCard) {
+            Get.close(3);
+          } else {
+            Get.close(2);
+          }
+
+          snackSuccess("${tr.success}", value.status!.message!);
+          await CartHelper.instance.deleteDataBase();
+        } else {
+          snackError("${tr.error_occurred}", value.status!.message!);
+        }
+      });
+
+      cleanAfterSucces();
+      await homeViewModel.refreshHome();
+      endLoading();
+    } catch (e) {}
+  }
+
+  Future<void> applyPayment(
+      {required String salesOrderId, required String paymentMethodId}) async {
+    try {
+      await StorageFeature.getInstance.applyPayment(body: {
+        LocalConstance.id: salesOrderId,
+        LocalConstance.paymentMethod: paymentMethodId,
+      }).then((value) => {
+            if (value.status!.success!)
+              {
+                Get.offAll(() => HomePageHolder()),
+                snackSuccess('', value.status?.message)
+              }
+            else
+              {Get.back(), snackError('', value.status?.message)}
+          });
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  Future<void> payApplicationFromWallet(
+      {required num price, required String newSalesOrderId}) async {
+    try {
+      num walletBalance = num.parse(profileViewModle.myWallet.balance ?? "0");
+      if (walletBalance >= price) {
+        await applyPayment(
+            salesOrderId: newSalesOrderId,
+            paymentMethodId: LocalConstance.wallet);
+      } else {
+        snackError("", "Wallet Balance");
+      }
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  Future<void> payApplicationFromPaymentGatewaye({
+    required num price,
+  }) async {
+    try {
+      await goToPaymentMethod(
+          amount: price,
+          isOrderProductPayment: true,
+          isFromNewStorage: false,
+          isFromCart: false,
+          cartModels: []);
+    } catch (e) {
+      printError();
+    }
   }
 }

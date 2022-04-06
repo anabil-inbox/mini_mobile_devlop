@@ -4,6 +4,8 @@ import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 
 class CompanySectorItem extends StatelessWidget {
   const CompanySectorItem({ Key? key , required this.sector , required this.cellIndex,required this.selectedIndex}) : super(key: key);
@@ -14,6 +16,7 @@ class CompanySectorItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       color: colorScaffoldRegistrationBody,
       height: sizeH40,

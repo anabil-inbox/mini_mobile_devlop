@@ -6,16 +6,19 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_three_widgets/payment_item.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
-import 'package:logger/logger.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 import '../primary_button.dart';
 
@@ -36,6 +39,21 @@ class BottomSheetPaymentWidget extends StatelessWidget {
       : super(key: key);
 
   static StorageViewModel storageViewModle = Get.find<StorageViewModel>();
+  static ProfileViewModle profileViewModle =
+      Get.put(ProfileViewModle(), permanent: true);
+
+  Widget onDestroy() {
+    if (task.id != LocalConstance.destroyId) {
+      return const SizedBox();
+    }
+    return Column(
+      children: [
+        SizedBox(height: sizeH12,),
+        Text(tr.choose_destroy_place),
+        SizedBox(height: sizeH12,),
+        ],
+    );
+  }
 
   Widget get priceTotalWidget => Container(
         width: double.infinity,
@@ -60,14 +78,45 @@ class BottomSheetPaymentWidget extends StatelessWidget {
             ),
             GetBuilder<StorageViewModel>(
               builder: (logic) {
-                return CustomTextView(
-                  txt: boxes.length == 0
-                      ? logic.calculateTaskPriceOnceBox(task: task)
-                      : logic.calculateTaskPriceLotBoxess(
-                          task: task, boxess: boxes),
-                  textAlign: TextAlign.center,
-                  textStyle: textStyleAppBarTitle()
-                      ?.copyWith(fontSize: fontSize28, color: colorPrimary),
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomTextView(
+                      txt: storageViewModle.isAccept ||
+                              storageViewModle.isUsingPromo
+                          ? storageViewModle
+                              .getPriceWithDiscount(
+                                  oldPrice: logic
+                                      .calculateTaskPriceLotBoxess(
+                                          isFromCart: false,
+                                          task: task,
+                                          boxess: boxes)
+                                      .toString()
+                                      .split(" ")[0])[0]
+                              .toString()
+                              
+                          : boxes.length == 0
+                              ? logic.calculateTaskPriceOnceBox(task: task)
+                              : logic.calculateTaskPriceLotBoxess(isFromCart: false, task: task, boxess: boxes),
+                      textStyle: textStyleAppBarTitle()
+                          ?.copyWith(fontSize: fontSize28, color: colorPrimary),
+                    ),
+                    if (storageViewModle.isAccept ||
+                        storageViewModle.isUsingPromo)
+                      SizedBox(
+                        width: sizeW7,
+                      ),
+                    if (storageViewModle.isAccept ||
+                        storageViewModle.isUsingPromo)
+                      CustomTextView(
+                          txt: logic.calculateTaskPriceLotBoxess(
+                              isFromCart: false, task: task, boxess: boxes),
+                          textAlign: TextAlign.center,
+                          textStyle: textStyleAppBarTitle()?.copyWith(
+                              fontSize: fontSize14,
+                              color: colorPrimary,
+                              decoration: TextDecoration.lineThrough)),
+                  ],
                 );
               },
             ),
@@ -87,7 +136,6 @@ class BottomSheetPaymentWidget extends StatelessWidget {
       );
 
   Widget get acceptTerms => GetBuilder<StorageViewModel>(
-        init: StorageViewModel(),
         builder: (value) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -118,7 +166,8 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                 ),
               ),
               CustomTextView(
-                txt: "500 ${tr.points}",
+                txt:
+                    "${profileViewModle.myPoints.totalPoints} ${tr.points} = ${profileViewModle.myPoints.totalPoints! * SharedPref.instance.getCurrentUserData().conversionFactor!} QR",
                 textAlign: TextAlign.start,
                 textStyle: textStyleNormal()!
                     .copyWith(color: colorPrimary, fontSize: fontSize14),
@@ -128,8 +177,77 @@ class BottomSheetPaymentWidget extends StatelessWidget {
         },
       );
 
+  Widget get promoCode => GetBuilder<StorageViewModel>(builder: (builder) {
+        return Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    builder.isUsingPromo = !builder.isUsingPromo;
+                    builder.update();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      builder.isUsingPromo
+                          ? SvgPicture.asset("assets/svgs/true.svg")
+                          : SvgPicture.asset(
+                              "assets/svgs/uncheck.svg",
+                              color: seconderyColor,
+                            ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      CustomTextView(
+                        txt: "${tr.use_promo_code} ",
+                        textStyle: textStyle(),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: sizeH12,
+            ),
+            if (builder.isUsingPromo)
+              TextField(
+                controller: storageViewModle.tdCopun,
+                onSubmitted: (value) async {
+                  await storageViewModle.checkPromo(promoCode: value);
+                },
+                textInputAction: TextInputAction.go,
+                decoration: InputDecoration(
+                    suffixIcon: builder.checkPromoAppResponse != null
+                        ? Padding(
+                            padding: EdgeInsets.all(padding12!),
+                            child:
+                                builder.checkPromoAppResponse!.status!.success!
+                                    ? SvgPicture.asset(
+                                        "assets/svgs/icon_big_check.svg")
+                                    : SvgPicture.asset(
+                                        "assets/svgs/cross_big.svg",
+                                      ),
+                          )
+                        : const SizedBox(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: colorBorderContainer),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: colorBorderContainer),
+                    ),
+                    hintText: "${tr.promo_code}"),
+              )
+          ],
+        );
+      });
+
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return SingleChildScrollView(
       child: Container(
         decoration: BoxDecoration(
@@ -160,32 +278,57 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               SizedBox(
                 height: sizeH16,
               ),
+              // onDestroy(),
               Text("${tr.select_payment_method}"),
               SizedBox(
                 height: sizeH16,
               ),
-              Container(
-                height: sizeH38,
-                child: ListView(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  children: getPaymentMethod()
-                      .map((e) => PaymentItem(
-                            paymentMethod: e,
-                          ))
-                      .toList(),
-                ),
-              ),
+              GetBuilder<StorageViewModel>(builder: (logic) {
+                return Container(
+                  height: sizeH38,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: getPaymentMethod().length,
+                    itemBuilder: (context, index) {
+                      PaymentMethod? paymentMethod = getPaymentMethod()[index];
+                      var calculateTasksCart = boxes.length == 0
+                          ? logic.calculateTaskPriceOnceBox(task: task)
+                          : logic.calculateTaskPriceLotBoxess(
+                              isFromCart: false, task: task, boxess: boxes);
+                      if (paymentMethod.name == LocalConstance.bankCard &&
+                          int.tryParse(calculateTasksCart.toString())
+                                  ?.toInt() ==
+                              0) {
+                        return const SizedBox.shrink();
+                      } else {
+                        return PaymentItem(
+                          paymentMethod: paymentMethod,
+                        );
+                      }
+                    },
+                    // children: getPaymentMethod()
+                    //     .map((e) => PaymentItem(
+                    //           paymentMethod: e,
+                    //         ))
+                    //     .toList(),
+                  ),
+                );
+              }),
               SizedBox(
                 height: sizeH16,
               ),
-              // acceptTerms,
+              promoCode,
+              SizedBox(
+                height: sizeH16,
+              ),
+              profileViewModle.myPoints.totalPoints! > 0
+                  ? acceptTerms
+                  : const SizedBox(),
               SizedBox(
                 height: sizeH16,
               ),
               GetBuilder<StorageViewModel>(
-                init: StorageViewModel(),
-                initState: (_) {},
                 builder: (logic) {
                   return PrimaryButton(
                     isExpanded: true,
@@ -206,6 +349,61 @@ class BottomSheetPaymentWidget extends StatelessWidget {
   }
 
   onClickSubmit() {
+    if (storageViewModle.isAccept || storageViewModle.isUsingPromo) {
+      if (storageViewModle.priceAfterDiscount > 0) {
+        if (storageViewModle.selectedPaymentMethod != null) {
+          if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
+              storageViewModle.selectedPaymentMethod?.id ==
+                  Constance.walletId) {
+            if (boxes.length > 0) {
+              storageViewModle.doTaskBoxRequest(
+                  isFromCart: false,
+                  task: task,
+                  boxes: boxes,
+                  selectedItems: items,
+                  beneficiaryId: beneficiaryId);
+            } else {
+              storageViewModle.doTaskBoxRequest(
+                  isFromCart: false,
+                  task: task,
+                  boxes: [box],
+                  selectedItems: items,
+                  beneficiaryId: beneficiaryId);
+            }
+          } else {
+            storageViewModle.goToPaymentMethod(
+                isOrderProductPayment: false,
+                cartModels: [],
+                isFromCart: false,
+                amount: storageViewModle.priceAfterDiscount,
+                beneficiaryId: beneficiaryId,
+                task: task,
+                boxes: boxes,
+                isFromNewStorage: false);
+          }
+        } else {
+          snackError("${tr.error_occurred}",
+              "${tr.you_have_to_select_payment_method}");
+        }
+      } else {
+        if (boxes.length > 0) {
+          storageViewModle.doTaskBoxRequest(
+              isFromCart: false,
+              task: task,
+              boxes: boxes,
+              selectedItems: items,
+              beneficiaryId: beneficiaryId);
+        } else {
+          storageViewModle.doTaskBoxRequest(
+              isFromCart: false,
+              task: task,
+              boxes: [box],
+              selectedItems: items,
+              beneficiaryId: beneficiaryId);
+        }
+      }
+      return;
+    }
     if (storageViewModle.selectedPaymentMethod != null) {
       if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
           storageViewModle.selectedPaymentMethod?.id == Constance.walletId) {
@@ -218,20 +416,20 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               beneficiaryId: beneficiaryId);
         } else {
           storageViewModle.doTaskBoxRequest(
-            isFromCart: false,
+              isFromCart: false,
               task: task,
               boxes: [box],
               selectedItems: items,
               beneficiaryId: beneficiaryId);
         }
       } else {
-        Logger().e("${num.parse(storageViewModle.calculateTaskPriceLotBoxess(
-              task: task,
-              boxess: boxes,
-            ).toString().split(" ")[0])}");
         storageViewModle.goToPaymentMethod(
+            isOrderProductPayment: false,
+            cartModels: [],
+            isFromCart: false,
             amount: num.parse(storageViewModle
                 .calculateTaskPriceLotBoxess(
+                  isFromCart: false,
                   task: task,
                   boxess: boxes,
                 )

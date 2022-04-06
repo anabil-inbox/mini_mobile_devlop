@@ -19,6 +19,7 @@ class AddItemWidget extends StatelessWidget {
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

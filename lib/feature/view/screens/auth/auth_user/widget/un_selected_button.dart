@@ -4,6 +4,8 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 class UnSelectedButton extends StatelessWidget {
   const UnSelectedButton({Key? key , required this.onClicked , required this.textButton}) : super(key: key);
 
@@ -11,6 +13,7 @@ class UnSelectedButton extends StatelessWidget {
   final Function onClicked;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       width: double.infinity,
       height: sizeH50,

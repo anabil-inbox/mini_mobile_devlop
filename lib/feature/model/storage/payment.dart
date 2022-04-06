@@ -18,18 +18,22 @@ class PaymentMethod {
     PaymentMethod({
         this.id,
         this.name,
+        this.image
     });
 
     String? id;
     String? name;
+    String? image;
 
     factory PaymentMethod.fromJson(Map<String, dynamic> json) => PaymentMethod(
         id: json["id"],
         name: json["name"],
+        image: json["image"],
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
+        "image" : image,
         "name": name,
     };
 }

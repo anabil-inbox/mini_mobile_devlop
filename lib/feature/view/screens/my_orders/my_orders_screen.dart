@@ -6,6 +6,7 @@ import 'package:inbox_clients/feature/view/screens/my_orders/widgets/my_order_ap
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 
 import 'widgets/my_order_item.dart';
+import '../../../../../util/app_shaerd_data.dart';
 
 class MyOrdersScreen extends StatefulWidget {
   const MyOrdersScreen({Key? key}) : super(key: key);
@@ -21,20 +22,20 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      MyOrdersScreen.myOrderViewModle.getOrdres();
-    });
-    MyOrdersScreen.myOrderViewModle.scrollcontroller.addListener(() {
-      MyOrdersScreen.myOrderViewModle.pagination();
+      MyOrdersScreen.myOrderViewModle.getOrdres(
+        isFromPagination: false,
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
           MyOrdersScreen.myOrderViewModle.userOrderSales.clear();
-          MyOrdersScreen.myOrderViewModle.getOrdres();
+          MyOrdersScreen.myOrderViewModle.getOrdres(isFromPagination: false);
         },
         child: Column(
           children: [
@@ -47,13 +48,19 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    return ListView(
+                    return ListView.builder(
+                      itemCount: logic.userOrderSales.length,
+                      itemBuilder: (context, index) => MyOrderItem(
+                        orderSales: logic.userOrderSales.toList()[index],
+                      ),
+                      // controller:
+                      //     MyOrdersScreen.myOrderViewModle.scrollcontroller,
                       shrinkWrap: true,
-                      children: logic.userOrderSales
-                          .map((e) => MyOrderItem(
-                                orderSales: e,
-                              ))
-                          .toList(),
+                      // children: logic.userOrderSales
+                      //     .map((e) => MyOrderItem(
+                      //           orderSales: e,
+                      //         ))
+                      //     .toList(),
                     );
                   }
                 },

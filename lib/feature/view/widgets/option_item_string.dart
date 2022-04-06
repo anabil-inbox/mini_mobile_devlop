@@ -6,6 +6,8 @@ import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../util/app_shaerd_data.dart';
+
 class OptionStringItem extends StatelessWidget {
   const OptionStringItem({Key? key, required this.vas}) : super(key: key);
 
@@ -15,6 +17,7 @@ class OptionStringItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<StorageViewModel>(
       init: StorageViewModel(),
       initState: (_) {

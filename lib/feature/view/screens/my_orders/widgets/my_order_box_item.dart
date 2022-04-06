@@ -16,6 +16,7 @@ class MyOrderBoxItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       margin: EdgeInsets.only(bottom: padding10!),
       padding: EdgeInsets.symmetric(vertical: padding10!),

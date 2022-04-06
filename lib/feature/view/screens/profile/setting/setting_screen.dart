@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
+import 'package:inbox_clients/feature/view/screens/profile/setting/widget/about_in_box.dart';
+import 'package:inbox_clients/feature/view/screens/profile/setting/widget/help_center/help_center_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/setting_item_no_padding.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -15,6 +17,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: AppBar(
@@ -39,13 +42,18 @@ class SettingsScreen extends StatelessWidget {
             height: sizeH20,
           ),
           SettingItemNoPadding(settingTitle: "${tr.helpCenter}", onTap: (){
-
+            Get.to(() => const HelpCenterScreen(
+              helpCenter: true,
+            ));
           }),
            SizedBox(
             height: sizeH16,
           ),
           SettingItemNoPadding(settingTitle: "${tr.about_inbox}", onTap: (){
-            Get.to(() => TermsScreen(isAboutUs: true,));
+
+            Get.to(() => const AboutInBox(
+              isAboutUs: true,
+            ));
           }),
            SizedBox(
             height: sizeH16,

@@ -5,10 +5,12 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class PaymentWidget extends StatelessWidget {
-  const PaymentWidget({Key? key}) : super(key: key);
+  const PaymentWidget({Key? key , required this.isRecivedOrderPayment}) : super(key: key);
 
+  final bool isRecivedOrderPayment;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: padding16!),
       decoration: BoxDecoration(
@@ -28,10 +30,15 @@ class PaymentWidget extends StatelessWidget {
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              children: getPaymentMethod().map((e) => PaymentItem(paymentMethod: e,)).toList(),
+              children: getPaymentMethod().map((e) {
+                return PaymentItem(
+                  isRecivedOrderPayment: isRecivedOrderPayment,
+                  paymentMethod: e,
+                );
+              }).toList(),
             ),
           ),
-           SizedBox(
+          SizedBox(
             height: sizeH25,
           ),
         ],

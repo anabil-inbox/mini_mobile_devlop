@@ -11,16 +11,21 @@ class MyOrderViewModle extends BaseController {
   Set<OrderSales> userOrderSales = <OrderSales>{};
   bool isLoading = false;
 
-  Future<void> getOrdres() async {
-    isLoading = true;
+  Future<void> getOrdres({required bool isFromPagination}) async {
+    if (!isFromPagination) {
+      isLoading = true;
+    }
+
     update();
     await OrderHelper.getInstance
-        .getCustomerBoxess(pageSize: 40, page: page)
+        .getCustomerBoxess(pageSize: 50, page: page)
         .then((value) => {
               userOrderSales.addAll(value),
               Logger().i("${userOrderSales.length}"),
             });
-    isLoading = false;
+    if (!isFromPagination) {
+      isLoading = false;
+    }
     update();
   }
 
@@ -33,7 +38,7 @@ class MyOrderViewModle extends BaseController {
       if ((scrollcontroller.position.pixels ==
           scrollcontroller.position.maxScrollExtent)) {
         page += 1;
-        getOrdres();
+        getOrdres(isFromPagination: true);
       }
     } catch (e) {}
 
@@ -71,10 +76,5 @@ class MyOrderViewModle extends BaseController {
       return true;
     }
     return false;
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
   }
 }

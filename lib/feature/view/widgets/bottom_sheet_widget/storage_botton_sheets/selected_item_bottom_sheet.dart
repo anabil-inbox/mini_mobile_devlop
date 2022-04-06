@@ -18,6 +18,7 @@ import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:logger/logger.dart';
 
+import '../../../screens/auth/terms/terms_view.dart';
 import '../../custome_text_view.dart';
 
 class SelectedItemBottomSheet extends StatelessWidget {
@@ -60,24 +61,34 @@ class SelectedItemBottomSheet extends StatelessWidget {
 
   Widget get acceptTerms => GetBuilder<StorageViewModel>(
         builder: (value) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () {
-                  value.isAccept = !value.isAccept;
-                  value.update();
-                },
-                child: Row(
+          return TextButton(
+            style: TextButton.styleFrom(
+              primary: Colors.transparent,
+              shadowColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
+            ),
+            onPressed: () {
+              Get.to(() => TermsScreen());
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    value.isAccept
-                        ? SvgPicture.asset("assets/svgs/check.svg")
-                        : SvgPicture.asset(
-                            "assets/svgs/uncheck.svg",
-                            color: seconderyColor,
-                          ),
+                    InkWell(
+                      onTap: () {
+                        value.isAccept = !value.isAccept;
+                        value.update();
+                      },
+                      child: value.isAccept
+                          ? SvgPicture.asset("assets/svgs/check.svg")
+                          : SvgPicture.asset(
+                              "assets/svgs/uncheck.svg",
+                              color: seconderyColor,
+                            ),
+                    ),
                     SizedBox(
                       width: 10,
                     ),
@@ -87,27 +98,25 @@ class SelectedItemBottomSheet extends StatelessWidget {
                     )
                   ],
                 ),
-              ),
-              InkWell(
-                  onTap: () {
-                    //Get.to(() => TermsScreen());
-                  },
-                  child: CustomTextView(
-                    txt: "${tr.company_policy}",
-                    textAlign: TextAlign.start,
-                    textStyle: textStyleUnderLinePrimary()!
-                        .copyWith(color: colorBlack, fontSize: fontSize14),
-                  )),
-            ],
+                CustomTextView(
+                  txt: "${tr.company_policy}",
+                  textAlign: TextAlign.start,
+                  textStyle: textStyleUnderLinePrimary()!
+                      .copyWith(color: colorBlack, fontSize: fontSize14),
+                ),
+              ],
+            ),
           );
         },
       );
 
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
   static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
+  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<ItemViewModle>(
         init: ItemViewModle(),
         builder: (logic) {
@@ -207,6 +216,7 @@ class SelectedItemBottomSheet extends StatelessWidget {
     final Task enterdTask =
         homeViewModel.searchTaskById(taskId: LocalConstance.fetchId);
     Get.back();
+    storageViewModel.isAccept = false;
     Get.bottomSheet(
         RecallBoxProcessSheet(
           items: itemViewModle.listIndexSelected,
@@ -216,7 +226,6 @@ class SelectedItemBottomSheet extends StatelessWidget {
           isFetchTask: true,
         ),
         isScrollControlled: true);
-      
   }
 
   onClickBringBox() {

@@ -1,21 +1,21 @@
 import 'package:inbox_clients/feature/model/country.dart';
 
 class Customer {
-  Customer({
-    this.id,
-    this.customerName,
-    this.crNumber,
-    this.email,
-    this.companySector,
-    this.applicantName,
-    this.applicantDepartment,
-    this.mobile,
-    this.countryCode,
-    this.image,
-    this.contactNumber,
-    this.isDisabled,
-    this.country,
-  });
+  Customer(
+      {this.id,
+      this.customerName,
+      this.crNumber,
+      this.email,
+      this.companySector,
+      this.applicantName,
+      this.applicantDepartment,
+      this.mobile,
+      this.countryCode,
+      this.image,
+      this.contactNumber,
+      this.isDisabled,
+      this.country,
+      this.conversionFactor});
 
   String? id;
   String? customerName;
@@ -30,11 +30,13 @@ class Customer {
   List<Map<String, dynamic>>? contactNumber;
   bool? isDisabled;
   List<Country>? country;
+  num? conversionFactor;
 
   factory Customer.fromJson(Map<String, dynamic> json) => Customer(
         id: json["id"] ?? "",
         customerName: json["customer_name"] ?? "",
         crNumber: json["cr_number"] ?? "",
+        conversionFactor: json["conversion_factor"] ?? "",
         email: json["email"] ?? "",
         companySector: json["company_sector"] ?? "",
         applicantName: json["applicant_name"] ?? "",
@@ -60,14 +62,19 @@ class Customer {
         "customer_name": customerName,
         "cr_number": crNumber,
         "email": email,
+        "conversion_factor": conversionFactor,
         "company_sector": companySector,
         "applicant_name": applicantName,
         "applicant_department": applicantDepartment,
         "mobile_number": mobile,
         "country_code": countryCode,
         "image": image,
-        "contact_number":contactNumber == null ? null : List<Map<String, dynamic>>.from(contactNumber!.map((x) => x)),
+        "contact_number": contactNumber == null
+            ? null
+            : List<Map<String, dynamic>>.from(contactNumber!.map((x) => x)),
         "is_disabled": isDisabled,
-        "country":country == null ? null : List<dynamic>.from(country!.map((x) => x.toJson())),
+        "country": country == null
+            ? null
+            : List<dynamic>.from(country!.map((x) => x.toJson())),
       };
 }

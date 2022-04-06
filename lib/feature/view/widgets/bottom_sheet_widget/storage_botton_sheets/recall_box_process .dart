@@ -18,6 +18,7 @@ import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/cart_view_model/cart_view_model.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/local_database/model/cart_model.dart';
@@ -48,6 +49,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
   static HomeViewModel _homeViewModel = Get.find<HomeViewModel>();
   static StorageViewModel _storageViewModel = Get.find<StorageViewModel>();
   static CartViewModel _cartViewModel = Get.put<CartViewModel>(CartViewModel());
+  static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
 
   final Task task;
   final List<BoxItem>? items;
@@ -237,14 +239,13 @@ class RecallBoxProcessSheet extends StatelessWidget {
                 child: GetBuilder<HomeViewModel>(
                   init: HomeViewModel(),
                   initState: (_) {},
-                  builder: (_) {
+                  builder: (home) {
                     if (isFetchTask!) {
                       return ListView(
                         padding: const EdgeInsets.all(0),
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        children: boxes[0]
-                            .items!
+                        children: itemViewModle.listIndexSelected
                             .map((e) => BoxItemInSalesOrder(
                                   boxItem: e,
                                 ))
@@ -270,7 +271,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("msg_boxess_length ${boxes.length}");
+    screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: sizeW15!),
       clipBehavior: Clip.hardEdge,
@@ -362,8 +363,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
   }
 
   onClickBreakSeal() async {
-    if (_storageViewModel.isValidateTask(task: task, boxess: boxes) &&
-        await _storageViewModel.checkTimeSlot()) {
+    if (_storageViewModel.isValidateTask(task: task, boxess: boxes)) {
       Get.back();
       Get.bottomSheet(
               BottomSheetPaymentWidget(
@@ -394,7 +394,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
     // }
   }
 
-  onClickBringBox() {
+  onClickBringBox() async {
     //here action of add to cart btn
     if (!isFromCart!) {
       // final task = _homeViewModel.searchTaskById(taskId: LocalConstance.giveawayId);
@@ -405,7 +405,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
           from: "${selectedDay?.from}",
           delivery: "${_storageViewModel.selectedDateTime.toString()}",
         );
-        _cartViewModel.addToCart(
+        await _cartViewModel.addToCart(
             (GetUtils.isNull(boxes) || boxes.isEmpty) ? [box!] : boxes,
             [],
             _storageViewModel.selectedAddress,

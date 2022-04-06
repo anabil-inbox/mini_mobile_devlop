@@ -11,6 +11,7 @@ class OrderDateWidget extends StatelessWidget {
   final String? date;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
   
     return Container(
       width: double.infinity,

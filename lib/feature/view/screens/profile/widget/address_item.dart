@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/edit_address.dart';
-import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -17,9 +17,8 @@ class AddressItem extends StatelessWidget {
   Address address;
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<ProfileViewModle>(
-      init: ProfileViewModle(),
-      initState: (_) {},
       builder: (_) {
         return Column(
           children: [
@@ -40,7 +39,6 @@ class AddressItem extends StatelessWidget {
                           ? InkWell(
                               onTap: () {
                                 print("UnCheck");
-
                                 this.address = Address(
                                   id: address.id,
                                   addressTitle: address.addressTitle,
@@ -116,8 +114,11 @@ class AddressItem extends StatelessWidget {
                   PositionedDirectional(
                     top: sizeH54,
                     start: sizeH54,
-                    child: Text(
-                        "${address.geoAddress}"),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      child: Text(
+                          "${address.geoAddress}"),
+                    ),
                   ),
                   PositionedDirectional(
                     top: sizeH12,

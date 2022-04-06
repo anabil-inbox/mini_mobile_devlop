@@ -10,11 +10,14 @@ import 'package:inbox_clients/feature/view_model/splash_view_modle/splash_view_m
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 
+import '../../../../../util/app_shaerd_data.dart';
+
 class SplashScreen extends GetWidget<SplashViewModle> {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     Future.delayed(Duration(seconds: 3), () => moveToIntro());
     return Scaffold(
         body: Center(child: SvgPicture.asset("assets/svgs/logo.svg")));
@@ -24,7 +27,8 @@ class SplashScreen extends GetWidget<SplashViewModle> {
 moveToIntro() {
   String? state = SharedPref.instance.getUserLoginState();
 
-  if (state?.toLowerCase() == "${ConstanceNetwork.userEnterd}") {
+  try {
+     if (state?.toLowerCase() == "${ConstanceNetwork.userEnterd}") {
     if (SharedPref.instance.getUserType() == "${ConstanceNetwork.userType}") {
       Get.off(() => UserRegisterScreen());
     } else if (SharedPref.instance.getUserType() ==
@@ -37,6 +41,9 @@ moveToIntro() {
   } else if (state?.toLowerCase() == "${ConstanceNetwork.userLoginedState}") {
     Get.off(() => HomePageHolder());
   } else {
-    Get.off(() => IntroScreen(type: SharedPref.instance.getUserType()));
+    Get.off(() => IntroScreen(type: SharedPref.instance.getUserType() ?? "both"));
+  }
+  } catch (e) {
+     Get.off(() => IntroScreen(type: "both"));
   }
 }

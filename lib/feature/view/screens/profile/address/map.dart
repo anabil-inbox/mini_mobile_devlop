@@ -34,6 +34,7 @@ class _MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       appBar: CustomAppBarWidget(
         leadingWidth: sizeW50,
@@ -119,8 +120,7 @@ class _MapSampleState extends State<MapSample> {
                     markers: {logic.mark},
                     onMapCreated: (GoogleMapController newMapController) {
                       if(!logic.controllerCompleter.isCompleted){
-                      logic.controllerCompleter
-                                  .complete(newMapController);
+                      logic.controllerCompleter.complete(newMapController);
                                   
                        }
                       

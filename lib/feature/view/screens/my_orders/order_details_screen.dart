@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
+import 'package:inbox_clients/feature/view/screens/home/recived_order/recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/widgets/my_order_address_widget.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/widgets/my_order_box_item.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/widgets/new_order_item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/price_bottom_sheet_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/map_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/feature/view_model/map_view_model/map_view_model.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
+import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 
+import '../../../../util/app_shaerd_data.dart';
+import '../../../model/my_order/order_sales.dart';
+import '../../../model/storage/payment.dart';
 import 'widgets/my_order_time_widget.dart';
 import 'widgets/status_widget.dart';
 
@@ -23,13 +33,14 @@ class OrderDetailesScreen extends StatefulWidget {
   final bool isFromPayment;
   static MyOrderViewModle myOrderViewModle =
       Get.put(MyOrderViewModle(), permanent: true);
+  static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
 
   @override
   State<OrderDetailesScreen> createState() => _OrderDetailesScreenState();
 }
 
 class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
-
   Widget get bodyOrderDetailes {
     //to do this when The Status Is An Task :
     if (GetUtils.isNull(
@@ -44,17 +55,6 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
           return ListView(
             primary: false,
             shrinkWrap: true,
-            // home.tasksDone
-            //             .asMap()
-            //             .map((i, element) => MapEntry(
-            //                 i,
-            //                 HomeCard(
-            //                   isFromCompleted: true,
-            //                   index: i,
-            //                   task: element,
-            //                 )))
-            //             .values
-            //             .toList()),
             children: myOrder.newOrderSales.orderItems!
                 .asMap()
                 .map((i, element) => MapEntry(i, GetBuilder<MyOrderViewModle>(
@@ -96,16 +96,15 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
       await OrderDetailesScreen.myOrderViewModle
           .getOrderDetaile(orderId: widget.orderId);
       OrderDetailesScreen.myOrderViewModle.update();
+
       setState(() {});
-      // Future.delayed(Duration(milliseconds: 1000)).then(
-      //     (value) async => {
-      //       // OrderDetailesScreen.myOrderViewModle.update(),
-      //       });
     });
+    //Get.put(MapViewModel()).getStreamLocation(OrderDetailesScreen.myOrderViewModle.newOrderSales);
   }
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return WillPopScope(
       onWillPop: () => onWillPop(),
       child: Scaffold(
@@ -129,6 +128,13 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                 primary: true,
                 child: GetBuilder<MyOrderViewModle>(
                   builder: (builder) {
+                    if (OrderDetailesScreen
+                            .myOrderViewModle.newOrderSales.totalPrice ==
+                        null) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: padding20!),
                       child: Column(
@@ -161,11 +167,8 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                           GetBuilder<MyOrderViewModle>(
                             builder: (controller) {
                               return MyOrderAddressWidget(
-                                address: controller
-                                        .newOrderSales.orderShippingAddress ??
-                                    controller
-                                        .newOrderSales.orderWarehouseAddress ??
-                                    "",
+                                newOrderSales:controller.newOrderSales,
+
                               );
                             },
                           ),
@@ -184,6 +187,57 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                             height: sizeH10,
                           ),
                           bodyOrderDetailes,
+                          SizedBox(
+                            height: sizeH32,
+                          ),
+                          if (widget.isFromPayment)
+                            PrimaryButton(
+                                textButton: "Back To Home",
+                                isLoading: false,
+                                onClicked: () async {
+                                  Get.off(() => HomePageHolder());
+                                },
+                                isExpanded: true),
+                          if (!widget.isFromPayment) ...[
+                            GetBuilder<HomeViewModel>(builder: (logic) {
+                              bool isHaveDetailes = true;
+                              for (OrderItem item
+                                  in myOrders.newOrderSales.orderItems ?? []) {
+                                if (item.item!.toLowerCase().contains("cage") ||
+                                    item.item!
+                                        .toLowerCase()
+                                        .contains("space") ||
+                                    item.item!.toLowerCase().contains("bulk") ||
+                                    myOrders.newOrderSales.proccessType ==
+                                        LocalConstance.productSv) {
+                                  isHaveDetailes = false;
+                                }
+                              }
+                              return (myOrders.newOrderSales.status ==
+                                          LocalConstance.completed ||
+                                      isHaveDetailes == false ||
+                                      myOrders.newOrderSales.proccessType ==
+                                          LocalConstance.productSv)
+                                  ? const SizedBox()
+                                  : PrimaryButton(
+                                      textButton: "Order Detaiels",
+                                      isLoading: logic.isLoading,
+                                      onClicked: () async {
+                                        await OrderDetailesScreen.homeViewModel
+                                            .getTaskResponse(
+                                                salersOrder: myOrders
+                                                        .newOrderSales
+                                                        .orderId ??
+                                                    "");
+                                        setupPaymentMethod();
+                                        Get.to(() => ReciverOrderScreen(logic));
+                                      },
+                                      isExpanded: true);
+                            })
+                          ],
+                          SizedBox(
+                            height: sizeH32,
+                          ),
                         ],
                       ),
                     );
@@ -195,5 +249,13 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
         ),
       ),
     );
+  }
+
+  setupPaymentMethod() {
+    OrderDetailesScreen.storageViewModel.selectedPaymentMethod = PaymentMethod(
+      id: OrderDetailesScreen.homeViewModel.operationTask.paymentMethod,
+      name: OrderDetailesScreen.homeViewModel.operationTask.paymentMethod,
+    );
+    OrderDetailesScreen.storageViewModel.update();
   }
 }

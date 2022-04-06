@@ -5,8 +5,8 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:inbox_clients/feature/view/screens/profile/log/log_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/my_rewareds/my_rewards_screen.dart';
-import 'package:inbox_clients/feature/view/screens/profile/payment_card/payment_card_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/setting/setting_screen.dart';
+import 'package:inbox_clients/feature/view/screens/profile/subscriptions/my_subscription_view.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/header_profile_card.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/setting_item.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/setting_item_with_title.dart';
@@ -24,13 +24,15 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Scaffold(
       body: GetBuilder<ProfileViewModle>(
           init: ProfileViewModle(),
-          initState: (state) {
-            // state.controller?.getMyWallet();
-            WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-              profileViewModel.getMyWallet();
+          initState: (_) {
+            WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+              await profileViewModel.getMyWallet();
+              await profileViewModel.getMyPoints();
+              await profileViewModel.getUserSubscription("");
             });
           },
           builder: (logic) {
@@ -64,7 +66,8 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                           onTap: () {
                             Get.to(() => MyRewardsScreen());
                           },
-                          trailingTitle: "0 ${tr.point}",
+                          trailingTitle:
+                              "${logic.myPoints.totalPoints} ${tr.point}",
                           settingTitle: "${tr.my_rewards}",
                           iconPath: "assets/svgs/rewareds.svg",
                         ),
@@ -95,12 +98,23 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                         ),
                         SettingItem(
                           onTap: () {
-                            Get.to(() => PaymentCardScreen());
+                            Get.to(() => MySubscriptionsView());
                           },
-                          settingTitle: "${tr.payment_card}",
+                          settingTitle: "${tr.my_subscriptions}",
                           trailingTitle: "",
                           iconPath: "assets/svgs/payment_card.svg",
                         ),
+                        // SizedBox(
+                        //   height: sizeH12,
+                        // ),
+                        // SettingItem(
+                        //   onTap: () {
+                        //     Get.to(() => PaymentCardScreen());
+                        //   },
+                        //   settingTitle: "${tr.payment_card}",
+                        //   trailingTitle: "",
+                        //   iconPath: "assets/svgs/payment_card.svg",
+                        // ),
                         SizedBox(
                           height: sizeH12,
                         ),

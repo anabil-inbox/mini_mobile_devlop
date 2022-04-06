@@ -2,7 +2,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/logout_bottom_sheet.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/cart_view_model/cart_view_model.dart';
@@ -57,12 +57,12 @@ class CartHead extends StatelessWidget {
                     textStyle: textStyleNormalBlack(),
                   ),
                 ),
-              CustomTextView(
-                txt:
-                    "${storageViewModel.calculateTaskPriceOnceBox(task: cartModel!.task!)}",
-                maxLine: Constance.maxLineOne,
-                textStyle: textStyleNormalBlack()?.copyWith(color: colorRed),
-              ),
+              // CustomTextView(
+              //   txt:
+              //       "${storageViewModel.calculateTaskPriceOnceBox(task: cartModel!.task!)}",
+              //   maxLine: Constance.maxLineOne,
+              //   textStyle: textStyleNormalBlack()?.copyWith(color: colorRed),
+              // ),
             ],
           );
         },
@@ -96,6 +96,7 @@ class CartHead extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -125,7 +126,7 @@ class CartHead extends StatelessWidget {
                       Text("${cartModel?.title}"),
                       SizedBox(width: sizeW5),
                       Text(
-                        "${storageViewModel.calculateTaskPriceLotBoxess(task: cartModel!.task!, boxess: cartModel?.box ?? [])}",
+                        "${storageViewModel.calculateTaskPriceLotBoxess(task: cartModel!.task!, boxess: cartModel?.box ?? [], isFromCart: true, myAddresss: cartModel?.address)}",
                         style: textStylePrimarySmall(),
                       ),
                     ],
@@ -185,9 +186,9 @@ class CartHead extends StatelessWidget {
                 hasIcon: true,
               ),
             ),
-            SizedBox(
+          SizedBox(
             height: sizeH10,
-            ),
+          ),
         ],
       ),
     );
@@ -204,7 +205,7 @@ class CartHead extends StatelessWidget {
         cartViewModel?.deleteItemCart(cartModel!);
         cartViewModel?.cartList.remove(cartModel);
         cartViewModel?.update();
-         Get.back();
+        Get.back();
       },
     ));
   }

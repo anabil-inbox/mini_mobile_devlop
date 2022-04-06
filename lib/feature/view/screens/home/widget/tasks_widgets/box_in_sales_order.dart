@@ -7,6 +7,8 @@ import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 
+import '../../../../../../util/app_shaerd_data.dart';
+
 class BoxInSalesOrder extends StatelessWidget {
    BoxInSalesOrder({Key? key, required this.box, required this.boxess})
       : super(key: key);
@@ -17,6 +19,7 @@ class BoxInSalesOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return GetBuilder<HomeViewModel>(
       init: HomeViewModel(),
       initState: (_) {},

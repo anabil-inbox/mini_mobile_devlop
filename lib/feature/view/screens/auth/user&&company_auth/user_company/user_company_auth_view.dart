@@ -24,6 +24,7 @@ class UserCompanyLoginScreen extends GetWidget<IntroViewModle> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     Get.put(AuthViewModle());
     return type != "${ConstanceNetwork.bothType}" ? Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,

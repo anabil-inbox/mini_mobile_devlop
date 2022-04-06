@@ -7,6 +7,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/fcm/app_fcm.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
@@ -26,6 +27,7 @@ import 'package:logger/logger.dart';
 
 class AuthViewModle extends GetxController {
   Logger log = Logger();
+
   //user text Controllers
 
   TextEditingController tdSearch = TextEditingController();
@@ -58,10 +60,12 @@ class AuthViewModle extends GetxController {
 
   Set<Country> countres = {};
   String? dropDown;
+
   // for defoult country
   Country defCountry = Country(name: "Qatar", flag: "", prefix: "+974");
   bool isSelectedCountry = false;
   String deviceType = "";
+
   // for loading var
   bool isLoading = false;
 
@@ -77,15 +81,16 @@ class AuthViewModle extends GetxController {
 
   Future<Set<Country>> getCountries(int page, int pageSize) async {
     print("msg_in_get_Country");
-    await CountryHelper.getInstance
-        .getCountryApi({"page": page, "page_size": pageSize.toString()}).then(
-            (value) => {
-                  if (!GetUtils.isNull(value))
-                    {
-                      countres = value,
-                      update(),
-                    }
-                });
+    await CountryHelper.getInstance.getCountryApi({
+      ConstanceNetwork.page: page,
+      ConstanceNetwork.pageSize: pageSize.toString()
+    }).then((value) => {
+          if (!GetUtils.isNull(value))
+            {
+              countres = value,
+              update(),
+            }
+        });
     return countres;
   }
 
@@ -100,7 +105,8 @@ class AuthViewModle extends GetxController {
               isLoading = false,
               update(),
               Get.to(() => CompanyVerficationCodeScreen(
-                  id: value.data["Customer"]["id"],
+                  id: value.data[ConstanceNetwork.customerKey]
+                      [ConstanceNetwork.idKey],
                   mobileNumber: user.mobile!,
                   countryCode: user.countryCode!,
                   type: "${ConstanceNetwork.userType}")),
@@ -131,7 +137,8 @@ class AuthViewModle extends GetxController {
                   isLoading = false,
                   update(),
                   Get.to(() => CompanyVerficationCodeScreen(
-                      id: value.data["Customer"]["id"],
+                      id: value.data[ConstanceNetwork.customerKey]
+                          [ConstanceNetwork.idKey],
                       countryCode: company.countryCode!,
                       mobileNumber: company.mobile!,
                       type: "${ConstanceNetwork.companyType}")),
@@ -156,11 +163,12 @@ class AuthViewModle extends GetxController {
     await AuthHelper.getInstance.loginUser(user!.toJson()).then((value) => {
           if (value.status!.success!)
             {
-              Logger().d(value.data["Customer"]),
+              Logger().d(value.data[ConstanceNetwork.customerKey]),
               isLoading = false,
               update(),
               Get.to(() => CompanyVerficationCodeScreen(
-                  id: value.data["Customer"]["id"],
+                  id: value.data[ConstanceNetwork.customerKey]
+                      [ConstanceNetwork.idKey],
                   mobileNumber: user.mobile!,
                   countryCode: user.countryCode!,
                   type: "${ConstanceNetwork.userType}")),
@@ -186,13 +194,18 @@ class AuthViewModle extends GetxController {
           if (value.status!.success!)
             {
               Get.put(AuthViewModle()),
-              Logger().d(value.data["Customer"]),
+              Logger().d(value.data[ConstanceNetwork.customerKey]),
               isLoading = false,
               update(),
               Get.to(() => CompanyVerficationCodeScreen(
-                  id: value.data["Customer"]["id"],
-                  mobileNumber: value.data["Customer"]["mobile_number"] ?? "",
-                  countryCode: value.data["Customer"]["country_code"] ?? "",
+                  id: value.data[ConstanceNetwork.customerKey]
+                      [ConstanceNetwork.idKey],
+                  mobileNumber: value.data[ConstanceNetwork.customerKey]
+                          [ConstanceNetwork.mobileNumberKey] ??
+                      "",
+                  countryCode: value.data[ConstanceNetwork.customerKey]
+                          [ConstanceNetwork.contryCodeKey] ??
+                      "",
                   type: "${ConstanceNetwork.companyType}")),
             }
           else
@@ -270,13 +283,14 @@ class AuthViewModle extends GetxController {
       String? mobileNumber,
       String? countryCode}) async {
     Map<String, dynamic> params = Map<String, dynamic>();
-    params["id"] = id;
-    params["udid"] = identifier;
-    params["code"] = code;
+
+    params[ConstanceNetwork.idKey] = id;
+    params[ConstanceNetwork.udidKey] = identifier;
+    params[ConstanceNetwork.codeKey] = code;
     if (mobileNumber.toString().isNotEmpty &&
         countryCode.toString().isNotEmpty) {
       params["${ConstanceNetwork.mobileNumberKey}"] = mobileNumber;
-      params["country_code"] = countryCode;
+      params[ConstanceNetwork.contryCodeKey] = countryCode;
     }
 
     await AuthHelper.getInstance.checkVerficationCode(params).then((value) => {
@@ -303,11 +317,11 @@ class AuthViewModle extends GetxController {
     isLoading = true;
     update();
     await AuthHelper.getInstance.reSendVerficationCode({
-      "id": "$id",
-      "udid": "$udid",
-      "target": "$target",
+      ConstanceNetwork.idKey: "$id",
+      ConstanceNetwork.udidKey: "$udid",
+      ConstanceNetwork.targetKey: "$target",
       "${ConstanceNetwork.mobileNumberKey}": "$mobileNumber",
-      "country_code": "$countryCode"
+      ConstanceNetwork.contryCodeKey: "$countryCode"
     }).then((value) => {
           if (value.status!.success!)
             {
@@ -316,11 +330,13 @@ class AuthViewModle extends GetxController {
               startTimer(),
               update(),
               // snackSuccess("${tr.success}", "${value.status!.message}"),
-              isFromChange ? Get.to(() => VerficationChangeMobilScreen(
-                id: id ?? "",
-                mobileNumber: mobileNumber ?? "",
-                countryCode: countryCode ?? "",
-              )) : {},
+              isFromChange
+                  ? Get.to(() => VerficationChangeMobilScreen(
+                        id: id ?? "",
+                        mobileNumber: mobileNumber ?? "",
+                        countryCode: countryCode ?? "",
+                      ))
+                  : {},
             }
           else
             {
@@ -339,7 +355,8 @@ class AuthViewModle extends GetxController {
       await _checkBiometrics();
       await _getAvailableBiometrics();
       await _authenticate();
-      if (isAuth! && SharedPref.instance
+      if (isAuth! &&
+          SharedPref.instance
               .getCurrentUserData()
               .crNumber
               .toString()
@@ -468,7 +485,7 @@ class AuthViewModle extends GetxController {
   final LocalAuthentication auth = LocalAuthentication();
   bool _canCheckBiometrics = false;
   List<BiometricType>? _availableBiometrics;
-  String _authorized = 'Not Authorized';
+  String _authorized = tr.not_authorized;
 
   Future<void> _checkBiometrics() async {
     bool canCheckBiometrics = false;
@@ -498,7 +515,7 @@ class AuthViewModle extends GetxController {
     bool authenticated = false;
     try {
       authenticated = await auth.authenticate(
-        localizedReason: 'Scan your fingerprint to authenticate',
+        localizedReason: tr.scan_to_auth ,
         useErrorDialogs: true,
         biometricOnly: true,
         stickyAuth: false,
@@ -506,7 +523,7 @@ class AuthViewModle extends GetxController {
     } on PlatformException catch (e) {
       print(e);
     }
-    _authorized = authenticated ? 'Authorized' : 'Not Authorized';
+    _authorized = authenticated ? tr.authorized  : tr.not_authorized;
     isAuth = authenticated ? true : false;
     update();
   }
@@ -516,6 +533,7 @@ class AuthViewModle extends GetxController {
     super.onInit();
     //  startTimer();
     clearAllControllers();
+    AppFcm.fcmInstance.getTokenFCM();
     getDeviceDetails();
     getPhonePlatform();
     update();

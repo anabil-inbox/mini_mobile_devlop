@@ -23,6 +23,7 @@ class LVWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    screenUtil(context);
     return GetBuilder<HomeViewModel>(
       init: HomeViewModel(),
       initState: (_) {},
@@ -35,8 +36,8 @@ class LVWidget extends StatelessWidget {
               itemCount: homeViewModel.userBoxess.length,
               itemBuilder: (context, index) => 
               !(homeViewModel.userBoxess
-                          .toList()[index]
-                          .allowed ??
+              .toList()[index]
+              .allowed ??
                       false)
                   ? InkWell(
                       highlightColor: colorTrans,

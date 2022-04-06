@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
+import '../../../util/app_shaerd_data.dart';
+
 class CustomTextView extends StatelessWidget {
   final String? txt;
   final TextAlign? textAlign;
@@ -12,8 +14,9 @@ class CustomTextView extends StatelessWidget {
   const CustomTextView({Key? key, this.txt, this.textAlign, this.textStyle, this.maxLine, this.textOverflow, this.isUpperCase = false}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    screenUtil(context);
     return AutoSizeText(
-      isUpperCase!?txt!.toUpperCase():txt!,
+      isUpperCase!?txt!.toUpperCase():txt?? "",
       overflow: textOverflow,
       textAlign: textAlign,
       style: textStyle,
