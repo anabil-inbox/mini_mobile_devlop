@@ -52,11 +52,13 @@ class FirebaseClint {
       ///  in serial we will get [bodyData]
       var documentReference =  FirebaseFirestore.instance.collection("$_diverTrack").doc(customerId)
           .collection(_serialOrder.toString()).doc(serial);
-      var querySnapshot = await documentReference.get();
-      yield TrackModel.fromJson(querySnapshot.data()??{}) ;
+      var querySnapshot =  documentReference.snapshots().where((event) => !event.metadata.isFromCache);
+
+      yield await querySnapshot.map((event) => TrackModel.fromJson(event.data()) ).last;
+
     } catch (e) {
       Logger().d(e);
-      throw "e";
+      throw e;
     }
   }
 

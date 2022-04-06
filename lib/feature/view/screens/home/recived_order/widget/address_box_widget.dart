@@ -86,13 +86,13 @@ class AddressBox extends StatelessWidget {
   void _goToMap({required SalesOrder salesOrder}) {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       Get.put(MapViewModel());
-      Get.bottomSheet(
-          MapBottomSheet(
-            salesOrder: salesOrder,
-          ),
-          enableDrag: true,
-          isScrollControlled: true,
-          clipBehavior: Clip.hardEdge);
+      // Get.bottomSheet(
+      //     MapBottomSheet(
+      //       salesOrder: salesOrder,
+      //     ),
+      //     enableDrag: true,
+      //     isScrollControlled: true,
+      //     clipBehavior: Clip.hardEdge);
     });
   }
 }

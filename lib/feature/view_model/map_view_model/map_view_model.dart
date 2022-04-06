@@ -71,7 +71,7 @@ class MapViewModel extends GetxController {
   // }
 
   onMapCreated(GoogleMapController controllerMap,
-      {required SalesOrder salesOrder}) async {
+      {required var salesOrderId}) async {
     if (!controller!.isCompleted) {
       controller?.complete(controllerMap);
     }
@@ -79,7 +79,7 @@ class MapViewModel extends GetxController {
     //todo here we use two method first for me and another for the user
     //todo me = driver
     await getMyCurrentPosition();
-    getStreamLocation(salesOrder);
+    getStreamLocation(salesOrderId);
     // getUserMarkers(salesOrder: salesOrder);
     Future.delayed(const Duration(seconds: 0)).then((value) async {
       await foucCameraOnUsers(
@@ -274,21 +274,21 @@ class MapViewModel extends GetxController {
         .then((Position value) async {
       myLatLng = LatLng(value.latitude, value.longitude);
       //if we need we can make animate for camera
-      await getMyCurrentMarkers();
+      //await getMyCurrentMarkers();
       update();
     });
   }
 
   // to do for stream Location
 
-  getStreamLocation(SalesOrder salesOrder) async {
+  getStreamLocation(var salesOrderId) async {
     FirebaseClint.instance.getTrackLocation(SharedPref.instance.getCurrentUserData().id,
-        salesOrder.orderId).listen((TrackModel event) {
-          Logger().d(event.toJson());
-          if(event.serialOrderDriverLocation != null)
+        salesOrderId).listen((TrackModel event) {
+          // Logger().d(event.toJson());
+          if( event.serialOrderDriverLocation != null)
           customerLatLng = event.serialOrderDriverLocation!;
           if(event.serialOrderData != null)
-          getUserMarkers(salesOrder: event.serialOrderData!);
+           getUserMarkers(salesOrder: event.serialOrderData!);
     });
     // try {
     //   Geolocator.getPositionStream().listen((event) {

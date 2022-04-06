@@ -29,7 +29,7 @@ abstract class Constance {
   static String driverToken = "driver_token";
 
   static String defoultImageMarker =
-      "https://drive.google.com/file/d/121FQ8BdhQ_yoYeGaDZ4tvA719tzSL94k/view?usp=sharing";
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdIUAt46mfuRdSQLjr-sghJMj2kw7PVx1ftQ&usqp=CAU";
 
   static String googleMapKey = "AIzaSyAzBtxE3NluLYNrUajTg9OnG7X_luzESvU";
 

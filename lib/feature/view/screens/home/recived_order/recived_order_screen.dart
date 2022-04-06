@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inbox_clients/feature/model/respons/task_response.dart';
+import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/address_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/application_payment.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/balance_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/box_need_scanned_item.dart';
@@ -171,6 +172,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                     return scanDelivedBoxes(homeViewModel: homeViewModel);
                   })
                 ],
+
                 SizedBox(height: sizeH10),
                 const ScanProducts(),
                 SizedBox(height: sizeH10),

@@ -14,7 +14,7 @@ class MapBottomSheet extends StatelessWidget {
 
   static MapViewModel get mapViewModel => Get.find<MapViewModel>();
 
-  final SalesOrder salesOrder;
+  final String salesOrder;
 
   Widget get closeBtnWidget => InkWell(
         child: SvgPicture.asset("assets/svgs/Close.svg"),
@@ -76,7 +76,7 @@ class MapBottomSheet extends StatelessWidget {
                                 onMapCreated:
                                     (GoogleMapController controller) =>
                                         logic.onMapCreated(controller,
-                                            salesOrder: salesOrder),
+                                            salesOrderId: salesOrder),
                               ),
                             ),
                           ),
