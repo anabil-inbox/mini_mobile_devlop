@@ -120,8 +120,7 @@ class _MapSampleState extends State<MapSample> {
                     markers: {logic.mark},
                     onMapCreated: (GoogleMapController newMapController) {
                       if(!logic.controllerCompleter.isCompleted){
-                      logic.controllerCompleter
-                                  .complete(newMapController);
+                      logic.controllerCompleter.complete(newMapController);
                                   
                        }
                       
