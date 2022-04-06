@@ -221,7 +221,6 @@ class AppFcm {
         name: homeViewModel.operationTask.paymentMethod,
       );
       storageViewModel.update();
-      
       var serial = map;
       if (serial[LocalConstance.id].toString() == LocalConstance.submitId) {
         print("MSG_BUG LocalConstance.submitId $map");
