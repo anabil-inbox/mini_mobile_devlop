@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/widgets/notification_item.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -30,18 +32,31 @@ class NotificationScreen extends StatelessWidget {
               fillColor: scaffoldColor),
         ),
       ),
-      body: SafeArea(
-          child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: 3,
-              itemBuilder: (context, index) => NotificationItem(),
-            ),
-          ),
-        ],
-      )),
+      body: GetBuilder<HomeViewModel>(
+          initState:(state){
+            WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+              state.controller?.getNotifications();
+            });
+          },
+          init:HomeViewModel(),
+          builder: (logic) {
+        return SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if(logic.isLoading)...[
+                  Expanded(child: Center(child: CircularProgressIndicator(color: colorPrimary,),)),
+                ]else ...[
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: logic.listNotifications.length,
+                    itemBuilder: (context, index) => NotificationItem(notification:logic.listNotifications[index]),
+                  ),
+                ),
+            ]
+              ],
+            ));
+      }),
     );
   }
 }

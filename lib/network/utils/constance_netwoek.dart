@@ -90,8 +90,7 @@ abstract class ConstanceNetwork {
 
   static String checkDepositEndPoint = "inbox_app.api.wallet.check_payment";
 
-  static String editProfilCompanyEndPoint =
-      "inbox_app.api.auth.company_edit_profile";
+  static String editProfilCompanyEndPoint = "inbox_app.api.auth.company_edit_profile";
 
   //todo this for storage end point
   static String storageCategoriesApi = "inbox_app.api.storage.categories";
@@ -158,6 +157,10 @@ abstract class ConstanceNetwork {
   // this for get Task Response:
 
   static String getCurrentTaskResponeEndPoint = "inbox_app.api.sales_order.get_order_details";
+
+  // this for notifcation
+  static String getNotificationsApi="inbox_app.api.loyalty_points.get_notifications";
+
   
   //todo this for constance Keys
   static String amountKey = "amount";

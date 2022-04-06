@@ -34,6 +34,8 @@ import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../../model/home/notification_data.dart';
+
 class HomeViewModel extends BaseController {
   var _currentIndex = 0;
 
@@ -600,4 +602,26 @@ class HomeViewModel extends BaseController {
       endLoading();
     });
   }
+
+  List<NotificationData> listNotifications = [];
+  Future<void> getNotifications()async{
+    isLoading = true;
+    update();
+    await HomeHelper.getInstance.getNotifications().then((value) {
+        if(value.isNotEmpty){
+          listNotifications.clear();
+          listNotifications = value;
+          isLoading = false;
+          update();
+        }else{
+          isLoading = false;
+          update();
+        }
+    }).catchError((onError){
+      Logger().d(onError.toString());
+      isLoading = false;
+      update();
+    });
+  }
+
 }
