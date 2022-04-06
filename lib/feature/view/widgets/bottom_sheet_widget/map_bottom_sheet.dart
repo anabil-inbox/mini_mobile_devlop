@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 
 import '../../../../network/firebase/sales_order.dart';
 import '../../../../util/app_dimen.dart';
@@ -28,8 +29,8 @@ class MapBottomSheet extends StatelessWidget {
         init: MapViewModel(),
         initState: (_) async {
           mapViewModel.getDirections();
-          mapViewModel.customerLatLng =
-              LatLng(salesOrder.latituide ?? 0, salesOrder.longitude ?? 0);
+          // mapViewModel.customerLatLng =
+          //     LatLng(salesOrder.latituide ?? 0, salesOrder.longitude ?? 0);
           mapViewModel.update();
         },
         builder: (logic) {

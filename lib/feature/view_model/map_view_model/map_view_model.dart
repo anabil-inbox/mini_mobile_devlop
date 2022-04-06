@@ -14,6 +14,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
+import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
+import 'package:inbox_clients/network/firebase/firbase_clinte.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/location_helper.dart';
@@ -24,6 +26,8 @@ import 'dart:ui' as ui;
 import 'package:logger/logger.dart';
 
 import '../../../network/firebase/sales_order.dart';
+import '../../../network/firebase/track_model.dart';
+import '../../../network/utils/constance_netwoek.dart';
 
 class MapViewModel extends GetxController {
   Completer<GoogleMapController>? controller = Completer();
@@ -75,7 +79,7 @@ class MapViewModel extends GetxController {
     //todo here we use two method first for me and another for the user
     //todo me = driver
     await getMyCurrentPosition();
-    getStreamLocation();
+    getStreamLocation(salesOrder);
     // getUserMarkers(salesOrder: salesOrder);
     Future.delayed(const Duration(seconds: 0)).then((value) async {
       await foucCameraOnUsers(
@@ -172,31 +176,31 @@ class MapViewModel extends GetxController {
     update();
   }
 
-  // getUserMarkers(
-  //   {required SalesOrder salesOrder}
-  //   ) async {
-  //   // markers.clear();
-  //   final Marker marker = Marker(
-  //     markerId: MarkerId("${salesOrder.customerId}"),
-  //     icon: await _getMarkerImageFromUrl(
-  //         salesOrder.customerImage == null
-  //             ? Constance.defoultImageMarker
-  //             : (ConstanceNetwork.imageUrl + (salesOrder.customerImage ?? "")),
-  //         targetWidth: 180,
-  //         color: colorTrans),
-  //     position: customerLatLng,
-  //     infoWindow: InfoWindow(
-  //       title: salesOrder.customerId,
-  //       onTap: () {
-  //         Logger().d("");
-  //       },
-  //     ),
-  //     // onTap: () {
-  //     // },
-  //   );
-  //   markers.add(marker);
-  //   update();
-  // }
+  getUserMarkers(
+    {required SalesOrder salesOrder}
+    ) async {
+    // markers.clear();
+    final Marker marker = Marker(
+      markerId: MarkerId("${salesOrder.customerId}"),
+      icon: await _getMarkerImageFromUrl(
+          salesOrder.customerImage == null
+              ? Constance.defoultImageMarker
+              : (ConstanceNetwork.imageUrl + (salesOrder.customerImage ?? "")),
+          targetWidth: 180,
+          color: colorTrans),
+      position: customerLatLng,
+      infoWindow: InfoWindow(
+        title: salesOrder.customerId,
+        onTap: () {
+          Logger().d("");
+        },
+      ),
+      // onTap: () {
+      // },
+    );
+    markers.add(marker);
+    update();
+  }
 
   foucCameraOnUsers(GoogleMapController mapController, LatLng pickUp,
       LatLng destination) async {
@@ -277,7 +281,15 @@ class MapViewModel extends GetxController {
 
   // to do for stream Location
 
-  getStreamLocation() async {
+  getStreamLocation(SalesOrder salesOrder) async {
+    FirebaseClint.instance.getTrackLocation(SharedPref.instance.getCurrentUserData().id,
+        salesOrder.orderId).listen((TrackModel event) {
+          Logger().d(event.toJson());
+          if(event.serialOrderDriverLocation != null)
+          customerLatLng = event.serialOrderDriverLocation!;
+          if(event.serialOrderData != null)
+          getUserMarkers(salesOrder: event.serialOrderData!);
+    });
     // try {
     //   Geolocator.getPositionStream().listen((event) {
     //     myLatLng = LatLng(event.latitude, event.longitude);

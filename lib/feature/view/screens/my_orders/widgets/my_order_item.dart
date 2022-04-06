@@ -66,34 +66,36 @@ class MyOrderItem extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      height: sizeH10,
-                    ),
-                    CustomTextView(
-                      txt: "${getPriceWithFormate(price: orderSales.totalPrice ?? 0)} ",
-                      textStyle: textStylePrimarySmall(),
-                    ),
-                    SizedBox(
-                      height: sizeH6,
-                    ),
-                    TextButton(
-                        clipBehavior: Clip.none,
-                        style: orderSales.status == LocalConstance.orderDraft
-                            ? buttonStyleBackgroundClicable
-                            : buttonStyleBackgroundGreen,
-                        onPressed: () {},
-                        child: CustomTextView(
-                          txt: "${orderSales.status}",
-                          textStyle: orderSales.status ==
-                                  LocalConstance.orderDraft
-                              ? textStyleSmall()?.copyWith(color: colorPrimary)
-                              : textStyleSmall()?.copyWith(color: colorGreen),
-                        )),
-                  ],
+                FittedBox(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        height: sizeH10,
+                      ),
+                      CustomTextView(
+                        txt: "${getPriceWithFormate(price: orderSales.totalPrice ?? 0)} ",
+                        textStyle: textStylePrimarySmall(),
+                      ),
+                      SizedBox(
+                        height: sizeH6,
+                      ),
+                      TextButton(
+                          clipBehavior: Clip.none,
+                          style: orderSales.status == LocalConstance.orderDraft
+                              ? buttonStyleBackgroundClicable
+                              : buttonStyleBackgroundGreen,
+                          onPressed: () {},
+                          child: CustomTextView(
+                            txt: "${orderSales.status}",
+                            textStyle: orderSales.status ==
+                                    LocalConstance.orderDraft
+                                ? textStyleSmall()?.copyWith(color: colorPrimary)
+                                : textStyleSmall()?.copyWith(color: colorGreen),
+                          )),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   width: sizeW10,
