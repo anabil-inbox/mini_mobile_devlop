@@ -199,7 +199,7 @@
      "update":"update",
      "checkout":"Checkout",
     "add_money":"Add Money",
-    "are_you_sure_you_want_to_delete_cart_item" : "are you sure you want to Delete Cart Item",
+    "are_you_sure_you_want_to_delete_cart_item" : "Are you sure you want to Delete Cart Item",
     "use_promo_code" : "Use Promo Code",
     "promo_code" : "Promo Code",
     "instant_order" : "Instant Order",
@@ -240,6 +240,7 @@
     "payment_failed": "Payment Failed",
     "sorry_area_available": "Sorry , No Zone Area Available",
     "select_time_zone": "Select Your Time Zone",
-    "want_delete_order": "Are You Sure You want to delete This Order ?"
+    "want_delete_order": "Are You Sure You want to delete This Order ?",
+    "customer_signature": "Customer Signature"
 
 }

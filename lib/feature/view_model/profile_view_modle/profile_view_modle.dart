@@ -242,6 +242,8 @@ class ProfileViewModle extends BaseController {
                 SharedPref.instance
                     .setUserLoginState("${ConstanceNetwork.userEnterd}"),
                 Get.offAll(() => UserBothLoginScreen()),
+                Get.find<HomeViewModel>().userBoxess.clear(),
+                Get.find<HomeViewModel>().changeTab(0),
               }
             else
               {
@@ -250,6 +252,8 @@ class ProfileViewModle extends BaseController {
                     .setUserLoginState("${ConstanceNetwork.userEnterd}"),
                 Get.offAll(() => UserBothLoginScreen()),
                 update(),
+                Get.find<HomeViewModel>().userBoxess.clear(),
+                Get.find<HomeViewModel>().changeTab(0),
                 // snackError("${tr.error_occurred}", "${value.status!.message}"),
               }
           });

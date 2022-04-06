@@ -121,6 +121,21 @@ class DateUtility {
     }
   }
 
+  static String convertToLocalDateTimeUnUtc(DateTime uTCTime) {
+    try {
+      initializeDateFormatting(isArabicLang() ? 'ar' : 'en');
+      var dateFormat = DateFormat("hh:mm aa",
+          (isArabicLang() ? "ar" : "en")); // you can change the format here
+      var utcDate = dateFormat.format(uTCTime); // pass the UTC time here
+      // var localDate = dateFormat.parse(utcDate, true).toLocal().toString();
+      // String createdDate = dateFormat.format(DateTime.parse(utcDate));
+      return utcDate;
+    } catch (e) {
+      print(e);
+      return "";
+    }
+  }
+
   // get Utc Time (Houers And Menites From Day) :
   static String getLocalhouersFromUtc({required Day day}) {
     final dtFrom = DateTime(0, 0, 0, int.parse(day.from!.split(":")[0]),
@@ -128,10 +143,13 @@ class DateUtility {
     final dtTo = DateTime(0, 0, 0, int.parse(day.to!.split(":")[0]),
         int.parse(day.to!.split(":")[1]));
 
-    convertToLocalDateTime(dtFrom);
-    convertToLocalDateTime(dtTo);
-    return "${convertToLocalDateTime(dtFrom)} - ${convertToLocalDateTime(dtTo)}";
+    // convertToLocalDateTime()
+    convertToLocalDateTimeUnUtc(dtFrom);
+    convertToLocalDateTimeUnUtc(dtTo);
+    return "${convertToLocalDateTimeUnUtc(dtFrom)} - ${convertToLocalDateTimeUnUtc(dtTo)}";
   }
+
+
 
   // ignore: non_constant_identifier_names
   static DateTime ConvertStringToDateTime(bool format, String dateTimeSt) {

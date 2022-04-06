@@ -65,7 +65,7 @@ class TaskWidgetBS extends StatelessWidget {
                   colorBtn: homeViewModel.selctedOperationsBoxess.length > 0
                       ? colorPrimary
                       : colorUnSelectedWidget,
-                  textButton: "Next",
+                  textButton: tr.next,
                   isLoading: false,
                   onClicked: homeViewModel.selctedOperationsBoxess.length > 0
                       ? () {

@@ -48,7 +48,7 @@ class CustomerSignatureInstantOrder extends StatelessWidget {
             ),
             SizedBox(width: sizeW10),
             CustomTextView(
-              txt: "Customer Signature",
+              txt: tr.customer_signature,
               textStyle: textStyleNormal()?.copyWith(color: colorBlack),
             ),
             

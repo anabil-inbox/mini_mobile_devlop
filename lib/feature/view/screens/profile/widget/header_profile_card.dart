@@ -13,6 +13,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/sh_util.dart';
+import 'package:logger/logger.dart';
 
 class HeaderProfileCard extends StatelessWidget {
   const HeaderProfileCard({Key? key}) : super(key: key);
