@@ -44,6 +44,8 @@ class BindingsController extends Bindings {
     // Get.lazyPut(() => ProfileViewModle());
     // Get.lazyPut(() => HomeViewModel());
     // Get.lazyPut(() => MyOrderViewModle());
+    // Get.lazyPut(() => MyOrderDetailViewModle());
+    // Get.lazyPut(() => MyOrderDetailViewModle());
     // Get.lazyPut<ItemViewModle>(
     //   () => ItemViewModle(),
     //   fenix: true,
