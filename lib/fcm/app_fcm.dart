@@ -83,6 +83,12 @@ class AppFcm {
               homeViewModel,
               isNeedFingerprint: true,
             ));
+      } else if (message.data["id"] == "4") {
+        storageViewModel.selectedPaymentMethod = PaymentMethod(
+            id: homeViewModel.operationTask.paymentMethod,
+            name: homeViewModel.operationTask.paymentMethod);
+        homeViewModel.update();
+        storageViewModel.update();
       } else {
         homeViewModel.selectedSignatureItemModel.title =
             LocalConstance.onDriverSide;
@@ -273,7 +279,11 @@ class AppFcm {
           LocalConstance.paymentRequiredId) {
         homeViewModel.operationTask =
             TaskResponse.fromJson(map, isFromNotification: true);
+        storageViewModel.selectedPaymentMethod = PaymentMethod(
+            id: homeViewModel.operationTask.paymentMethod,
+            name: homeViewModel.operationTask.paymentMethod);
         homeViewModel.update();
+        storageViewModel.update();
         Get.off(() => ReciverOrderScreen(
               homeViewModel,
               isNeedToPayment: true,

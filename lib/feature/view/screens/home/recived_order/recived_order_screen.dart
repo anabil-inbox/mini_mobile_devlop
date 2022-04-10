@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:inbox_clients/feature/model/respons/task_response.dart';
-import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/address_box_widget.dart';
-import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/application_payment.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/balance_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/box_need_scanned_item.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/contract_signature_widget.dart';
@@ -16,7 +13,6 @@ import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/signature
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';

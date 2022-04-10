@@ -1658,11 +1658,13 @@ class StorageViewModel extends BaseController {
     if (task.id == LocalConstance.fetchId) {
       data.add(ApiItem.getApiObjectToSend(
           itemCode: task.id ?? "",
+          processType: task.id,
           qty: boxes.length,
           subscriptionPrice: task.price ?? 0,
           selectedDateTime: selectedDateTime,
           groupId: 1,
           itemParent: 0,
+          
           itemsChildIn: itemSeriales,
           selectedDay: selectedDay,
           beneficiaryNameIn: "",
@@ -1676,6 +1678,7 @@ class StorageViewModel extends BaseController {
           groupId: 1,
           itemParent: 0,
           selectedDay: selectedDay,
+          processType: task.id,
           itemsChildIn: "",
           beneficiaryNameIn: homeViewModel.selctedbeneficiary?.id ?? "",
           boxessSeriales: boxessSeriales));
@@ -1684,6 +1687,7 @@ class StorageViewModel extends BaseController {
           itemCode: task.id ?? "",
           qty: boxes.length,
           itemsChildIn: "",
+          processType: task.id,
           subscriptionPrice: task.price ?? 0,
           selectedDateTime: selectedDateTime,
           groupId: 1,
@@ -1695,6 +1699,7 @@ class StorageViewModel extends BaseController {
     data.add(ApiItem.getApiObjectToSend(
         itemCode: "shipping_sv",
         qty: boxes.length,
+        processType: task.id,
         subscriptionPrice: shivingPrice,
         selectedDateTime: selectedDateTime,
         groupId: 1,
@@ -1707,6 +1712,7 @@ class StorageViewModel extends BaseController {
     for (var item in selectedStringOption) {
       data.add(ApiItem.getApiObjectToSend(
           itemCode: item.id ?? "",
+          processType: task.id,
           qty: boxes.length,
           subscriptionPrice: item.price ?? 0,
           selectedDateTime: selectedDateTime,
@@ -1993,6 +1999,7 @@ class StorageViewModel extends BaseController {
           data.add(ApiItem.getApiObjectToSend(
               itemCode: cartModels[i].task?.id ?? "",
               qty: cartModels[i].box!.length,
+              processType: cartModels[i].task?.id ?? "",
               subscriptionPrice: cartModels[i].task?.price ?? 0,
               selectedDateTime: selectedDateTime,
               itemsChildIn: itemSeriales,
@@ -2010,6 +2017,7 @@ class StorageViewModel extends BaseController {
               selectedDateTime: selectedDateTime,
               groupId: 1,
               itemParent: 0,
+              processType: cartModels[i].task?.id ?? "",
               selectedDay: selectedDay,
               beneficiaryNameIn: homeViewModel.selctedbeneficiary?.id ?? "",
               boxessSeriales: boxessSeriales));
@@ -2018,6 +2026,7 @@ class StorageViewModel extends BaseController {
               itemCode: cartModels[i].task?.id ?? "",
               qty: cartModels[i].box!.length,
               itemsChildIn: "",
+              processType: cartModels[i].task?.id ?? "",
               subscriptionPrice: cartModels[i].task?.price ?? 0,
               selectedDateTime: selectedDateTime,
               groupId: 1,
@@ -2031,6 +2040,7 @@ class StorageViewModel extends BaseController {
             qty: cartModels[i].box!.length,
             subscriptionPrice: shivingPrice,
             itemsChildIn: "",
+            processType: cartModels[i].task?.id ?? "",
             selectedDateTime: selectedDateTime,
             groupId: 1,
             itemParent: 0,
@@ -2045,6 +2055,7 @@ class StorageViewModel extends BaseController {
               itemsChildIn: "",
               subscriptionPrice: item.price ?? 0,
               selectedDateTime: selectedDateTime,
+              processType: cartModels[i].task?.id ?? "",
               groupId: 1,
               itemParent: 0,
               selectedDay: selectedDay,

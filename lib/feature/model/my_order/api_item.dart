@@ -99,10 +99,12 @@ class ApiItem {
     required String? boxessSeriales,
     required String? beneficiaryNameIn,
     required String? itemsChildIn,
+    required String? processType,
   }) {
     return ApiItem(
             itemCode: itemCode,
             qty: qty,
+            processType: processType,
             deliveryDate: selectedDateTime == null
                 ? DateTime.now().toString()
                 : selectedDateTime.toString(),

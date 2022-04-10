@@ -289,7 +289,6 @@ class HomeViewModel extends BaseController {
           await getCustomerBoxes();
         }
       }
-
       endLoadingPagination();
       update();
     } catch (e) {

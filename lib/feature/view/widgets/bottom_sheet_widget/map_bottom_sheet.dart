@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 
-import '../../../../network/firebase/sales_order.dart';
 import '../../../../util/app_dimen.dart';
 import '../../../../util/app_shaerd_data.dart';
 import '../../../view_model/map_view_model/map_view_model.dart';
