@@ -242,5 +242,8 @@
   "sorry_area_available": "عذرا ، لا توجد منطقة متاحة",
   "select_time_zone": "حدد منطقتك الزمنية",
   "want_delete_order": "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
-  "customer_signature": "توقيع الزبون"
+  "customer_signature": "توقيع الزبون",
+  "add_review": "اضافة تقيم لخدماتنا",
+  "note_review": "ادخل ملاحظاتك",
+  "report_an_emergency": "الابلاغ عن طارئ"
 }

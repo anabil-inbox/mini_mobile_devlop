@@ -96,6 +96,8 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
       OrderDetailesScreen.myOrderViewModle.update();
 
       setState(() {});
+      OrderDetailesScreen.homeViewModel.isLoading = false;
+      OrderDetailesScreen.homeViewModel.update();
     });
     //Get.put(MapViewModel()).getStreamLocation(OrderDetailesScreen.myOrderViewModle.newOrderSales);
   }

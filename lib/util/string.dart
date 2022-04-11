@@ -56,7 +56,8 @@ String? txtShipped = "Shipped ";
 String? txtOutForDelivery = "Out for delivery ";
 String? txtDelivered = "Delivered";
 String? txtNEW = "NEW";
-String? txtADD = "ADD";
+String? txtADD = "add";
+String? txtAddReview = "addReview";
 String? txtAddAmount = "Add Amount";
 
 //todo this for product details

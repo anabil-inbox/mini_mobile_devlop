@@ -34,6 +34,7 @@ import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../../model/cases_data.dart';
 import '../../model/home/notification_data.dart';
 
 class HomeViewModel extends BaseController {
@@ -55,6 +56,11 @@ class HomeViewModel extends BaseController {
 
   // get Custome Boxes Vars And Functtions ::
   Set<Box> userBoxess = {};
+
+  double ratingService = 3.0;
+  List<CasesData> casesDataList = [];
+  List<CasesData> casesSelectedDataList = [];
+
 
   Future<void> getCustomerBoxes() async {
     if (!isLoadingPagination) {
@@ -621,6 +627,97 @@ class HomeViewModel extends BaseController {
       isLoading = false;
       update();
     });
+  }
+
+
+  onRatingUpdate(double rating) {
+    ratingService = rating;
+    update();
+  }
+
+  //this for add user review
+  void addReview(TaskResponse? taskResponse, TextEditingController noteController) async{
+
+    Map<String , dynamic> map  = {
+      ConstanceNetwork.rateKey:"$ratingService",
+      ConstanceNetwork.noteKey:"${noteController.text.toString()}",
+      ConstanceNetwork.driverIdKey:"${taskResponse?.driverId}" ,
+      ConstanceNetwork.salesOrderKey:"${taskResponse?.salesOrder}" ,
+    };
+
+    isLoading = true;
+    update();
+    await OrderHelper.getInstance.addOrderReview(body: map).then((value) {
+      if(value.status != null && value.status!.success!){
+        isLoading = false;
+          update();
+          Get.back();
+          snackSuccess("", value.status?.message??"");
+      }else{
+        isLoading = false;
+          update();
+      }
+    }).catchError((onError) {
+      Logger().d(onError.toString());
+      isLoading = false;
+      update();
+
+    });
+
+  }
+
+
+  getCases()async{
+    casesDataList.clear();
+    await HomeHelper.getInstance.getCases().then((value) {
+      casesDataList = value;
+      update();
+    });
+  }
+
+  void casesReport(TaskResponse? taskResponse, TextEditingController noteController) async{
+    if(noteController.text.isEmpty && casesSelectedDataList.isEmpty){
+      return;
+    }
+
+    Map<String , dynamic> map = {
+      ConstanceNetwork.emergencyCaseKey:casesSelectedDataList.first.name,
+      ConstanceNetwork.notesKey:"${noteController.text.toString()}",
+      ConstanceNetwork.salesOrderKey:"${taskResponse?.salesOrder}" ,
+
+    };
+
+    isLoading = true;
+    update();
+    await OrderHelper.getInstance.addEmergencyCasesReport(body: map).then((value) {
+     if(value.status != null && value.status!.success!){
+        isLoading = false;
+          update();
+          Get.back();
+          snackSuccess("", value.status?.message??"");
+          casesSelectedDataList.clear();
+        noteController.clear();
+      }else{
+        isLoading = false;
+          update();
+      }
+    }).catchError((onError) {
+      Logger().d(onError.toString());
+      isLoading = false;
+      update();
+
+    });
+
+  }
+
+  void addCasesItem(CasesData casesData) {
+    if(casesSelectedDataList.contains(casesData)){
+      casesSelectedDataList.remove(casesData);
+      update();
+    }else{
+      casesSelectedDataList.add(casesData);
+      update();
+    }
   }
 
 }

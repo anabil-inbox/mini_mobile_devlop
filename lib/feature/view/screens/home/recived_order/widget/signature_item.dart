@@ -23,13 +23,13 @@ class SignatureItem extends StatelessWidget {
   final Function onSelected;
 
   Widget photoSignature() {
-    Logger().d("test_title:$title");
-    Logger().d("test_Constanse:${Constance.fingerprint}");
-    Logger().d("test_Selected:${homeViewModel.selectedSignatureItemModel.title}");
-    Logger().d("test_get:${homeViewModel.operationTask.signatureFile}");
-    Logger().d("test_task:${homeViewModel.operationTask.toJson()}");
-    Logger().d("test_type:${homeViewModel.operationTask.signatureType}");
-    Logger().d("test_selected_type:${homeViewModel.selectedSignatureItemModel.toString()}");
+    // Logger().d("test_title:$title");
+    // Logger().d("test_Constanse:${Constance.fingerprint}");
+    // Logger().d("test_Selected:${homeViewModel.selectedSignatureItemModel.title}");
+    // Logger().d("test_get:${homeViewModel.operationTask.signatureFile}");
+    // Logger().d("test_task:${homeViewModel.operationTask.toJson()}");
+    // Logger().d("test_type:${homeViewModel.operationTask.signatureType}");
+    // Logger().d("test_selected_type:${homeViewModel.selectedSignatureItemModel.toString()}");
     if (title == Constance.fingerprint) {
       return const SizedBox();
     }
