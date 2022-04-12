@@ -1,9 +1,6 @@
 // ignore_for_file: unused_local_variable
 
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/cases_data.dart';
@@ -16,9 +13,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
-import 'package:signature/signature.dart';
 
-import '../../../../util/string.dart';
 import '../custome_text_view.dart';
 import '../primary_button.dart';
 

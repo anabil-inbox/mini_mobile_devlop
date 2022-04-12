@@ -11,7 +11,6 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
-import 'package:logger/logger.dart';
 
 class SignatureItem extends StatelessWidget {
   const SignatureItem({Key? key, required this.title, required this.onSelected})

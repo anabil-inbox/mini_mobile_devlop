@@ -10,7 +10,6 @@ import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widg
 import 'package:inbox_clients/feature/view/screens/home/widget/filter_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/qr_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
-import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/rate_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/empty_state/home_empty_statte.dart';
