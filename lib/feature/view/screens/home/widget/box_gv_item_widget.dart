@@ -46,7 +46,7 @@ class HomeGVItemWidget extends StatelessWidget {
                   height: sizeH10,
                 ),
                 CustomTextView(
-                  txt: "${box.serialNo}",
+                  txt: "${box.storageName}",
                   maxLine: Constance.maxLineTwo,
                   textStyle: textStyleNormalBlack(),
                   textAlign: TextAlign.center,
