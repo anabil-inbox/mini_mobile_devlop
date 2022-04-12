@@ -719,7 +719,7 @@ Widget returnBoxByStatus(
     {required String storageStatus,
     required bool isEnabeld,
     required bool isPickup}) {
-  String boxPath = "assets/svgs/desable_box.svg";
+    String boxPath = "assets/svgs/desable_box.svg";
   // if (!true) {
   //   boxPath = "assets/svgs/block_folder.svg";
   // } else

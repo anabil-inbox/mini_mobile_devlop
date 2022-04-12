@@ -25,8 +25,7 @@ class PaymentItem extends StatelessWidget {
   final bool isFromApplicationPayment;
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
-  static ProfileViewModle profileViewModle =
-      Get.put(ProfileViewModle(), permanent: true);
+  static ProfileViewModle profileViewModle = Get.put(ProfileViewModle(), permanent: true);
 
   final bool isRecivedOrderPayment;
 
@@ -131,12 +130,7 @@ class PaymentItem extends StatelessWidget {
       sendedWattingFeesOrCancellationReson = "cancellation";
     }
     if (paymentMethod.name == LocalConstance.cash) {
-      // homeViewModel.applyPayment(
-      //     salesOrder: homeViewModel.operationTask.salesOrder ?? "",
-      //     paymentMethod: paymentMethod.name ?? "",
-      //     paymentId: "",
-      //     extraFees: sendedWattingFeesOrCancellation,
-      //     reason: sendedWattingFeesOrCancellationReson);
+      
     } else if (paymentMethod.name == LocalConstance.wallet) {
       if ((num.tryParse(profileViewModle.myWallet.balance.toString()) ?? 0) >
           (homeViewModel.operationTask.totalDue ?? 0)) {
@@ -150,11 +144,10 @@ class PaymentItem extends StatelessWidget {
         snackError("", "Wallet Balance is not enough");
       }
     } else if (paymentMethod.name == LocalConstance.bankCard) {
-      // await storageViewModel.payApplicationFromPaymentGatewaye(
-      //     price: homeViewModel.operationTask.totalDue ?? 0);
-    } else if (paymentMethod.name == LocalConstance.creditCard) {
       await storageViewModel.payApplicationFromPaymentGatewaye(
           price: homeViewModel.operationTask.totalDue ?? 0);
+    } else if (paymentMethod.name == LocalConstance.creditCard) {
+      
     }
   }
 }

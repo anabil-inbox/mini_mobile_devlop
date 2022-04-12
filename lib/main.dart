@@ -18,7 +18,6 @@ void main() async {
   await Firebase.initializeApp();
   await AppFcm.fcmInstance.init();
   await SharedPref.instance.init();
-  // FirebaseCrashlytics.instance.crash();
   portraitOrientation();
   HttpOverrides.global = MyHttpOverrides();
   DioManagerClass.getInstance.init();
