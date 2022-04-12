@@ -645,6 +645,10 @@ class HomeViewModel extends BaseController {
       ConstanceNetwork.salesOrderKey:"${taskResponse?.salesOrder}" ,
     };
 
+    if(taskResponse?.driverId == null || (taskResponse?.driverId != null && "${taskResponse?.driverId.toString()}".isEmpty)){
+      map.remove(ConstanceNetwork.driverIdKey);
+    }
+
     isLoading = true;
     update();
     await OrderHelper.getInstance.addOrderReview(body: map).then((value) {
