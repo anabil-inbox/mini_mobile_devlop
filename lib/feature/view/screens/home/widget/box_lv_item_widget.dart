@@ -45,7 +45,7 @@ class HomeLVItemWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 CustomTextView(
-                  txt: "${box.serialNo}",
+                  txt: "${box.storageName}",
                   maxLine: Constance.maxLineOne,
                   textStyle: textStyleNormalBlack()?.copyWith(height: 1),
                   textAlign: TextAlign.center,
