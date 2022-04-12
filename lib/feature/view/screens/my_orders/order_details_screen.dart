@@ -19,6 +19,7 @@ import 'package:inbox_clients/util/constance/constance.dart';
 import '../../../../util/app_shaerd_data.dart';
 import '../../../model/my_order/order_sales.dart';
 import '../../../model/storage/payment.dart';
+import '../../widgets/bottom_sheet_widget/rate_bottom_sheet.dart';
 import 'widgets/my_order_time_widget.dart';
 import 'widgets/status_widget.dart';
 
@@ -98,6 +99,16 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
       setState(() {});
       OrderDetailesScreen.homeViewModel.isLoading = false;
       OrderDetailesScreen.homeViewModel.update();
+      if (OrderDetailesScreen.myOrderViewModle.newOrderSales.isRated! ==
+              false &&
+          OrderDetailesScreen.myOrderViewModle.newOrderSales.status ==
+              LocalConstance.completed) {
+        Get.bottomSheet(
+            RateBottomSheet(
+              orderSales: OrderDetailesScreen.myOrderViewModle.newOrderSales,
+            ),
+            isScrollControlled: true);
+      }
     });
     //Get.put(MapViewModel()).getStreamLocation(OrderDetailesScreen.myOrderViewModle.newOrderSales);
   }
@@ -167,8 +178,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                           GetBuilder<MyOrderViewModle>(
                             builder: (controller) {
                               return MyOrderAddressWidget(
-                                newOrderSales:controller.newOrderSales,
-
+                                newOrderSales: controller.newOrderSales,
                               );
                             },
                           ),

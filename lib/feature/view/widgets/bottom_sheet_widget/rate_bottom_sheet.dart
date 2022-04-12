@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:inbox_clients/feature/model/respons/task_response.dart';
+import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -13,32 +13,26 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
-
 import '../custome_text_view.dart';
 import '../primary_button.dart';
 
 class RateBottomSheet extends StatelessWidget {
-  RateBottomSheet({
-    Key? key,
-    required this.taskResponse,
-  }) : super(key: key);
+  RateBottomSheet({Key? key, required this.orderSales}) : super(key: key);
 
-  final TaskResponse? taskResponse;
+  //final TaskResponse? taskResponse;
   static final TextEditingController _noteController = TextEditingController();
-
+  final OrderSales orderSales;
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    screenUtil(context);
-    return GetBuilder<HomeViewModel>(
-        builder: (logic) {
+    return GetBuilder<HomeViewModel>(builder: (logic) {
       return SingleChildScrollView(
         primary: true,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.vertical(
-                top: Radius.circular(padding30!)),
+            borderRadius:
+                BorderRadius.vertical(top: Radius.circular(padding30!)),
             color: colorTextWhite,
           ),
           child: Column(
@@ -60,12 +54,11 @@ class RateBottomSheet extends StatelessWidget {
                 allowHalfRating: true,
                 itemCount: 5,
                 itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                itemBuilder: (context, _) =>
-                    Icon(
-                      Icons.star,
-                      color: colorPrimary,
-                    ),
-                onRatingUpdate: (rating) =>logic.onRatingUpdate(rating),
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: colorPrimary,
+                ),
+                onRatingUpdate: (rating) => logic.onRatingUpdate(rating),
               ),
               SizedBox(height: sizeH14),
               CustomTextFormFiled(
@@ -86,8 +79,8 @@ class RateBottomSheet extends StatelessWidget {
                   textButton: tr.add,
                   isLoading: logic.isLoading,
                   colorBtn: colorPrimary,
-                  onClicked: (){
-                    logic.addReview(taskResponse , _noteController);
+                  onClicked: () {
+                    logic.addReview(orderSales, _noteController);
                   },
                   isExpanded: true),
               SizedBox(height: sizeH40),
@@ -97,6 +90,4 @@ class RateBottomSheet extends StatelessWidget {
       );
     });
   }
-
-
 }

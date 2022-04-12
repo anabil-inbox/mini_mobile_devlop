@@ -12,6 +12,7 @@ import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/beneficiary.dart';
 import 'package:inbox_clients/feature/model/home/signature_item_model.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 import 'package:inbox_clients/feature/model/respons/task_response.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
@@ -629,23 +630,22 @@ class HomeViewModel extends BaseController {
     });
   }
 
-
   onRatingUpdate(double rating) {
     ratingService = rating;
     update();
   }
 
   //this for add user review
-  void addReview(TaskResponse? taskResponse, TextEditingController noteController) async{
+  void addReview(OrderSales orderSales , TextEditingController noteController) async{
 
     Map<String , dynamic> map  = {
       ConstanceNetwork.rateKey:"$ratingService",
       ConstanceNetwork.noteKey:"${noteController.text.toString()}",
-      ConstanceNetwork.driverIdKey:"${taskResponse?.driverId}" ,
-      ConstanceNetwork.salesOrderKey:"${taskResponse?.salesOrder}" ,
+      ConstanceNetwork.driverIdKey:"${orderSales.driverId}" ,
+      ConstanceNetwork.salesOrderKey:"${orderSales.orderId}" ,
     };
 
-    if(taskResponse?.driverId == null || (taskResponse?.driverId != null && "${taskResponse?.driverId.toString()}".isEmpty)){
+    if(orderSales.driverId == null || (orderSales.driverId != null && "${orderSales.driverId.toString()}".isEmpty)){
       map.remove(ConstanceNetwork.driverIdKey);
     }
 
@@ -670,7 +670,6 @@ class HomeViewModel extends BaseController {
 
   }
 
-
   getCases()async{
     casesDataList.clear();
     await HomeHelper.getInstance.getCases().then((value) {
@@ -688,7 +687,6 @@ class HomeViewModel extends BaseController {
       ConstanceNetwork.emergencyCaseKey:casesSelectedDataList.first.name,
       ConstanceNetwork.notesKey:"${noteController.text.toString()}",
       ConstanceNetwork.salesOrderKey:"${taskResponse?.salesOrder}" ,
-
     };
 
     isLoading = true;

@@ -10,7 +10,6 @@ import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/sca
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_products_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/cases_report_bottom_sheet.dart';
-import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/rate_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/signature_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
@@ -51,9 +50,9 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
       } else if (widget.isNeedFingerprint) {
         await widget.homeViewModel.signatureWithTouchId();
       }
-      if(!widget.homeViewModel.operationTask.isRated!){
-        Get.bottomSheet(RateBottomSheet(taskResponse:widget.homeViewModel.operationTask ,),isScrollControlled: true);
-      }
+      // if(!widget.homeViewModel.operationTask.isRated!){
+      //   Get.bottomSheet(RateBottomSheet(taskResponse:widget.homeViewModel.operationTask ,),isScrollControlled: true);
+      // }
 
     });
   }
@@ -167,16 +166,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                   ),
                 ],
                 SizedBox(height: sizeH10),
-                // if (!(home.operationTask.processType ==
-                //         LocalConstance.newStorageSv ||
-                //     home.operationTask.processType == LocalConstance.pickupId ||
-                //     home.operationTask.processType == LocalConstance.fetchId ||
-                //     home.operationTask.processType ==
-                //         LocalConstance.destroyId)) ...[
-                //   GetBuilder<HomeViewModel>(builder: (homeViewModel) {
-                //     return scanDelivedBoxes(homeViewModel: homeViewModel);
-                //   })
-                // ],
+
                 if (home.operationTask.processType == LocalConstance.recallId ||
                     (home.operationTask.processType == LocalConstance.terminateId &&
                         (home.operationTask.hasDeliveredScan ?? false))) ...[
