@@ -97,3 +97,4 @@ Thumbs.db
 *.mov
 *.wmv
 .env*
+/pubspec.lock
