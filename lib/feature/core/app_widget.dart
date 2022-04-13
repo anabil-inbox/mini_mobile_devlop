@@ -76,7 +76,9 @@ class _AppWidgetState extends State<AppWidget> {
 
     return ScreenUtilInit(
       designSize: Size(392.72727272727275, 803.6363636363636),
-      builder: () {
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context) {
         ScreenUtil.setContext(context);
         return GetMaterialApp(
           smartManagement: SmartManagement.keepFactory,
