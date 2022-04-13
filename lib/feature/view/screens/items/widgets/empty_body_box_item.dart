@@ -15,6 +15,9 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 
+import '../../../../../util/constance.dart';
+import '../../../widgets/custom_text_filed.dart';
+
 class EmptyBodyBoxItem extends StatelessWidget {
   const EmptyBodyBoxItem({Key? key, required this.box, required this.isEnabel})
       : super(key: key);
@@ -24,6 +27,27 @@ class EmptyBodyBoxItem extends StatelessWidget {
 
   final Box? box;
   final bool isEnabel;
+
+  // Search Widget =>
+  Widget get searchWidget => CustomTextFormFiled(
+        iconSize: sizeRadius20,
+        maxLine: Constance.maxLineOne,
+        icon: Icons.search,
+        iconColor: colorBlack,
+        textInputAction: TextInputAction.search,
+        keyboardType: TextInputType.text,
+        onSubmitted: (_) {},
+        onChange: (value) {
+          itemViewModle.search = value.toString();
+          itemViewModle.update();
+        },
+        isSmallPadding: false,
+        isSmallPaddingWidth: true,
+        fillColor: colorBackground,
+        isFill: true,
+        isBorder: true,
+        label: tr.search,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -37,21 +61,48 @@ class EmptyBodyBoxItem extends StatelessWidget {
               bottom: padding0,
               start: padding0,
               end: padding0,
-              child: SvgPicture.asset("assets/svgs/empty_icon.svg")),
+              child: SvgPicture.asset("assets/svgs/box_empty.svg" ,)),
           Column(
             children: [
               SizedBox(
-                height: sizeH20,
+                height: sizeH16,
               ),
-              TextFormField(
-                decoration: InputDecoration(
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.all(padding16!),
-                      child: SvgPicture.asset(
-                        "assets/svgs/search_icon.svg",
-                      ),
-                    ),
-                    hintText: "Search"),
+              Row(
+                children: [
+                  Expanded(child: searchWidget),
+                  if (!(itemViewModle.operationsBox?.logSeals == null ||
+                      itemViewModle.operationsBox!.logSeals!.isEmpty)) ...[
+                    IconButton(
+                        splashColor: colorTrans,
+                        highlightColor: colorTrans,
+                        onPressed: () {
+                          itemViewModle.showSealssBottomSheet(
+                            seals: itemViewModle.operationsBox!.logSeals ?? [],
+                          );
+                        },
+                        icon: SvgPicture.asset(
+                          "assets/svgs/seal.svg",
+                          width: sizeW24,
+                          height: sizeH22,
+                        )),
+                  ],
+                  if (!(itemViewModle.operationsBox?.invoices == null ||
+                      itemViewModle.operationsBox!.invoices!.isEmpty)) ...[
+                    IconButton(
+                        splashColor: colorTrans,
+                        highlightColor: colorTrans,
+                        onPressed: () {
+                          itemViewModle.showInvoicesBottomSheet(
+                              invoices:
+                                  itemViewModle.operationsBox!.invoices ?? []);
+                        },
+                        icon: SvgPicture.asset(
+                          "assets/svgs/invoice.svg",
+                          width: sizeW24,
+                          height: sizeH22,
+                        )),
+                  ]
+                ],
               ),
             ],
           ),

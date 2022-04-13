@@ -9,6 +9,7 @@ class ApiItem {
       this.subscriptionDuration,
       this.subscriptionPrice,
       this.groupId,
+      this.invoices,
       this.storageType,
       this.itemParent,
       this.needAdviser,
@@ -43,6 +44,7 @@ class ApiItem {
   String? storageChildIn;
   String? itemsChildIn;
   String? beneficiaryNameIn;
+  String? invoices;
 
   factory ApiItem.fromJson(Map<String, dynamic> json) => ApiItem(
         itemCode: json["item_code"],
@@ -79,6 +81,7 @@ class ApiItem {
         "need_adviser": 0,
         "order_to": orderTo,
         "order_from": orderFrom,
+        "invoices": invoices,
         "order_time": orderTime,
         "space": 0,
         "space_xaxis": 0,
@@ -100,6 +103,7 @@ class ApiItem {
     required String? beneficiaryNameIn,
     required String? itemsChildIn,
     required String? processType,
+    required String? invoices,
   }) {
     return ApiItem(
             itemCode: itemCode,
@@ -114,6 +118,7 @@ class ApiItem {
             subscription: "Daily",
             subscriptionDuration: 1,
             groupId: groupId ?? 1,
+            invoices: invoices,
             needAdviser: 0,
             orderTo: "${selectedDay?.to ?? "13:20"}",
             orderFrom: "${selectedDay?.from ?? "14:20"}",
@@ -124,6 +129,7 @@ class ApiItem {
             space: 0,
             spaceXaxis: 0,
             spaceYaxis: 0,
+            
             beneficiaryNameIn: beneficiaryNameIn)
         .toJson();
   }

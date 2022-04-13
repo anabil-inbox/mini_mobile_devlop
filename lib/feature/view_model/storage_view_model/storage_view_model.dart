@@ -8,6 +8,7 @@ import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/box_model.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/model/inside_box/invoices.dart';
 import 'package:inbox_clients/feature/model/my_order/api_item.dart';
 import 'package:inbox_clients/feature/model/my_order/order_sales.dart' as OS;
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
@@ -1528,12 +1529,9 @@ class StorageViewModel extends BaseController {
 
     for (var item in selectedStringOption) {
       price += item.price ?? 0;
-      print("options_price ${item.price}");
     }
 
     price += task.price!;
-    print("task_price ${task.price!}");
-    print("total_price $price");
     return getPriceWithFormate(price: price);
   }
 
@@ -1542,7 +1540,6 @@ class StorageViewModel extends BaseController {
       required List<Box> boxess,
       required bool isFromCart,
       Address? myAddresss}) {
-    print("calculate Task Price Lot Boxess !");
     final ApiSettings settings =
         ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
     if (isFromCart) {
@@ -1626,6 +1623,7 @@ class StorageViewModel extends BaseController {
     List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
     Map<String, dynamic> map = {};
     String boxessSeriales = "";
+    String invoices = "";
     String itemSeriales = "";
     num shivingPrice = 0;
 
@@ -1636,6 +1634,12 @@ class StorageViewModel extends BaseController {
     selectedItems?.forEach((element) {
       itemSeriales += '${element.id},';
     });
+
+    for (var i = 0; i < boxes.length; i++) {
+      for (Invoices invoice in boxes[i].invoices ?? []) {
+        invoices += '${invoice.name},';
+      }
+    }
 
     if (selectedAddress != null) {
       for (var item in task.areaZones!) {
@@ -1651,6 +1655,10 @@ class StorageViewModel extends BaseController {
       boxessSeriales = boxessSeriales.substring(0, boxessSeriales.length - 1);
     }
 
+    if (invoices.isNotEmpty) {
+      invoices = invoices.substring(0, invoices.length - 1);
+    }
+
     if (itemSeriales.isNotEmpty) {
       itemSeriales = itemSeriales.substring(0, itemSeriales.length - 1);
     }
@@ -1664,7 +1672,7 @@ class StorageViewModel extends BaseController {
           selectedDateTime: selectedDateTime,
           groupId: 1,
           itemParent: 0,
-          
+          invoices: invoices,
           itemsChildIn: itemSeriales,
           selectedDay: selectedDay,
           beneficiaryNameIn: "",
@@ -1677,6 +1685,7 @@ class StorageViewModel extends BaseController {
           selectedDateTime: selectedDateTime,
           groupId: 1,
           itemParent: 0,
+          invoices: invoices,
           selectedDay: selectedDay,
           processType: task.id,
           itemsChildIn: "",
@@ -1690,6 +1699,7 @@ class StorageViewModel extends BaseController {
           processType: task.id,
           subscriptionPrice: task.price ?? 0,
           selectedDateTime: selectedDateTime,
+          invoices: invoices,
           groupId: 1,
           itemParent: 0,
           selectedDay: selectedDay,
@@ -1702,6 +1712,7 @@ class StorageViewModel extends BaseController {
         processType: task.id,
         subscriptionPrice: shivingPrice,
         selectedDateTime: selectedDateTime,
+        invoices: invoices,
         groupId: 1,
         itemParent: 0,
         itemsChildIn: "",
@@ -1714,6 +1725,7 @@ class StorageViewModel extends BaseController {
           itemCode: item.id ?? "",
           processType: task.id,
           qty: boxes.length,
+          invoices: invoices,
           subscriptionPrice: item.price ?? 0,
           selectedDateTime: selectedDateTime,
           groupId: 1,
@@ -1735,7 +1747,8 @@ class StorageViewModel extends BaseController {
 
     map["coupon_code"] = isUsingPromo ? tdCopun.text : "";
     map["order[0]"] = data;
-    map["address[0]"] = selectedAddress == null ? boxes[0].address?.id : selectedAddress?.id;
+    map["address[0]"] =
+        selectedAddress == null ? boxes[0].address?.id : selectedAddress?.id;
     mapSalesOrder.add(map);
 
     Map<String, dynamic> newMap = {"sales_order": jsonEncode(mapSalesOrder)};
@@ -1966,6 +1979,8 @@ class StorageViewModel extends BaseController {
         selectedStringOption = cartModels[i].task?.selectedVas ?? [];
         String boxessSeriales = "";
         String itemSeriales = "";
+        String invoices = "";
+
         num shivingPrice = 0;
         Map<String, dynamic> map = {};
         for (var j = 0; j < cartModels[i].box!.length; j++) {
@@ -1974,6 +1989,12 @@ class StorageViewModel extends BaseController {
 
         cartModels[i].boxItem?.forEach((element) {
           itemSeriales += '${element.id},';
+        });
+
+        cartModels[i].box?.forEach((element) {
+          for (Invoices invoice in element.invoices ?? []) {
+            invoices += '${invoice.name},';
+          }
         });
 
         if (selectedAddress != null) {
@@ -1991,6 +2012,10 @@ class StorageViewModel extends BaseController {
               boxessSeriales.substring(0, boxessSeriales.length - 1);
         }
 
+        if(invoices.isNotEmpty){
+          invoices = invoices.substring(0, invoices.length - 1);
+        }
+
         if (itemSeriales.isNotEmpty) {
           itemSeriales = itemSeriales.substring(0, boxessSeriales.length - 2);
         }
@@ -1999,6 +2024,7 @@ class StorageViewModel extends BaseController {
           data.add(ApiItem.getApiObjectToSend(
               itemCode: cartModels[i].task?.id ?? "",
               qty: cartModels[i].box!.length,
+              invoices: invoices,
               processType: cartModels[i].task?.id ?? "",
               subscriptionPrice: cartModels[i].task?.price ?? 0,
               selectedDateTime: selectedDateTime,
@@ -2013,6 +2039,7 @@ class StorageViewModel extends BaseController {
               itemCode: cartModels[i].task?.id ?? "",
               qty: cartModels[i].box!.length,
               itemsChildIn: "",
+              invoices: invoices,
               subscriptionPrice: cartModels[i].task?.price ?? 0,
               selectedDateTime: selectedDateTime,
               groupId: 1,
@@ -2025,6 +2052,7 @@ class StorageViewModel extends BaseController {
           data.add(ApiItem.getApiObjectToSend(
               itemCode: cartModels[i].task?.id ?? "",
               qty: cartModels[i].box!.length,
+              invoices: invoices,
               itemsChildIn: "",
               processType: cartModels[i].task?.id ?? "",
               subscriptionPrice: cartModels[i].task?.price ?? 0,
@@ -2039,6 +2067,7 @@ class StorageViewModel extends BaseController {
             itemCode: "shipping_sv",
             qty: cartModels[i].box!.length,
             subscriptionPrice: shivingPrice,
+            invoices: invoices,
             itemsChildIn: "",
             processType: cartModels[i].task?.id ?? "",
             selectedDateTime: selectedDateTime,
@@ -2054,6 +2083,7 @@ class StorageViewModel extends BaseController {
               qty: cartModels[i].box!.length,
               itemsChildIn: "",
               subscriptionPrice: item.price ?? 0,
+              invoices: invoices,
               selectedDateTime: selectedDateTime,
               processType: cartModels[i].task?.id ?? "",
               groupId: 1,
