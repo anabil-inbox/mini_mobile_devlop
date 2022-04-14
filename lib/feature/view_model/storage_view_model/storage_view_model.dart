@@ -1540,8 +1540,7 @@ class StorageViewModel extends BaseController {
       required List<Box> boxess,
       required bool isFromCart,
       Address? myAddresss}) {
-    final ApiSettings settings =
-        ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
+    final ApiSettings settings = ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
     if (isFromCart) {
       selectedAddress = myAddresss;
     }
@@ -1662,7 +1661,6 @@ class StorageViewModel extends BaseController {
     if (itemSeriales.isNotEmpty) {
       itemSeriales = itemSeriales.substring(0, itemSeriales.length - 1);
     }
-    Logger().e(itemSeriales);
     if (task.id == LocalConstance.fetchId) {
       data.add(ApiItem.getApiObjectToSend(
           itemCode: task.id ?? "",

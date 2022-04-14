@@ -15,7 +15,6 @@ class FilterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    screenUtil(context);
     return GetBuilder<HomeViewModel>(builder: (logic) {
       return Container(
         width: double.infinity,
@@ -56,7 +55,9 @@ class FilterWidget extends StatelessWidget {
                                     (logic.tasks.toList()[index].id ==
                                         LocalConstance.newNewStorageSpaceSv) ||
                                     (logic.tasks.toList()[index].id ==
-                                        LocalConstance.newStorageItemSv)
+                                        LocalConstance.newStorageItemSv) ||
+                                         (logic.tasks.toList()[index].id ==
+                                        LocalConstance.productSv)
                                 ? const SizedBox()
                                 : ChoiceShapeWidget(
                                     onClicked: () {

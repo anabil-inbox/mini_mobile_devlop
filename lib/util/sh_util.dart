@@ -204,7 +204,7 @@ class SharedPref {
     try {
       return _prefs?.getString('$tokenKey');
     } catch (e) {
-      print(e);
+      Logger().e("msg_get_user_token_error $e");
       return "";
     }
   }

@@ -19,6 +19,7 @@ import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:inbox_clients/util/sh_util.dart';
+import 'package:logger/logger.dart';
 
 import '../primary_button.dart';
 
@@ -48,10 +49,14 @@ class BottomSheetPaymentWidget extends StatelessWidget {
     }
     return Column(
       children: [
-        SizedBox(height: sizeH12,),
+        SizedBox(
+          height: sizeH12,
+        ),
         Text(tr.choose_destroy_place),
-        SizedBox(height: sizeH12,),
-        ],
+        SizedBox(
+          height: sizeH12,
+        ),
+      ],
     );
   }
 
@@ -94,10 +99,10 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                                       .toString()
                                       .split(" ")[0])[0]
                               .toString()
-                              
                           : boxes.length == 0
                               ? logic.calculateTaskPriceOnceBox(task: task)
-                              : logic.calculateTaskPriceLotBoxess(isFromCart: false, task: task, boxess: boxes),
+                              : logic.calculateTaskPriceLotBoxess(
+                                  isFromCart: false, task: task, boxess: boxes),
                       textStyle: textStyleAppBarTitle()
                           ?.copyWith(fontSize: fontSize28, color: colorPrimary),
                     ),
@@ -423,18 +428,16 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               beneficiaryId: beneficiaryId);
         }
       } else {
+        var amount = boxes.length == 0
+            ? storageViewModle.calculateTaskPriceOnceBox(task: task)
+            : storageViewModle.calculateTaskPriceLotBoxess(
+                isFromCart: false, task: task, boxess: boxes);
+        Logger().e("AMOUNT $amount");
         storageViewModle.goToPaymentMethod(
             isOrderProductPayment: false,
             cartModels: [],
             isFromCart: false,
-            amount: num.parse(storageViewModle
-                .calculateTaskPriceLotBoxess(
-                  isFromCart: false,
-                  task: task,
-                  boxess: boxes,
-                )
-                .toString()
-                .split(" ")[0]),
+            amount: num.parse(amount.toString().split(" ")[0]),
             beneficiaryId: beneficiaryId,
             task: task,
             boxes: boxes,
