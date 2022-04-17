@@ -62,8 +62,7 @@ class PaymentViewModel extends GetxController {
                           },
 
                         await homeViewModel.applyPayment(
-                            salesOrder:
-                                homeViewModel.operationTask.salesOrder ?? "",
+                            salesOrder: homeViewModel.operationTask.salesOrder ?? "",
                             paymentMethod: LocalConstance.bankCard,
                             paymentId: paymentId,
                             extraFees: sendedWattingFeesOrCancellation,
@@ -77,7 +76,6 @@ class PaymentViewModel extends GetxController {
                       }
                     else if (isFromNewStorage)
                       {
-                        // Get.back();
                         stroageViewModel.addNewStorage(paymentId: paymentId),
                       }
                     else if (isFromCart)

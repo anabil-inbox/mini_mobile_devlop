@@ -8,11 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/model/inside_box/invoices.dart';
 import 'package:inbox_clients/feature/model/inside_box/item.dart';
+import 'package:inbox_clients/feature/model/inside_box/seal.dart';
 import 'package:inbox_clients/feature/model/inside_box/sended_image.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/chooce_add_method_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/items_operations_widget_BS.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/box_bottom_sheet/seals_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
@@ -29,12 +32,14 @@ import 'package:inbox_clients/util/string.dart';
 import 'package:logger/logger.dart';
 import 'package:share/share.dart';
 
+import '../../view/widgets/bottom_sheet_widget/box_bottom_sheet/invoices_bottom_sheet.dart';
+
 class ItemViewModle extends BaseController {
   //to update Get Home View Modle and Update Oprations Box ::
   final HomeViewModel homeViewModel = Get.find<HomeViewModel>();
 
-   ItemViewModle._();
-   factory ItemViewModle() => ItemViewModle._();
+  ItemViewModle._();
+  factory ItemViewModle() => ItemViewModle._();
   // to decler here search value ::
 
   String search = "";
@@ -61,7 +66,7 @@ class ItemViewModle extends BaseController {
   Future<void> updateBox({required Box box, required int index}) async {
     Get.back();
     startLoading();
-   
+
     List<SendedTag> tags = [];
 
     for (var tag in usesBoxTags) {
@@ -69,7 +74,7 @@ class ItemViewModle extends BaseController {
     }
 
     await HomeHelper.getInstance.updateBox(body: {
-      ConstanceNetwork.nameKey : box.storageName,
+      ConstanceNetwork.nameKey: box.storageName,
       ConstanceNetwork.serial: box.serialNo,
       ConstanceNetwork.qtyKey: itemQuantity,
       ConstanceNetwork.newNameKey: tdName.text,
@@ -79,7 +84,8 @@ class ItemViewModle extends BaseController {
             {
               // homeViewModel.getCustomerBoxes(),
               snackSuccess("${tr.success}", "${value.status?.message}"),
-              operationsBox = Box.fromJson(value.data[ConstanceNetwork.dataKey]),
+              operationsBox =
+                  Box.fromJson(value.data[ConstanceNetwork.dataKey]),
               homeViewModel.userBoxess.clear(),
               homeViewModel.getCustomerBoxes(),
             }
@@ -89,7 +95,7 @@ class ItemViewModle extends BaseController {
     // await getBoxBySerial(serial: box.serialNo!);
     tags.clear();
     tdName.clear();
-    
+
     usesBoxTags.clear();
     tdTag.clear();
     endLoading();
@@ -142,7 +148,8 @@ class ItemViewModle extends BaseController {
           if (value.status!.success!)
             {
               Logger().i("${value.data[ConstanceNetwork.dataKey]}"),
-              operationsBox?.items?.add(BoxItem.fromJson(value.data[ConstanceNetwork.dataKey])),
+              operationsBox?.items
+                  ?.add(BoxItem.fromJson(value.data[ConstanceNetwork.dataKey])),
               snackSuccess("${tr.success}", "${value.status!.message}"),
               Get.back(),
               endLoading()
@@ -157,7 +164,7 @@ class ItemViewModle extends BaseController {
     tags.clear();
     usesBoxItemsTags.clear();
     tdTag.clear();
-    
+
     tdName.clear();
     itemQuantity = 1;
     update();
@@ -235,7 +242,8 @@ class ItemViewModle extends BaseController {
           if (value.status!.success!)
             {
               snackSuccess("${tr.success}", "${value.status!.message}"),
-              operationsBox?.items?.add(BoxItem.fromJson(value.data[ConstanceNetwork.dataKey])),
+              operationsBox?.items
+                  ?.add(BoxItem.fromJson(value.data[ConstanceNetwork.dataKey])),
               endLoading()
             }
           else
@@ -269,7 +277,9 @@ class ItemViewModle extends BaseController {
   Future<void> deleteItem(
       {required String serialNo, required String id}) async {
     startLoading();
-    await ItemHelper.getInstance.deleteItem(body: {ConstanceNetwork.idKey: id}).then((value) => {
+    await ItemHelper.getInstance.deleteItem(body: {
+      ConstanceNetwork.idKey: id
+    }).then((value) => {
           if (value.status!.success!)
             {
               Logger().i("${value.toJson()}"),
@@ -383,20 +393,20 @@ class ItemViewModle extends BaseController {
     try {
       operationsBox = null;
       startLoading();
-      await ItemHelper.getInstance
-          .getBoxBySerial(body: {ConstanceNetwork.serial: serial}).then((value) => {
-                if (value.status!.success!)
-                  {
-                    Logger().e("${value.toJson()}"),
-                    operationsBox = Box.fromJson(value.data),
-                    
-                    endLoading(),
-                  }
-                else
-                  {
-                    snackError("$error", "${value.status!.message}"),
-                  }
-              });
+      await ItemHelper.getInstance.getBoxBySerial(body: {
+        ConstanceNetwork.serial: serial
+      }).then((value) => {
+            if (value.status!.success!)
+              {
+                Logger().e("${value.toJson()}"),
+                operationsBox = Box.fromJson(value.data),
+                endLoading(),
+              }
+            else
+              {
+                snackError("$error", "${value.status!.message}"),
+              }
+          });
       endLoading();
     } catch (e) {
       Logger().d("${e.toString()}");
@@ -558,8 +568,22 @@ class ItemViewModle extends BaseController {
     }
   }
 
+  showInvoicesBottomSheet({required List<Invoices> invoices}) {
+    Get.bottomSheet(
+        InvoicesBottomSheet(
+          invoices: invoices,
+        ),
+        isScrollControlled: true);
+  }
+
+  showSealssBottomSheet({required List<Seal> seals}) {
+    Get.bottomSheet(
+        SealsBottomSheet(
+          seals: seals,
+        ),
+        isScrollControlled: true);
+  }
+
   @override
   InternalFinalCallback<void> get onDelete => super.onDelete;
-
-  
 }

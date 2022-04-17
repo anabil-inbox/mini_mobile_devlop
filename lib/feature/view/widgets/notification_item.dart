@@ -41,15 +41,22 @@ class NotificationItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomTextView(
-                    txt : notification?.title.toString()
+                    txt : notification?.title.toString(),
+                    textStyle: textStyleAppbar()!.copyWith(
+                      fontSize: 14
+                    )
                     ),
                   SizedBox(
                     height: sizeW2,
                   ),
-                  CustomTextView(
-                      txt : notification?.message.toString(),
-                      maxLine: Constance.maxLineOne,
-                    textOverflow:TextOverflow.ellipsis ,
+                  Container(
+                    child: CustomTextView(
+                        txt : notification?.message.toString(),
+                        maxLine: Constance.maxLineTwo,
+                      textOverflow:TextOverflow.ellipsis ,
+                      textStyle: textStyleMeduimBlackText(),
+                      
+                    ),
                   ),
                   SizedBox(
                     height: sizeW2,

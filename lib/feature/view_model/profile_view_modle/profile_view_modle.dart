@@ -595,8 +595,7 @@ class ProfileViewModle extends BaseController {
   List<Transactions> transaction = <Transactions>[];
 
   getMyWallet() async {
-    isLoading = true;
-    update();
+    startLoading();
     try {
       Logger().d("test_1");
       await ProfileHelper.getInstance.getMyWallet().then((value) {
@@ -714,7 +713,7 @@ class ProfileViewModle extends BaseController {
 
   Future<void> getMyPoints() async {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      startLoading();
+      // startLoading();
     });
     try {
       await ProfileHelper.getInstance.getMyPoints().then((value) => {
@@ -761,7 +760,7 @@ class ProfileViewModle extends BaseController {
 
   //this for Subscription
   Future<void> getUserSubscription(String filterType) async {
-    startLoading();
+    // startLoading();
     subscriptions?.clear();
     Map<String, dynamic> map = {ConstanceNetwork.filter: filterType};
     try {
@@ -810,6 +809,16 @@ class ProfileViewModle extends BaseController {
       printError();
       endLoading();
       Logger().e(e);
+    }
+  }
+
+  Future<void> initeProfileScreen() async {
+    try {
+      await getMyWallet();
+      await getMyPoints();
+      await getUserSubscription("");
+    } catch (e) {
+      Logger().e("error : ${e.toString()}");
     }
   }
 }

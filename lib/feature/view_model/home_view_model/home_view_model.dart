@@ -656,6 +656,8 @@ class HomeViewModel extends BaseController {
         isLoading = false;
           update();
           Get.back();
+          noteController.clear();
+          ratingService = 3.0;
           snackSuccess("", value.status?.message??"");
       }else{
         isLoading = false;
