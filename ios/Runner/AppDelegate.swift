@@ -1,7 +1,6 @@
 import UIKit
 import Flutter
 import GoogleMaps
-import Firebase
 
 
 @UIApplicationMain
@@ -11,7 +10,10 @@ import Firebase
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     GMSServices.provideAPIKey("AIzaSyAzBtxE3NluLYNrUajTg9OnG7X_luzESvU")
-    FirebaseApp.configure()
+      if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
+          }
+    GMSServices.provideAPIKey("AIzaSyBVYCRj21jVrNrC8vzEFQtLC2lXA9cnsng")
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
