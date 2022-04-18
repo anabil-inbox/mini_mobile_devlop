@@ -40,33 +40,36 @@ class PriceBottomSheetWidget extends StatelessWidget {
               priceTitle ?? "${tr.price}",
             style: textStyleSkipButton(),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GetBuilder<StorageViewModel>(
-                init: StorageViewModel(),
-                initState: (_) {},
-                builder: (logic) {
-                  return totalPalance == null
-                      ? Text(
-                          isTotalPalnce
-                              ? "${formatStringWithCurrency(logic.totalBalance , "")}"
-                              : "${formatStringWithCurrency(logic.balance, "")}",
-                          style: textStyleBigPrimaryTextColorSeconderSize(),
-                        )
-                      : Text("${formatStringWithCurrency(totalPalance, "")}",
-                          style: textStyleBigPrimaryTextColorSeconderSize());
-                },
-              ),
-              // SizedBox(
-              //   width: sizeW4,
-              // ),
-              // Text(
-              //   "QR",
-              //   style: textStyleBigPrimaryTextColorSeconderSize()!
-              //       .copyWith(fontSize: fontSize21),
-              // )
-            ],
+          FittedBox(
+            clipBehavior: Clip.hardEdge,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GetBuilder<StorageViewModel>(
+                  init: StorageViewModel(),
+                  initState: (_) {},
+                  builder: (logic) {
+                    return totalPalance == null
+                        ? Text(
+                            isTotalPalnce
+                                ? "${formatStringWithCurrency(logic.totalBalance , "")}"
+                                : "${formatStringWithCurrency(logic.balance, "")}",
+                            style: textStyleBigPrimaryTextColorSeconderSize(),
+                          )
+                        : Text("${formatStringWithCurrency(totalPalance, "")}",
+                            style: textStyleBigPrimaryTextColorSeconderSize());
+                  },
+                ),
+                // SizedBox(
+                //   width: sizeW4,
+                // ),
+                // Text(
+                //   "QR",
+                //   style: textStyleBigPrimaryTextColorSeconderSize()!
+                //       .copyWith(fontSize: fontSize21),
+                // )
+              ],
+            ),
           ),
           SizedBox(
             height: sizeH10,
@@ -111,33 +114,35 @@ class PriceWidget extends StatelessWidget {
           Text( "${tr.total}",
             style: textStyleSkipButton(),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GetBuilder<StorageViewModel>(
-                init: StorageViewModel(),
-                initState: (_) {},
-                builder: (logic) {
-                  return totalPalance == null
-                      ? Text(
-                          isTotalPalnce
-                              ? "${logic.totalBalance}"
-                              : "${logic.balance}",
-                          style: textStyleBigPrimaryTextColorSeconderSize(),
-                        )
-                      : Text("$totalPalance",
-                          style: textStyleBigPrimaryText());
-                },
-              ),
-              SizedBox(
-                width: sizeW4,
-              ),
-              Text(
-                "QR",
-                style: textStyleBigPrimaryTextColorSeconderSize()!
-                    .copyWith(fontSize: fontSize21),
-              )
-            ],
+          FittedBox(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GetBuilder<StorageViewModel>(
+                  init: StorageViewModel(),
+                  initState: (_) {},
+                  builder: (logic) {
+                    return totalPalance == null
+                        ? Text(
+                            isTotalPalnce
+                                ? "${logic.totalBalance}"
+                                : "${logic.balance}",
+                            style: textStyleBigPrimaryTextColorSeconderSize(),
+                          )
+                        : Text("$totalPalance",
+                            style: textStyleBigPrimaryText());
+                  },
+                ),
+                SizedBox(
+                  width: sizeW4,
+                ),
+                Text(
+                  "QR",
+                  style: textStyleBigPrimaryTextColorSeconderSize()!
+                      .copyWith(fontSize: fontSize21),
+                )
+              ],
+            ),
           ),
           SizedBox(
             height: sizeH16,

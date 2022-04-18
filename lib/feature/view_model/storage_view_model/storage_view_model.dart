@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+
 // import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
@@ -201,6 +202,7 @@ class StorageViewModel extends BaseController {
   /// to do when you want to count balance with new choosen options :
   void countBalanceWithOptions(
       {required StorageCategoriesData storageCategoriesData}) {
+    num _price = 0;
     if (storageCategoriesData.storageCategoryType ==
         ConstanceNetwork.quantityCategoryType) {
       // storageCategoriesData.storageItem?.forEach((element) {
@@ -252,6 +254,13 @@ class StorageViewModel extends BaseController {
             lastStorageItem?.x = tdX.text;
             lastStorageItem?.y = tdY.text;
             lastStorageItem = element;
+            // if (lastStorageItem?.price != null &&
+            //     tdY.text.isNotEmpty &&
+            //     tdX.text.isNotEmpty) {
+            //   _price = (num.tryParse(element.price.toString())! *
+            //       (num.tryParse(tdX.text)! * num.tryParse(tdY.text)!));
+            //   lastStorageItem?.price = _price.toString();
+            // }
             return;
           }
         } else {
@@ -1354,6 +1363,7 @@ class StorageViewModel extends BaseController {
             selectedFeaures.clear(),
             lastStorageItem = null,
             balance = 0,
+
           });
     } else if (ConstanceNetwork.driedCage ==
             storageCategoriesData.storageCategoryType ||
@@ -1374,7 +1384,7 @@ class StorageViewModel extends BaseController {
                 selectedFeaures.clear(),
                 lastStorageItem = null,
                 balance = 0,
-                animateToIndex()
+                animateToIndex(),
               })
           .then((value) => {animateToIndex()});
     }
@@ -1540,7 +1550,8 @@ class StorageViewModel extends BaseController {
       required List<Box> boxess,
       required bool isFromCart,
       Address? myAddresss}) {
-    final ApiSettings settings = ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
+    final ApiSettings settings =
+        ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
     if (isFromCart) {
       selectedAddress = myAddresss;
     }
@@ -2010,7 +2021,7 @@ class StorageViewModel extends BaseController {
               boxessSeriales.substring(0, boxessSeriales.length - 1);
         }
 
-        if(invoices.isNotEmpty){
+        if (invoices.isNotEmpty) {
           invoices = invoices.substring(0, invoices.length - 1);
         }
 

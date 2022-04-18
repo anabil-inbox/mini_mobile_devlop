@@ -35,10 +35,10 @@ class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      storageViewModel.intialBalance(
-          storageCategoriesData: widget.storageCategoriesData);
-    });
+    // WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    //   storageViewModel.intialBalance(
+    //       storageCategoriesData: widget.storageCategoriesData);
+    // });
   }
 
   @override
@@ -54,7 +54,12 @@ class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
         ),
         child: GetBuilder<StorageViewModel>(
           init: StorageViewModel(),
-          initState: (_) {},
+          initState: (state) {
+            WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+              state.controller?.intialBalance(
+                  storageCategoriesData: widget.storageCategoriesData);
+            });
+          },
           builder: (builder) {
             return Column(
               mainAxisSize: MainAxisSize.min,
