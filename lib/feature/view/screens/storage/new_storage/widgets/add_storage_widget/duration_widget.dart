@@ -38,6 +38,13 @@ class DurationWidget extends StatelessWidget {
               storageViewModel.onChangeBulkDuration(
                   newDuration: durationTitle,
                   storageCategoriesData: storageCategoriesData);
+            } else if (storageCategoriesData.storageCategoryType ==
+                    ConstanceNetwork.spaceCategoryType ||
+                storageCategoriesData.storageCategoryType ==
+                    ConstanceNetwork.driedCage) {
+              storageViewModel.getSmallBalanceForCage(
+                  newDuration: storageViewModel.selectedDuration,
+                  storageItem: storageViewModel.lastStorageItem!);
             } else {
               storageViewModel.getBalanceFromDuration(
                   newDuration: durationTitle,

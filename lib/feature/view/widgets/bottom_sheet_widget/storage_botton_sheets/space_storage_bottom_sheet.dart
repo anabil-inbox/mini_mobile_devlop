@@ -14,7 +14,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 import '../../primary_button.dart';
 
-class SpaceStorageBottomSheet extends StatefulWidget {
+class SpaceStorageBottomSheet extends StatelessWidget {
   const SpaceStorageBottomSheet(
       {Key? key,
       required this.storageCategoriesData,
@@ -25,21 +25,7 @@ class SpaceStorageBottomSheet extends StatefulWidget {
   final StorageCategoriesData storageCategoriesData;
   final bool isUpdate;
   final int index;
-  @override
-  State<SpaceStorageBottomSheet> createState() =>
-      _SpaceStorageBottomSheetState();
-}
-
-class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
-  StorageViewModel storageViewModel = Get.find<StorageViewModel>();
-  @override
-  void initState() {
-    super.initState();
-    // WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-    //   storageViewModel.intialBalance(
-    //       storageCategoriesData: widget.storageCategoriesData);
-    // });
-  }
+  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +42,8 @@ class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
           init: StorageViewModel(),
           initState: (state) {
             WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-              state.controller?.intialBalance(
-                  storageCategoriesData: widget.storageCategoriesData);
+              state.controller
+                  ?.intialBalance(storageCategoriesData: storageCategoriesData);
             });
           },
           builder: (builder) {
@@ -77,7 +63,7 @@ class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
                 SizedBox(
                   height: sizeH20,
                 ),
-                Text(widget.storageCategoriesData.storageName ?? ""),
+                Text(storageCategoriesData.storageName ?? ""),
                 SizedBox(
                   height: sizeH20,
                 ),
@@ -86,13 +72,13 @@ class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
                   height: sizeH16,
                 ),
                 CustomSpaceWidget(
-                  storageCategoriesData: widget.storageCategoriesData,
+                  storageCategoriesData: storageCategoriesData,
                 ),
                 SizedBox(
                   height: sizeH16,
                 ),
                 PeriodStorageWidget(
-                  storageCategoriesData: widget.storageCategoriesData,
+                  storageCategoriesData: storageCategoriesData,
                 ),
                 if (storageViewModel.selectedDuration ==
                     ConstanceNetwork.dailyDurationType)
@@ -106,15 +92,19 @@ class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
                   QuantityWidget(
                     value: storageViewModel.numberOfDays,
                     increasingFunction: () {
-                      builder.increaseDaysDurations(
-                          storageCategoriesData: widget.storageCategoriesData);
+                      builder.increaseDaysPriceCage(
+                          storageCategoriesData: storageCategoriesData);
+                      // builder.increaseDaysDurations(
+                      //     storageCategoriesData: storageCategoriesData);
                     },
                     mineassingFunction: () {
-                      builder.minasDaysDurations(
-                          storageCategoriesData: widget.storageCategoriesData);
+                      builder.minuesDaysPriceCage(
+                          storageCategoriesData: storageCategoriesData);
+                      // builder.minasDaysDurations(
+                      //     storageCategoriesData: storageCategoriesData);
                     },
                     quantityTitle: "${tr.days}",
-                    storageCategoriesData: widget.storageCategoriesData,
+                    storageCategoriesData: storageCategoriesData,
                   )
                 else
                   const SizedBox(),
@@ -122,7 +112,7 @@ class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
                   height: sizeH16,
                 ),
                 OptionWidget(
-                  storageCategoriesData: widget.storageCategoriesData,
+                  storageCategoriesData: storageCategoriesData,
                 ),
                 SizedBox(
                   height: sizeH16,
@@ -140,9 +130,9 @@ class _SpaceStorageBottomSheetState extends State<SpaceStorageBottomSheet> {
                         return;
                       }
                       storageViewModel.saveStorageDataToArray(
-                          updateIndex: widget.index,
-                          isUpdate: widget.isUpdate,
-                          storageCategoriesData: widget.storageCategoriesData);
+                          updateIndex: index,
+                          isUpdate: isUpdate,
+                          storageCategoriesData: storageCategoriesData);
                       storageViewModel.checkDaplication();
                       storageViewModel.update();
                     },
