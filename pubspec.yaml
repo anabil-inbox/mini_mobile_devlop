@@ -19,7 +19,7 @@ version: 1.0.11+3
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
-
+  #flutter: ">=2.5.0"
 dependencies:
   flutter:
     sdk: flutter
@@ -52,7 +52,7 @@ dependencies:
   flutter_local_notifications: ^9.1.5
   local_auth: ^1.1.8
   grouped_list: ^4.1.0
-  google_maps_flutter: ^2.1.0
+  google_maps_flutter: ^2.1.3
   google_place: ^0.4.3
   geolocator: ^8.0.0
   geocoding: ^2.0.1
@@ -90,7 +90,13 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
+#  plugin:
+#    platforms:
+#      android:
+#        package: io.flutter.plugins.googlemaps
+#        pluginClass: GoogleMapsPlugin
+#      ios:
+#        pluginClass: FLTGoogleMapsPlugin
   # To add assets to your application, add an assets section, like this:
   assets:
    #- assets/images/
