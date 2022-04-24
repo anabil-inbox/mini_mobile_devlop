@@ -156,11 +156,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     Get.put(StorageViewModel(), permanent: true);
-    HomeScreen.homeViewModle.homeScrollcontroller.addListener(() {
-      HomeScreen.homeViewModle.pagination();
-    });
-
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      HomeScreen.homeViewModle.homeScrollcontroller.addListener(() {
+        HomeScreen.homeViewModle.pagination();
+      });
       HomeScreen.homeViewModle.getCases();
       if (widget.isFromScan ?? false) {
         Get.bottomSheet(
@@ -171,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -190,9 +189,6 @@ class _HomeScreenState extends State<HomeScreen> {
             } else if (logic.userBoxess.isEmpty) {
               return RefreshIndicator(
                 onRefresh: () async {
-                  // HomeScreen.homeViewModle.page = 1;
-                  // HomeScreen.homeViewModle.userBoxess.clear();
-                  // HomeScreen.homeViewModle.onInit();
                   await HomeScreen.homeViewModle.refreshHome();
                 },
                 child: SingleChildScrollView(
