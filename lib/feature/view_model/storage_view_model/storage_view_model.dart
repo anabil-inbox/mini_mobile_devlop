@@ -906,7 +906,6 @@ class StorageViewModel extends BaseController {
                 selectedStore = null,
                 selectedDay = null,
                 profileViewModle.getMyPoints(),
-                // Get.close(1),
                 userStorageCategoriesData.clear(),
                 Get.offAll(() => OrderDetailesScreen(
                       orderId: value.data["order_name"],

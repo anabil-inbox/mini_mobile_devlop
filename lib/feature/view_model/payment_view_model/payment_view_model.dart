@@ -34,73 +34,51 @@ class PaymentViewModel extends GetxController {
     required List<CartModel> cartModels,
   }) async {
     try {
-      await payController
-          ?.evaluateJavascript("document.documentElement.innerHTML")
-          .then((value) async => {
-                if (value.contains("success"))
-                  {
-                    logger.i("Payment Success"),
-                    if (isOrderProductPayment)
-                      {
-                        if ((homeViewModel.operationTask.waitingTime ?? 0) > 0)
-                          {
-                            sendedWattingFeesOrCancellation =
-                                homeViewModel.operationTask.waitingTime ?? 0,
-                            sendedWattingFeesOrCancellationReson =
-                                "waiting_fees",
-                          }
-                        else if ((homeViewModel
-                                    .operationTask.cancellationFees ??
-                                0) >
-                            0)
-                          {
-                            sendedWattingFeesOrCancellation =
-                                homeViewModel.operationTask.cancellationFees ??
-                                    0,
-                            sendedWattingFeesOrCancellationReson =
-                                "cancellation",
-                          },
+      await payController?.evaluateJavascript("document.documentElement.innerHTML")
+          .then((value) async {
+        if (value.contains("success")) {
+          logger.i("Payment Success");
+          if (isOrderProductPayment) {
+            if ((homeViewModel.operationTask.waitingTime ?? 0) > 0) {
+              sendedWattingFeesOrCancellation =
+                  homeViewModel.operationTask.waitingTime ?? 0;
+              sendedWattingFeesOrCancellationReson = "waiting_fees";
+            } else if ((homeViewModel.operationTask.cancellationFees ?? 0) >
+                0) {
+              sendedWattingFeesOrCancellation =
+                  homeViewModel.operationTask.cancellationFees ?? 0;
+              sendedWattingFeesOrCancellationReson = "cancellation";
+            }
 
-                        await homeViewModel.applyPayment(
-                            salesOrder: homeViewModel.operationTask.salesOrder ?? "",
-                            paymentMethod: LocalConstance.bankCard,
-                            paymentId: paymentId,
-                            extraFees: sendedWattingFeesOrCancellation,
-                            reason: sendedWattingFeesOrCancellationReson),
-                        
-                        Get.back()
-                        //  await stroageViewModel.applyPayment(
-                        //       salesOrderId: homeViewModel.operationTask.salesOrder ??
-                        //           "",
-                        //       paymentMethodId: LocalConstance.bankCard),
-                      }
-                    else if (isFromNewStorage)
-                      {
-                        stroageViewModel.addNewStorage(paymentId: paymentId),
-                      }
-                    else if (isFromCart)
-                      {
-                        stroageViewModel.checkOutCart(cartModels: cartModels),
-                      }
-                    else
-                      {
-                        await stroageViewModel.doTaskBoxRequest(
-                            isFromCart: false,
-                            paymentId: paymentId,
-                            task: task!,
-                            boxes: boxes!,
-                            beneficiaryId: beneficiaryId!),
-                        Get.back(),
-                      }
-                    //http://inbox.ahdtech.com/response?id=70219f15-6599-4a66-98e7-a5d5b0a481c5&statusId=2&status=Paid
-                  }
-                else if (value.contains("failed"))
-                  {
-                    Future.delayed(Duration(seconds: 5), () {
-                      snackError("${tr.error_occurred}", tr.payment_failed);
-                    })
-                  }
-              });
+            await homeViewModel.applyPayment(
+                salesOrder: homeViewModel.operationTask.salesOrder ?? "",
+                paymentMethod: LocalConstance.bankCard,
+                paymentId: paymentId,
+                extraFees: sendedWattingFeesOrCancellation,
+                reason: sendedWattingFeesOrCancellationReson);
+
+            Get.back();
+          } else if (isFromNewStorage && paymentId.isNotEmpty) {
+            stroageViewModel.addNewStorage(paymentId: paymentId);
+            return;
+          } else if (isFromCart) {
+            stroageViewModel.checkOutCart(cartModels: cartModels);
+          } else {
+            await stroageViewModel.doTaskBoxRequest(
+                isFromCart: false,
+                paymentId: paymentId,
+                task: task!,
+                boxes: boxes!,
+                beneficiaryId: beneficiaryId!);
+            Get.back();
+          }
+          //http://inbox.ahdtech.com/response?id=70219f15-6599-4a66-98e7-a5d5b0a481c5&statusId=2&status=Paid
+        } else if (value.contains("failed")) {
+          Future.delayed(Duration(seconds: 5), () {
+            snackError("${tr.error_occurred}", tr.payment_failed);
+          });
+        }
+      });
     } catch (e) {
       Logger().e(e);
     }
