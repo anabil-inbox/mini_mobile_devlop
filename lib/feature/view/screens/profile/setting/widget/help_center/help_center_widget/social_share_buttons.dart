@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 
 import '../../../../../../../../util/app_shaerd_data.dart';
+import '../../../../../../../model/app_setting_modle.dart';
 
 class SocialShareButtons extends StatelessWidget {
   const SocialShareButtons({Key? key}) : super(key: key);
-
+  static ApiSettings? _appSettings = SharedPref.instance.getAppSettings();
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -17,7 +19,6 @@ class SocialShareButtons extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                // onClicked: () => share(SocialMedia.whatsapp);
 
               },
               child: const Image(

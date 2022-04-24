@@ -71,6 +71,7 @@ abstract class ConstanceNetwork {
       "inbox_app.api.auth.resend_code";
 
   static String addAddressEndPoint = "inbox_app.api.address.add";
+  static String createHelpDocPoint = "inbox_app.api.service_center.create_help_doc";
 
   static String editAddressEndPoint = "inbox_app.api.address.edit";
 

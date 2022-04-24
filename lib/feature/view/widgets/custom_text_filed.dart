@@ -5,6 +5,10 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
+import '../../../util/app_shaerd_data.dart';
+import '../../../util/string.dart';
+import 'package:get/get.dart';
+
 class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
   final String? label;
   final TextInputType? keyboardType;
@@ -84,7 +88,7 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
       // ignore: missing_return
       validator: (String? value) {
         if (value!.isEmpty || value == "") {
-          // return messageFiled?.tr;
+           return messageFiled?.tr;
         } else if (customValid != null) {
           return customValid!(value);
         } else {

@@ -88,6 +88,16 @@ class SharedPref {
     }
   }
 
+  ApiSettings? getAppSettings() {
+    try {
+      return ApiSettings.fromJson(
+          json.decode(_prefs!.get("$appSettingKey").toString()));
+    } catch (e) {
+      print("e");
+      return null;
+    }
+  }
+
   List<Language>? getAppLanguage() {
     try {
       return ApiSettings.fromJson(
