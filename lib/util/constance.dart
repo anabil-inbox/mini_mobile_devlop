@@ -16,7 +16,7 @@ abstract class Constance {
 
   static const String cashId = "Cash";
   static const String walletId = "Wallet";
-
+  static const String creditCard = "Credit Card";
   static const String orderId = "order_id";
 
   static String salesOrderUnderScoure = "sales_order";
