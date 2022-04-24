@@ -14,6 +14,7 @@ import '../../../util/date_time_util.dart';
 class NotificationItem extends StatelessWidget {
   const NotificationItem({Key? key, this.notification, }) : super(key: key);
   final NotificationData? notification;
+
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -55,7 +56,6 @@ class NotificationItem extends StatelessWidget {
                         maxLine: Constance.maxLineTwo,
                       textOverflow:TextOverflow.ellipsis ,
                       textStyle: textStyleMeduimBlackText(),
-                      
                     ),
                   ),
                   SizedBox(
