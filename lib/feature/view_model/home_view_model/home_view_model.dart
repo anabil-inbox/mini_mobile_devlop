@@ -30,6 +30,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
@@ -61,7 +62,6 @@ class HomeViewModel extends BaseController {
   double ratingService = 3.0;
   List<CasesData> casesDataList = [];
   List<CasesData> casesSelectedDataList = [];
-
 
   Future<void> getCustomerBoxes() async {
     if (!isLoadingPagination) {
@@ -236,7 +236,7 @@ class HomeViewModel extends BaseController {
     try {
       if (!p) {
         ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(content: Text(tr.no_permission)),
+          SnackBar(content: Text(tr.no_permission)),
         );
       }
     } catch (e) {
@@ -308,7 +308,7 @@ class HomeViewModel extends BaseController {
   Future<Box> getBoxBySerial({required String serial}) async {
     Box box = Box();
     await ItemHelper.getInstance.getBoxBySerial(body: {
-     ConstanceNetwork.serial: serial
+      ConstanceNetwork.serial: serial
     }).then((value) => {
           if (value.status!.success!)
             {
@@ -601,7 +601,7 @@ class HomeViewModel extends BaseController {
       ConstanceNetwork.paymentIdKey: paymentId,
       ConstanceNetwork.extraFeesKey: extraFees,
       ConstanceNetwork.reasonKey: reason,
-      Constance.driverToken: operationTask.driverToken ?? ""
+      Constance.driverToken: await SharedPref.instance.getDriverToken(),
     };
     startLoading();
     await OrderHelper.getInstance.applyPayment(body: map).then((value) {
@@ -610,20 +610,20 @@ class HomeViewModel extends BaseController {
   }
 
   List<NotificationData> listNotifications = [];
-  Future<void> getNotifications()async{
+  Future<void> getNotifications() async {
     isLoading = true;
     update();
     await HomeHelper.getInstance.getNotifications().then((value) {
-        if(value.isNotEmpty){
-          listNotifications.clear();
-          listNotifications = value;
-          isLoading = false;
-          update();
-        }else{
-          isLoading = false;
-          update();
-        }
-    }).catchError((onError){
+      if (value.isNotEmpty) {
+        listNotifications.clear();
+        listNotifications = value;
+        isLoading = false;
+        update();
+      } else {
+        isLoading = false;
+        update();
+      }
+    }).catchError((onError) {
       Logger().d(onError.toString());
       isLoading = false;
       update();
@@ -636,43 +636,43 @@ class HomeViewModel extends BaseController {
   }
 
   //this for add user review
-  void addReview(OrderSales orderSales , TextEditingController noteController) async{
-
-    Map<String , dynamic> map  = {
-      ConstanceNetwork.rateKey:"$ratingService",
-      ConstanceNetwork.noteKey:"${noteController.text.toString()}",
-      ConstanceNetwork.driverIdKey:"${orderSales.driverId}" ,
-      ConstanceNetwork.salesOrderKey:"${orderSales.orderId}" ,
+  void addReview(
+      OrderSales orderSales, TextEditingController noteController) async {
+    Map<String, dynamic> map = {
+      ConstanceNetwork.rateKey: "$ratingService",
+      ConstanceNetwork.noteKey: "${noteController.text.toString()}",
+      ConstanceNetwork.driverIdKey: "${orderSales.driverId}",
+      ConstanceNetwork.salesOrderKey: "${orderSales.orderId}",
     };
 
-    if(orderSales.driverId == null || (orderSales.driverId != null && "${orderSales.driverId.toString()}".isEmpty)){
+    if (orderSales.driverId == null ||
+        (orderSales.driverId != null &&
+            "${orderSales.driverId.toString()}".isEmpty)) {
       map.remove(ConstanceNetwork.driverIdKey);
     }
 
     isLoading = true;
     update();
     await OrderHelper.getInstance.addOrderReview(body: map).then((value) {
-      if(value.status != null && value.status!.success!){
+      if (value.status != null && value.status!.success!) {
         isLoading = false;
-          update();
-          Get.back();
-          noteController.clear();
-          ratingService = 3.0;
-          snackSuccess("", value.status?.message??"");
-      }else{
+        update();
+        Get.back();
+        noteController.clear();
+        ratingService = 3.0;
+        snackSuccess("", value.status?.message ?? "");
+      } else {
         isLoading = false;
-          update();
+        update();
       }
     }).catchError((onError) {
       Logger().d(onError.toString());
       isLoading = false;
       update();
-
     });
-
   }
 
-  getCases()async{
+  getCases() async {
     casesDataList.clear();
     await HomeHelper.getInstance.getCases().then((value) {
       casesDataList = value;
@@ -680,48 +680,48 @@ class HomeViewModel extends BaseController {
     });
   }
 
-  void casesReport(TaskResponse? taskResponse, TextEditingController noteController) async{
-    if(noteController.text.isEmpty && casesSelectedDataList.isEmpty){
+  void casesReport(
+      TaskResponse? taskResponse, TextEditingController noteController) async {
+    if (noteController.text.isEmpty && casesSelectedDataList.isEmpty) {
       return;
     }
 
-    Map<String , dynamic> map = {
-      ConstanceNetwork.emergencyCaseKey:casesSelectedDataList.first.name,
-      ConstanceNetwork.notesKey:"${noteController.text.toString()}",
-      ConstanceNetwork.salesOrderKey:"${taskResponse?.salesOrder}" ,
+    Map<String, dynamic> map = {
+      ConstanceNetwork.emergencyCaseKey: casesSelectedDataList.first.name,
+      ConstanceNetwork.notesKey: "${noteController.text.toString()}",
+      ConstanceNetwork.salesOrderKey: "${taskResponse?.salesOrder}",
     };
 
     isLoading = true;
     update();
-    await OrderHelper.getInstance.addEmergencyCasesReport(body: map).then((value) {
-     if(value.status != null && value.status!.success!){
+    await OrderHelper.getInstance
+        .addEmergencyCasesReport(body: map)
+        .then((value) {
+      if (value.status != null && value.status!.success!) {
         isLoading = false;
-          update();
-          Get.back();
-          snackSuccess("", value.status?.message??"");
-          casesSelectedDataList.clear();
+        update();
+        Get.back();
+        snackSuccess("", value.status?.message ?? "");
+        casesSelectedDataList.clear();
         noteController.clear();
-      }else{
+      } else {
         isLoading = false;
-          update();
+        update();
       }
     }).catchError((onError) {
       Logger().d(onError.toString());
       isLoading = false;
       update();
-
     });
-
   }
 
   void addCasesItem(CasesData casesData) {
-    if(casesSelectedDataList.contains(casesData)){
+    if (casesSelectedDataList.contains(casesData)) {
       casesSelectedDataList.remove(casesData);
       update();
-    }else{
+    } else {
       casesSelectedDataList.add(casesData);
       update();
     }
   }
-
 }

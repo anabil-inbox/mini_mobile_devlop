@@ -72,6 +72,7 @@ abstract class ConstanceNetwork {
 
   static String addAddressEndPoint = "inbox_app.api.address.add";
   static String createHelpDocPoint = "inbox_app.api.service_center.create_help_doc";
+  static String getProfileEndPoint = "inbox_app.api.auth.me";
 
   static String editAddressEndPoint = "inbox_app.api.address.edit";
 

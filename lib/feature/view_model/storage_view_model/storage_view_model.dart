@@ -55,6 +55,7 @@ class StorageViewModel extends BaseController {
 
   //todo this for bottom sheet accept isAccept
   bool isAccept = false;
+  bool isAcceptTermsAndConditions = false;
   bool isUsingPromo = false;
 
   // to do for X And Y Form Keys ::
@@ -1448,10 +1449,6 @@ class StorageViewModel extends BaseController {
     return getPriceWithFormate(price: price);
   }
 
-  getDiscount() {
-    if (isAccept) {}
-  }
-
   bool isValidateTask({required Task task, required List<Box> boxess}) {
     if (!((task.id == LocalConstance.destroyId ||
             task.id == LocalConstance.terminateId ||
@@ -1670,6 +1667,7 @@ class StorageViewModel extends BaseController {
     selectedDateTime = null;
     profileViewModle.getMyPoints();
     profileViewModle.getMyWallet();
+    tdCopun.clear();
   }
 
   // Fun to Test If Ihave Any Box At home ::
@@ -1768,12 +1766,11 @@ class StorageViewModel extends BaseController {
     }
 
     if (isAccept) {
-      if (price -
-              profileViewModle.myPoints.totalPoints! *
+      // 
+      if (price - profileViewModle.myPoints.totalPoints! *
                   SharedPref.instance.getCurrentUserData().conversionFactor! >
           0) {
-        price = price -
-            profileViewModle.myPoints.totalPoints! *
+        price = price - profileViewModle.myPoints.totalPoints! *
                 SharedPref.instance.getCurrentUserData().conversionFactor!;
         userUsesPoints = profileViewModle.myPoints.totalPoints!;
       } else {
@@ -1781,27 +1778,23 @@ class StorageViewModel extends BaseController {
         //     SharedPref.instance.getCurrentUserData().conversionFactor!;
 
         usesPoints = profileViewModle.myPoints.totalPoints! -
-            (price /
-                SharedPref.instance.getCurrentUserData().conversionFactor!);
+            (price / SharedPref.instance.getCurrentUserData().conversionFactor!);
         price = 0;
       }
     }
     priceAfterDiscount = price;
     userUsesPoints = profileViewModle.myPoints.totalPoints! - usesPoints;
-    // if (!GetUtils.isNull(checkPromoAppResponse)) {
-    //   if (checkPromoAppResponse!.status!.success!) {
-    //     if ((price - (price * checkPromoAppResponse?.data["amount"] / 100)) >
-    //         0) {
-    //       price = price - (price * checkPromoAppResponse?.data["amount"] / 100);
-    //     } else {
-    //       price = 0;
-    //     }
-    //   }
-    // }
+
     Logger().e("MSG_USER_POINTS = $userUsesPoints");
     Logger().e("MSG_USER_POINTS = $price");
+
     profileViewModle.getMyPoints();
-    return [getPriceWithFormate(price: price), usesPoints];
+
+    if (price > 0) {
+      return [getPriceWithFormate(price: price), usesPoints];
+    } else {
+      return [getPriceWithFormate(price: 0), usesPoints];
+    }
   }
 
   calculateTasksCart({required List<CartModel> cartModel}) {
@@ -2052,4 +2045,6 @@ class StorageViewModel extends BaseController {
       printError();
     }
   }
+
+
 }

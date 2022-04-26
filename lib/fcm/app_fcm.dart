@@ -58,13 +58,14 @@ class AppFcm {
         TaskResponse.fromJson(message.data, isFromNotification: true);
     homeViewModel.expandableController.expanded = false;
     homeViewModel.expandableController.expanded = true;
+    SharedPref.instance.setDriverToken(token: homeViewModel.operationTask.driverToken ?? "");
+    Logger().e("DRIVER TOKEN ${await SharedPref.instance.getDriverToken()}}");
     storageViewModel.update();
     homeViewModel.update();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       homeViewModel.operationTask =
           TaskResponse.fromJson(message.data, isFromNotification: true);
-      if (message.data["id"] == "8" &&
-          message.data["type"] == LocalConstance.onClientSide) {
+      if (message.data["id"] == LocalConstance.signature && message.data["type"] == LocalConstance.onClientSide) {
         homeViewModel.selectedSignatureItemModel.title =
             LocalConstance.onClientSide;
         SignatureBottomSheet.showSignatureBottomSheet();
@@ -89,12 +90,11 @@ class AppFcm {
             name: homeViewModel.operationTask.paymentMethod);
         homeViewModel.update();
         storageViewModel.update();
-      } else if(message.data[LocalConstance.id] == LocalConstance.orderDoneId){
-          
+      } else if (message.data[LocalConstance.id] ==
+          LocalConstance.orderDoneId) {
         homeViewModel.refreshHome();
         Get.offAll(() => HomePageHolder());
         return;
-      
       } else {
         homeViewModel.selectedSignatureItemModel.title =
             LocalConstance.onDriverSide;
@@ -117,8 +117,9 @@ class AppFcm {
     );
     final InitializationSettings initializationSettings =
         InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS,);
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: selectNotification);
@@ -154,7 +155,6 @@ class AppFcm {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
-
 
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
@@ -256,7 +256,9 @@ class AppFcm {
           LocalConstance.orderDeleviredId) {
         homeViewModel.operationTask =
             TaskResponse.fromJson(map, isFromNotification: true);
-
+        SharedPref.instance.setDriverToken(
+            token: homeViewModel.operationTask.driverToken ?? "");
+        Logger().e("DRIVER TOKEN ${SharedPref.instance.getDriverToken()}}");
         Get.off(ReciverOrderScreen(homeViewModel));
         return;
       }
