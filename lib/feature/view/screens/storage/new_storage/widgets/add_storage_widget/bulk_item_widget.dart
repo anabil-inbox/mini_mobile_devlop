@@ -61,7 +61,10 @@ class BulkItemWidget extends StatelessWidget {
                 onTap: () {
                   deleteFunction();
                 },
-                child: SvgPicture.asset("assets/svgs/close.svg")))
+                child: SvgPicture.asset("assets/svgs/close.svg" , 
+                height: sizeH20,
+                width: sizeW20,
+                )))
       ],
     );
   }
