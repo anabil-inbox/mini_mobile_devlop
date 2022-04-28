@@ -158,8 +158,7 @@ class HomeViewModel extends BaseController {
         if (i == 1) {
           Logger().d(
               "${userBoxess.toList()[index].serialNo} || ${data.code.toString().replaceAll("http://", "")}");
-          if (userBoxess.toList()[index].serialNo !=
-                  data.code.toString().replaceAll("http://", "") &&
+          if (userBoxess.toList()[index].serialNo != data.code.toString().replaceAll("http://", "") &&
               isFromAtHome!) {
             snackError(tr.error_occurred, tr.box_serial_invalid);
             endLoading();

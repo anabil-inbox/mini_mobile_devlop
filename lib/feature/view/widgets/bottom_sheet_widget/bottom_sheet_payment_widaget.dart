@@ -136,7 +136,7 @@ class BottomSheetPaymentWidget extends StatelessWidget {
         ),
       );
 
-  Widget get acceptTerms => GetBuilder<StorageViewModel>(
+  Widget get myPointsText => GetBuilder<StorageViewModel>(
         builder: (value) {
           Logger().e(
               "CONVERCATION FACTOR ${SharedPref.instance.getCurrentUserData().conversionFactor}");
@@ -326,7 +326,7 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                 height: sizeH16,
               ),
               profileViewModle.myPoints.totalPoints! > 0
-                  ? acceptTerms
+                  ? myPointsText
                   : const SizedBox(),
               SizedBox(
                 height: sizeH16,

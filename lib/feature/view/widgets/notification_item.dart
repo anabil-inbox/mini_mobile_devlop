@@ -12,7 +12,10 @@ import '../../../util/app_shaerd_data.dart';
 import '../../../util/date_time_util.dart';
 
 class NotificationItem extends StatelessWidget {
-  const NotificationItem({Key? key, this.notification, }) : super(key: key);
+  const NotificationItem({
+    Key? key,
+    this.notification,
+  }) : super(key: key);
   final NotificationData? notification;
 
   @override
@@ -20,13 +23,16 @@ class NotificationItem extends StatelessWidget {
     screenUtil(context);
     return InkWell(
       onTap: _onItemClick,
+      splashColor: colorTrans,
+      highlightColor: colorTrans,
       child: Container(
-       padding: EdgeInsets.symmetric(horizontal: sizeW12! , vertical:  sizeH12!),
+        padding: EdgeInsets.symmetric(horizontal: sizeW12!, vertical: sizeH12!),
         width: double.infinity,
-        margin: EdgeInsets.symmetric(horizontal: sizeH20! , vertical: sizeH5!),
+        margin: EdgeInsets.symmetric(horizontal: sizeH20!, vertical: sizeH5!),
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
-            color: colorTextWhite, borderRadius: BorderRadius.circular(sizeH6!)),
+            color: colorTextWhite,
+            borderRadius: BorderRadius.circular(sizeH6!)),
         child: Row(
           children: [
             SizedBox(
@@ -42,26 +48,27 @@ class NotificationItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomTextView(
-                    txt : notification?.title.toString(),
-                    textStyle: textStyleAppbar()!.copyWith(
-                      fontSize: 14
-                    )
-                    ),
+                      txt: notification?.title.toString(),
+                      textStyle: textStyleAppbar()!.copyWith(fontSize: 14)),
                   SizedBox(
                     height: sizeW2,
                   ),
                   Container(
                     child: CustomTextView(
-                        txt : notification?.message.toString(),
-                        maxLine: Constance.maxLineTwo,
-                      textOverflow:TextOverflow.ellipsis ,
+                      txt: notification?.message.toString(),
+                      maxLine: Constance.maxLineTwo,
+                      textOverflow: TextOverflow.ellipsis,
                       textStyle: textStyleMeduimBlackText(),
                     ),
                   ),
                   SizedBox(
                     height: sizeW2,
                   ),
-                  Text(DateUtility.dateFormatNamed(txtDate: notification?.date.toString()), style: smallHintTextStyle(), )
+                  Text(
+                    DateUtility.dateFormatNamed(
+                        txtDate: notification?.date.toString()),
+                    style: smallHintTextStyle(),
+                  )
                 ],
               ),
             )

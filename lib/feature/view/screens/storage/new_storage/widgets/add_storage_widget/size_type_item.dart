@@ -51,30 +51,6 @@ class SizeTypeItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // storageViewModel.isShowAll
-                    //     ? SvgPicture.asset(ConstanceNetwork.enableFolder)
-                    //     : ((storageCategoriesData.storageCategoryType ==
-                    //                     ConstanceNetwork.quantityCategoryType ||
-                    //                 storageCategoriesData.storageCategoryType ==
-                    //                     ConstanceNetwork.itemCategoryType) &&
-                    //             storageViewModel.isShowQuantityAndItems)
-                    //         ? SvgPicture.asset(ConstanceNetwork.enableFolder)
-                    //         : ((storageCategoriesData.storageCategoryType ==
-                    //                         ConstanceNetwork.spaceCategoryType ||
-                    //                     storageCategoriesData
-                    //                             .storageCategoryType ==
-                    //                         ConstanceNetwork.driedCage) &&
-                    //                 storageViewModel.isShowSpaces)
-                    //             ? SvgPicture.asset(
-                    //                 ConstanceNetwork.enableFolder,
-                    //                 width: sizeW50,
-                    //                 height: sizeH40,
-                    //               )
-                    //             : SvgPicture.asset(
-                    //                 ConstanceNetwork.disableFolder,
-                    //                 width: sizeW50,
-                    //                 height: sizeH40,
-                    //               ),
                     getWidget(),
                     SizedBox(
                       height: sizeH10,
@@ -111,28 +87,6 @@ class SizeTypeItem extends StatelessWidget {
   }
 
   getWidget() {
-    // if (storageViewModel.isShowAll) {
-    //   return SvgPicture.asset(ConstanceNetwork.enableFolder);
-    // } else if (((storageCategoriesData.storageCategoryType ==
-    //             ConstanceNetwork.quantityCategoryType ||
-    //         storageCategoriesData.storageCategoryType ==
-    //             ConstanceNetwork.itemCategoryType) &&
-    //     storageViewModel.isShowQuantityAndItems)) {
-    //   return SvgPicture.asset(ConstanceNetwork.enableFolder);
-    // } else if (((storageCategoriesData.storageCategoryType ==
-    //             ConstanceNetwork.spaceCategoryType ||
-    //         storageCategoriesData.storageCategoryType ==
-    //             ConstanceNetwork.driedCage ||
-    //         storageCategoriesData.storageCategoryType!
-    //             .toLowerCase()
-    //             .contains("space")) &&
-    //     storageViewModel.isShowSpaces)) {
-    //   return SvgPicture.asset(
-    //     ConstanceNetwork.enableFolder,
-    //     width: sizeW50,
-    //     height: sizeH40,
-    //   );
-    // }
     if (storageViewModel.isShowAll) {
       return SvgPicture.asset(ConstanceNetwork.enableFolder);
     } else if (((storageCategoriesData.storageCategoryType ==

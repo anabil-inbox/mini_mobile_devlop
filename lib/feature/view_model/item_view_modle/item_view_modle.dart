@@ -84,8 +84,7 @@ class ItemViewModle extends BaseController {
             {
               // homeViewModel.getCustomerBoxes(),
               snackSuccess("${tr.success}", "${value.status?.message}"),
-              operationsBox =
-                  Box.fromJson(value.data[ConstanceNetwork.dataKey]),
+              operationsBox = Box.fromJson(value.data[ConstanceNetwork.dataKey]),
               homeViewModel.userBoxess.clear(),
               homeViewModel.getCustomerBoxes(),
             }
@@ -261,7 +260,8 @@ class ItemViewModle extends BaseController {
   // here for delete item Func && Botttom Sheet Alarm ::
   Future<void> showDeleteItemBottomSheet(
       {required String serialNo, required String id}) async {
-    await Get.bottomSheet(GlobalBottomSheet(
+    await Get.bottomSheet(
+      GlobalBottomSheet(
       isTwoBtn: true,
       title: tr.want_delete,
       onOkBtnClick: () async {

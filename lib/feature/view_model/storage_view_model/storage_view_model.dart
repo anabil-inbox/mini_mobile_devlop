@@ -340,8 +340,7 @@ class StorageViewModel extends BaseController {
     getBulksBalance(localBulk: localBulk);
   }
 
-  void getSmallBalance(
-      {required String newDuration, required StorageItem storageItem}) {
+  void getSmallBalance({required String newDuration, required StorageItem storageItem}) {
     if (newDuration
         .toLowerCase()
         .contains(ConstanceNetwork.dailyDurationType.toLowerCase())) {
@@ -395,8 +394,7 @@ class StorageViewModel extends BaseController {
     update();
   }
 
-  void saveStorageDataToArray(
-      {required StorageCategoriesData storageCategoriesData,
+  void saveStorageDataToArray({required StorageCategoriesData storageCategoriesData,
       bool isUpdate = false,
       int? updateIndex}) async {
     if (storageCategoriesData.storageCategoryType ==
@@ -472,11 +470,9 @@ class StorageViewModel extends BaseController {
             ConstanceNetwork.spaceCategoryType ||
         storageCategoriesData.storageCategoryType ==
             ConstanceNetwork.driedCage) {
-      getSmallBalanceForCage(
-          newDuration: selectedDuration, storageItem: lastStorageItem!);
+      getSmallBalanceForCage(newDuration: selectedDuration, storageItem: lastStorageItem!);
     } else {
-      getSmallBalance(
-          newDuration: selectedDuration, storageItem: lastStorageItem!);
+      getSmallBalance(newDuration: selectedDuration, storageItem: lastStorageItem!);
     }
   }
 
@@ -1209,9 +1205,7 @@ class StorageViewModel extends BaseController {
   }
 
   void showMainStorageBottomSheet(
-      {required StorageCategoriesData storageCategoriesData,
-      bool isUpdate = false,
-      int index = 0}) {
+      {required StorageCategoriesData storageCategoriesData, bool isUpdate = false, int index = 0}) {
     if (isUpdate) {
       if (storageCategoriesData.storageCategoryType ==
           ConstanceNetwork.itemCategoryType) {
@@ -1234,8 +1228,7 @@ class StorageViewModel extends BaseController {
       });
     }
 
-    if (ConstanceNetwork.quantityCategoryType ==
-        storageCategoriesData.storageCategoryType) {
+    if (ConstanceNetwork.quantityCategoryType == storageCategoriesData.storageCategoryType) {
       Get.bottomSheet(
         QuantityStorageBottomSheet(
           isUpdate: isUpdate,
@@ -1246,8 +1239,7 @@ class StorageViewModel extends BaseController {
       ).whenComplete(() => {
             clearBottomSheetData(),
           });
-    } else if (ConstanceNetwork.itemCategoryType ==
-        storageCategoriesData.storageCategoryType) {
+    } else if (ConstanceNetwork.itemCategoryType ==  storageCategoriesData.storageCategoryType) {
       Get.bottomSheet(
         ItemStorageBottomSheet(
           index: index,
@@ -1532,6 +1524,7 @@ class StorageViewModel extends BaseController {
     if (itemSeriales.isNotEmpty) {
       itemSeriales = itemSeriales.substring(0, itemSeriales.length - 1);
     }
+    
     if (task.id == LocalConstance.fetchId) {
       data.add(ApiItem.getApiObjectToSend(
           itemCode: task.id ?? "",
@@ -1697,7 +1690,6 @@ class StorageViewModel extends BaseController {
           .payment(body: {"amount": amount}).then((value) => {
                 if (value.status!.success!)
                   {
-                    // snackSuccess("${tr.success}", value.status!.message!),
                     if (GetUtils.isURL(value.data["payment_url"]))
                       {
                         Logger().e(value.data["payment_url"]),

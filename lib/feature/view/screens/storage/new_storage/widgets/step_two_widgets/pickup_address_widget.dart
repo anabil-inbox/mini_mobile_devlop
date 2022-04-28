@@ -37,17 +37,6 @@ class PickupAddress extends StatelessWidget {
     }
   }
 
-  //  if (storageViewModel.userStorageCategoriesData[0]
-  //                               .storageCategoryType ==
-  //                           ConstanceNetwork.itemCategoryType ||
-  //                       storageViewModel.userStorageCategoriesData[0]
-  //                               .storageCategoryType ==
-  //                           ConstanceNetwork.quantityCategoryType) {
-  //                   return ;
-  //                   } else {
-  //                   return Text("${tr.pickup_address}");
-  //                   }
-
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -67,7 +56,6 @@ class PickupAddress extends StatelessWidget {
                     ConstanceNetwork.itemCategoryType ||
                 storageViewModel.userStorageCategoriesData[0].storageCategoryType ==
                     ConstanceNetwork.quantityCategoryType)
-
               GetBuilder<ProfileViewModle>(
                 initState: (_) {
                   WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
