@@ -597,9 +597,7 @@ class ProfileViewModle extends BaseController {
   getMyWallet() async {
     startLoading();
     try {
-      Logger().d("test_1");
       await ProfileHelper.getInstance.getMyWallet().then((value) {
-        Logger().d("test_2${value}");
         myWallet = value;
         transaction = value.transactions!;
         isLoading = false;
@@ -718,7 +716,6 @@ class ProfileViewModle extends BaseController {
     try {
       await ProfileHelper.getInstance.getMyPoints().then((value) => {
             myPoints = MyPoints.fromJson(value.data),
-            Logger().e(myPoints.toJson())
           });
     } catch (e) {
       printError();
@@ -824,10 +821,10 @@ class ProfileViewModle extends BaseController {
 
   void sendNote(TextEditingController emailController,
       TextEditingController noteController) {
-    if(emailController.text.isEmpty){
+    if (emailController.text.isEmpty) {
       return;
     }
-    if(noteController.text.isEmpty){
+    if (noteController.text.isEmpty) {
       return;
     }
     Map<String, dynamic> map = {
@@ -837,7 +834,10 @@ class ProfileViewModle extends BaseController {
     _sendNote(map, emailController, noteController);
   }
 
-  Future<void> _sendNote(Map<String, dynamic> map, TextEditingController emailController, TextEditingController noteController) async {
+  Future<void> _sendNote(
+      Map<String, dynamic> map,
+      TextEditingController emailController,
+      TextEditingController noteController) async {
     startLoading();
     await ProfileHelper.getInstance.sendNote(map).then((value) {
       if (value.status!.success!) {
@@ -852,5 +852,13 @@ class ProfileViewModle extends BaseController {
       endLoading();
       Logger().d(value);
     });
+  }
+
+  Future<void> getProfileData() async {
+    try {
+      await ProfileHelper.getInstance.getUserData();
+    } catch (e) {
+      Logger().e("getProfileData", e);
+    }
   }
 }

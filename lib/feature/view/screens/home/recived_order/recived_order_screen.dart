@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/balance_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/box_need_scanned_item.dart';
-import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/contract_signature_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/customer_signature_instant_order.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/fetched_items.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_box_instant_order.dart';
@@ -145,12 +144,12 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
             child: ListView(
               shrinkWrap: true,
               children: [
-                if ((home.operationTask.isNew ?? false)) ...[
-                  SizedBox(height: sizeH27),
-                  const ContractSignature(),
-                  SizedBox(height: sizeH10),
-                  idVerification
-                ],
+                // if ((home.operationTask.isNew ?? false)) ...[
+                //   SizedBox(height: sizeH27),
+                //   const ContractSignature(),
+                //   SizedBox(height: sizeH10),
+                //   idVerification
+                // ],
                 SizedBox(height: sizeH10),
                 if (home.operationTask.processType !=
                     LocalConstance.fetchId) ...[

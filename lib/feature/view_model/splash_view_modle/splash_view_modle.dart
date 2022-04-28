@@ -17,7 +17,6 @@ class SplashViewModle extends GetxController{
      await SplashHelper.getInstance.getAppSettings().then((value)async =>{
         if(!GetUtils.isNull(value)){
           apiSettings = value,
-          Logger().i(value.workingHours,),
           await SharedPref.instance.setUserType(value.customerType!),
           update()
     }

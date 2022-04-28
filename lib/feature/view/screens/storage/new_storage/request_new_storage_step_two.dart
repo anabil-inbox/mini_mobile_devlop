@@ -95,8 +95,7 @@ class _RequestNewStoragesStepTwoScreenState
                           textButton: "${tr.next}",
                           onClicked: () async {
                             if (logic.userStorageCategoriesData.isNotEmpty) if (
-                            logic
-                                .isStepTwoValidate(
+                            logic.isStepTwoValidate(
                                     catygoreyType: logic
                                             .userStorageCategoriesData[0]
                                             .storageCategoryType ??
