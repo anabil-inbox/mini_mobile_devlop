@@ -15,7 +15,7 @@ class MapBottomSheet extends StatelessWidget {
   final String salesOrder;
 
   Widget get closeBtnWidget => InkWell(
-        child: SvgPicture.asset("assets/svgs/Close.svg"),
+        child: SvgPicture.asset("assets/svgs/close.svg"),
         onTap: () {
           Get.back();
         },
