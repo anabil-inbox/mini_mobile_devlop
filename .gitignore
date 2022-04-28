@@ -98,3 +98,4 @@ Thumbs.db
 *.wmv
 .env*
 /pubspec.lock
+/ios/Podfile.lock
