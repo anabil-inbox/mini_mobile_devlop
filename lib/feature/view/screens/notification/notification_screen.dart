@@ -17,6 +17,7 @@ class NotificationScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: colorTextWhite,
         toolbarHeight: sizeH90,
         elevation: 1,
@@ -31,41 +32,49 @@ class NotificationScreen extends StatelessWidget {
               filled: true,
               fillColor: scaffoldColor),
         ),
+        actions: [],
+        leading: null,
       ),
       body: GetBuilder<HomeViewModel>(
-          initState:(state){
+          initState: (state) {
             WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
               state.controller?.getNotifications();
             });
           },
-          init:HomeViewModel(),
+          init: HomeViewModel(),
           builder: (logic) {
-        return SafeArea(
-            child: Column(
+            return SafeArea(
+                child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if(logic.isLoading)...[
-                  Expanded(child: Center(child: CircularProgressIndicator(color: colorPrimary,),)),
-                ]else ...[
-                Expanded(
-                  child: RefreshIndicator(
-                    onRefresh:()=> _onRefresh(logic),
-                    child: ListView.builder(
-                      physics: customScrollViewIOS(),
-                      itemCount: logic.listNotifications.length,
-                      itemBuilder: (context, index) => NotificationItem(notification:logic.listNotifications[index]),
+                if (logic.isLoading) ...[
+                  Expanded(
+                      child: Center(
+                    child: CircularProgressIndicator(
+                      color: colorPrimary,
+                    ),
+                  )),
+                ] else ...[
+                  Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: () => _onRefresh(logic),
+                      child: ListView.builder(
+                        physics: customScrollViewIOS(),
+                        itemCount: logic.listNotifications.length,
+                        itemBuilder: (context, index) => NotificationItem(
+                            notification: logic.listNotifications[index]),
+                      ),
                     ),
                   ),
-                ),
-            ]
+                ]
               ],
             ));
-      }),
+          }),
     );
   }
 
   //refresh
-  _onRefresh(HomeViewModel logic) async{
+  _onRefresh(HomeViewModel logic) async {
     logic.getNotifications();
     await Future.delayed(Duration(seconds: 1));
   }

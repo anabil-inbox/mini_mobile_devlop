@@ -58,13 +58,14 @@ class AppFcm {
         TaskResponse.fromJson(message.data, isFromNotification: true);
     homeViewModel.expandableController.expanded = false;
     homeViewModel.expandableController.expanded = true;
+    SharedPref.instance.setDriverToken(token: homeViewModel.operationTask.driverToken ?? "");
+    Logger().e("DRIVER TOKEN ${await SharedPref.instance.getDriverToken()}}");
     storageViewModel.update();
     homeViewModel.update();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       homeViewModel.operationTask =
           TaskResponse.fromJson(message.data, isFromNotification: true);
-      if (message.data["id"] == "8" &&
-          message.data["type"] == LocalConstance.onClientSide) {
+      if (message.data["id"] == LocalConstance.signature && message.data["type"] == LocalConstance.onClientSide) {
         homeViewModel.selectedSignatureItemModel.title =
             LocalConstance.onClientSide;
         SignatureBottomSheet.showSignatureBottomSheet();
@@ -83,6 +84,17 @@ class AppFcm {
               homeViewModel,
               isNeedFingerprint: true,
             ));
+      } else if (message.data["id"] == "4") {
+        storageViewModel.selectedPaymentMethod = PaymentMethod(
+            id: homeViewModel.operationTask.paymentMethod,
+            name: homeViewModel.operationTask.paymentMethod);
+        homeViewModel.update();
+        storageViewModel.update();
+      } else if (message.data[LocalConstance.id] ==
+          LocalConstance.orderDoneId) {
+        homeViewModel.refreshHome();
+        Get.offAll(() => HomePageHolder());
+        return;
       } else {
         homeViewModel.selectedSignatureItemModel.title =
             LocalConstance.onDriverSide;
@@ -103,19 +115,11 @@ class AppFcm {
       requestBadgePermission: false,
       requestSoundPermission: false,
     );
-
-    // final MacOSInitializationSettings initializationSettingsMacOS =
-    //     MacOSInitializationSettings(
-    //   requestAlertPermission: false,
-    //   requestBadgePermission: false,
-    //   requestSoundPermission: false,
-    // );
-
     final InitializationSettings initializationSettings =
         InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS,
-            macOS: null);
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: selectNotification);
@@ -128,7 +132,6 @@ class AppFcm {
 
   Future selectNotification(String? payload) async {
     try {
-      // RemoteMessage message = messages;
       Logger().e(messages);
       goToOrderPage(messages.data, isFromTerminate: false);
     } catch (e) {
@@ -153,8 +156,6 @@ class AppFcm {
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
-    /// Update the iOS foreground notification presentation options to allow
-    /// heads up notifications.
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
       alert: false,
@@ -168,11 +169,6 @@ class AppFcm {
       Logger().e(d);
       jsonDecode(jsonEncode(message.data));
       Logger().e(message.data);
-      //todo this for add badge for app
-      // var android = message.data;
-      // Logger().e("MSG_MESSAGE $message");
-      // Logger().e("MSG_NOT_MESSAGE $messages");
-      // Logger().e("MSG_NOT ${message.data.toString()}");
       if (Platform.isIOS || Platform.isAndroid) {
         messages = message;
         updatePages(message);
@@ -260,7 +256,9 @@ class AppFcm {
           LocalConstance.orderDeleviredId) {
         homeViewModel.operationTask =
             TaskResponse.fromJson(map, isFromNotification: true);
-
+        SharedPref.instance.setDriverToken(
+            token: homeViewModel.operationTask.driverToken ?? "");
+        Logger().e("DRIVER TOKEN ${SharedPref.instance.getDriverToken()}}");
         Get.off(ReciverOrderScreen(homeViewModel));
         return;
       }
@@ -273,7 +271,11 @@ class AppFcm {
           LocalConstance.paymentRequiredId) {
         homeViewModel.operationTask =
             TaskResponse.fromJson(map, isFromNotification: true);
+        storageViewModel.selectedPaymentMethod = PaymentMethod(
+            id: homeViewModel.operationTask.paymentMethod,
+            name: homeViewModel.operationTask.paymentMethod);
         homeViewModel.update();
+        storageViewModel.update();
         Get.off(() => ReciverOrderScreen(
               homeViewModel,
               isNeedToPayment: true,

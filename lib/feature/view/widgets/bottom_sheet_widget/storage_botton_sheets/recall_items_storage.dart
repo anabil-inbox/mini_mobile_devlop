@@ -112,13 +112,15 @@ class RecallStorageSheet extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  value.isAccept = !value.isAccept;
+                  //value.isAccept = !value.isAccept;
+                  value.isAcceptTermsAndConditions =
+                      !value.isAcceptTermsAndConditions;
                   value.update();
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    value.isAccept
+                    value.isAcceptTermsAndConditions
                         ? SvgPicture.asset("assets/svgs/check.svg")
                         : SvgPicture.asset(
                             "assets/svgs/uncheck.svg",
@@ -255,7 +257,6 @@ class RecallStorageSheet extends StatelessWidget {
     } else {
       snackError("${tr.error_occurred}", "${tr.you_have_to_accept_our_terms}");
     }
-
   }
 
   onClickBringBox() {

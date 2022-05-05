@@ -57,13 +57,13 @@ abstract class ConstanceNetwork {
 
   static String loginCompany = "inbox_app.api.auth.company_login";
 
-  static String userLoginedState = "logined";
-
   static String userStillNotVerifyState = "stillNotVerify";
 
   static String companyStillNotVerifyState = "CompanystillNotVerify";
 
   static String userEnterd = "enterd";
+
+  static String userLoginedState = "logined";
 
   static String verfiyCodeEndPoint = "inbox_app.api.auth.verfiy";
 
@@ -71,6 +71,9 @@ abstract class ConstanceNetwork {
       "inbox_app.api.auth.resend_code";
 
   static String addAddressEndPoint = "inbox_app.api.address.add";
+  static String createHelpDocPoint =
+      "inbox_app.api.service_center.create_help_doc";
+  static String getProfileEndPoint = "inbox_app.api.auth.me";
 
   static String editAddressEndPoint = "inbox_app.api.address.edit";
 
@@ -90,7 +93,8 @@ abstract class ConstanceNetwork {
 
   static String checkDepositEndPoint = "inbox_app.api.wallet.check_payment";
 
-  static String editProfilCompanyEndPoint = "inbox_app.api.auth.company_edit_profile";
+  static String editProfilCompanyEndPoint =
+      "inbox_app.api.auth.company_edit_profile";
 
   //todo this for storage end point
   static String storageCategoriesApi = "inbox_app.api.storage.categories";
@@ -143,25 +147,31 @@ abstract class ConstanceNetwork {
 
   // this for constance Myorder
   static String myOrderDetailesEndPoint = "inbox_app.api.sales_order.get_order";
-  static String myPointsEndPoint = "inbox_app.api.loyalty_points.get_loyalty_points";
-  static String submitPaymentEndPoint = "inbox_app.api.sales_order.submit_payment";
-
+  static String myPointsEndPoint =
+      "inbox_app.api.loyalty_points.get_loyalty_points";
+  static String submitPaymentEndPoint =
+      "inbox_app.api.sales_order.submit_payment";
   static String uploadOrderSignatureEndPoint =
       "inbox_app.api.sales_order.upload_order_signature";
+  static String addReviewApi = "inbox_app.api.service_center.create_review";
 
   // this for subscriptions
-  static String getSubscriptionsEndPoint ="inbox_app.api.subscription.get_subscriptions";
-  static String terminateSubscriptionsEndPoint ="inbox_app.api.subscription.terminate_subscription";
-  
+  static String getSubscriptionsEndPoint =
+      "inbox_app.api.subscription.get_subscriptions";
+  static String terminateSubscriptionsEndPoint =
+      "inbox_app.api.subscription.terminate_subscription";
 
   // this for get Task Response:
-
-  static String getCurrentTaskResponeEndPoint = "inbox_app.api.sales_order.get_order_details";
+  static String getCurrentTaskResponeEndPoint =
+      "inbox_app.api.sales_order.get_order_details";
+  static String getCasesApi = "inbox_app.api.service_center.get_cases";
+  static String createEmergencyCasesApi =
+      "inbox_app.api.service_center.create_emer_report"; //
 
   // this for notifcation
-  static String getNotificationsApi="inbox_app.api.loyalty_points.get_notifications";
+  static String getNotificationsApi =
+      "inbox_app.api.loyalty_points.get_notifications";
 
-  
   //todo this for constance Keys
   static String amountKey = "amount";
   static String idKey = "id";
@@ -222,7 +232,7 @@ abstract class ConstanceNetwork {
 
   static var imageSmallKey = "image";
 
-  static var contactNumberkey ="contact_number";
+  static var contactNumberkey = "contact_number";
 
   static var companyNameKey = "company_name";
 
@@ -230,7 +240,18 @@ abstract class ConstanceNetwork {
 
   static var applicantNameKey = "applicant_name";
 
-  static var applicantDepartmentKey = "applicant_department";//small
+  static var applicantDepartmentKey = "applicant_department";
+
+  static var rateKey = "rate";
+
+  static var noteKey = "note";
+  static var notesKey = "notes";
+
+  static var driverIdKey = "driver";
+
+  static var salesOrderKey = "sales_order";
+
+  static var emergencyCaseKey = "emergency_case"; //small
 
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};

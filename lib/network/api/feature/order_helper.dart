@@ -67,4 +67,31 @@ class OrderHelper {
       return appResponse;
     }
   }
+
+
+  Future<AppResponse> addOrderReview({required Map<String, dynamic> body}) async {
+    var appResponse = await OrderApi.getInstance.addOrderReview(
+        body: body,
+        url: "${ConstanceNetwork.addReviewApi}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      Logger().e(appResponse.data);
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
+  Future<AppResponse> addEmergencyCasesReport({required Map<String, dynamic> body}) async {
+    var appResponse = await OrderApi.getInstance.addEmergencyCasesReport(
+        body: body,
+        url: "${ConstanceNetwork.createEmergencyCasesApi}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      Logger().e(appResponse.data);
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
 }

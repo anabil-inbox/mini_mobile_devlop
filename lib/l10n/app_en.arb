@@ -241,6 +241,9 @@
     "sorry_area_available": "Sorry , No Zone Area Available",
     "select_time_zone": "Select Your Time Zone",
     "want_delete_order": "Are You Sure You want to delete This Order ?",
-    "customer_signature": "Customer Signature"
+    "customer_signature": "Customer Signature",
+    "add_review": "Add review for our service",
+    "note_review": "Enter your note",
+    "report_an_emergency": "Report An Emergency"
 
 }

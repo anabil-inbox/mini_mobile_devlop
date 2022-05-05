@@ -7,10 +7,8 @@ import 'package:inbox_clients/feature/view/screens/my_orders/widgets/my_order_bo
 import 'package:inbox_clients/feature/view/screens/my_orders/widgets/new_order_item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/price_bottom_sheet_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
-import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/map_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
-import 'package:inbox_clients/feature/view_model/map_view_model/map_view_model.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -21,6 +19,7 @@ import 'package:inbox_clients/util/constance/constance.dart';
 import '../../../../util/app_shaerd_data.dart';
 import '../../../model/my_order/order_sales.dart';
 import '../../../model/storage/payment.dart';
+import '../../widgets/bottom_sheet_widget/rate_bottom_sheet.dart';
 import 'widgets/my_order_time_widget.dart';
 import 'widgets/status_widget.dart';
 
@@ -98,6 +97,18 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
       OrderDetailesScreen.myOrderViewModle.update();
 
       setState(() {});
+      OrderDetailesScreen.homeViewModel.isLoading = false;
+      OrderDetailesScreen.homeViewModel.update();
+      if (OrderDetailesScreen.myOrderViewModle.newOrderSales.isRated! ==
+              false &&
+          OrderDetailesScreen.myOrderViewModle.newOrderSales.status ==
+              LocalConstance.completed) {
+        Get.bottomSheet(
+            RateBottomSheet(
+              orderSales: OrderDetailesScreen.myOrderViewModle.newOrderSales,
+            ),
+            isScrollControlled: true);
+      }
     });
     //Get.put(MapViewModel()).getStreamLocation(OrderDetailesScreen.myOrderViewModle.newOrderSales);
   }
@@ -167,8 +178,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                           GetBuilder<MyOrderViewModle>(
                             builder: (controller) {
                               return MyOrderAddressWidget(
-                                newOrderSales:controller.newOrderSales,
-
+                                newOrderSales: controller.newOrderSales,
                               );
                             },
                           ),

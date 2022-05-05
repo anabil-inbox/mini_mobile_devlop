@@ -1,16 +1,18 @@
 class OrderSales {
-  OrderSales({
-    this.orderId,
-    this.customerId,
-    this.orderType,
-    this.proccessType,
-    this.totalPrice,
-    this.orderShippingAddress,
-    this.orderWarehouseAddress,
-    this.deliveryDate,
-    this.status,
-    this.orderItems,
-  });
+  OrderSales(
+      {this.orderId,
+      this.customerId,
+      this.orderType,
+      this.proccessType,
+      this.totalPrice,
+      this.orderShippingAddress,
+      this.orderWarehouseAddress,
+      this.deliveryDate,
+      this.status,
+      this.orderItems,
+      this.isRated,
+      this.driverId,
+      this.hasTasks});
 
   String? orderId;
   String? customerId;
@@ -22,6 +24,9 @@ class OrderSales {
   String? status;
   String? proccessType;
   List<OrderItem>? orderItems;
+  bool? isRated;
+  bool? hasTasks;
+  String? driverId;
 
   factory OrderSales.fromJson(Map<String, dynamic> json) => OrderSales(
         orderId: json["order_id"] ?? "",
@@ -33,6 +38,9 @@ class OrderSales {
         orderWarehouseAddress: json["order_warehouse_address"] ?? "",
         deliveryDate: DateTime.parse(json["delivery_date"]),
         status: json["status"] ?? "",
+        isRated: json["is_rated"] == null ? false : json["is_rated"],
+        hasTasks: json["has_tasks"] == null ? false : json["has_tasks"],
+        driverId: json["driver_id"] == null ? "" : json["driver_id"],
         orderItems: json["order_items"] == null
             ? []
             : List<OrderItem>.from(
@@ -43,10 +51,13 @@ class OrderSales {
         "order_id": orderId,
         "customer_id": customerId,
         "order_type": orderType,
-        "process" : proccessType,
+        "process": proccessType,
         "total_price": totalPrice,
         "order_shipping_address": orderShippingAddress,
         "order_warehouse_address": orderWarehouseAddress,
+        "is_rated": isRated == null ? null : isRated,
+        "has_tasks": hasTasks == null ? null : hasTasks,
+        "driver_id": driverId == null ? null : driverId,
         "delivery_date":
             "${deliveryDate?.year.toString().padLeft(4, '0')}-${deliveryDate?.month.toString().padLeft(2, '0')}-${deliveryDate?.day.toString().padLeft(2, '0')}",
         "status": status,

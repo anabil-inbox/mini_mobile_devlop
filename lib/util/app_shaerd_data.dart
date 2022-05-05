@@ -40,10 +40,13 @@ String? urlUserPlacholder =
 
 screenUtil(BuildContext context) {
   ScreenUtil.init(
-      BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width,
-          maxHeight: MediaQuery.of(context).size.height),
-      context: Get.context,
+      Get.context!,
+      // BoxConstraints(
+      //     maxWidth: MediaQuery.of(context).size.width,
+      //     maxHeight: MediaQuery.of(context).size.height),
+
+       deviceSize:Size(392.72727272727275, 803.6363636363636) ,
+       splitScreenMode: true,
       minTextAdapt: true,
       designSize: Size(392.72727272727275, 803.6363636363636),
       orientation: Orientation.portrait);
@@ -719,7 +722,7 @@ Widget returnBoxByStatus(
     {required String storageStatus,
     required bool isEnabeld,
     required bool isPickup}) {
-  String boxPath = "assets/svgs/desable_box.svg";
+    String boxPath = "assets/svgs/desable_box.svg";
   // if (!true) {
   //   boxPath = "assets/svgs/block_folder.svg";
   // } else
@@ -814,4 +817,25 @@ List<PaymentMethod> getPaymentMethod() {
               .paymentMethod ??
           [];
   return list;
+}
+
+class DismissKeyboard extends StatelessWidget {
+  final Widget? child;
+
+  DismissKeyboard({this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    // screenUtil(context);
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus &&
+            currentFocus.focusedChild != null) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        }
+      },
+      child: child,
+    );
+  }
 }

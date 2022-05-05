@@ -31,6 +31,9 @@ class TaskResponse {
       this.cancellationFees,
         this.hasDeliveredScan,
       this.hasTimeRequest,
+        this.driverId,
+        this.hasTasks = false,
+        this.isRated = false,
       this.notificationId});
 
   String? salesOrder;
@@ -59,7 +62,9 @@ class TaskResponse {
   List<FetchedItem>? items;
   num? waittingFees;
   bool? hasDeliveredScan;
-
+  bool? isRated;
+  bool? hasTasks;
+  String? driverId;
   factory TaskResponse.fromJson(Map<String, dynamic> json,
       {required bool isFromNotification}) {
     if (isFromNotification) {
@@ -125,7 +130,10 @@ class TaskResponse {
             num.tryParse(json["cancellation_fees"].toString()) ?? 0.0,
     hasDeliveredScan: json["has_delivered_scan"] == "false"
     ? false
-        : json["has_delivered_scan"] == "true",
+        : json["has_delivered_scan"] == "true"?true:false,
+    isRated: json["is_rated"] != null &&  json["is_rated"] == "true" ? true : json["is_rated"] != null &&  json["is_rated"] == "false" ? false:false,
+    hasTasks: json["has_tasks"] != null &&  json["has_tasks"] == "true" ? true : json["has_tasks"] != null &&  json["has_tasks"] == "false" ? false:false,
+    driverId: json["driver_id"] == null ? "" : json["driver_id"],
       );
     } else {
       return TaskResponse(
@@ -179,9 +187,10 @@ class TaskResponse {
         cancellationFees:
             num.tryParse(json["cancellation_fees"].toString()) ?? 0.0,
         waitingTime: num.tryParse(json["waiting_time"].toString()) ?? 0.0,
-    hasDeliveredScan: json["has_delivered_scan"] == null
-    ? null
-        : json["has_delivered_scan"],
+    hasDeliveredScan: json["has_delivered_scan"] == null? null: json["has_delivered_scan"],
+    isRated: json["is_rated"] == null ? false : json["is_rated"],
+    hasTasks: json["has_tasks"] == null ? false : json["has_tasks"],
+    driverId: json["driver_id"] == null ? "" : json["driver_id"],
       );
     }
   }
@@ -219,6 +228,9 @@ class TaskResponse {
         "process_type": processType,
         "driver_token": driverToken,
         "task_status": taskStatus,
+        "is_rated": isRated == null ? null : isRated,
+        "has_tasks": hasTasks == null ? null : hasTasks,
+        "driver_id": driverId == null ? null : driverId,
       };
 }
 

@@ -12,7 +12,6 @@ import 'package:inbox_clients/feature/view/screens/storage/details_storage/widge
 import 'package:inbox_clients/feature/view/widgets/appbar/widget/back_btn_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/giveaway_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
-import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 
@@ -25,6 +24,7 @@ import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:logger/logger.dart';
 
+import '../../widgets/custom_text_filed.dart';
 import 'filter_items/filter_item_screen.dart';
 
 class ItemScreen extends StatefulWidget {
@@ -36,7 +36,7 @@ class ItemScreen extends StatefulWidget {
       : super(key: key);
 
   ItemViewModle get itemViewModle => Get.put(ItemViewModle(), permanent: true);
-  HomeViewModel get homeViewModel => Get.put(HomeViewModel(),  permanent: true);
+  HomeViewModel get homeViewModel => Get.put(HomeViewModel(), permanent: true);
   final Box box;
   final Function()? getBoxDataMethod;
   final bool isEnabeld;
@@ -138,7 +138,10 @@ class _ItemScreenState extends State<ItemScreen> {
               }
             },
             icon: SvgPicture.asset("assets/svgs/update.svg")),
-        (widget.box.storageStatus == LocalConstance.boxAtHome || itemViewModle.operationsBox?.storageStatus == LocalConstance.boxAtHome||  !widget.box.allowed!)
+        (widget.box.storageStatus == LocalConstance.boxAtHome ||
+                itemViewModle.operationsBox?.storageStatus ==
+                    LocalConstance.boxAtHome ||
+                !widget.box.allowed!)
             ? const SizedBox()
             : Center(
                 child: InkWell(
@@ -383,7 +386,45 @@ class _ItemScreenState extends State<ItemScreen> {
                   SizedBox(
                     height: sizeH20,
                   ),
-                  searchWidget,
+                  Row(
+                    children: [
+                      Expanded(child: searchWidget),
+                      if (!(itemViewModle.operationsBox?.logSeals == null ||
+                          itemViewModle.operationsBox!.logSeals!.isEmpty)) ...[
+                        IconButton(
+                            splashColor: colorTrans,
+                            highlightColor: colorTrans,
+                            onPressed: () {
+                              itemViewModle.showSealssBottomSheet(
+                                seals:
+                                    itemViewModle.operationsBox!.logSeals ?? [],
+                              );
+                            },
+                            icon: SvgPicture.asset(
+                              "assets/svgs/seal.svg",
+                              width: sizeW24,
+                              height: sizeH22,
+                            )),
+                      ],
+                      if (!(itemViewModle.operationsBox?.invoices == null ||
+                          itemViewModle.operationsBox!.invoices!.isEmpty)) ...[
+                        IconButton(
+                            splashColor: colorTrans,
+                            highlightColor: colorTrans,
+                            onPressed: () {
+                              itemViewModle.showInvoicesBottomSheet(
+                                  invoices:
+                                      itemViewModle.operationsBox!.invoices ??
+                                          []);
+                            },
+                            icon: SvgPicture.asset(
+                              "assets/svgs/invoice.svg",
+                              width: sizeW24,
+                              height: sizeH22,
+                            )),
+                      ]
+                    ],
+                  ),
                   SizedBox(
                     height: sizeH20,
                   ),
@@ -396,10 +437,13 @@ class _ItemScreenState extends State<ItemScreen> {
                     height: sizeH10,
                   ),
                   itemLVWidget,
-                (itemViewModle.operationsBox?.allowed ?? false)
+                  (itemViewModle.operationsBox?.allowed ?? false)
                       ? BtnActionWidget(
-                          isGaveAway: itemViewModle.operationsBox?.storageStatus == LocalConstance.giveawayId,
-                          boxStatus: itemViewModle.operationsBox!.storageStatus ?? "",
+                          isGaveAway:
+                              itemViewModle.operationsBox?.storageStatus ==
+                                  LocalConstance.giveawayId,
+                          boxStatus:
+                              itemViewModle.operationsBox!.storageStatus ?? "",
                           redBtnText: widget.box.storageStatus ==
                                   LocalConstance.boxAtHome
                               ? "${tr.pickup}"

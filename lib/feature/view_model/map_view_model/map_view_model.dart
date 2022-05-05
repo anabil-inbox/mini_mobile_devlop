@@ -14,7 +14,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
-import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 import 'package:inbox_clients/network/firebase/firbase_clinte.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/constance.dart';
@@ -40,6 +39,7 @@ class MapViewModel extends GetxController {
   );
 
   Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers = {}
+  
     ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
     ..add(
       Factory<VerticalDragGestureRecognizer>(

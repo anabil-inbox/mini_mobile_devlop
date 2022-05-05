@@ -2,6 +2,9 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:logger/logger.dart';
 
+import '../inside_box/invoices.dart';
+import '../inside_box/seal.dart';
+
 class Box {
   Box(
       {this.id,
@@ -14,8 +17,10 @@ class Box {
       this.tags,
       this.items,
       this.allowed = false,
+      this.logSeals,
       this.options,
       this.isPickup,
+      this.invoices,
       this.address});
 
   String? id;
@@ -32,6 +37,9 @@ class Box {
   Address? address;
   bool? allowed;
   bool? isPickup;
+  List<Seal>? logSeals;
+  List<Invoices>? invoices;
+
 
   factory Box.fromJson(Map<String, dynamic> json) => Box(
         id: json["id"] == null ? null : json["id"],
@@ -47,12 +55,19 @@ class Box {
             json["modified"] == null ? null : DateTime.parse(json["modified"]),
         address:
             json["address"] == null ? null : Address.fromJson(json["address"]),
+        logSeals: json["seals_log"] == null
+            ? null
+            : List<Seal>.from(json["seals_log"].map((x) => Seal.fromJson(x))),
         options: json["options"] == null
             ? null
             : List<String>.from(json["options"].map((x) => x)),
         tags: json["tags"] == null
             ? null
             : List<ItemTag>.from(json["tags"].map((x) => ItemTag.fromJson(x))),
+
+        invoices: json["invoices"] == null
+            ? null
+            : List<Invoices>.from(json["invoices"].map((x) => Invoices.fromJson(x))),    
         items: json["items"] == null
             ? null
             : List<BoxItem>.from(json["items"].map((x) => BoxItem.fromJson(x))),

@@ -22,6 +22,7 @@ import '../box_in_task_widget.dart';
 
 class TaskWidgetBS extends StatelessWidget {
   const TaskWidgetBS({Key? key, required this.task}) : super(key: key);
+
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
   static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
@@ -79,8 +80,7 @@ class TaskWidgetBS extends StatelessWidget {
                                 ),
                                 isScrollControlled: true);
                           } else if ((task.id == LocalConstance.destroyId ||
-                                  task.id == LocalConstance.terminateId ||
-                                  task.id == LocalConstance.giveawayId) &&
+                                  task.id == LocalConstance.terminateId) &&
                               !(storageViewModel.doseBoxInHome(
                                 boxess: homeViewModel.selctedOperationsBoxess
                                     .toList(),

@@ -26,9 +26,8 @@ class SplashScreen extends GetWidget<SplashViewModle> {
 
 moveToIntro() {
   String? state = SharedPref.instance.getUserLoginState();
-
   try {
-     if (state?.toLowerCase() == "${ConstanceNetwork.userEnterd}") {
+  if (state?.toLowerCase() == "${ConstanceNetwork.userEnterd}") {
     if (SharedPref.instance.getUserType() == "${ConstanceNetwork.userType}") {
       Get.off(() => UserRegisterScreen());
     } else if (SharedPref.instance.getUserType() ==
@@ -38,6 +37,7 @@ moveToIntro() {
         "${ConstanceNetwork.companyType}") {
       Get.off(() => RegisterCompanyScreen());
     }
+    Get.off(() => UserBothLoginScreen());
   } else if (state?.toLowerCase() == "${ConstanceNetwork.userLoginedState}") {
     Get.off(() => HomePageHolder());
   } else {

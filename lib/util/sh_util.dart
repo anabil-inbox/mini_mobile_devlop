@@ -21,12 +21,22 @@ class SharedPref {
   final String customrKey = "customerKey";
   final String userDataKey = "userData";
   final String boxessKey = "boxessKey";
+  final String driverToken = "driverToken";
   
   var log = Logger();
 
   SharedPref._();
 
   static SharedPreferences? _prefs;
+
+
+  setDriverToken({required String token}){
+    _prefs?.setString(driverToken, token);
+  }
+
+  Future<String> getDriverToken() async {
+    return _prefs?.getString(driverToken) ?? "";
+  }
 
   setAppSetting(var json) async {
     String prfApiSettings = jsonEncode(json);
@@ -55,7 +65,6 @@ class SharedPref {
       var string = _prefs?.getString("$userDataKey") ?? "";
       var decode;
       if (GetUtils.isNull(json.decode(string)["data"]["Customer"])) {
-        print("get Current user if");
         decode = json.decode(string)["data"];
       } else {
         decode = json.decode(string)["data"]["Customer"];
@@ -82,6 +91,16 @@ class SharedPref {
       return ApiSettings.fromJson(
               json.decode(_prefs!.get("$appSettingKey").toString()))
           .companySectors;
+    } catch (e) {
+      print("e");
+      return null;
+    }
+  }
+
+  ApiSettings? getAppSettings() {
+    try {
+      return ApiSettings.fromJson(
+          json.decode(_prefs!.get("$appSettingKey").toString()));
     } catch (e) {
       print("e");
       return null;
@@ -204,7 +223,7 @@ class SharedPref {
     try {
       return _prefs?.getString('$tokenKey');
     } catch (e) {
-      print(e);
+      Logger().e("msg_get_user_token_error $e");
       return "";
     }
   }

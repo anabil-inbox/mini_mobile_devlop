@@ -74,7 +74,7 @@ class MyRewardsScreen extends StatelessWidget {
                     primary: false,
                     children: profile.myPoints.transactions!
                         .map((e) => HistoryItem(
-                              title: "${e.salesOrder}",
+                              title: e.salesOrder ?? "",
                               date: "${e.date.toString().split(" ")[0]}",
                               points: "${e.loyaltyPoints} points",
                             ))

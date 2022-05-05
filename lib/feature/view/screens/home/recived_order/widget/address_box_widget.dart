@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 
 import '../../../../../../network/firebase/sales_order.dart';
 import '../../../../../../util/app_color.dart';
@@ -10,7 +9,6 @@ import '../../../../../../util/app_shaerd_data.dart';
 import '../../../../../../util/app_style.dart';
 import '../../../../../../util/constance.dart';
 import '../../../../../view_model/map_view_model/map_view_model.dart';
-import '../../../../widgets/bottom_sheet_widget/map_bottom_sheet.dart';
 import '../../../../widgets/custome_text_view.dart';
 
 class AddressBox extends StatelessWidget {

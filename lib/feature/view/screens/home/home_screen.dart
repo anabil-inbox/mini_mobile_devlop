@@ -22,6 +22,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 
+import '../../../view_model/profile_view_modle/profile_view_modle.dart';
 import 'widget/box_lv_widget.dart';
 
 // ignore: must_be_immutable
@@ -33,6 +34,7 @@ class HomeScreen extends StatefulWidget {
 
   static HomeViewModel homeViewModle = Get.find<HomeViewModel>();
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+  static ProfileViewModle profileViewModle = Get.put(ProfileViewModle());
 
   bool? isFromScan = false;
   Box? box;
@@ -156,11 +158,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     Get.put(StorageViewModel(), permanent: true);
-    HomeScreen.homeViewModle.homeScrollcontroller.addListener(() {
-      HomeScreen.homeViewModle.pagination();
-    });
-
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      HomeScreen.profileViewModle.getProfileData();
+      HomeScreen.homeViewModle.homeScrollcontroller.addListener(() {
+        HomeScreen.homeViewModle.pagination();
+      });
+      HomeScreen.homeViewModle.getCases();
       if (widget.isFromScan ?? false) {
         Get.bottomSheet(
             CheckInBoxWidget(
@@ -170,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -189,9 +192,6 @@ class _HomeScreenState extends State<HomeScreen> {
             } else if (logic.userBoxess.isEmpty) {
               return RefreshIndicator(
                 onRefresh: () async {
-                  // HomeScreen.homeViewModle.page = 1;
-                  // HomeScreen.homeViewModle.userBoxess.clear();
-                  // HomeScreen.homeViewModle.onInit();
                   await HomeScreen.homeViewModle.refreshHome();
                 },
                 child: SingleChildScrollView(

@@ -19,6 +19,7 @@ import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:inbox_clients/util/sh_util.dart';
+import 'package:logger/logger.dart';
 
 import '../primary_button.dart';
 
@@ -48,10 +49,14 @@ class BottomSheetPaymentWidget extends StatelessWidget {
     }
     return Column(
       children: [
-        SizedBox(height: sizeH12,),
+        SizedBox(
+          height: sizeH12,
+        ),
         Text(tr.choose_destroy_place),
-        SizedBox(height: sizeH12,),
-        ],
+        SizedBox(
+          height: sizeH12,
+        ),
+      ],
     );
   }
 
@@ -82,10 +87,8 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomTextView(
-                      txt: storageViewModle.isAccept ||
-                              storageViewModle.isUsingPromo
-                          ? storageViewModle
-                              .getPriceWithDiscount(
+                      txt: (storageViewModle.isAccept || storageViewModle.isUsingPromo)
+                          ? storageViewModle.getPriceWithDiscount(
                                   oldPrice: logic
                                       .calculateTaskPriceLotBoxess(
                                           isFromCart: false,
@@ -94,20 +97,17 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                                       .toString()
                                       .split(" ")[0])[0]
                               .toString()
-                              
                           : boxes.length == 0
                               ? logic.calculateTaskPriceOnceBox(task: task)
-                              : logic.calculateTaskPriceLotBoxess(isFromCart: false, task: task, boxess: boxes),
+                              : logic.calculateTaskPriceLotBoxess(
+                                  isFromCart: false, task: task, boxess: boxes),
                       textStyle: textStyleAppBarTitle()
                           ?.copyWith(fontSize: fontSize28, color: colorPrimary),
                     ),
-                    if (storageViewModle.isAccept ||
-                        storageViewModle.isUsingPromo)
+                    if (storageViewModle.isAccept || storageViewModle.isUsingPromo) ...[
                       SizedBox(
                         width: sizeW7,
                       ),
-                    if (storageViewModle.isAccept ||
-                        storageViewModle.isUsingPromo)
                       CustomTextView(
                           txt: logic.calculateTaskPriceLotBoxess(
                               isFromCart: false, task: task, boxess: boxes),
@@ -115,7 +115,8 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                           textStyle: textStyleAppBarTitle()?.copyWith(
                               fontSize: fontSize14,
                               color: colorPrimary,
-                              decoration: TextDecoration.lineThrough)),
+                              decoration: TextDecoration.lineThrough))
+                    ],
                   ],
                 );
               },
@@ -135,8 +136,10 @@ class BottomSheetPaymentWidget extends StatelessWidget {
         ),
       );
 
-  Widget get acceptTerms => GetBuilder<StorageViewModel>(
+  Widget get myPointsText => GetBuilder<StorageViewModel>(
         builder: (value) {
+          Logger().e(
+              "CONVERCATION FACTOR ${SharedPref.instance.getCurrentUserData().conversionFactor}");
           return Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -323,7 +326,7 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                 height: sizeH16,
               ),
               profileViewModle.myPoints.totalPoints! > 0
-                  ? acceptTerms
+                  ? myPointsText
                   : const SizedBox(),
               SizedBox(
                 height: sizeH16,
@@ -351,10 +354,9 @@ class BottomSheetPaymentWidget extends StatelessWidget {
   onClickSubmit() {
     if (storageViewModle.isAccept || storageViewModle.isUsingPromo) {
       if (storageViewModle.priceAfterDiscount > 0) {
-        if (storageViewModle.selectedPaymentMethod != null) {
+        if (storageViewModle.selectedPaymentMethod?.id != null) {
           if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
-              storageViewModle.selectedPaymentMethod?.id ==
-                  Constance.walletId) {
+              storageViewModle.selectedPaymentMethod?.id == Constance.creditCard) {
             if (boxes.length > 0) {
               storageViewModle.doTaskBoxRequest(
                   isFromCart: false,
@@ -369,6 +371,28 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                   boxes: [box],
                   selectedItems: items,
                   beneficiaryId: beneficiaryId);
+            }
+          } else if (storageViewModle.selectedPaymentMethod?.id == Constance.walletId) {
+            if (num.tryParse(profileViewModle.myWallet.balance ?? "0")! >=
+                storageViewModle.priceAfterDiscount) {
+              if (boxes.length > 0) {
+                storageViewModle.doTaskBoxRequest(
+                    isFromCart: false,
+                    task: task,
+                    boxes: boxes,
+                    selectedItems: items,
+                    beneficiaryId: beneficiaryId);
+              } else {
+                storageViewModle.doTaskBoxRequest(
+                    isFromCart: false,
+                    task: task,
+                    boxes: [box],
+                    selectedItems: items,
+                    beneficiaryId: beneficiaryId);
+              }
+            } else {
+              snackError(
+                  "${tr.error_occurred}", "Wallet balance is not enough");
             }
           } else {
             storageViewModle.goToPaymentMethod(
@@ -386,6 +410,7 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               "${tr.you_have_to_select_payment_method}");
         }
       } else {
+        
         if (boxes.length > 0) {
           storageViewModle.doTaskBoxRequest(
               isFromCart: false,
@@ -401,12 +426,14 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               selectedItems: items,
               beneficiaryId: beneficiaryId);
         }
+
+
       }
       return;
     }
-    if (storageViewModle.selectedPaymentMethod != null) {
+    if (storageViewModle.selectedPaymentMethod?.id != null) {
       if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
-          storageViewModle.selectedPaymentMethod?.id == Constance.walletId) {
+          storageViewModle.selectedPaymentMethod?.id == Constance.creditCard) {
         if (boxes.length > 0) {
           storageViewModle.doTaskBoxRequest(
               isFromCart: false,
@@ -422,19 +449,44 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               selectedItems: items,
               beneficiaryId: beneficiaryId);
         }
+      } else if (storageViewModle.selectedPaymentMethod?.id ==
+          Constance.walletId) {
+        var amount = boxes.length == 0
+            ? storageViewModle.calculateTaskPriceOnceBox(task: task)
+            : storageViewModle.calculateTaskPriceLotBoxess(
+                isFromCart: false, task: task, boxess: boxes);
+
+        if (num.tryParse(amount.toString().split(" ")[0])! <=
+            num.tryParse(profileViewModle.myWallet.balance ?? "0")!) {
+          if (boxes.length > 0) {
+            storageViewModle.doTaskBoxRequest(
+                isFromCart: false,
+                task: task,
+                boxes: boxes,
+                selectedItems: items,
+                beneficiaryId: beneficiaryId);
+          } else {
+            storageViewModle.doTaskBoxRequest(
+                isFromCart: false,
+                task: task,
+                boxes: [box],
+                selectedItems: items,
+                beneficiaryId: beneficiaryId);
+          }
+        } else {
+          snackError("${tr.error_occurred}", "Wallet balance is not enough");
+        }
       } else {
+        var amount = boxes.length == 0
+            ? storageViewModle.calculateTaskPriceOnceBox(task: task)
+            : storageViewModle.calculateTaskPriceLotBoxess(
+                isFromCart: false, task: task, boxess: boxes);
+        Logger().e("AMOUNT $amount");
         storageViewModle.goToPaymentMethod(
             isOrderProductPayment: false,
             cartModels: [],
             isFromCart: false,
-            amount: num.parse(storageViewModle
-                .calculateTaskPriceLotBoxess(
-                  isFromCart: false,
-                  task: task,
-                  boxess: boxes,
-                )
-                .toString()
-                .split(" ")[0]),
+            amount: num.parse(amount.toString().split(" ")[0]),
             beneficiaryId: beneficiaryId,
             task: task,
             boxes: boxes,

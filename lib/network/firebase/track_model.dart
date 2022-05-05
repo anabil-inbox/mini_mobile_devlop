@@ -5,7 +5,6 @@ import 'dart:convert' as j;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inbox_clients/network/firebase/driver_modle.dart';
 import 'package:inbox_clients/network/firebase/sales_order.dart';
-import 'package:logger/logger.dart';
 
 class TrackModel {
 

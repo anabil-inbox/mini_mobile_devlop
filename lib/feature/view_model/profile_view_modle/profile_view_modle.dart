@@ -595,12 +595,9 @@ class ProfileViewModle extends BaseController {
   List<Transactions> transaction = <Transactions>[];
 
   getMyWallet() async {
-    isLoading = true;
-    update();
+    startLoading();
     try {
-      Logger().d("test_1");
       await ProfileHelper.getInstance.getMyWallet().then((value) {
-        Logger().d("test_2${value}");
         myWallet = value;
         transaction = value.transactions!;
         isLoading = false;
@@ -714,12 +711,11 @@ class ProfileViewModle extends BaseController {
 
   Future<void> getMyPoints() async {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      startLoading();
+      // startLoading();
     });
     try {
       await ProfileHelper.getInstance.getMyPoints().then((value) => {
             myPoints = MyPoints.fromJson(value.data),
-            Logger().e(myPoints.toJson())
           });
     } catch (e) {
       printError();
@@ -761,7 +757,7 @@ class ProfileViewModle extends BaseController {
 
   //this for Subscription
   Future<void> getUserSubscription(String filterType) async {
-    startLoading();
+    // startLoading();
     subscriptions?.clear();
     Map<String, dynamic> map = {ConstanceNetwork.filter: filterType};
     try {
@@ -810,6 +806,59 @@ class ProfileViewModle extends BaseController {
       printError();
       endLoading();
       Logger().e(e);
+    }
+  }
+
+  Future<void> initeProfileScreen() async {
+    try {
+      await getMyWallet();
+      await getMyPoints();
+      await getUserSubscription("");
+    } catch (e) {
+      Logger().e("error : ${e.toString()}");
+    }
+  }
+
+  void sendNote(TextEditingController emailController,
+      TextEditingController noteController) {
+    if (emailController.text.isEmpty) {
+      return;
+    }
+    if (noteController.text.isEmpty) {
+      return;
+    }
+    Map<String, dynamic> map = {
+      ConstanceNetwork.emailKey: emailController.text.toString(),
+      ConstanceNetwork.notesKey: noteController.text.toString(),
+    };
+    _sendNote(map, emailController, noteController);
+  }
+
+  Future<void> _sendNote(
+      Map<String, dynamic> map,
+      TextEditingController emailController,
+      TextEditingController noteController) async {
+    startLoading();
+    await ProfileHelper.getInstance.sendNote(map).then((value) {
+      if (value.status!.success!) {
+        emailController.clear();
+        noteController.clear();
+        snackSuccess("", value.status?.message.toString());
+      } else {
+        snackError("", value.status?.message.toString());
+      }
+      endLoading();
+    }).catchError((value) {
+      endLoading();
+      Logger().d(value);
+    });
+  }
+
+  Future<void> getProfileData() async {
+    try {
+      await ProfileHelper.getInstance.getUserData();
+    } catch (e) {
+      Logger().e("getProfileData", e);
     }
   }
 }

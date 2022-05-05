@@ -59,6 +59,9 @@ class MyOrderAddressWidget extends StatelessWidget {
 
   void _onAddressClick() async{
     Get.put(MapViewModel());
-    Get.bottomSheet(MapBottomSheet(salesOrder: newOrderSales!.orderId.toString()));
+    Get.bottomSheet(MapBottomSheet(salesOrder: newOrderSales!.orderId.toString()),
+        enableDrag: true,
+        isScrollControlled: true,
+        clipBehavior: Clip.hardEdge);
   }
 }

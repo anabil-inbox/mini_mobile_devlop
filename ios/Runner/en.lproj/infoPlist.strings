@@ -1,0 +1,9 @@
+/* 
+  infoPlist.strings
+  Runner
+
+  Created by Osama on 21/04/2022.
+  
+*/
+
+"CFBundleName" = "Inbox Client";

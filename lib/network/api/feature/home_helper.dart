@@ -6,6 +6,8 @@ import 'package:inbox_clients/network/api/model/home_api.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:logger/logger.dart';
 
+import '../../../feature/model/cases_data.dart';
+
 class HomeHelper {
   HomeHelper._();
   static final HomeHelper getInstance = HomeHelper._();
@@ -111,4 +113,16 @@ class HomeHelper {
     }
   }
 
+
+  Future<List<CasesData>> getCases() async {
+    var appResponse = await HomeApi.getInstance.getCases(
+        url: "${ConstanceNetwork.getCasesApi}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      List data = appResponse.data;
+      return data.map((e) => CasesData.fromJson(e)).toList();
+    } else {
+      return [];
+    }
+  }
 }

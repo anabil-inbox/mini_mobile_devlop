@@ -16,7 +16,6 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
-import 'package:logger/logger.dart';
 
 import 'widgets/show_selction_widget/my_list_widget.dart';
 
@@ -128,17 +127,13 @@ class RequestNewStorageStepThree extends StatelessWidget {
                               onClicked: () async {
                                 if (logic.isValiedToSaveStorage()) {
                                   if (logic.selectedPaymentMethod?.id ==
-                                      Constance.cashId) {
+                                      Constance.cashId || logic.selectedPaymentMethod?.id ==
+                                      Constance.creditCard) {
                                     await logic.addNewStorage();
                                     logic.isLoading = false;
                                     logic.update();
                                   } else if ((logic.selectedPaymentMethod?.id ==
                                       Constance.walletId)) {
-                                    Logger().e(num.parse(profileViewModle
-                                        .myWallet.balance
-                                        .toString()));
-                                    Logger().e(storageViewModel.totalBalance
-                                        .toString());
                                     if (num.parse(profileViewModle
                                             .myWallet.balance
                                             .toString()) >
