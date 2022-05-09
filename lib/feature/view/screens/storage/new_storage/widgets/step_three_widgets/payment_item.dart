@@ -18,6 +18,7 @@ class PaymentItem extends StatelessWidget {
       {Key? key,
       this.isRecivedOrderPayment = false,
       required this.paymentMethod,
+        this.isDisable=false,
       this.isFromApplicationPayment = false})
       : super(key: key);
 
@@ -26,7 +27,7 @@ class PaymentItem extends StatelessWidget {
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
   static ProfileViewModle profileViewModle = Get.put(ProfileViewModle(), permanent: true);
-
+  final bool? isDisable;
   final bool isRecivedOrderPayment;
 
   @override
@@ -37,7 +38,7 @@ class PaymentItem extends StatelessWidget {
       initState: (_) {},
       builder: (builder) {
         return InkWell(
-          onTap: () {
+          onTap:isDisable!?(){}: () {
             builder.selectedPaymentMethod = paymentMethod;
             builder.update();
             if (isRecivedOrderPayment) {

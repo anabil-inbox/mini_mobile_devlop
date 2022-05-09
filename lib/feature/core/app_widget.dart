@@ -80,7 +80,7 @@ class _AppWidgetState extends State<AppWidget> {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context) {
-        ScreenUtil.setContext(context);
+        // ScreenUtil.setContext(context);
         return DismissKeyboard(
           child: GetMaterialApp(
             smartManagement: SmartManagement.keepFactory,

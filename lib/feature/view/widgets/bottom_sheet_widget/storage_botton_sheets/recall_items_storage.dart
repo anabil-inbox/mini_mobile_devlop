@@ -113,6 +113,7 @@ class RecallStorageSheet extends StatelessWidget {
               InkWell(
                 onTap: () {
                   //value.isAccept = !value.isAccept;
+                  value.isAccept = !value.isAccept;
                   value.isAcceptTermsAndConditions =
                       !value.isAcceptTermsAndConditions;
                   value.update();

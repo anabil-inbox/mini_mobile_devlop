@@ -307,6 +307,10 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                       } else {
                         return PaymentItem(
                           paymentMethod: paymentMethod,
+                          isDisable: ((logic.isAccept || logic.isUsingPromo)
+                                    && storageViewModle.priceAfterDiscount == 0)
+                              ?true
+                              :false,
                         );
                       }
                     },
