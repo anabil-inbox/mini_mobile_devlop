@@ -360,6 +360,7 @@ class BottomSheetPaymentWidget extends StatelessWidget {
       if (storageViewModle.priceAfterDiscount > 0) {
         if (storageViewModle.selectedPaymentMethod?.id != null) {
           if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
+              storageViewModle.selectedPaymentMethod?.id == Constance.wireTransferId ||
               storageViewModle.selectedPaymentMethod?.id == Constance.creditCard) {
             if (boxes.length > 0) {
               storageViewModle.doTaskBoxRequest(
@@ -437,6 +438,7 @@ class BottomSheetPaymentWidget extends StatelessWidget {
     }
     if (storageViewModle.selectedPaymentMethod?.id != null) {
       if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
+          storageViewModle.selectedPaymentMethod?.id == Constance.wireTransferId ||
           storageViewModle.selectedPaymentMethod?.id == Constance.creditCard) {
         if (boxes.length > 0) {
           storageViewModle.doTaskBoxRequest(

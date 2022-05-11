@@ -128,7 +128,8 @@ class RequestNewStorageStepThree extends StatelessWidget {
                                 if (logic.isValiedToSaveStorage()) {
                                   if (logic.selectedPaymentMethod?.id ==
                                       Constance.cashId || logic.selectedPaymentMethod?.id ==
-                                      Constance.creditCard) {
+                                      Constance.creditCard ||
+                                      logic.selectedPaymentMethod?.id == Constance.wireTransferId) {
                                     await logic.addNewStorage();
                                     logic.isLoading = false;
                                     logic.update();

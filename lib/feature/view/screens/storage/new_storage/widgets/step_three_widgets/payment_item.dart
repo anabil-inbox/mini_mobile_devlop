@@ -130,7 +130,7 @@ class PaymentItem extends StatelessWidget {
           homeViewModel.operationTask.cancellationFees ?? 0;
       sendedWattingFeesOrCancellationReson = "cancellation";
     }
-    if (paymentMethod.name == LocalConstance.cash) {
+    if (paymentMethod.name == LocalConstance.cash || paymentMethod.name == LocalConstance.wireTransfer) {
       
     } else if (paymentMethod.name == LocalConstance.wallet) {
       if ((num.tryParse(profileViewModle.myWallet.balance.toString()) ?? 0) >

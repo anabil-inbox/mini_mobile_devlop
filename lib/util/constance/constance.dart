@@ -29,6 +29,7 @@ class LocalConstance {
 
   // to add here payment Methodes :
   static String cash = "Cash";
+  static String wireTransfer = "Wire Transfer";
   static String bankCard = "Bank Card";
   static String creditCard = "Credit Card";
   static String wallet = "Wallet";
