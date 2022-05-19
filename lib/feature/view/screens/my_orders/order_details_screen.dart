@@ -231,7 +231,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                                   !myOrders.newOrderSales.hasTasks!*/)
                                   ? const SizedBox()
                                   : PrimaryButton(
-                                      textButton: "Order Detaiels",
+                                      textButton: tr.order_details,
                                       isLoading: logic.isLoading,
                                       onClicked: () async {
                                         await OrderDetailesScreen.homeViewModel

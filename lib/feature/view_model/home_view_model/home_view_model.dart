@@ -574,9 +574,9 @@ class HomeViewModel extends BaseController {
     }).then((value) => {
           if (value.status!.success!)
             {
-              Logger().i(value.data),
+              Logger().i(value.data??{}),
               operationTask =
-                  TaskResponse.fromJson(value.data, isFromNotification: false),
+                  TaskResponse.fromJson(value.data??{}, isFromNotification: false),
             }
           else
             {snackError("", value.status?.message)}
