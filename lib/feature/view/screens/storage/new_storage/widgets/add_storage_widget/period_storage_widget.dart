@@ -7,6 +7,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 import 'duration_widget.dart';
 
@@ -57,23 +58,26 @@ class PeriodStorageWidget extends StatelessWidget {
                     storageCategoriesData: storageCategoriesData,
                     durationTitle: ConstanceNetwork.dailyDurationType,
                   ),
-                  SizedBox(
-                    width: sizeH5,
-                  ),
-                  DurationWidget(
-                    storageCategoriesData: storageCategoriesData,
-                    durationTitle: ConstanceNetwork.montlyDurationType,
-                  ),
-                  SizedBox(
-                    width: sizeH5,
-                  ),
-                  DurationWidget(
-                    storageCategoriesData: storageCategoriesData,
-                    durationTitle: ConstanceNetwork.yearlyDurationType,
-                  ),
-                  SizedBox(
-                    width: sizeH5,
-                  ),
+                  if(!SharedPref.instance.getIsHideSubscriptions())...[
+                    SizedBox(
+                      width: sizeH5,
+                    ),
+                    DurationWidget(
+                      storageCategoriesData: storageCategoriesData,
+                      durationTitle: ConstanceNetwork.montlyDurationType,
+                    ),
+                    SizedBox(
+                      width: sizeH5,
+                    ),
+                    DurationWidget(
+                      storageCategoriesData: storageCategoriesData,
+                      durationTitle: ConstanceNetwork.yearlyDurationType,
+                    ),
+                    SizedBox(
+                      width: sizeH5,
+                    ),
+                  ],
+
                   // DurationWidget(
                   //   storageCategoriesData: storageCategoriesData,
                   //   durationTitle: ConstanceNetwork.unLimtedDurationType,

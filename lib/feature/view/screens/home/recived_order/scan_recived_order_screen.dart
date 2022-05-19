@@ -46,6 +46,14 @@ class _ScanRecivedOrderScreenState extends State<ScanRecivedOrderScreen> {*/
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: colorBlack,
+            leading: InkWell(
+                onTap: (){
+                  Get.back();
+                },
+                child: Icon(Icons.arrow_back_ios , color: colorTextWhite,)),
+          ),
           body: QRView(
         key: qrKey,
         onQRViewCreated: (controller) => homeViewModel.createQrOrderOrder(

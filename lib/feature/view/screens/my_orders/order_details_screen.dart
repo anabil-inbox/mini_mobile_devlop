@@ -227,7 +227,8 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                                           LocalConstance.completed ||
                                       isHaveDetailes == false ||
                                       myOrders.newOrderSales.proccessType ==
-                                          LocalConstance.productSv)
+                                          LocalConstance.productSv /*||
+                                  !myOrders.newOrderSales.hasTasks!*/)
                                   ? const SizedBox()
                                   : PrimaryButton(
                                       textButton: "Order Detaiels",

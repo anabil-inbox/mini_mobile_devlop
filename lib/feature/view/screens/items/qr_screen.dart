@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
@@ -22,6 +23,14 @@ class QrScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     screenUtil(context);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: colorBlack,
+        leading: InkWell(
+            onTap: (){
+              Get.back();
+            },
+            child: Icon(Icons.arrow_back_ios , color: colorTextWhite,)),
+      ),
       body: QRView(
       key: qrKey,
       onQRViewCreated:(controller) =>  homeViewModel.onQRViewCreated(controller , isFromAtHome:isFromAtHome , index: index ,storageViewModel: storageViewModel),

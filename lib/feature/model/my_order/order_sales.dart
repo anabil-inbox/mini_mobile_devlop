@@ -12,7 +12,7 @@ class OrderSales {
       this.orderItems,
       this.isRated,
       this.driverId,
-      this.hasTasks});
+      this.hasTasks = false});
 
   String? orderId;
   String? customerId;

@@ -111,6 +111,10 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
                       newPageProgressIndicatorBuilder: (ctx) {
                     return const SizedBox();
                   }, itemBuilder: (context, item, index) {
+                    if (item.name?.toLowerCase() == "iran" ||
+                        item.name?.toLowerCase() == "syria") {
+                      return const SizedBox();
+                    }
                     return InkWell(
                       onTap: () {
                         logic.selectedIndex = -1;
@@ -123,7 +127,7 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
                           padding: EdgeInsets.symmetric(horizontal: sizeH20!,),
                           child: logic.tdSearch.text.isEmpty ||
                                   item.name.toString().toUpperCase().contains(
-                                      logic.tdSearch.text.toUpperCase())
+                                      logic.tdSearch.text.toUpperCase() )
                               ? CountryItem(
                                   cellIndex: index,
                                   selectedIndex: logic.selectedIndex,

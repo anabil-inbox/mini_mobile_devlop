@@ -13,6 +13,7 @@ import 'package:inbox_clients/feature/view/screens/profile/widget/setting_item_w
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 import 'address/get_address.dart';
 import 'my_wallet/my_wallet_screen.dart';
@@ -93,17 +94,21 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                           trailingTitle: "",
                           iconPath: "assets/svgs/adress_icon.svg",
                         ),
-                        SizedBox(
-                          height: sizeH12,
-                        ),
-                        SettingItem(
-                          onTap: () {
-                            Get.to(() => MySubscriptionsView());
-                          },
-                          settingTitle: "${tr.my_subscriptions}",
-                          trailingTitle: "",
-                          iconPath: "assets/svgs/payment_card.svg",
-                        ),
+
+                        if(!SharedPref.instance.getIsHideSubscriptions())...[
+                          SizedBox(
+                            height: sizeH12,
+                          ),
+                          SettingItem(
+                            onTap: () {
+                              Get.to(() => MySubscriptionsView());
+                            },
+                            settingTitle: "${tr.my_subscriptions}",
+                            trailingTitle: "",
+                            iconPath: "assets/svgs/payment_card.svg",
+                          ),
+                        ],
+
                         // SizedBox(
                         //   height: sizeH12,
                         // ),

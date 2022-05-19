@@ -13,6 +13,7 @@ class SharedPref {
   final String appSettingKey = "settings";
   final String languageKey = "language";
   final String isShowKey = "loading";
+  final String isHideKey = "hide";
   final String currentUser = "currentUser";
   final String loginKey = "login";
   final String fcmKey = "fcm";
@@ -122,7 +123,14 @@ class SharedPref {
     // ignore: unnecessary_statements
     isShow == null ? isShow = false : isShow;
     _prefs?.setBool("$isShowKey", isShow);
-  } 
+  }
+
+  setIsHideSubscriptions(bool? hide)async{
+    _prefs?.setBool("$isHideKey", hide!);
+  }
+   bool getIsHideSubscriptions(){
+    return _prefs?.getBool("$isHideKey")??false;
+  }
 
 
   //   setBoxesList({required List<Box> boxes}) {
