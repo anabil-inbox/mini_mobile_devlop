@@ -33,6 +33,7 @@ class LocalConstance {
   static String bankCard = "Bank Card";
   static String creditCard = "Credit Card";
   static String wallet = "Wallet";
+  static String applePay = "Apple Pay";
   static String application = "application";
 
   // to add here Map Types:
@@ -83,5 +84,7 @@ class LocalConstance {
   static String completed = "Completed";
 
   static String productSv = "Product_sv";
+
+  static String dailySubscriptions = "Daily";
 
 }

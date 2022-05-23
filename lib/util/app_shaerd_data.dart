@@ -40,16 +40,19 @@ String? urlUserPlacholder =
 
 screenUtil(BuildContext context) {
   ScreenUtil.init(
-      Get.context!,
-      // BoxConstraints(
-      //     maxWidth: MediaQuery.of(context).size.width,
-      //     maxHeight: MediaQuery.of(context).size.height),
+    Get.context!,
 
-       deviceSize:Size(392.72727272727275, 803.6363636363636) ,
-       splitScreenMode: true,
-      minTextAdapt: true,
-      designSize: Size(392.72727272727275, 803.6363636363636),
-      orientation: Orientation.portrait);
+    // BoxConstraints(
+    //     maxWidth: MediaQuery.of(context).size.width,
+    //     maxHeight: MediaQuery.of(context).size.height),
+
+    // deviceSize:Size(392.72727272727275, 803.6363636363636) ,
+    // deviceSize:Size(392.72727272727275, 803.6363636363636),
+    splitScreenMode: true,
+    minTextAdapt: true,
+    designSize: Size(392.72727272727275,
+        803.6363636363636), /*orientation: Orientation.portrait*/
+  );
 }
 
 var safeAreaLight =
@@ -256,6 +259,7 @@ showAnimatedDialog(dialog) {
 var paymentError = "https://cdn-icons-png.flaticon.com/512/189/189715.png";
 var urlProduct =
     "https://images.unsplash.com/photo-1613177794106-be20802b11d3?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xvY2slMjBoYW5kc3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80";
+
 Widget imageNetwork(
     {double? width,
     double? height,
@@ -722,7 +726,7 @@ Widget returnBoxByStatus(
     {required String storageStatus,
     required bool isEnabeld,
     required bool isPickup}) {
-    String boxPath = "assets/svgs/desable_box.svg";
+  String boxPath = "assets/svgs/desable_box.svg";
   // if (!true) {
   //   boxPath = "assets/svgs/block_folder.svg";
   // } else
@@ -816,6 +820,12 @@ List<PaymentMethod> getPaymentMethod() {
       ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()))
               .paymentMethod ??
           [];
+  var applePay = PaymentMethod(id: "Apple Pay", name: "Apple Pay", image: "");
+  if (!list.contains(applePay)) {
+    if(Platform.isIOS) {
+      list.add(applePay);
+    }
+  }
   return list;
 }
 

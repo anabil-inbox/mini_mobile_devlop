@@ -37,58 +37,60 @@ class BoxInTaskWidget extends StatelessWidget {
               init: HomeViewModel(),
               initState: (_) {},
               builder: (logical) {
-                return Row(
-                  children: [
-                    SizedBox(
-                      width: sizeW13,
-                    ),
-                    logical.selctedOperationsBoxess.contains(box)
-                        ? SvgPicture.asset(
-                            "assets/svgs/true.svg",
-                            width: sizeW20,
-                            height: sizeH20,
-                          )
-                        : SvgPicture.asset(
-                            "assets/svgs/empty_circle.svg",
-                            width: sizeW20,
-                            height: sizeH20,
+                return FittedBox(
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: sizeW13,
+                      ),
+                      logical.selctedOperationsBoxess.contains(box)
+                          ? SvgPicture.asset(
+                              "assets/svgs/true.svg",
+                              width: sizeW20,
+                              height: sizeH20,
+                            )
+                          : SvgPicture.asset(
+                              "assets/svgs/empty_circle.svg",
+                              width: sizeW20,
+                              height: sizeH20,
+                            ),
+                      SizedBox(
+                        width: sizeW10,
+                      ),
+                      returnBoxByStatus(
+                          isPickup: box.isPickup ?? true,
+                          storageStatus: box.storageStatus!,
+                          isEnabeld: isEnabeld),
+                      SizedBox(
+                        width: sizeW15,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: sizeH16,
                           ),
-                    SizedBox(
-                      width: sizeW10,
-                    ),
-                    returnBoxByStatus(
-                        isPickup: box.isPickup ?? true,
-                        storageStatus: box.storageStatus!,
-                        isEnabeld: isEnabeld),
-                    SizedBox(
-                      width: sizeW15,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: sizeH16,
-                        ),
-                        Container(
-                            width: sizeW240,
-                            child: CustomTextView(
-                              txt: "${box.storageName}",
-                              maxLine: 2,
-                            )),
-                        SizedBox(
-                          height: sizeH2,
-                        ),
-                        Text(
-                          "${DateUtility.getChatTime(box.modified.toString())}",
-                          style: textStyleHints(),
-                        ),
-                        SizedBox(
-                          height: sizeH16,
-                        ),
-                      ],
-                    )
-                  ],
+                          Container(
+                              width: sizeW240,
+                              child: CustomTextView(
+                                txt: "${box.storageName}",
+                                maxLine: 2,
+                              )),
+                          SizedBox(
+                            height: sizeH2,
+                          ),
+                          Text(
+                            "${DateUtility.getChatTime(box.modified.toString())}",
+                            style: textStyleHints(),
+                          ),
+                          SizedBox(
+                            height: sizeH16,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 );
               },
             ),

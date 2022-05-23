@@ -7,6 +7,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../../../../util/app_shaerd_data.dart';
 
@@ -33,6 +34,7 @@ class DurationWidget extends StatelessWidget {
           onTap: () {
             storageViewModel.numberOfDays = 1;
             storageViewModel.selectedDuration = durationTitle;
+            Logger().d("${storageViewModel.selectedDuration}\n${storageViewModel.numberOfDays}");
             if (storageCategoriesData.storageCategoryType ==
                 ConstanceNetwork.itemCategoryType) {
               storageViewModel.onChangeBulkDuration(

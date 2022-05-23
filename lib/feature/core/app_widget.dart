@@ -28,7 +28,7 @@ class AppWidget extends StatefulWidget {
 }
 
 class _AppWidgetState extends State<AppWidget> {
-  
+
   Future<void> setupInteractedMessage() async {
     // Get any messages which caused the application to open from
     // a terminated state.
@@ -79,8 +79,8 @@ class _AppWidgetState extends State<AppWidget> {
       designSize: Size(392.72727272727275, 803.6363636363636),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context) {
-        // ScreenUtil.setContext(context);
+      builder: (context , widget) {
+        //ScreenUtil.setContext(context);
         return DismissKeyboard(
           child: GetMaterialApp(
             smartManagement: SmartManagement.keepFactory,
