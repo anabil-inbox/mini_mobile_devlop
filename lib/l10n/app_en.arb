@@ -116,7 +116,7 @@
     "on_the_way":"On the way",
     "in_warehouse":"in warehouse",
     "at_home":"At Home",
-    "request_new_storage":"Request New Storage",
+    "request_new_storage":"New Storage Request",
     "storage_size_type" : "Storage Size & Type:",
     "choose_from_below" : "Choose from below",
      "quantity":"Quantity",
@@ -244,6 +244,7 @@
     "customer_signature": "Customer Signature",
     "add_review": "Add review for our service",
     "note_review": "Enter your note",
-    "report_an_emergency": "Report An Emergency"
+    "report_an_emergency": "Report An Emergency",
+    "no_history_yet": "No history yet"
 
 }

@@ -126,7 +126,7 @@ class StorageFeature {
     var appResponse = await StorageModel.getInstance.paymentMethod(
         url: "${ConstanceNetwork.paymentEndPoint}",
         body: body,
-        header: ConstanceNetwork.header(4));
+        header: ConstanceNetwork.header(2));
     Logger().i("${appResponse.toJson()}");
     if (appResponse.status?.success == true) {
       return appResponse;

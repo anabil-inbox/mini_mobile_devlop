@@ -33,6 +33,7 @@ class TaskWidgetBS extends StatelessWidget {
   Widget build(BuildContext context) {
     screenUtil(context);
     return Container(
+      margin: EdgeInsets.only(top: sizeH50!),
       padding: EdgeInsets.symmetric(horizontal: padding20!),
       decoration: containerBoxDecoration().copyWith(
           borderRadius:

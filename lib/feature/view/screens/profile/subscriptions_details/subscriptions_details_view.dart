@@ -39,7 +39,7 @@ class SubscriptionsDetailsView extends StatelessWidget {
               decoration: BoxDecoration(
                   color: colorBackground,
                   borderRadius: BorderRadius.circular(padding6!)),
-              child: Text("${plan?.plan.toString()}"));
+              child: Text("${plan?.plan != null ? plan?.plan.toString().replaceAll("_", " ").toString().replaceAll("-", " "): ""}"));
         },
       );
     return const SizedBox.shrink();

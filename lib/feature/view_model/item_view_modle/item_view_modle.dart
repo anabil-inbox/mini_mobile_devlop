@@ -137,10 +137,10 @@ class ItemViewModle extends BaseController {
       map["image[$i]"] = innerImages[i].attachment;
       map["file[$i]"] = innerImages[i].type;
     }
-
+    var qty = itemQuantity;
     map[ConstanceNetwork.nameKey] = tdName.text;
     map[ConstanceNetwork.storageKey] = serialNo;
-    map[ConstanceNetwork.qtyKey] = itemQuantity;
+    map[ConstanceNetwork.qtyKey] = qty;
     map[ConstanceNetwork.tagsKey] = jsonEncode(tags);
 
     await ItemHelper.getInstance.addItem(body: map).then((value) => {
@@ -150,8 +150,8 @@ class ItemViewModle extends BaseController {
               operationsBox?.items
                   ?.add(BoxItem.fromJson(value.data[ConstanceNetwork.dataKey])),
               snackSuccess("${tr.success}", "${value.status!.message}"),
+              endLoading(),
               Get.back(),
-              endLoading()
             }
           else
             {
@@ -159,15 +159,26 @@ class ItemViewModle extends BaseController {
               endLoading()
             }
         });
+
+      images.clear();
+      tags.clear();
+      usesBoxItemsTags.clear();
+      tdTag.clear();
+      tdName.clear();
+      itemQuantity = 1;
+      update();
+      Get.close(1);
+    getBoxBySerial(serial: serialNo);
+
+  }
+
+  clearBottomSheetItem(){
     images.clear();
-    tags.clear();
     usesBoxItemsTags.clear();
     tdTag.clear();
-
     tdName.clear();
     itemQuantity = 1;
     update();
-    Get.close(1);
   }
 
   // here for updateing the Item

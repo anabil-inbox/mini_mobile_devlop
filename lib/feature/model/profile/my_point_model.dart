@@ -8,8 +8,8 @@ class MyPoints {
   List<Transaction>? transactions;
 
   factory MyPoints.fromJson(Map<String, dynamic> json) => MyPoints(
-        totalPoints: json["total_points"],
-        transactions: List<Transaction>.from(
+        totalPoints: json["total_points"] == null ? 0 :json["total_points"],
+        transactions:json["transactions"] == null ? <Transaction>[]: List<Transaction>.from(
             json["transactions"].map((x) => Transaction.fromJson(x))),
       );
 
@@ -31,7 +31,7 @@ class Transaction {
   String? salesOrder;
 
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
-        loyaltyPoints: json["loyalty_points"],
+        loyaltyPoints: json["loyalty_points"] == null ? 0:json["loyalty_points"],
         date: DateTime.parse(json["date"]),
         salesOrder: json["sales_order"],
       );

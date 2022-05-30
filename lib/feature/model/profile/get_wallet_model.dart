@@ -11,7 +11,7 @@ class GetWallet {
 
   factory GetWallet.fromJson(Map<String, dynamic> json) => GetWallet(
         id: json["id"] == null ? null : json["id"],
-        balance: json["balance"] == null ? null : json["balance"],
+        balance: json["balance"] == null ? "0" : json["balance"],
         transactions: json["transactions"] == null
             ? null
             : List<Transactions>.from(

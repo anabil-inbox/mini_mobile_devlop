@@ -37,8 +37,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
   int index = 1;
 
   List<Widget> bnbScreens = [
-    HomeScreen(
-    ),
+    HomeScreen(),
     const MyOrdersScreen(),
     NotificationScreen(),
     const ProfileScreen(),

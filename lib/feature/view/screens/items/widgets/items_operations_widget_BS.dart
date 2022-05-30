@@ -48,7 +48,10 @@ class ItemsOperationBS extends StatelessWidget {
                       box: box,
                       boxItem: boxItem,
                     ),
-                    isScrollControlled: true);
+                    isScrollControlled: true).whenComplete(() {
+                    itemViewModle.clearBottomSheetItem();
+
+                });
                 Get.back();
               }),
           SizedBox(

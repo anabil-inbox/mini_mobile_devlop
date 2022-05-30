@@ -151,6 +151,7 @@ class RequestNewStorageStepThree extends StatelessWidget {
                                         isOrderProductPayment: false,
                                         isFromCart: false,
                                         isFromNewStorage: true,
+                                        storageViewModel:storageViewModel,
                                         amount: logic.totalBalance);
                                     logic.isLoading = false;
                                     logic.update();

@@ -46,7 +46,11 @@ class ChooseAddMethodWidget extends StatelessWidget {
                     isUpdate: isUpdate,
                     box: box,
                   ),
-                  isScrollControlled: true);
+                  isScrollControlled: true).whenComplete(() {
+                    if(isUpdate){
+                      itemViewModle.clearBottomSheetItem();
+                    }
+              });
             },
             isExpanded: true,
           ),

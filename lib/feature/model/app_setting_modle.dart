@@ -166,7 +166,7 @@ class WorkingHours {
 }
 
 class Day {
-  Day({this.from, this.to, this.day, this.delivery, this.check});
+  Day({this.from, this.to, this.day, this.delivery, this.check = false});
 
   String? from;
   String? to;

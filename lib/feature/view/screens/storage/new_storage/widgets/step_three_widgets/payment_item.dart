@@ -23,7 +23,7 @@ class PaymentItem extends StatelessWidget {
       {Key? key,
       this.isRecivedOrderPayment = false,
       required this.paymentMethod,
-        this.isDisable=false,
+      this.isDisable = false,
       this.isFromApplicationPayment = false})
       : super(key: key);
 
@@ -31,7 +31,8 @@ class PaymentItem extends StatelessWidget {
   final bool isFromApplicationPayment;
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
-  static ProfileViewModle profileViewModle = Get.put(ProfileViewModle(), permanent: true);
+  static ProfileViewModle profileViewModle =
+      Get.put(ProfileViewModle(), permanent: true);
   final bool? isDisable;
   final bool isRecivedOrderPayment;
 
@@ -40,14 +41,14 @@ class PaymentItem extends StatelessWidget {
     // 'default_payment_profile_google_pay.json'
   ]);
 
-  static bool _isAvailableApplePay = true;//available
+  static bool _isAvailableApplePay = true; //available
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
     return GetBuilder<StorageViewModel>(
       init: StorageViewModel(),
       initState: (_) {
-        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async{
+        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
           await _payClient.userCanPay().then((value) {
             _isAvailableApplePay = value;
             _.controller?.update();
@@ -56,27 +57,31 @@ class PaymentItem extends StatelessWidget {
       },
       builder: (builder) {
         //if unAvailableApplePay && list have method apple pay
-         if(!_isAvailableApplePay && paymentMethod.id == LocalConstance.applePay){
-           return const SizedBox.shrink();
-         }
-         //if isAndroid && list have method apple pay
-         if(Platform.isAndroid && paymentMethod.id == LocalConstance.applePay){
-           return const SizedBox.shrink();
-         }
-         //if selected subscriptions != daily && list have method apple pay
-         if(builder.selectedDuration != LocalConstance.dailySubscriptions &&
-             paymentMethod.id == LocalConstance.applePay){
-           return const SizedBox.shrink();
-         }
+        //  if(!_isAvailableApplePay && paymentMethod.id == LocalConstance.applePay){
+        //    return const SizedBox.shrink();
+        //  }
+        //if isAndroid && list have method apple pay
+        if (Platform.isAndroid && paymentMethod.id == LocalConstance.applePay) {
+          return const SizedBox.shrink();
+        }
+        //if selected subscriptions != daily && list have method apple pay
+        if (builder.selectedDuration != LocalConstance.dailySubscriptions &&
+            paymentMethod.id == LocalConstance.applePay) {
+          return const SizedBox.shrink();
+        }
         return InkWell(
-          onTap:isDisable!?(){}: () async{
-            builder.selectedPaymentMethod = paymentMethod;
-            builder.update();
-            Logger().d(paymentMethod.name);
-            if (isRecivedOrderPayment) {
-              doOnRecivedOrderPayment();
-            }
-          },
+          onTap: isDisable!
+              ? () {}
+              : () async {
+                  builder.selectedPaymentMethod = paymentMethod;
+                  builder.update();
+                  Logger().d(paymentMethod.name);
+                  if (isRecivedOrderPayment) {
+                    doOnRecivedOrderPayment();
+                  } else {
+                    _applePayHandler();
+                  }
+                },
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: padding4!),
             decoration: BoxDecoration(
@@ -162,9 +167,9 @@ class PaymentItem extends StatelessWidget {
           homeViewModel.operationTask.cancellationFees ?? 0;
       sendedWattingFeesOrCancellationReson = "cancellation";
     }
-    if (paymentMethod.name == LocalConstance.cash || paymentMethod.name == LocalConstance.wireTransfer) {
-      
-    }else if(paymentMethod.name == LocalConstance.applePay){
+    if (paymentMethod.name == LocalConstance.cash ||
+        paymentMethod.name == LocalConstance.wireTransfer) {
+    } else if (paymentMethod.name == LocalConstance.applePay) {
       //todo this for apple pay actions
       _applePayHandler();
     } else if (paymentMethod.name == LocalConstance.wallet) {
@@ -182,19 +187,17 @@ class PaymentItem extends StatelessWidget {
     } else if (paymentMethod.name == LocalConstance.bankCard) {
       await storageViewModel.payApplicationFromPaymentGatewaye(
           price: homeViewModel.operationTask.totalDue ?? 0);
-    } else if (paymentMethod.name == LocalConstance.creditCard) {
-      
-    }
+    } else if (paymentMethod.name == LocalConstance.creditCard) {}
   }
 
-  void _applePayHandler() async{
-    if(paymentMethod.name == LocalConstance.applePay){
+  void _applePayHandler() async {
+    if (paymentMethod.name == LocalConstance.applePay) {
       //todo this for apple pay actions
-      Logger().d("1${paymentMethod.name}");
+      Logger().d("1${paymentMethod.name} , ${homeViewModel.operationTask.totalDue??storageViewModel.totalBalance }");
       var _paymentItems = [
         applePay.PaymentItem(
           label: 'Total',
-          amount: '${homeViewModel.operationTask.totalDue ?? 0}',
+          amount: '${homeViewModel.operationTask.totalDue??storageViewModel.totalBalance }',
           status: applePay.PaymentItemStatus.final_price,
         )
       ];
@@ -211,27 +214,28 @@ class PaymentItem extends StatelessWidget {
             homeViewModel.operationTask.cancellationFees ?? 0;
         sendedWattingFeesOrCancellationReson = "cancellation";
       }
-       if(userCanPay){
-      _payClient.showPaymentSelector(paymentItems: _paymentItems).then((value) {
-        Logger().d("paymentApple: => $value");
-        if(value["token"] != null){
-          homeViewModel.applyPayment(
-              salesOrder: homeViewModel.operationTask.salesOrder ?? "",
-              paymentMethod: paymentMethod.name ?? "",
-              paymentId: "",
-              extraFees: sendedWattingFeesOrCancellation,
-              reason: sendedWattingFeesOrCancellationReson);
-        }else{
-          snackError("", "Credit Balance is not enough");
-        }
-
-      }).catchError((onError){
-        Logger().d("paymentApple: => $onError");
-      });
-      }else{
-      Logger().e("paymentApple is: => $userCanPay");
-      snackError("", "Apple Pay is not available");
-      }
+      // if (userCanPay) {
+        _payClient
+            .showPaymentSelector(paymentItems: _paymentItems)
+            .then((value) {
+          Logger().d("paymentApple: => $value");
+          if (value["token"] != null) {
+            homeViewModel.applyPayment(
+                salesOrder: homeViewModel.operationTask.salesOrder ?? "",
+                paymentMethod: paymentMethod.name ?? "",
+                paymentId: "",
+                extraFees: sendedWattingFeesOrCancellation,
+                reason: sendedWattingFeesOrCancellationReson);
+          } else {
+            snackError("", "Credit Balance is not enough");
+          }
+        }).catchError((onError) {
+          Logger().d("paymentApple: => $onError");
+        });
+      // } else {
+      //   Logger().e("paymentApple is: => $userCanPay");
+      //   snackError("", "Apple Pay is not available");
+      // }
     }
   }
 }

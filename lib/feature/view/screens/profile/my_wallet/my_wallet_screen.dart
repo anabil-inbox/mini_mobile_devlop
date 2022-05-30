@@ -77,16 +77,24 @@ class MyWalletScreen extends StatelessWidget {
                     SizedBox(
                       height: sizeH20!,
                     ),
-                    ListView.builder(
+                    if (logic.transaction.isEmpty) ...[
+                      SizedBox(
+                        height: sizeH150,
+                      ),
+                      Center(child: Text("${tr.no_history_yet}")),
+                    ] else ...[
+                      ListView.builder(
                         shrinkWrap: true,
                         primary: false,
                         itemCount: logic.transaction.length,
                         itemBuilder: (context, index) => HistoryItem(
-                              title: "${logic.transaction[index].type}",
-                              date:
-                                  '${myFormat.format(logic.transaction[index].date!).toString()}',
-                              points: "${logic.transaction[index].amount}",
-                            ))
+                          title: "${logic.transaction[index].type}",
+                          date:
+                              '${myFormat.format(logic.transaction[index].date!).toString()}',
+                          points: "${logic.transaction[index].amount}",
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               );

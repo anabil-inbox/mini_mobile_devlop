@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view_model/payment_view_model/payment_view_model.dart';
 import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:logger/logger.dart';
@@ -20,10 +22,12 @@ class PaymentScreen extends StatelessWidget {
       required this.isFromCart,
       this.task,
       required this.cartModels,
-      required this.isOrderProductPayment})
+      required this.isOrderProductPayment,
+      required this.paymentId})
       : super(key: key);
 
   final String url;
+  final String paymentId;
   final bool isFromNewStorage;
   final Task? task;
   final List<Box>? boxes;
@@ -35,7 +39,11 @@ class PaymentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    return GetBuilder<PaymentViewModel>(
+    return Scaffold(
+        appBar: CustomAppBarWidget(
+          titleWidget: const SizedBox.shrink(),
+        ),
+        body: GetBuilder<PaymentViewModel>(
       builder: (payment) {
         return WebView(
           javascriptMode: JavascriptMode.unrestricted,
@@ -44,8 +52,9 @@ class PaymentScreen extends StatelessWidget {
           onPageFinished: (url) {
             try {
               Logger().i("onPageFinished : url $url");
-              String paymentId = url.split("=")[1].split("&")[0];
-              Logger().e(paymentId);
+              // String paymentId = url.split("=")[1].split("&")[0];
+              // Logger().e(paymentId);
+              // payment.paymentId = paymentId;
               payment.paymentId = paymentId;
               payment.readResponse(
                   isOrderProductPayment: isOrderProductPayment,
@@ -65,6 +74,6 @@ class PaymentScreen extends StatelessWidget {
           },
         );
       },
-    );
+    ));
   }
 }

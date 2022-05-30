@@ -273,6 +273,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     screenUtil(context);
     return Container(
+      margin: EdgeInsets.only(top: sizeH50!),
       padding: EdgeInsets.symmetric(horizontal: sizeW15!),
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
@@ -288,7 +289,16 @@ class RecallBoxProcessSheet extends StatelessWidget {
             SizedBox(
               height: sizeH30,
             ),
-            Align(alignment: Alignment.center, child: SpacerdColor()),
+            Row(
+              children: [
+                InkWell(
+                  onTap: (){
+                    Get.back();
+                  },
+                    child: Icon(Icons.close)),
+                Expanded(child: Center(child: Align(alignment: Alignment.center, child: SpacerdColor()))),
+              ],
+            ),
             SizedBox(
               height: sizeH30,
             ),

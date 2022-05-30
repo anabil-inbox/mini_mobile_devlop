@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/widget/back_btn_widget.dart';
@@ -21,7 +23,6 @@ final double? leadingWidth;
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    screenUtil(context);
     return AppBar(
       // leadingWidth:leadingWidth?? sizeW90,
      titleSpacing: 10,
@@ -39,5 +40,5 @@ final double? leadingWidth;
   }
    _getBack()=> Get.back();
   @override
-  Size get preferredSize => Size.fromHeight(sizeH60!);
+  Size get preferredSize => Size.fromHeight(/*Platform.isIOS ? sizeH90!:*/sizeH60!);
 }

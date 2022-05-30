@@ -17,6 +17,7 @@ class PhotoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     screenUtil(context);
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(padding6!),
       ),

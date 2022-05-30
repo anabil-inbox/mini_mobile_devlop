@@ -69,17 +69,30 @@ class MyRewardsScreen extends StatelessWidget {
                   SizedBox(
                     height: sizeH20!,
                   ),
-                  ListView(
-                    shrinkWrap: true,
-                    primary: false,
-                    children: profile.myPoints.transactions!
-                        .map((e) => HistoryItem(
-                              title: e.salesOrder ?? "",
-                              date: "${e.date.toString().split(" ")[0]}",
-                              points: "${e.loyaltyPoints} points",
-                            ))
-                        .toList(),
-                  ),
+                  if(profile.myPoints.transactions == null)...[
+                    SizedBox(
+                      height: sizeH100!,
+                    ),
+                    Center(child: Text("${tr.no_history_yet}")),
+                  ]else if(profile.myPoints.transactions != null  && profile.myPoints.transactions!.isEmpty)...[
+                    SizedBox(
+                      height: sizeH150,
+                    ),
+                    Center(child: Text("${tr.no_history_yet}")),
+                  ]else ...[
+                    ListView(
+                      shrinkWrap: true,
+                      primary: false,
+                      children: profile.myPoints.transactions!
+                          .map((e) => HistoryItem(
+                        title: e.salesOrder ?? "",
+                        date: "${e.date.toString().split(" ")[0]}",
+                        points: "${e.loyaltyPoints} points",
+                      ))
+                          .toList(),
+                    ),
+                  ]
+
                   // ListView.builder(
                   // shrinkWrap: true,
                   // primary: false,

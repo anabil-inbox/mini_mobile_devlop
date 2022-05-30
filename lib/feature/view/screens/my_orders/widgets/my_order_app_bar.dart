@@ -24,7 +24,7 @@ class MyOrderAppBar extends StatelessWidget {
         color: colorBackground,
         padding: EdgeInsets.symmetric(horizontal: sizeW20!, vertical: sizeH20!),
         child: SizedBox(
-          height: sizeH80,
+          // height: sizeH80,
           child: CustomAppBarWidget(
             elevation: 0,
             isCenterTitle: true,

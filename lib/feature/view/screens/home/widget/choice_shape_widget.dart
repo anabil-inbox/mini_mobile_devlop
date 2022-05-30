@@ -27,10 +27,12 @@ class ChoiceShapeWidget extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         padding: EdgeInsets.all(padding7!),
         decoration: BoxDecoration(color: colorUnSelectedWidget, borderRadius: BorderRadius.circular(sizeRadius2!)),
-        child: CustomTextView(
-          maxLine: Constance.maxLineOne,
-          txt: "${task.taskName}",
-          textStyle: textStyleNormalBlack()?.copyWith(fontSize: fontSize13), textAlign: TextAlign.center,
+        child: FittedBox(
+          child: CustomTextView(
+            maxLine: Constance.maxLineOne,
+            txt: "${task.taskName}",
+            textStyle: textStyleNormalBlack()?.copyWith(fontSize: fontSize13), textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

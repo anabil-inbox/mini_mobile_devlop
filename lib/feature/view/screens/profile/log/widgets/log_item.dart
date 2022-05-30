@@ -3,6 +3,7 @@ import 'package:inbox_clients/feature/model/profile/log_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../../util/app_shaerd_data.dart';
 
@@ -57,7 +58,7 @@ class LogItem extends StatelessWidget {
             height: sizeH5,
           ),
           Text(
-            log.date.toString().split(" ")[0],
+            DateFormat("yyyy-MM-dd hh:mm a").format(log.date!)/*.split(" ")[0]*/,
             style: textStyleHints(),
           ),
           SizedBox(

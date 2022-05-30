@@ -35,7 +35,7 @@ class MyOrderBoxItem extends StatelessWidget {
               SizedBox(
                 width: sizeW10,
               ),
-              SizedBox(width: sizeW200, child: Text(orderItem.item ?? "")),
+              SizedBox(width: sizeW200, child: Text(orderItem.item != null ? orderItem.item.toString().replaceAll("_", " ").toString().replaceAll("-", " "): "")),
               const Spacer(),
               Column(
                 children: [

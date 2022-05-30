@@ -35,199 +35,200 @@ class AddItemWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: colorBackground,
-          borderRadius:
-              BorderRadius.vertical(top: Radius.circular(padding30!))),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(padding30!))),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: padding20!),
         child: Form(
           key: itemViewModle.formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: sizeH20,
-              ),
-              SpacerdColor(),
-              SizedBox(
-                height: sizeH20,
-              ),
-              Text(isUpdate ?? false ? "Update Item" : "Add Item"),
-              SizedBox(
-                height: sizeH20,
-              ),
-              TextFormField(
-                controller: itemViewModle.tdName,
-                validator: (e) {
-                  if (e!.trim().length < 1) {
-                    return "${tr.fill_your_name}";
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: colorBorderContainer),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: colorBorderContainer),
-                    ),
-                    hintText: "${tr.name}"),
-              ),
-              SizedBox(
-                height: sizeH16,
-              ),
-              QtyWidget(),
-              SizedBox(
-                height: sizeH16,
-              ),
-              TagBoxItemWidget(
-                boxItem: boxItem,
-                isUpdate: isUpdate ?? false,
-              ),
-              SizedBox(
-                height: sizeH16,
-              ),
-              Container(
-                  width: double.infinity,
-                  child: Text(
-                    "Photos",
-                    textAlign: TextAlign.start,
-                  )),
-              SizedBox(
-                height: sizeH6,
-              ),
-              
-              GetBuilder<ItemViewModle>(
-                init: ItemViewModle(),
-                initState: (_) {},
-                builder: (builder) {
-                  return Row(
-                    children: [
-                      InkWell(
-                        child: SvgPicture.asset("assets/svgs/add_cont.svg"),
-                        onTap: () {
-                          builder.getImageBottomSheet();
-                        },
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: sizeH20,
+                ),
+                SpacerdColor(),
+                SizedBox(
+                  height: sizeH20,
+                ),
+                Text(isUpdate ?? false ? "Update Item" : "Add Item"),
+                SizedBox(
+                  height: sizeH20,
+                ),
+                TextFormField(
+                  controller: itemViewModle.tdName,
+                  validator: (e) {
+                    if (e!.trim().length < 1) {
+                      return "${tr.fill_your_name}";
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: colorBorderContainer),
                       ),
-                      Expanded(
-                        child: SizedBox(
-                           height: sizeH50,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            primary: true,
-                            children: [
-                              builder.images.isNotEmpty
-                                  ? SizedBox(
-                                    height: sizeH50,
-                                    child: ListView(
-                                      primary: false,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      children: builder.images
-                                          .map((e) => PhotoItem(
-                                                isFromLocal: true,
-                                                img: e,
-                                               
-                                              ))
-                                          .toList(),
-                                    ),
-                                  )
-                                  : const SizedBox(),
-                              !(GetUtils.isNull(boxItem.itemGallery) ||
-                                  boxItem.itemGallery!.isEmpty)
-                              ? SizedBox(
-                                height: sizeH50,
-                                child: ListView(
-                                   primary: false,
-                                      shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  children: boxItem.itemGallery!
-                                      .map((e) => PhotoItem(
-                                            img: null,
-                                            isFromLocal: false,
-                                            url: e.attachment,
-                                          ))
-                                      .toList(),
-                                ),
-                              )
-                              : const SizedBox(),
-                            
-                            ],
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: colorBorderContainer),
+                      ),
+                      hintText: "${tr.name}"),
+                ),
+                SizedBox(
+                  height: sizeH16,
+                ),
+                QtyWidget(),
+                SizedBox(
+                  height: sizeH16,
+                ),
+                TagBoxItemWidget(
+                  boxItem: boxItem,
+                  isUpdate: isUpdate ?? false,
+                ),
+                SizedBox(
+                  height: sizeH16,
+                ),
+                Container(
+                    width: double.infinity,
+                    child: Text(
+                      "Photos",
+                      textAlign: TextAlign.start,
+                    )),
+                SizedBox(
+                  height: sizeH6,
+                ),
+
+                GetBuilder<ItemViewModle>(
+                  init: ItemViewModle(),
+                  initState: (_) {},
+                  builder: (builder) {
+                    return Row(
+                      children: [
+                        InkWell(
+                          child: SvgPicture.asset("assets/svgs/add_cont.svg"),
+                          onTap: () {
+                            builder.getImageBottomSheet();
+                          },
+                        ),
+                        Expanded(
+                          child: SizedBox(
+                             height: sizeH50,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              primary: true,
+                              children: [
+                                builder.images.isNotEmpty
+                                    ? SizedBox(
+                                      height: sizeH50,
+                                      child: ListView(
+                                        primary: false,
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.horizontal,
+                                        children: builder.images
+                                            .map((e) => PhotoItem(
+                                                  isFromLocal: true,
+                                                  img: e,
+
+                                                ))
+                                            .toList(),
+                                      ),
+                                    )
+                                    : const SizedBox(),
+                                !(GetUtils.isNull(boxItem.itemGallery) ||
+                                    boxItem.itemGallery!.isEmpty)
+                                ? SizedBox(
+                                  height: sizeH50,
+                                  child: ListView(
+                                     primary: false,
+                                        shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    children: boxItem.itemGallery!
+                                        .map((e) => PhotoItem(
+                                              img: null,
+                                              isFromLocal: false,
+                                              url: e.attachment,
+                                            ))
+                                        .toList(),
+                                  ),
+                                )
+                                : const SizedBox(),
+
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      // builder.images.isNotEmpty
-                      //     ? Expanded(
-                      //         child: Container(
-                      //           height: sizeH50,
-                      //           child: ListView(
-                      //             scrollDirection: Axis.horizontal,
-                      //             children: builder.images
-                      //                 .map((e) => PhotoItem(
-                      //                       isFromLocal: true,
-                      //                       img: e,
-                      //                     ))
-                      //                 .toList(),
-                      //           ),
-                      //         ),
-                      //       )
-                      //     : const SizedBox(),
-                      // !(GetUtils.isNull(boxItem.itemGallery) ||
-                      //         boxItem.itemGallery!.isEmpty)
-                      //     ? Expanded(
-                      //         child: Container(
-                      //           height: sizeH50,
-                      //           child: ListView(
-                      //              primary: false,
-                      //                 shrinkWrap: true,
-                      //             scrollDirection: Axis.horizontal,
-                      //             children: boxItem.itemGallery!
-                      //                 .map((e) => PhotoItem(
-                      //                       img: null,
-                      //                       isFromLocal: false,
-                      //                       url: e["attachment"],
-                      //                     ))
-                      //                 .toList(),
-                      //           ),
-                      //         ),
-                      //       )
-                      //     : const SizedBox(),
-                    ],
-                  );
-                },
-              ),
-              
-              
-              SizedBox(
-                height: sizeH16,
-              ),
-              GetBuilder<ItemViewModle>(
-                init: ItemViewModle(),
-                initState: (_) {},
-                builder: (builder) {
-                  return PrimaryButton(
-                      textButton:
-                          isUpdate ?? false ? "Update Item" : "Add Item",
-                      isLoading: builder.isLoading,
-                      onClicked: () {
-                        if (itemViewModle.formKey.currentState!.validate()) {
-                          if (isUpdate!) {
-                            itemViewModle.updateItem(
-                              gallary: boxItem.itemGallery,
-                              serialNo: box.serialNo ?? "",
-                              itemId: boxItem.id!,
-                            );
-                          } else {
-                            itemViewModle.addItem(serialNo: box.serialNo ?? "");
+                        // builder.images.isNotEmpty
+                        //     ? Expanded(
+                        //         child: Container(
+                        //           height: sizeH50,
+                        //           child: ListView(
+                        //             scrollDirection: Axis.horizontal,
+                        //             children: builder.images
+                        //                 .map((e) => PhotoItem(
+                        //                       isFromLocal: true,
+                        //                       img: e,
+                        //                     ))
+                        //                 .toList(),
+                        //           ),
+                        //         ),
+                        //       )
+                        //     : const SizedBox(),
+                        // !(GetUtils.isNull(boxItem.itemGallery) ||
+                        //         boxItem.itemGallery!.isEmpty)
+                        //     ? Expanded(
+                        //         child: Container(
+                        //           height: sizeH50,
+                        //           child: ListView(
+                        //              primary: false,
+                        //                 shrinkWrap: true,
+                        //             scrollDirection: Axis.horizontal,
+                        //             children: boxItem.itemGallery!
+                        //                 .map((e) => PhotoItem(
+                        //                       img: null,
+                        //                       isFromLocal: false,
+                        //                       url: e["attachment"],
+                        //                     ))
+                        //                 .toList(),
+                        //           ),
+                        //         ),
+                        //       )
+                        //     : const SizedBox(),
+                      ],
+                    );
+                  },
+                ),
+
+
+                SizedBox(
+                  height: sizeH16,
+                ),
+                GetBuilder<ItemViewModle>(
+                  init: ItemViewModle(),
+                  initState: (_) {},
+                  builder: (builder) {
+                    return PrimaryButton(
+                        textButton:
+                            isUpdate ?? false ? "Update Item" : "Add Item",
+                        isLoading: builder.isLoading,
+                        onClicked: () async{
+                          if (itemViewModle.formKey.currentState!.validate()) {
+                            if (isUpdate!) {
+                             await  itemViewModle.updateItem(
+                                gallary: boxItem.itemGallery,
+                                serialNo: box.serialNo ?? "",
+                                itemId: boxItem.id!,
+                              );
+                            } else {
+                             await  itemViewModle.addItem(serialNo: box.serialNo ?? "");
+                            }
                           }
-                        }
-                      },
-                      isExpanded: true);
-                },
-              ),
-              SizedBox(
-                height: sizeH6,
-              ),
-            ],
+                        },
+                        isExpanded: true);
+                  },
+                ),
+                SizedBox(
+                  height: sizeH6,
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
@@ -21,16 +22,34 @@ class SelectedHourItem extends StatelessWidget {
     screenUtil(context);
     return Column(
       children: [
-        SeconderyButtom(
-            isEnable: day?.check ?? false,
-            textButton: "${DateUtility.getLocalhouersFromUtc(day: day!)}",
-            onClicked: day?.check ?? false
-                ? () {
-                    storageViewModel.selectedDay = day;
-                    storageViewModel.update();
-                    Get.back();
-                  }
-                : (){}),
+        Stack(
+          children: [
+
+            SeconderyButtom(
+                isEnable: (day?.check ?? false),
+                textButton: "${DateUtility.getLocalhouersFromUtc(day: day!)}",
+                onClicked: day?.check ?? false
+                    ? () {
+                        storageViewModel.selectedDay = day;
+                        storageViewModel.update();
+                        Get.back();
+                      }
+                    : (){}),
+            PositionedDirectional(
+                start: sizeW10,
+                bottom: sizeH10,
+                top: sizeH10,
+                child:  InkWell(
+                    onTap: day?.check ?? false
+                        ? () {
+                      storageViewModel.selectedDay = day;
+                      storageViewModel.update();
+                      Get.back();
+                    }
+                        : (){},
+                    child: SvgPicture.asset(storageViewModel.selectedDay == day?"assets/svgs/true.svg":"assets/svgs/uncheck.svg"))),
+          ],
+        ),
         SizedBox(
           height: sizeH10,
         )

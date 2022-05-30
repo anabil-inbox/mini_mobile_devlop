@@ -245,5 +245,6 @@
   "customer_signature": "توقيع الزبون",
   "add_review": "اضافة تقيم لخدماتنا",
   "note_review": "ادخل ملاحظاتك",
-  "report_an_emergency": "الابلاغ عن طارئ"
+  "report_an_emergency": "الابلاغ عن طارئ",
+  "no_history_yet": "لا يوجد سجل حتى الان"
 }

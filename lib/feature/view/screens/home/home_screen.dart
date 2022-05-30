@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -86,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding:
               EdgeInsets.symmetric(horizontal: sizeW20!, vertical: sizeH20!),
           child: SizedBox(
-            height: sizeH50,
+             height: sizeH50,
             child: CustomAppBarWidget(
               elevation: 0,
               appBarColor: (HomeScreen.homeViewModle.userBoxess.isEmpty)
@@ -228,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               return Column(
                                 children: [
                                   SizedBox(
-                                    height: 150,
+                                    height:Platform.isIOS ? 160: 150,
                                   ),
                                   FilterWidget(),
                                   SizedBox(
@@ -274,7 +276,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Container(
                       width: double.infinity,
-                      height: 120,
+                      height:Platform.isIOS? 135: 120,
                       // padding: EdgeInsets.all(padding10!),
                       decoration: BoxDecoration(
                         color: colorBackground,

@@ -74,11 +74,11 @@ class PickupAddressItem extends StatelessWidget {
                         children: [
                           (store != null &&
                                   storageViewModel.selectedStore == store)
-                              ? SvgPicture.asset("assets/svgs/rec_true.svg")
+                              ? SvgPicture.asset(/*"assets/svgs/rec_true.svg"*/"assets/svgs/true.svg")
                               : storageViewModel.selectedAddress == address
-                                  ? SvgPicture.asset("assets/svgs/rec_true.svg")
+                                  ? SvgPicture.asset(/*"assets/svgs/rec_true.svg"*/"assets/svgs/true.svg")
                                   : SvgPicture.asset(
-                                      "assets/svgs/rec_empty.svg"),
+                                      /*"assets/svgs/rec_empty.svg"*/"assets/svgs/uncheck.svg"),
                           SizedBox(
                             width: sizeW10,
                           ),
