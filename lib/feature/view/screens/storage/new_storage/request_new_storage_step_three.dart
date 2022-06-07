@@ -3,9 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/request_new_storage_header.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_three_widgets/payment_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
@@ -107,11 +109,29 @@ class RequestNewStorageStepThree extends StatelessWidget {
                     PaymentWidget(isRecivedOrderPayment: false),
                     // SizedBox(height: sizeH16),
                     // acceptTerms,
+                    if (logical.selectedPaymentMethod?.id ==
+                        Constance.bankTransferId) ...[
+                      SizedBox(
+                        height: sizeH16,
+                      ),
+                      CustomTextFormFiled(
+                        isReadOnly: true,
+                        fun: () async {
+                          logical.onBankImageClick();
+                        },
+                        label: logical.imageBankTransfer != null
+                            ? logical.imageBankTransfer?.path.split("/").last.toString()
+                            : tr.select_image,
+                        isFill: true,
+                        fillColor: colorTextWhite,
+                      ),
+                    ],
                     SizedBox(
                       height: sizeH100,
                     ),
                   ],
                 ),
+
                 PositionedDirectional(
                     bottom: padding32,
                     start: padding20,
@@ -127,10 +147,19 @@ class RequestNewStorageStepThree extends StatelessWidget {
                               onClicked: () async {
                                 if (logic.isValiedToSaveStorage()) {
                                   if (logic.selectedPaymentMethod?.id ==
-                                      Constance.cashId || logic.selectedPaymentMethod?.id ==
-                                      Constance.creditCard ||
-                                      logic.selectedPaymentMethod?.id == Constance.wireTransferId) {
+                                              Constance.cashId ||
+                                          logic.selectedPaymentMethod?.id ==
+                                              Constance
+                                                  .pointOfSaleId /*||
+                                      logic.selectedPaymentMethod?.id == Constance.bankTransferId*/
+                                      ) {
                                     await logic.addNewStorage();
+                                    logic.isLoading = false;
+                                    logic.update();
+                                  } else if (logic.selectedPaymentMethod?.id ==
+                                      Constance.bankTransferId) {
+                                    //todo here i will check if user upload or select image i will allow to send request
+                                    await logic.addNewStorage(isFromBankTransfer:true);
                                     logic.isLoading = false;
                                     logic.update();
                                   } else if ((logic.selectedPaymentMethod?.id ==
@@ -143,7 +172,8 @@ class RequestNewStorageStepThree extends StatelessWidget {
                                       logic.isLoading = false;
                                       logic.update();
                                     } else {
-                                      snackError("", tr.wallet_balance_is_not_enough);
+                                      snackError(
+                                          "", tr.wallet_balance_is_not_enough);
                                     }
                                   } else {
                                     await logic.goToPaymentMethod(
@@ -151,7 +181,7 @@ class RequestNewStorageStepThree extends StatelessWidget {
                                         isOrderProductPayment: false,
                                         isFromCart: false,
                                         isFromNewStorage: true,
-                                        storageViewModel:storageViewModel,
+                                        storageViewModel: storageViewModel,
                                         amount: logic.totalBalance);
                                     logic.isLoading = false;
                                     logic.update();

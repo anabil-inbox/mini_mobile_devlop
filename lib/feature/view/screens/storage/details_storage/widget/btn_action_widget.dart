@@ -72,26 +72,30 @@ class BtnActionWidget extends StatelessWidget {
           SizedBox(
             width: sizeW10,
           ),
-          PrimaryButton(
-              textButton: redBtnText ?? "${tr.recall}",
-              isLoading: false,
-              onClicked: onRedBtnClick ?? () {},
-              width: sizeW114,
-              isExpanded: false),
+          Expanded(
+            child: PrimaryButton(
+                textButton: redBtnText ?? "${tr.recall}",
+                isLoading: false,
+                onClicked: onRedBtnClick ?? () {},
+                width: sizeW114,
+                isExpanded:boxStatus == LocalConstance.boxAtHome?true: false),
+          ),
           SizedBox(
             width: sizeW5,
           ),
-          boxStatus == LocalConstance.boxAtHome && isGaveAway
+          boxStatus == LocalConstance.boxAtHome || isGaveAway
               ? const SizedBox()
-              : PrimaryButton(
-                  textButton: grayBtnText ?? "${tr.giveaway}",
-                  isLoading: false,
-                  onClicked: onGrayBtnClick ?? () {},
-                  width: sizeW114,
-                  isExpanded: false,
-                  colorBtn: colorBtnGray,
-                  colorText: colorTextDark,
-                ),
+              : Expanded(
+                child: PrimaryButton(
+                    textButton: grayBtnText ?? "${tr.giveaway}",
+                    isLoading: false,
+                    onClicked: onGrayBtnClick ?? () {},
+                    width: sizeW114,
+                    isExpanded: false,
+                    colorBtn: colorBtnGray,
+                    colorText: colorTextDark,
+                  ),
+              ),
           SizedBox(
             width: sizeW5,
           ),

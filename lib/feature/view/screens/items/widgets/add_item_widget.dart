@@ -51,7 +51,7 @@ class AddItemWidget extends StatelessWidget {
                 SizedBox(
                   height: sizeH20,
                 ),
-                Text(isUpdate ?? false ? "Update Item" : "Add Item"),
+                Text(isUpdate ?? false ? tr.update_item : tr.add_item),
                 SizedBox(
                   height: sizeH20,
                 ),
@@ -89,7 +89,7 @@ class AddItemWidget extends StatelessWidget {
                 Container(
                     width: double.infinity,
                     child: Text(
-                      "Photos",
+                      tr.photos,
                       textAlign: TextAlign.start,
                     )),
                 SizedBox(
@@ -206,7 +206,7 @@ class AddItemWidget extends StatelessWidget {
                   builder: (builder) {
                     return PrimaryButton(
                         textButton:
-                            isUpdate ?? false ? "Update Item" : "Add Item",
+                            isUpdate ?? false ? tr.update_item :tr.add_item,
                         isLoading: builder.isLoading,
                         onClicked: () async{
                           if (itemViewModle.formKey.currentState!.validate()) {

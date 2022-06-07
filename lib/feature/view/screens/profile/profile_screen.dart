@@ -5,6 +5,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:inbox_clients/feature/view/screens/profile/log/log_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/my_rewareds/my_rewards_screen.dart';
+import 'package:inbox_clients/feature/view/screens/profile/payment_card/payment_card_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/setting/setting_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/subscriptions/my_subscription_view.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/header_profile_card.dart';
@@ -109,17 +110,17 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                           ),
                         ],
 
-                        // SizedBox(
-                        //   height: sizeH12,
-                        // ),
-                        // SettingItem(
-                        //   onTap: () {
-                        //     Get.to(() => PaymentCardScreen());
-                        //   },
-                        //   settingTitle: "${tr.payment_card}",
-                        //   trailingTitle: "",
-                        //   iconPath: "assets/svgs/payment_card.svg",
-                        // ),
+                        SizedBox(
+                          height: sizeH12,
+                        ),
+                        SettingItem(
+                          onTap: () {
+                            Get.to(() => PaymentCardScreen());
+                          },
+                          settingTitle: "${tr.payment_card}",
+                          trailingTitle: "",
+                          iconPath: "assets/svgs/payment_card.svg",
+                        ),
                         SizedBox(
                           height: sizeH12,
                         ),

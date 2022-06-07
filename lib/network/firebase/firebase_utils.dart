@@ -17,4 +17,11 @@ class FirebaseUtils {
     return data?["hide"]??false;
   }
 
+  void addPaymentSuccess(Map<String, dynamic> value) {
+    FirebaseFirestore.instance.collection("payment").doc("success").collection("list").add(value);
+  }//Success
+  void addPaymentFail(Map<String, dynamic> value) {
+    FirebaseFirestore.instance.collection("payment").doc("fail").collection("list").add(value);
+  }//Success
+
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:inbox_clients/feature/model/profile/cards_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 
 class PaymentCardWidget extends StatelessWidget {
-  const PaymentCardWidget({Key? key}) : super(key: key);
+  const PaymentCardWidget({Key? key,required this.card}) : super(key: key);
+  final CardModel card;
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +16,7 @@ class PaymentCardWidget extends StatelessWidget {
     return Stack(
       children: [
         Container(
+          margin: EdgeInsets.only(top: sizeH12!),
           padding: EdgeInsets.symmetric(horizontal: padding16!),
           decoration: BoxDecoration(
               color: colorPrimaryOpcaityColor,
@@ -28,7 +31,7 @@ class PaymentCardWidget extends StatelessWidget {
                 tr.name,
                 style: textStyleCardPaymentTitle(),
               ),
-              Text("Mahnaz Farzin", style: textStyleCardPaymentBody()),
+              Text(card.name.toString(), style: textStyleCardPaymentBody()),
               SizedBox(
                 height: sizeH16,
               ),
@@ -36,7 +39,7 @@ class PaymentCardWidget extends StatelessWidget {
                 tr.card_number,
                 style: textStyleCardPaymentTitle(),
               ),
-              Text("1234 ********** 8901", style: textStyleCardPaymentBody()),
+              Text("${card.firstSix.toString()} ********** ${card.lastFour.toString()}", style: textStyleCardPaymentBody()),
               SizedBox(
                 height: sizeH16,
               ),
@@ -48,17 +51,17 @@ class PaymentCardWidget extends StatelessWidget {
                         tr.expiry_date,
                         style: textStyleCardPaymentTitle(),
                       ),
-                      Text("03/19", style: textStyleCardPaymentBody())
+                      Text("${card.expMonth.toString()}/${card.expYear.toString()}", style: textStyleCardPaymentBody())
                     ],
                   ),
                   const Spacer(),
                   Column(
                     children: [
                       Text(
-                        "CVV",
+                        "",
                         style: textStyleCardPaymentTitle(),
                       ),
-                      Text("012", style: textStyleCardPaymentBody())
+                      Text("${card.brand.toString()}", style: textStyleCardPaymentBody())
                     ],
                   ),
                   const Spacer(),
@@ -70,13 +73,13 @@ class PaymentCardWidget extends StatelessWidget {
             ],
           ),
         ),
-        PositionedDirectional(
-            end: padding16,
-            top: padding16,
-            child: IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset("assets/svgs/delete_white.svg"),
-            ))
+        // PositionedDirectional(
+        //     end: padding16,
+        //     top: padding16,
+        //     child: IconButton(
+        //       onPressed: () {},
+        //       icon: SvgPicture.asset("assets/svgs/delete_white.svg"),
+        //     ))
       ],
     );
   }

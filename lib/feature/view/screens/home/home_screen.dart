@@ -76,9 +76,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 isBorder: true,
               ),
             ),
-            SvgPicture.asset(
-              "assets/svgs/Filter.svg",
-            ),
+            // SvgPicture.asset(
+            //   "assets/svgs/Filter.svg",
+            // ),
           ],
         ),
       );

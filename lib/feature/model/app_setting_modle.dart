@@ -189,20 +189,28 @@ class Day {
 }
 
 class AreaZone {
-  AreaZone({this.id, this.areaZone, this.price});
+  AreaZone({this.id, this.areaZone, this.price, this.numbers});
 
   String? id;
   String? areaZone;
   num? price;
+  List<dynamic>? numbers;
 
   factory AreaZone.fromJson(Map<String, dynamic> json) => AreaZone(
         id: json["id"] == null ? null : json["id"],
         price: json["price"] == null ? 0 : json["price"],
         areaZone: json["area_zone"] == null ? null : json["area_zone"],
+        numbers: json["numbers"] == null
+            ? null
+            : List<dynamic>.from(json["numbers"].map((x) => x.toString())),
       );
 
-  Map<String, dynamic> toJson() =>
-      {"id": id, "area_zone": areaZone, "price": price};
+  Map<String, dynamic> toJson() => {
+        "id":id == null ? null: id,
+        "area_zone":areaZone == null ? null: areaZone,
+        "price":price == null ? null: price,
+        "numbers":numbers == null ? null: List<dynamic>.from(numbers!.map((x) => x.toString())),
+      };
 }
 
 class NotAllowed {

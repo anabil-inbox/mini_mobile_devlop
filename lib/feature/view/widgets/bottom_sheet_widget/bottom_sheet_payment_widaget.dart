@@ -300,9 +300,7 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                           : logic.calculateTaskPriceLotBoxess(
                               isFromCart: false, task: task, boxess: boxes);
                       if (paymentMethod.name == LocalConstance.bankCard &&
-                          int.tryParse(calculateTasksCart.toString())
-                                  ?.toInt() ==
-                              0) {
+                          int.tryParse(calculateTasksCart.toString())?.toInt() == 0) {
                         return const SizedBox.shrink();
                       } else {
                         return PaymentItem(
@@ -360,8 +358,8 @@ class BottomSheetPaymentWidget extends StatelessWidget {
       if (storageViewModle.priceAfterDiscount > 0) {
         if (storageViewModle.selectedPaymentMethod?.id != null) {
           if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
-              storageViewModle.selectedPaymentMethod?.id == Constance.wireTransferId ||
-              storageViewModle.selectedPaymentMethod?.id == Constance.creditCard) {
+              /*storageViewModle.selectedPaymentMethod?.id == Constance.bankTransferId ||*/
+              storageViewModle.selectedPaymentMethod?.id == Constance.pointOfSaleId) {
             if (boxes.length > 0) {
               storageViewModle.doTaskBoxRequest(
                   isFromCart: false,
@@ -377,6 +375,8 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                   selectedItems: items,
                   beneficiaryId: beneficiaryId);
             }
+          }else if (storageViewModle.selectedPaymentMethod?.id == Constance.bankTransferId){
+
           } else if (storageViewModle.selectedPaymentMethod?.id == Constance.walletId) {
             if (num.tryParse(profileViewModle.myWallet.balance ?? "0")! >=
                 storageViewModle.priceAfterDiscount) {
@@ -438,8 +438,8 @@ class BottomSheetPaymentWidget extends StatelessWidget {
     }
     if (storageViewModle.selectedPaymentMethod?.id != null) {
       if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
-          storageViewModle.selectedPaymentMethod?.id == Constance.wireTransferId ||
-          storageViewModle.selectedPaymentMethod?.id == Constance.creditCard) {
+          /*storageViewModle.selectedPaymentMethod?.id == Constance.bankTransferId ||*/
+          storageViewModle.selectedPaymentMethod?.id == Constance.pointOfSaleId) {
         if (boxes.length > 0) {
           storageViewModle.doTaskBoxRequest(
               isFromCart: false,
@@ -455,7 +455,9 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               selectedItems: items,
               beneficiaryId: beneficiaryId);
         }
-      } else if (storageViewModle.selectedPaymentMethod?.id ==
+      } else if(storageViewModle.selectedPaymentMethod?.id == Constance.bankTransferId ){
+
+      }else if (storageViewModle.selectedPaymentMethod?.id ==
           Constance.walletId) {
         var amount = boxes.length == 0
             ? storageViewModle.calculateTaskPriceOnceBox(task: task)

@@ -38,7 +38,7 @@ class ChooseAddMethodWidget extends StatelessWidget {
           ),
           SeconderyButtom(
             buttonTextStyle: textSeconderyButtonUnBold(),
-            textButton: "Add Item",
+            textButton:tr.add_item,
             onClicked: () async {
               Get.bottomSheet(
                   AddItemWidget(
@@ -59,7 +59,7 @@ class ChooseAddMethodWidget extends StatelessWidget {
           ),
           SeconderyButtom(
             buttonTextStyle: textSeconderyButtonUnBold(),
-            textButton: "Add From Gallery",
+            textButton:tr.add_from_gallery,
             onClicked: () async {
               await itemViewModle.getItemImage(serialNo: box.serialNo ?? "");
             },

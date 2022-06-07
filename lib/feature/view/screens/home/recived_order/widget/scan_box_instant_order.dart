@@ -19,6 +19,7 @@ class ScanBoxInstantOrder extends StatelessWidget {
       : super(key: key);
 
   final HomeViewModel homeViewModel;
+
   // static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
 
   @override
@@ -68,6 +69,7 @@ class ScanBoxInstantOrder extends StatelessWidget {
                 } else {
                   Get.to(() => ScanRecivedOrderScreen(
                         isBox: true,
+                        code: homeViewModel.operationTask.salesOrder,
                         isProduct: false,
                         isScanDeliverdBoxes: false,
                       ));
@@ -107,6 +109,10 @@ class ScanBoxInstantOrder extends StatelessWidget {
                               children:
                                   homeViewModel.operationTask.customerScanned!
                                       .map((e) => BoxOnOrderItem(
+                                            isBox: true,
+                                            isProduct: false,
+                                            isScanDeliverdBox: false,
+                                            hidReceiveBtn: true,
                                             boxModel: e,
                                           ))
                                       .toList());

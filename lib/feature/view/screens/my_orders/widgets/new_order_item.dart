@@ -68,7 +68,7 @@ class NewOrderItemTask extends StatelessWidget {
           index == 0
               ? Row(
                   children: [
-                    Text("Total:"),
+                    Text(tr.totaldots),
                     const Spacer(),
                     Text(
                       getPriceWithFormate(price: orderItem.totalPrice ?? 0),

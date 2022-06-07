@@ -46,6 +46,7 @@ class AddressItem extends StatelessWidget {
                                   extraDetails: address.extraDetails,
                                   buildingNo: address.buildingNo,
                                   zone: address.zone,
+                                  zoneNumber: address.zoneNumber??"",
                                   streat: address.streat,
                                   unitNo: address.unitNo,
                                   latitude: address.latitude,

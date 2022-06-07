@@ -11,7 +11,8 @@ class Address {
         this.latitude,
         this.geoAddress,
         this.isPrimaryAddress,
-        this.title
+        this.title,
+        this.zoneNumber
     });
 
     String? id;
@@ -26,6 +27,7 @@ class Address {
     String? geoAddress;
     int? isPrimaryAddress;
     String? title;
+    dynamic zoneNumber;
 
     factory Address.fromJson(Map<String, dynamic> json) => Address(
         id: json["id"],
@@ -36,6 +38,7 @@ class Address {
         zone: json["zone"],
         streat: json["streat"],
         geoAddress: json["geo_address"],
+        zoneNumber: json["zone_number"] == null ? null:json["zone_number"],
         extraDetails: json["extra_details"],
         longitude: json["longitude"] == null ? null : json["longitude"].toDouble(),
         latitude: json["latitude"] == null ? null :json["latitude"].toDouble(),
@@ -54,7 +57,8 @@ class Address {
         "longitude": longitude,
         "latitude": latitude,
         "is_primary_address": isPrimaryAddress,
-        "title" : title
+        "title" : title,
+        "zone_number":zoneNumber
     };
 
     @override

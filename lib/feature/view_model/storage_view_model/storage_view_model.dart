@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
 // import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
@@ -41,11 +43,14 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/base_controller.dart';
+import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:dio/dio.dart' as multiPart;
+
 
 class StorageViewModel extends BaseController {
   //todo this for appbar select btn
@@ -792,7 +797,8 @@ class StorageViewModel extends BaseController {
   ProfileViewModle profileViewModle =
       Get.put(ProfileViewModle(), permanent: true);
 
-  Future<void> addNewStorage({String? paymentId}) async {
+  Future<void> addNewStorage(
+      {String? paymentId, bool? isFromBankTransfer = false}) async {
     try {
       //still this layer will complete when you complete order // refer to =>
       Get.put(MyOrderViewModle());
@@ -880,47 +886,69 @@ class StorageViewModel extends BaseController {
       // map["type[0]"] = "New Storage_sv";
       // map["address[0]"] = selectedAddress!.id;
 
-      await StorageFeature.getInstance.addNewStorage(body: {
-        "shipping_address": "${selectedAddress?.id}",
-        "items_list": jsonEncode(orderItems),
-        "order_to": "${selectedDay?.from}",
-        "coupon_code": "",
-        "points": isAccept ? profileViewModle.myPoints.totalPoints : 0,
-        "payment_method": "${selectedPaymentMethod?.id}",
-        "payment_id": "$paymentId",
-        "order_from": "${selectedDay?.to}",
-        "order_time": "${selectedDay?.from}/${selectedDay?.to}",
-        "type": getNewStorageType(
-            storageCategoriesData: userStorageCategoriesData[0])
+      Map<String, dynamic> map = {};
+      if (isFromBankTransfer!) {
+        map = {
+          "shipping_address": "${selectedAddress?.id}",
+          "items_list": jsonEncode(orderItems),
+          "order_to": "${selectedDay?.from}",
+          "coupon_code": "",
+          "points": isAccept ? profileViewModle.myPoints.totalPoints : 0,
+          "payment_method": "${selectedPaymentMethod?.id}",
+          "payment_id": "$paymentId",
+          "order_from": "${selectedDay?.to}",
+          "order_time": "${selectedDay?.from}/${selectedDay?.to}",
+          "type": getNewStorageType(
+              storageCategoriesData: userStorageCategoriesData[0]),
+          "image":imageBankTransfer != null ? multiPart.MultipartFile.fromFileSync(imageBankTransfer!.path):"" ,
+        };
+      }else{
+        map = {
+          "shipping_address": "${selectedAddress?.id}",
+          "items_list": jsonEncode(orderItems),
+          "order_to": "${selectedDay?.from}",
+          "coupon_code": "",
+          "points": isAccept ? profileViewModle.myPoints.totalPoints : 0,
+          "payment_method": "${selectedPaymentMethod?.id}",
+          "payment_id": "$paymentId",
+          "order_from": "${selectedDay?.to}",
+          "order_time": "${selectedDay?.from}/${selectedDay?.to}",
+          "type": getNewStorageType(
+              storageCategoriesData: userStorageCategoriesData[0]),
+        };
       }
-          /*   map*/
-          ).then((value) => {
-            if (value.status!.success!)
-              {
-                isLoading = false,
-                update(),
-                checkDaplication(),
-                isShowAll = true,
-                snackSuccess("${tr.success}", "${value.status!.message}"),
-                selectedPaymentMethod = null,
-                selectedAddress = null,
-                selectedDateTime = null,
-                selectedStore = null,
-                selectedDay = null,
-                profileViewModle.getMyPoints(),
-                userStorageCategoriesData.clear(),
-                Get.offAll(() => OrderDetailesScreen(
-                      orderId: value.data["order_name"],
-                      isFromPayment: true,
-                    )),
-              }
-            else
-              {
-                isLoading = false,
-                update(),
-                snackError("${tr.error_occurred}", "${value.status!.message}")
-              }
-          });
+      await StorageFeature.getInstance
+          .addNewStorage(body: map
+              /*   map*/
+              )
+          .then((value) => {
+                if (value.status!.success!)
+                  {
+                    isLoading = false,
+                    update(),
+                    checkDaplication(),
+                    isShowAll = true,
+                    snackSuccess("${tr.success}", "${value.status!.message}"),
+                    selectedPaymentMethod = null,
+                    selectedAddress = null,
+                    selectedDateTime = null,
+                    selectedStore = null,
+                    selectedDay = null,
+                    profileViewModle.getMyPoints(),
+                    userStorageCategoriesData.clear(),
+                    Get.offAll(() => OrderDetailesScreen(
+                          orderId: value.data["order_name"],
+                          isFromPayment: true,
+                        )),
+                  }
+                else
+                  {
+                    isLoading = false,
+                    update(),
+                    snackError(
+                        "${tr.error_occurred}", "${value.status!.message}")
+                  }
+              });
     } catch (e) {}
   }
 
@@ -969,6 +997,10 @@ class StorageViewModel extends BaseController {
     } else if (GetUtils.isNull(selectedPaymentMethod)) {
       snackError(
           "${tr.error_occurred}", "${tr.you_have_to_select_payment_method}");
+      return false;
+    }else if(selectedPaymentMethod?.id == Constance.bankTransferId && imageBankTransfer == null){
+      snackError(
+          "${tr.error_occurred}", "${tr.you_have_to_add_bank_transfer_image}");//transfer
       return false;
     } else {
       return true;
@@ -1037,6 +1069,10 @@ class StorageViewModel extends BaseController {
     } else if (DateTime.now().toUtc().isAfter(selectedDateTime!
         .add(Duration(hours: 12))
         .toUtc() /*DateUtility.convertUtcToLocalDateTimeDT(selectedDateTime!)*/)) {
+      Logger().w(DateTime.now()
+          .toUtc()
+          .isAfter(selectedDateTime!.add(Duration(hours: 12))));
+      Logger().w(selectedDateTime.toString());
       snackError("${tr.error_occurred}", "Invalid Selected Date");
       Logger().d(
           "selectedDateTime_${selectedDateTime?.toUtc()} \t :: DateTimeNowToUtc_${DateTime.now().toUtc()} ");
@@ -1691,34 +1727,43 @@ class StorageViewModel extends BaseController {
     String? beneficiaryId,
     required bool isFromCart,
     required List<CartModel> cartModels,
-    required bool isOrderProductPayment, StorageViewModel? storageViewModel,
+    required bool isOrderProductPayment,
+    StorageViewModel? storageViewModel,
   }) async {
     startLoading();
     try {
       var paymentUrlOldKey = "payment_url";
       var paymentUrlNewKey = "url";
       var paymentIdKey = "id";
-      Map<String , dynamic> map = {
+      Map<String, dynamic> map = {
         "amount": amount,
         "task_process": /*isFromNewStorage? "new_storage" :*/ "other",
         // "type":ConstanceNetwork.dailyDurationType.toUpperCase(),
         // "type":ConstanceNetwork.dailyDurationType.toUpperCase(),
       };
-      if(isFromNewStorage && storageViewModel != null &&
-          storageViewModel.selectedDuration != ConstanceNetwork.dailyDurationType){
+      if (isFromNewStorage &&
+          storageViewModel != null &&
+          storageViewModel.selectedDuration !=
+              ConstanceNetwork.dailyDurationType) {
         map = {
           "amount": amount,
-          "task_process":  "new_storage" ,
-          "type": storageViewModel.selectedDuration == ConstanceNetwork.montlyDurationType  ? "MONTHLY": "YEARLY",//MONTHLY/YEARLY,
+          "task_process": "new_storage",
+          "type": storageViewModel.selectedDuration ==
+                  ConstanceNetwork.montlyDurationType
+              ? "MONTHLY"
+              : "YEARLY",
+          //MONTHLY/YEARLY,
           "price": amount,
-          "date": DateFormat("yyyy-MM-dd").format(storageViewModel.selectedDateTime!),
+          "date": DateFormat("yyyy-MM-dd")
+              .format(storageViewModel.selectedDateTime!),
         };
       }
       await StorageFeature.getInstance.payment(body: map).then((value) => {
             if (value.status!.success!)
               {
                 Logger().d(value.data[paymentUrlNewKey]),
-                if (GetUtils.isURL(value.data[paymentUrlNewKey]) ||value.data[paymentUrlNewKey].toString().contains("http") )
+                if (GetUtils.isURL(value.data[paymentUrlNewKey]) ||
+                    value.data[paymentUrlNewKey].toString().contains("http"))
                   {
                     Logger().e(value.data[paymentUrlNewKey]),
                     Logger().e(value.data[paymentIdKey] ?? "null"),
@@ -1730,7 +1775,9 @@ class StorageViewModel extends BaseController {
                           beneficiaryId: beneficiaryId,
                           boxes: boxes,
                           task: task,
-                          paymentId: value.data[paymentIdKey] == null ? DateTime.now().millisecondsSinceEpoch.toString():value.data[paymentIdKey],
+                          paymentId: value.data[paymentIdKey] == null
+                              ? DateTime.now().millisecondsSinceEpoch.toString()
+                              : value.data[paymentIdKey],
                           url: value.data[paymentUrlNewKey],
                           isFromNewStorage: isFromNewStorage,
                         )),
@@ -2068,6 +2115,18 @@ class StorageViewModel extends BaseController {
           cartModels: []);
     } catch (e) {
       printError();
+    }
+  }
+
+  File? imageBankTransfer;
+
+  //this for add image for bank transfer
+  void onBankImageClick() async {
+    final XFile? image =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      imageBankTransfer = File(image.path.toString());
+      update();
     }
   }
 }

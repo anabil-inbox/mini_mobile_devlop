@@ -157,7 +157,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                             builder: (cont) {
                               return PriceBottomSheetWidget(
                                 backGroundColor: colorBackground,
-                                priceTitle: "Total Price",
+                                priceTitle: tr.total_price,
                                 totalPalance: cont.newOrderSales.totalPrice,
                               );
                             },
@@ -202,7 +202,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                           ),
                           if (widget.isFromPayment)
                             PrimaryButton(
-                                textButton: "Back To Home",
+                                textButton: tr.back_to_home,
                                 isLoading: false,
                                 onClicked: () async {
                                   Get.off(() => HomePageHolder());

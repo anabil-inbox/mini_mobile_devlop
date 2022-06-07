@@ -7,6 +7,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:logger/logger.dart';
 
 import 'request_new_storage_step_three.dart';
 import 'widgets/add_storage_widget/request_new_storage_header.dart';
@@ -94,6 +95,11 @@ class _RequestNewStoragesStepTwoScreenState
                           isLoading: false,
                           textButton: "${tr.next}",
                           onClicked: () async {
+                            Logger().d(logic.selectedDateTime.toString());
+                            logic.selctedWorksHours?.forEach((element) {
+                              Logger().i(element.toJson().toString());
+                            });
+
                             if (logic.userStorageCategoriesData.isNotEmpty) if (
                             logic.isStepTwoValidate(
                                     catygoreyType: logic

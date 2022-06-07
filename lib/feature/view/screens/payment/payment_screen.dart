@@ -23,12 +23,14 @@ class PaymentScreen extends StatelessWidget {
       this.task,
       required this.cartModels,
       required this.isOrderProductPayment,
-      required this.paymentId})
+      required this.paymentId,
+      this.isFromAddCard = false})
       : super(key: key);
 
   final String url;
   final String paymentId;
   final bool isFromNewStorage;
+  final bool? isFromAddCard;
   final Task? task;
   final List<Box>? boxes;
   final String? beneficiaryId;
@@ -44,36 +46,49 @@ class PaymentScreen extends StatelessWidget {
           titleWidget: const SizedBox.shrink(),
         ),
         body: GetBuilder<PaymentViewModel>(
-      builder: (payment) {
-        return WebView(
-          javascriptMode: JavascriptMode.unrestricted,
-          initialUrl: url,
-          onProgress: (i) {},
-          onPageFinished: (url) {
-            try {
-              Logger().i("onPageFinished : url $url");
-              // String paymentId = url.split("=")[1].split("&")[0];
-              // Logger().e(paymentId);
-              // payment.paymentId = paymentId;
-              payment.paymentId = paymentId;
-              payment.readResponse(
-                  isOrderProductPayment: isOrderProductPayment,
-                  isFromCart: isFromCart,
-                  cartModels: cartModels,
-                  isFromNewStorage: isFromNewStorage,
-                  task: task,
-                  boxes: boxes,
-                  beneficiaryId: beneficiaryId);
-            } catch (e) {
-              print(e);
-            }
+          init: PaymentViewModel(),
+          builder: (payment) {
+            return WebView(
+              javascriptMode: JavascriptMode.unrestricted,
+              initialUrl: url,
+              onProgress: (i) {},
+              onWebResourceError: (error){
+                Logger().e(error);
+              },
+              onPageFinished: (url)async{
+                try {
+                  Logger().i("onPageFinished : url $url");
+                  // String paymentId = url.split("=")[1].split("&")[0];
+                  // Logger().e(paymentId);
+                  // payment.paymentId = paymentId;
+                  if (isFromAddCard!) {
+                    if(url.toString().contains("true")){
+                      //todo here we will get all cards and go back
+                      Get.back(result: true);
+                    }
+                  } else {
+                    if(url.toString().contains("status") && !url.toString().contains("false") ){
+                      payment.paymentId = paymentId;
+                      payment.readResponse(
+                          isOrderProductPayment: isOrderProductPayment,
+                          isFromCart: isFromCart,
+                          cartModels: cartModels,
+                          isFromNewStorage: isFromNewStorage,
+                          task: task,
+                          boxes: boxes,
+                          beneficiaryId: beneficiaryId);
+                    }
+                  }
+                } catch (e) {
+                  Logger().e(e);
+                }
+              },
+              onWebViewCreated: (e) {
+                payment.payController = e;
+                payment.update();
+              },
+            );
           },
-          onWebViewCreated: (e) {
-            payment.payController = e;
-            payment.update();
-          },
-        );
-      },
-    ));
+        ));
   }
 }

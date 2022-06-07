@@ -32,6 +32,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
     profileViewModle.tdTitleEdit.text = widget.address.addressTitle ?? "";
     profileViewModle.tdBuildingNoEdit.text = widget.address.buildingNo ?? "";
     profileViewModle.tdZoneEdit.text = widget.address.zone ?? "";
+    profileViewModle.tdZoneNumberEdit.text = widget.address.zoneNumber ?? "";
+
     profileViewModle.tdExtraDetailesEdit.text =
         widget.address.extraDetails ?? "";
     profileViewModle.tdLocationEdit.text = widget.address.geoAddress ?? "";
@@ -152,6 +154,24 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                     ),
                     TextFormField(
                       onSaved: (newValue) {
+                        controller.tdZoneNumberEdit.text = newValue!;
+                        controller.update();
+                      },
+                      controller: controller.tdZoneNumberEdit,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '${tr.fill_the_zone_correctly}';
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.numberWithOptions(),
+                      decoration: InputDecoration(hintText: "${tr.zone_number}"),
+                    ),
+                    SizedBox(
+                      height: sizeH10,
+                    ),
+                    TextFormField(
+                      onSaved: (newValue) {
                         controller.tdStreetEdit.text = newValue!;
                         controller.update();
                       },
@@ -263,6 +283,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                           controller.isAccepteDefoltLocation
                                               ? 1
                                               : 0,
+                                      zoneNumber: controller.tdZoneNumberEdit.text,
                                       zone: controller.tdZoneEdit.text,
                                       streat: controller.tdStreetEdit.text,
                                       extraDetails:

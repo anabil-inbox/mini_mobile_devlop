@@ -16,11 +16,13 @@ import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
+import 'package:inbox_clients/feature/model/profile/cards_model.dart';
 import 'package:inbox_clients/feature/model/profile/get_wallet_model.dart';
 import 'package:inbox_clients/feature/model/profile/log_model.dart';
 import 'package:inbox_clients/feature/model/profile/my_point_model.dart';
 import 'package:inbox_clients/feature/model/subscription_data.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
+import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/widgets/area_zone_widget.dart';
 import 'package:inbox_clients/feature/view/screens/profile/my_wallet/Widgets/deposit_money_to_wallet_webView.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
@@ -60,12 +62,16 @@ class ProfileViewModle extends BaseController {
 
   Customer? currentCustomer;
 
+  String? urlCard;
+  CardsData? cardsData ;
+
 //to do fot address textEditting Controllers ;
   TextEditingController tdTitle = TextEditingController();
   TextEditingController tdBuildingNo = TextEditingController();
   TextEditingController tdUnitNo = TextEditingController();
   TextEditingController tdZone = TextEditingController();
   TextEditingController tdStreet = TextEditingController();
+  TextEditingController tdZoneNumber = TextEditingController();
   TextEditingController tdLocation = TextEditingController();
   TextEditingController tdExtraDetailes = TextEditingController();
 
@@ -75,6 +81,7 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdUnitNoEdit = TextEditingController();
   TextEditingController tdZoneEdit = TextEditingController();
   TextEditingController tdStreetEdit = TextEditingController();
+  TextEditingController tdZoneNumberEdit = TextEditingController();
   TextEditingController tdLocationEdit = TextEditingController();
   TextEditingController tdExtraDetailesEdit = TextEditingController();
 
@@ -861,4 +868,51 @@ class ProfileViewModle extends BaseController {
       Logger().e("getProfileData", e);
     }
   }
+
+
+  Future<void> addCard() async {
+    startLoading();
+    await ProfileHelper.getInstance.addCard().then((value) async{
+      if (value.status!.success!) {
+        Logger().d(value.toJson());
+        urlCard  = value.data["url"].toString();
+        // snackSuccess("", value.status?.message.toString());
+        endLoading();
+        if(value.data["url"] != null) {
+         var result = await Get.to(PaymentScreen(isOrderProductPayment: false,
+          paymentId: '',
+          cartModels: [],
+          url: value.data["url"].toString(),
+          isFromCart: false,
+          isFromAddCard: true,
+          isFromNewStorage: false,));
+         if(result){
+           getCards();
+         }
+        }
+      } else {
+        snackError("", value.status?.message.toString());
+      }
+      endLoading();
+    }).catchError((value) {
+      endLoading();
+      Logger().d(value);
+    });
+  }
+  Future<void> getCards() async {
+    startLoading();
+    await ProfileHelper.getInstance.getCards().then((value) {
+      if (value.cards != null && value.cards!.isNotEmpty) {
+        Logger().d(value.toJson());
+        cardsData = value;
+        endLoading();
+      }else {
+        endLoading();
+      }
+    }).catchError((value) {
+      endLoading();
+      Logger().d(value);
+    });
+  }
+
 }

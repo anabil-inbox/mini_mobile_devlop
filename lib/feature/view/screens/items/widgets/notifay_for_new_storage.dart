@@ -15,6 +15,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/date_time_util.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
+import 'package:logger/logger.dart';
 
 import '../qr_screen.dart';
 
@@ -145,12 +146,13 @@ class NotifayForNewStorage extends StatelessWidget {
                   onClicked: () {
                     // Get.put(ItemViewModle());
                     Get.to(() => QrScreen(
+                      code: box.serialNo,
                         index: index ?? 1,
                         isFromAtHome: true,
                         storageViewModel: storageViewModel));
                     // homeViewModel.startScan();
                   },
-                  textButton: "Scan QR Key",
+                  textButton: tr.scan_qr_key,
                 ),
                 SizedBox(
                   width: sizeW12,

@@ -40,7 +40,7 @@ class ItemsOperationBS extends StatelessWidget {
             height: sizeH16,
           ),
           SeconderyButtom(
-              textButton: "Update",
+              textButton: tr.update,
               onClicked: () async {
                 await Get.bottomSheet(
                     AddItemWidget(
@@ -58,7 +58,7 @@ class ItemsOperationBS extends StatelessWidget {
             height: sizeH10,
           ),
           SeconderyButtom(
-              textButton: "Share",
+              textButton: tr.share,
               onClicked: () {
                 itemViewModle.shareItem(boxItem: boxItem);
               }),
@@ -66,7 +66,7 @@ class ItemsOperationBS extends StatelessWidget {
             height: sizeH10,
           ),
           SeconderyButtom(
-              textButton: "Delete",
+              textButton: tr.delete,
               onClicked: () async {
                 await itemViewModle.showDeleteItemBottomSheet(
                   id: boxItem.id ?? "",

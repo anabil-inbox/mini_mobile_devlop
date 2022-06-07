@@ -105,12 +105,14 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                             isLoading: controller.isLoading,
                             onClicked: () {
                               if (_formKey.currentState!.validate()) {
-                                controller.addNewAddress(Address(
+                                if(controller.userAreaZone!.numbers!.contains(controller.tdZoneNumber.text.toString())) {
+                                  controller.addNewAddress(Address(
                                   addressTitle: controller.tdTitle.text,
                                   isPrimaryAddress:
                                       controller.isAccepteDefoltLocation
                                           ? 1
                                           : 0,
+                                  zoneNumber: controller.tdZoneNumber.text.toString(),
                                   zone: controller.userAreaZone?.id ?? "",
                                   streat: controller.tdStreet.text,
                                   extraDetails: controller.tdExtraDetailes.text,
@@ -120,6 +122,9 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                                   latitude: controller.mark.position.latitude,
                                   longitude: controller.mark.position.longitude,
                                 ));
+                                }else{
+                                  snackError("", tr.fill_the_zone_correctly);
+                                }
                               }
                             },
                             isExpanded: true);

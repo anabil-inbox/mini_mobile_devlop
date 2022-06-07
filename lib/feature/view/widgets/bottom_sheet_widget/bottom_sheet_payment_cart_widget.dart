@@ -327,10 +327,12 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
       if (storageViewModle.priceAfterDiscount > 0) {
         if (storageViewModle.selectedPaymentMethod != null) {
           if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
-              storageViewModle.selectedPaymentMethod?.id == Constance.wireTransferId ||
+              /*storageViewModle.selectedPaymentMethod?.id == Constance.bankTransferId ||*/
               storageViewModle.selectedPaymentMethod?.id ==
                   Constance.walletId) {
             storageViewModle.checkOutCart(cartModels: cartModels);
+          }else if (storageViewModle.selectedPaymentMethod?.id == Constance.bankTransferId){
+
           } else {
             storageViewModle.goToPaymentMethod(
               isOrderProductPayment: false,
@@ -359,10 +361,12 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
     }
     if (storageViewModle.selectedPaymentMethod != null) {
       if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
-          storageViewModle.selectedPaymentMethod?.id == Constance.wireTransferId ||
+          /*storageViewModle.selectedPaymentMethod?.id == Constance.bankTransferId ||*/
           storageViewModle.selectedPaymentMethod?.id == Constance.walletId) {
         storageViewModle.checkOutCart(cartModels: cartModels);
-      } else {
+      } else if (storageViewModle.selectedPaymentMethod?.id == Constance.bankTransferId){
+
+      }else {
         storageViewModle.goToPaymentMethod(
           isOrderProductPayment: false,
             cartModels: cartModels,

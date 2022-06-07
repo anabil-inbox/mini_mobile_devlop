@@ -17,7 +17,6 @@ class BoxNeedScannedItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    screenUtil(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: sizeW15!, vertical: sizeH13!),
       decoration: BoxDecoration(
@@ -49,7 +48,7 @@ class BoxNeedScannedItem extends StatelessWidget {
             ),
             SizedBox(width: sizeW10),
             CustomTextView(
-              txt: "Boxes Need Scan",
+              txt: tr.boxes_need_scan,
               textStyle: textStyleNormal()?.copyWith(color: colorBlack),
             ),
           ],
@@ -77,6 +76,9 @@ class BoxNeedScannedItem extends StatelessWidget {
                       itemCount: home.operationTask.boxes?.length,
                       itemBuilder: (context, index) {
                         return BoxOnOrderItem(
+                          isBox: true,
+                          isProduct: false,
+                          isScanDeliverdBox:false ,
                           boxModel: home.operationTask.boxes![index],
                         );
                       },

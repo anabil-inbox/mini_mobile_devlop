@@ -357,7 +357,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
                       color: colorHint2.withOpacity(0.2),
                     ),
                   ),
-                  labelText: "Notes"),
+                  labelText: tr.notes),
             ),
             SizedBox(
               height: sizeH16,

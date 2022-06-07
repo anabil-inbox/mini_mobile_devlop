@@ -85,7 +85,7 @@ class MyOrderBoxItem extends StatelessWidget {
               SizedBox(
                 width: sizeW15,
               ),
-              Text("Total:"),
+              Text(tr.totaldots),
               const Spacer(),
               Text(
                 getPriceWithFormate(price: orderItem.totalPrice ?? 0),

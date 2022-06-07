@@ -69,7 +69,7 @@ class TagBoxItemWidget extends StatelessWidget {
                   decoration: InputDecoration(
                       focusColor: colorTrans,
                       focusedBorder: InputBorder.none,
-                      hintText: "Tag"),
+                      hintText: tr.tag),
                   textInputAction: TextInputAction.go,
                   onFieldSubmitted: (e) {
                     if (e.trim().isNotEmpty) {

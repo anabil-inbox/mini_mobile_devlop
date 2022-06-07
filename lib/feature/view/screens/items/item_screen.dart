@@ -440,12 +440,10 @@ class _ItemScreenState extends State<ItemScreen> {
                   (itemViewModle.operationsBox?.allowed ?? false)
                       ? BtnActionWidget(
                           isGaveAway:
-                              itemViewModle.operationsBox?.storageStatus ==
-                                  LocalConstance.giveawayId,
-                          boxStatus:
-                              itemViewModle.operationsBox!.storageStatus ?? "",
-                          redBtnText: widget.box.storageStatus ==
-                                  LocalConstance.boxAtHome
+                              (itemViewModle.operationsBox?.storageStatus == LocalConstance.giveawayId &&
+                                  itemViewModle.operationsBox?.storageStatus != LocalConstance.boxAtHome),
+                          boxStatus: itemViewModle.operationsBox!.storageStatus ?? "",
+                          redBtnText: widget.box.storageStatus == LocalConstance.boxAtHome
                               ? "${tr.pickup}"
                               : "${tr.recall}",
                           onShareBox: onShareBoxClick,

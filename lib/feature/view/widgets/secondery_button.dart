@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:logger/logger.dart';
 
 import '../../../util/app_shaerd_data.dart';
 
@@ -20,6 +21,7 @@ class SeconderyButtom extends StatelessWidget {
   double? height;
   final double? width;
   final bool isEnable;
+
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -38,12 +40,38 @@ class SeconderyButtom extends StatelessWidget {
           onClicked();
         },
         child: Text(
-          "$textButton",
+          "${textHandel()}",
           style: isEnable
               ? textStyleBorderButton()
               : textStyleBottomNavUnSelected(),
         ),
       ),
     );
+  }
+
+  String textHandel() {
+    return textButton
+        .toString()
+        .replaceAll("٠", "0")
+        .toString()
+        .replaceAll("١", "1")
+        .toString()
+        .replaceAll("٢", "2")
+        .toString()
+        .replaceAll("٣", "3")
+        .toString()
+        .replaceAll("٤", "4")
+        .toString()
+        .replaceAll("٥", "5")
+        .toString()
+        .toString()
+        .replaceAll("٦", "6")
+        .replaceAll("٠", "0")
+        .toString()
+        .replaceAll("٧", "7")
+        .toString()
+        .replaceAll("٩", "9")
+        .toString()
+        .replaceAll("٨", "8");
   }
 }

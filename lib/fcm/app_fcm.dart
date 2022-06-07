@@ -233,6 +233,7 @@ class AppFcm {
         homeViewModel.operationTask =
             TaskResponse.fromJson(map, isFromNotification: true);
         Get.off(ScanRecivedOrderScreen(
+          code:homeViewModel.operationTask.salesOrder,
           isScanDeliverdBoxes: false,
           isBox: true,
           isProduct: false,

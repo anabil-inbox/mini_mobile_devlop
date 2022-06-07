@@ -123,9 +123,9 @@ class DateUtility {
 
   static String convertToLocalDateTimeUnUtc(DateTime uTCTime) {
     try {
-      initializeDateFormatting(isArabicLang() ? 'ar' : 'en');
+      initializeDateFormatting(isArabicLang() ? 'en' : 'en');
       var dateFormat = DateFormat("hh:mm aa",
-          (isArabicLang() ? "ar" : "en")); // you can change the format here
+          (isArabicLang() ? "en" : "en")); // you can change the format here
       var utcDate = dateFormat.format(uTCTime); // pass the UTC time here
       // var localDate = dateFormat.parse(utcDate, true).toLocal().toString();
       // String createdDate = dateFormat.format(DateTime.parse(utcDate));

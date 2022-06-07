@@ -15,9 +15,9 @@ abstract class Constance {
   static const int maxLineTwenty = 20;
 
   static const String cashId = "Cash";
-  static const String wireTransferId = "Wire Transfer";
+  static const String bankTransferId = "Bank Transfer";
   static const String walletId = "Wallet";
-  static const String creditCard = "Credit Card";
+  static const String pointOfSaleId = "POS";
   static const String orderId = "order_id";
 
   static String salesOrderUnderScoure = "sales_order";

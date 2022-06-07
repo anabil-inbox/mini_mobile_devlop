@@ -172,6 +172,10 @@ abstract class ConstanceNetwork {
   static String getNotificationsApi =
       "inbox_app.api.loyalty_points.get_notifications";
 
+  //this for cards
+  static String addCardApi = "inbox_app.api.get_payment_url.add_card";
+  static String getCardApi = "inbox_app.api.get_payment_url.get_cards";
+
   //todo this for constance Keys
   static String amountKey = "amount";
   static String idKey = "id";

@@ -1,4 +1,5 @@
 import 'package:get/utils.dart';
+import 'package:inbox_clients/feature/model/profile/cards_model.dart';
 import 'package:inbox_clients/feature/model/profile/get_wallet_model.dart';
 import 'package:inbox_clients/feature/model/profile/log_model.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
@@ -169,6 +170,28 @@ class ProfileHelper {
       return appResponse;
     } else {
       return appResponse;
+    }
+  }
+
+  Future<AppResponse> addCard() async {
+    var appResponse = await ProfileApi.getInstance.addCard(
+        url: "${ConstanceNetwork.addCardApi}",
+        header: ConstanceNetwork.header(2));
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
+  Future<CardsData> getCards() async {
+    var appResponse = await ProfileApi.getInstance.getCard(
+        url: "${ConstanceNetwork.getCardApi}",
+        header: ConstanceNetwork.header(2));
+    if (appResponse.status?.success == true) {
+      return CardsData.fromJson(appResponse.data);
+    } else {
+      return CardsData.fromJson(appResponse.data ?? {});
     }
   }
 }

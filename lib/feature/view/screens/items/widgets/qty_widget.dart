@@ -31,7 +31,7 @@ class QtyWidget extends StatelessWidget {
           SizedBox(
             width: sizeW15,
           ),
-          Text("Quantity"),
+          Text(tr.quantity),
           const Spacer(),
           Container(
             width: sizeH100,

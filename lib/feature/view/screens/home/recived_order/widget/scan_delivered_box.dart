@@ -67,6 +67,7 @@ class ScanDeliveredBox extends StatelessWidget {
                       snackError("", "You Scaned All Boxess Recived");
                     } else {
                       Get.to(() => ScanRecivedOrderScreen(
+                            code:homeViewModel.operationTask.salesOrder,
                             isScanDeliverdBoxes: true,
                             isBox: true,
                             isProduct: false,
@@ -104,6 +105,10 @@ class ScanDeliveredBox extends StatelessWidget {
                                     .operationTask.customerDelivered?.length,
                                 itemBuilder: (context, index) {
                                   return BoxOnOrderItem(
+                                    isScanDeliverdBox: true,
+                                    isBox: true,
+                                    isProduct: false,
+                                    hidReceiveBtn:true,
                                     boxModel: home.operationTask
                                         .customerDelivered![index],
                                   );

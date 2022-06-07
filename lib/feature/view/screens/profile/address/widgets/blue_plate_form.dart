@@ -107,6 +107,24 @@ class BluePlateForm extends StatelessWidget {
         ),
         TextFormField(
           onSaved: (newValue) {
+            profileViewModle.tdZoneNumber.text = newValue!;
+            profileViewModle.update();
+          },
+          controller: profileViewModle.tdZoneNumber,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return '${tr.fill_the_zone_correctly}';
+            }
+            return null;
+          },
+          keyboardType: TextInputType.numberWithOptions(),
+          decoration: InputDecoration(hintText: "${tr.zone_number}" , ),
+        ),
+        SizedBox(
+          height: sizeH10,
+        ),
+        TextFormField(
+          onSaved: (newValue) {
             profileViewModle.tdStreet.text = newValue!;
             profileViewModle.update();
           },
