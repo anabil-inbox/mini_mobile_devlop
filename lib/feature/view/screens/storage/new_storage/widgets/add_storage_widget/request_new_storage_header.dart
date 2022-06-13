@@ -25,10 +25,10 @@ class RequestNewStorageHeader extends StatelessWidget {
           Column(
             children: [
               currentLevel == 0
-                  ? SvgPicture.asset("assets/svgs/level_one.svg")
+                  ? SvgPicture.asset("assets/svgs/level_one_orange.svg")//level_one
                   : currentLevel == 1
-                      ? SvgPicture.asset("assets/svgs/level_two.svg")
-                      : SvgPicture.asset("assets/svgs/level_three.svg"),
+                      ? SvgPicture.asset("assets/svgs/level_two_oranage.svg")//level_two
+                      : SvgPicture.asset("assets/svgs/level_three_orange.svg"),
               SizedBox(
                 height: sizeH7,
               ),

@@ -35,9 +35,9 @@ class HeaderRegisterCompany extends GetWidget<IntroViewModle> {
               },
               icon: isArabicLang()
                   ? SvgPicture.asset(
-                      "assets/svgs/language_en.svg",
+                      "assets/svgs/lang_engl_orange.svg"/*language_en*/,
                     )
-                  : SvgPicture.asset("assets/svgs/language_eye.svg"),
+                  : SvgPicture.asset("assets/svgs/lang_ar_ornage.svg")/*language_eye*/,
             ),
           ),
           PositionedDirectional(
@@ -57,7 +57,7 @@ class HeaderRegisterCompany extends GetWidget<IntroViewModle> {
                   top: padding80,
                   bottom: padding40,
                   child: SvgPicture.asset(
-                    "assets/svgs/logo_horizantal.svg",
+                    "assets/svgs/inbox_mini_logo.svg"/*logo_horizantal*/,
                   ),
                 )
               : PositionedDirectional(
@@ -66,7 +66,7 @@ class HeaderRegisterCompany extends GetWidget<IntroViewModle> {
                   top: padding69,
                   bottom: padding12,
                   child: SvgPicture.asset(
-                    "assets/svgs/logo_horizantal.svg",
+                    "assets/svgs/inbox_mini_logo.svg"/*logo_horizantal*/,
                   ),
                 ),
 

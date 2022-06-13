@@ -47,7 +47,7 @@ class SelectedHourItem extends StatelessWidget {
                       Get.back();
                     }
                         : (){},
-                    child: SvgPicture.asset(storageViewModel.selectedDay == day?"assets/svgs/true.svg":"assets/svgs/uncheck.svg"))),
+                    child: SvgPicture.asset(storageViewModel.selectedDay == day?"assets/svgs/true_orange.svg"/*true*/:"assets/svgs/uncheck.svg"))),
           ],
         ),
         SizedBox(

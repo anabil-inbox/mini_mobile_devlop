@@ -34,7 +34,7 @@ class ItemsSelectedWidget extends StatelessWidget {
                 child: TextButton(
                   onPressed: onCheckItem,
                   child: logic.listIndexSelected.contains(boxItem)
-                      ? SvgPicture.asset("assets/svgs/storage_check_active.svg")
+                      ? SvgPicture.asset("assets/svgs/storage_check_active_orange.svg")/*storage_check_active*/
                       : SvgPicture.asset("assets/svgs/storage_check_deactive.svg"),
                 ),
               );
@@ -167,7 +167,7 @@ class ImageSelectedItem extends StatelessWidget {
                     builder.update();
                  },
                   child: builder.selectedItmePhotos.contains(itemGallery?.attachment)
-                      ? SvgPicture.asset("assets/svgs/storage_check_active.svg")
+                      ? SvgPicture.asset("assets/svgs/storage_check_active_orange.svg")/*storage_check_active*/
                       : SvgPicture.asset("assets/svgs/storage_check_deactive.svg"),
                 ),
               );

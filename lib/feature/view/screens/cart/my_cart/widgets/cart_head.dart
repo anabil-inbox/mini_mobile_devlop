@@ -161,7 +161,7 @@ class CartHead extends StatelessWidget {
                 onTap: _deleteCartItem,
                 child: ClipOval(
                   child: SvgPicture.asset(
-                    "assets/svgs/delete_box_widget.svg",
+                    "assets/svgs/delete_box_widget_orange.svg"/*delete_box_widget*/,
                     fit: BoxFit.cover,
                     width: sizeW36,
                   ),

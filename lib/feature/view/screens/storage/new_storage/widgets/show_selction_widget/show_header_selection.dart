@@ -53,7 +53,7 @@ class ShowHeaderSelection extends StatelessWidget {
         InkWell(
             onTap: () => storageViewModel.deleteCategoreyDataBottomSheet(
                 storageCategoriesData: storageCategoriesData),
-            child: SvgPicture.asset("assets/svgs/delete.svg")),
+            child: SvgPicture.asset("assets/svgs/delete_ornage.svg")),//delete
         SizedBox(
           width: sizeW10,
         ),
@@ -65,7 +65,7 @@ class ShowHeaderSelection extends StatelessWidget {
                   isUpdate: true,
                   storageCategoriesData: storageCategoriesData);
             },
-            child: SvgPicture.asset("assets/svgs/update_icon.svg")),
+            child: SvgPicture.asset("assets/svgs/update_icon_orange.svg")),//update_icon
       ],
     );
   }

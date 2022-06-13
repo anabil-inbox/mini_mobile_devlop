@@ -58,7 +58,7 @@ class ItemsWidget extends StatelessWidget {
                                 boxItem) /* ||
                           logic.isSelectAllClick*/
                             ? SvgPicture.asset(
-                                "assets/svgs/storage_check_active.svg")
+                                "assets/svgs/storage_check_active_orange.svg")/*storage_check_active*/
                             : SvgPicture.asset(
                                 "assets/svgs/storage_check_deactive.svg"),
                       ),

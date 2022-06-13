@@ -49,7 +49,7 @@ class StorageDetailsView extends StatelessWidget {
               }),
           IconButton(
               onPressed: () {},
-              icon: SvgPicture.asset("assets/svgs/update.svg")),
+              icon: SvgPicture.asset("assets/svgs/update_icon_orange.svg")/*update*/),
           SizedBox(
             width: sizeW10,
           )

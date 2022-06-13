@@ -45,7 +45,7 @@ class BoxInTaskWidget extends StatelessWidget {
                       ),
                       logical.selctedOperationsBoxess.contains(box)
                           ? SvgPicture.asset(
-                              "assets/svgs/true.svg",
+                              "assets/svgs/true_orange.svg"/*true*/,
                               width: sizeW20,
                               height: sizeH20,
                             )

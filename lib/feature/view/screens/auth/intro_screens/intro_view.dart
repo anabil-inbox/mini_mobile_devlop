@@ -113,9 +113,9 @@ class IntroScreen extends GetWidget<IntroViewModle> {
                     IconButton(
                       icon: isArabicLang()
                           ? SvgPicture.asset(
-                              "assets/svgs/language_en.svg",
+                              "assets/svgs/lang_engl_orange.svg"/*language_en*/,
                             )
-                          : SvgPicture.asset("assets/svgs/language_eye.svg"),
+                          : SvgPicture.asset("assets/svgs/lang_ar_ornage.svg")/*language_eye*/,
                       onPressed: () {
                         changeLanguageBottomSheet(isFromINtro: true);
                       },

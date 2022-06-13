@@ -72,7 +72,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                   textStyle: textStyleNormal()?.copyWith(color: colorBlack),
                 ),
                 const Spacer(),
-                SvgPicture.asset("assets/svgs/check.svg"),
+                SvgPicture.asset("assets/svgs/check.svg",color: colorPrimary,),
               ],
             );
           },
@@ -125,7 +125,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
           focusColor: colorPrimary,
           hoverColor: colorPrimary,
           splashColor: colorPrimary,
-          child: SvgPicture.asset("assets/svgs/call_red_fig.svg"),
+          child:Icon(Icons.call , color: colorTextWhite,) /*SvgPicture.asset("assets/svgs/call_red_fig.svg" )*/,
         ),
         appBar: CustomAppBarWidget(
           titleWidget: CustomTextView(

@@ -152,7 +152,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                           },
                           settingTitle: "${tr.log_out}",
                           trailingTitle: "",
-                          iconPath: "assets/svgs/logout.svg",
+                          iconPath: "assets/svgs/logout_icons_ornage.svg"/*logout*/,
                         ),
                         SizedBox(
                           height: sizeH40,

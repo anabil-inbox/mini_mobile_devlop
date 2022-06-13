@@ -132,7 +132,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
                           minWidth: sizeW48,
                           child: logic.currentIndex == 0
                               ? SvgPicture.asset(
-                                  "assets/svgs/home_selected.svg")
+                                  "assets/svgs/home_selected.svg" , color: colorPrimary,)
                               : SvgPicture.asset("assets/svgs/home.svg"),
                         ),
                         SizedBox(width: sizeW20),
@@ -145,7 +145,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
                           minWidth: sizeW48,
                           child: logic.currentIndex == 1
                               ? SvgPicture.asset(
-                                  "assets/svgs/document_selected.svg")
+                                  "assets/svgs/document_selected.svg", color: colorPrimary,)
                               : SvgPicture.asset("assets/svgs/document.svg"),
                         ),
                       ],
@@ -160,7 +160,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
                           minWidth: sizeW48,
                           child: logic.currentIndex == 2
                               ? SvgPicture.asset(
-                                  "assets/svgs/notification_selected.svg")
+                                  "assets/svgs/notification_selected.svg", color: colorPrimary,)
                               : SvgPicture.asset(
                                   "assets/svgs/notification.svg"),
                         ),
@@ -172,7 +172,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
                           minWidth: sizeW48,
                           child: logic.currentIndex == 3
                               ? SvgPicture.asset(
-                                  "assets/svgs/profile_selected.svg")
+                                  "assets/svgs/profile_selected.svg", color: colorPrimary,)
                               : SvgPicture.asset("assets/svgs/profile.svg"),
                         ),
                       ],

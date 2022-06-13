@@ -8,6 +8,7 @@ import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/cart_view_model/cart_view_model.dart';
 import 'package:inbox_clients/feature/view_model/product_view_model/product_view_model.dart';
+import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
@@ -34,7 +35,7 @@ class CartScreen extends StatelessWidget {
         actionsWidgets: [
           InkWell(
               onTap: _goToStoreView,
-              child: SvgPicture.asset("assets/svgs/store.svg")),
+              child: SvgPicture.asset("assets/svgs/store.svg", color: colorPrimary,)),
           SizedBox(
             width: sizeW10,
           ),

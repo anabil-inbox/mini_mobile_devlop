@@ -122,7 +122,7 @@ class RecallStorageSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     value.isAcceptTermsAndConditions
-                        ? SvgPicture.asset("assets/svgs/check.svg")
+                        ? SvgPicture.asset("assets/svgs/check.svg",color: colorPrimary,)
                         : SvgPicture.asset(
                             "assets/svgs/uncheck.svg",
                             color: seconderyColor,

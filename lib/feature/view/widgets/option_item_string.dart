@@ -34,7 +34,7 @@ class OptionStringItem extends StatelessWidget {
               child: Row(
                 children: [
                   _storageViewModel.searchOperationById(vasId: vas?.id ?? "")
-                      ? SvgPicture.asset("assets/svgs/true.svg")
+                      ? SvgPicture.asset("assets/svgs/true_orange.svg")//true
                       : SvgPicture.asset("assets/svgs/uncheck.svg"),
                   SizedBox(
                     width: sizeW10,

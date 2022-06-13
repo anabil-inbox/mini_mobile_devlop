@@ -47,7 +47,7 @@ class OptionItem extends StatelessWidget {
               child: Row(
                 children: [
                   storageViewModel.selectedFeaures.contains(storageFeatures)
-                      ? SvgPicture.asset(/*"assets/svgs/true.svg"*/"assets/svgs/storage_check_active.svg")
+                      ? SvgPicture.asset(/*"assets/svgs/true.svg"*/"assets/svgs/storage_check_active_orange.svg")//storage_check_active
                       : SvgPicture.asset(/*"assets/svgs/uncheck.svg"*/"assets/svgs/storage_check_deactive.svg"),
                   SizedBox(
                     width: sizeW10,

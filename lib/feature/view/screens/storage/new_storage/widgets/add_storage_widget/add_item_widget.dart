@@ -116,7 +116,7 @@ class AddItemWidget extends StatelessWidget {
                             builder: (builder) {
                               return IconButton(
                                 icon: SvgPicture.asset(
-                                    "assets/svgs/circle_mines.svg"),
+                                    "assets/svgs/circle_mines_orange.svg")/*circle_mines*/,
                                 onPressed: () {
                                   builder.minesQuantityForBulks(
                                       storageCategoriesData:
@@ -134,7 +134,7 @@ class AddItemWidget extends StatelessWidget {
                             builder: (value) {
                               return IconButton(
                                 icon: SvgPicture.asset(
-                                    "assets/svgs/circle_add.svg"),
+                                    "assets/svgs/add_icons_orange.svg"),/*circle_add*/
                                 onPressed: () {
                                   value.increaseQuantityForBulks(
                                       storageCategoriesData:

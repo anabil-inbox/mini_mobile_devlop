@@ -77,7 +77,7 @@ class QtyWidget extends StatelessWidget {
                       builder: (builder) {
                         return IconButton(
                           icon:
-                              SvgPicture.asset("assets/svgs/circle_mines.svg"),
+                              SvgPicture.asset("assets/svgs/circle_mines_orange.svg")/*circle_mines*/,
                           onPressed: () {
                             if (isItemQuantity) {
                               int qty = int.parse(boxItem?.itemQuantity ?? "1");
@@ -101,7 +101,7 @@ class QtyWidget extends StatelessWidget {
                       initState: (_) {},
                       builder: (value) {
                         return IconButton(
-                          icon: SvgPicture.asset("assets/svgs/circle_add.svg"),
+                          icon: SvgPicture.asset("assets/svgs/add_icons_orange.svg"),/*circle_add*/
                           onPressed: () {
                             if (isItemQuantity) {
                               if (int.parse(boxItem!.itemQuantity ?? "1") <

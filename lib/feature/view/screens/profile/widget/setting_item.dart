@@ -36,7 +36,7 @@ class SettingItem extends StatelessWidget {
               ? Padding(
                   padding: EdgeInsets.symmetric(horizontal: sizeH4!),
                   child: CircleAvatar(
-                    child: SvgPicture.asset("$iconPath"),
+                    child: SvgPicture.asset("$iconPath",),
                   ),
                 )
               : const SizedBox(),

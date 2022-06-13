@@ -91,7 +91,7 @@ class _ItemScreenState extends State<ItemScreen> {
               child: Row(
                 children: [
                   SvgPicture.asset(
-                    "assets/svgs/red_add.svg",
+                    "assets/svgs/add_icons_orange.svg"/*red_add.svg*/,
                   ),
                   SizedBox(
                     width: sizeW5,
@@ -137,7 +137,7 @@ class _ItemScreenState extends State<ItemScreen> {
                     isUpdate: true);
               }
             },
-            icon: SvgPicture.asset("assets/svgs/update.svg")),
+            icon: SvgPicture.asset("assets/svgs/update_icon_orange.svg")/*update*/),
         (widget.box.storageStatus == LocalConstance.boxAtHome ||
                 itemViewModle.operationsBox?.storageStatus ==
                     LocalConstance.boxAtHome ||

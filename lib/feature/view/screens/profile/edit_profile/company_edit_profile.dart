@@ -133,7 +133,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                     ),
                     PositionedDirectional(
                       end: 0,
-                      child: SvgPicture.asset("assets/svgs/update_red.svg"),
+                      child: SvgPicture.asset("assets/svgs/update_orange.svg")/*update_red.svg*/,
                     )
                   ],
                 ),
@@ -344,7 +344,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                             addNewContact("${logic.defCountry.prefix}");
                           },
                           child: SvgPicture.asset(
-                            "assets/svgs/add.svg",
+                            "assets/svgs/add_orange.svg"/*add.svg*/,
                             fit: BoxFit.cover,
                           ),
                         );

@@ -23,7 +23,7 @@ class LanguageItem extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(width: sizeW13,),
-          selectedIndex == cellIndex ?  SvgPicture.asset("assets/svgs/check.svg") :
+          selectedIndex == cellIndex ?  SvgPicture.asset("assets/svgs/check.svg" ,color: colorPrimary,) :
            SvgPicture.asset("assets/svgs/uncheck.svg"),
           SizedBox(width: sizeW15,),
           Text("$name")

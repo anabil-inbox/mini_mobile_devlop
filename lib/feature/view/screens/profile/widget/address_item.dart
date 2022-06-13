@@ -70,7 +70,7 @@ class AddressItem extends StatelessWidget {
                                     true);
                                 profileViewModle.update();
                               },
-                              child: SvgPicture.asset("assets/svgs/check.svg"))
+                              child: SvgPicture.asset("assets/svgs/check.svg",color: colorPrimary,))
                           : InkWell(
                               onTap: () {
                                 print("Check");
@@ -144,7 +144,7 @@ class AddressItem extends StatelessWidget {
                                 },
                               ));
                             },
-                            child: SvgPicture.asset("assets/svgs/delete.svg")),
+                            child: SvgPicture.asset("assets/svgs/delete_ornage.svg")/*delete.svg*/),
                         SizedBox(
                           width: sizeW10,
                         ),
@@ -152,7 +152,7 @@ class AddressItem extends StatelessWidget {
                             onTap: () {
                               Get.to(() => EditAddressScreen(address: address));
                             },
-                            child: SvgPicture.asset("assets/svgs/update.svg"))
+                            child: SvgPicture.asset("assets/svgs/update_icon_orange.svg")/*update.svg*/)
                       ],
                     ),
                   )

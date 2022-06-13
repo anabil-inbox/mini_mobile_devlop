@@ -42,7 +42,7 @@ class RequestNewStorageStepThree extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     value.isAccept
-                        ? SvgPicture.asset("assets/svgs/true.svg")
+                        ? SvgPicture.asset("assets/svgs/true_orange.svg")//true
                         : SvgPicture.asset(
                             "assets/svgs/uncheck.svg",
                             color: seconderyColor,

@@ -111,7 +111,7 @@ class CasesReportBottomSheet extends StatelessWidget {
           children: [
             Expanded(child: Text("${casesData.name}")),
             if(logic.casesSelectedDataList.contains(casesData))...[
-              SvgPicture.asset("assets/svgs/check.svg"),
+              SvgPicture.asset("assets/svgs/check.svg",color: colorPrimary,),
             ]else...[
               SvgPicture.asset("assets/svgs/uncheck.svg"),
             ]

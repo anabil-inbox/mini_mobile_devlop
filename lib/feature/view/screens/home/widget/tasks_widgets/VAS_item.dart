@@ -23,7 +23,7 @@ class VASItem extends StatelessWidget {
           child: Row(
             children: [
               home.selectedVAS.contains(vas)
-                  ? SvgPicture.asset("assets/svgs/true.svg")
+                  ? SvgPicture.asset("assets/svgs/true_orange.svg")//true
                   : SvgPicture.asset("assets/svgs/uncheck.svg"),
               SizedBox(
                 width: sizeW12,

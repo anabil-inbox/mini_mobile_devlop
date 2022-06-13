@@ -20,7 +20,7 @@ class SplashScreen extends GetWidget<SplashViewModle> {
     screenUtil(context);
     Future.delayed(Duration(seconds: 3), () => moveToIntro());
     return Scaffold(
-        body: Center(child: SvgPicture.asset("assets/svgs/logo.svg")));
+        body: Center(child: SvgPicture.asset("assets/svgs/logo_new.svg"/*logo*/)));
   }
 }
 

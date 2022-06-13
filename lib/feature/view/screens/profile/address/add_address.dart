@@ -76,7 +76,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                           return Row(
                             children: [
                               controller.isAccepteDefoltLocation
-                                  ? SvgPicture.asset("assets/svgs/check.svg")
+                                  ? SvgPicture.asset("assets/svgs/check.svg",color: colorPrimary,)
                                   : SvgPicture.asset("assets/svgs/uncheck.svg"),
                               SizedBox(
                                 width: sizeH10,

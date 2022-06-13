@@ -82,7 +82,7 @@ class SignatureItem extends StatelessWidget {
                             //             title ||
                             homeViewModel.selectedSignatureItemModel.title ==
                                     title
-                                ? SvgPicture.asset("assets/svgs/check.svg")
+                                ? SvgPicture.asset("assets/svgs/check.svg",color: colorPrimary,)
                                 : SvgPicture.asset("assets/svgs/uncheck.svg"));
                   },
                 ),
