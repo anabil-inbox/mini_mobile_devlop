@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/recived_order_screen.dart';
@@ -127,6 +128,20 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
           ),
           isCenterTitle: true,
           onBackBtnClick: () => onWillPop(),
+          actionsWidgets: [
+            // IconButton(
+            //     onPressed: () async{
+            //       await OrderDetailesScreen.homeViewModel
+            //           .getTaskResponse(
+            //           salersOrder: OrderDetailesScreen.myOrderViewModle
+            //               .newOrderSales
+            //               .orderId ??
+            //               "");
+            //       setupPaymentMethod();
+            //       Get.to(() => ReciverOrderScreen(OrderDetailesScreen.homeViewModel));
+            //     },
+            //     icon: SvgPicture.asset("assets/svgs/update.svg")),
+          ],
         ),
         body: GetBuilder<MyOrderViewModle>(
           builder: (myOrders) {

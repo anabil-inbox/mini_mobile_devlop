@@ -245,64 +245,63 @@ class HomeViewModel extends BaseController {
       itemViewModle.tdTag.clear();
       itemViewModle.update();
 
-        Logger().d(
-            "${userBoxess.toList()[index].serialNo} || ${code.toString().replaceAll("http://", "")}");
-        if (userBoxess.toList()[index].serialNo !=
-                code.toString().replaceAll("http://", "") &&
-            isFromAtHome!) {
-          snackError(tr.error_occurred, tr.box_serial_invalid);
-          endLoading();
-          Get.back();
-        } else {
-          await getBoxBySerial(
-                  serial: code.toString().replaceAll("http://", ""))
-              .then((value) async => {
-                    Logger().e(value.toJson()),
-                    newBox.id = value.id,
-                    if (value.id == null)
-                      {
-                        Get.off(() => HomePageHolder()),
-                      }
-                    else
-                      {
-                        // userBoxess.toList()[index].storageStatus =
-                        //     LocalConstance.boxAtHome,
-                        for (var item in userBoxess)
-                          {
-                            if (item.serialNo == code)
-                              {
-                                // item..storageStatus = LocalConstance.boxAtHome,
-                                // item.modified = DateTime.now()
-                              }
-                          },
-                        update(),
-                        await fromAtHome(code, storageViewModel,
-                            homeViewModel: this),
-                        Get.off(() => HomePageHolder(
-                              box: value,
-                              isFromScan: true,
-                            )),
-                        itemViewModle.tdName.text = value.storageName ?? "",
-                        if (isFromAtHome ?? false)
-                          {
-                            await Get.bottomSheet(
-                                CheckInBoxWidget(box: value, isUpdate: false),
-                                isScrollControlled: true),
-                          }
-                        else
-                          {
-                            userBoxess.forEach((element) {
-                              if (element.id == value.id) {
-                                // element.storageStatus = LocalConstance.boxAtHome;
-                              }
-                            }),
-                            getCustomerBoxes(),
-                          },
-                      },
-                    endLoading(),
-                  });
-          update();
-        }
+      Logger().d(
+          "${userBoxess.toList()[index].serialNo} || ${code.toString().replaceAll("http://", "")}");
+      if (userBoxess.toList()[index].serialNo !=
+              code.toString().replaceAll("http://", "") &&
+          isFromAtHome!) {
+        snackError(tr.error_occurred, tr.box_serial_invalid);
+        endLoading();
+        Get.back();
+      } else {
+        await getBoxBySerial(serial: code.toString().replaceAll("http://", ""))
+            .then((value) async => {
+                  Logger().e(value.toJson()),
+                  newBox.id = value.id,
+                  if (value.id == null)
+                    {
+                      Get.off(() => HomePageHolder()),
+                    }
+                  else
+                    {
+                      // userBoxess.toList()[index].storageStatus =
+                      //     LocalConstance.boxAtHome,
+                      for (var item in userBoxess)
+                        {
+                          if (item.serialNo == code)
+                            {
+                              // item..storageStatus = LocalConstance.boxAtHome,
+                              // item.modified = DateTime.now()
+                            }
+                        },
+                      update(),
+                      await fromAtHome(code, storageViewModel,
+                          homeViewModel: this),
+                      Get.off(() => HomePageHolder(
+                            box: value,
+                            isFromScan: true,
+                          )),
+                      itemViewModle.tdName.text = value.storageName ?? "",
+                      if (isFromAtHome ?? false)
+                        {
+                          await Get.bottomSheet(
+                              CheckInBoxWidget(box: value, isUpdate: false),
+                              isScrollControlled: true),
+                        }
+                      else
+                        {
+                          userBoxess.forEach((element) {
+                            if (element.id == value.id) {
+                              // element.storageStatus = LocalConstance.boxAtHome;
+                            }
+                          }),
+                          getCustomerBoxes(),
+                        },
+                    },
+                  endLoading(),
+                });
+        update();
+      }
 
       isLoading = false;
       update();
@@ -365,19 +364,16 @@ class HomeViewModel extends BaseController {
       print("mess_7_$e");
       endLoading();
     }
-    // endLoading();
+     endLoading();
   }
 
-
-
   createQrOrderConfirm(
-      {
-        required var code,
-        required StorageViewModel storageViewModel,
-        required bool isBox,
-        required HomeViewModel homeViewModel,
-        required bool isScanDeliverdBox,
-        required bool isProduct}) async{
+      {required var code,
+      required StorageViewModel storageViewModel,
+      required bool isBox,
+      required HomeViewModel homeViewModel,
+      required bool isScanDeliverdBox,
+      required bool isProduct}) async {
     print("mess_1");
     startLoading();
     print("mess_2");
@@ -393,7 +389,7 @@ class HomeViewModel extends BaseController {
       print("mess_7_$e");
       endLoading();
     }
-    // endLoading();
+    endLoading();
   }
 
   // this for Pagination :
@@ -690,9 +686,13 @@ class HomeViewModel extends BaseController {
               Logger().i(value.data ?? {}),
               operationTask = TaskResponse.fromJson(value.data ?? {},
                   isFromNotification: false),
+              endLoading(),
             }
           else
-            {snackError("", value.status?.message)}
+            {
+              snackError("", value.status?.message),
+              endLoading(),
+            }
         });
     // } catch (e) {
     //   Logger().e(e);

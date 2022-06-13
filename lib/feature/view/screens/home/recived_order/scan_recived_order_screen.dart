@@ -86,53 +86,59 @@ class _ScanRecivedOrderScreenState extends State<ScanRecivedOrderScreen> {*/
                 onPermissionSet: (ctrl, p) =>
                     homeViewModel.onPermissionSet(context, ctrl, p),
               ),
-
-                PositionedDirectional(
-                  bottom: 0,
-                  end: 0,
-                  start: 0,
-                  child: Container(
-                    width: double.maxFinite,
-                    padding: EdgeInsets.all(sizeRadius16!),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: colorTextWhite,
-                        borderRadius: BorderRadius.circular(sizeRadius16!)),
-                    margin: EdgeInsets.all(sizeRadius16!),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CustomTextView(
-                          txt: tr.you_can_scan_confirmed_button,
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(
-                          height: sizeH20,
-                        ),
-                        GetBuilder<HomeViewModel>(
-                            init: HomeViewModel(),
-                            builder: (logic) {
-                              return PrimaryButton(
-                                  textButton: tr.confirmed,
-                                  isLoading: logic.isLoading,
-                                  onClicked: () async {
-                                    if (code != null && code!.isNotEmpty) {
-                                      logic.createQrOrderConfirm(
-                                          code: code,
-                                          isScanDeliverdBox: isScanDeliverdBoxes,
-                                          storageViewModel: storageViewModel ?? StorageViewModel(),
-                                          isBox: /*widget.*/ isBox,
-                                          isProduct: /*widget.*/ isProduct,
-                                          homeViewModel: logic);
-                                    }
-                                  },
-                                  isExpanded: true);
-                            }),
-                      ],
-                    ),
-                  ),
-                ),
+                // if(code != null && code.toString().isNotEmpty)
+                // PositionedDirectional(
+                //   bottom: 0,
+                //   end: 0,
+                //   start: 0,
+                //   child: Container(
+                //     width: double.maxFinite,
+                //     padding: EdgeInsets.all(sizeRadius16!),
+                //     alignment: Alignment.center,
+                //     decoration: BoxDecoration(
+                //         color: colorTextWhite,
+                //         borderRadius: BorderRadius.circular(sizeRadius16!)),
+                //     margin: EdgeInsets.all(sizeRadius16!),
+                //     child: Column(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       crossAxisAlignment: CrossAxisAlignment.center,
+                //       children: [
+                //         CustomTextView(
+                //           txt: tr.you_can_scan_confirmed_button,
+                //           textAlign: TextAlign.center,
+                //         ),
+                //         SizedBox(
+                //           height: sizeH20,
+                //         ),
+                //         GetBuilder<HomeViewModel>(
+                //             init: HomeViewModel(),
+                //             initState: (state){
+                //               WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                //                 state.controller?.isLoading = false;
+                //                 state.controller?.update();
+                //               });
+                //             },
+                //             builder: (logic) {
+                //               return PrimaryButton(
+                //                   textButton: tr.confirmed,
+                //                   isLoading: homeViewModel.isLoading,
+                //                   onClicked: () async {
+                //                     if (code != null && code!.isNotEmpty) {
+                //                       logic.createQrOrderConfirm(
+                //                           code: code,
+                //                           isScanDeliverdBox: isScanDeliverdBoxes,
+                //                           storageViewModel: storageViewModel ?? StorageViewModel(),
+                //                           isBox: /*widget.*/ isBox,
+                //                           isProduct: /*widget.*/ isProduct,
+                //                           homeViewModel: logic);
+                //                     }
+                //                   },
+                //                   isExpanded: true);
+                //             }),
+                //       ],
+                //     ),
+                //   ),
+                // ),
             ],
           )),
     );

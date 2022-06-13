@@ -31,7 +31,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
     super.initState();
     profileViewModle.tdTitleEdit.text = widget.address.addressTitle ?? "";
     profileViewModle.tdBuildingNoEdit.text = widget.address.buildingNo ?? "";
-    profileViewModle.tdZoneEdit.text = widget.address.zone ?? "";
+    // profileViewModle.tdZoneEdit.text = widget.address.zone ?? "";
     profileViewModle.tdZoneNumberEdit.text = widget.address.zoneNumber ?? "";
 
     profileViewModle.tdExtraDetailesEdit.text =
@@ -135,20 +135,20 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                     SizedBox(
                       height: sizeH10,
                     ),
-                    TextFormField(
-                      onSaved: (newValue) {
-                        controller.tdZoneEdit.text = newValue!;
-                        controller.update();
-                      },
-                      controller: controller.tdZoneEdit,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '${tr.fill_the_zone_correctly}';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(hintText: "${tr.zone}"),
-                    ),
+                    // TextFormField(
+                    //   onSaved: (newValue) {
+                    //     controller.tdZoneEdit.text = newValue!;
+                    //     controller.update();
+                    //   },
+                    //   controller: controller.tdZoneEdit,
+                    //   validator: (value) {
+                    //     if (value == null || value.isEmpty) {
+                    //       return '${tr.fill_the_zone_correctly}';
+                    //     }
+                    //     return null;
+                    //   },
+                    //   decoration: InputDecoration(hintText: "${tr.zone}"),
+                    // ),
                     SizedBox(
                       height: sizeH10,
                     ),
@@ -284,7 +284,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                               ? 1
                                               : 0,
                                       zoneNumber: controller.tdZoneNumberEdit.text,
-                                      zone: controller.tdZoneEdit.text,
+                                      // zone: controller.tdZoneEdit.text,
                                       streat: controller.tdStreetEdit.text,
                                       extraDetails:
                                           controller.tdExtraDetailesEdit.text,

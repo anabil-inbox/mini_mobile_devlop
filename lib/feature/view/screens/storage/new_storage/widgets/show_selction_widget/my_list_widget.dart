@@ -48,13 +48,10 @@ class MyListWidget extends StatelessWidget {
                             .map((index, value) => MapEntry(
                                   index,
                                   build.checkCategoreyType(
-                                                  storageCategoreyType: value
-                                                      .storageCategoryType!) ==
-                                              ConstanceNetwork
-                                                  .quantityCategoryType ||
+                                                  storageCategoreyType: value.storageCategoryType!) ==
+                                              ConstanceNetwork.quantityCategoryType ||
                                           build.checkCategoreyType(
-                                                  storageCategoreyType: value
-                                                      .storageCategoryType!) ==
+                                                  storageCategoreyType: value.storageCategoryType!) ==
                                               ConstanceNetwork.spaceCategoryType
                                       ? ShowSpaceAndQuantityWidget(
                                           index: index,

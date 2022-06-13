@@ -69,7 +69,7 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdTitle = TextEditingController();
   TextEditingController tdBuildingNo = TextEditingController();
   TextEditingController tdUnitNo = TextEditingController();
-  TextEditingController tdZone = TextEditingController();
+  // TextEditingController tdZone = TextEditingController();
   TextEditingController tdStreet = TextEditingController();
   TextEditingController tdZoneNumber = TextEditingController();
   TextEditingController tdLocation = TextEditingController();
@@ -79,7 +79,7 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdTitleEdit = TextEditingController();
   TextEditingController tdBuildingNoEdit = TextEditingController();
   TextEditingController tdUnitNoEdit = TextEditingController();
-  TextEditingController tdZoneEdit = TextEditingController();
+  // TextEditingController tdZoneEdit = TextEditingController();
   TextEditingController tdStreetEdit = TextEditingController();
   TextEditingController tdZoneNumberEdit = TextEditingController();
   TextEditingController tdLocationEdit = TextEditingController();
@@ -111,7 +111,7 @@ class ProfileViewModle extends BaseController {
     tdTitle.clear();
     tdBuildingNo.clear();
     tdUnitNo.clear();
-    tdZone.clear();
+    // tdZone.clear();
     tdStreet.clear();
     tdLocation.clear();
     tdExtraDetailes.clear();
@@ -315,6 +315,56 @@ class ProfileViewModle extends BaseController {
                   ],
                 ),
               ),
+        isScrollControlled: true);
+  }
+
+
+
+  void showZoneNumberBottmSheet() {
+    Set<AreaZone> areaZone =
+        ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting()))
+            .areaZones?.where((element) => element.id == userAreaZone?.id)
+            .toSet() ??
+            {};
+
+    Get.bottomSheet(
+        areaZone.isEmpty
+            ? Container(
+            decoration: BoxDecoration(
+                color: colorBackground,
+                borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(padding30!))),
+            child: Text(tr.sorry_area_available, style: textStyleTitle()))
+            : Container(
+          decoration: BoxDecoration(
+              color: colorBackground,
+              borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(padding30!))),
+          padding: EdgeInsets.symmetric(horizontal: padding20!),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: sizeH20,
+              ),
+              Text(
+                tr.select_time_zone,
+                style: textStyleTitle()!.copyWith(color: colorPrimary),
+              ),
+              SizedBox(
+                height: sizeH20,
+              ),
+              ListView(
+                shrinkWrap: true,
+                children: areaZone
+                    .map((e) => AreaZoneWidget(
+                  areaZone: e,
+                ))
+                    .toList(),
+              ),
+            ],
+          ),
+        ),
         isScrollControlled: true);
   }
 

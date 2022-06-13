@@ -4,6 +4,7 @@ import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/company_both_login/company_both_login_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/widget/header_login_widget.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/widget/shared_login_form_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_form_button.dart';
 import 'package:inbox_clients/feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -20,14 +21,12 @@ class UserBothLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-        print("msg_check ${GetUtils.isNull(SharedPref.instance.getCurrentUserData().id??null)}");
-
     Get.put(AuthViewModle());
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       body: ListView(
-      padding: const EdgeInsets.all(0),
-      children: [
+        padding: const EdgeInsets.all(0),
+        children: [
           HeaderLogin(),
           SizedBox(
             height: sizeH16,
@@ -49,41 +48,49 @@ class UserBothLoginScreen extends StatelessWidget {
             height: sizeH16,
           ),
           SharedLoginForm(type: "${ConstanceNetwork.userType}"),
-          SizedBox(height: sizeH20,),
-          SharedPref.instance.getUserType() == "${ConstanceNetwork.bothType}" ? Padding(
-            padding: EdgeInsets.symmetric(horizontal: padding20!),
-            child: SeconderyFormButton(
-              buttonText: "${tr.login_as_company}",
-              onClicked: (){
-                Get.to(() => CompanyBothLoginScreen());
-              }, ),
-          ) : const SizedBox(),
-          SizedBox(height: sizeH30,),
+          SizedBox(
+            height: sizeH20,
+          ),
+          SharedPref.instance.getUserType() == "${ConstanceNetwork.bothType}"
+              ? Padding(
+                  padding: EdgeInsets.symmetric(horizontal: padding20!),
+                  child: SeconderyFormButton(
+                    buttonText: "${tr.login_as_company}",
+                    onClicked: () {
+                      Get.to(() => CompanyBothLoginScreen());
+                    },
+                  ),
+                )
+              : const SizedBox(),
+          SizedBox(
+            height: sizeH30,
+          ),
           InkWell(
             splashColor: colorTrans,
             highlightColor: colorTrans,
-            onTap: (){
+            onTap: () {
               Get.to(() => UserRegisterScreen());
             },
             child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    style: textStyleTitle(),
-                    children: [
-                      TextSpan(
-                          text:
-                              "${tr.dont_have_an_account} ",
-                          style: textStylePrimary()!.copyWith(color: colorTextHint,fontSize: 13),
-                          ),
-                      TextSpan(
-                          text:
-                              "${tr.sign_up_here}",
-                          style: textStylePrimary()!.copyWith(fontSize: 13)),
-                    ],
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                style: textStyleTitle(),
+                children: [
+                  TextSpan(
+                    text: "${tr.dont_have_an_account} ",
+                    style: textStylePrimary()!
+                        .copyWith(color: colorTextHint, fontSize: 13),
                   ),
-                ),
+                  TextSpan(
+                      text: "${tr.sign_up_here}",
+                      style: textStylePrimary()!.copyWith(fontSize: 13)),
+                ],
+              ),
+            ),
           ),
-          SizedBox(height: 16,),
+          SizedBox(
+            height: 16,
+          ),
         ],
       ),
     );

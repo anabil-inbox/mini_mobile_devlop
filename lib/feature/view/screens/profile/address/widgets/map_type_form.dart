@@ -39,43 +39,49 @@ class MapTypeForm extends StatelessWidget {
         SizedBox(
           height: sizeH10,
         ),
-        InkWell(
-          onTap: () {
-            profileViewModle.showZoneBottmSheet();
-          },
-          child: TextFormField(
-            onTap: () {
-              profileViewModle.showZoneBottmSheet();
-            },
-            readOnly: true,
-            onSaved: (newValue) {
-              profileViewModle.tdZone.text = newValue!;
-              profileViewModle.update();
-            },
-            controller: profileViewModle.tdZone,
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return '${tr.fill_the_zone_correctly}';
-              }
-              return null;
-            },
-            decoration: InputDecoration(
-                suffixIcon: Padding(
-                  padding: EdgeInsets.all(padding6!),
-                  child: SvgPicture.asset("assets/svgs/down_arrow.svg"),
-                ),
-                hintText: "${tr.zone}"),
-          ),
-        ),
-        SizedBox(
-          height: sizeH10,
-        ),
+        // InkWell(
+        //   onTap: () {
+        //     profileViewModle.showZoneBottmSheet();
+        //   },
+        //   child: TextFormField(
+        //     onTap: () {
+        //       profileViewModle.showZoneBottmSheet();
+        //     },
+        //     readOnly: true,
+        //     onSaved: (newValue) {
+        //       profileViewModle.tdZone.text = newValue!;
+        //       profileViewModle.update();
+        //     },
+        //     controller: profileViewModle.tdZone,
+        //     validator: (value) {
+        //       if (value == null || value.trim().isEmpty) {
+        //         return '${tr.fill_the_zone_correctly}';
+        //       }
+        //       return null;
+        //     },
+        //     decoration: InputDecoration(
+        //         suffixIcon: Padding(
+        //           padding: EdgeInsets.all(padding6!),
+        //           child: SvgPicture.asset("assets/svgs/down_arrow.svg"),
+        //         ),
+        //         hintText: "${tr.zone}"),
+        //   ),
+        // ),
+        // SizedBox(
+        //   height: sizeH10,
+        // ),
         TextFormField(
+          // onTap: (){
+          //   if(profileViewModle.tdZone.text.isNotEmpty) {
+          //     profileViewModle.showZoneNumberBottmSheet();
+          //   }
+          // },
           onSaved: (newValue) {
             profileViewModle.tdZoneNumber.text = newValue!;
             profileViewModle.update();
           },
           controller: profileViewModle.tdZoneNumber,
+          // readOnly: true,
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
               return '${tr.fill_the_zone_correctly}';

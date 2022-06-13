@@ -161,7 +161,7 @@ class MapViewModel extends GetxController {
       icon: await _getMarkerImageFromUrl(
           SharedPref.instance.getCurrentUserData().image == null
       ? Constance.defoultImageMarker
-          : SharedPref.instance.getCurrentUserData().image.toString().length >10  ?(ConstanceNetwork.imageUrl + (SharedPref.instance.getCurrentUserData().image ?? "")):Constance.defoultImageMarker,
+          : SharedPref.instance.getCurrentUserData().image.toString().length >10  ?(SharedPref.instance.getCurrentUserData().image.toString().contains("http") ?SharedPref.instance.getCurrentUserData().image.toString() :ConstanceNetwork.imageUrl + (SharedPref.instance.getCurrentUserData().image ?? "")):Constance.defoultImageMarker,
           targetWidth: 180,
           color: colorTrans),
       position: myLatLng,
@@ -183,12 +183,16 @@ class MapViewModel extends GetxController {
     {required SalesOrder salesOrder}
     ) async {
     // markers.clear();
+    if(markers.isNotEmpty){
+        markers.removeWhere((element) => element.markerId.value == salesOrder.customerId);
+        update();
+    }
     final Marker marker = Marker(
       markerId: MarkerId("${salesOrder.customerId}"),
       icon: await _getMarkerImageFromUrl(
           salesOrder.customerImage == null
               ? Constance.defoultImageMarker
-              : (ConstanceNetwork.imageUrl + (salesOrder.customerImage ?? "")),
+              : (salesOrder.customerImage.toString().isNotEmpty && salesOrder.customerImage.toString().contains("http")?salesOrder.customerImage.toString(): ConstanceNetwork.imageUrl + (salesOrder.customerImage ?? "")),
           targetWidth: 180,
           color: colorTrans),
       position: customerLatLng,

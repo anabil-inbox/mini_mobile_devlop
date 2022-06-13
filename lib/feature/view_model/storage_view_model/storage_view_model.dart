@@ -1259,16 +1259,23 @@ class StorageViewModel extends BaseController {
       }
       numberOfDays = storageCategoriesData.numberOfDays ?? 1;
       tdX.text = storageCategoriesData.x.toString();
+
       tdY.text = storageCategoriesData.y.toString();
       selectedDuration = storageCategoriesData.selectedDuration!;
       quantity = storageCategoriesData.quantity ?? 1;
+
+      Logger().i(lastStorageItem?.options);
+
       storageCategoriesData.storageFeatures?.forEach((element) {
+        Logger().w(element.storageFeature);
         lastStorageItem?.options?.forEach((inner) {
-          if (inner == element.storageFeature) {
+          Logger().e(inner);
+          if (inner.toLowerCase() == element.storageFeature?.toLowerCase()) {
             selectedFeaures.add(element);
           }
         });
       });
+      Logger().i(selectedFeaures);
     }
 
     if (ConstanceNetwork.quantityCategoryType ==
@@ -1652,7 +1659,7 @@ class StorageViewModel extends BaseController {
     //   map["destroy_status"] = placeDestroy;
     // }
 
-    map["coupon_code"] = isUsingPromo ? tdCopun.text : "";
+    map["coupon_code"] = (isUsingPromo  && checkPromoAppResponse != null && checkPromoAppResponse!.status!.success!)? tdCopun.text : "";
     map["order[0]"] = data;
     map["address[0]"] =
         selectedAddress == null ? boxes[0].address?.id : selectedAddress?.id;
@@ -2034,7 +2041,7 @@ class StorageViewModel extends BaseController {
         map["payment_method"] = selectedPaymentMethod?.id ?? "";
         map["payment_id"] = paymentId ?? "";
         map["points"] = isAccept ? userUsesPoints / cartModels.length : 0;
-        map["coupon_code"] = isUsingPromo ? tdCopun.text : "";
+        map["coupon_code"] = (isUsingPromo  && checkPromoAppResponse != null && checkPromoAppResponse!.status!.success!) ? tdCopun.text : "";
         map["order[$i]"] = data;
         map["address[$i]"] = selectedAddress == null
             ? cartModels[i].box![0].address?.id

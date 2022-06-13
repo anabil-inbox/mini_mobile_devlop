@@ -74,6 +74,8 @@ class CartScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                if (!GetUtils.isNull(logic.cartList) &&
+                    logic.cartList.length != 0)
                 Positioned(
                   bottom: padding20,
                   right: padding20,

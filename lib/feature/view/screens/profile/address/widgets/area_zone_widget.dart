@@ -25,7 +25,7 @@ class AreaZoneWidget extends StatelessWidget {
           buttonText: "${areaZone.areaZone}",
           onClicked: () {
             profileViewModle.userAreaZone = areaZone;
-            profileViewModle.tdZone.text = areaZone.areaZone ?? "";
+            // profileViewModle.tdZone.text = areaZone.areaZone ?? "";
             Logger().d(areaZone.toJson());
             Get.back();
             profileViewModle.update();

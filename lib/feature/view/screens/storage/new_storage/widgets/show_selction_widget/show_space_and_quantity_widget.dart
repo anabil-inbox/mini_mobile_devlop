@@ -65,7 +65,7 @@ class ShowSpaceAndQuantityWidget extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Total",
+                tr.total,
                 style: textStyleNormalBlack(),
               ),
               const Spacer(),

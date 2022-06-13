@@ -29,8 +29,8 @@ abstract class Constance {
 
   static String driverToken = "driver_token";
 
-  static String defoultImageMarker =
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdIUAt46mfuRdSQLjr-sghJMj2kw7PVx1ftQ&usqp=CAU";
+  static String defoultImageMarker ="https://jenalk.ahdtech.com/dev/assets/img/no-user.png";
+      // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdIUAt46mfuRdSQLjr-sghJMj2kw7PVx1ftQ&usqp=CAU";
       // "https://upload.wikimedia.org/wikipedia/commons/f/f2/678111-map-marker-512.png";
 
   static String googleMapKey = "AIzaSyAzBtxE3NluLYNrUajTg9OnG7X_luzESvU";

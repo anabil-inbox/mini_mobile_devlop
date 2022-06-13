@@ -64,7 +64,7 @@ class QrScreen extends StatelessWidget {
             onPermissionSet: (ctrl, p) =>
                 homeViewModel.onPermissionSet(context, ctrl, p),
           ),
-          if (index != 0)
+          if /*(index != 0)*/(code != null && code!.isNotEmpty)
             PositionedDirectional(
               bottom: 0,
               end: 0,

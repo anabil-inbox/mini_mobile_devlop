@@ -65,19 +65,8 @@ class GlobalBottomSheet extends StatelessWidget {
           ),
              Row(
                children: [
-                 Expanded(
+                 !isTwoBtn! ? const SizedBox.shrink(): Expanded(
                    child: PrimaryButton(
-                    isLoading: false,
-                    textButton: "${tr.ok}",
-                    width: double.infinity ,
-                    onClicked: onOkBtnClick??(){},
-                    isExpanded: false),
-                 ),
-                 SizedBox(
-                   width: sizeW18,
-                 ),
-                !isTwoBtn! ? const SizedBox.shrink(): Expanded(
-                  child: PrimaryButton(
                        isLoading: false,
                        textButton: "${tr.cancle}",
                        width: double.infinity ,
@@ -85,7 +74,18 @@ class GlobalBottomSheet extends StatelessWidget {
                        colorBtn: colorBtnGray,
                        colorText: colorTextDark,
                        isExpanded: false),
-                ),
+                 ),
+                 SizedBox(
+                   width: sizeW18,
+                 ),
+                 Expanded(
+                   child: PrimaryButton(
+                       isLoading: false,
+                       textButton: "${tr.ok}",
+                       width: double.infinity ,
+                       onClicked: onOkBtnClick??(){},
+                       isExpanded: false),
+                 ),
                ],
              ),
           SizedBox(

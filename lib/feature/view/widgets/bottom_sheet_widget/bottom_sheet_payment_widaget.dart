@@ -9,6 +9,7 @@ import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_three_widgets/payment_item.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/feature/view/widgets/icon_btn.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -87,8 +88,10 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomTextView(
-                      txt: (storageViewModle.isAccept || storageViewModle.isUsingPromo)
-                          ? storageViewModle.getPriceWithDiscount(
+                      txt: (storageViewModle.isAccept ||
+                              storageViewModle.isUsingPromo)
+                          ? storageViewModle
+                              .getPriceWithDiscount(
                                   oldPrice: logic
                                       .calculateTaskPriceLotBoxess(
                                           isFromCart: false,
@@ -104,7 +107,8 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                       textStyle: textStyleAppBarTitle()
                           ?.copyWith(fontSize: fontSize28, color: colorPrimary),
                     ),
-                    if (storageViewModle.isAccept || storageViewModle.isUsingPromo) ...[
+                    if (storageViewModle.isAccept ||
+                        storageViewModle.isUsingPromo) ...[
                       SizedBox(
                         width: sizeW7,
                       ),
@@ -217,32 +221,53 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               height: sizeH12,
             ),
             if (builder.isUsingPromo)
-              TextField(
-                controller: storageViewModle.tdCopun,
-                onSubmitted: (value) async {
-                  await storageViewModle.checkPromo(promoCode: value);
-                },
-                textInputAction: TextInputAction.go,
-                decoration: InputDecoration(
-                    suffixIcon: builder.checkPromoAppResponse != null
-                        ? Padding(
-                            padding: EdgeInsets.all(padding12!),
-                            child:
-                                builder.checkPromoAppResponse!.status!.success!
-                                    ? SvgPicture.asset(
-                                        "assets/svgs/icon_big_check.svg")
-                                    : SvgPicture.asset(
-                                        "assets/svgs/cross_big.svg",
-                                      ),
-                          )
-                        : const SizedBox(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: colorBorderContainer),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: storageViewModle.tdCopun,
+                      onSubmitted: (value) async {
+                        await storageViewModle.checkPromo(promoCode: value);
+                      },
+                      textInputAction: TextInputAction.go,
+                      decoration: InputDecoration(
+                          suffixIcon: builder.checkPromoAppResponse != null
+                              ? Padding(
+                                  padding: EdgeInsets.all(padding12!),
+                                  child: builder.checkPromoAppResponse!.status!
+                                          .success!
+                                      ? SvgPicture.asset(
+                                          "assets/svgs/icon_big_check.svg")
+                                      : SvgPicture.asset(
+                                          "assets/svgs/cross_big.svg",
+                                        ),
+                                )
+                              : const SizedBox(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: colorBorderContainer),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: colorBorderContainer),
+                          ),
+                          hintText: "${tr.promo_code}"),
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: colorBorderContainer),
-                    ),
-                    hintText: "${tr.promo_code}"),
+                  ),
+                  SizedBox(
+                    width: sizeW10,
+                  ),
+                  IconBtn(
+                    onPressed: () async{
+                      await storageViewModle.checkPromo(promoCode: storageViewModle.tdCopun.text);
+                    },
+                    backgroundColor:builder.checkPromoAppResponse != null && builder.checkPromoAppResponse!.status!
+                        .success!?colorGreen: colorPrimary,
+                    width: sizeW50,
+                    height: sizeH50,
+                    borderColor: colorTextWhite,
+                    icon: "assets/svgs/check_icons.svg",
+                    iconColor: colorTextWhite,
+                  )
+                ],
               )
           ],
         );
@@ -300,15 +325,17 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                           : logic.calculateTaskPriceLotBoxess(
                               isFromCart: false, task: task, boxess: boxes);
                       if (paymentMethod.name == LocalConstance.bankCard &&
-                          int.tryParse(calculateTasksCart.toString())?.toInt() == 0) {
+                          int.tryParse(calculateTasksCart.toString())
+                                  ?.toInt() ==
+                              0) {
                         return const SizedBox.shrink();
                       } else {
                         return PaymentItem(
                           paymentMethod: paymentMethod,
-                          isDisable: ((logic.isAccept || logic.isUsingPromo)
-                                    && storageViewModle.priceAfterDiscount == 0)
-                              ?true
-                              :false,
+                          isDisable: ((logic.isAccept || logic.isUsingPromo) &&
+                                  storageViewModle.priceAfterDiscount == 0)
+                              ? true
+                              : false,
                         );
                       }
                     },
@@ -359,7 +386,8 @@ class BottomSheetPaymentWidget extends StatelessWidget {
         if (storageViewModle.selectedPaymentMethod?.id != null) {
           if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
               /*storageViewModle.selectedPaymentMethod?.id == Constance.bankTransferId ||*/
-              storageViewModle.selectedPaymentMethod?.id == Constance.pointOfSaleId) {
+              storageViewModle.selectedPaymentMethod?.id ==
+                  Constance.pointOfSaleId) {
             if (boxes.length > 0) {
               storageViewModle.doTaskBoxRequest(
                   isFromCart: false,
@@ -375,9 +403,10 @@ class BottomSheetPaymentWidget extends StatelessWidget {
                   selectedItems: items,
                   beneficiaryId: beneficiaryId);
             }
-          }else if (storageViewModle.selectedPaymentMethod?.id == Constance.bankTransferId){
-
-          } else if (storageViewModle.selectedPaymentMethod?.id == Constance.walletId) {
+          } else if (storageViewModle.selectedPaymentMethod?.id ==
+              Constance.bankTransferId) {
+          } else if (storageViewModle.selectedPaymentMethod?.id ==
+              Constance.walletId) {
             if (num.tryParse(profileViewModle.myWallet.balance ?? "0")! >=
                 storageViewModle.priceAfterDiscount) {
               if (boxes.length > 0) {
@@ -415,7 +444,6 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               "${tr.you_have_to_select_payment_method}");
         }
       } else {
-        
         if (boxes.length > 0) {
           storageViewModle.doTaskBoxRequest(
               isFromCart: false,
@@ -431,15 +459,14 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               selectedItems: items,
               beneficiaryId: beneficiaryId);
         }
-
-
       }
       return;
     }
     if (storageViewModle.selectedPaymentMethod?.id != null) {
       if (storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
           /*storageViewModle.selectedPaymentMethod?.id == Constance.bankTransferId ||*/
-          storageViewModle.selectedPaymentMethod?.id == Constance.pointOfSaleId) {
+          storageViewModle.selectedPaymentMethod?.id ==
+              Constance.pointOfSaleId) {
         if (boxes.length > 0) {
           storageViewModle.doTaskBoxRequest(
               isFromCart: false,
@@ -455,9 +482,9 @@ class BottomSheetPaymentWidget extends StatelessWidget {
               selectedItems: items,
               beneficiaryId: beneficiaryId);
         }
-      } else if(storageViewModle.selectedPaymentMethod?.id == Constance.bankTransferId ){
-
-      }else if (storageViewModle.selectedPaymentMethod?.id ==
+      } else if (storageViewModle.selectedPaymentMethod?.id ==
+          Constance.bankTransferId) {
+      } else if (storageViewModle.selectedPaymentMethod?.id ==
           Constance.walletId) {
         var amount = boxes.length == 0
             ? storageViewModle.calculateTaskPriceOnceBox(task: task)

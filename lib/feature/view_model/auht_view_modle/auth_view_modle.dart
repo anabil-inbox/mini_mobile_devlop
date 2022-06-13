@@ -13,9 +13,12 @@ import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/model/user_model.dart';
 import 'package:inbox_clients/feature/model/user_modle.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_company/register/register_company.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_company/verfication/company_verfication_code_view.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_register_view.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/profile/change_mobile/verfication_change_mobile.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/network/api/feature/auth_helper.dart';
 import 'package:inbox_clients/network/api/feature/country_helper.dart';
@@ -175,6 +178,12 @@ class AuthViewModle extends GetxController {
             }
           else
             {
+              if(value.status?.code ==417)
+              Get.bottomSheet(GlobalBottomSheet(
+                title: tr.register_new_user,
+                onCancelBtnClick: ()=> Get.back(),
+                onOkBtnClick: ()=> Get.off(() => UserRegisterScreen()),
+              ),),
               isLoading = false,
               update(),
               snackError("${tr.error_occurred}", "${value.status!.message}")
@@ -213,6 +222,12 @@ class AuthViewModle extends GetxController {
               print("msg_value ${value.toJson()}"),
               isLoading = false,
               update(),
+              if(value.status?.code ==417)
+              Get.bottomSheet(GlobalBottomSheet(
+                title: tr.register_new_user,
+                onCancelBtnClick: ()=> Get.back(),
+                onOkBtnClick: ()=> Get.off(() => RegisterCompanyScreen()),
+              ),),
               snackError("${tr.error_occurred}", "${value.status!.message}")
             }
         });
@@ -515,7 +530,7 @@ class AuthViewModle extends GetxController {
     bool authenticated = false;
     try {
       authenticated = await auth.authenticate(
-        localizedReason: tr.scan_to_auth ,
+        localizedReason: tr.scan_to_auth,
         useErrorDialogs: true,
         biometricOnly: true,
         stickyAuth: false,
@@ -523,7 +538,7 @@ class AuthViewModle extends GetxController {
     } on PlatformException catch (e) {
       print(e);
     }
-    _authorized = authenticated ? tr.authorized  : tr.not_authorized;
+    _authorized = authenticated ? tr.authorized : tr.not_authorized;
     isAuth = authenticated ? true : false;
     update();
   }

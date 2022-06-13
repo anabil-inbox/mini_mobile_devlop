@@ -92,7 +92,7 @@ class ShowBulkItem extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Total",
+                tr.total,
                 style: textStyleNormalBlack(),
               ),
               const Spacer(),
