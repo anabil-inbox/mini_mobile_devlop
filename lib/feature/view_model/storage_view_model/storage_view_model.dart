@@ -1276,6 +1276,7 @@ class StorageViewModel extends BaseController {
         });
       });
       Logger().i(selectedFeaures);
+
     }
 
     if (ConstanceNetwork.quantityCategoryType ==
@@ -1540,6 +1541,11 @@ class StorageViewModel extends BaseController {
     String invoices = "";
     String itemSeriales = "";
     num shivingPrice = 0;
+    if(selectedPaymentMethod?.id == Constance.bankTransferId && imageBankTransfer == null){
+      snackError(
+          "${tr.error_occurred}", "${tr.you_have_to_add_bank_transfer_image}");//transfe
+      return;
+    }
 
     for (var i = 0; i < boxes.length; i++) {
       boxessSeriales += '${boxes[i].serialNo},';
