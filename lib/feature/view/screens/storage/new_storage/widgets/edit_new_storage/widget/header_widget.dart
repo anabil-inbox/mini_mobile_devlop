@@ -65,7 +65,7 @@ class HeaderWidget extends StatelessWidget {
             onTap: () {
               viewModel.deleteItem(index);
             },
-            child: SvgPicture.asset("assets/svgs/delete.svg")),
+            child: SvgPicture.asset("assets/svgs/delete_ornage.svg")/*delete.svg*/),
 //         SizedBox(
 //           width: sizeW10,
 //         ),
