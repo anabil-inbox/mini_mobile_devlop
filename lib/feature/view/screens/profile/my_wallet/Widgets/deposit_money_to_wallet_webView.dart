@@ -12,6 +12,7 @@ class DepositMoneyToWalletWebView extends StatelessWidget {
     this.url,
   }) : super(key: key);
   final String? url;
+
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -29,16 +30,17 @@ class DepositMoneyToWalletWebView extends StatelessWidget {
                     var queryParameters = uri.queryParameters;
                     Logger().i("onPageFinished : url $url");
                     //String paymentId = url.split("=")[1].split("&")[0];
-                    String paymentId = queryParameters["id"].toString();
+                    // String paymentId = queryParameters["id"].toString();
+                    String paymentId = queryParameters["tap_id"].toString();
                     logic.paymentId = paymentId;
                     Logger().e(paymentId);
                     //logic.depositStatus = url.split("status=")[1];
-                    logic.depositStatus =
-                        queryParameters["status"].toString();
+                    logic.depositStatus = queryParameters["status"].toString();
                     Logger().e(logic.depositStatus);
                     //bool result = url.contains("Paid");
                     //todo add action
-                    logic.checkDeposit();
+                    if (queryParameters["status"].toString().contains("true"))
+                      logic.checkDeposit();
                   }
                 } on Exception catch (e) {
                   print(e);

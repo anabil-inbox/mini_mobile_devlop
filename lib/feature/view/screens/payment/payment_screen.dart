@@ -4,6 +4,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
+import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/payment_view_model/payment_view_model.dart';
 import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:logger/logger.dart';
@@ -24,12 +25,12 @@ class PaymentScreen extends StatelessWidget {
       required this.cartModels,
       required this.isOrderProductPayment,
       required this.paymentId,
-      this.isFromAddCard = false})
+      this.isFromAddCard = false, this.isFromCancel = false,this.orderId,this.myOrderViewModel  })
       : super(key: key);
 
-  final String url;
+  final String? url , orderId;
   final String paymentId;
-  final bool isFromNewStorage;
+  final bool isFromNewStorage , isFromCancel;
   final bool? isFromAddCard;
   final Task? task;
   final List<Box>? boxes;
@@ -37,6 +38,7 @@ class PaymentScreen extends StatelessWidget {
   final bool isFromCart;
   final List<CartModel> cartModels;
   final bool isOrderProductPayment;
+  final MyOrderViewModle? myOrderViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +68,9 @@ class PaymentScreen extends StatelessWidget {
                       //todo here we will get all cards and go back
                       Get.back(result: true);
                     }
+                  }else if(isFromCancel){
+                    if(url.toString().contains("status") && !url.toString().contains("false") )
+                    myOrderViewModel?.applyCancel(orderId);
                   } else {
                     if(url.toString().contains("status") && !url.toString().contains("false") ){
                       payment.paymentId = paymentId;

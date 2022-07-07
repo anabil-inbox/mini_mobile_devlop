@@ -28,6 +28,7 @@ import 'package:inbox_clients/feature/view/screens/profile/my_wallet/Widgets/dep
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/network/api/feature/profie_helper.dart';
+import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/feature/subscription_feature.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -112,6 +113,7 @@ class ProfileViewModle extends BaseController {
     tdBuildingNo.clear();
     tdUnitNo.clear();
     // tdZone.clear();
+    tdZoneNumber.clear();
     tdStreet.clear();
     tdLocation.clear();
     tdExtraDetailes.clear();
@@ -671,6 +673,11 @@ class ProfileViewModle extends BaseController {
     }
   }
 
+
+
+
+
+
   TextEditingController amountController = TextEditingController();
   String url = "";
 
@@ -678,20 +685,21 @@ class ProfileViewModle extends BaseController {
     isLoading = true;
     Map<String, dynamic> map = {
       "${ConstanceNetwork.amountKey}": "${amountController.text.toString()}",
+      "task_process":  "other",
     };
     try {
-      await ProfileHelper.getInstance.depositMoneyToWallet(map).then((value) {
+      await StorageFeature.getInstance.payment(body:map).then((value) {
         if (!GetUtils.isNull(value.data)) {
           isLoading = false;
-          url = value.data["payment_url"].toString();
-          Logger().d("url : ${value.data["payment_url"].toString()}");
-          amountController.clear();
+          url = value.data["url"].toString();
+          Logger().d("url : ${value.data["url"].toString()}");
+          // amountController.clear();
           update();
           Get.off(DepositMoneyToWalletWebView(
-              url: value.data["payment_url"].toString()));
+              url: value.data["url"].toString()));
         } else {
           isLoading = false;
-          amountController.clear();
+          // amountController.clear();
           update();
         }
       }).catchError((onError) {
@@ -711,7 +719,7 @@ class ProfileViewModle extends BaseController {
 
   void checkDeposit() async {
     isLoading = true;
-    if (depositStatus.contains("Paid")) {
+    if (depositStatus.contains("Paid") || depositStatus.contains("true")) {
       depositStatus = 'success';
     } else {
       depositStatus = 'fail';
@@ -719,6 +727,7 @@ class ProfileViewModle extends BaseController {
     Map<String, dynamic> map = {
       "${ConstanceNetwork.statusKey}": "${depositStatus.toString()}",
       "${ConstanceNetwork.idKey}": "${paymentId.toString()}",
+      "${ConstanceNetwork.amountKey}": "${amountController.text.toString()}",
     };
     try {
       await ProfileHelper.getInstance.checkDeposit(map).then((value) {
@@ -729,17 +738,20 @@ class ProfileViewModle extends BaseController {
           Logger().d(
               "depositStatus : ${value.data["_server_messages"].toString()}");
 
+          amountController.clear();
           getMyWallet();
           snackSuccess("$txtSuccess", "$txtSuccess");
           Get.back();
           update();
         } else {
           isLoading = false;
+          amountController.clear();
           snackError("$txtError", "$txtError");
           update();
         }
       }).catchError((onError) {
         Logger().d(onError.toString());
+        amountController.clear();
         isLoading = false;
         update();
       });

@@ -18,4 +18,9 @@ class Store {
         "id": id,
         "addresses": List<dynamic>.from(addresses!.map((x) => x.toJson())),
     };
+
+    @override
+  String toString() {
+    return 'Store{id: $id, addresses: $addresses}';
+  }
 }

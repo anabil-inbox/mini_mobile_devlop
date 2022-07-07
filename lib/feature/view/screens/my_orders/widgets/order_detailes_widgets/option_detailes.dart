@@ -21,14 +21,15 @@ class OptionDeatailes extends StatelessWidget {
           SizedBox(
             height: sizeH10,
           ),
-          orderItem.options!.isEmpty
+          orderItem.options != null && orderItem.options!.isEmpty
               ? const SizedBox()
               : SizedBox(width: double.infinity, child: Text(tr.options)),
-          orderItem.options!.isEmpty
+          orderItem.options != null &&  orderItem.options!.isEmpty
               ? const SizedBox()
               : SizedBox(
                   height: sizeH10,
                 ),
+        if(orderItem.options != null &&  orderItem.options!.isNotEmpty)
           ListView(
             shrinkWrap: true,
             primary: false,

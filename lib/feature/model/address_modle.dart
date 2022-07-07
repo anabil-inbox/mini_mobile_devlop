@@ -68,4 +68,9 @@ class Address {
 
   @override
   int get hashCode => id.hashCode;
+
+    @override
+  String toString() {
+    return 'Address{id: $id, addressTitle: $addressTitle, buildingNo: $buildingNo, unitNo: $unitNo, zone: $zone, streat: $streat, extraDetails: $extraDetails, longitude: $longitude, latitude: $latitude, geoAddress: $geoAddress, isPrimaryAddress: $isPrimaryAddress, title: $title, zoneNumber: $zoneNumber}';
+  }
 }

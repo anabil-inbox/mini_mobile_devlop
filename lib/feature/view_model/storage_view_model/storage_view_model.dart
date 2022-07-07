@@ -183,8 +183,10 @@ class StorageViewModel extends BaseController {
   ScrollController myListController = ScrollController();
 
   void animateToIndex() {
-    myListController.jumpTo(myListController.position.maxScrollExtent + 200);
-    update();
+      myListController.jumpTo(myListController.position.maxScrollExtent + 200);
+      update();
+
+
   }
 
 // to do when user choose new option :
@@ -404,7 +406,7 @@ class StorageViewModel extends BaseController {
   void saveStorageDataToArray(
       {required StorageCategoriesData storageCategoriesData,
       bool isUpdate = false,
-      int? updateIndex}) async {
+      int? updateIndex, MyOrderViewModle? orderViewModel, bool? isFromOrderEdit = false}) async {
     if (storageCategoriesData.storageCategoryType ==
         ConstanceNetwork.itemCategoryType) {
       saveBulksUser(
@@ -447,8 +449,12 @@ class StorageViewModel extends BaseController {
         userStorageCategoriesData[updateIndex!] = newStorageCategoriesData;
       } else {
         newStorageCategoriesData.groupId = updateIndex;
-        await Future.delayed(Duration(seconds: 0)).then((value) =>
+        if(isFromOrderEdit!){
+          orderViewModel!.addItemToList(newStorageCategoriesData);
+        }else {
+          await Future.delayed(Duration(seconds: 0)).then((value) =>
             {userStorageCategoriesData.add(newStorageCategoriesData)});
+        }
       }
     }
     Logger().i(storageCategoriesList.length);
@@ -935,6 +941,8 @@ class StorageViewModel extends BaseController {
                     selectedStore = null,
                     selectedDay = null,
                     profileViewModle.getMyPoints(),
+                    homeViewModel.getCustomerBoxes(),
+                    myOrderViewModel.getOrdres(isFromPagination: false),
                     userStorageCategoriesData.clear(),
                     Get.offAll(() => OrderDetailesScreen(
                           orderId: value.data["order_name"],
@@ -1208,6 +1216,7 @@ class StorageViewModel extends BaseController {
         if (!GetUtils.isNull(value) && value.length != 0) {
           //todo success here
           storageCategoriesList = value;
+
           isStorageCategories.value = false;
           update();
         } else {
@@ -1248,7 +1257,7 @@ class StorageViewModel extends BaseController {
   void showMainStorageBottomSheet(
       {required StorageCategoriesData storageCategoriesData,
       bool isUpdate = false,
-      int index = 0}) {
+      int index = 0, bool? isFromOrderEdit = false}) {
     if (isUpdate) {
       if (storageCategoriesData.storageCategoryType ==
           ConstanceNetwork.itemCategoryType) {
@@ -1276,6 +1285,7 @@ class StorageViewModel extends BaseController {
         });
       });
       Logger().i(selectedFeaures);
+
     }
 
     if (ConstanceNetwork.quantityCategoryType ==
@@ -1284,11 +1294,12 @@ class StorageViewModel extends BaseController {
         QuantityStorageBottomSheet(
           isUpdate: isUpdate,
           index: index,
+          isFromOrderEdit:isFromOrderEdit,
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
       ).whenComplete(() => {
-            clearBottomSheetData(),
+            clearBottomSheetData(isFromOrderEdit:isFromOrderEdit),
           });
     } else if (ConstanceNetwork.itemCategoryType ==
         storageCategoriesData.storageCategoryType) {
@@ -1326,13 +1337,14 @@ class StorageViewModel extends BaseController {
   //todo i concatenate homeViewModel with storageViewModel
   //todo i get index of list to update it local
 
-  void clearBottomSheetData() {
+  void clearBottomSheetData({bool? isFromOrderEdit = false}) {
     selectedDuration = "Daily";
     quantity = 1;
     numberOfDays = 1;
     selectedFeaures.clear();
     lastStorageItem = null;
     balance = 0;
+    if(!isFromOrderEdit!)
     animateToIndex();
   }
 
@@ -1524,6 +1536,7 @@ class StorageViewModel extends BaseController {
   //Note :: IF You want to Send Single Box you Will Add The Box Only in The List Like This [myBox()]
 
   final HomeViewModel homeViewModel = Get.put(HomeViewModel(), permanent: true);
+  final MyOrderViewModle myOrderViewModel = Get.put(MyOrderViewModle(), permanent: true);
 
   Future<void> doTaskBoxRequest({
     required Task task,
@@ -1540,6 +1553,11 @@ class StorageViewModel extends BaseController {
     String invoices = "";
     String itemSeriales = "";
     num shivingPrice = 0;
+    if(selectedPaymentMethod?.id == Constance.bankTransferId && imageBankTransfer == null){
+      snackError(
+          "${tr.error_occurred}", "${tr.you_have_to_add_bank_transfer_image}");//transfe
+      return;
+    }
 
     for (var i = 0; i < boxes.length; i++) {
       boxessSeriales += '${boxes[i].serialNo},';

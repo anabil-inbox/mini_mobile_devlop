@@ -94,4 +94,43 @@ class OrderHelper {
       return appResponse;
     }
   }
+
+  Future<AppResponse> cancelOrder({required Map<String, dynamic> body}) async {
+    var appResponse = await OrderApi.getInstance.cancelOrder(
+        body: body,
+        url: "${ConstanceNetwork.cancelOrderApi}",
+        header: ConstanceNetwork.header(2));
+    if (appResponse.status?.success == true) {
+      Logger().e(appResponse.data);
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
+  Future<AppResponse> applyCancel({required Map<String, dynamic> body}) async {
+    var appResponse = await OrderApi.getInstance.applyCancel(
+        body: body,
+        url: "${ConstanceNetwork.applyCancelApi}",
+        header: ConstanceNetwork.header(2));
+    if (appResponse.status?.success == true) {
+      Logger().e(appResponse.data);
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
+  Future<AppResponse> editOrder({required Map<String, dynamic> body}) async {
+    var appResponse = await OrderApi.getInstance.editOrder(
+        body: body,
+        url: "${ConstanceNetwork.editOrderApi}",
+        header: ConstanceNetwork.header(2));
+    if (appResponse.status?.success == true) {
+      Logger().e(appResponse.data);
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
 }

@@ -1,18 +1,21 @@
 class OrderSales {
-  OrderSales(
-      {this.orderId,
-      this.customerId,
-      this.orderType,
-      this.proccessType,
-      this.totalPrice,
-      this.orderShippingAddress,
-      this.orderWarehouseAddress,
-      this.deliveryDate,
-      this.status,
-      this.orderItems,
-      this.isRated,
-      this.driverId,
-      this.hasTasks = false});
+  OrderSales({
+    this.orderId,
+    this.customerId,
+    this.orderType,
+    this.proccessType,
+    this.totalPrice,
+    this.orderShippingAddress,
+    this.orderWarehouseAddress,
+    this.deliveryDate,
+    this.status,
+    this.orderItems,
+    this.isRated  = false,
+    this.driverId,
+    this.hasTasks = false,
+    this.editable = false,
+    this.boxes,
+  });
 
   String? orderId;
   String? customerId;
@@ -24,7 +27,9 @@ class OrderSales {
   String? status;
   String? proccessType;
   List<OrderItem>? orderItems;
+  List<String>? boxes;
   bool? isRated;
+  bool? editable;
   bool? hasTasks;
   String? driverId;
 
@@ -39,12 +44,16 @@ class OrderSales {
         deliveryDate: DateTime.parse(json["delivery_date"]),
         status: json["status"] ?? "",
         isRated: json["is_rated"] == null ? false : json["is_rated"],
+        editable: json["editable"] == null ? false : json["editable"],
         hasTasks: json["has_tasks"] == null ? false : json["has_tasks"],
         driverId: json["driver_id"] == null ? "" : json["driver_id"],
         orderItems: json["order_items"] == null
             ? []
             : List<OrderItem>.from(
                 json["order_items"].map((x) => OrderItem.fromJson(x))),
+        boxes: json["boxes"] == null
+            ? []
+            : List<String>.from(json["boxes"].map((x) => x.toString())),
       );
 
   Map<String, dynamic> toJson() => {
@@ -56,6 +65,7 @@ class OrderSales {
         "order_shipping_address": orderShippingAddress,
         "order_warehouse_address": orderWarehouseAddress,
         "is_rated": isRated == null ? null : isRated,
+        "editable": editable == null ? null : editable,
         "has_tasks": hasTasks == null ? null : hasTasks,
         "driver_id": driverId == null ? null : driverId,
         "delivery_date":
@@ -64,6 +74,9 @@ class OrderSales {
         "order_items": (orderItems == null || orderItems!.isEmpty)
             ? []
             : List<dynamic>.from(orderItems!.map((x) => x.toJson())),
+    "boxes": (boxes == null || boxes!.isEmpty)
+            ? []
+            : List<dynamic>.from(boxes!.map((x) => x)),
       };
 
   @override
@@ -83,6 +96,7 @@ class OrderItem {
       this.item,
       this.needAdviser,
       this.price,
+      this.oldPrice,
       this.quantity,
       this.totalPrice,
       this.groupId,
@@ -90,12 +104,18 @@ class OrderItem {
       this.isParent,
       this.itemsList,
       this.options,
-      this.boxes});
+      this.editable = false,
+      this.boxes,
+        this.itemName,
+      });
 
+  bool? editable;
   String? itemParent;
   String? item;
+  String? itemName;
   int? needAdviser;
   num? price;
+  num? oldPrice;
   num? quantity;
   num? totalPrice;
   String? groupId;
@@ -108,8 +128,10 @@ class OrderItem {
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
         itemParent: json["item_parent"],
         item: json["item"],
+      itemName: json["item_name"],
         needAdviser: json["need_Adviser"],
         price: json["price"],
+      oldPrice: json["price"],
         options: json["options"] == null
             ? []
             : List<String>.from(json["options"].map((x) => x)),
@@ -121,26 +143,34 @@ class OrderItem {
         groupId: json["group_id"],
         itemStatus: json["item_status"] == null ? null : json["item_status"],
         isParent: json["is_parent"],
+        editable: json["editable"] == null ? false : json["editable"],
         itemsList: json["items_list"] == null
             ? null
             : List<ItemsList>.from(
                 json["items_list"].map((x) => ItemsList.fromJson(x))),
+
       );
 
   Map<String, dynamic> toJson() => {
         "item_parent": itemParent,
         "item": item,
+        "item_name": itemName,
         "need_Adviser": needAdviser,
         "price": price,
+        "oldPrice": oldPrice,
         "quantity": quantity,
         "totalPrice": totalPrice,
         "options": options,
         "group_id": groupId,
+        "editable": editable == null ? null : editable,
         "item_status": itemStatus == null ? null : itemStatus,
         "is_parent": isParent,
         "items_list": itemsList == null
             ? null
             : List<dynamic>.from(itemsList!.map((x) => x.toJson())),
+    "boxes": (boxes == null || boxes!.isEmpty)
+            ? []
+            : List<dynamic>.from(boxes!.map((x) => x)),
       };
 
   @override
@@ -157,6 +187,9 @@ class OrderItem {
           groupId == other.groupId &&
           itemStatus == other.itemStatus &&
           isParent == other.isParent &&
+          editable == other.editable &&
+          boxes == other.boxes &&
+          itemName == other.itemName &&
           itemsList == other.itemsList;
 
   @override
@@ -170,6 +203,9 @@ class OrderItem {
       groupId.hashCode ^
       itemStatus.hashCode ^
       isParent.hashCode ^
+      editable.hashCode ^
+      boxes.hashCode ^
+      itemName.hashCode ^
       itemsList.hashCode;
 }
 

@@ -16,6 +16,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../util/app_shaerd_data.dart';
 import '../../../model/my_order/order_sales.dart';
@@ -100,6 +101,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
       setState(() {});
       OrderDetailesScreen.homeViewModel.isLoading = false;
       OrderDetailesScreen.homeViewModel.update();
+      Logger().w(OrderDetailesScreen.myOrderViewModle.newOrderSales.toJson());
       if (OrderDetailesScreen.myOrderViewModle.newOrderSales.isRated! ==
               false &&
           OrderDetailesScreen.myOrderViewModle.newOrderSales.status ==
@@ -215,14 +217,14 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                           SizedBox(
                             height: sizeH32,
                           ),
-                          if (widget.isFromPayment)
-                            PrimaryButton(
-                                textButton: tr.back_to_home,
-                                isLoading: false,
-                                onClicked: () async {
-                                  Get.off(() => HomePageHolder());
-                                },
-                                isExpanded: true),
+                          // if (widget.isFromPayment)
+                          //   PrimaryButton(
+                          //       textButton: tr.back_to_home,
+                          //       isLoading: false,
+                          //       onClicked: () async {
+                          //         Get.off(() => HomePageHolder());
+                          //       },
+                          //       isExpanded: true),
                           if (!widget.isFromPayment) ...[
                             GetBuilder<HomeViewModel>(builder: (logic) {
                               bool isHaveDetailes = true;
@@ -242,8 +244,12 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                                           LocalConstance.completed ||
                                       isHaveDetailes == false ||
                                       myOrders.newOrderSales.proccessType ==
-                                          LocalConstance.productSv /*||
-                                  !myOrders.newOrderSales.hasTasks!*/)
+                                          LocalConstance.productSv ||
+                                      myOrders.newOrderSales.proccessType ==
+                                          LocalConstance
+                                              .giveawayId /*||
+                                  !myOrders.newOrderSales.hasTasks!*/
+                                  )
                                   ? const SizedBox()
                                   : PrimaryButton(
                                       textButton: tr.order_details,
@@ -261,6 +267,47 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                                       isExpanded: true);
                             })
                           ],
+                          SizedBox(
+                            height: sizeH10,
+                          ),
+                          Row(
+                            children: [
+                              if (myOrders.isAllowToCancel(myOrders.newOrderSales)  ) ...[
+                                Expanded(
+                                  child: PrimaryButton(
+                                      textButton: tr.cancle,
+                                      isLoading: myOrders.isLoadingCancel,
+                                      onClicked: () => _onCancelClick(myOrders),
+                                      isExpanded: true),
+                                ),
+                                SizedBox(
+                                  width: sizeW10,
+                                ),
+                              ],
+                              if (myOrders.isAllowToEdit(myOrders.newOrderSales)) ...[
+                                Expanded(
+                                  child: PrimaryButton(
+                                      colorBtn: colorBtnGray,
+                                      colorText: colorBlack,
+                                      textButton: tr.edit,
+                                      isLoading: false,
+                                      onClicked: () => _onEditClick(myOrders),
+                                      isExpanded: true),
+                                ),
+                              ],
+                            ],
+                          ),
+                          SizedBox(
+                            height: sizeH10,
+                          ),
+                          if (widget.isFromPayment)
+                            PrimaryButton(
+                                textButton: tr.back_to_home,
+                                isLoading: false,
+                                onClicked: () async {
+                                  Get.off(() => HomePageHolder());
+                                },
+                                isExpanded: true),
                           SizedBox(
                             height: sizeH32,
                           ),
@@ -283,5 +330,13 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
       name: OrderDetailesScreen.homeViewModel.operationTask.paymentMethod,
     );
     OrderDetailesScreen.storageViewModel.update();
+  }
+
+  _onCancelClick(MyOrderViewModle myOrders) {
+    myOrders.cancelOrder(myOrders.newOrderSales , OrderDetailesScreen.homeViewModel, OrderDetailesScreen.storageViewModel);
+  }
+
+  _onEditClick(MyOrderViewModle myOrders) {
+    myOrders.editOrder(myOrders.newOrderSales , OrderDetailesScreen.homeViewModel, OrderDetailesScreen.storageViewModel);
   }
 }

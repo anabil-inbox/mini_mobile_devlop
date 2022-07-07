@@ -80,6 +80,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
   Widget build(BuildContext context) {
     screenUtil(context);
     return Scaffold(
+      extendBody: true,
       body: GetBuilder<HomeViewModel>(
           init: HomeViewModel(),
           builder: (logic) {
@@ -109,6 +110,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
           return Container(
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
+              color: Colors.transparent,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(sizeRadius16!),
                     topRight: Radius.circular(sizeRadius16!))),

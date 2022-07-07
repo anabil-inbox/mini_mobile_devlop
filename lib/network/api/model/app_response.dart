@@ -13,11 +13,19 @@ class AppResponse {
       
       if (GetUtils.isNull(map["data"])|| map["data"] == {}) {
         return AppResponse(
-          status: Status.fromJson(map["status"]),
+          status: Status.fromJson(map["status"]??{
+            "message":"error accord",
+            "code":403,
+            "success":false,
+          }),
         );
       } else {
         return AppResponse(
-          status: Status.fromJson(map["status"]),
+          status: Status.fromJson(map["status"]??{
+            "message":"error accord",
+            "code":403,
+            "success":false,
+          }),
           data: map["data"] == null ? null : map["data"],
         );
       }

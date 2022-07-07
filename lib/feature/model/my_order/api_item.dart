@@ -104,6 +104,7 @@ class ApiItem {
     required String? itemsChildIn,
     required String? processType,
     required String? invoices,
+    String? storageType,
   }) {
     return ApiItem(
             itemCode: itemCode,
@@ -114,7 +115,7 @@ class ApiItem {
                 : selectedDateTime.toString(),
             itemParent: itemParent ?? 0,
             subscriptionPrice: subscriptionPrice,
-            storageType: "Process",
+            storageType:storageType?? "Process",
             subscription: "Daily",
             subscriptionDuration: 1,
             groupId: groupId ?? 1,

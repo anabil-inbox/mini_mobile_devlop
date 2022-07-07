@@ -79,7 +79,10 @@ class TaskWidgetBS extends StatelessWidget {
                                   boxes: homeViewModel.selctedOperationsBoxess
                                       .toList(),
                                 ),
-                                isScrollControlled: true);
+                                isScrollControlled: true).whenComplete((){
+                              storageViewModel.imageBankTransfer = null;
+                              storageViewModel.update();
+                            });
                           } else if ((task.id == LocalConstance.destroyId ||
                                   task.id == LocalConstance.terminateId) &&
                               !(storageViewModel.doseBoxInHome(
