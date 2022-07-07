@@ -70,6 +70,7 @@ class HomeViewModel extends BaseController {
     await HomeHelper.getInstance
         .getCustomerBoxess(pageSize: 30, page: page)
         .then((value) => {
+              userBoxess.clear(),
               userBoxess.addAll(value),
               update(),
             });

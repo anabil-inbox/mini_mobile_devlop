@@ -154,6 +154,9 @@ abstract class ConstanceNetwork {
   static String uploadOrderSignatureEndPoint =
       "inbox_app.api.sales_order.upload_order_signature";
   static String addReviewApi = "inbox_app.api.service_center.create_review";
+  static String cancelOrderApi ="inbox_app.api.sales_order.cancel_order";
+  static String applyCancelApi ="inbox_app.api.sales_order.apply_cancel";
+  static String editOrderApi ="inbox_app.api.sales_order.edit_order";
 
   // this for subscriptions
   static String getSubscriptionsEndPoint =
@@ -225,6 +228,7 @@ abstract class ConstanceNetwork {
   static var tagsKey = "tags";
 
   static var dataKey = "data";
+  static var deliveryDateKey = "delivery_date";
 
   static var imageKey = "Image";
 
@@ -256,6 +260,14 @@ abstract class ConstanceNetwork {
   static var salesOrderKey = "sales_order";
 
   static var emergencyCaseKey = "emergency_case"; //small
+  static var orderIdKey = "order_id";
+
+  static var shippingAddressKey = "shipping_address";
+
+  static var orderFromKey = "order_from";
+  static var orderToKey = "order_to";
+
+  static var itemsKey = "items"; //small
 
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};

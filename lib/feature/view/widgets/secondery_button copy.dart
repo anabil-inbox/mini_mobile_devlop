@@ -36,6 +36,7 @@ class SeconderyButtom extends StatelessWidget {
         // ),
       ], borderRadius: BorderRadius.circular(6)),
       child: MaterialButton(
+        elevation: 0,
         color: colorBackground,
         textColor: colorPrimary,
         onPressed: () {

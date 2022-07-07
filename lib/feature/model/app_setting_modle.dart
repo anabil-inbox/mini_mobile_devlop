@@ -71,7 +71,7 @@ class ApiSettings {
         "payment_method":
             List<dynamic>.from(paymentMethod!.map((x) => x.toJson())),
         "working_hours": workingHours?.toJson(),
-        "area_zones": List<dynamic>.from(areaZones!.map((x) => x.toJson())),
+        "area_zones":areaZones  == null ? null: List<dynamic>.from(areaZones!.map((x) => x.toJson())),
       };
 }
 

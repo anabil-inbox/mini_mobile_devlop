@@ -6,6 +6,7 @@ import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/a
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/price_bottom_sheet_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/quantity_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -13,16 +14,19 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 
 class QuantityStorageBottomSheet extends StatefulWidget {
-  const QuantityStorageBottomSheet(
-      {Key? key,
-      required this.storageCategoriesData,
-      this.isUpdate = false,
-      required this.index})
-      : super(key: key);
+  const QuantityStorageBottomSheet({
+    Key? key,
+    required this.storageCategoriesData,
+    this.isUpdate = false,
+    required this.index,
+    this.isFromOrderEdit = false,
+  }) : super(key: key);
 
   final StorageCategoriesData storageCategoriesData;
   final bool isUpdate;
   final int index;
+  final bool? isFromOrderEdit;
+
   @override
   State<QuantityStorageBottomSheet> createState() =>
       _QuantityStorageBottomSheetState();
@@ -30,8 +34,11 @@ class QuantityStorageBottomSheet extends StatefulWidget {
 
 class _QuantityStorageBottomSheetState
     extends State<QuantityStorageBottomSheet> {
+
   static StorageViewModel get storageViewModel =>
       Get.put(StorageViewModel(), permanent: true);
+  MyOrderViewModle get orderViewModel => Get.find<MyOrderViewModle>();
+
   //  StorageViewModel storageViewModel = Get.find<StorageViewModel>();
   @override
   void initState() {
@@ -138,12 +145,15 @@ class _QuantityStorageBottomSheetState
                         textButton: "${tr.next}",
                         isLoading: b.isLoading,
                         onClicked: () {
-                          storageViewModel.saveStorageDataToArray(
-                              updateIndex: widget.index,
-                              isUpdate: widget.isUpdate,
-                              storageCategoriesData:
-                                  widget.storageCategoriesData);
-                          storageViewModel.checkDaplication();
+
+                            storageViewModel.saveStorageDataToArray(
+                                updateIndex: widget.index,
+                                isUpdate: widget.isUpdate,
+                                orderViewModel:orderViewModel,
+                                isFromOrderEdit:widget.isFromOrderEdit!,
+                                storageCategoriesData:
+                                    widget.storageCategoriesData);
+                            storageViewModel.checkDaplication();
                         },
                         isExpanded: true);
                   },
