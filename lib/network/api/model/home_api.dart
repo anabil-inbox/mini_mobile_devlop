@@ -18,6 +18,7 @@ class HomeApi {
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
+      DioManagerClass.getInstance.handleNotAuthorized(message["status"]["message"]);
       return AppResponse.fromJson(message);
     }
   }
@@ -30,6 +31,7 @@ class HomeApi {
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
+      DioManagerClass.getInstance.handleNotAuthorized(message["status"]["message"]);
       return AppResponse.fromJson(message);
     }
   }
@@ -42,6 +44,7 @@ class HomeApi {
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
+      DioManagerClass.getInstance.handleNotAuthorized(message["status"]["message"]);
       return AppResponse.fromJson(message);
     }
   }
@@ -54,6 +57,7 @@ class HomeApi {
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
+      DioManagerClass.getInstance.handleNotAuthorized(message["status"]["message"]);
       return AppResponse.fromJson(message);
     }
   }
@@ -66,6 +70,7 @@ class HomeApi {
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
+      DioManagerClass.getInstance.handleNotAuthorized(message["status"]["message"]);
       return AppResponse.fromJson(message);
     }
   }
@@ -78,6 +83,7 @@ class HomeApi {
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
+      DioManagerClass.getInstance.handleNotAuthorized(message["status"]["message"]);
       return AppResponse.fromJson(message);
     }
   }
@@ -90,6 +96,7 @@ class HomeApi {
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
+      DioManagerClass.getInstance.handleNotAuthorized(message["status"]["message"]);
       return AppResponse.fromJson(message);
     }
   }
@@ -103,6 +110,7 @@ class HomeApi {
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
+      DioManagerClass.getInstance.handleNotAuthorized(message["status"]["message"]);
       return AppResponse.fromJson(message);
     }
   }

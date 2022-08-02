@@ -18,6 +18,8 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
+import 'package:inbox_clients/util/sh_util.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import 'widgets/show_selction_widget/my_list_widget.dart';
 
@@ -73,137 +75,160 @@ class RequestNewStorageStepThree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    return Scaffold(
-      backgroundColor: scaffoldColor,
-      appBar: CustomAppBarWidget(
-        isCenterTitle: true,
-        titleWidget: Text(
-          "${tr.request_new_storage}",
-          style: textStyleAppBarTitle(),
-        ),
-      ),
-      body: GetBuilder<StorageViewModel>(
-        builder: (logical) {
-          return SizedBox(
-            height: double.infinity,
-            child: Stack(
-              children: [
-                ListView(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  shrinkWrap: true,
-                  primary: true,
-                  children: [
-                    GetBuilder<StorageViewModel>(
-                      init: StorageViewModel(),
-                      initState: (_) {},
-                      builder: (val) {
-                        return RequestNewStorageHeader(
-                          currentLevel: val.currentLevel,
-                        );
-                      },
-                    ),
-                    MyListWidget(),
-                    SizedBox(
-                      height: sizeH16,
-                    ),
-                    PaymentWidget(isRecivedOrderPayment: false),
-                    // SizedBox(height: sizeH16),
-                    // acceptTerms,
-                    if (logical.selectedPaymentMethod?.id ==
-                        Constance.bankTransferId) ...[
-                      SizedBox(
-                        height: sizeH16,
-                      ),
-                      CustomTextFormFiled(
-                        isReadOnly: true,
-                        fun: () async {
-                          logical.onBankImageClick();
-                        },
-                        label: logical.imageBankTransfer != null
-                            ? logical.imageBankTransfer?.path.split("/").last.toString()
-                            : tr.select_image,
-                        isFill: true,
-                        fillColor: colorTextWhite,
-                      ),
-                    ],
-                    SizedBox(
-                      height: sizeH100,
-                    ),
-                  ],
-                ),
+    return ShowCaseWidget(
 
-                PositionedDirectional(
-                    bottom: padding32,
-                    start: padding20,
-                    end: padding20,
-                    child: Container(
-                        width: sizeW150,
-                        child: GetBuilder<StorageViewModel>(
-                          builder: (logic) {
-                            return PrimaryButton(
-                              isExpanded: false,
-                              isLoading: logic.isLoading,
-                              textButton: "${tr.request_box}",
-                              onClicked: () async {
-                                if (logic.isValiedToSaveStorage()) {
-                                  if (logic.selectedPaymentMethod?.id ==
-                                              Constance.cashId ||
-                                          logic.selectedPaymentMethod?.id ==
-                                              Constance
-                                                  .pointOfSaleId /*||
-                                      logic.selectedPaymentMethod?.id == Constance.bankTransferId*/
-                                      ) {
-                                    await logic.addNewStorage();
-                                    logic.isLoading = false;
-                                    logic.update();
-                                  } else if (logic.selectedPaymentMethod?.id ==
-                                      Constance.bankTransferId) {
-                                    //todo here i will check if user upload or select image i will allow to send request
-                                    await logic.addNewStorage(isFromBankTransfer:true);
-                                    logic.isLoading = false;
-                                    logic.update();
-                                  } else if ((logic.selectedPaymentMethod?.id ==
-                                      Constance.walletId)) {
-                                    if (num.parse(profileViewModle
-                                            .myWallet.balance
-                                            .toString()) >
-                                        storageViewModel.totalBalance) {
-                                      await logic.addNewStorage();
-                                      logic.isLoading = false;
-                                      logic.update();
-                                    } else {
-                                      snackError(
-                                          "", tr.wallet_balance_is_not_enough);
-                                    }
-                                  } else {
-                                    await logic.goToPaymentMethod(
-                                        cartModels: [],
-                                        isOrderProductPayment: false,
-                                        isFromCart: false,
-                                        isFromNewStorage: true,
-                                        storageViewModel: storageViewModel,
-                                        amount: logic.totalBalance);
-                                    logic.isLoading = false;
-                                    logic.update();
-                                  }
-                                }
+      onFinish: ()async{
+        await SharedPref.instance.setFirstPaymentKey(true);
+      },
+      builder: Builder(
+        builder: (context) {
+          storageViewModel.setContext(context);
+          return Scaffold(
+            backgroundColor: scaffoldColor,
+            appBar: CustomAppBarWidget(
+              isCenterTitle: true,
+              titleWidget: Text(
+                "${tr.request_new_storage}",
+                style: textStyleAppBarTitle(),
+              ),
+            ),
+            body: GetBuilder<StorageViewModel>(
+              initState: (s){
+                s.controller?.showPaymentShowCase();
+              },
+              builder: (logical) {
+                return SizedBox(
+                  height: double.infinity,
+                  child: Stack(
+                    children: [
+                      ListView(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        shrinkWrap: true,
+                        primary: true,
+                        children: [
+                          GetBuilder<StorageViewModel>(
+                            init: StorageViewModel(),
+                            initState: (_) {},
+                            builder: (val) {
+                              return RequestNewStorageHeader(
+                                currentLevel: val.currentLevel,
+                              );
+                            },
+                          ),
+                          MyListWidget(),
+                          SizedBox(
+                            height: sizeH16,
+                          ),
+                          Showcase(
+                              disableAnimation: Constance.showCaseDisableAnimation,
+                              shapeBorder: RoundedRectangleBorder(),
+                              radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
+                              showArrow: Constance.showCaseShowArrow,
+                              overlayPadding: EdgeInsets.all(5),
+                              blurValue:Constance.showCaseBluer ,
+                              description: tr.payment_btn_show_case,
+                              key: logical.paymentCaseKey,
+                              child: PaymentWidget(isRecivedOrderPayment: false)),
+                          // SizedBox(height: sizeH16),
+                          // acceptTerms,
+                          if (logical.selectedPaymentMethod?.id ==
+                              Constance.bankTransferId) ...[
+                            SizedBox(
+                              height: sizeH16,
+                            ),
+                            CustomTextFormFiled(
+                              isReadOnly: true,
+                              fun: () async {
+                                logical.onBankImageClick();
                               },
-                            );
-                          },
-                        ))),
-                // PositionedDirectional(
-                //     bottom: padding32,
-                //     end: padding40,
-                //     child: Container(
-                //         width: sizeW150,
-                //         child: SeconderyFormButton(
-                //           buttonText: "${tr.add_to_cart}",
-                //           onClicked: () {},
-                //         ))),
-              ],
+                              label: logical.imageBankTransfer != null
+                                  ? logical.imageBankTransfer?.path.split("/").last.toString()
+                                  : tr.select_image,
+                              isFill: true,
+                              fillColor: colorTextWhite,
+                            ),
+                          ],
+                          SizedBox(
+                            height: sizeH100,
+                          ),
+                        ],
+                      ),
+
+                      PositionedDirectional(
+                          bottom: padding32,
+                          start: padding20,
+                          end: padding20,
+                          child: Container(
+                              width: sizeW150,
+                              child: GetBuilder<StorageViewModel>(
+                                builder: (logic) {
+                                  return PrimaryButton(
+                                    isExpanded: false,
+                                    isLoading: logic.isLoading,
+                                    textButton: "${tr.request_box}",
+                                    onClicked: () async {
+                                      if (logic.isValiedToSaveStorage()) {
+                                        if (logic.selectedPaymentMethod?.id ==
+                                                    Constance.cashId ||
+                                                logic.selectedPaymentMethod?.id ==
+                                                    Constance
+                                                        .pointOfSaleId /*||
+                                            logic.selectedPaymentMethod?.id == Constance.bankTransferId*/
+                                            ) {
+                                          await logic.addNewStorage();
+                                          logic.isLoading = false;
+                                          logic.update();
+                                        } else if (logic.selectedPaymentMethod?.id ==
+                                            Constance.bankTransferId) {
+                                          //todo here i will check if user upload or select image i will allow to send request
+                                          await logic.addNewStorage(isFromBankTransfer:true);
+                                          logic.isLoading = false;
+                                          logic.update();
+                                        } else if ((logic.selectedPaymentMethod?.id ==
+                                            Constance.walletId)) {
+                                          if (num.parse(profileViewModle
+                                                  .myWallet.balance
+                                                  .toString()) >
+                                              storageViewModel.totalBalance) {
+                                            await logic.addNewStorage();
+                                            logic.isLoading = false;
+                                            logic.update();
+                                          } else {
+                                            snackError(
+                                                "", tr.wallet_balance_is_not_enough);
+                                          }
+                                        } else {
+                                          await logic.goToPaymentMethod(
+                                              cartModels: [],
+                                              isOrderProductPayment: false,
+                                              isFromCart: false,
+                                              isFromNewStorage: true,
+                                              storageViewModel: storageViewModel,
+                                              amount: logic.totalBalance);
+                                          logic.isLoading = false;
+                                          logic.update();
+                                        }
+                                      }
+                                    },
+                                  );
+                                },
+                              ))),
+                      // PositionedDirectional(
+                      //     bottom: padding32,
+                      //     end: padding40,
+                      //     child: Container(
+                      //         width: sizeW150,
+                      //         child: SeconderyFormButton(
+                      //           buttonText: "${tr.add_to_cart}",
+                      //           onClicked: () {},
+                      //         ))),
+                    ],
+                  ),
+                );
+              },
             ),
           );
-        },
+        }
       ),
     );
   }

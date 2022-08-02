@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
+import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/widgets/blue_plate_form.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/widgets/map_type_form.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/widgets/map_type_item.dart';
@@ -13,6 +18,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 
 class AddAddressScreen extends GetWidget<ProfileViewModle> {
@@ -52,7 +58,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         MapTypeItem(buttonText: "Blue plate"),
-                        MapTypeItem(buttonText: "Map"),
+                        MapTypeItem(buttonText: "Share location"),
                       ],
                     ),
                     builder.selectedMapType == LocalConstance.bluePlate
@@ -103,8 +109,16 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                         return PrimaryButton(
                             textButton: "${tr.save}",
                             isLoading: controller.isLoading,
-                            onClicked: () {
+                            onClicked: () async{
+
                               if (_formKey.currentState!.validate()) {
+                                // if(controller.mark.position.latitude == 25.36){
+                                //   var position = await GeolocatorPlatform.instance.getCurrentPosition(
+                                //     /*desiredAccuracy: LocationAccuracy.high*/);
+                                //   controller.mark =   Marker(markerId: MarkerId(position.toString()) ,
+                                //       position:LatLng(position.latitude , position.longitude) );
+                                //   await controller.getAddressFromLatLong(LatLng(position.latitude , position.longitude));
+                                // }
                                 // if(controller.userAreaZone!.numbers!.contains(controller.tdZoneNumber.text.toString())) {
                                   controller.addNewAddress(Address(
                                   addressTitle: controller.tdTitle.text,
@@ -112,8 +126,9 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                                       controller.isAccepteDefoltLocation
                                           ? 1
                                           : 0,
-                                  zoneNumber: controller.tdZoneNumber.text.toString(),
-                                  zone: controller.userAreaZone?.id ?? "",
+                                  zoneNumber: controller.tdZoneNumber.text.toString()/*??""*/,
+                                  zone:controller.tdZoneNumber.text.toString().isNotEmpty? ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting()))
+                                      .areaZones?.firstWhere((element) => element.numbers!.contains(controller.tdZoneNumber.text.toString())).areaZone??""/*controller.userAreaZone?.id ?? ""*/:"",
                                   streat: controller.tdStreet.text,
                                   extraDetails: controller.tdExtraDetailes.text,
                                   buildingNo: controller.tdBuildingNo.text,

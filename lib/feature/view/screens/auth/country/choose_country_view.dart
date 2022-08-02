@@ -16,8 +16,8 @@ import '../auth_user/widget/country_item_widget.dart';
 
 // ignore: must_be_immutable
 class ChooseCountryScreen extends StatefulWidget {
-  ChooseCountryScreen({Key? key}) : super(key: key);
-
+  ChooseCountryScreen({Key? key, this.isOperator = false, }) : super(key: key);
+  final bool? isOperator;
   @override
   State<ChooseCountryScreen> createState() => _ChooseCountryScreenState();
 }
@@ -145,7 +145,11 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
                     isLoading: false,
                     textButton: "${tr.ok}",
                     onClicked: () {
-                      logic.defCountry = selctedCountry;
+                      if(widget.isOperator!){
+                        logic.defCountryOperator = selctedCountry;
+                      }else {
+                        logic.defCountry = selctedCountry;
+                      }
                       logic.update();
                       Navigator.pop(context);
                     },

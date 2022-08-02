@@ -15,12 +15,14 @@ import 'package:inbox_clients/feature/model/inside_box/sended_image.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/chooce_add_method_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/items_operations_widget_BS.dart';
+import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/box_bottom_sheet/seals_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/secondery_button%20copy.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
 import 'package:inbox_clients/network/api/feature/item_helper.dart';
+import 'package:inbox_clients/network/api/feature/order_helper.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -39,7 +41,9 @@ class ItemViewModle extends BaseController {
   final HomeViewModel homeViewModel = Get.find<HomeViewModel>();
 
   ItemViewModle._();
+
   factory ItemViewModle() => ItemViewModle._();
+
   // to decler here search value ::
 
   String search = "";
@@ -84,7 +88,8 @@ class ItemViewModle extends BaseController {
             {
               // homeViewModel.getCustomerBoxes(),
               snackSuccess("${tr.success}", "${value.status?.message}"),
-              operationsBox = Box.fromJson(value.data[ConstanceNetwork.dataKey]),
+              operationsBox =
+                  Box.fromJson(value.data[ConstanceNetwork.dataKey]),
               homeViewModel.userBoxess.clear(),
               homeViewModel.getCustomerBoxes(),
             }
@@ -160,19 +165,18 @@ class ItemViewModle extends BaseController {
             }
         });
 
-      images.clear();
-      tags.clear();
-      usesBoxItemsTags.clear();
-      tdTag.clear();
-      tdName.clear();
-      itemQuantity = 1;
-      update();
-      Get.close(1);
+    images.clear();
+    tags.clear();
+    usesBoxItemsTags.clear();
+    tdTag.clear();
+    tdName.clear();
+    itemQuantity = 1;
+    update();
+    Get.close(1);
     getBoxBySerial(serial: serialNo);
-
   }
 
-  clearBottomSheetItem(){
+  clearBottomSheetItem() {
     images.clear();
     usesBoxItemsTags.clear();
     tdTag.clear();
@@ -271,8 +275,7 @@ class ItemViewModle extends BaseController {
   // here for delete item Func && Botttom Sheet Alarm ::
   Future<void> showDeleteItemBottomSheet(
       {required String serialNo, required String id}) async {
-    await Get.bottomSheet(
-      GlobalBottomSheet(
+    await Get.bottomSheet(GlobalBottomSheet(
       isTwoBtn: true,
       title: tr.want_delete,
       onOkBtnClick: () async {
@@ -579,10 +582,12 @@ class ItemViewModle extends BaseController {
     }
   }
 
-  showInvoicesBottomSheet({required List<Invoices> invoices}) {
+  showInvoicesBottomSheet({required List<Invoices> invoices,required Box? operationsBox}) {
     Get.bottomSheet(
         InvoicesBottomSheet(
           invoices: invoices,
+          viewModel: this,
+            operationsBox:operationsBox,
         ),
         isScrollControlled: true);
   }
@@ -597,4 +602,30 @@ class ItemViewModle extends BaseController {
 
   @override
   InternalFinalCallback<void> get onDelete => super.onDelete;
+
+  bool isLoadingInvoice = false;
+  Future<void> getInvoiceUrl(String? paymentEntryId, {Box ? operationsBox}) async {
+    isLoadingInvoice = true;
+    update();
+    var boxId = paymentEntryId;
+    var appResponse = await OrderHelper.getInstance
+        .getInvoiceUrlPaymentApi(body: {LocalConstance.id: boxId});
+    isLoadingInvoice = false;
+    update();
+    if (appResponse.status!.success!) {
+      var data = appResponse.data;
+      var paymentUrl = data["url"];
+      Get.to(PaymentScreen(
+        isFromNewStorage: false,
+        isFromCart: false,
+        url: paymentUrl,
+        paymentId: '',
+        cartModels: [],
+        isOrderProductPayment: false,
+        isFromInvoice: true,
+        boxIdInvoice: boxId,
+          operationsBox:operationsBox,
+      ));
+    }
+  }
 }

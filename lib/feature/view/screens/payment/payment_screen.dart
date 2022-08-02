@@ -4,9 +4,12 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
+import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/payment_view_model/payment_view_model.dart';
 import 'package:inbox_clients/local_database/model/cart_model.dart';
+import 'package:inbox_clients/network/api/feature/order_helper.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:logger/logger.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -14,23 +17,29 @@ import '../../../../util/app_shaerd_data.dart';
 
 // ignore: must_be_immutable
 class PaymentScreen extends StatelessWidget {
-  PaymentScreen(
-      {Key? key,
-      required this.url,
-      required this.isFromNewStorage,
-      this.beneficiaryId,
-      this.boxes,
-      required this.isFromCart,
-      this.task,
-      required this.cartModels,
-      required this.isOrderProductPayment,
-      required this.paymentId,
-      this.isFromAddCard = false, this.isFromCancel = false,this.orderId,this.myOrderViewModel  })
-      : super(key: key);
+  PaymentScreen({
+    Key? key,
+    required this.url,
+    required this.isFromNewStorage,
+    this.beneficiaryId,
+    this.boxes,
+    required this.isFromCart,
+    this.task,
+    required this.cartModels,
+    required this.isOrderProductPayment,
+    required this.paymentId,
+    this.isFromAddCard = false,
+    this.isFromCancel = false,
+    this.orderId,
+    this.myOrderViewModel,
+    this.isFromInvoice = false,
+    this.boxIdInvoice,
+    this.operationsBox,
+  }) : super(key: key);
 
-  final String? url , orderId;
+  final String? url, orderId;
   final String paymentId;
-  final bool isFromNewStorage , isFromCancel;
+  final bool isFromNewStorage, isFromCancel;
   final bool? isFromAddCard;
   final Task? task;
   final List<Box>? boxes;
@@ -39,7 +48,11 @@ class PaymentScreen extends StatelessWidget {
   final List<CartModel> cartModels;
   final bool isOrderProductPayment;
   final MyOrderViewModle? myOrderViewModel;
+  final bool? isFromInvoice;
+  final String? boxIdInvoice;
+  final Box? operationsBox;
 
+  ItemViewModle get itemViewModel => Get.put<ItemViewModle>(ItemViewModle());
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -54,25 +67,43 @@ class PaymentScreen extends StatelessWidget {
               javascriptMode: JavascriptMode.unrestricted,
               initialUrl: url,
               onProgress: (i) {},
-              onWebResourceError: (error){
+              onWebResourceError: (error) {
                 Logger().e(error);
               },
-              onPageFinished: (url)async{
+              onPageFinished: (url) async {
                 try {
                   Logger().i("onPageFinished : url $url");
                   // String paymentId = url.split("=")[1].split("&")[0];
                   // Logger().e(paymentId);
                   // payment.paymentId = paymentId;
                   if (isFromAddCard!) {
-                    if(url.toString().contains("true")){
+                    if (url.toString().contains("true")) {
                       //todo here we will get all cards and go back
                       Get.back(result: true);
                     }
-                  }else if(isFromCancel){
-                    if(url.toString().contains("status") && !url.toString().contains("false") )
-                    myOrderViewModel?.applyCancel(orderId);
+                  } else if (isFromInvoice!) {
+                    if (url.toString().contains("true")) {
+                      //todo here we will apply submit payment invoice
+                      var appResponse = await OrderHelper.getInstance
+                          .applyInvoicePaymentApi(
+                              body: {LocalConstance.id: boxIdInvoice});
+                      if (appResponse.status!.success!) {
+                        Get.back();
+                        snackSuccess("", appResponse.status?.message.toString());
+                        if(operationsBox != null){
+                          itemViewModel.getBoxBySerial(serial: operationsBox!.serialNo.toString());
+                        }
+                      } else {
+                        snackError("", appResponse.status?.message.toString());
+                      }
+                    }
+                  } else if (isFromCancel) {
+                    if (url.toString().contains("status") &&
+                        !url.toString().contains("false"))
+                      myOrderViewModel?.applyCancel(orderId);
                   } else {
-                    if(url.toString().contains("status") && !url.toString().contains("false") ){
+                    if (url.toString().contains("status") &&
+                        !url.toString().contains("false")) {
                       payment.paymentId = paymentId;
                       payment.readResponse(
                           isOrderProductPayment: isOrderProductPayment,

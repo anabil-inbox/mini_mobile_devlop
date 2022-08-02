@@ -23,6 +23,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../../view_model/profile_view_modle/profile_view_modle.dart';
 import 'widget/box_lv_widget.dart';
@@ -96,32 +97,52 @@ class _HomeScreenState extends State<HomeScreen> {
                   : colorBackground,
               isCenterTitle: true,
               titleWidget: searchWidget,
-              leadingWidget: IconBtn(
-                iconColor: colorTextWhite,
-                width: sizeW48,
-                height: sizeH48,
-                backgroundColor: colorRed,
-                onPressed: () {
-                  Get.to(() => QrScreen(
-                        index: 0,
-                        storageViewModel: HomeScreen.storageViewModel,
-                      ));
-                },
-                borderColor: colorTrans,
-                icon: "assets/svgs/Scan.svg",
+              leadingWidget: Showcase(
+                disableAnimation: Constance.showCaseDisableAnimation,
+                shapeBorder: RoundedRectangleBorder(),
+                radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
+                showArrow: Constance.showCaseShowArrow,
+                overlayPadding: EdgeInsets.all(5),
+                blurValue:Constance.showCaseBluer ,
+                description: tr.scan_btn_show_case,
+                key: HomeScreen.homeViewModle.scanShowKey/*?? GlobalKey()*/,
+                child: IconBtn(
+                  iconColor: colorTextWhite,
+                  width: sizeW48,
+                  height: sizeH48,
+                  backgroundColor: colorRed,
+                  onPressed: () {
+                    Get.to(() => QrScreen(
+                          index: 0,
+                          storageViewModel: HomeScreen.storageViewModel,
+                        ));
+                  },
+                  borderColor: colorTrans,
+                  icon: "assets/svgs/Scan.svg",
+                ),
               ),
               leadingWidth: sizeW48,
               actionsWidgets: [
-                IconBtn(
-                  icon: "assets/svgs/Buy.svg",
-                  iconColor: colorRed,
-                  width: sizeW48,
-                  height: sizeH48,
-                  backgroundColor: colorRedTrans,
-                  onPressed: () {
-                    Get.to(() => CartScreen());
-                  },
-                  borderColor: colorTrans,
+                Showcase(
+                  disableAnimation: Constance.showCaseDisableAnimation,
+                  shapeBorder: RoundedRectangleBorder(),
+                  radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
+                  showArrow: Constance.showCaseShowArrow,
+                  overlayPadding: EdgeInsets.all(5),
+                  blurValue:Constance.showCaseBluer ,
+                  description: tr.cart_btn_show_case,
+                  key: HomeScreen.homeViewModle.cartShowKey/*?? GlobalKey()*/,
+                  child: IconBtn(
+                    icon: "assets/svgs/Buy.svg",
+                    iconColor: colorRed,
+                    width: sizeW48,
+                    height: sizeH48,
+                    backgroundColor: colorRedTrans,
+                    onPressed: () {
+                      Get.to(() => CartScreen());
+                    },
+                    borderColor: colorTrans,
+                  ),
                 ),
               ],
             ),
@@ -232,29 +253,48 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(
                                     height:Platform.isIOS ? 160: 150,
                                   ),
-                                  FilterWidget(),
+                                  Showcase(
+                                      disableAnimation: Constance.showCaseDisableAnimation,
+                                      shapeBorder: RoundedRectangleBorder(),
+                                      radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
+                                      showArrow: Constance.showCaseShowArrow,
+                                      overlayPadding: EdgeInsets.all(5),
+                                      blurValue:Constance.showCaseBluer ,
+                                      description: tr.task_btn_show_case,
+                                      key: HomeScreen.homeViewModle.taskShowKey/*?? GlobalKey()*/,
+                                      child: FilterWidget()),
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  FittedBox(
-                                    fit: BoxFit.fill,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        InkWell(
-                                            onTap: /*onTheWayClick*/ () {},
-                                            child: textHintsWidget(
-                                                "${tr.on_the_way}", null)),
-                                        textHintsWidget("${tr.in_warehouse}",
-                                            colorInWarhouse),
-                                        textHintsWidget(
-                                            "${tr.at_home}", colorAtHome),
-                                        textHintsWidget(
-                                            tr.pickup, boxColorOrange),
-                                      ],
+                                  Showcase(
+                                    disableAnimation: Constance.showCaseDisableAnimation,
+                                    shapeBorder: RoundedRectangleBorder(),
+                                    radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
+                                    showArrow: Constance.showCaseShowArrow,
+                                    overlayPadding: EdgeInsets.all(5),
+                                    blurValue:Constance.showCaseBluer ,
+                                    description: tr.status_btn_show_case,
+                                    key: HomeScreen.homeViewModle.boxStatusShowKey /*?? GlobalKey()*/,
+                                    child: FittedBox(
+                                      fit: BoxFit.fill,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                              onTap: /*onTheWayClick*/ () {},
+                                              child: textHintsWidget(
+                                                  "${tr.on_the_way}", null)),
+                                          textHintsWidget("${tr.in_warehouse}",
+                                              colorInWarhouse),
+                                          textHintsWidget(
+                                              "${tr.at_home}", colorAtHome),
+                                          textHintsWidget(
+                                              tr.pickup, boxColorOrange),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   if (!logic.isListView!) ...[

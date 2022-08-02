@@ -413,6 +413,7 @@ class _ItemScreenState extends State<ItemScreen> {
                             highlightColor: colorTrans,
                             onPressed: () {
                               itemViewModle.showInvoicesBottomSheet(
+                                  operationsBox:itemViewModle.operationsBox,
                                   invoices:
                                       itemViewModle.operationsBox!.invoices ??
                                           []);

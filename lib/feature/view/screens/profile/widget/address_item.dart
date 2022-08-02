@@ -8,6 +8,7 @@ import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
+import 'package:logger/logger.dart';
 
 // ignore: must_be_immutable
 class AddressItem extends StatelessWidget {
@@ -20,6 +21,7 @@ class AddressItem extends StatelessWidget {
     screenUtil(context);
     return GetBuilder<ProfileViewModle>(
       builder: (_) {
+        Logger().i(address.geoAddress);
         return Column(
           children: [
             Container(
@@ -118,7 +120,7 @@ class AddressItem extends StatelessWidget {
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.75,
                       child: Text(
-                          "${address.geoAddress}"),
+                          "${address.geoAddress.toString().isEmpty? ("${address.buildingNo} ${address.unitNo} ${address.zoneNumber} ${address.extraDetails}"):address.geoAddress}"),
                     ),
                   ),
                   PositionedDirectional(

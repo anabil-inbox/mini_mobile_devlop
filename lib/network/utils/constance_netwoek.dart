@@ -151,6 +151,8 @@ abstract class ConstanceNetwork {
       "inbox_app.api.loyalty_points.get_loyalty_points";
   static String submitPaymentEndPoint =
       "inbox_app.api.sales_order.submit_payment";
+  static String getInvoiceUrlPaymentApi = "inbox_app.api.get_payment_url.get_invoice_url";
+  static String applyInvoicePaymentApi = "inbox_app.api.get_payment_url.apply_invoice";
   static String uploadOrderSignatureEndPoint =
       "inbox_app.api.sales_order.upload_order_signature";
   static String addReviewApi = "inbox_app.api.service_center.create_review";
@@ -268,6 +270,7 @@ abstract class ConstanceNetwork {
   static var orderToKey = "order_to";
 
   static var itemsKey = "items"; //small
+  static var paymentEntryKey = "payment_entry"; //small
 
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};

@@ -280,6 +280,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                                       onClicked: () => _onCancelClick(myOrders),
                                       isExpanded: true),
                                 ),
+                                if(myOrders.isAllowToEdit(myOrders.newOrderSales))
                                 SizedBox(
                                   width: sizeW10,
                                 ),

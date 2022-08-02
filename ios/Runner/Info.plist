@@ -36,6 +36,10 @@
 		<string>twitter</string>
 		<string>whatsapp</string>
 		<string>tg</string>
+		<string>https</string>
+		<string>http</string>
+		<string>tel</string>
+		<string>mailto</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -53,6 +57,8 @@
 	<string>This app need to access your location so you can see driver near you or update your current location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app need to access your location so you can see driver near you or update your current location.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>The application does not use this feature</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app requires to access your photo library to show image on profile</string>
 	<key>UIBackgroundModes</key>

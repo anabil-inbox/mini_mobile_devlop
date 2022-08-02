@@ -45,7 +45,7 @@ class StorageSizeType extends StatelessWidget {
                   primary: false,
                   itemCount: builder.storageCategoriesList.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
+                      crossAxisCount: (builder.storageCategoriesList.length  == 1 ? 1: 2),
                       mainAxisSpacing: sizeW10!,
                       crossAxisSpacing: sizeH10!,
                       childAspectRatio: (sizeH320 / sizeH200!)),

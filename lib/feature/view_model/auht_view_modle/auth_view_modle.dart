@@ -35,6 +35,7 @@ class AuthViewModle extends GetxController {
 
   TextEditingController tdSearch = TextEditingController();
   TextEditingController tdMobileNumber = TextEditingController();
+  TextEditingController tdMobileNumberOperator = TextEditingController();
   TextEditingController tdName = TextEditingController();
   TextEditingController tdEmail = TextEditingController();
   TextEditingController tdPinCode = TextEditingController();
@@ -43,6 +44,7 @@ class AuthViewModle extends GetxController {
   TextEditingController tdcrNumber = TextEditingController();
   TextEditingController tdCompanyName = TextEditingController();
   TextEditingController tdCompanyEmail = TextEditingController();
+  TextEditingController tdCompanyEmailOperator = TextEditingController();
   TextEditingController tdNameOfApplicant = TextEditingController();
   TextEditingController tdApplicantDepartment = TextEditingController();
 
@@ -66,6 +68,7 @@ class AuthViewModle extends GetxController {
 
   // for defoult country
   Country defCountry = Country(name: "Qatar", flag: "", prefix: "+974");
+  Country defCountryOperator = Country(name: "Qatar", flag: "", prefix: "+974");
   bool isSelectedCountry = false;
   String deviceType = "";
 

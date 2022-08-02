@@ -36,4 +36,10 @@ abstract class Constance {
   static String googleMapKey = "AIzaSyAzBtxE3NluLYNrUajTg9OnG7X_luzESvU";
 
   static String fingerprint = "Fingerprint";
+
+  static double  showCaseBluer = 2;
+  static double  showCaseCircularBorder = 40;
+  static double  showCaseRecBorder = 20;
+  static bool  showCaseShowArrow = true;
+  static bool  showCaseDisableAnimation = false;
 }

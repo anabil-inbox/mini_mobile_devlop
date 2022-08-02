@@ -10,11 +10,11 @@ import 'package:logger/logger.dart';
 
 import '../../../../../../util/app_shaerd_data.dart';
 
-class AreaZoneWidget extends StatelessWidget {
-  const AreaZoneWidget({Key? key, required this.areaZone,required this.isEdit, }) : super(key: key);
+class AreaZoneNumberWidget extends StatelessWidget {
+  const AreaZoneNumberWidget({Key? key,required this.areaZone,required this.isEdit,  }) : super(key: key);
 
-  final AreaZone areaZone;
-  final bool? isEdit;
+ final String areaZone;
+ final bool isEdit;
   static ProfileViewModle profileViewModle = Get.find<ProfileViewModle>();
 
   @override
@@ -23,13 +23,12 @@ class AreaZoneWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(bottom: padding10!),
       child: SeconderyFormButton(
-          buttonText: "${areaZone.areaZone}",
+          buttonText: "${areaZone}",
           onClicked: () {
-            profileViewModle.userAreaZone = areaZone;
-             profileViewModle.tdZone.text = areaZone.areaZone ?? "";
-             if(isEdit!)
-             profileViewModle.tdZoneEdit.text = areaZone.areaZone ?? "";
-            Logger().d(areaZone.toJson());
+            profileViewModle.userAreaZoneNum = areaZone;
+             profileViewModle.tdZoneNumber.text = areaZone ;
+             if(isEdit)
+             profileViewModle.tdZoneNumberEdit.text = areaZone ;
             Get.back();
             profileViewModle.update();
           }),

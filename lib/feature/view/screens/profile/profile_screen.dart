@@ -96,7 +96,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                           iconPath: "assets/svgs/adress_icon.svg",
                         ),
 
-                        if(!SharedPref.instance.getIsHideSubscriptions())...[
+                        // if(!SharedPref.instance.getIsHideSubscriptions())...[
                           SizedBox(
                             height: sizeH12,
                           ),
@@ -108,7 +108,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                             trailingTitle: "",
                             iconPath: "assets/svgs/payment_card.svg",
                           ),
-                        ],
+                        // ],
 
                         SizedBox(
                           height: sizeH12,
@@ -155,7 +155,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                           iconPath: "assets/svgs/logout_icons_ornage.svg"/*logout*/,
                         ),
                         SizedBox(
-                          height: sizeH40,
+                          height: sizeH100,
                         ),
                       ],
                     ),

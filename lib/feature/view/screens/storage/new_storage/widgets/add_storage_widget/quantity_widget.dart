@@ -72,8 +72,8 @@ class QuantityWidget extends StatelessWidget {
                           initState: (_) {},
                           builder: (builder) {
                             return IconButton(
-                              icon:
-                                  SvgPicture.asset("assets/svgs/circle_mines_orange.svg"),//circle_mines.svg
+
+                              icon: SvgPicture.asset("assets/svgs/circle_mines_orange.svg" , width: sizeH24,),//circle_mines.svg
                               onPressed: () {
                                 mineassingFunction();
                                 // builder.minesQuantity(
@@ -90,7 +90,7 @@ class QuantityWidget extends StatelessWidget {
                       initState: (_) {},
                       builder: (value) {
                         return IconButton(
-                          icon: SvgPicture.asset("assets/svgs/add_icons_orange.svg"),/*circle_add*/
+                          icon: SvgPicture.asset("assets/svgs/add_icons_orange.svg" , width: sizeH24,),/*circle_add*/
                           onPressed: () {
                             increasingFunction();
                           //  value.increaseQuantity(storageCategoriesData: storageCategoriesData);

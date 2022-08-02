@@ -93,8 +93,8 @@ class EmptyBodyBoxItem extends StatelessWidget {
                         highlightColor: colorTrans,
                         onPressed: () {
                           itemViewModle.showInvoicesBottomSheet(
-                              invoices:
-                                  itemViewModle.operationsBox!.invoices ?? []);
+                              invoices: itemViewModle.operationsBox!.invoices ?? [],
+                              operationsBox: itemViewModle.operationsBox);
                         },
                         icon: SvgPicture.asset(
                           "assets/svgs/invoice.svg",

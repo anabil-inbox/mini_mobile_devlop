@@ -34,6 +34,7 @@ class SpaceStorageBottomSheet extends StatelessWidget {
       primary: true,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
+        margin: EdgeInsets.only(top: 40),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.vertical(top: Radius.circular(padding30!)),
           color: colorTextWhite,
@@ -53,12 +54,19 @@ class SpaceStorageBottomSheet extends StatelessWidget {
                 SizedBox(
                   height: sizeH20,
                 ),
-                Container(
-                  height: sizeH5,
-                  width: sizeW50,
-                  decoration: BoxDecoration(
-                      color: colorSpacer,
-                      borderRadius: BorderRadius.circular(padding3)),
+                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(onTap:()=> Get.back(),child: Icon(Icons.close , color: colorBlack,),),
+                    Container(
+                      height: sizeH5,
+                      width: sizeW50,
+                      decoration: BoxDecoration(
+                          color: colorSpacer,
+                          borderRadius: BorderRadius.circular(padding3)),
+                    ),
+                    InkWell(onTap:()=> Get.back(),child: Icon(Icons.close , color: colorTrans,),),
+                  ],
                 ),
                 SizedBox(
                   height: sizeH20,

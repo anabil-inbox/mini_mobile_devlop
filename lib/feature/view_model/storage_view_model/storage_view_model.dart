@@ -50,7 +50,7 @@ import 'package:inbox_clients/util/sh_util.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:dio/dio.dart' as multiPart;
-
+import 'package:showcaseview/showcaseview.dart';
 
 class StorageViewModel extends BaseController {
   //todo this for appbar select btn
@@ -173,6 +173,88 @@ class StorageViewModel extends BaseController {
 
   /// this for account total balance for user choisess :
 
+  late BuildContext showCaseBuildContext;
+
+  /// this for host request storage
+  var orderStepShowKey = GlobalKey();
+  var storageCategoriesShowKey = GlobalKey();
+
+  ///this for qty bottom sheet
+  var qtyShowCaseKey = GlobalKey();
+  var subscriptionsShowCaseKey = GlobalKey();
+  var durationsShowCaseKey = GlobalKey();
+  var featuresShowCaseKey = GlobalKey();
+
+  ///this for new storage step two address and date
+  var dateTimeShowCaseKey = GlobalKey();
+  var addressShowCaseKey = GlobalKey();
+
+  ///this for payment
+  var paymentCaseKey = GlobalKey();
+
+  @override
+  void onInit() {
+    super.onInit();
+    storageCategoriesList.clear();
+    userStorageCategoriesData.clear();
+    userStorageCategoriesData = <StorageCategoriesData>[];
+    getStorageCategories();
+
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      moveToIntro();
+    });
+  }
+
+  moveToIntro() {
+    if(!SharedPref.instance.getFirstStorageKey()){
+      ShowCaseWidget.of(showCaseBuildContext).startShowCase([
+        orderStepShowKey,
+        storageCategoriesShowKey,
+      ]);
+    }
+  }
+
+  void showQtyShowCase() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      if(!SharedPref.instance.getFirstQtyKey()){
+        ShowCaseWidget.of(showCaseBuildContext).startShowCase([
+          qtyShowCaseKey,
+          subscriptionsShowCaseKey,
+          durationsShowCaseKey,
+          featuresShowCaseKey,
+        ]);
+      }
+    });
+
+  }
+
+  void showAddressAndDateShowCase()
+  {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      if(!SharedPref.instance.getFirstAddressAndDateKey()){
+        ShowCaseWidget.of(showCaseBuildContext).startShowCase([
+          dateTimeShowCaseKey,
+          addressShowCaseKey
+        ]);
+      }
+    });
+  }
+
+  void showPaymentShowCase()
+  {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      if(!SharedPref.instance.getFirstPaymentKey()){
+        ShowCaseWidget.of(showCaseBuildContext).startShowCase([
+          paymentCaseKey
+        ]);
+      }
+    });
+  }
+  void setContext(context) {
+    showCaseBuildContext = context;
+    // update();
+  }
+
   void calculateBalance() {
     totalBalance = 0;
     userStorageCategoriesData.forEach((element) {
@@ -183,10 +265,8 @@ class StorageViewModel extends BaseController {
   ScrollController myListController = ScrollController();
 
   void animateToIndex() {
-      myListController.jumpTo(myListController.position.maxScrollExtent + 200);
-      update();
-
-
+    myListController.jumpTo(myListController.position.maxScrollExtent + 200);
+    update();
   }
 
 // to do when user choose new option :
@@ -406,7 +486,9 @@ class StorageViewModel extends BaseController {
   void saveStorageDataToArray(
       {required StorageCategoriesData storageCategoriesData,
       bool isUpdate = false,
-      int? updateIndex, MyOrderViewModle? orderViewModel, bool? isFromOrderEdit = false}) async {
+      int? updateIndex,
+      MyOrderViewModle? orderViewModel,
+      bool? isFromOrderEdit = false}) async {
     if (storageCategoriesData.storageCategoryType ==
         ConstanceNetwork.itemCategoryType) {
       saveBulksUser(
@@ -449,11 +531,11 @@ class StorageViewModel extends BaseController {
         userStorageCategoriesData[updateIndex!] = newStorageCategoriesData;
       } else {
         newStorageCategoriesData.groupId = updateIndex;
-        if(isFromOrderEdit!){
+        if (isFromOrderEdit!) {
           orderViewModel!.addItemToList(newStorageCategoriesData);
-        }else {
+        } else {
           await Future.delayed(Duration(seconds: 0)).then((value) =>
-            {userStorageCategoriesData.add(newStorageCategoriesData)});
+              {userStorageCategoriesData.add(newStorageCategoriesData)});
         }
       }
     }
@@ -906,9 +988,11 @@ class StorageViewModel extends BaseController {
           "order_time": "${selectedDay?.from}/${selectedDay?.to}",
           "type": getNewStorageType(
               storageCategoriesData: userStorageCategoriesData[0]),
-          "image":imageBankTransfer != null ? multiPart.MultipartFile.fromFileSync(imageBankTransfer!.path):"" ,
+          "image": imageBankTransfer != null
+              ? multiPart.MultipartFile.fromFileSync(imageBankTransfer!.path)
+              : "",
         };
-      }else{
+      } else {
         map = {
           "shipping_address": "${selectedAddress?.id}",
           "items_list": jsonEncode(orderItems),
@@ -1006,9 +1090,10 @@ class StorageViewModel extends BaseController {
       snackError(
           "${tr.error_occurred}", "${tr.you_have_to_select_payment_method}");
       return false;
-    }else if(selectedPaymentMethod?.id == Constance.bankTransferId && imageBankTransfer == null){
-      snackError(
-          "${tr.error_occurred}", "${tr.you_have_to_add_bank_transfer_image}");//transfer
+    } else if (selectedPaymentMethod?.id == Constance.bankTransferId &&
+        imageBankTransfer == null) {
+      snackError("${tr.error_occurred}",
+          "${tr.you_have_to_add_bank_transfer_image}"); //transfer
       return false;
     } else {
       return true;
@@ -1162,15 +1247,6 @@ class StorageViewModel extends BaseController {
     ));
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    storageCategoriesList.clear();
-    userStorageCategoriesData.clear();
-    userStorageCategoriesData = <StorageCategoriesData>[];
-    getStorageCategories();
-  }
-
   //todo this for show selection btn
   updateSelectBtn() {
     isSelectBtnClick = !isSelectBtnClick!;
@@ -1257,7 +1333,8 @@ class StorageViewModel extends BaseController {
   void showMainStorageBottomSheet(
       {required StorageCategoriesData storageCategoriesData,
       bool isUpdate = false,
-      int index = 0, bool? isFromOrderEdit = false}) {
+      int index = 0,
+      bool? isFromOrderEdit = false}) {
     if (isUpdate) {
       if (storageCategoriesData.storageCategoryType ==
           ConstanceNetwork.itemCategoryType) {
@@ -1285,7 +1362,6 @@ class StorageViewModel extends BaseController {
         });
       });
       Logger().i(selectedFeaures);
-
     }
 
     if (ConstanceNetwork.quantityCategoryType ==
@@ -1294,12 +1370,12 @@ class StorageViewModel extends BaseController {
         QuantityStorageBottomSheet(
           isUpdate: isUpdate,
           index: index,
-          isFromOrderEdit:isFromOrderEdit,
+          isFromOrderEdit: isFromOrderEdit,
           storageCategoriesData: storageCategoriesData,
         ),
         isScrollControlled: true,
       ).whenComplete(() => {
-            clearBottomSheetData(isFromOrderEdit:isFromOrderEdit),
+            clearBottomSheetData(isFromOrderEdit: isFromOrderEdit),
           });
     } else if (ConstanceNetwork.itemCategoryType ==
         storageCategoriesData.storageCategoryType) {
@@ -1344,8 +1420,7 @@ class StorageViewModel extends BaseController {
     selectedFeaures.clear();
     lastStorageItem = null;
     balance = 0;
-    if(!isFromOrderEdit!)
-    animateToIndex();
+    if (!isFromOrderEdit!) animateToIndex();
   }
 
   customerStoragesChangeStatus(var serial,
@@ -1536,7 +1611,8 @@ class StorageViewModel extends BaseController {
   //Note :: IF You want to Send Single Box you Will Add The Box Only in The List Like This [myBox()]
 
   final HomeViewModel homeViewModel = Get.put(HomeViewModel(), permanent: true);
-  final MyOrderViewModle myOrderViewModel = Get.put(MyOrderViewModle(), permanent: true);
+  final MyOrderViewModle myOrderViewModel =
+      Get.put(MyOrderViewModle(), permanent: true);
 
   Future<void> doTaskBoxRequest({
     required Task task,
@@ -1553,9 +1629,10 @@ class StorageViewModel extends BaseController {
     String invoices = "";
     String itemSeriales = "";
     num shivingPrice = 0;
-    if(selectedPaymentMethod?.id == Constance.bankTransferId && imageBankTransfer == null){
-      snackError(
-          "${tr.error_occurred}", "${tr.you_have_to_add_bank_transfer_image}");//transfe
+    if (selectedPaymentMethod?.id == Constance.bankTransferId &&
+        imageBankTransfer == null) {
+      snackError("${tr.error_occurred}",
+          "${tr.you_have_to_add_bank_transfer_image}"); //transfe
       return;
     }
 
@@ -1677,7 +1754,11 @@ class StorageViewModel extends BaseController {
     //   map["destroy_status"] = placeDestroy;
     // }
 
-    map["coupon_code"] = (isUsingPromo  && checkPromoAppResponse != null && checkPromoAppResponse!.status!.success!)? tdCopun.text : "";
+    map["coupon_code"] = (isUsingPromo &&
+            checkPromoAppResponse != null &&
+            checkPromoAppResponse!.status!.success!)
+        ? tdCopun.text
+        : "";
     map["order[0]"] = data;
     map["address[0]"] =
         selectedAddress == null ? boxes[0].address?.id : selectedAddress?.id;
@@ -2059,7 +2140,11 @@ class StorageViewModel extends BaseController {
         map["payment_method"] = selectedPaymentMethod?.id ?? "";
         map["payment_id"] = paymentId ?? "";
         map["points"] = isAccept ? userUsesPoints / cartModels.length : 0;
-        map["coupon_code"] = (isUsingPromo  && checkPromoAppResponse != null && checkPromoAppResponse!.status!.success!) ? tdCopun.text : "";
+        map["coupon_code"] = (isUsingPromo &&
+                checkPromoAppResponse != null &&
+                checkPromoAppResponse!.status!.success!)
+            ? tdCopun.text
+            : "";
         map["order[$i]"] = data;
         map["address[$i]"] = selectedAddress == null
             ? cartModels[i].box![0].address?.id
@@ -2154,4 +2239,6 @@ class StorageViewModel extends BaseController {
       update();
     }
   }
+
+
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
+import 'package:inbox_clients/util/location_helper.dart';
 
 class MapSample extends StatefulWidget {
   @override
@@ -27,9 +30,10 @@ class _MapSampleState extends State<MapSample> {
   void initState() {
     super.initState();
 
-        profileViewModle.googlePlace = GooglePlace("AIzaSyAzBtxE3NluLYNrUajTg9OnG7X_luzESvU");
-       // profileViewModle.currentPostion = LatLng(profileViewModle.latitude, profileViewModle.longitude);
-        
+    profileViewModle.googlePlace =
+        GooglePlace("AIzaSyAzBtxE3NluLYNrUajTg9OnG7X_luzESvU");
+    // profileViewModle.currentPostion = LatLng(profileViewModle.latitude, profileViewModle.longitude);
+    LocationHelper.instance.getCurrentPosition();
   }
 
   @override
@@ -85,11 +89,15 @@ class _MapSampleState extends State<MapSample> {
               GetBuilder<ProfileViewModle>(
                 builder: (logic) {
                   return GoogleMap(
-                    zoomControlsEnabled: false,
-                    mapType: MapType.normal,
-                    mapToolbarEnabled: false,
-                    myLocationEnabled: false,
-                    zoomGesturesEnabled: true,
+                    padding: EdgeInsets.only(
+                      bottom: logic.bottomPadding ,
+                    ),
+                    mapType: /*MapType.normal*/profileViewModle.mapType ,
+                     mapToolbarEnabled: false,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                    zoomGesturesEnabled: false,
+                     zoomControlsEnabled: false,
                     scrollGesturesEnabled: true,
                     rotateGesturesEnabled: false,
                     gestureRecognizers: Set()
@@ -107,34 +115,31 @@ class _MapSampleState extends State<MapSample> {
                         Factory<ScaleGestureRecognizer>(
                             () => ScaleGestureRecognizer()),
                       ),
-                    initialCameraPosition:
-                        GetUtils.isNull(logic.kGooglePlex)
-                            ? CameraPosition(
-                                target: LatLng(25.36, 51.18),
-                                zoom: 10,
-                              )
-                            : logic.kGooglePlex!,
+                    initialCameraPosition: GetUtils.isNull(logic.kGooglePlex)
+                        ? CameraPosition(
+                            target: LatLng(25.226247442192594, 51.53212357058872),
+                            zoom: 8,
+                          )
+                        : logic.kGooglePlex!,
                     onTap: (lat) {
                       logic.onClickMap(lat);
                     },
                     markers: {logic.mark},
                     onMapCreated: (GoogleMapController newMapController) {
-                      if(!logic.controllerCompleter.isCompleted){
-                      logic.controllerCompleter.complete(newMapController);
-                                  
-                       }
-                      
+                      logic.bottomPadding = sizeH100!;
+                      logic.update();
+                      if (!logic.controllerCompleter.isCompleted) {
+                        logic.controllerCompleter.complete(newMapController);
+                      }
 
                       logic.mapController = newMapController;
                       logic.update();
                       if (GetUtils.isNull(profileViewModle.currentPostion)) {
                         profileViewModle.getCurrentUserLagAndLong();
-                      }else{
-                      logic.getCurrentUserLagAndLong(latLng:logic.mark.position);
-
+                      } else {
+                        logic.getCurrentUserLagAndLong(
+                            latLng: logic.mark.position);
                       }
-                      
-                      
                     },
                   );
                 },
@@ -153,6 +158,85 @@ class _MapSampleState extends State<MapSample> {
                         Get.back();
                       },
                       isExpanded: true)),
+               // if(Platform.isIOS) /// this for zoom in \ out on ios
+              PositionedDirectional(
+                bottom: sizeH100 ,
+                end: sizeW10,
+                child: Opacity(
+                  opacity: 0.8,
+                  child: Card(
+                    elevation: 2,
+                    child: Container(
+                      color: Color(0xFFFAFAFA),
+                      width: 40,
+                      height: 100,
+                      child: Column(
+                        children: <Widget>[
+                          IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () async {
+                                var currentZoomLevel = await profileViewModle
+                                    .mapController
+                                    ?.getZoomLevel();
+
+                                currentZoomLevel = currentZoomLevel! + 2;
+                                profileViewModle.mapController?.animateCamera(
+                                  CameraUpdate.newCameraPosition(
+                                    CameraPosition(
+                                      target: profileViewModle.currentPostion!,
+                                      zoom: currentZoomLevel,
+                                    ),
+                                  ),
+                                );
+                              }),
+                          SizedBox(height: 2),
+                          IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () async {
+                                var currentZoomLevel = await profileViewModle
+                                    .mapController
+                                    ?.getZoomLevel();
+                                currentZoomLevel = currentZoomLevel! - 2;
+                                if (currentZoomLevel < 0) currentZoomLevel = 0;
+                                profileViewModle.mapController?.animateCamera(
+                                  CameraUpdate.newCameraPosition(
+                                    CameraPosition(
+                                      target: profileViewModle.currentPostion!,
+                                      zoom: currentZoomLevel,
+                                    ),
+                                  ),
+                                );
+                              }),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              PositionedDirectional(
+                end: /*(Platform.isIOS) ? sizeH220 : sizeH140*/sizeH12,
+                top: sizeH70,
+                child: PhysicalModel(
+                  color: colorTextWhite,
+                  shape: BoxShape.circle,
+                  elevation: 3,
+                  child: SizedBox(
+                     width: 40,
+                    child: ClipOval(
+                      clipBehavior: Clip.hardEdge,
+                      child: Column(
+                        children: <Widget>[
+                          InkWell(
+                              onTap: ()async{
+                                profileViewModle.changeMapType();
+                              },
+                              child: ClipOval(child: Image.asset(profileViewModle.mapType != MapType.normal ? "assets/png/normal_type.png" :"assets/png/satellite_type.png" ))),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               (profileViewModle.tdSearchMap.text.isEmpty ||
                       profileViewModle.predictions.isEmpty ||
                       !profileViewModle.isSearching)
@@ -176,10 +260,10 @@ class _MapSampleState extends State<MapSample> {
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () async {
-
                                     profileViewModle.isSearching = false;
                                     profileViewModle.update();
-                                    profileViewModle.selectAutocompletePrediction =
+                                    profileViewModle
+                                            .selectAutocompletePrediction =
                                         profileViewModle.predictions[index];
                                     profileViewModle.tdSearchMap.text =
                                         profileViewModle
@@ -191,11 +275,10 @@ class _MapSampleState extends State<MapSample> {
                                         profileViewModle
                                             .selectAutocompletePrediction!
                                             .placeId!);
-                                                                      
+
                                     profileViewModle.predictions = [];
                                     profileViewModle.isSearching = false;
                                     profileViewModle.update();
-
                                   },
                                   child: Column(
                                     crossAxisAlignment:

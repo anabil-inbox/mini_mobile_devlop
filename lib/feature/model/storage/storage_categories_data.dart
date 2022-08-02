@@ -25,9 +25,11 @@ class StorageCategoriesData {
       this.y,
       this.selectedItem,
       this.localBulk,
-      this.groupId});
+      this.groupId,
+      this.defaultImage});
 
   String? name;
+  String? defaultImage;
   String? storageName;
   String? storageCategoryType;
   double? pricePerDay;
@@ -56,6 +58,7 @@ class StorageCategoriesData {
     try {
       return StorageCategoriesData(
         name: json["name"] == null ? null : json["name"],
+        defaultImage: json["default_image"] == null ? null : json["default_image"],
         storageName: json["storage_name"] == null ? null : json["storage_name"],
         storageCategoryType: json["storage_category_type"] == null
             ? null
@@ -100,6 +103,7 @@ class StorageCategoriesData {
       return {
         "name": name,
         "storage_name": storageName,
+        "default_image": defaultImage,
         "storage_category_type": storageCategoryType,
         "price_per_day": pricePerDay,
         "price_per_month": pricePerMonth,

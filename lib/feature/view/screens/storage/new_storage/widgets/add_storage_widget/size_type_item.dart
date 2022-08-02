@@ -10,6 +10,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../../../../util/app_shaerd_data.dart';
 
@@ -88,15 +89,30 @@ class SizeTypeItem extends StatelessWidget {
 
   getWidget() {
     if (storageViewModel.isShowAll) {
-      return SvgPicture.asset(ConstanceNetwork.enableFolder);
+      return storageCategoriesData.defaultImage != null ?imageNetwork(
+          height: sizeW50,
+          width: sizeW40,
+          url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
+          fit: BoxFit.cover
+      ): SvgPicture.asset(ConstanceNetwork.enableFolder);
     } else if (((storageCategoriesData.storageCategoryType ==
             ConstanceNetwork.quantityCategoryType) &&
         storageViewModel.isShowQuantity)) {
-      return SvgPicture.asset(ConstanceNetwork.enableFolder);
+      return storageCategoriesData.defaultImage != null ?imageNetwork(
+        height: sizeW50,
+        width: sizeW40,
+        url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
+        fit: BoxFit.cover
+      ): SvgPicture.asset(ConstanceNetwork.enableFolder);
     } else if (((storageCategoriesData.storageCategoryType ==
             ConstanceNetwork.itemCategoryType) &&
         storageViewModel.isShowItem)) {
-      return SvgPicture.asset(
+      return storageCategoriesData.defaultImage != null ?imageNetwork(
+          height: sizeW50,
+          width: sizeW40,
+          url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
+          fit: BoxFit.cover
+      ):SvgPicture.asset(
         ConstanceNetwork.enableFolder,
         width: sizeW50,
         height: sizeH40,
@@ -105,7 +121,12 @@ class SizeTypeItem extends StatelessWidget {
                 ConstanceNetwork.spaceCategoryType ||
             storageCategoriesData.storageCategoryType!.contains("Space")) &&
         storageViewModel.isShowSpaces)) {
-      return SvgPicture.asset(
+      return storageCategoriesData.defaultImage != null ?imageNetwork(
+          height: sizeW50,
+          width: sizeW40,
+          url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
+          fit: BoxFit.cover
+      ):SvgPicture.asset(
         ConstanceNetwork.enableFolder,
         width: sizeW50,
         height: sizeH40,

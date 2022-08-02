@@ -17,8 +17,10 @@ import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view
 import 'package:inbox_clients/local_database/sql_helper.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../../../util/app_shaerd_data.dart';
 
@@ -76,115 +78,140 @@ class _HomePageHolderState extends State<HomePageHolder> {
     });
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    return Scaffold(
-      extendBody: true,
-      body: GetBuilder<HomeViewModel>(
-          init: HomeViewModel(),
-          builder: (logic) {
-            return bnbScreens[logic.currentIndex];
-          }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () {
-          Logger().d(
-              "${SharedPref.instance.getCurrentUserData().toJson().toString()}");
-          Logger().d("${SharedPref.instance.getUserToken()}");
-          Get.to(() => RequestNewStorageScreen());
-          //  Get.put(ItemViewModle());
-          //  Get.to(() => ItemScreen(box: Box(storageName: "Test")));
-          // Get.to(StorageDetailsView(tags: [],));
-        },
-        child: Icon(
-          Icons.add,
-          color: colorTextWhite,
-        ),
-        elevation: 2.0,
-      ),
-      bottomNavigationBar: GetBuilder<HomeViewModel>(
-        init: HomeViewModel(),
-        builder: (logic) {
-          return Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(sizeRadius16!),
-                    topRight: Radius.circular(sizeRadius16!))),
-            child: BottomAppBar(
-              color: colorTextWhite,
-              shape: CircularNotchedRectangle(),
-              notchMargin: 8,
-              child: Padding(
-                padding: EdgeInsets.all(sizeH6!),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        MaterialButton(
-                          onPressed: () {
-                            logic.changeTab(0);
-                            print('main');
-                          },
-                          minWidth: sizeW48,
-                          child: logic.currentIndex == 0
-                              ? SvgPicture.asset(
-                                  "assets/svgs/home_selected.svg" , color: colorPrimary,)
-                              : SvgPicture.asset("assets/svgs/home.svg"),
-                        ),
-                        SizedBox(width: sizeW20),
-                        MaterialButton(
-                          onPressed: () {
-                            Get.put(MyOrderViewModle() , permanent: true);
-                            logic.changeTab(1);
-                            print('Event');
-                          },
-                          minWidth: sizeW48,
-                          child: logic.currentIndex == 1
-                              ? SvgPicture.asset(
-                                  "assets/svgs/document_selected.svg", color: colorPrimary,)
-                              : SvgPicture.asset("assets/svgs/document.svg"),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        MaterialButton(
-                          onPressed: () {
-                            logic.changeTab(2);
-                          },
-                          minWidth: sizeW48,
-                          child: logic.currentIndex == 2
-                              ? SvgPicture.asset(
-                                  "assets/svgs/notification_selected.svg", color: colorPrimary,)
-                              : SvgPicture.asset(
-                                  "assets/svgs/notification.svg"),
-                        ),
-                        SizedBox(width: sizeW20),
-                        MaterialButton(
-                          onPressed: () {
-                            logic.changeTab(3);
-                          },
-                          minWidth: sizeW48,
-                          child: logic.currentIndex == 3
-                              ? SvgPicture.asset(
-                                  "assets/svgs/profile_selected.svg", color: colorPrimary,)
-                              : SvgPicture.asset("assets/svgs/profile.svg"),
-                        ),
-                      ],
-                    )
-                  ],
+    return ShowCaseWidget(
+      enableAutoScroll: true,
+      // autoPlay: true,
+      onFinish: ()async{
+        await SharedPref.instance.setFirstHome(true);
+      },
+      builder: Builder(
+        builder: (context) {
+          homeViewModle.setContext(context);
+          return Scaffold(
+            extendBody: true,
+            body: GetBuilder<HomeViewModel>(
+                init: HomeViewModel(),
+                builder: (logic) {
+                  return bnbScreens[logic.currentIndex];
+                }),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: Showcase/*.withWidget*/(
+              disableAnimation: Constance.showCaseDisableAnimation,
+              shapeBorder: CircleBorder(),
+              radius: BorderRadius.all(Radius.circular(40)),
+              showArrow: Constance.showCaseShowArrow,
+              overlayPadding: EdgeInsets.all(5),
+              blurValue:Constance.showCaseBluer ,
+              description: tr.add_btn_show_case,
+              key: homeViewModle.addShowKey /*?? GlobalKey()*/,
+              child: FloatingActionButton(
+                backgroundColor: Theme.of(context).primaryColor,
+                onPressed: () {
+                  Logger().d(
+                      "${SharedPref.instance.getCurrentUserData().toJson().toString()}");
+                  Logger().d("${SharedPref.instance.getUserToken()}");
+                  Get.to(() => RequestNewStorageScreen());
+                  //  Get.put(ItemViewModle());
+                  //  Get.to(() => ItemScreen(box: Box(storageName: "Test")));
+                  // Get.to(StorageDetailsView(tags: [],));
+                },
+                child: Icon(
+                  Icons.add,
+                  color: colorTextWhite,
                 ),
+                elevation: 2.0,
               ),
             ),
+            bottomNavigationBar: GetBuilder<HomeViewModel>(
+              init: HomeViewModel(),
+              builder: (logic) {
+                return Container(
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(sizeRadius16!),
+                          topRight: Radius.circular(sizeRadius16!))),
+                  child: BottomAppBar(
+                    color: colorTextWhite,
+                    shape: CircularNotchedRectangle(),
+                    notchMargin: 8,
+                    child: Padding(
+                      padding: EdgeInsets.all(sizeH6!),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              MaterialButton(
+                                onPressed: () {
+                                  logic.changeTab(0);
+                                  print('main');
+                                },
+                                minWidth: sizeW48,
+                                child: logic.currentIndex == 0
+                                    ? SvgPicture.asset(
+                                  "assets/svgs/home_selected.svg" , color: colorPrimary,)
+                                    : SvgPicture.asset("assets/svgs/home.svg"),
+                              ),
+                              SizedBox(width: sizeW20),
+                              MaterialButton(
+                                onPressed: () {
+                                  Get.put(MyOrderViewModle() , permanent: true);
+                                  logic.changeTab(1);
+                                  print('Event');
+                                },
+                                minWidth: sizeW48,
+                                child: logic.currentIndex == 1
+                                    ? SvgPicture.asset(
+                                  "assets/svgs/document_selected.svg", color: colorPrimary,)
+                                    : SvgPicture.asset("assets/svgs/document.svg"),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              MaterialButton(
+                                onPressed: () {
+                                  logic.changeTab(2);
+                                },
+                                minWidth: sizeW48,
+                                child: logic.currentIndex == 2
+                                    ? SvgPicture.asset(
+                                  "assets/svgs/notification_selected.svg", color: colorPrimary,)
+                                    : SvgPicture.asset(
+                                    "assets/svgs/notification.svg"),
+                              ),
+                              SizedBox(width: sizeW20),
+                              MaterialButton(
+                                onPressed: () {
+                                  logic.changeTab(3);
+                                },
+                                minWidth: sizeW48,
+                                child: logic.currentIndex == 3
+                                    ? SvgPicture.asset(
+                                  "assets/svgs/profile_selected.svg", color: colorPrimary,)
+                                    : SvgPicture.asset("assets/svgs/profile.svg"),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
           );
-        },
+        }
       ),
     );
   }

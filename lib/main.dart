@@ -17,8 +17,8 @@ import 'feature/view_model/splash_view_modle/splash_view_modle.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await AppFcm.fcmInstance.init();
   await SharedPref.instance.init();
+  await AppFcm.fcmInstance.init();
   var bool = await FirebaseUtils.instance.isHideWallet();
   await SharedPref.instance.setIsHideSubscriptions(bool);
   portraitOrientation();

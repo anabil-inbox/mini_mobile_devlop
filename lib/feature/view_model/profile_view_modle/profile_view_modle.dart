@@ -23,6 +23,7 @@ import 'package:inbox_clients/feature/model/profile/my_point_model.dart';
 import 'package:inbox_clients/feature/model/subscription_data.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
+import 'package:inbox_clients/feature/view/screens/profile/address/widgets/area_zone_nomber_widget.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/widgets/area_zone_widget.dart';
 import 'package:inbox_clients/feature/view/screens/profile/my_wallet/Widgets/deposit_money_to_wallet_webView.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
@@ -64,13 +65,13 @@ class ProfileViewModle extends BaseController {
   Customer? currentCustomer;
 
   String? urlCard;
-  CardsData? cardsData ;
+  CardsData? cardsData;
 
 //to do fot address textEditting Controllers ;
   TextEditingController tdTitle = TextEditingController();
   TextEditingController tdBuildingNo = TextEditingController();
   TextEditingController tdUnitNo = TextEditingController();
-  // TextEditingController tdZone = TextEditingController();
+  TextEditingController tdZone = TextEditingController();
   TextEditingController tdStreet = TextEditingController();
   TextEditingController tdZoneNumber = TextEditingController();
   TextEditingController tdLocation = TextEditingController();
@@ -80,7 +81,7 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdTitleEdit = TextEditingController();
   TextEditingController tdBuildingNoEdit = TextEditingController();
   TextEditingController tdUnitNoEdit = TextEditingController();
-  // TextEditingController tdZoneEdit = TextEditingController();
+  TextEditingController tdZoneEdit = TextEditingController();
   TextEditingController tdStreetEdit = TextEditingController();
   TextEditingController tdZoneNumberEdit = TextEditingController();
   TextEditingController tdLocationEdit = TextEditingController();
@@ -89,8 +90,12 @@ class ProfileViewModle extends BaseController {
   //here for edit user profile controllers:
   TextEditingController tdUserFullNameEdit = TextEditingController();
   TextEditingController tdUserEmailEdit = TextEditingController();
+  TextEditingController tdCompanyEmailOperator = TextEditingController();
   TextEditingController tdUserMobileNumberEdit = TextEditingController();
+  TextEditingController tdMobileNumberOperator = TextEditingController();
   Country defCountry =
+      Country(prefix: SharedPref.instance.getCurrentUserData().countryCode);
+  Country defCountryOperator =
       Country(prefix: SharedPref.instance.getCurrentUserData().countryCode);
   final picker = ImagePicker();
   File? img;
@@ -106,13 +111,15 @@ class ProfileViewModle extends BaseController {
   List<Map<String, dynamic>> contactMap = [];
   List<SubscriptionData>? subscriptions = [];
 
+  var bottomPadding = sizeH100!;
+
   // for address (add , edit ,delete)
 
   clearControllers() {
     tdTitle.clear();
     tdBuildingNo.clear();
     tdUnitNo.clear();
-    // tdZone.clear();
+    tdZone.clear();
     tdZoneNumber.clear();
     tdStreet.clear();
     tdLocation.clear();
@@ -121,7 +128,8 @@ class ProfileViewModle extends BaseController {
   }
 
   Future<Address> addNewAddress(Address newAddress) async {
-    print("msg_on_add ${newAddress.isPrimaryAddress}");
+    Logger().d("msg_on_add ${newAddress.isPrimaryAddress}");
+    Logger().d("addNewAddress ${newAddress.toJson()}");
     Address address = Address();
     isLoading = true;
     update();
@@ -149,7 +157,7 @@ class ProfileViewModle extends BaseController {
                         "${tr.error_occurred}", "${value.status!.message}")
                   }
               });
-      clearControllers();
+      // clearControllers();
     } catch (e) {}
 
     return address;
@@ -271,8 +279,9 @@ class ProfileViewModle extends BaseController {
 
   // to od here for bottom sheet Time Zone :
   AreaZone? userAreaZone;
+  String? userAreaZoneNum;
 
-  void showZoneBottmSheet() {
+  void showZoneBottmSheet({bool? isEdit = false}) {
     Set<AreaZone> areaZone =
         ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting()))
                 .areaZones
@@ -311,6 +320,7 @@ class ProfileViewModle extends BaseController {
                       children: areaZone
                           .map((e) => AreaZoneWidget(
                                 areaZone: e,
+                                isEdit: isEdit!,
                               ))
                           .toList(),
                     ),
@@ -320,53 +330,55 @@ class ProfileViewModle extends BaseController {
         isScrollControlled: true);
   }
 
-
-
-  void showZoneNumberBottmSheet() {
+  void showZoneNumberBottmSheet({bool? isEdit = false}) {
     Set<AreaZone> areaZone =
         ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting()))
-            .areaZones?.where((element) => element.id == userAreaZone?.id)
-            .toSet() ??
+                .areaZones
+                ?.where((element) => element.id == userAreaZone?.id)
+                .toSet() ??
             {};
 
     Get.bottomSheet(
         areaZone.isEmpty
             ? Container(
-            decoration: BoxDecoration(
-                color: colorBackground,
-                borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(padding30!))),
-            child: Text(tr.sorry_area_available, style: textStyleTitle()))
+                decoration: BoxDecoration(
+                    color: colorBackground,
+                    borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(padding30!))),
+                child: Text(tr.sorry_area_available, style: textStyleTitle()))
             : Container(
-          decoration: BoxDecoration(
-              color: colorBackground,
-              borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(padding30!))),
-          padding: EdgeInsets.symmetric(horizontal: padding20!),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: sizeH20,
+                decoration: BoxDecoration(
+                    color: colorBackground,
+                    borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(padding30!))),
+                padding: EdgeInsets.symmetric(horizontal: padding20!),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: sizeH20,
+                    ),
+                    Text(
+                      tr.select_time_zone,
+                      style: textStyleTitle()!.copyWith(color: colorPrimary),
+                    ),
+                    SizedBox(
+                      height: sizeH20,
+                    ),
+                    if (areaZone.first.numbers != null &&
+                        areaZone.first.numbers!.isNotEmpty)
+                      ListView(
+                        shrinkWrap: true,
+                        children: areaZone.first.numbers!
+                            .map((e) => AreaZoneNumberWidget(
+                                  areaZone: e,
+                            isEdit:isEdit!
+                                ))
+                            .toList(),
+                      ),
+                  ],
+                ),
               ),
-              Text(
-                tr.select_time_zone,
-                style: textStyleTitle()!.copyWith(color: colorPrimary),
-              ),
-              SizedBox(
-                height: sizeH20,
-              ),
-              ListView(
-                shrinkWrap: true,
-                children: areaZone
-                    .map((e) => AreaZoneWidget(
-                  areaZone: e,
-                ))
-                    .toList(),
-              ),
-            ],
-          ),
-        ),
         isScrollControlled: true);
   }
 
@@ -407,6 +419,8 @@ class ProfileViewModle extends BaseController {
         "${ConstanceNetwork.mobileNumberKey}": tdCompanyMobileNumber.text,
         ConstanceNetwork.contryCodeKey: defCountry.prefix,
         ConstanceNetwork.udidKey: identidire,
+        "reporter_mobile": tdMobileNumberOperator.text,
+        "reporter_email": tdCompanyEmailOperator.text,
       };
     }
     try {
@@ -461,17 +475,18 @@ class ProfileViewModle extends BaseController {
   TextEditingController tdSearchMap = TextEditingController();
   Completer<GoogleMapController> controllerCompleter = Completer();
   GoogleMapController? mapController;
-  double latitude = 25.36;
-  double longitude = 51.18;
+  double latitude = 25.226247442192594;
+  double longitude = 51.53212357058872;
   String addressFromLocation = "";
   AutocompletePrediction? selectAutocompletePrediction;
   GooglePlace googlePlace =
       GooglePlace("AIzaSyAozWyP-XVpiaIfqgKprWwwCce5ou46YZE");
-  Marker mark = Marker(markerId: MarkerId(LatLng(25.36, 51.18).toString()));
+  Marker mark = Marker(markerId: MarkerId(LatLng(25.226247442192594, 51.53212357058872).toString()));
   List<AutocompletePrediction> predictions = [];
   CameraPosition? kGooglePlex;
   LatLng? currentPostion;
   bool isSearching = false;
+  var mapType = MapType.normal;
 
   void autoCompleteSearch(String value) async {
     try {
@@ -537,7 +552,10 @@ class ProfileViewModle extends BaseController {
 
     Logger().e(status);
     Logger().e(isShown);
-
+      if(bottomPadding != sizeH100){
+        bottomPadding = sizeH100!;
+        update();
+      }
     if (status.isDenied) {
       if (await Permission.speech.isPermanentlyDenied) {
         openAppSettings();
@@ -574,7 +592,7 @@ class ProfileViewModle extends BaseController {
     if (!GetUtils.isNull(currentPostion)) {
       kGooglePlex = CameraPosition(
         target: LatLng(currentPostion!.latitude, currentPostion!.latitude),
-        zoom: 10,
+        zoom: 8,
       );
       latitude = currentPostion!.latitude;
       longitude = currentPostion!.longitude;
@@ -582,8 +600,8 @@ class ProfileViewModle extends BaseController {
       update();
     } else {
       kGooglePlex = CameraPosition(
-        target: LatLng(25.36, 51.18),
-        zoom: 10,
+        target: LatLng(25.226247442192594, 51.53212357058872),
+        zoom: 8,
       );
       print("msg_position_in_else $currentPostion");
       update();
@@ -602,7 +620,7 @@ class ProfileViewModle extends BaseController {
     latitude = position.latitude;
     longitude = position.longitude;
     onClickMap(position);
-    kGooglePlex = CameraPosition(target: position);
+    kGooglePlex = CameraPosition(target: position , zoom: 15);
     try {
       List<Placemark> placemarks =
           await placemarkFromCoordinates(position.latitude, position.longitude);
@@ -630,7 +648,16 @@ class ProfileViewModle extends BaseController {
         address += ", ${place.administrativeArea}";
       tdLocation.text = address;
       tdLocationEdit.text = address;
+      try {
+        tdZone.text = ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting()))
+                  .areaZones?.firstWhere((element) => element.areaZone!.contains(place.administrativeArea.toString())).areaZone??"";
+        tdZoneNumber.text =  ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting()))
+            .areaZones?.firstWhere((element) => element.areaZone!.contains(place.administrativeArea.toString())).numbers?.first??"";
+      } catch (e) {
+        print(e);
+      }
       update();
+      // Logger().wtf(address , place.toJson());
     } catch (e) {
       String address = "${tr.unknown_address}";
       tdLocation.text = address;
@@ -673,30 +700,26 @@ class ProfileViewModle extends BaseController {
     }
   }
 
-
-
-
-
-
   TextEditingController amountController = TextEditingController();
   String url = "";
 
   void depositMoneyToWallet() async {
     isLoading = true;
+    update();
     Map<String, dynamic> map = {
       "${ConstanceNetwork.amountKey}": "${amountController.text.toString()}",
-      "task_process":  "other",
+      "task_process": "other",
     };
     try {
-      await StorageFeature.getInstance.payment(body:map).then((value) {
+      await StorageFeature.getInstance.payment(body: map).then((value) {
         if (!GetUtils.isNull(value.data)) {
           isLoading = false;
           url = value.data["url"].toString();
           Logger().d("url : ${value.data["url"].toString()}");
           // amountController.clear();
           update();
-          Get.off(DepositMoneyToWalletWebView(
-              url: value.data["url"].toString()));
+          Get.off(
+              DepositMoneyToWalletWebView(url: value.data["url"].toString()));
         } else {
           isLoading = false;
           // amountController.clear();
@@ -931,26 +954,27 @@ class ProfileViewModle extends BaseController {
     }
   }
 
-
   Future<void> addCard() async {
     startLoading();
-    await ProfileHelper.getInstance.addCard().then((value) async{
+    await ProfileHelper.getInstance.addCard().then((value) async {
       if (value.status!.success!) {
         Logger().d(value.toJson());
-        urlCard  = value.data["url"].toString();
+        urlCard = value.data["url"].toString();
         // snackSuccess("", value.status?.message.toString());
         endLoading();
-        if(value.data["url"] != null) {
-         var result = await Get.to(PaymentScreen(isOrderProductPayment: false,
-          paymentId: '',
-          cartModels: [],
-          url: value.data["url"].toString(),
-          isFromCart: false,
-          isFromAddCard: true,
-          isFromNewStorage: false,));
-         if(result){
-           getCards();
-         }
+        if (value.data["url"] != null) {
+          var result = await Get.to(PaymentScreen(
+            isOrderProductPayment: false,
+            paymentId: '',
+            cartModels: [],
+            url: value.data["url"].toString(),
+            isFromCart: false,
+            isFromAddCard: true,
+            isFromNewStorage: false,
+          ));
+          if (result) {
+            getCards();
+          }
         }
       } else {
         snackError("", value.status?.message.toString());
@@ -961,6 +985,7 @@ class ProfileViewModle extends BaseController {
       Logger().d(value);
     });
   }
+
   Future<void> getCards() async {
     startLoading();
     await ProfileHelper.getInstance.getCards().then((value) {
@@ -968,7 +993,7 @@ class ProfileViewModle extends BaseController {
         Logger().d(value.toJson());
         cardsData = value;
         endLoading();
-      }else {
+      } else {
         endLoading();
       }
     }).catchError((value) {
@@ -977,4 +1002,13 @@ class ProfileViewModle extends BaseController {
     });
   }
 
+  changeMapType(){
+    if(mapType == MapType.normal) {
+      mapType =MapType.satellite;
+      update();
+    }else{
+      mapType =MapType.normal;
+      update();
+    }
+  }
 }

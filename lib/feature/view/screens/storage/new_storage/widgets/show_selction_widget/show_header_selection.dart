@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
@@ -29,7 +30,12 @@ class ShowHeaderSelection extends StatelessWidget {
     screenUtil(context);
     return Row(
       children: [
-        SvgPicture.asset("assets/svgs/folder_icon.svg"),
+        storageCategoriesData.defaultImage != null ?imageNetwork(
+            height: sizeW50,
+            width: sizeW40,
+            url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
+            fit: BoxFit.cover
+        ): SvgPicture.asset("assets/svgs/folder_icon.svg"),
         SizedBox(
           width: sizeW5,
         ),

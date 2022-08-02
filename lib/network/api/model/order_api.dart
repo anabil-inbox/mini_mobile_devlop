@@ -11,7 +11,8 @@ class OrderApi {
 
   static final OrderApi getInstance = OrderApi._();
 
-  Future<AppResponse> getMyOrders({var url, var header, var body, var queryParameters}) async {
+  Future<AppResponse> getMyOrders(
+      {var url, var header, var body, var queryParameters}) async {
     try {
       var response = await DioManagerClass.getInstance.dioGetMethod(
           url: url, header: header, queryParameters: queryParameters);
@@ -19,106 +20,151 @@ class OrderApi {
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
+      DioManagerClass.getInstance
+          .handleNotAuthorized(message["status"]["message"]);
       return AppResponse.fromJson(message);
     }
   }
 
   Future<AppResponse> newSalesOrder({var url, var header, var body}) async {
     try {
-      var response = await DioManagerClass.getInstance.dioPostMethod(
-          url: url, header: header, body: body);
-      return AppResponse.fromJson(json.decode(response.toString())??{});
+      var response = await DioManagerClass.getInstance
+          .dioPostMethod(url: url, header: header, body: body);
+      return AppResponse.fromJson(json.decode(response.toString()) ?? {});
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
-      return AppResponse.fromJson(message??{});
+      DioManagerClass.getInstance
+          .handleNotAuthorized(message["status"]["message"]);
+      return AppResponse.fromJson(message ?? {});
     }
   }
 
   Future<AppResponse> getOrderDetails({var url, var header, var body}) async {
     try {
-      var response = await DioManagerClass.getInstance.dioPostFormMethod(
-          url: url, header: header, body: body);
-      return AppResponse.fromJson(json.decode(response.toString())??{});
+      var response = await DioManagerClass.getInstance
+          .dioPostFormMethod(url: url, header: header, body: body);
+      return AppResponse.fromJson(json.decode(response.toString()) ?? {});
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
-      return AppResponse.fromJson(message??{});
+      DioManagerClass.getInstance
+          .handleNotAuthorized(message["status"]["message"]);
+      return AppResponse.fromJson(message ?? {});
+    }
+  }
+
+  Future<AppResponse> getInvoiceUrlPaymentApi(
+      {var url, var header, var body}) async {
+    try {
+      var response = await DioManagerClass.getInstance
+          .dioGetMethod(url: url, header: header, queryParameters: body);
+      return AppResponse.fromJson(json.decode(response.toString()) ?? {});
+    } on DioError catch (ex) {
+      var message = json.decode(ex.response.toString());
+      Logger().e(message);
+      DioManagerClass.getInstance
+          .handleNotAuthorized(message["status"]["message"]);
+      return AppResponse.fromJson(message ?? {});
+    }
+  }
+
+  Future<AppResponse> applyInvoicePaymentApi({var url, var header, var body}) async {
+    try {
+      var response = await DioManagerClass.getInstance
+          .dioGetMethod(url: url, header: header, queryParameters: body);
+      return AppResponse.fromJson(json.decode(response.toString()) ?? {});
+    } on DioError catch (ex) {
+      var message = json.decode(ex.response.toString());
+      Logger().e(message);
+      DioManagerClass.getInstance
+          .handleNotAuthorized(message["status"]["message"]);
+      return AppResponse.fromJson(message ?? {});
     }
   }
 
   Future<AppResponse> applyPayment({var url, var header, var body}) async {
     try {
-      var response = await DioManagerClass.getInstance.dioPostFormMethod(
-          url: url, header: header, body: body);
-      return AppResponse.fromJson(json.decode(response.toString())??{});
+      var response = await DioManagerClass.getInstance
+          .dioPostFormMethod(url: url, header: header, body: body);
+      return AppResponse.fromJson(json.decode(response.toString()) ?? {});
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
-      return AppResponse.fromJson(message??{});
+      DioManagerClass.getInstance
+          .handleNotAuthorized(message["status"]["message"]);
+      return AppResponse.fromJson(message ?? {});
     }
   }
-
 
   Future<AppResponse> addOrderReview({var url, var header, var body}) async {
     try {
-      var response = await DioManagerClass.getInstance.dioPostFormMethod(
-          url: url, header: header, body: body);
-      return AppResponse.fromJson(json.decode(response.toString())??{});
+      var response = await DioManagerClass.getInstance
+          .dioPostFormMethod(url: url, header: header, body: body);
+      return AppResponse.fromJson(json.decode(response.toString()) ?? {});
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
-      return AppResponse.fromJson(message??{});
+      DioManagerClass.getInstance
+          .handleNotAuthorized(message["status"]["message"]);
+      return AppResponse.fromJson(message ?? {});
     }
   }
 
-  Future<AppResponse> addEmergencyCasesReport({var url, var header, var body}) async {
+  Future<AppResponse> addEmergencyCasesReport(
+      {var url, var header, var body}) async {
     try {
-      var response = await DioManagerClass.getInstance.dioPostFormMethod(
-          url: url, header: header, body: body);
-      return AppResponse.fromJson(json.decode(response.toString())??{});
+      var response = await DioManagerClass.getInstance
+          .dioPostFormMethod(url: url, header: header, body: body);
+      return AppResponse.fromJson(json.decode(response.toString()) ?? {});
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
-      return AppResponse.fromJson(message??{});
+      DioManagerClass.getInstance
+          .handleNotAuthorized(message["status"]["message"]);
+      return AppResponse.fromJson(message ?? {});
     }
   }
 
   Future<AppResponse> cancelOrder({var url, var header, var body}) async {
     try {
-      var response = await DioManagerClass.getInstance.dioPostFormMethod(
-          url: url, header: header, body: body);
-      return AppResponse.fromJson(json.decode(response.toString())??{});
+      var response = await DioManagerClass.getInstance
+          .dioPostFormMethod(url: url, header: header, body: body);
+      return AppResponse.fromJson(json.decode(response.toString()) ?? {});
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
-      return AppResponse.fromJson(message??{});
+      DioManagerClass.getInstance
+          .handleNotAuthorized(message["status"]["message"]);
+      return AppResponse.fromJson(message ?? {});
     }
   }
 
   Future<AppResponse> applyCancel({var url, var header, var body}) async {
     try {
-      var response = await DioManagerClass.getInstance.dioPostFormMethod(
-          url: url, header: header, body: body);
-      return AppResponse.fromJson(json.decode(response.toString())??{});
+      var response = await DioManagerClass.getInstance
+          .dioPostFormMethod(url: url, header: header, body: body);
+      return AppResponse.fromJson(json.decode(response.toString()) ?? {});
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
-      return AppResponse.fromJson(message??{});
+      DioManagerClass.getInstance
+          .handleNotAuthorized(message["status"]["message"]);
+      return AppResponse.fromJson(message ?? {});
     }
   }
 
   Future<AppResponse> editOrder({var url, var header, var body}) async {
     try {
-      var response = await DioManagerClass.getInstance.dioPostFormMethod(
-          url: url, header: header, body: body);
-      return AppResponse.fromJson(json.decode(response.toString())??{});
+      var response = await DioManagerClass.getInstance
+          .dioPostFormMethod(url: url, header: header, body: body);
+      return AppResponse.fromJson(json.decode(response.toString()) ?? {});
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
-      return AppResponse.fromJson(message??{});
+      DioManagerClass.getInstance
+          .handleNotAuthorized(message["status"]["message"]);
+      return AppResponse.fromJson(message ?? {});
     }
   }
-
-
 }

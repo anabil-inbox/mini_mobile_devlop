@@ -68,8 +68,34 @@ class OrderHelper {
     }
   }
 
+  Future<AppResponse> applyInvoicePaymentApi({required Map<String, dynamic> body}) async {
+    var appResponse = await OrderApi.getInstance.applyInvoicePaymentApi(
+        body: body,
+        url: "${ConstanceNetwork.applyInvoicePaymentApi}",
+        header: ConstanceNetwork.header(2));
+    if (appResponse.status?.success == true) {
+      Logger().e(appResponse.data);
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
 
-  Future<AppResponse> addOrderReview({required Map<String, dynamic> body}) async {
+  Future<AppResponse> getInvoiceUrlPaymentApi({required Map<String, dynamic> body}) async {
+    var appResponse = await OrderApi.getInstance.getInvoiceUrlPaymentApi(
+        body: body,
+        url: "${ConstanceNetwork.getInvoiceUrlPaymentApi}",
+        header: ConstanceNetwork.header(2));
+    if (appResponse.status?.success == true) {
+      Logger().e(appResponse.data);
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
+  Future<AppResponse> addOrderReview(
+      {required Map<String, dynamic> body}) async {
     var appResponse = await OrderApi.getInstance.addOrderReview(
         body: body,
         url: "${ConstanceNetwork.addReviewApi}",
@@ -82,7 +108,8 @@ class OrderHelper {
     }
   }
 
-  Future<AppResponse> addEmergencyCasesReport({required Map<String, dynamic> body}) async {
+  Future<AppResponse> addEmergencyCasesReport(
+      {required Map<String, dynamic> body}) async {
     var appResponse = await OrderApi.getInstance.addEmergencyCasesReport(
         body: body,
         url: "${ConstanceNetwork.createEmergencyCasesApi}",

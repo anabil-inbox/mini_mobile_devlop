@@ -240,79 +240,82 @@ class _CompanyVerficationCodeScreenState
       return GetBuilder<AuthViewModle>(builder: (logic) {
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: sizeW80!),
-          child: PinCodeTextField(
-            autoFocus: true,
-            controller: controller,
-            enablePinAutofill: true,
-            // onAutoFillDisposeAction: true,
-            // useExternalAutoFillGroup: true,
-            hintCharacter: "__",
-            hintStyle: textStyleTitle(),
-            length: 4,
-            textStyle: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-            obscureText: false,
-            animationType: AnimationType.fade,
-            pinTheme: PinTheme(
-                shape: PinCodeFieldShape.underline,
-                fieldHeight: 50,
-                fieldWidth: 50,
-                disabledColor: Color(0xFFCECECE),
-                selectedFillColor: colorTextWhite,
-                activeFillColor: colorTextWhite,
-                inactiveFillColor: colorTextWhite,
-                inactiveColor: Color(0xFFCECECE),
-                activeColor: colorTextWhite,
-                selectedColor: colorTextWhite,
-                borderRadius: BorderRadius.circular(sizeRadius10!)
+          child: AutofillGroup(
+            child: PinCodeTextField(
+              autoFocus: true,
+              controller: controller,
+              enablePinAutofill: true,
+              // useExternalAutoFillGroup: true,
+              // onAutoFillDisposeAction: true,
+              // useExternalAutoFillGroup: true,
+              hintCharacter: "__",
+              hintStyle: textStyleTitle(),
+              length: 4,
+              textStyle: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+              obscureText: false,
+              animationType: AnimationType.fade,
+              pinTheme: PinTheme(
+                  shape: PinCodeFieldShape.underline,
+                  fieldHeight: 50,
+                  fieldWidth: 50,
+                  disabledColor: Color(0xFFCECECE),
+                  selectedFillColor: colorTextWhite,
+                  activeFillColor: colorTextWhite,
+                  inactiveFillColor: colorTextWhite,
+                  inactiveColor: Color(0xFFCECECE),
+                  activeColor: colorTextWhite,
+                  selectedColor: colorTextWhite,
+                  borderRadius: BorderRadius.circular(sizeRadius10!)
 
-            ),
-            cursorColor: Colors.black,
-            animationDuration: Duration(milliseconds: 300),
-            backgroundColor: colorScaffoldRegistrationBody,
-            enableActiveFill: true,
-            keyboardType: TextInputType.number,
-            onCompleted: (v) {
-              authViewModle.checkVerficationCode(
-                countryCode: "",
-                id: widget.id,
-                mobileNumber: "",
-                code: v.toString(),
+              ),
+              cursorColor: Colors.black,
+              animationDuration: Duration(milliseconds: 300),
+              backgroundColor: colorScaffoldRegistrationBody,
+              enableActiveFill: true,
+              // keyboardType: TextInputType.,
+              onCompleted: (v) {
+                authViewModle.checkVerficationCode(
+                  countryCode: "",
+                  id: widget.id,
+                  mobileNumber: "",
+                  code: v.toString(),
 
-              );
-            },
-            onChanged: (value) {
+                );
+              },
+              onChanged: (value) {
+                //   if(value.isEmpty) {
+                //   //  return kPleaseActiveCode.tr;
+                //   }else if(value.length!=4) {
+                //  //   return kPleaseActiveCode.tr;
+                //   }else{
+                //     print("msg_in_else");
+                //     authViewModle.checkVerficationCode(
+                //     countryCode: "",
+                //     id: widget.id,
+                //     mobileNumber: "",
+                //     code: value.toString(),
+                //   );
+                //   }
+              },
+              // validator: (value) {
               //   if(value.isEmpty) {
-              //   //  return kPleaseActiveCode.tr;
+              //     return kPleaseActiveCode.tr;
               //   }else if(value.length!=4) {
-              //  //   return kPleaseActiveCode.tr;
+              //    // return kPleaseActiveCode.tr;
               //   }else{
-              //     print("msg_in_else");
-              //     authViewModle.checkVerficationCode(
-              //     countryCode: "",
-              //     id: widget.id,
-              //     mobileNumber: "",
-              //     code: value.toString(),
-              //   );
+              //     return null;
               //   }
-            },
-            // validator: (value) {
-            //   if(value.isEmpty) {
-            //     return kPleaseActiveCode.tr;
-            //   }else if(value.length!=4) {
-            //    // return kPleaseActiveCode.tr;
-            //   }else{
-            //     return null;
-            //   }
-            // },
-            beforeTextPaste: (text) {
-              //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-              //but you can show anything you want here, like your pop up saying wrong paste format or etc
-              return true;
-            },
-            appContext: context,
+              // },
+              beforeTextPaste: (text) {
+                //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                return true;
+              },
+              appContext: context,
+            ),
           ),
         );
       });

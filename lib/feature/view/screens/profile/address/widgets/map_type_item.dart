@@ -5,6 +5,8 @@ import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 import '../../../../../../util/app_shaerd_data.dart';
@@ -17,6 +19,12 @@ class MapTypeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     screenUtil(context);
     return GetBuilder<ProfileViewModle>(
+      initState: (con){
+        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+          con.controller?.selectedMapType = LocalConstance.bluePlate;
+          con.controller?.update();
+        });
+      },
       builder: (builder) {
         return InkWell(
           onTap: () {

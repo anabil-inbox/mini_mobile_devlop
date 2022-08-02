@@ -57,7 +57,7 @@ class MyWalletScreen extends StatelessWidget {
                     InkWell(
                         onTap: () {
                           Get.bottomSheet(
-                            AddMoneyBottomSheet(),
+                            AddMoneyBottomSheet(isLoading:logic.isLoading),
                             isScrollControlled: true,
                           );
                         },

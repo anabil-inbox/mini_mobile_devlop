@@ -14,8 +14,8 @@ import 'package:inbox_clients/util/string.dart';
 import '../../../../util/app_shaerd_data.dart';
 
 class AddMoneyBottomSheet extends StatelessWidget {
-  const AddMoneyBottomSheet({Key? key}) : super(key: key);
-
+  const AddMoneyBottomSheet({Key? key, this.isLoading = false, }) : super(key: key);
+  final bool? isLoading;
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -49,6 +49,7 @@ class AddMoneyBottomSheet extends StatelessWidget {
                       isBorder: false,
                       isSmallPaddingWidth: false,
                       isSmallPadding: false,
+                      textInputAction: TextInputAction.done,
                       fillColor: colorBtnGray.withOpacity(0.4),
                       isFill: true,
                       keyboardType: TextInputType.number,
@@ -56,7 +57,7 @@ class AddMoneyBottomSheet extends StatelessWidget {
                     SizedBox(height: sizeH20),
                     PrimaryButton(
                         textButton: txtADD!,
-                        isLoading: false,
+                        isLoading: logic.isLoading,
                         onClicked: () {
                           logic.depositMoneyToWallet();
                         },

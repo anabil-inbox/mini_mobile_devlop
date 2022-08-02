@@ -6,6 +6,7 @@ import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/view/screens/profile/change_mobile/change_mobild_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/edit_profile/company_edit_profile.dart';
 import 'package:inbox_clients/feature/view/screens/profile/edit_profile/user_edit_profile_screen.dart';
+import 'package:inbox_clients/feature/view/screens/profile/setting/widget/help_center/help_center_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -49,11 +50,7 @@ class HeaderProfileCard extends StatelessWidget {
                 builder: (_) {
                   return GetUtils.isNull(
                               SharedPref.instance.getCurrentUserData().image) ||
-                          SharedPref.instance
-                              .getCurrentUserData()
-                              .image
-                              .toString()
-                              .isEmpty
+                          SharedPref.instance.getCurrentUserData().image.toString().isEmpty
                       ? CircleAvatar(
                           backgroundColor: colorPrimary,
                           radius: 35,
@@ -69,60 +66,75 @@ class HeaderProfileCard extends StatelessWidget {
               SizedBox(
                 width: sizeH10,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GetBuilder<ProfileViewModle>(
-                    init: ProfileViewModle(),
-                    initState: (_) {},
-                    builder: (_) {
-                      return Text(
-                          "${SharedPref.instance.getCurrentUserData().customerName}");
-                    },
-                  ),
-                  // Text("Ahmed Ali Abdullah"),
-                  SizedBox(
-                    height: sizeH4,
-                  ),
-                  Row(
-                    children: [
-                      GetBuilder<ProfileViewModle>(
-                        init: ProfileViewModle(),
-                        initState: (_) {},
-                        builder: (_) {
-                          return Text(
-                              "${SharedPref.instance.getCurrentUserData().countryCode} ${SharedPref.instance.getCurrentUserData().mobile}",
-                              style: textStyleHint()!
-                                  .copyWith(fontWeight: FontWeight.normal),
-                              textDirection: TextDirection.ltr);
-                        },
-                      ),
-                      SizedBox(
-                        width: sizeH9,
-                      ),
-                      if (SharedPref.instance
-                              .getCurrentUserData()
-                              .crNumber
-                              .toString()
-                              .isEmpty ||
-                          GetUtils.isNull(SharedPref.instance
-                              .getCurrentUserData()
-                              .crNumber))
-                        InkWell(
-                            onTap: () {
-                              print("Cliked");
-                              Get.to(() => ChangeMobileScreen(
-                                    mobileNumber:
-                                        "${SharedPref.instance.getCurrentUserData().countryCode} ${SharedPref.instance.getCurrentUserData().mobile}",
-                                  ));
-                            },
-                            child: SvgPicture.asset("assets/svgs/edit_pen.svg" ,color: colorPrimary,))
-                      else
-                        const SizedBox(),
-                    ],
-                  )
-                ],
-              )
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GetBuilder<ProfileViewModle>(
+                      init: ProfileViewModle(),
+                      initState: (_) {},
+                      builder: (_) {
+                        return Text(
+                            "${SharedPref.instance.getCurrentUserData().customerName}");
+                      },
+                    ),
+                    // Text("Ahmed Ali Abdullah"),
+                    SizedBox(
+                      height: sizeH4,
+                    ),
+                    Row(
+                      children: [
+                        GetBuilder<ProfileViewModle>(
+                          init: ProfileViewModle(),
+                          initState: (_) {},
+                          builder: (_) {
+                            return Text(
+                                "${SharedPref.instance.getCurrentUserData().countryCode} ${SharedPref.instance.getCurrentUserData().mobile}",
+                                style: textStyleHint()!
+                                    .copyWith(fontWeight: FontWeight.normal),
+                                textDirection: TextDirection.ltr);
+                          },
+                        ),
+                        SizedBox(
+                          width: sizeH9,
+                        ),
+                        if (SharedPref.instance
+                                .getCurrentUserData()
+                                .crNumber
+                                .toString()
+                                .isEmpty ||
+                            GetUtils.isNull(SharedPref.instance
+                                .getCurrentUserData()
+                                .crNumber))
+                          InkWell(
+                              onTap: () {
+                                print("Cliked");
+                                Get.to(() => ChangeMobileScreen(
+                                      mobileNumber:
+                                          "${SharedPref.instance.getCurrentUserData().countryCode} ${SharedPref.instance.getCurrentUserData().mobile}",
+                                    ));
+                              },
+                              child: SvgPicture.asset("assets/svgs/edit_pen.svg" ,color: colorPrimary,))
+                        else
+                          const SizedBox(),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: sizeH16,
+              ),
+              InkWell(
+                  onTap: (){
+                    Get.to(() => const HelpCenterScreen(
+                      helpCenter: true,
+                    ));
+                  },
+                  child: Image.asset("assets/png/customer_support.png" , width: sizeW24,)),
+              SizedBox(
+                width: sizeH16,
+              ),
             ],
           ),
           SizedBox(

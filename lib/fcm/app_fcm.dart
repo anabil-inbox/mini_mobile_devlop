@@ -12,16 +12,20 @@ import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/scan_recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
+import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/signature_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
+import 'package:inbox_clients/network/api/feature/order_helper.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
 class AppFcm {
   AppFcm._();
+
   static AppFcm fcmInstance = AppFcm._();
 
   static HomeViewModel homeViewModel = Get.put(
@@ -48,7 +52,7 @@ class AppFcm {
     'com.inbox.clients', // id
     'com.inbox.clients', // title
     //  'IMPORTANCE_HIGH', // description
-    importance: Importance.defaultImportance,
+    importance: Importance.max,
     //showBadge: true,
   );
 
@@ -58,14 +62,16 @@ class AppFcm {
         TaskResponse.fromJson(message.data, isFromNotification: true);
     homeViewModel.expandableController.expanded = false;
     homeViewModel.expandableController.expanded = true;
-    SharedPref.instance.setDriverToken(token: homeViewModel.operationTask.driverToken ?? "");
+    SharedPref.instance
+        .setDriverToken(token: homeViewModel.operationTask.driverToken ?? "");
     Logger().e("DRIVER TOKEN ${await SharedPref.instance.getDriverToken()}}");
     storageViewModel.update();
     homeViewModel.update();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       homeViewModel.operationTask =
           TaskResponse.fromJson(message.data, isFromNotification: true);
-      if (message.data["id"] == LocalConstance.signature && message.data["type"] == LocalConstance.onClientSide) {
+      if (message.data["id"] == LocalConstance.signature &&
+          message.data["type"] == LocalConstance.onClientSide) {
         homeViewModel.selectedSignatureItemModel.title =
             LocalConstance.onClientSide;
         SignatureBottomSheet.showSignatureBottomSheet();
@@ -109,17 +115,18 @@ class AppFcm {
   configuration() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('drawable/app_icon');
-    final IOSInitializationSettings initializationSettingsIOS =
+    const IOSInitializationSettings initializationSettingsIOS =
         IOSInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
     );
-    final InitializationSettings initializationSettings =
+
+    const InitializationSettings initializationSettings =
         InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS,
-    );
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS,
+            macOS: null);
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: selectNotification);
@@ -146,7 +153,7 @@ class AppFcm {
       announcement: false,
       badge: true,
       carPlay: false,
-      criticalAlert: false,
+      criticalAlert: /*Platform.isAndroid ? true: */ false,
       provisional: false,
       sound: true,
     );
@@ -158,7 +165,7 @@ class AppFcm {
 
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
-      alert: false,
+      alert: /*Platform.isAndroid ? true: */ false,
       badge: true,
       sound: true,
     );
@@ -169,33 +176,41 @@ class AppFcm {
       Logger().e(d);
       jsonDecode(jsonEncode(message.data));
       Logger().e(message.data);
-      if (Platform.isIOS || Platform.isAndroid) {
+      if (true) {
         messages = message;
         updatePages(message);
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              iOS: IOSNotificationDetails(
-                presentAlert: true,
-                presentBadge: true,
-                presentSound: true,
-                /* subtitle: message.notification.body,*/
-              ),
-              android: AndroidNotificationDetails(
-                channel.id, channel.name,
-                // channel.description,
-                styleInformation: BigTextStyleInformation(''),
-                enableLights: true,
-                enableVibration: true,
-                fullScreenIntent: true,
-                autoCancel: true,
-                importance: Importance.defaultImportance,
-                priority: Priority.high,
-              ),
-            ),
-            payload: "${message.data}");
+
+        flutterLocalNotificationsPlugin
+            .show(
+                notification.hashCode,
+                notification.title,
+                notification.body,
+                NotificationDetails(
+                  iOS: IOSNotificationDetails(
+                    presentAlert: true,
+                    presentBadge: true,
+                    presentSound: true,
+                    /* subtitle: message.notification.body,*/
+                  ),
+                  android: AndroidNotificationDetails(
+                    /*channel.id*/
+                    "com.inbox.clients", "com.inbox.clients" /*channel.name*/,
+                    // channel.description,
+                    styleInformation: BigTextStyleInformation(''),
+                    enableLights: true,
+                    enableVibration: true,
+                    fullScreenIntent: true,
+                    autoCancel: true,
+                    importance: Importance.max,
+                    priority: Priority.high,
+                  ),
+                ),
+                payload: "${message.data}")
+            .catchError((onError) {
+          Logger().e(onError);
+        }).onError((error, stackTrace) {
+          Logger().e(error);
+        });
       }
     });
   }
@@ -227,13 +242,13 @@ class AppFcm {
             ));
         return;
       }
-      /*else*/ if (serial[LocalConstance.id].toString() ==
-          LocalConstance.scanBoxId) {
+      /*else*/
+      if (serial[LocalConstance.id].toString() == LocalConstance.scanBoxId) {
         print("MSG_BUG LocalConstance.scanBoxId $map");
         homeViewModel.operationTask =
             TaskResponse.fromJson(map, isFromNotification: true);
         Get.off(ScanRecivedOrderScreen(
-          code:homeViewModel.operationTask.salesOrder,
+          code: homeViewModel.operationTask.salesOrder,
           isScanDeliverdBoxes: false,
           isBox: true,
           isProduct: false,
@@ -293,6 +308,39 @@ class AppFcm {
         Get.off(() => ReciverOrderScreen(
               homeViewModel,
             ));
+
+        return;
+      }
+
+      if (serial[LocalConstance.id].toString() == LocalConstance.invoice) {
+        // homeViewModel.operationTask =
+        //     TaskResponse.fromJson(map, isFromNotification: true);
+        //
+        // storageViewModel.selectedPaymentMethod = PaymentMethod(
+        //   id: homeViewModel.operationTask.paymentMethod,
+        //   name: homeViewModel.operationTask.paymentMethod,
+        // );
+        //
+        // storageViewModel.update();
+        // Get.off(ReciverOrderScreen(homeViewModel));
+        var boxId = serial[ConstanceNetwork.paymentEntryKey]; //"payment_entry"
+        var salesInvoiceId = serial["sales_invoice"]; //"payment_entry"
+        var appResponse = await OrderHelper.getInstance
+            .getInvoiceUrlPaymentApi(body: {LocalConstance.id: boxId});
+        if (appResponse.status!.success!) {
+          var data = appResponse.data;
+          var paymentUrl = data["url"];
+          Get.to(PaymentScreen(
+            isFromNewStorage: false,
+            isFromCart: false,
+            url: paymentUrl,
+            paymentId: '',
+            cartModels: [],
+            isOrderProductPayment: false,
+            isFromInvoice: true,
+            boxIdInvoice: boxId,
+          ));
+        }
 
         return;
       }

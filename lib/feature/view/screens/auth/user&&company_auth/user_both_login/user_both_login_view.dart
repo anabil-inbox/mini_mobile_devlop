@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/view/screens/auth/auth_company/verfication/company_verfication_code_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_register_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/company_both_login/company_both_login_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/widget/header_login_widget.dart';
@@ -22,6 +23,13 @@ class UserBothLoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     screenUtil(context);
     Get.put(AuthViewModle());
+    // Future.delayed(Duration(seconds: 1)).then((value) {
+    //   Get.to(() => CompanyVerficationCodeScreen(
+    //       id:"id",
+    //       countryCode: "972",
+    //       mobileNumber: "595933777",
+    //       type: "${ConstanceNetwork.companyType}"));
+    // });
     return Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       body: ListView(

@@ -15,6 +15,7 @@ import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 import 'package:inbox_clients/feature/model/respons/task_response.dart';
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
+import 'package:inbox_clients/feature/view/screens/auth/intro_screens/intro_view.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
@@ -35,6 +36,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../model/cases_data.dart';
 import '../../model/home/notification_data.dart';
@@ -62,6 +64,88 @@ class HomeViewModel extends BaseController {
   double ratingService = 3.0;
   List<CasesData> casesDataList = [];
   List<CasesData> casesSelectedDataList = [];
+
+  late BuildContext showCaseBuildContext;
+
+
+  ///this for home screen
+  var addShowKey = GlobalKey();
+  var scanShowKey = GlobalKey();
+  var cartShowKey = GlobalKey();
+  var taskShowKey = GlobalKey();
+  var switchViewShowKey = GlobalKey();
+  var boxStatusShowKey = GlobalKey();
+
+  ///this for received order
+  //   var boxNeedScanShowKey = GlobalKey();
+  //   var scanBoxShowKey = GlobalKey();
+  //   var scanProductShowKey = GlobalKey();
+  //   var priceShowKey = GlobalKey();
+  //   var signatureShowKey = GlobalKey();
+
+  @override
+  void onInit() async {
+    super.onInit();
+    await getCustomerBoxes();
+    await getTasks();
+    getBeneficiary();
+
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      moveToIntro();
+    });
+    // homeScrollcontroller.addListener(() {
+    //   pagination();
+    // });
+  }
+
+  moveToIntro() {
+    if(!SharedPref.instance.getFirstHome()){
+      ShowCaseWidget.of(showCaseBuildContext).startShowCase([
+        scanShowKey /*= GlobalKey()*/,
+        cartShowKey /*= GlobalKey()*/,
+        taskShowKey /*= GlobalKey()*/,
+        // switchViewShowKey = GlobalKey(),
+        boxStatusShowKey /*= GlobalKey()*/,
+        addShowKey /*= GlobalKey()*/,
+      ]);
+    }
+  }
+
+  showReceivedOrderCase(GlobalKey<State<StatefulWidget>> boxNeedScanShowKey, GlobalKey<State<StatefulWidget>> scanBoxShowKey, GlobalKey<State<StatefulWidget>> scanProductShowKey,
+      GlobalKey<State<StatefulWidget>> priceShowKey, GlobalKey<State<StatefulWidget>> signatureShowKey) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      if(!SharedPref.instance.getFirstReceivedOrderKey()){
+        ShowCaseWidget.of(showCaseBuildContext).startShowCase([
+          boxNeedScanShowKey,
+          scanBoxShowKey,
+          scanProductShowKey,
+          priceShowKey,
+          signatureShowKey,
+        ]);
+      }
+    });
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    // scanShowKey.currentState?.dispose();
+    // cartShowKey.currentState?.dispose();
+    // taskShowKey.currentState?.dispose();
+    //  switchViewShowKey.currentState?.dispose();
+    // boxStatusShowKey.currentState?.dispose();
+    // addShowKey.currentState?.dispose();
+    // boxNeedScanShowKey.currentState?.dispose();
+    // scanBoxShowKey.currentState?.dispose();
+    // scanProductShowKey.currentState?.dispose();
+    // priceShowKey.currentState?.dispose();
+    // signatureShowKey.currentState?.dispose();
+    super.onClose();
+  }
+  void setContext(context) {
+    showCaseBuildContext = context;
+    // update();
+  }
 
   Future<void> getCustomerBoxes() async {
     if (!isLoadingPagination) {
@@ -433,17 +517,7 @@ class HomeViewModel extends BaseController {
   }
 
   //
-  @override
-  void onInit() async {
-    super.onInit();
-    await getCustomerBoxes();
-    await getTasks();
-    getBeneficiary();
 
-    // homeScrollcontroller.addListener(() {
-    //   pagination();
-    // });
-  }
 
   // to start work with user And Store Address ::
   Address? selectedAddres;
@@ -805,12 +879,12 @@ class HomeViewModel extends BaseController {
 
   void casesReport(
       TaskResponse? taskResponse, TextEditingController noteController) async {
-    if (noteController.text.isEmpty && casesSelectedDataList.isEmpty) {
+    if (noteController.text.isEmpty &&  casesSelectedDataList.isEmpty) {
       return;
     }
 
     Map<String, dynamic> map = {
-      ConstanceNetwork.emergencyCaseKey: casesSelectedDataList.first.name,
+      ConstanceNetwork.emergencyCaseKey: !GetUtils.isNull(casesSelectedDataList) && casesSelectedDataList.isNotEmpty ?   casesSelectedDataList.first.name.toString()  :"",
       ConstanceNetwork.notesKey: "${noteController.text.toString()}",
       ConstanceNetwork.salesOrderKey: "${taskResponse?.salesOrder}",
     };

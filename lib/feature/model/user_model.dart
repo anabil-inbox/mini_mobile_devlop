@@ -12,6 +12,8 @@ class Company {
     this.deviceType,
     this.conversionFactor,
     this.fcm,
+    this.reporterMobile,
+    this.reporterEmail,
   });
 
   String? crNumber;
@@ -26,10 +28,14 @@ class Company {
   String? deviceType;
   String? conversionFactor;
   String? fcm;
+  String? reporterMobile;
+  String? reporterEmail;
 
   factory Company.fromJson(Map<String, dynamic> json) => Company(
         crNumber: json["cr_number"] ?? "",
         mobile: json["mobile_number"] ?? "",
+        reporterEmail: json["reporter_email"] ?? "",
+        reporterMobile: json["reporter_mobile"] ?? "",
         countryCode: json["country_code"] ?? "",
         email: json["email"] ?? "",
         conversionFactor: json["conversion_factor;"],
@@ -44,6 +50,8 @@ class Company {
 
   Map<String, dynamic> toJson() => {
         "cr_number": crNumber,
+        "reporter_mobile": reporterMobile ?? "",
+        "reporter_email": reporterEmail ?? "",
         "mobile_number": mobile,
         "country_code": countryCode,
         "email": email,

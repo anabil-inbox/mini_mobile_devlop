@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:inbox_clients/fcm/app_fcm.dart';
 import 'package:inbox_clients/feature/view/screens/auth/splash/splash.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/network/api/feature/splash_feature_helper.dart';
 import 'package:inbox_clients/util/app_color.dart';
 
@@ -17,6 +18,7 @@ import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logger/logger.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../main.dart';
 
@@ -142,7 +144,8 @@ class _AppWidgetState extends State<AppWidget> {
               }),
             ),
 
-            home: const SplashScreen()
+            home:  SplashScreen(),
+
             // home: ReciverOrderScreen()
             ),
         );

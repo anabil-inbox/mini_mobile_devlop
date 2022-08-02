@@ -54,35 +54,22 @@ class BluePlateForm extends StatelessWidget {
           },
           decoration: InputDecoration(hintText: "${tr.building_no}"),
         ),
-        SizedBox(
-          height: sizeH10,
-        ),
-        TextFormField(
-          controller: profileViewModle.tdUnitNo,
-          onSaved: (newValue) {
-            profileViewModle.tdUnitNo.text = newValue!;
-            profileViewModle.update();
-          },
-          // validator: (value) {
-          //   if (value == null || value.trim().isEmpty) {
-          //     return '${tr.fill_the_unit_no_correctly}';
-          //   }
-          //   return null;
-          // },
-          decoration: InputDecoration(hintText: "${tr.unit_no}"),
-        ),
+
         SizedBox(
           height: sizeH10,
         ),
         // InkWell(
         //   onTap: () {
         //     profileViewModle.showZoneBottmSheet();
+        //     // profileViewModle.showZoneNumberBottmSheet();
         //   },
-        //   child: TextFormField(
+        //   child:
+        //   TextFormField(
         //     onTap: () {
         //       profileViewModle.showZoneBottmSheet();
+        //       // profileViewModle.showZoneNumberBottmSheet();
         //     },
-        //     readOnly: true,
+        //     // readOnly: true,
         //     onSaved: (newValue) {
         //       profileViewModle.tdZone.text = newValue!;
         //       profileViewModle.update();
@@ -102,9 +89,9 @@ class BluePlateForm extends StatelessWidget {
         //         hintText: "${tr.zone}"),
         //   ),
         // ),
-        SizedBox(
-          height: sizeH10,
-        ),
+        // SizedBox(
+        //   height: sizeH10,
+        // ),
         TextFormField(
           onSaved: (newValue) {
             profileViewModle.tdZoneNumber.text = newValue!;
@@ -117,6 +104,10 @@ class BluePlateForm extends StatelessWidget {
             }
             return null;
           },
+          // onTap: () {
+          //   profileViewModle.showZoneNumberBottmSheet();
+          // },
+          // readOnly: true,
           keyboardType: TextInputType.numberWithOptions(),
           decoration: InputDecoration(hintText: "${tr.zone_number}" , ),
         ),
@@ -140,39 +131,57 @@ class BluePlateForm extends StatelessWidget {
         SizedBox(
           height: sizeH10,
         ),
-        InkWell(
-          onTap: () {
-            Get.to(() => MapSample());
+        // InkWell(
+        //   onTap: () {
+        //     Get.to(() => MapSample());
+        //   },
+        //   child: TextFormField(
+        //     onTap: () {
+        //       Get.to(() => MapSample());
+        //     },
+        //     onSaved: (newValue) {
+        //       profileViewModle.tdLocation.text = newValue!;
+        //       profileViewModle.update();
+        //     },
+        //     readOnly: true,
+        //     controller: profileViewModle.tdLocation,
+        //     validator: (value) {
+        //       if (value == null || value.trim().isEmpty) {
+        //         return '${tr.choose_your_location}';
+        //       }
+        //       return null;
+        //     },
+        //     decoration: InputDecoration(
+        //         enabled: true,
+        //         suffixIcon: Padding(
+        //           padding: const EdgeInsets.all(5.0),
+        //           child: Image.asset(
+        //             "assets/png/Location.png",
+        //             width: 10,
+        //             height: 10,
+        //           ),
+        //         ),
+        //         suffixStyle: TextStyle(color: Colors.transparent),
+        //         hintText: "${tr.choose_your_location}"),
+        //   ),
+        // ),
+        // SizedBox(
+        //   height: sizeH10,
+        // ),
+
+        TextFormField(
+          controller: profileViewModle.tdUnitNo,
+          onSaved: (newValue) {
+            profileViewModle.tdUnitNo.text = newValue!;
+            profileViewModle.update();
           },
-          child: TextFormField(
-            onTap: () {
-              Get.to(() => MapSample());
-            },
-            onSaved: (newValue) {
-              profileViewModle.tdLocation.text = newValue!;
-              profileViewModle.update();
-            },
-            readOnly: true,
-            controller: profileViewModle.tdLocation,
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return '${tr.choose_your_location}';
-              }
-              return null;
-            },
-            decoration: InputDecoration(
-                enabled: true,
-                suffixIcon: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Image.asset(
-                    "assets/png/Location.png",
-                    width: 10,
-                    height: 10,
-                  ),
-                ),
-                suffixStyle: TextStyle(color: Colors.transparent),
-                hintText: "${tr.choose_your_location}"),
-          ),
+          // validator: (value) {
+          //   if (value == null || value.trim().isEmpty) {
+          //     return '${tr.fill_the_unit_no_correctly}';
+          //   }
+          //   return null;
+          // },
+          decoration: InputDecoration(hintText: "${tr.unit_no}"),
         ),
         SizedBox(
           height: sizeH10,

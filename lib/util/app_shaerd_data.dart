@@ -313,6 +313,9 @@ Widget imageNetwork(
 }
 
 Future<void> askOnWhatsApp(String? phoneNumber) async {
+  if(phoneNumber == null || phoneNumber.isEmpty){
+    return ;
+  }
   final u =
       "https://api.whatsapp.com/send?phone=+972${phoneNumber.toString().replaceFirst(RegExp(r'^0+'), "")}&text=";
 
@@ -350,6 +353,21 @@ Future<void> askOnWhatsApp(String? phoneNumber) async {
   }
 }
 
+openBrowser(url)async{//openBrowser
+  if(url == null ){
+    return;
+  }
+  if (await canLaunch(url)) {
+    // await launch(url, /*forceSafariVC: false, forceWebView: false*/);
+    await launch(
+      url,
+      forceSafariVC: true,
+      forceWebView: true,
+      // statusBarBrightness: Brightness.dark,
+    );
+  }
+
+}
 Future<void> makePhoneCall(String? phone) async {
   try {
     await launch(

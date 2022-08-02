@@ -99,6 +99,7 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                     hintText:
                         "${tr.your_email_address}"),
               ),
+
               SizedBox(
                 height: padding16,
               ),
@@ -234,6 +235,113 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                     },
                   ),
                 ),
+              ),SizedBox(
+                height: padding16,
+              ),
+              TextFormField(
+                controller: controller.tdCompanyEmailOperator,
+                onSaved: (newValue) {
+                  controller.tdCompanyEmailOperator.text = newValue!;
+                  controller.update();
+                },
+                // validator: (value) {
+                //   if (value == null || value.isEmpty) {
+                //     return '${tr.fill_your_company_email}';
+                //   } else if (!GetUtils.isEmail(value)) {
+                //     return '${tr.please_enter_valid_email}';
+                //   }
+                //   return null;
+                // },
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                    hintText:
+                    "${tr.your_email_address_operator}"),
+              ),
+              SizedBox(
+                height: padding16,
+              ),
+              InkWell(
+                onTap: () {
+                  Get.to(() => ChooseCountryScreen(isOperator:true));
+                },
+                child: Container(
+                  height: sizeH60,
+                  decoration: BoxDecoration(
+                    color: colorTextWhite,
+                  ),
+                  child: GetBuilder<AuthViewModle>(
+                    init: AuthViewModle(),
+                    initState: (_) {},
+                    builder: (_) {
+                      return Row(
+                        textDirection: TextDirection.ltr,
+                        children: [
+                          SizedBox(
+                            width: sizeW18,
+                          ),
+                          controller.defCountryOperator.name!
+                              .toLowerCase()
+                              .contains("qatar") ||
+                              controller.defCountryOperator.name!.isEmpty
+                              ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
+                              : imageNetwork(
+                              url:
+                              "${ConstanceNetwork.imageUrl}${controller.defCountryOperator.flag}",
+                              width: 36,
+                              height: 26),
+                          SizedBox(
+                            width: sizeW5,
+                          ),
+                          VerticalDivider(),
+                          GetBuilder<AuthViewModle>(
+                            init: AuthViewModle(),
+                            initState: (_) {},
+                            builder: (value) {
+                              return Text(
+                                "${value.defCountryOperator.prefix == null || value.defCountryOperator.prefix!.isEmpty ? "+974" : value.defCountryOperator.prefix}",
+                                textDirection: TextDirection.ltr,
+                              );
+                            },
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              textDirection: TextDirection.ltr,
+                              maxLength: 10,
+                              onSaved: (newValue) {
+                                if(newValue.toString().isNotEmpty){
+                                  var phonev= phoneVaild(newValue.toString());
+                                  if(phonev != null){
+                                    snackError("", phonev.toString());
+                                  }
+                                }
+                                controller.tdMobileNumberOperator.text =
+                                    newValue.toString();
+                                controller.update();
+                              },
+                              decoration: InputDecoration(
+                                counterText: "",
+                                hintText: tr.mobile_operator
+                              ),
+                              controller: controller.tdMobileNumberOperator,
+                              // validator: (value) {
+                              //   if(value.toString().isNotEmpty) {
+                              //     return phoneVaild(value.toString());
+                              //   }else{
+                              //     return "";
+                              //   }
+                              // },
+                              keyboardType: TextInputType.number,
+                            ),
+                          )
+                        ],
+                      );
+
+                    },
+                  ),
+                ),
+              )
+              ,SizedBox(
+                height: padding16,
               ),
               SizedBox(
                 height: sizeH31,
@@ -303,6 +411,8 @@ class RegisterCompanyForm extends GetWidget<AuthViewModle> {
                           logic.signUpCompany(
                               company: Company(
                             crNumber: logic.tdcrNumber.text,
+                            reporterMobile: logic.tdCompanyEmailOperator.text,
+                            reporterEmail: logic.tdMobileNumberOperator.text,
                             countryCode:
                                 logic.defCountry.prefix,
                             companyName: logic.tdCompanyName.text,

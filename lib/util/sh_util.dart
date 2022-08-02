@@ -23,15 +23,20 @@ class SharedPref {
   final String userDataKey = "userData";
   final String boxessKey = "boxessKey";
   final String driverToken = "driverToken";
-  
+  final String isFirstHomeKey = "isFirstHome";
+  final String isFirstStorageKey = "isFirstStorage";
+  final String isFirstQtyKey = "isFirstQtyKey";
+  final String isFirstAddressAndDate = "isFirstAddressAndDate";
+  final String isFirstPayment = "isFirstPayment";
+  final String isFirstReceivedOrder = "isFirstReceivedOrder";
+
   var log = Logger();
 
   SharedPref._();
 
   static SharedPreferences? _prefs;
 
-
-  setDriverToken({required String token}){
+  setDriverToken({required String token}) {
     _prefs?.setString(driverToken, token);
   }
 
@@ -80,6 +85,7 @@ class SharedPref {
 
   getAppSetting() {
     try {
+      Logger().w(_prefs!.get("$appSettingKey"));
       Object appSetting = _prefs!.get("$appSettingKey")!;
       return appSetting;
     } catch (e) {
@@ -89,6 +95,9 @@ class SharedPref {
 
   List<CompanySector>? getAppSectors() {
     try {
+      Logger().i("sectore_${_prefs!.get("$appSettingKey")}");
+      Logger().i(
+          "sectore_${ApiSettings.fromJson(json.decode(_prefs!.get("$appSettingKey").toString())).companySectors}");
       return ApiSettings.fromJson(
               json.decode(_prefs!.get("$appSettingKey").toString()))
           .companySectors;
@@ -115,7 +124,7 @@ class SharedPref {
           .languges;
     } catch (e) {
       print("e");
-       return null;
+      return null;
     }
   }
 
@@ -125,13 +134,13 @@ class SharedPref {
     _prefs?.setBool("$isShowKey", isShow);
   }
 
-  setIsHideSubscriptions(bool? hide)async{
+  setIsHideSubscriptions(bool? hide) async {
     _prefs?.setBool("$isHideKey", hide!);
   }
-   bool getIsHideSubscriptions(){
-    return _prefs?.getBool("$isHideKey")??false;
-  }
 
+  bool getIsHideSubscriptions() {
+    return _prefs?.getBool("$isHideKey") ?? false;
+  }
 
   //   setBoxesList({required List<Box> boxes}) {
   //   removeBoxess();
@@ -156,7 +165,6 @@ class SharedPref {
   //   }
   // }
 
-
   getShowProgress() {
     try {
       return _prefs?.getBool("$isShowKey") ?? false;
@@ -180,7 +188,7 @@ class SharedPref {
   }
 
   getUserType() {
-    return _prefs!.getString("$customrKey")??"";
+    return _prefs!.getString("$customrKey") ?? "";
   }
 
   setUserType(String customerType) {
@@ -250,4 +258,52 @@ class SharedPref {
   //   await _prefs?.remove(taskKey);
   //   await _prefs?.setString(taskKey, taskResponse);
   // }
+
+  setFirstHome(bool value) async {
+    await _prefs?.setBool(isFirstHomeKey, value);
+  }
+
+  setFirstStorageKey(bool value) async {
+    await _prefs?.setBool(isFirstStorageKey, value);
+  }
+
+  setFirstQtyKey(bool value) async {
+    await _prefs?.setBool(isFirstQtyKey, value);
+  }
+
+  setFirstAddressAndDateKey(bool value) async {
+    await _prefs?.setBool(isFirstAddressAndDate, value);
+  }
+
+  setFirstPaymentKey(bool value) async {
+    await _prefs?.setBool(isFirstPayment, value);
+  }
+
+  setFirstReceivedOrderKey(bool value) async {
+    await _prefs?.setBool(isFirstReceivedOrder, value);
+  }
+
+  bool getFirstHome() {
+    return /*_prefs?.getBool(isFirstHomeKey) ?? false*/ true;
+  }
+
+  bool getFirstStorageKey() {
+    return /*_prefs?.getBool(isFirstStorageKey) ?? false*/ true;
+  }
+
+  bool getFirstQtyKey() {
+    return /*_prefs?.getBool(isFirstQtyKey) ?? false*/ true;
+  }
+
+  bool getFirstAddressAndDateKey() {
+    return /*_prefs?.getBool(isFirstAddressAndDate) ?? false*/ true;
+  }
+
+  bool getFirstPaymentKey() {
+    return /*_prefs?.getBool(isFirstPayment) ?? false*/ true;
+  }
+
+  bool getFirstReceivedOrderKey() {
+    return /*_prefs?.getBool(isFirstReceivedOrder) ?? false*/ true;
+  }
 }

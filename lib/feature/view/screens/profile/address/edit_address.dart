@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inbox_clients/feature/model/address_modle.dart';
+import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
@@ -10,6 +13,8 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/sh_util.dart';
+import 'package:logger/logger.dart';
 
 import 'map.dart';
 
@@ -31,7 +36,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
     super.initState();
     profileViewModle.tdTitleEdit.text = widget.address.addressTitle ?? "";
     profileViewModle.tdBuildingNoEdit.text = widget.address.buildingNo ?? "";
-    // profileViewModle.tdZoneEdit.text = widget.address.zone ?? "";
+     profileViewModle.tdZoneEdit.text = widget.address.zone ?? "";
     profileViewModle.tdZoneNumberEdit.text = widget.address.zoneNumber ?? "";
 
     profileViewModle.tdExtraDetailesEdit.text =
@@ -42,18 +47,18 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
     profileViewModle.tdUnitNoEdit.text = widget.address.unitNo ?? "";
     profileViewModle.isAccepteDefoltLocation =
         widget.address.isPrimaryAddress == 1;
-    profileViewModle.latitude = widget.address.latitude ?? 0;
-    profileViewModle.longitude = widget.address.longitude ?? 0;
+    profileViewModle.latitude = widget.address.latitude ?? profileViewModle.latitude;
+    profileViewModle.longitude = widget.address.longitude ??  profileViewModle.longitude;
     profileViewModle.mark = Marker(
         position:
-            LatLng(widget.address.latitude ?? 0, widget.address.longitude ?? 0),
+            LatLng(widget.address.latitude ?? profileViewModle.latitude, widget.address.longitude ??  profileViewModle.longitude),
         markerId: MarkerId(
-          LatLng(widget.address.latitude ?? 0, widget.address.longitude ?? 0)
+          LatLng(widget.address.latitude ?? profileViewModle.latitude, widget.address.longitude ??  profileViewModle.longitude)
               .toString(),
         ));
     profileViewModle.kGooglePlex = CameraPosition(
         target:
-            LatLng(widget.address.latitude ?? 0, widget.address.longitude ?? 0),
+            LatLng(widget.address.latitude ?? profileViewModle.latitude, widget.address.longitude ?? profileViewModle.longitude),
         zoom: 10);
   }
 
@@ -73,7 +78,20 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
         padding: EdgeInsets.symmetric(horizontal: sizeH16!),
         child: GetBuilder<ProfileViewModle>(
           init: ProfileViewModle(),
-          initState: (_) {},
+          initState: (_) {
+            WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+              try {
+                var s = ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting()))
+                                  .areaZones?.firstWhere((element) => element.numbers!.contains(_.controller?.tdZoneNumberEdit.text.toString())).areaZone??"";
+                if(s.isNotEmpty){
+                  _.controller?.tdZoneEdit.text = s;
+                }
+              } catch (e) {
+                print(e);
+                Logger().d(e);
+              }
+            });
+          },
           builder: (controller) {
             return Form(
                 key: _formKey,
@@ -135,24 +153,41 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                     SizedBox(
                       height: sizeH10,
                     ),
-                    // TextFormField(
-                    //   onSaved: (newValue) {
-                    //     controller.tdZoneEdit.text = newValue!;
-                    //     controller.update();
-                    //   },
-                    //   controller: controller.tdZoneEdit,
-                    //   validator: (value) {
-                    //     if (value == null || value.isEmpty) {
-                    //       return '${tr.fill_the_zone_correctly}';
-                    //     }
-                    //     return null;
-                    //   },
-                    //   decoration: InputDecoration(hintText: "${tr.zone}"),
-                    // ),
+                    TextFormField(
+                      onSaved: (newValue) {
+                        controller.tdZoneEdit.text = newValue!;
+                        controller.update();
+                      },
+                      onTap: (){
+                        controller.showZoneBottmSheet(isEdit:true);
+                      },
+                       readOnly: true,
+                      controller: controller.tdZoneEdit,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '${tr.fill_the_zone_correctly}';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(hintText:/* ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting()))
+                          .areaZones?.firstWhere((element) => element.numbers!.contains(controller.tdZoneNumberEdit.text.toString())).areaZone??*/"${tr.zone}" , suffixIcon: InkWell(
+                        onTap: (){
+                          controller.showZoneBottmSheet(isEdit:true);
+                        },
+                        child: Padding(
+                            padding: EdgeInsets.all(padding6!),
+                            child: SvgPicture.asset("assets/svgs/down_arrow.svg"),
+                          ),
+                      ),
+                      ),
+                    ),
                     SizedBox(
                       height: sizeH10,
                     ),
                     TextFormField(
+                        onTap: (){
+                          controller.showZoneNumberBottmSheet(isEdit:true);
+                        },
                       onSaved: (newValue) {
                         controller.tdZoneNumberEdit.text = newValue!;
                         controller.update();
@@ -164,6 +199,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                         }
                         return null;
                       },
+                      readOnly: true,
                       keyboardType: TextInputType.numberWithOptions(),
                       decoration: InputDecoration(hintText: "${tr.zone_number}"),
                     ),
@@ -187,39 +223,39 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                     SizedBox(
                       height: sizeH10,
                     ),
-                    InkWell(
-                      onTap: () {
-                        Get.to(() => MapSample());
-                      },
-                      child: TextFormField(
-                        onSaved: (newValue) {
-                          controller.tdLocationEdit.text = newValue!;
-                          controller.update();
-                        },
-                        controller: controller.tdLocationEdit,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '${tr.choose_your_location}';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                            enabled: false,
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Image.asset(
-                                "assets/png/Location.png",
-                                width: sizeW15,
-                                height: sizeH16,
-                              ),
-                            ),
-                            suffixStyle: TextStyle(color: Colors.transparent),
-                            hintText: "${tr.choose_your_location}"),
-                      ),
-                    ),
-                    SizedBox(
-                      height: sizeH10,
-                    ),
+                    // InkWell(
+                    //   onTap: () {
+                    //     Get.to(() => MapSample());
+                    //   },
+                    //   child: TextFormField(
+                    //     onSaved: (newValue) {
+                    //       controller.tdLocationEdit.text = newValue!;
+                    //       controller.update();
+                    //     },
+                    //     controller: controller.tdLocationEdit,
+                    //     validator: (value) {
+                    //       if (value == null || value.isEmpty) {
+                    //         return '${tr.choose_your_location}';
+                    //       }
+                    //       return null;
+                    //     },
+                    //     decoration: InputDecoration(
+                    //         enabled: false,
+                    //         suffixIcon: Padding(
+                    //           padding: const EdgeInsets.all(5.0),
+                    //           child: Image.asset(
+                    //             "assets/png/Location.png",
+                    //             width: sizeW15,
+                    //             height: sizeH16,
+                    //           ),
+                    //         ),
+                    //         suffixStyle: TextStyle(color: Colors.transparent),
+                    //         hintText: "${tr.choose_your_location}"),
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: sizeH10,
+                    // ),
                     TextFormField(
                       onSaved: (newValue) {
                         controller.tdExtraDetailesEdit.text = newValue!;
@@ -284,7 +320,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                               ? 1
                                               : 0,
                                       zoneNumber: controller.tdZoneNumberEdit.text,
-                                      // zone: controller.tdZoneEdit.text,
+                                       zone: controller.tdZoneEdit.text,
                                       streat: controller.tdStreetEdit.text,
                                       extraDetails:
                                           controller.tdExtraDetailesEdit.text,

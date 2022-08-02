@@ -1,21 +1,24 @@
 import 'package:inbox_clients/feature/model/country.dart';
 
 class Customer {
-  Customer(
-      {this.id,
-      this.customerName,
-      this.crNumber,
-      this.email,
-      this.companySector,
-      this.applicantName,
-      this.applicantDepartment,
-      this.mobile,
-      this.countryCode,
-      this.image,
-      this.contactNumber,
-      this.isDisabled,
-      this.country,
-      this.conversionFactor});
+  Customer({
+    this.id,
+    this.customerName,
+    this.crNumber,
+    this.email,
+    this.companySector,
+    this.applicantName,
+    this.applicantDepartment,
+    this.mobile,
+    this.countryCode,
+    this.image,
+    this.contactNumber,
+    this.isDisabled,
+    this.country,
+    this.conversionFactor,
+    this.reporterMobile,
+    this.reporterEmail,
+  });
 
   String? id;
   String? customerName;
@@ -31,9 +34,13 @@ class Customer {
   bool? isDisabled;
   List<Country>? country;
   num? conversionFactor;
+  String? reporterMobile;
+  String? reporterEmail;
 
   factory Customer.fromJson(Map<String, dynamic> json) => Customer(
         id: json["id"] ?? "",
+        reporterEmail: json["reporter_email"] ?? "",
+        reporterMobile: json["reporter_mobile"] ?? "",
         customerName: json["customer_name"] ?? "",
         crNumber: json["cr_number"] ?? "",
         conversionFactor: json["conversion_factor"] ?? "",
@@ -59,6 +66,8 @@ class Customer {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "reporter_mobile": reporterMobile ?? "",
+        "reporter_email": reporterEmail ?? "",
         "customer_name": customerName,
         "cr_number": crNumber,
         "email": email,

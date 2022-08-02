@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/utils.dart';
@@ -52,6 +53,7 @@ class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
     return SingleChildScrollView(
       primary: true,
       child: Container(
+        margin: EdgeInsets.only(top: 40),
         padding: EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.vertical(top: Radius.circular(padding30!)),
@@ -67,12 +69,19 @@ class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
                 SizedBox(
                   height: sizeH20,
                 ),
-                Container(
-                  height: sizeH5,
-                  width: sizeW50,
-                  decoration: BoxDecoration(
-                      color: colorSpacer,
-                      borderRadius: BorderRadius.circular(padding3)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(onTap:()=> Get.back(),child: Icon(Icons.close , color: colorBlack,),),
+                    Container(
+                      height: sizeH5,
+                      width: sizeW50,
+                      decoration: BoxDecoration(
+                          color: colorSpacer,
+                          borderRadius: BorderRadius.circular(padding3)),
+                    ),
+                    InkWell(onTap:()=> Get.back(),child: Icon(Icons.close , color: colorTrans,),),
+                  ],
                 ),
                 SizedBox(
                   height: sizeH20,
@@ -137,11 +146,16 @@ class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
                     textButton: "${tr.next}",
                     isLoading: false,
                     onClicked: () {
-                      storageViewModel.saveStorageDataToArray(
+                      if(storageViewModel.localBulk.endStorageItem.isNotEmpty) {
+                        storageViewModel.saveStorageDataToArray(
                           updateIndex: widget.index,
                           isUpdate: widget.isUpdate,
                           storageCategoriesData: widget.storageCategoriesData);
-                      storageViewModel.checkDaplication();
+                        storageViewModel.checkDaplication();
+                      }else{
+                        snackError("", tr.must_add_item);
+                      }
+
                     },
                     isExpanded: true),
                 SizedBox(

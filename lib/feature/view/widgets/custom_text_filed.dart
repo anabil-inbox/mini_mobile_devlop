@@ -29,6 +29,7 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
   final TextStyle? hintStyle;
   final IconData? icon;
   final double? iconSize;
+  final bool? isOutlineBorder;
 
   const CustomTextFormFiled(
       {Key? key,
@@ -60,7 +61,7 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
       this.autoFocus = false,
       this.icon,
       this.iconSize,
-      this.enabledBorderColor})
+      this.enabledBorderColor, this.isOutlineBorder = false})
       : super(key: key);
 
   @override
@@ -81,7 +82,7 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
       maxLines: maxLine ?? 1,
       minLines: minLine ?? 1,
       readOnly: isReadOnly ?? false,
-      style: textInputFiled()?.copyWith(color: colorPrimaryDark),
+      style: textInputFiled()/*?.copyWith(color: colorPrimaryDark)*/,
       // textDirection: TextDirection.ltr,
       // textDirection:obscureText!?TextDirection.ltr:TextDirection.rtl ,
       textInputAction: textInputAction ?? TextInputAction.newline,
@@ -146,7 +147,10 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
             ? UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(sizeRadius!),
                 borderSide: BorderSide(color: colorTrans))
-            : UnderlineInputBorder(
+            : isOutlineBorder! ?OutlineInputBorder(
+            borderRadius: BorderRadius.circular(sizeRadius!),
+            borderSide: BorderSide(color: colorBorderTextFiled)
+        ) :UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(sizeRadius!),
                 borderSide: BorderSide(color: colorBorderTextFiled)),
         fillColor: fillColor ?? colorBackground,
@@ -159,19 +163,28 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
         hintStyle:
             hintStyle ?? textInputFiledHint()?.copyWith(color: colorTextHint),
         focusedBorder: isBorder!
-            ? UnderlineInputBorder(
+            ? isOutlineBorder! ?OutlineInputBorder(
+            borderRadius: BorderRadius.circular(sizeRadius!),
+            borderSide: BorderSide(color: fillColor ?? colorPrimary)
+        ) :UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(sizeRadius!),
                 borderSide:
                     BorderSide(color: fillColor ?? colorPrimary, width: 2))
             : InputBorder.none,
         errorBorder: isBorder!
-            ? UnderlineInputBorder(
+            ?isOutlineBorder! ?OutlineInputBorder(
+            borderRadius: BorderRadius.circular(sizeRadius!),
+            borderSide: BorderSide(color: fillColor ?? colorPrimary)
+        ) : UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(sizeRadius!),
                 borderSide:
                     BorderSide(color: fillColor ?? colorPrimary, width: 2))
             : InputBorder.none,
         border: isBorder!
-            ? UnderlineInputBorder(
+            ? isOutlineBorder! ?OutlineInputBorder(
+            borderRadius: BorderRadius.circular(sizeRadius!),
+            borderSide: BorderSide(color: colorBorderTextFiled)
+        ) : UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(sizeRadius!),
                 borderSide: BorderSide(color: colorBorderTextFiled))
             : InputBorder.none);
@@ -193,7 +206,10 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
                 ? UnderlineInputBorder(
                     borderRadius: BorderRadius.circular(sizeRadius!),
                     borderSide: BorderSide(color: colorTrans))
-                : UnderlineInputBorder(
+                : isOutlineBorder! ?OutlineInputBorder(
+            borderRadius: BorderRadius.circular(sizeRadius!),
+            borderSide: BorderSide(color: colorBorderTextFiled)
+        ) :UnderlineInputBorder(
                     borderRadius: BorderRadius.circular(sizeRadius!),
                     borderSide: BorderSide(color: colorBorderTextFiled)),
         fillColor: fillColor ?? colorBackground,
@@ -205,19 +221,28 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
         hintText: label,
         hintStyle: hintStyle ?? textInputFiledHint(),
         errorBorder: isBorder!
-            ? UnderlineInputBorder(
+            ? isOutlineBorder! ?OutlineInputBorder(
+            borderRadius: BorderRadius.circular(sizeRadius!),
+            borderSide: BorderSide(color: fillColor ?? colorPrimary)
+        ) :UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(sizeRadius!),
                 borderSide:
                     BorderSide(color: fillColor ?? colorPrimary, width: 2))
             : InputBorder.none,
         focusedBorder: isBorder!
-            ? UnderlineInputBorder(
+            ? isOutlineBorder! ?OutlineInputBorder(
+            borderRadius: BorderRadius.circular(sizeRadius!),
+            borderSide: BorderSide(color: fillColor ?? colorPrimary)
+        ) :UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(sizeRadius!),
                 borderSide:
                     BorderSide(color: fillColor ?? colorPrimary, width: 2))
             : InputBorder.none,
         border: isBorder!
-            ? UnderlineInputBorder(
+            ? isOutlineBorder! ?OutlineInputBorder(
+            borderRadius: BorderRadius.circular(sizeRadius!),
+            borderSide: BorderSide(color: colorBorderTextFiled)
+        ) :UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(sizeRadius!),
                 borderSide: BorderSide(color: colorBorderTextFiled))
             : InputBorder.none);

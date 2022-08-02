@@ -37,7 +37,7 @@ class LocalConstance {
   static String application = "application";
 
   // to add here Map Types:
-  static String mapType = "Map";
+  static String mapType = "Share Location";
   static String bluePlate = "Blue plate";
 
   static String coupon = "coupon";
@@ -55,7 +55,8 @@ class LocalConstance {
   static String orderDoneId = "6";
   static String signatureOnDrvier = "7";
   static String signature = "8";
-  
+  static String invoice = "101";
+
   static String id = "id";
   static String salesOrder = "sales_order";
   static String orderId = "order_id";
@@ -87,4 +88,6 @@ class LocalConstance {
 
   static String dailySubscriptions = "Daily";
 
+
+  static int showCaseBluer = 2;
 }

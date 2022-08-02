@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:inbox_clients/feature/view/screens/auth/terms/terms_view.dart';
+import 'package:inbox_clients/feature/view/screens/profile/setting/user_guid_view.dart';
 import 'package:inbox_clients/feature/view/screens/profile/setting/widget/about_in_box.dart';
 import 'package:inbox_clients/feature/view/screens/profile/setting/widget/help_center/help_center_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/widget/setting_item_no_padding.dart';
@@ -60,6 +61,12 @@ class SettingsScreen extends StatelessWidget {
           ),
           SettingItemNoPadding(settingTitle: "${tr.terms_and_conditions}", onTap: (){
             Get.to(() => TermsScreen());
+          }),
+          SizedBox(
+            height: sizeH16,
+          ),
+          SettingItemNoPadding(settingTitle: "${tr.user_guid}", onTap: (){
+            Get.to(() => UserGuidView());
           }),
         ],
       ),

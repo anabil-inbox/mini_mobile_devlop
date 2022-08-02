@@ -12,6 +12,7 @@ import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/box_in_sales_order.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/box_item_in_sales_order.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/add_address.dart';
+import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/quantity_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/edit_new_storage/widget/space_and_quantity_edit_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/pickup_address_item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/schedule_pickup_widget.dart';
@@ -165,7 +166,7 @@ class EditNewStorageView extends StatelessWidget {
                       builder: (_) {
                         return log.userAddress.isNotEmpty
                             ? SizedBox(
-                          height: sizeH270,
+                          height:log.userAddress.isNotEmpty && log.userAddress.length >=3 ?sizeH270 :  sizeH100,
                           child: ListView(
                             primary: false,
                             shrinkWrap: true,
@@ -199,6 +200,9 @@ class EditNewStorageView extends StatelessWidget {
                 onClicked: () {
                   Get.to(() => AddAddressScreen());
                 }),
+          ),
+          SizedBox(
+            height: sizeH90,
           ),
         ],
       );
@@ -278,9 +282,18 @@ class EditNewStorageView extends StatelessWidget {
                             textButton: "${tr.add_item}",
                             isExpanded: true,
                             onClicked: () {
-                              _storageViewModel.showMainStorageBottomSheet(
-                                  storageCategoriesData: _storageViewModel.storageCategoriesList[3],
-                                  isFromOrderEdit:true);
+                              Logger().wtf(logic.newOrderSales.toJson());
+                              if(logic.newOrderSales.orderItems!.where((element) => element.itemName == "Regular Box").isNotEmpty){
+                                _storageViewModel.showMainStorageBottomSheet(
+                                    storageCategoriesData: _storageViewModel.storageCategoriesList[3],
+                                    isFromOrderEdit:true);
+                              }else{
+                                _storageViewModel.showMainStorageBottomSheet(
+                                    storageCategoriesData: _storageViewModel.storageCategoriesList[2],
+                                    isFromOrderEdit:true);
+                              }
+
+
                             }),
 
                         SizedBox(
@@ -298,10 +311,10 @@ class EditNewStorageView extends StatelessWidget {
                                   index: index,
                                   arraySize : logic.newOrderSales.orderItems?.length,
                                   viewModel: logic,
+                                    storageViewModel:_storageViewModel,
                                 );
                               }),
                         ],
-
                       ],
                     );
                   }),

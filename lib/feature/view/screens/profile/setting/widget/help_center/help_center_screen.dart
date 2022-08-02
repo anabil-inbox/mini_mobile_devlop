@@ -53,6 +53,12 @@ class HelpCenterScreen extends StatelessWidget {
         ),
         body: GetBuilder<ProfileViewModle>(
             init: ProfileViewModle(),
+            initState: (con){
+              WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                _emailController.text  =  SharedPref.instance
+                    .getCurrentUserData().email.toString();
+              });
+            },
             builder: (logic) {
           return Column(
             children: [
@@ -128,10 +134,11 @@ class HelpCenterScreen extends StatelessWidget {
                                 controller: _noteController,
                                 label: tr.txtWriteHer,
                                 maxLine: Constance.maxLineSaven,
+                                minLine: 5,
                                 hintStyle: TextStyle(
                                     fontSize: 14, color: colorTextHint1),
-                                textInputAction: TextInputAction.send,
-                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.newline,
+                                // keyboardType: TextInputType.text,
                                 onSubmitted: (_) {},
                                 onChange: (value) {},
                                 isSmallPadding: false,

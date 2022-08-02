@@ -8,6 +8,7 @@ import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart
 import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/task_widget_BS.dart';
 import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/edit_new_storage/edit_new_storage_view.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/order/edit_order_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
@@ -351,19 +352,27 @@ class MyOrderViewModle extends BaseController {
           update();
           return;
         }
-        Get.to(
-          PaymentScreen(
-            isFromCart: false,
-            url: orderUrl,
-            cartModels: [],
-            isFromNewStorage: false,
-            paymentId: '',
-            isOrderProductPayment: false,
-            isFromCancel: true,
-            orderId: orderId,
-            myOrderViewModel: this,
-          ),
-        );
+        Get.bottomSheet(GlobalBottomSheet(
+          title: tr.must_fees,
+          isTwoBtn: true,
+          onCancelBtnClick: ()=> Get.back(),
+          onOkBtnClick: (){
+            Get.to(
+              PaymentScreen(
+                isFromCart: false,
+                url: orderUrl,
+                cartModels: [],
+                isFromNewStorage: false,
+                paymentId: '',
+                isOrderProductPayment: false,
+                isFromCancel: true,
+                orderId: orderId,
+                myOrderViewModel: this,
+              ),
+            );
+          },
+        ) , isScrollControlled: true);
+
         isLoadingCancel = false;
         update();
       } else if (value.status != null && value.status!.success!) {
@@ -459,51 +468,67 @@ class MyOrderViewModle extends BaseController {
       };
     } else {
       List<Map<String, dynamic>> apiItems = [];
-
+      num qty = 0;
+      var price = 0;
+      var groupId = "0";
+      var itemCode = "";
       if (newOrderSales.orderItems != null &&
           newOrderSales.orderItems!.isNotEmpty) {
+
         newOrderSales.orderItems?.forEach((element) {
           Logger().wtf(element.toJson());
-          // var apiObjectToSend = ApiItem.getApiObjectToSend(
-          //     itemCode:element.itemName == null ? element.item.toString(): (element.itemName.toString().contains("_in") ?element.itemName.toString() :element.itemName.toString()+"_in"),
-          //     qty: element.quantity!.toInt(),
-          //     processType:LocalConstance.newStorageSv,
-          //     storageType:"Quantity",
-          //     subscriptionPrice: 0,
-          //     selectedDateTime: DateFormat("yyyy-MM-dd").parse(storageViewModel.selectedDateTime!.toString()),
-          //     groupId: int.parse(element.groupId.toString()),
-          //     itemParent: 0,
-          //     itemsChildIn: "",
-          //     selectedDay: first,
-          //     boxessSeriales: "",
-          //     beneficiaryNameIn: null,
-          //     invoices: '');
-          // apiObjectToSend["storage_type"] = "Quantity";
-          Map<String, dynamic> maps = {
-            "item_code": element.itemName == null ? element.item.toString(): (element.itemName.toString().contains("_in") ?element.itemName.toString() :element.itemName.toString()+"_in"),
-            "qty": element.quantity!.toInt(),
-            "delivery_date": DateFormat("yyyy-MM-dd").format(storageViewModel.selectedDateTime!),
-             "subscription": storageViewModel.selectedDuration,
-             "subscription_duration": storageViewModel.numberOfDays,
-            "subscription_price": storageViewModel.balance,
-            "group_id": element.groupId,
-            "storage_type": "Quantity",
-            "item_parent": 0,
-            "need_adviser": 0,
-            "order_to": first.from,
-            "order_from": first.to,
-            "order_time": "${first.to ?? "13:20"} -- ${first.from ?? "14:20"}",
-            "space": 0,
-            "space_xaxis": 0,
-            "space_yaxis": 0,
-            "area_zone":storageViewModel.selectedAddress?.zone.toString(),
-            "process_type": "New Storage_sv",
-            "storage_child_in": "",
-            "items_child_in": ""
-          };
-          apiItems.add(/*apiObjectToSend*/maps);
+          itemCode= element.itemName == null ? element.item.toString(): (element.itemName.toString().contains("_in") ?element.itemName.toString() :element.itemName.toString()+"_in");
+          groupId= element.groupId.toString();
+          qty= qty + element.quantity!;
+          // Map<String, dynamic> maps = {
+          //   "item_code": element.itemName == null ? element.item.toString(): (element.itemName.toString().contains("_in") ?element.itemName.toString() :element.itemName.toString()+"_in"),
+          //   "qty": element.quantity!.toInt(),
+          //   "delivery_date": DateFormat("yyyy-MM-dd").format(storageViewModel.selectedDateTime!),
+          //    "subscription": storageViewModel.selectedDuration,
+          //    "subscription_duration": storageViewModel.numberOfDays,
+          //   "subscription_price": storageViewModel.balance,
+          //   "group_id": element.groupId,
+          //   "storage_type": "Quantity",
+          //   "item_parent": 0,
+          //   "need_adviser": 0,
+          //   "order_to": first.from,
+          //   "order_from": first.to,
+          //   "order_time": "${first.to ?? "13:20"} -- ${first.from ?? "14:20"}",
+          //   "space": 0,
+          //   "space_xaxis": 0,
+          //   "space_yaxis": 0,
+          //   "area_zone":storageViewModel.selectedAddress?.zone.toString(),
+          //   "process_type": "New Storage_sv",
+          //   "storage_child_in": "",
+          //   "items_child_in": ""
+          // };
+          // apiItems.add(/*apiObjectToSend*/maps);
         });
       }
+      Map<String, dynamic> maps = {
+        // "item_code": element.itemName == null ? element.item.toString(): (element.itemName.toString().contains("_in") ?element.itemName.toString() :element.itemName.toString()+"_in"),
+        "item_code": itemCode,
+        "qty": qty,
+        "delivery_date": DateFormat("yyyy-MM-dd").format(storageViewModel.selectedDateTime!),
+        "subscription": storageViewModel.selectedDuration,
+        "subscription_duration": storageViewModel.numberOfDays,
+        "subscription_price": storageViewModel.balance,
+        "group_id": groupId,
+        "storage_type": "Quantity",
+        "item_parent": 0,
+        "need_adviser": 0,
+        "order_to": first.from,
+        "order_from": first.to,
+        "order_time": "${first.to ?? "13:20"} -- ${first.from ?? "14:20"}",
+        "space": 0,
+        "space_xaxis": 0,
+        "space_yaxis": 0,
+        "area_zone":storageViewModel.selectedAddress?.zone.toString(),
+        "process_type": "New Storage_sv",
+        "storage_child_in": "",
+        "items_child_in": ""
+      };
+      apiItems.add(/*apiObjectToSend*/maps);
       map = {
         ConstanceNetwork.orderIdKey: newOrderSales.orderId,
         ConstanceNetwork.deliveryDateKey:
@@ -546,8 +571,8 @@ class MyOrderViewModle extends BaseController {
       newOrderSales.orderItems![index].quantity =
           newOrderSales.orderItems![index].quantity! + 1;
       var oldPrice = newOrderSales.orderItems![index].oldPrice;
-      newOrderSales.orderItems![index].price =
-          newOrderSales.orderItems![index].price! + oldPrice!;
+      newOrderSales.orderItems![index].totalPrice =
+          newOrderSales.orderItems![index].totalPrice! + oldPrice!;
       update();
     }
   }
@@ -557,11 +582,22 @@ class MyOrderViewModle extends BaseController {
         newOrderSales.orderItems!.isNotEmpty &&
         newOrderSales.orderItems![index].quantity != null &&
         newOrderSales.orderItems![index].quantity! > 1) {
+      Logger().wtf(newOrderSales.orderItems![index].toJson());
       newOrderSales.orderItems![index].quantity =
           newOrderSales.orderItems![index].quantity! - 1;
-      var oldPrice = newOrderSales.orderItems![index].oldPrice;
-      newOrderSales.orderItems![index].price =
-          newOrderSales.orderItems![index].price! - oldPrice!;
+      // if(newOrderSales.orderItems![index].quantity!  > 1 &&
+      //     newOrderSales.orderItems![index].oldPrice == newOrderSales.orderItems![index].totalPrice!){
+      //
+      //   var oldPrice = (newOrderSales.orderItems![index].oldPrice! / newOrderSales.orderItems![index].quantity!);
+      //   Logger().wtf(oldPrice);
+      //   newOrderSales.orderItems![index].totalPrice =
+      //       newOrderSales.orderItems![index].totalPrice! - oldPrice;
+      // }else{
+        var oldPrice = newOrderSales.orderItems![index].oldPrice;
+        newOrderSales.orderItems![index].totalPrice =
+            newOrderSales.orderItems![index].totalPrice! - oldPrice!;
+      // }
+
 
       update();
     }
@@ -579,7 +615,7 @@ class MyOrderViewModle extends BaseController {
     OrderItem orderItem = OrderItem(
       itemParent: "0",
       item: newStorageCategoriesData.name,
-      price: newStorageCategoriesData.userPrice,
+       price: newStorageCategoriesData.userPrice,
       quantity: newStorageCategoriesData.quantity,
       itemName: newStorageCategoriesData.storageName,
       isParent: false,
@@ -588,7 +624,7 @@ class MyOrderViewModle extends BaseController {
       // itemStatus: ,
       groupId: newStorageCategoriesData.groupId.toString(),
       needAdviser: 0,
-      oldPrice: newStorageCategoriesData.userPrice,
+      oldPrice: newStorageCategoriesData.userPrice !~/ newStorageCategoriesData.quantity!,
       // options: newStorageCategoriesData.,
       // boxes: ,
     );

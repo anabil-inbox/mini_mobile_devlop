@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
@@ -34,7 +35,7 @@ class SpaceWidget extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(padding6!)),
           ),
           child: TextFormField(
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.numberWithOptions(),
             controller: textEditingController,
             textAlign: TextAlign.center,
             onChanged: (e) {
@@ -48,6 +49,9 @@ class SpaceWidget extends StatelessWidget {
                 return null;
               }
             },
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly
+            ],
             decoration: InputDecoration(
                 filled: true,
                 fillColor: scaffoldColor,

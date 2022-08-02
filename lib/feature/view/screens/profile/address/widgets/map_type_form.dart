@@ -39,61 +39,7 @@ class MapTypeForm extends StatelessWidget {
         SizedBox(
           height: sizeH10,
         ),
-        // InkWell(
-        //   onTap: () {
-        //     profileViewModle.showZoneBottmSheet();
-        //   },
-        //   child: TextFormField(
-        //     onTap: () {
-        //       profileViewModle.showZoneBottmSheet();
-        //     },
-        //     readOnly: true,
-        //     onSaved: (newValue) {
-        //       profileViewModle.tdZone.text = newValue!;
-        //       profileViewModle.update();
-        //     },
-        //     controller: profileViewModle.tdZone,
-        //     validator: (value) {
-        //       if (value == null || value.trim().isEmpty) {
-        //         return '${tr.fill_the_zone_correctly}';
-        //       }
-        //       return null;
-        //     },
-        //     decoration: InputDecoration(
-        //         suffixIcon: Padding(
-        //           padding: EdgeInsets.all(padding6!),
-        //           child: SvgPicture.asset("assets/svgs/down_arrow.svg"),
-        //         ),
-        //         hintText: "${tr.zone}"),
-        //   ),
-        // ),
-        // SizedBox(
-        //   height: sizeH10,
-        // ),
-        TextFormField(
-          // onTap: (){
-          //   if(profileViewModle.tdZone.text.isNotEmpty) {
-          //     profileViewModle.showZoneNumberBottmSheet();
-          //   }
-          // },
-          onSaved: (newValue) {
-            profileViewModle.tdZoneNumber.text = newValue!;
-            profileViewModle.update();
-          },
-          controller: profileViewModle.tdZoneNumber,
-          // readOnly: true,
-          validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return '${tr.fill_the_zone_correctly}';
-            }
-            return null;
-          },
-          keyboardType: TextInputType.numberWithOptions(),
-          decoration: InputDecoration(hintText: "${tr.zone_number}" , ),
-        ),
-        SizedBox(
-          height: sizeH10,
-        ),
+
 
         InkWell(
           onTap: () {
@@ -120,7 +66,7 @@ class MapTypeForm extends StatelessWidget {
                 suffixIcon: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Image.asset(
-                    "assets/png/Location.png",
+                    "assets/png/location_orang.png",
                     width: 10,
                     height: 10,
                   ),
@@ -129,6 +75,113 @@ class MapTypeForm extends StatelessWidget {
                 hintText: "${tr.choose_your_location}"),
           ),
         ),
+        SizedBox(
+          height: sizeH10,
+        ),
+        TextFormField(
+          // onTap: () {
+          //   profileViewModle.showZoneBottmSheet();
+          // },
+          // readOnly: true,
+          onSaved: (newValue) {
+            profileViewModle.tdZone.text = newValue!;
+            profileViewModle.update();
+          },
+          controller: profileViewModle.tdZone,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return '${tr.fill_the_zone_correctly}';
+            }
+            return null;
+          },
+          decoration: InputDecoration(
+              suffixIcon: InkWell(
+                onTap: (){
+                  profileViewModle.showZoneBottmSheet();
+                },
+                child: Padding(
+                  padding: EdgeInsets.all(padding6!),
+                  child: SvgPicture.asset("assets/svgs/down_arrow.svg"),
+                ),
+              ),
+              hintText: "${tr.zone}"),
+        ),
+        SizedBox(
+          height: sizeH10,
+        ),
+        // TextFormField(
+        //   onTap: (){
+        //     // if(profileViewModle.tdZone.text.isNotEmpty) {
+        //       profileViewModle.showZoneNumberBottmSheet();
+        //     // }
+        //   },
+        //   onSaved: (newValue) {
+        //     profileViewModle.tdZoneNumber.text = newValue!;
+        //     profileViewModle.update();
+        //   },
+        //   controller: profileViewModle.tdZoneNumber,
+        //   // readOnly: true,
+        //   validator: (value) {
+        //     if (value == null || value.trim().isEmpty) {
+        //       return '${tr.fill_the_zone_correctly}';
+        //     }
+        //     return null;
+        //   },
+        //   keyboardType: TextInputType.numberWithOptions(),
+        //   decoration: InputDecoration(hintText: "${tr.zone_number}" , ),
+        // ),
+        // SizedBox(
+        //   height: sizeH10,
+        // ),
+        // TextFormField(
+        //   onSaved: (newValue) {
+        //     profileViewModle.tdStreet.text = newValue!;
+        //     profileViewModle.update();
+        //   },
+        //   controller: profileViewModle.tdStreet,
+        //   validator: (value) {
+        //     if (value == null || value.trim().isEmpty) {
+        //       return '${tr.fill_the_title_correctly}';
+        //     }
+        //     return null;
+        //   },
+        //   decoration: InputDecoration(hintText: "${tr.street}"),
+        // ),
+        // SizedBox(
+        //   height: sizeH10,
+        // ),
+        // TextFormField(
+        //   onSaved: (newValue) {
+        //     profileViewModle.tdBuildingNo.text = newValue!;
+        //     profileViewModle.update();
+        //   },
+        //   controller: profileViewModle.tdBuildingNo,
+        //   validator: (value) {
+        //     if (value == null || value.trim().isEmpty) {
+        //       return '${tr.fill_the_title_correctly}';
+        //     }
+        //     return null;
+        //   },
+        //   decoration: InputDecoration(hintText: "${tr.building_no}"),
+        // ),
+        // SizedBox(
+        //   height: sizeH10,
+        // ),
+        TextFormField(
+          onSaved: (newValue) {
+            profileViewModle.tdUnitNo.text = newValue!;
+            profileViewModle.update();
+          },
+          controller: profileViewModle.tdUnitNo,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return '${tr.fill_the_title_correctly}';
+            }
+            return null;
+          },
+          decoration: InputDecoration(hintText: "${tr.unit_no}"),
+        ),
+
         SizedBox(
           height: sizeH10,
         ),

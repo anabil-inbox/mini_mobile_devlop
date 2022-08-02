@@ -13,7 +13,9 @@ class ApiSettings {
       this.workingHours,
       this.paymentMethod,
       this.areaZones,
-      this.deliveryFactor});
+      this.deliveryFactor,
+      this.socialContact,
+      this.userGuide});
 
   String? customerType;
   String? aboutUs;
@@ -26,16 +28,25 @@ class ApiSettings {
   List<PaymentMethod>? paymentMethod;
   List<AreaZone>? areaZones;
   num? deliveryFactor;
+  List<SocialContact>? socialContact;
+  List<UserGuide>? userGuide;
 
   factory ApiSettings.fromJson(Map<String, dynamic> json) => ApiSettings(
       customerType: json["customer_type"] ?? "both",
       aboutUs: json["about_us"] == null ? "" : json["about_us"],
       termOfConditions: json["term_of_conditions"],
+      socialContact: json["social_contact"] == null
+          ? null
+          : List<SocialContact>.from(
+              json["social_contact"].map((x) => SocialContact.fromJson(x))),
+      userGuide: json["user_guide"] == null
+          ? null
+          : List<UserGuide>.from(
+              json["user_guide"].map((x) => UserGuide.fromJson(x))),
       contactInfo: json["contact_info"] == null
           ? null
           : ContactInfo.fromJson(json["contact_info"]),
-      companySectors: (json["ccompany_sectors"] == [] ||
-              json["ccompany_sectors"] == null)
+      companySectors: (json["company_sectors"] == [] || json["company_sectors"] == null)
           ? []
           : List<CompanySector>.from(
               json["company_sectors"].map((x) => CompanySector.fromJson(x))),
@@ -50,17 +61,18 @@ class ApiSettings {
       workingHours: json["working_hours"] == null
           ? null
           : WorkingHours.fromJson(json["working_hours"]),
-      paymentMethod: (json["payment_method"] == [] || json["payment_method"] == null)
-          ? []
-          : List<PaymentMethod>.from(
-              json["payment_method"].map((x) => PaymentMethod.fromJson(x))),
-      areaZones: json["area_zones"] == null
-          ? null
-          : List<AreaZone>.from(json["area_zones"].map((x) => AreaZone.fromJson(x))),
+      paymentMethod: (json["payment_method"] == [] || json["payment_method"] == null) ? [] : List<PaymentMethod>.from(json["payment_method"].map((x) => PaymentMethod.fromJson(x))),
+      areaZones: json["area_zones"] == null ? null : List<AreaZone>.from(json["area_zones"].map((x) => AreaZone.fromJson(x))),
       deliveryFactor: json["delivery_factor"] ?? 1);
 
   Map<String, dynamic> toJson() => {
         "customer_type": customerType,
+        "social_contact": socialContact == null
+            ? null
+            : List<dynamic>.from(socialContact!.map((x) => x.toJson())),
+        "user_guide": userGuide == null
+            ? null
+            : List<dynamic>.from(userGuide!.map((x) => x.toJson())),
         "about_us": aboutUs,
         "term_of_conditions": termOfConditions,
         "contact_info": contactInfo!.toJson(),
@@ -71,7 +83,9 @@ class ApiSettings {
         "payment_method":
             List<dynamic>.from(paymentMethod!.map((x) => x.toJson())),
         "working_hours": workingHours?.toJson(),
-        "area_zones":areaZones  == null ? null: List<dynamic>.from(areaZones!.map((x) => x.toJson())),
+        "area_zones": areaZones == null
+            ? null
+            : List<dynamic>.from(areaZones!.map((x) => x.toJson())),
       };
 }
 
@@ -206,10 +220,12 @@ class AreaZone {
       );
 
   Map<String, dynamic> toJson() => {
-        "id":id == null ? null: id,
-        "area_zone":areaZone == null ? null: areaZone,
-        "price":price == null ? null: price,
-        "numbers":numbers == null ? null: List<dynamic>.from(numbers!.map((x) => x.toString())),
+        "id": id == null ? null : id,
+        "area_zone": areaZone == null ? null : areaZone,
+        "price": price == null ? null : price,
+        "numbers": numbers == null
+            ? null
+            : List<dynamic>.from(numbers!.map((x) => x.toString())),
       };
 }
 
@@ -235,4 +251,48 @@ class NotAllowed {
         "title": title,
         "image": image == null ? null : image,
       };
+}
+
+class SocialContact {
+  SocialContact({
+    this.type,
+    this.url,
+    this.image,
+  });
+
+  String? type;
+  String? url;
+  String? image;
+
+  factory SocialContact.fromJson(Map<String, dynamic> json) => SocialContact(
+    type: json["type"] == null ? null : json["type"],
+    url: json["url"] == null ? null : json["url"],
+    image: json["image"] == null ? null : json["image"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "type": type == null ? null : type,
+    "url": url == null ? null : url,
+    "image": image == null ? null : image,
+  };
+}
+
+class UserGuide {
+  UserGuide({
+    this.title,
+    this.text,
+  });
+
+  String? title;
+  String? text;
+
+  factory UserGuide.fromJson(Map<String, dynamic> json) => UserGuide(
+    title: json["title"] == null ? null : json["title"],
+    text: json["text"] == null ? null : json["text"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "title": title == null ? null : title,
+    "text": text == null ? null : text,
+  };
 }
