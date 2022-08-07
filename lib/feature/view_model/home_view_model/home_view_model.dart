@@ -561,6 +561,8 @@ class HomeViewModel extends BaseController {
   // to do for Show Bottom Sheet For Task :
 
   Future<void> showTaskBottomSheet({required Task task}) async {
+    Logger().d(task.toJson());
+    Logger().d(selctedOperationsBoxess);
     selctedOperationsBoxess.clear();
     Get.bottomSheet(
         TaskWidgetBS(

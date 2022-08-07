@@ -185,7 +185,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                           GetBuilder<MyOrderViewModle>(
                             builder: (build) {
                               return StatusWidget(
-                                status: build.newOrderSales.status,
+                                status: build.newOrderSales.statusName/*status*/,
                               );
                             },
                           ),

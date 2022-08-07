@@ -56,7 +56,7 @@ class ScanDeliveredBox extends StatelessWidget {
                 ),
                 SizedBox(width: sizeW10),
                 CustomTextView(
-                  txt: "Scan Delivered Box",
+                  txt: tr.scan_delivered_box,
                   textStyle: textStyleNormal()?.copyWith(color: colorBlack),
                 ),
                 const Spacer(),
@@ -64,7 +64,7 @@ class ScanDeliveredBox extends StatelessWidget {
                   onTap: () {
                     if (homeViewModel.operationTask.boxes?.length ==
                         homeViewModel.operationTask.customerDelivered?.length) {
-                      snackError("", "You Scaned All Boxess Recived");
+                      snackError("", tr.you_scanned_all_boxes_received);
                     } else {
                       Get.to(() => ScanRecivedOrderScreen(
                             code:homeViewModel.operationTask.salesOrder,

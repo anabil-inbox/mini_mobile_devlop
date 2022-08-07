@@ -15,6 +15,7 @@ class OrderSales {
     this.hasTasks = false,
     this.editable = false,
     this.boxes,
+    this.statusName,
   });
 
   String? orderId;
@@ -25,6 +26,7 @@ class OrderSales {
   dynamic orderWarehouseAddress;
   DateTime? deliveryDate;
   String? status;
+  String? statusName;
   String? proccessType;
   List<OrderItem>? orderItems;
   List<String>? boxes;
@@ -43,6 +45,7 @@ class OrderSales {
         orderWarehouseAddress: json["order_warehouse_address"] ?? "",
         deliveryDate: DateTime.parse(json["delivery_date"]),
         status: json["status"] ?? "",
+        statusName: json["status_name"] ?? json["status"]??"",
         isRated: json["is_rated"] == null ? false : json["is_rated"],
         editable: json["editable"] == null ? false : json["editable"],
         hasTasks: json["has_tasks"] == null ? false : json["has_tasks"],
@@ -70,7 +73,8 @@ class OrderSales {
         "driver_id": driverId == null ? null : driverId,
         "delivery_date":
             "${deliveryDate?.year.toString().padLeft(4, '0')}-${deliveryDate?.month.toString().padLeft(2, '0')}-${deliveryDate?.day.toString().padLeft(2, '0')}",
-        "status": status,
+        "status": status ?? null,
+        "status_name": statusName ?? null,
         "order_items": (orderItems == null || orderItems!.isEmpty)
             ? []
             : List<dynamic>.from(orderItems!.map((x) => x.toJson())),
@@ -107,12 +111,14 @@ class OrderItem {
       this.editable = false,
       this.boxes,
         this.itemName,
+        this.storageType,
       });
 
   bool? editable;
   String? itemParent;
   String? item;
   String? itemName;
+  String? storageType;
   int? needAdviser;
   num? price;
   num? oldPrice;
@@ -129,6 +135,7 @@ class OrderItem {
         itemParent: json["item_parent"],
         item: json["item"],
       itemName: json["item_name"],
+      storageType: json["storage_type"]??"",
         needAdviser: json["need_Adviser"],
         price: json["price"],
       oldPrice: json["price"],
@@ -155,6 +162,7 @@ class OrderItem {
         "item_parent": itemParent,
         "item": item,
         "item_name": itemName,
+        "storage_type": storageType,
         "need_Adviser": needAdviser,
         "price": price,
         "oldPrice": oldPrice,

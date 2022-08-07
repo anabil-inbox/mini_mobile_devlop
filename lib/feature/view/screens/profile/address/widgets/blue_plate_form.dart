@@ -6,6 +6,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 import '../map.dart';
 
@@ -101,6 +102,14 @@ class BluePlateForm extends StatelessWidget {
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
               return '${tr.fill_the_zone_correctly}';
+            }else if(SharedPref.instance.getAppSettings()!.areaZones!.isNotEmpty ){
+              var areaZones = SharedPref.instance.getAppSettings()!.areaZones;
+              for(int i = 0 ; i < areaZones!.length ; i ++ ){
+                if(!areaZones[i].numbers!.contains(value)){
+                  return '${tr.fill_the_zone_correctly}';
+                }
+                return null;
+              }
             }
             return null;
           },

@@ -9,10 +9,12 @@ import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
+import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/box_in_sales_order.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/box_item_in_sales_order.dart';
 import 'package:inbox_clients/feature/view/screens/profile/address/add_address.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/quantity_widget.dart';
+import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/edit_new_storage/widget/bottom_sheet_storage_categorires.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/edit_new_storage/widget/space_and_quantity_edit_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/pickup_address_item.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/schedule_pickup_widget.dart';
@@ -53,28 +55,26 @@ class EditNewStorageView extends StatelessWidget {
   final OrderSales newOrderSales;
   final MyOrderViewModle viewModel;
 
-  Widget get actionBtn =>
-      GetBuilder<MyOrderViewModle>(
-          init: MyOrderViewModle(),
-          builder: (logic) {
-            return Container(
-              margin: EdgeInsets.symmetric(horizontal: sizeW10!),
-              child: PrimaryButton(
-                  isExpanded: true,
-                  isLoading: logic.isLoading,
-                  onClicked: onClickUpdate,
-                  textButton: "${tr.update}"),
-            );
-          });
+  Widget get actionBtn => GetBuilder<MyOrderViewModle>(
+      init: MyOrderViewModle(),
+      builder: (logic) {
+        return Container(
+          margin: EdgeInsets.symmetric(horizontal: sizeW10!),
+          child: PrimaryButton(
+              isExpanded: true,
+              isLoading: logic.isLoading,
+              onClicked: onClickUpdate,
+              textButton: "${tr.update}"),
+        );
+      });
 
-  Widget get addressWidget =>
-      Column(
+  Widget get addressWidget => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             alignment: Alignment.center,
             padding:
-            EdgeInsets.only(left: sizeW10!, right: sizeW10!, top: sizeH20!),
+                EdgeInsets.only(left: sizeW10!, right: sizeW10!, top: sizeH20!),
             margin: EdgeInsets.symmetric(horizontal: sizeW10!),
             decoration: BoxDecoration(
                 boxShadow: [boxShadowLight()!],
@@ -124,8 +124,8 @@ class EditNewStorageView extends StatelessWidget {
                                 newOrderSales
                                     .orderShippingAddress!.isNotEmpty) {
                               var address = log.userAddress.toList().firstWhere(
-                                      (element) =>
-                                  element.id!.toLowerCase() ==
+                                  (element) =>
+                                      element.id!.toLowerCase() ==
                                       newOrderSales.orderShippingAddress!
                                           .toLowerCase());
                               _storageViewModel.selectedAddress = address;
@@ -140,9 +140,9 @@ class EditNewStorageView extends StatelessWidget {
                                 var address = _storageViewModel.storeAddress
                                     .toList()
                                     .firstWhere((element) =>
-                                element.id!.toLowerCase() ==
-                                    newOrderSales.orderWarehouseAddress!
-                                        .toLowerCase());
+                                        element.id!.toLowerCase() ==
+                                        newOrderSales.orderWarehouseAddress!
+                                            .toLowerCase());
                                 _storageViewModel.selectedStore = address;
                                 _storageViewModel.update();
                               } catch (e) {
@@ -166,18 +166,20 @@ class EditNewStorageView extends StatelessWidget {
                       builder: (_) {
                         return log.userAddress.isNotEmpty
                             ? SizedBox(
-                          height:log.userAddress.isNotEmpty && log.userAddress.length >=3 ?sizeH270 :  sizeH100,
-                          child: ListView(
-                            primary: false,
-                            shrinkWrap: true,
-                            children: log.userAddress
-                                .map((e) =>
-                                PickupAddressItem(
-                                  address: e,
-                                ))
-                                .toList(),
-                          ),
-                        )
+                                height: log.userAddress.isNotEmpty &&
+                                        log.userAddress.length >= 3
+                                    ? sizeH270
+                                    : sizeH100,
+                                child: ListView(
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  children: log.userAddress
+                                      .map((e) => PickupAddressItem(
+                                            address: e,
+                                          ))
+                                      .toList(),
+                                ),
+                              )
                             : const SizedBox();
                       },
                     );
@@ -207,8 +209,7 @@ class EditNewStorageView extends StatelessWidget {
         ],
       );
 
-  Widget get headerBox =>
-      Container(
+  Widget get headerBox => Container(
         width: double.infinity,
         decoration: BoxDecoration(
             color: scaffoldColor,
@@ -217,29 +218,29 @@ class EditNewStorageView extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: sizeH20!),
         child: (newOrderSales.orderItems?.length == 0)
             ? Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: sizeH22,
-            ),
-            SvgPicture.asset("assets/svgs/folder_icon.svg"),
-            SizedBox(
-              height: sizeH6,
-            ),
-            Text("${newOrderSales.orderId}"),
-            SizedBox(
-              height: sizeH2,
-            ),
-            Text(
-              "${newOrderSales.status}",
-              style: textStyleHints()!.copyWith(fontSize: fontSize13),
-            ),
-            SizedBox(
-              height: sizeH20,
-            ),
-          ],
-        )
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: sizeH22,
+                  ),
+                  SvgPicture.asset("assets/svgs/folder_icon.svg"),
+                  SizedBox(
+                    height: sizeH6,
+                  ),
+                  Text("${newOrderSales.orderId}"),
+                  SizedBox(
+                    height: sizeH2,
+                  ),
+                  Text(
+                    "${newOrderSales.statusName}",
+                    style: textStyleHints()!.copyWith(fontSize: fontSize13),
+                  ),
+                  SizedBox(
+                    height: sizeH20,
+                  ),
+                ],
+              )
             : const SizedBox(),
       );
 
@@ -275,49 +276,92 @@ class EditNewStorageView extends StatelessWidget {
                   GetBuilder<MyOrderViewModle>(
                       init: MyOrderViewModle(),
                       builder: (logic) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SeconderyButtom(
-                            textButton: "${tr.add_item}",
-                            isExpanded: true,
-                            onClicked: () {
-                              Logger().wtf(logic.newOrderSales.toJson());
-                              if(logic.newOrderSales.orderItems!.where((element) => element.itemName == "Regular Box").isNotEmpty){
-                                _storageViewModel.showMainStorageBottomSheet(
-                                    storageCategoriesData: _storageViewModel.storageCategoriesList[3],
-                                    isFromOrderEdit:true);
-                              }else{
-                                _storageViewModel.showMainStorageBottomSheet(
-                                    storageCategoriesData: _storageViewModel.storageCategoriesList[2],
-                                    isFromOrderEdit:true);
-                              }
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SeconderyButtom(
+                                textButton: "${tr.add_item}",
+                                isExpanded: true,
+                                onClicked: () {
+                                  Logger().wtf(logic.newOrderSales.toJson());
+
+                                  // if( logic.newOrderSales.orderItems != null &&
+                                  //     logic.newOrderSales.orderItems!.isNotEmpty &&
+                                  //     newOrderSales.orderItems != null &&
+                                  //     newOrderSales.orderItems!.isNotEmpty){
+                                  //   var orderItem = logic.newOrderSales.orderItems?.firstWhere((element) => element.storageType != null );
+                                  //   var firstWhere = newOrderSales.orderItems?.firstWhere((element) => element.storageType != null);
+                                  //   if(orderItem?.storageType.toString() == firstWhere?.storageType.toString()){
+                                  //     var storageCategories = _storageViewModel.storageCategoriesList.firstWhere((element) {
+                                  //       Logger().e(element.id);
+                                  //       return element.id == orderItem?.item;
+                                  //     });
+                                  //     _storageViewModel.showMainStorageBottomSheet(
+                                  //         storageCategoriesData: storageCategories,
+                                  //         isFromOrderEdit:true);
+                                  //   }
+                                  // }
+
+                                  if(logic.newOrderSales.orderItems != null && logic.newOrderSales.orderItems!.isNotEmpty){
+                                    var orderItem =  logic.newOrderSales.orderItems?.firstWhere((element) => element.storageType.toString().isNotEmpty );
+                                    Get.bottomSheet(StorageCategoriesBottomSheet(
+                                      orderItem: orderItem,
+                                      onSelectStorageCategoriesData: (StorageCategoriesData storageCategoriesData) async{
+                                        Get.back();
+                                        _storageViewModel.showMainStorageBottomSheet(
+                                            storageCategoriesData: storageCategoriesData,
+                                            isFromOrderEdit: true);
+
+                                        // Get.back();
+                                      },
+                                    ));
+                                  }
 
 
-                            }),
-
-                        SizedBox(
-                          height: sizeH16,
-                        ),
-                        if (logic.newOrderSales.orderItems != null &&
-                            logic.newOrderSales.orderItems!.isNotEmpty) ...[
-                          ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: logic.newOrderSales.orderItems?.length,
-                              itemBuilder: (context, index) {
-                                return SpaceAndQuantityEditWidget(
-                                  orderItem: logic.newOrderSales.orderItems![index],
-                                  index: index,
-                                  arraySize : logic.newOrderSales.orderItems?.length,
-                                  viewModel: logic,
-                                    storageViewModel:_storageViewModel,
-                                );
-                              }),
-                        ],
-                      ],
-                    );
-                  }),
+                                  // _storageViewModel.showMainStorageBottomSheet(
+                                  //           storageCategoriesData: _storageViewModel.storageCategoriesList.firstWhere((element) {
+                                  //             return element.items.toString().contains("Regular Box-in");
+                                  //           })/*[3]*/,
+                                  //           isFromOrderEdit:true);
+                                  //  if(logic.newOrderSales.orderItems!.where((element) => element.itemName == "Regular Box" ||element.itemName ==  "Standard Box").isNotEmpty){
+                                  //   _storageViewModel.showMainStorageBottomSheet(
+                                  //       storageCategoriesData: _storageViewModel.storageCategoriesList.firstWhere((element) {
+                                  //         return element.id.toString().contains("Regular Box-in");
+                                  //       })/*[3]*/,
+                                  //       isFromOrderEdit:true);
+                                  // }else{
+                                  //   _storageViewModel.showMainStorageBottomSheet(
+                                  //       storageCategoriesData: _storageViewModel.storageCategoriesList.firstWhere((element) {
+                                  //         return !element.id.toString().contains("Regular Box-in");
+                                  //       })/*_storageViewModel.storageCategoriesList[2]*/,
+                                  //       isFromOrderEdit:true);
+                                  // }
+                                }),
+                            SizedBox(
+                              height: sizeH16,
+                            ),
+                            if (logic.newOrderSales.orderItems != null &&
+                                logic.newOrderSales.orderItems!.isNotEmpty) ...[
+                              ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      logic.newOrderSales.orderItems?.length,
+                                  itemBuilder: (context, index) {
+                                    return SpaceAndQuantityEditWidget(
+                                      orderItem: logic
+                                          .newOrderSales.orderItems![index],
+                                      index: index,
+                                      arraySize: logic
+                                          .newOrderSales.orderItems?.length,
+                                      viewModel: logic,
+                                      storageViewModel: _storageViewModel,
+                                    );
+                                  }),
+                            ],
+                          ],
+                        );
+                      }),
 
                   SizedBox(
                     height: sizeH16,
@@ -393,6 +437,7 @@ class EditNewStorageView extends StatelessWidget {
   }
 
   onClickUpdate() {
-    viewModel.editOrderRequest(_storageViewModel, _homeViewModel , isNewStorage:true);
+    viewModel.editOrderRequest(_storageViewModel, _homeViewModel,
+        isNewStorage: true);
   }
 }

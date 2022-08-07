@@ -217,7 +217,7 @@ abstract class ConstanceNetwork {
 
   static var filter = "filter";
 
-  static var smsKey = "sms";
+  static var smsKey = /*"sms"*/"mobile";
 
   static var targetKey = "target";
 

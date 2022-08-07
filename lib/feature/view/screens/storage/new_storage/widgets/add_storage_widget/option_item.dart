@@ -66,8 +66,7 @@ class OptionItem extends StatelessWidget {
             Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(horizontal: padding30!),
-                child: Text(
-                  "Will have ${storageFeatures.addedPrice}QR as extra fees",
+                child: Text(getText(),
                   style: textStyleSmall()?.copyWith(color: colorHint),
                 )),
             SizedBox(
@@ -77,5 +76,9 @@ class OptionItem extends StatelessWidget {
         );
       },
     );
+  }
+
+  String getText() {
+    return tr.will_have+ " ${storageFeatures.addedPrice} " +tr.as_extra_fees;
   }
 }

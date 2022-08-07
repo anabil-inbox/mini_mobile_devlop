@@ -11,6 +11,7 @@ import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../../../util/app_shaerd_data.dart';
 
@@ -33,6 +34,16 @@ class _BoxOnOrderItemState extends State<BoxOnOrderItem> {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    // Logger().w(!widget.hidReceiveBtn! &&
+    //     BoxOnOrderItem.homeViewModel.operationTask.customerScanned != null &&
+    //     !BoxOnOrderItem.homeViewModel.operationTask.customerScanned!.contains(widget.boxModel) &&
+    //     (BoxOnOrderItem.homeViewModel.operationTask.driverId != null &&
+    //         BoxOnOrderItem.homeViewModel.operationTask.driverId.toString().isNotEmpty));
+    // Logger().w(!widget.hidReceiveBtn!);
+    // Logger().w(BoxOnOrderItem.homeViewModel.operationTask.customerScanned != null );
+    // Logger().w(!BoxOnOrderItem.homeViewModel.operationTask.customerScanned!.contains(widget.boxModel)  );
+    // Logger().w((BoxOnOrderItem.homeViewModel.operationTask.driverId != null &&
+    //     BoxOnOrderItem.homeViewModel.operationTask.driverId.toString().isNotEmpty) );
     return Container(
       margin: EdgeInsets.all(padding10!),
       child: InkWell(
@@ -48,9 +59,11 @@ class _BoxOnOrderItemState extends State<BoxOnOrderItem> {
                     textStyle: textStyleNormal()?.copyWith(color: colorBlack),
                   ),
                 ),
-                if(!widget.hidReceiveBtn! &&
+                if(!widget.hidReceiveBtn! /*&&
                     BoxOnOrderItem.homeViewModel.operationTask.customerScanned != null &&
-                    !BoxOnOrderItem.homeViewModel.operationTask.customerScanned!.contains(widget.boxModel))
+                    !BoxOnOrderItem.homeViewModel.operationTask.customerScanned!.contains(widget.boxModel)*/ /*&&
+                    (BoxOnOrderItem.homeViewModel.operationTask.driverId != null &&
+                        BoxOnOrderItem.homeViewModel.operationTask.driverId.toString().isNotEmpty)*/ )
                 Container(
                   padding: EdgeInsets.all(sizeRadius10!),
                   decoration: BoxDecoration(

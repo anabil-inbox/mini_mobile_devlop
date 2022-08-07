@@ -3,7 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
+import 'package:inbox_clients/feature/view/screens/profile/setting/user_guid_details.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
+import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -52,23 +54,23 @@ class _UserGuidViewState extends State<UserGuidView> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CustomTextFormFiled(
-                icon: Icons.search,
-                label: tr.search,
-                isBorder: true,
-                isFill: false,
-                fillColor: colorBtnGray,
-                isOutlineBorder: true,
-                enabledBorderColor: colorBtnGray,
-                textInputAction: TextInputAction.search,
-                keyboardType: TextInputType.text,
-                onChange: (vale) {
-                 /* if (vale.isNotEmpty && vale.length > 3)*/ _runFilter(vale);
-                },
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: CustomTextFormFiled(
+            //     icon: Icons.search,
+            //     label: tr.search,
+            //     isBorder: true,
+            //     isFill: false,
+            //     fillColor: colorBtnGray,
+            //     isOutlineBorder: true,
+            //     enabledBorderColor: colorBtnGray,
+            //     textInputAction: TextInputAction.search,
+            //     keyboardType: TextInputType.text,
+            //     onChange: (vale) {
+            //      /* if (vale.isNotEmpty && vale.length > 3)*/ _runFilter(vale);
+            //     },
+            //   ),
+            // ),
             /*SharedPref.instance.getAppSettings()?.userGuide != null &&
                     SharedPref.instance.getAppSettings()!.userGuide!.isNotEmpty*/
             _userGuid!.isNotEmpty
@@ -83,65 +85,82 @@ class _UserGuidViewState extends State<UserGuidView> {
                     var userGuide = /*SharedPref.instance
                         .getAppSettings()!
                         .userGuide*/_userGuid![index];
-                    return Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                          color: colorTextWhite,
-                          borderRadius: BorderRadius.circular(padding12!),
-                          border: Border.all(color: Colors.transparent),
-                          boxShadow: [boxShadowLight()!]),
-                      child: Theme(
-                        data: Theme.of(context)
-                            .copyWith(dividerColor: Colors.transparent),
-                        child: ExpansionTile(
-                          collapsedIconColor: colorBlack,
-                          collapsedBackgroundColor: Colors.transparent,
-                          backgroundColor: Colors.transparent,
-                          childrenPadding:
-                              EdgeInsets.symmetric(horizontal: padding12!),
-                          textColor: colorBlack,
-                          collapsedTextColor: colorBlack,
-                          iconColor: colorBlack,
-                          title: Text(
-                            userGuide.title.toString(),
-                            style: TextStyle(
-                                fontSize: 16.0, fontWeight: FontWeight.w500),
-                          ),
-                          children: <Widget>[
-                            HtmlWidget(
-                              '${userGuide.text}',
-                              enableCaching: true,
-                              baseUrl:
-                                  Uri.parse("${ConstanceNetwork.imageUrl}"),
-                              onLoadingBuilder:
-                                  (context, element, loadingProgress) =>
-                                      CircularProgressIndicator(),
-                              onTapUrl: (url) {
-                                Logger().d(url);
-                                openBrowser(url);
-                                return true;
-                              },
-                              onErrorBuilder: (context, element, error) {
-                                return CircularProgressIndicator();
-                              },
-                              webView: true,
-                              webViewDebuggingEnabled: true,
-                              webViewJs: true,
-                              webViewMediaPlaybackAlwaysAllow: true,
-                              webViewUserAgent:
-                                  "${ConstanceNetwork.imageUrl}",
-                              renderMode: RenderMode.column,
-                            ),
-                            SizedBox(
-                              height: sizeH10!,
-                            ),
+                    return InkWell(
+                      onTap: (){
+                        Get.to(UserGuidDetails(userGuide:userGuide));
+                      },
+                      child: Container(
+                        clipBehavior: Clip.hardEdge,
+                        padding: EdgeInsets.all( padding12!),
+                        decoration: BoxDecoration(
+                            color: colorTextWhite,
+                            borderRadius: BorderRadius.circular(padding12!),
+                            border: Border.all(color: Colors.transparent),
+                            boxShadow: [boxShadowLight()!]),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+
+                            CustomTextView(txt: userGuide.title.toString(),),
+                            isArabicLang()
+                                ? Icon(Icons.arrow_forward_ios , size: 12,)
+                                : Icon(Icons.arrow_forward_ios, size: 12,),
                           ],
-                        ),
+                        )
+                        /*Theme(
+                          data: Theme.of(context)
+                              .copyWith(dividerColor: Colors.transparent),
+                          child: ExpansionTile(
+
+                            collapsedIconColor: colorBlack,
+                            collapsedBackgroundColor: Colors.transparent,
+                            backgroundColor: Colors.transparent,
+                            childrenPadding:
+                                EdgeInsets.symmetric(horizontal: padding12!),
+                            textColor: colorBlack,
+                            collapsedTextColor: colorBlack,
+                            iconColor: colorBlack,
+                            title: Text(
+                              userGuide.title.toString(),
+                              style: TextStyle(
+                                  fontSize: 16.0, fontWeight: FontWeight.w500),
+                            ),
+                            children: <Widget>[
+                              HtmlWidget(
+                                '${userGuide.text}',
+                                enableCaching: true,
+                                baseUrl:
+                                    Uri.parse("${ConstanceNetwork.imageUrl}"),
+                                onLoadingBuilder:
+                                    (context, element, loadingProgress) =>
+                                        Center(child: CircularProgressIndicator()),
+                                onTapUrl: (url) {
+                                  Logger().d(url);
+                                  openBrowser(url);
+                                  return true;
+                                },
+                                onErrorBuilder: (context, element, error) {
+                                  return Center(child: CircularProgressIndicator());
+                                },
+                                webView: true,
+                                webViewDebuggingEnabled: true,
+                                webViewJs: true,
+                                webViewMediaPlaybackAlwaysAllow: true,
+                                webViewUserAgent:
+                                    "${ConstanceNetwork.imageUrl}",
+                                renderMode: RenderMode.column,
+                              ),
+                              SizedBox(
+                                height: sizeH10!,
+                              ),
+                            ],
+                          ),
+                        )*/,
                       ),
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
-                    return Divider();
+                    return Divider(color: colorTrans,);
                   },
                 )
                 : const SizedBox.shrink()

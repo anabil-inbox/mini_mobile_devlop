@@ -291,11 +291,19 @@ class ProfileViewModle extends BaseController {
     Get.bottomSheet(
         areaZone.isEmpty
             ? Container(
+            padding: EdgeInsets.symmetric(horizontal: padding40!),
                 decoration: BoxDecoration(
                     color: colorBackground,
                     borderRadius: BorderRadius.vertical(
                         top: Radius.circular(padding30!))),
-                child: Text(tr.sorry_area_available, style: textStyleTitle()))
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: sizeH20!,),
+                    Center(child: Text(tr.sorry_area_available, style: textStyleTitle())),
+                    SizedBox(height: sizeH20!,),
+                  ],
+                ))
             : Container(
                 decoration: BoxDecoration(
                     color: colorBackground,
@@ -414,8 +422,7 @@ class ProfileViewModle extends BaseController {
         ConstanceNetwork.contactNumberkey: jsonEncode(contactMap),
         ConstanceNetwork.companySectorKey: companySector!.name,
         ConstanceNetwork.applicantNameKey: tdCompanyNameOfApplicationEdit.text,
-        ConstanceNetwork.applicantDepartmentKey:
-            tdCompanyApplicantDepartment.text,
+        ConstanceNetwork.applicantDepartmentKey: tdCompanyApplicantDepartment.text,
         "${ConstanceNetwork.mobileNumberKey}": tdCompanyMobileNumber.text,
         ConstanceNetwork.contryCodeKey: defCountry.prefix,
         ConstanceNetwork.udidKey: identidire,

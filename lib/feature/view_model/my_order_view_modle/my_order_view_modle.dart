@@ -444,6 +444,7 @@ class MyOrderViewModle extends BaseController {
       {bool? isNewStorage = false}) async {
     isLoading = true;
     update();
+    Set<String> items = Set();
     var first = getDayByNumber(
       selectedDateTime: storageViewModel.selectedDateTime!,
     ).first;
@@ -477,58 +478,62 @@ class MyOrderViewModle extends BaseController {
 
         newOrderSales.orderItems?.forEach((element) {
           Logger().wtf(element.toJson());
-          itemCode= element.itemName == null ? element.item.toString(): (element.itemName.toString().contains("_in") ?element.itemName.toString() :element.itemName.toString()+"_in");
-          groupId= element.groupId.toString();
-          qty= qty + element.quantity!;
-          // Map<String, dynamic> maps = {
-          //   "item_code": element.itemName == null ? element.item.toString(): (element.itemName.toString().contains("_in") ?element.itemName.toString() :element.itemName.toString()+"_in"),
-          //   "qty": element.quantity!.toInt(),
-          //   "delivery_date": DateFormat("yyyy-MM-dd").format(storageViewModel.selectedDateTime!),
-          //    "subscription": storageViewModel.selectedDuration,
-          //    "subscription_duration": storageViewModel.numberOfDays,
-          //   "subscription_price": storageViewModel.balance,
-          //   "group_id": element.groupId,
-          //   "storage_type": "Quantity",
-          //   "item_parent": 0,
-          //   "need_adviser": 0,
-          //   "order_to": first.from,
-          //   "order_from": first.to,
-          //   "order_time": "${first.to ?? "13:20"} -- ${first.from ?? "14:20"}",
-          //   "space": 0,
-          //   "space_xaxis": 0,
-          //   "space_yaxis": 0,
-          //   "area_zone":storageViewModel.selectedAddress?.zone.toString(),
-          //   "process_type": "New Storage_sv",
-          //   "storage_child_in": "",
-          //   "items_child_in": ""
-          // };
-          // apiItems.add(/*apiObjectToSend*/maps);
+          // items.add(itemCode);
+          // itemCode= /*element.itemName == null ? */element.item.toString()/*: (element.itemName.toString().contains("_in") ?element.itemName.toString() :element.itemName.toString()+"_in")*/;
+          // groupId= element.groupId.toString();
+          // qty= qty + element.quantity!;
+          Map<String, dynamic> maps = {
+            // "item_code": element.itemName == null ? element.item.toString(): (element.itemName.toString().contains("_in") ?element.itemName.toString() :element.itemName.toString()+"_in"),
+            "item_code": (element.item.toString().split("-").length > 2 ?  element.item.toString().split("-")[2]+"_in" : element.item.toString() ),
+            "qty": element.quantity!.toInt(),
+            "delivery_date": DateFormat("yyyy-MM-dd").format(storageViewModel.selectedDateTime!),
+             "subscription": storageViewModel.selectedDuration,
+             "subscription_duration": storageViewModel.numberOfDays,
+            "subscription_price": storageViewModel.balance,
+            "group_id": element.groupId,
+            "storage_type": element.storageType,
+            "item_parent": 0,
+            "need_adviser": 0,
+            "order_to": first.from,
+            "order_from": first.to,
+            "order_time": "${first.to ?? "13:20"} -- ${first.from ?? "14:20"}",
+            "space": 0,
+            "space_xaxis": 0,
+            "space_yaxis": 0,
+            "area_zone":storageViewModel.selectedAddress?.zone.toString(),
+            "process_type": "New Storage_sv",
+            "storage_child_in": "",
+            "items_child_in": ""
+          };
+          apiItems.add(/*apiObjectToSend*/maps);
         });
       }
-      Map<String, dynamic> maps = {
-        // "item_code": element.itemName == null ? element.item.toString(): (element.itemName.toString().contains("_in") ?element.itemName.toString() :element.itemName.toString()+"_in"),
-        "item_code": itemCode,
-        "qty": qty,
-        "delivery_date": DateFormat("yyyy-MM-dd").format(storageViewModel.selectedDateTime!),
-        "subscription": storageViewModel.selectedDuration,
-        "subscription_duration": storageViewModel.numberOfDays,
-        "subscription_price": storageViewModel.balance,
-        "group_id": groupId,
-        "storage_type": "Quantity",
-        "item_parent": 0,
-        "need_adviser": 0,
-        "order_to": first.from,
-        "order_from": first.to,
-        "order_time": "${first.to ?? "13:20"} -- ${first.from ?? "14:20"}",
-        "space": 0,
-        "space_xaxis": 0,
-        "space_yaxis": 0,
-        "area_zone":storageViewModel.selectedAddress?.zone.toString(),
-        "process_type": "New Storage_sv",
-        "storage_child_in": "",
-        "items_child_in": ""
-      };
-      apiItems.add(/*apiObjectToSend*/maps);
+      // Logger().i(itemCode);
+      //
+      // Map<String, dynamic> maps = {
+      //   // "item_code": element.itemName == null ? element.item.toString(): (element.itemName.toString().contains("_in") ?element.itemName.toString() :element.itemName.toString()+"_in"),
+      //   "item_code": (itemCode.split("-").length > 2 ?  itemCode.split("-")[2]+"_in" : itemCode ),
+      //   "qty": qty,
+      //   "delivery_date": DateFormat("yyyy-MM-dd").format(storageViewModel.selectedDateTime!),
+      //   "subscription": storageViewModel.selectedDuration,
+      //   "subscription_duration": storageViewModel.numberOfDays,
+      //   "subscription_price": storageViewModel.balance,
+      //   "group_id": groupId,
+      //   "storage_type": element.storageType,
+      //   "item_parent": 0,
+      //   "need_adviser": 0,
+      //   "order_to": first.from,
+      //   "order_from": first.to,
+      //   "order_time": "${first.to ?? "13:20"} -- ${first.from ?? "14:20"}",
+      //   "space": 0,
+      //   "space_xaxis": 0,
+      //   "space_yaxis": 0,
+      //   "area_zone":storageViewModel.selectedAddress?.zone.toString(),
+      //   "process_type": "New Storage_sv",
+      //   "storage_child_in": "",
+      //   "items_child_in": ""
+      // };
+      // apiItems.add(/*apiObjectToSend*/maps);
       map = {
         ConstanceNetwork.orderIdKey: newOrderSales.orderId,
         ConstanceNetwork.deliveryDateKey:

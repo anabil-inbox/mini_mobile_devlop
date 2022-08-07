@@ -86,7 +86,7 @@ class _AppWidgetState extends State<AppWidget> {
         return DismissKeyboard(
           child: GetMaterialApp(
             smartManagement: SmartManagement.keepFactory,
-            title: 'Inbox Clients',
+            title: 'Inbox Mini Clients',
             locale: Locale(SharedPref.instance.getAppLanguageMain().split("_")[0]),
             localizationsDelegates: [
               AppLocalizations.delegate,

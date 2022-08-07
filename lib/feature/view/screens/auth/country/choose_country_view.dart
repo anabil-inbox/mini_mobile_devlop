@@ -37,23 +37,28 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
     super.initState();
 
     authViewModle.tdSearch.clear();
+
   }
 
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    controller.addPageRequestListener((pageKey) async {
-      final data = await repo.getCountries(1 + (pageKey ~/ 10), 250);
-       for(var i in data){
-        var contains = listCountry.contains(i);
-        if(contains) {
-          data.remove(i);
-        }
-      }
-      controller.appendPage(data.toList(), pageKey + data.length);
-      listCountry.addAll(data);
-    });
 
+    // WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      controller.addPageRequestListener((pageKey) async {
+        final data = await repo.getCountries(1 + (pageKey ~/ 10), 250);
+        if(data.isNotEmpty) {
+          for (var i in data) {
+            var contains = listCountry.contains(i);
+            if (contains) {
+              data.remove(i);
+            }
+          }
+          controller.appendPage(data.toList(), pageKey + data.length);
+          listCountry.addAll(data);
+        }
+      });
+    // });
     return Scaffold(
       appBar: AppBar(
         elevation: 1,

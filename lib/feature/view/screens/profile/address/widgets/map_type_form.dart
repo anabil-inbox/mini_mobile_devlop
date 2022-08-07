@@ -79,10 +79,10 @@ class MapTypeForm extends StatelessWidget {
           height: sizeH10,
         ),
         TextFormField(
-          // onTap: () {
-          //   profileViewModle.showZoneBottmSheet();
-          // },
-          // readOnly: true,
+          onTap: () {
+            profileViewModle.showZoneBottmSheet();
+          },
+          readOnly: true,
           onSaved: (newValue) {
             profileViewModle.tdZone.text = newValue!;
             profileViewModle.update();

@@ -215,7 +215,7 @@ class EditOrderBottomSheet extends StatelessWidget {
                     height: sizeH2,
                   ),
                   Text(
-                    "${newOrderSales.status}",
+                    "${newOrderSales.statusName}",
                     style: textStyleHints()!.copyWith(fontSize: fontSize13),
                   ),
                   SizedBox(

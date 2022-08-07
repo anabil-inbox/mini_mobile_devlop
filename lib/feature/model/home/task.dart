@@ -19,24 +19,24 @@ class Task {
   List<VAS>? selectedVas;
 
   factory Task.fromJson(Map<String, dynamic> json) => Task(
-        id: json["id"],
-        task: json["task"],
-        taskName: json["task_name"],
-        price: json["price"],
-        selectedVas: json["selected_VAS"] == null ? null : List<VAS>.from(json["selected_VAS"].map((x) => VAS.fromJson(x))),
-        areaZones: List<AreaZone>.from(
+        id:json["id"] == null ? null:  json["id"],
+        task:json["task"] == null ? null:  json["task"],
+        taskName : json["task_name"] == null ? null:  json["task_name"],
+        price:json["price"] == null ? null:  json["price"],
+        selectedVas:  json["selected_VAS"] == null ? null : List<VAS>.from(json["selected_VAS"].map((x) => VAS.fromJson(x))),
+        areaZones:json["area_zones"] == null ? null:  List<AreaZone>.from(
             json["area_zones"].map((x) => AreaZone.fromJson(x))),
-        vas: List<VAS>.from(json["VAS"].map((x) => VAS.fromJson(x))),
+        vas:json["VAS"] == null ? null:  List<VAS>.from(json["VAS"].map((x) => VAS.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "task": task,
-        "task_name": taskName,
-        "price": price,
-        "area_zones": List<AreaZone>.from(areaZones!.map((x) => x)),
-        "VAS": List<VAS>.from(vas!.map((x) => x)),
-        "selected_VAS": List<VAS>.from(selectedVas!.map((x) => x)),
+        "id":id == null ? null: id,
+        "task":task == null ? null: task,
+        "task_name":taskName == null ? null: taskName,
+        "price":price == null ? null: price,
+        "area_zones":areaZones == null ? null: List<AreaZone>.from(areaZones!.map((x) => x)),
+        "VAS":vas == null ? null: List<VAS>.from(vas!.map((x) => x)),
+        "selected_VAS":selectedVas == null ? null: List<VAS>.from(selectedVas!.map((x) => x)),
       };
 
   @override
@@ -60,15 +60,15 @@ class VAS {
   num? price;
 
   factory VAS.fromJson(Map<String, dynamic> json) => VAS(
-        id: json["id"],
-        name: json["name"],
-        price: json["price"],
+        id: json["id"] == null ?null :json["id"],
+        name: json["name"] == null ?null :json["name"],
+        price: json["price"] == null ? null:json["price"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "price": price,
+        "id": id == null ? null : id,
+        "name": name == null ? null : name,
+        "price": price == null ? null : price,
       };
 
   @override

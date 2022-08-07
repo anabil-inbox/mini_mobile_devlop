@@ -38,21 +38,15 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
     super.initState();
     Logger()
         .i("${SharedPref.instance.getCurrentUserData().toJson().toString()}");
-    profileViewModle.tdCompanyApplicantDepartment.text =
-        SharedPref.instance.getCurrentUserData().applicantName ?? "";
-    profileViewModle.tdCompanyNameEdit.text =
-        SharedPref.instance.getCurrentUserData().customerName ?? "";
+    profileViewModle.tdCompanyApplicantDepartment.text = SharedPref.instance.getCurrentUserData().applicantDepartment ?? "";
+    profileViewModle.tdCompanyNameEdit.text = SharedPref.instance.getCurrentUserData().customerName ?? "";
     // profileViewModle.tdCompanyMobileNumber.text =
     //     SharedPref.instance.getCurrentUserData().mobile ?? "";
-    profileViewModle.tdCompanyNameOfApplicationEdit.text =
-        SharedPref.instance.getCurrentUserData().applicantName ?? "";
-    profileViewModle.companySector!.sectorName =
-        SharedPref.instance.getCurrentUserData().companySector ?? "";
-    profileViewModle.tdCompanyEmailEdit.text =
-        SharedPref.instance.getCurrentUserData().email ?? "";
+    profileViewModle.tdCompanyNameOfApplicationEdit.text = SharedPref.instance.getCurrentUserData().applicantName ?? "";
+    profileViewModle.companySector!.sectorName = SharedPref.instance.getCurrentUserData().companySector ?? "";
+    profileViewModle.tdCompanyEmailEdit.text = SharedPref.instance.getCurrentUserData().email ?? "";
     profileViewModle.contactMap.clear();
-    profileViewModle.contactMap =
-        SharedPref.instance.getCurrentUserData().contactNumber!.toList();
+    profileViewModle.contactMap = SharedPref.instance.getCurrentUserData().contactNumber!.toList();
 
     profileViewModle.tdCompanyEmailOperator.text = SharedPref.instance.getCurrentUserData().reporterEmail.toString();
     profileViewModle.tdMobileNumberOperator.text = SharedPref.instance.getCurrentUserData().reporterMobile.toString();
@@ -355,6 +349,9 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                     )
                   ],
                 ),
+                SizedBox(
+                  height: padding16,
+                ),
                 TextFormField(
                   controller: profileViewModle.tdCompanyEmailOperator,
                   onSaved: (newValue) {
@@ -396,20 +393,20 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                             SizedBox(
                               width: sizeW18,
                             ),
-                            profileViewModle.defCountryOperator.name!
+                            /*profileViewModle.defCountryOperator.name!
                                 .toLowerCase()
                                 .contains("qatar") ||
                                 profileViewModle.defCountryOperator.name!.isEmpty
                                 ? SvgPicture.asset("assets/svgs/qatar_flag.svg")
-                                : imageNetwork(
+                                :*/ /*imageNetwork(
                                 url:
                                 "${ConstanceNetwork.imageUrl}${profileViewModle.defCountryOperator.flag}",
                                 width: 36,
                                 height: 26),
                             SizedBox(
                               width: sizeW5,
-                            ),
-                            VerticalDivider(),
+                            ),*/
+
                             GetBuilder<AuthViewModle>(
                               init: AuthViewModle(),
                               initState: (_) {},
@@ -420,6 +417,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
                                 );
                               },
                             ),
+                            VerticalDivider(),
                             Expanded(
                               child: TextFormField(
                                 textDirection: TextDirection.ltr,

@@ -88,7 +88,7 @@ class MyOrderItem extends StatelessWidget {
                               : buttonStyleBackgroundGreen,
                           onPressed: () {},
                           child: CustomTextView(
-                            txt: "${orderSales.status}",
+                            txt: "${orderSales.statusName}",
                             textStyle: orderSales.status ==
                                     LocalConstance.orderDraft
                                 ? textStyleSmall()?.copyWith(color: colorPrimary)

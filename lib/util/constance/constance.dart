@@ -1,3 +1,5 @@
+import 'package:inbox_clients/util/app_shaerd_data.dart';
+
 class LocalConstance {
   // to add boxess status Home
   static String boxAtHome = "At home";
@@ -37,8 +39,8 @@ class LocalConstance {
   static String application = "application";
 
   // to add here Map Types:
-  static String mapType = "Share Location";
-  static String bluePlate = "Blue plate";
+  static String mapType = tr.share_location/*"Share Location"*/;
+  static String bluePlate = tr.blue_plate/*"Blue plate"*/;
 
   static String coupon = "coupon";
 
@@ -88,6 +90,7 @@ class LocalConstance {
 
   static String dailySubscriptions = "Daily";
 
+  static String standardBoxIn = "Standard Box_in";
 
   static int showCaseBluer = 2;
 }

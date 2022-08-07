@@ -124,7 +124,7 @@
     "request_new_storage":"New Storage Request",
     "storage_size_type" : "Storage Size & Type:",
     "choose_from_below" : "Choose from below",
-     "quantity":"Quantity",
+     "quantity":"Count of boxes",
      "duration_of_subscription":"Duration of Subscription:",
     "starting_from_pickup_date":"starting from pickup date",
     "price":"Price",
@@ -222,7 +222,7 @@
     "txtTirms":"Terms & Conditions",
     "txtFollow":"Follow us on social media",
     "txtTechnicalSupport":"You can send a direct message to technical support",
-    "txt_about_inbox":"About Inbox",
+    "txt_about_inbox":"About Inbox-Mini",
     "send":"Send",
     "txtFullNameScreen": "Full Name",
     "delivery_address": "Delivery Address",
@@ -238,7 +238,7 @@
     "authorized": "Authorized",
     "checkout_successfully": "Checkout Successfully",
     "no_permission": "no Permission",
-    "want_delete": "Are You Share You Want To Delete This Item ?",
+    "want_delete": "Are You sure You Want To Delete This Item ?",
     "select_image": "Select Image",
     "camera": "Camera",
     "gallery": "Gallery",
@@ -289,6 +289,18 @@
     "scan_product_btn_show_case": "This for product that we need to pay and scanned scanned",
     "price_btn_show_case": "This for show invoice and select payment method ",
     "signature_show_case": "This for signature by your text signature or by your fingerprint or make driver sign ",
-    "user_guid": "User Guid"
+    "user_guid": "User Guide",
+    "will_have": "Will have",
+    "as_extra_fees": "QR as extra fees",
+    "delivered": "Delivered",
+    "box_name": "Box Name",
+    "update_box": "Update Box",
+    "check_in_box": "Check in Box",
+    "blue_plate": "Blue plate",
+    "share_location": "Share location",
+    "add_amount": "Add Amount",
+    "scan_delivered_box": "Scan Delivered Box",
+    "you_scanned_all_boxes_received": "You Scanned All Boxes Received"
+
 
 }

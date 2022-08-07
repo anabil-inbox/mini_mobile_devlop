@@ -133,12 +133,14 @@ class _ItemStorageBottomSheetState extends State<ItemStorageBottomSheet> {
                   )
                 else
                   const SizedBox(),
-                SizedBox(
-                  height: sizeH16,
-                ),
-                OptionWidget(
-                  storageCategoriesData: widget.storageCategoriesData,
-                ),
+                if(widget.storageCategoriesData.storageFeatures != null && widget.storageCategoriesData.storageFeatures!.isNotEmpty)...[
+                  SizedBox(
+                    height: sizeH16,
+                  ),
+                  OptionWidget(
+                    storageCategoriesData: widget.storageCategoriesData,
+                  ),
+                ],
                 SizedBox(
                   height: sizeH16,
                 ),

@@ -17,12 +17,13 @@ import '../../../../../../../util/app_shaerd_data.dart';
 // ignore: must_be_immutable
 class SizeTypeItem extends StatelessWidget {
   SizeTypeItem(
-      {Key? key, required this.storageCategoriesData, required this.media})
+      {Key? key, required this.storageCategoriesData, required this.media, this.isFromEditClick = false, })
       : super(key: key);
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
   final StorageCategoriesData storageCategoriesData;
   final List<String> media;
   bool isEnable = true;
+  final bool? isFromEditClick;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class SizeTypeItem extends StatelessWidget {
             start: padding0,
             end: padding0,
             child: TextButton(
-              onPressed: () {
+              onPressed:isFromEditClick! ? null: () {
                 if (isEnable) {
                   storageViewModel.showMainStorageBottomSheet(
                       storageCategoriesData: storageCategoriesData);

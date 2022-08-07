@@ -38,11 +38,11 @@ class CompanyVerficationCodeScreen extends StatefulWidget {
 class _CompanyVerficationCodeScreenState
     extends State<CompanyVerficationCodeScreen> {
 
-  final AuthViewModle authViewModle = Get.find<AuthViewModle>();
+  final AuthViewModle authViewModle = Get.put<AuthViewModle>(AuthViewModle());
 
   @override
   void initState() {
-    Get.lazyPut(() => AuthViewModle());
+    // Get.lazyPut(() => AuthViewModle());
     super.initState();
     initListener();
 
@@ -149,9 +149,10 @@ class _CompanyVerficationCodeScreenState
                       authViewModle.startTimer();
                       authViewModle.update();
                       authViewModle.reSendVerficationCode(
+                          id: widget.id,
                           udid: authViewModle.identifier,
-                          // countryCode: countryCode,
-                          // mobileNumber: mobileNumber,
+                           // countryCode: widget.countryCode,
+                           // mobileNumber: widget.mobileNumber,
                           target: ConstanceNetwork.emailKey
                       );
                     } else {

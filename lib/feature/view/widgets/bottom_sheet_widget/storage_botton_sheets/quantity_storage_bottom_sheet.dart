@@ -177,22 +177,24 @@ class _QuantityStorageBottomSheetState
                         )
                       else
                         const SizedBox(),
-                      SizedBox(
-                        height: sizeH16,
-                      ),
-                      Showcase(
-                        disableAnimation: Constance.showCaseDisableAnimation,
-                        shapeBorder: RoundedRectangleBorder(),
-                        radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
-                        showArrow: Constance.showCaseShowArrow,
-                        overlayPadding: EdgeInsets.all(5),
-                        blurValue:Constance.showCaseBluer ,
-                        description: tr.features_btn_show_case,
-                        key: builder.featuresShowCaseKey,
-                        child: OptionWidget(
-                          storageCategoriesData: widget.storageCategoriesData,
+                      if(widget.storageCategoriesData.storageFeatures != null && widget.storageCategoriesData.storageFeatures!.isNotEmpty)...[
+                        SizedBox(
+                          height: sizeH16,
                         ),
-                      ),
+                        Showcase(
+                          disableAnimation: Constance.showCaseDisableAnimation,
+                          shapeBorder: RoundedRectangleBorder(),
+                          radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
+                          showArrow: Constance.showCaseShowArrow,
+                          overlayPadding: EdgeInsets.all(5),
+                          blurValue:Constance.showCaseBluer ,
+                          description: tr.features_btn_show_case,
+                          key: builder.featuresShowCaseKey,
+                          child: OptionWidget(
+                            storageCategoriesData: widget.storageCategoriesData,
+                          ),
+                        ),
+                      ],
                       SizedBox(
                         height: sizeH16,
                       ),

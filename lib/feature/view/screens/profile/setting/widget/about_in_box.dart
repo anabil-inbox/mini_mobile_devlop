@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../../../util/app_color.dart';
 import '../../../../../../util/app_shaerd_data.dart';
@@ -50,12 +53,35 @@ class AboutInBox extends StatelessWidget {
           child: Padding(
             padding:
                 const EdgeInsets.only(right: 24, left: 24, top: 26, bottom: 48),
-            child: CustomTextView(
+            child:HtmlWidget(
+              '${isAboutUs! ?SharedPref.instance.getAppSettings()?.aboutUs.toString() : SharedPref.instance.getAppSettings()?.termOfConditions.toString()}',
+              enableCaching: true,
+              baseUrl:
+              Uri.parse("${ConstanceNetwork.imageUrl}"),
+              onLoadingBuilder:
+                  (context, element, loadingProgress) =>
+                  Center(child: CircularProgressIndicator()),
+              onTapUrl: (url) {
+                Logger().d(url);
+                openBrowser(url);
+                return true;
+              },
+              onErrorBuilder: (context, element, error) {
+                return Center(child: CircularProgressIndicator());
+              },
+              webView: true,
+              webViewDebuggingEnabled: true,
+              webViewJs: true,
+              webViewMediaPlaybackAlwaysAllow: true,
+              webViewUserAgent:
+              "${ConstanceNetwork.imageUrl}",
+              renderMode: RenderMode.column,
+            ) /*CustomTextView(
               maxLine: Constance.maxLineTwenty,
               textAlign: TextAlign.start,
               txt: "${tr.txt_about_inbox}",
               textStyle: textStyleSitting(),
-            ),
+            )*/,
           ),
         ));
   }

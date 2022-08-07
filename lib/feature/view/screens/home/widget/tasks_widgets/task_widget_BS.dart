@@ -16,6 +16,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../../../util/app_shaerd_data.dart';
 import '../box_in_task_widget.dart';
@@ -32,6 +33,7 @@ class TaskWidgetBS extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    Logger().d(homeViewModel.userBoxess);
     return Container(
       margin: EdgeInsets.only(top: sizeH50!),
       padding: EdgeInsets.symmetric(horizontal: padding20!),

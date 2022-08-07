@@ -59,7 +59,7 @@ class CheckInBoxWidget extends StatelessWidget {
                   height: sizeH5!,
                 ),
                 Text(
-                  "Deliverd",
+                  tr.delivered,
                   style: textStyleHints(),
                 ),
                 SizedBox(
@@ -94,7 +94,7 @@ class CheckInBoxWidget extends StatelessWidget {
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: colorBorderContainer),
                     ),
-                    hintText: "Box Name"),
+                    hintText:tr.box_name ),
               );
             },
           ),
@@ -148,7 +148,7 @@ class CheckInBoxWidget extends StatelessWidget {
                         ));
                       }
                     },
-                    textButton: isUpdate ? "Update-Box" : "Check-in Box",
+                    textButton: isUpdate ? tr.update_box/*"Update-Box"*/ : tr.check_in_box/*"Check-in Box"*/,
                   );
                 },
               ),
@@ -158,7 +158,7 @@ class CheckInBoxWidget extends StatelessWidget {
               SizedBox(
                 width: sizeW150,
                 child: SeconderyFormButton(
-                  buttonText: "Cancel",
+                  buttonText: tr.cancle,
                   onClicked: () {
                     Get.back();
                   },

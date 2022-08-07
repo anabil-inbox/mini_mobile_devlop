@@ -1,4 +1,5 @@
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
 class StorageCategoriesData {
@@ -48,7 +49,7 @@ class StorageCategoriesData {
   int? groupId;
   StorageItem? selectedItem;
   String? selectedDuration;
-  int? numberOfDays = 1; 
+  int? numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ??1);
   int? x;
   int? y;
   LocalBulk? localBulk;

@@ -39,7 +39,7 @@ class AddMoneyBottomSheet extends StatelessWidget {
                     SvgPicture.asset('assets/svgs/Indicator.svg'),
                     SizedBox(height: sizeH20),
                     CustomTextView(
-                      txt: txtAddAmount,
+                      txt: tr.add_amount/*txtAddAmount*/,
                       textStyle: textStyleNormal()
                           ?.copyWith(fontSize: fontSize18, color: colorBlack),
                     ),

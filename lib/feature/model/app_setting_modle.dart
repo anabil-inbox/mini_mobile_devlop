@@ -15,11 +15,13 @@ class ApiSettings {
       this.areaZones,
       this.deliveryFactor,
       this.socialContact,
-      this.userGuide});
+      this.userGuide,
+      this.minDays});
 
   String? customerType;
   String? aboutUs;
   String? termOfConditions;
+  int? minDays;
   ContactInfo? contactInfo;
   List<CompanySector>? companySectors;
   List<NotAllowed>? notAllowed;
@@ -34,7 +36,8 @@ class ApiSettings {
   factory ApiSettings.fromJson(Map<String, dynamic> json) => ApiSettings(
       customerType: json["customer_type"] ?? "both",
       aboutUs: json["about_us"] == null ? "" : json["about_us"],
-      termOfConditions: json["term_of_conditions"],
+      termOfConditions: json["term_of_conditions"] ??"",
+      minDays: json["min_days"] == null ? 1:json["min_days"],
       socialContact: json["social_contact"] == null
           ? null
           : List<SocialContact>.from(
@@ -67,6 +70,7 @@ class ApiSettings {
 
   Map<String, dynamic> toJson() => {
         "customer_type": customerType,
+        "min_days": minDays == null ? null :minDays,
         "social_contact": socialContact == null
             ? null
             : List<dynamic>.from(socialContact!.map((x) => x.toJson())),
@@ -281,18 +285,22 @@ class UserGuide {
   UserGuide({
     this.title,
     this.text,
+    this.video,
   });
 
   String? title;
   String? text;
+  String? video;
 
   factory UserGuide.fromJson(Map<String, dynamic> json) => UserGuide(
     title: json["title"] == null ? null : json["title"],
     text: json["text"] == null ? null : json["text"],
+    video: json["video"] == null ? null : json["video"],
   );
 
   Map<String, dynamic> toJson() => {
     "title": title == null ? null : title,
     "text": text == null ? null : text,
+    "video": video == null ? null : video,
   };
 }

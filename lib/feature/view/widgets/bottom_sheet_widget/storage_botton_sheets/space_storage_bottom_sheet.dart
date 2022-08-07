@@ -116,12 +116,14 @@ class SpaceStorageBottomSheet extends StatelessWidget {
                   )
                 else
                   const SizedBox(),
-                SizedBox(
-                  height: sizeH16,
-                ),
-                OptionWidget(
-                  storageCategoriesData: storageCategoriesData,
-                ),
+                if(storageCategoriesData.storageFeatures != null && storageCategoriesData.storageFeatures!.isNotEmpty)...[
+                  SizedBox(
+                    height: sizeH16,
+                  ),
+                  OptionWidget(
+                    storageCategoriesData: storageCategoriesData,
+                  ),
+                ],
                 SizedBox(
                   height: sizeH16,
                 ),

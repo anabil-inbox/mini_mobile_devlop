@@ -139,7 +139,7 @@ class StorageViewModel extends BaseController {
 
   // for quantity items counter
   int quantity = 1;
-  int numberOfDays = 1;
+  int numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ??1);
   num balance = 0;
 
   // Set<StorageFeatures>? selectedStorageFeaturesArray = {};
@@ -373,7 +373,7 @@ class StorageViewModel extends BaseController {
 
   void minasDaysDurations(
       {required StorageCategoriesData storageCategoriesData}) {
-    if (numberOfDays != 1) {
+    if (numberOfDays != (SharedPref.instance.getAppSettings()?.minDays ??1)) {
       numberOfDays--;
       if (storageCategoriesData.storageCategoryType ==
           ConstanceNetwork.itemCategoryType) {
@@ -407,7 +407,7 @@ class StorageViewModel extends BaseController {
 
   void minuesDaysPriceCage(
       {required StorageCategoriesData storageCategoriesData}) {
-    if (numberOfDays != 1) {
+    if (numberOfDays != (SharedPref.instance.getAppSettings()?.minDays ??1)) {
       numberOfDays--;
     }
     getSmallBalanceForCage(
@@ -548,7 +548,7 @@ class StorageViewModel extends BaseController {
     selectedDuration = "Daily";
     selectedFeaures.clear();
     quantity = 1;
-    numberOfDays = 1;
+    numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ??1);
     isNeedingAdviser = false;
     tdX.clear();
     tdY.clear();
@@ -653,7 +653,7 @@ class StorageViewModel extends BaseController {
       selectedDuration = "Daily";
       selectedFeaures.clear();
       quantity = 1;
-      numberOfDays = 1;
+      numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ??1);
       balance = 0;
       tdX.clear();
       tdY.clear();
@@ -805,7 +805,7 @@ class StorageViewModel extends BaseController {
     selectedDuration = "Daily";
     selectedFeaures.clear();
     quantity = 1;
-    numberOfDays = 1;
+    numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ??1);
     balance = 0;
     tdX.clear();
     tdY.clear();
@@ -1416,7 +1416,7 @@ class StorageViewModel extends BaseController {
   void clearBottomSheetData({bool? isFromOrderEdit = false}) {
     selectedDuration = "Daily";
     quantity = 1;
-    numberOfDays = 1;
+    numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ??1);
     selectedFeaures.clear();
     lastStorageItem = null;
     balance = 0;

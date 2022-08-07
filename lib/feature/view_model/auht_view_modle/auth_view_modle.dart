@@ -347,7 +347,7 @@ class AuthViewModle extends GetxController {
               startTimerCounter = 60,
               startTimer(),
               update(),
-              // snackSuccess("${tr.success}", "${value.status!.message}"),
+               snackSuccess("${tr.success}", "${value.status!.message}"),
               isFromChange
                   ? Get.to(() => VerficationChangeMobilScreen(
                         id: id ?? "",

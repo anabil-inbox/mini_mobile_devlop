@@ -57,8 +57,8 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        MapTypeItem(buttonText: "Blue plate"),
-                        MapTypeItem(buttonText: "Share location"),
+                        MapTypeItem(buttonText:tr.blue_plate /*"Blue plate"*/),
+                        MapTypeItem(buttonText:tr.share_location /*"Share location"*/),
                       ],
                     ),
                     builder.selectedMapType == LocalConstance.bluePlate
