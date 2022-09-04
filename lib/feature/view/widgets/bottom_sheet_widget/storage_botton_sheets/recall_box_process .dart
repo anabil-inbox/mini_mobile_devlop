@@ -42,10 +42,12 @@ class RecallBoxProcessSheet extends StatelessWidget {
     this.isFetchTask = false,
     this.isFromCart = false,
     this.cartModel,
+    required this.isFirstPickUp,
   }) : super(key: key);
 
   final Box? box;
   final int? index;
+  final bool? isFirstPickUp;
   static HomeViewModel _homeViewModel = Get.find<HomeViewModel>();
   static StorageViewModel _storageViewModel = Get.find<StorageViewModel>();
   static CartViewModel _cartViewModel = Get.put<CartViewModel>(CartViewModel());
@@ -88,6 +90,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: SeconderyFormButton(
+                  color: (!isFromCart!) ? seconderyButton : colorPrimary,
                   buttonText:
                       (!isFromCart!) ? "${tr.add_to_cart}" : "${tr.update}",
                   onClicked: onClickBringBox,
@@ -259,6 +262,9 @@ class RecallBoxProcessSheet extends StatelessWidget {
                         children: boxes
                             .map((e) => BoxInSalesOrder(
                                   box: e,
+                                  cartViewModel: _cartViewModel,
+                                  isFromCart: isFromCart,
+                                  cartModel: cartModel,
                                   boxess: boxes,
                                 ))
                             .toList(),
@@ -272,6 +278,7 @@ class RecallBoxProcessSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+
     return Container(
       margin: EdgeInsets.only(top: sizeH50!),
       padding: EdgeInsets.symmetric(horizontal: sizeW15!),
@@ -292,11 +299,15 @@ class RecallBoxProcessSheet extends StatelessWidget {
             Row(
               children: [
                 InkWell(
-                  onTap: (){
-                    Get.back();
-                  },
+                    onTap: () {
+                      Get.back();
+                    },
                     child: Icon(Icons.close)),
-                Expanded(child: Center(child: Align(alignment: Alignment.center, child: SpacerdColor()))),
+                Expanded(
+                    child: Center(
+                        child: Align(
+                            alignment: Alignment.center,
+                            child: SpacerdColor()))),
               ],
             ),
             SizedBox(
@@ -380,8 +391,9 @@ class RecallBoxProcessSheet extends StatelessWidget {
                 beneficiaryId: "",
                 items: items,
                 boxes: boxes,
-                box: box!,
+                box: box?.serialNo == null ?  itemViewModle.operationsBox! : box!,
                 task: task,
+                isFirstPickUp: isFirstPickUp! && task.id == LocalConstance.pickupId,
               ),
               isScrollControlled: true)
           .then((value) => {
@@ -415,27 +427,39 @@ class RecallBoxProcessSheet extends StatelessWidget {
           from: "${selectedDay?.from}",
           delivery: "${_storageViewModel.selectedDateTime.toString()}",
         );
-        await _cartViewModel.addToCart(
-            (GetUtils.isNull(boxes) || boxes.isEmpty) ? [box!] : boxes,
-            [],
-            _storageViewModel.selectedAddress,
-            task,
-            day,
-            task.taskName.toString());
+        await _cartViewModel
+            .addToCart(
+                (GetUtils.isNull(boxes) || boxes.isEmpty) ? [box!] : boxes,
+                [],
+                _storageViewModel.selectedAddress,
+                task,
+                day,
+                task.taskName.toString(),
+                isFirstPickUp: isFirstPickUp! && task.id == LocalConstance.pickupId)
+            .then((value) {
+          Get.back();
+        });
+
         // Get.back();
         _cartViewModel.getMyCart();
       }
     } else {
       //here action of update item cart
+      if (_storageViewModel.selectedDay?.from == null) {
+        snackError("", tr.you_should_select_correct_time);
+        return;
+      }
       var selectedDay = _storageViewModel.selectedDay;
       Day day = Day(
         to: "${selectedDay?.to}",
         from: "${selectedDay?.from}",
         delivery: "${_storageViewModel.selectedDateTime.toString()}",
       );
+
       _cartViewModel.updateItemCart(CartModel(
           id: cartModel?.id,
           userId: cartModel?.userId,
+          isFirstPickUp: isFirstPickUp! && task.id == LocalConstance.pickupId,
           task: task,
           box: cartModel?.box,
           boxItem: cartModel?.boxItem,

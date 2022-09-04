@@ -81,8 +81,8 @@ class MapBottomSheet extends StatelessWidget {
                         ],
                       ),
                       PositionedDirectional(
-                        end: sizeW20,
-                        top: sizeH20,
+                        top: sizeW20,
+                        start: sizeH20,
                         height: sizeH30,
                         width: sizeW30,
                         child: closeBtnWidget,

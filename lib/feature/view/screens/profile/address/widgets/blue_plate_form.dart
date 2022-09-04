@@ -35,7 +35,7 @@ class BluePlateForm extends StatelessWidget {
             }
             return null;
           },
-          decoration: InputDecoration(hintText: "${tr.title}"),
+          decoration: InputDecoration(hintText: "${tr.title}" ,),
         ),
         SizedBox(
           height: sizeH10,
@@ -102,7 +102,7 @@ class BluePlateForm extends StatelessWidget {
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
               return '${tr.fill_the_zone_correctly}';
-            }else if(SharedPref.instance.getAppSettings()!.areaZones!.isNotEmpty ){
+            }/*else if(SharedPref.instance.getAppSettings()!.areaZones!.isNotEmpty ){
               var areaZones = SharedPref.instance.getAppSettings()!.areaZones;
               for(int i = 0 ; i < areaZones!.length ; i ++ ){
                 if(!areaZones[i].numbers!.contains(value)){
@@ -110,7 +110,7 @@ class BluePlateForm extends StatelessWidget {
                 }
                 return null;
               }
-            }
+            }*/
             return null;
           },
           // onTap: () {

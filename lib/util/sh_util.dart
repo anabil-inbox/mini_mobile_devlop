@@ -85,7 +85,6 @@ class SharedPref {
 
   getAppSetting() {
     try {
-      Logger().w(_prefs!.get("$appSettingKey"));
       Object appSetting = _prefs!.get("$appSettingKey")!;
       return appSetting;
     } catch (e) {
@@ -109,8 +108,10 @@ class SharedPref {
 
   ApiSettings? getAppSettings() {
     try {
+      // Logger().i(json.decode(_prefs!.get("$appSettingKey").toString()) ["working_hours"]);
       return ApiSettings.fromJson(
           json.decode(_prefs!.get("$appSettingKey").toString()));
+
     } catch (e) {
       print("e");
       return null;

@@ -13,6 +13,7 @@ import 'package:inbox_clients/feature/model/inside_box/item.dart';
 import 'package:inbox_clients/feature/model/inside_box/seal.dart';
 import 'package:inbox_clients/feature/model/inside_box/sended_image.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/add_item_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/chooce_add_method_widget.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/items_operations_widget_BS.dart';
 import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
@@ -49,9 +50,9 @@ class ItemViewModle extends BaseController {
   String search = "";
 
   // to do here item Editting Controllers ::
-  final formKey = GlobalKey<FormState>();
-  final TextEditingController tdName = TextEditingController();
-  final TextEditingController tdTag = TextEditingController();
+  //   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+   final TextEditingController tdName = TextEditingController();
+   final TextEditingController tdTag = TextEditingController();
   int itemQuantity = 1;
   Set<String> usesBoxTags = {};
   Set<String> usesBoxItemsTags = {};
@@ -83,18 +84,20 @@ class ItemViewModle extends BaseController {
       ConstanceNetwork.qtyKey: itemQuantity,
       ConstanceNetwork.newNameKey: tdName.text,
       ConstanceNetwork.tagsKey: jsonEncode(tags),
-    }).then((value) => {
-          if (value.status!.success!)
+    }).then((valueApp) async => {
+          if (valueApp.status!.success!)
             {
-              // homeViewModel.getCustomerBoxes(),
-              snackSuccess("${tr.success}", "${value.status?.message}"),
-              operationsBox =
-                  Box.fromJson(value.data[ConstanceNetwork.dataKey]),
+               // homeViewModel.getCustomerBoxes(),
+               operationsBox = Box.fromJson(valueApp.data[ConstanceNetwork.dataKey]),
+                await getBoxBySerial(serial: /*box.serialNo!*/valueApp.data[ConstanceNetwork.dataKey]["serial"]),
+              snackSuccess("${tr.success}", "${valueApp.status?.message}"),
+              update(),
               homeViewModel.userBoxess.clear(),
               homeViewModel.getCustomerBoxes(),
+
             }
           else
-            {snackError("${tr.error_occurred}", "${value.status?.message}")}
+            {snackError("${tr.error_occurred}", "${valueApp.status?.message}")}
         });
     // await getBoxBySerial(serial: box.serialNo!);
     tags.clear();
@@ -133,9 +136,9 @@ class ItemViewModle extends BaseController {
     }
 
     for (var item in images) {
-      compressImage(item);
+      var compressfile = await compressImage(item);
       innerImages.add(SendedImage(
-          attachment: multiPart.MultipartFile.fromFileSync(item.path),
+          attachment: multiPart.MultipartFile.fromFileSync(/*item*/compressfile!.path.toString()),
           type: ConstanceNetwork.imageKey));
     }
     for (var i = 0; i < innerImages.length; i++) {
@@ -170,9 +173,10 @@ class ItemViewModle extends BaseController {
     usesBoxItemsTags.clear();
     tdTag.clear();
     tdName.clear();
+    // isAllowToShowGallery = false;
     itemQuantity = 1;
     update();
-    Get.close(1);
+    // Get.close(1);
     getBoxBySerial(serial: serialNo);
   }
 
@@ -182,6 +186,7 @@ class ItemViewModle extends BaseController {
     tdTag.clear();
     tdName.clear();
     itemQuantity = 1;
+    // isAllowToShowGallery = false;
     update();
   }
 
@@ -222,6 +227,8 @@ class ItemViewModle extends BaseController {
             {
               Logger().i("${value.toJson()}"),
               snackSuccess("${tr.success}", "${value.status!.message}"),
+              // getBoxBySerial(serial: operationsBox!.serialNo.toString()),
+              // operationsBox =
               Get.back(),
               endLoading()
             }
@@ -231,7 +238,7 @@ class ItemViewModle extends BaseController {
               endLoading()
             }
         });
-    await getBoxBySerial(serial: serialNo);
+    await getBoxBySerial(serial: operationsBox?.serialNo.toString()??serialNo);
     images.clear();
     tags.clear();
     tdName.clear();
@@ -284,7 +291,7 @@ class ItemViewModle extends BaseController {
       },
       onCancelBtnClick: () {
         Get.back();
-      },
+      }, isDelete: true,
     ));
   }
 
@@ -298,6 +305,7 @@ class ItemViewModle extends BaseController {
             {
               Logger().i("${value.toJson()}"),
               snackSuccess("${tr.success}", "${value.status!.message}"),
+              getBoxBySerial(serial: serialNo),
               endLoading()
             }
           else
@@ -312,7 +320,12 @@ class ItemViewModle extends BaseController {
   // adding image to item functions ::
   final picker = ImagePicker();
 
-  void getImageBottomSheet() {
+  Future<void> getImageBottomSheet(
+      {bool? isMultiSelect = false,
+      bool? isFromGallery = false,
+      BoxItem? boxItem,
+      bool? isUpdate = false,
+      Box? box, bool? isFromAddItem = false}) async {
     Get.bottomSheet(Container(
       height: sizeH240,
       padding: EdgeInsets.symmetric(horizontal: padding20!),
@@ -346,7 +359,11 @@ class ItemViewModle extends BaseController {
             buttonTextStyle: textSeconderyButtonUnBold(),
             textButton: tr.camera,
             onClicked: () async {
-              await getImage(ImageSource.camera);
+              await getImage(ImageSource.camera, isMultiSelect: isMultiSelect!,
+                  isFromGallery: isFromGallery,
+                  boxItem: boxItem,
+                  isUpdate: isUpdate,
+                  box: box);
               Get.back();
             },
             isExpanded: true,
@@ -358,8 +375,20 @@ class ItemViewModle extends BaseController {
             buttonTextStyle: textSeconderyButtonUnBold(),
             textButton: tr.gallery,
             onClicked: () async {
-              await getImage(ImageSource.gallery);
-              Get.back();
+              if(isFromAddItem!) {
+                Get.back();
+                Get.back();
+              }
+                await getImage(ImageSource.gallery,
+                  isMultiSelect: true/*isMultiSelect!*/,
+                  isFromAddItem:isFromAddItem,
+                  isFromGallery: isFromGallery,
+                  boxItem: boxItem,
+                  isUpdate: isUpdate,
+                  box: box);
+              if(!isFromAddItem) {
+                Get.back();
+              }
             },
             isExpanded: true,
           ),
@@ -371,11 +400,68 @@ class ItemViewModle extends BaseController {
     ));
   }
 
-  Future getImage(ImageSource source) async {
-    final pickedImage = await picker.pickImage(source: source);
-    if (pickedImage != null) {
-      images.add(File(pickedImage.path));
-      update();
+  Future getImage(ImageSource source,
+      {bool? isMultiSelect = false,
+      bool? isFromGallery = false,
+      BoxItem? boxItem,
+      bool? isUpdate = false,
+      Box? box, bool? isFromAddItem = false}) async {
+    // isAllowToShowGallery = false;
+    // update();
+    if ((isMultiSelect! || (isMultiSelect && isFromAddItem!)) && source == ImageSource.gallery) {
+      final pickedImage = await picker.pickMultiImage();
+      if (pickedImage != null) {
+        pickedImage.forEach((element) {
+          images.add(File(element.path));
+        });
+        update();
+         // Get.back();
+        Future.delayed(Duration.zero).then((value) {
+          Get.bottomSheet(
+              AddItemWidget(
+                isMultiSelect:isMultiSelect,
+                isFromAddItem: isFromAddItem,
+                isFromGallery: true,
+                boxItem: BoxItem(),
+                isUpdate: isUpdate,
+                box: box!,
+              ),
+              isScrollControlled: true)
+              .whenComplete(() {
+            // if(isUpdate){
+            clearBottomSheetItem();
+            // }
+          });
+        });
+      }
+    }/*else if (isMultiSelect && source == ImageSource.camera){
+      final pickedImage = await picker.pickImage(source: source);
+      if (pickedImage != null) {
+        images.add(File(pickedImage.path));
+        update();
+        Future.delayed(Duration.zero).then((value) {
+          Get.bottomSheet(
+              AddItemWidget(
+                isFromGallery: true,
+                isFromAddItem: isFromAddItem,
+                boxItem: BoxItem(),
+                isUpdate: isUpdate,
+                box: box!,
+              ),
+              isScrollControlled: true)
+              .whenComplete(() {
+            // if(isUpdate){
+            clearBottomSheetItem();
+            // }
+          });
+        });
+      }
+    } */else {
+      final pickedImage = await picker.pickImage(source: source);
+      if (pickedImage != null) {
+        images.add(File(pickedImage.path));
+        update();
+      }
     }
   }
 
@@ -405,13 +491,17 @@ class ItemViewModle extends BaseController {
   // to get Box With His Serial No..
   Future<void> getBoxBySerial({required String serial}) async {
     try {
-      operationsBox = null;
+      if(serial.isEmpty){
+        return;
+      }
+      Logger().w("getBoxBySerial $serial");
       startLoading();
       await ItemHelper.getInstance.getBoxBySerial(body: {
         ConstanceNetwork.serial: serial
       }).then((value) => {
             if (value.status!.success!)
               {
+                operationsBox = null,
                 Logger().e("${value.toJson()}"),
                 operationsBox = Box.fromJson(value.data),
                 endLoading(),
@@ -419,9 +509,9 @@ class ItemViewModle extends BaseController {
             else
               {
                 snackError("$error", "${value.status!.message}"),
+                endLoading(),
               }
           });
-      endLoading();
     } catch (e) {
       Logger().d("${e.toString()}");
       endLoading();
@@ -582,12 +672,13 @@ class ItemViewModle extends BaseController {
     }
   }
 
-  showInvoicesBottomSheet({required List<Invoices> invoices,required Box? operationsBox}) {
+  showInvoicesBottomSheet(
+      {required List<Invoices> invoices, required Box? operationsBox}) {
     Get.bottomSheet(
         InvoicesBottomSheet(
           invoices: invoices,
           viewModel: this,
-            operationsBox:operationsBox,
+          operationsBox: operationsBox,
         ),
         isScrollControlled: true);
   }
@@ -604,7 +695,9 @@ class ItemViewModle extends BaseController {
   InternalFinalCallback<void> get onDelete => super.onDelete;
 
   bool isLoadingInvoice = false;
-  Future<void> getInvoiceUrl(String? paymentEntryId, {Box ? operationsBox}) async {
+
+  Future<void> getInvoiceUrl(String? paymentEntryId,
+      {Box? operationsBox}) async {
     isLoadingInvoice = true;
     update();
     var boxId = paymentEntryId;
@@ -624,7 +717,7 @@ class ItemViewModle extends BaseController {
         isOrderProductPayment: false,
         isFromInvoice: true,
         boxIdInvoice: boxId,
-          operationsBox:operationsBox,
+        operationsBox: operationsBox,
       ));
     }
   }

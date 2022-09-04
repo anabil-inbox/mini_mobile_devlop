@@ -53,7 +53,7 @@ class AuthViewModle extends GetxController {
 
   //timer For Verfication code
   Timer? timer;
-  int startTimerCounter = 60;
+  int startTimerCounter = 59;
 
   CompanySector? companySector = CompanySector();
   CompanySector? temproreySectorName;
@@ -185,7 +185,7 @@ class AuthViewModle extends GetxController {
               Get.bottomSheet(GlobalBottomSheet(
                 title: tr.register_new_user,
                 onCancelBtnClick: ()=> Get.back(),
-                onOkBtnClick: ()=> Get.off(() => UserRegisterScreen()),
+                onOkBtnClick: ()=> Get.off(() => UserRegisterScreen()), isDelete: false,
               ),),
               isLoading = false,
               update(),
@@ -229,7 +229,7 @@ class AuthViewModle extends GetxController {
               Get.bottomSheet(GlobalBottomSheet(
                 title: tr.register_new_user,
                 onCancelBtnClick: ()=> Get.back(),
-                onOkBtnClick: ()=> Get.off(() => RegisterCompanyScreen()),
+                onOkBtnClick: ()=> Get.off(() => RegisterCompanyScreen()), isDelete: false,
               ),),
               snackError("${tr.error_occurred}", "${value.status!.message}")
             }
@@ -344,10 +344,10 @@ class AuthViewModle extends GetxController {
           if (value.status!.success!)
             {
               isLoading = false,
-              startTimerCounter = 60,
+              startTimerCounter = 59,
               startTimer(),
               update(),
-               snackSuccess("${tr.success}", "${value.status!.message}"),
+               // snackSuccess("${tr.success}", "${value.status!.message}"),
               isFromChange
                   ? Get.to(() => VerficationChangeMobilScreen(
                         id: id ?? "",

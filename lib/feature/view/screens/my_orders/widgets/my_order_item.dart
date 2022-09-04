@@ -9,6 +9,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
+import 'package:logger/logger.dart';
 
 import '../order_details_screen.dart';
 
@@ -20,10 +21,12 @@ class MyOrderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+
     return InkWell(
       splashColor: colorTrans,
       highlightColor: colorTrans,
       onTap: () {
+        Logger().w(orderSales.toJson());
         Get.to(() => OrderDetailesScreen(orderId: orderSales.orderId ?? "", isFromPayment: false,));
       },
       child: Column(
@@ -38,7 +41,7 @@ class MyOrderItem extends StatelessWidget {
                 SizedBox(
                   width: sizeW15,
                 ),
-                SvgPicture.asset("assets/svgs/folder_seconder.svg"),
+                SvgPicture.asset("assets/svgs/folder_seconder.svg"/* desable_box*/ /*, width: sizeW40*/,),
                 SizedBox(
                   width: sizeW10,
                 ),
@@ -54,7 +57,7 @@ class MyOrderItem extends StatelessWidget {
                       height: sizeH4,
                     ),
                     Text(
-                      "${orderSales.orderShippingAddress ?? orderSales.orderWarehouseAddress ?? ""}",
+                      "${orderSales.orderShippingAddress.toString().isNotEmpty ?orderSales.orderShippingAddress : orderSales.orderWarehouseAddress ?? ""}",
                       style: textStyleHints()!.copyWith(fontSize: fontSize13),
                     ),
                     SizedBox(
@@ -83,16 +86,15 @@ class MyOrderItem extends StatelessWidget {
                       ),
                       TextButton(
                           clipBehavior: Clip.none,
-                          style: orderSales.status == LocalConstance.orderDraft
+                          style: orderSales.status == LocalConstance.orderDraft || orderSales.status == LocalConstance.processing
                               ? buttonStyleBackgroundClicable
-                              : buttonStyleBackgroundGreen,
+                              : orderSales.status == LocalConstance.cancelled ? buttonStyleBackgroundGreen.copyWith(backgroundColor:MaterialStateProperty.all(errorColor.withOpacity(0.1))) : buttonStyleBackgroundGreen,
                           onPressed: () {},
                           child: CustomTextView(
                             txt: "${orderSales.statusName}",
-                            textStyle: orderSales.status ==
-                                    LocalConstance.orderDraft
+                            textStyle: orderSales.status == LocalConstance.orderDraft || orderSales.status == LocalConstance.processing
                                 ? textStyleSmall()?.copyWith(color: colorPrimary)
-                                : textStyleSmall()?.copyWith(color: colorGreen),
+                                : orderSales.status == LocalConstance.cancelled ? textStyleSmall()?.copyWith(color: errorColor): textStyleSmall()?.copyWith(color: colorGreen),
                           )),
                     ],
                   ),

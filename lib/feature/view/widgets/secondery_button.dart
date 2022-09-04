@@ -51,7 +51,7 @@ class SeconderyButtom extends StatelessWidget {
 
   String textHandel() {
     return textButton
-        .toString()
+        /*.toString()
         .replaceAll("٠", "0")
         .toString()
         .replaceAll("١", "1")
@@ -72,6 +72,6 @@ class SeconderyButtom extends StatelessWidget {
         .toString()
         .replaceAll("٩", "9")
         .toString()
-        .replaceAll("٨", "8");
+        .replaceAll("٨", "8")*/;
   }
 }

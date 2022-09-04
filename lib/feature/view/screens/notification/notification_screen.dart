@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/notification_item.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -19,19 +21,25 @@ class NotificationScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: colorTextWhite,
-        toolbarHeight: sizeH90,
+        toolbarHeight: sizeH60,
         elevation: 1,
-        title: TextFormField(
-          decoration: InputDecoration(
-              border: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(padding6!)),
-              prefixIcon: Padding(
-                padding: const EdgeInsets.all(18),
-                child: SvgPicture.asset("assets/svgs/search_icon.svg"),
-              ),
-              filled: true,
-              fillColor: scaffoldColor),
+        centerTitle: true,
+        title: CustomTextView(
+          txt: "${tr.notification}",
+          textStyle: textStyleAppBarTitle(),
+          maxLine: Constance.maxLineOne,
         ),
+        // title: TextFormField(
+        //   decoration: InputDecoration(
+        //       border: UnderlineInputBorder(
+        //           borderRadius: BorderRadius.circular(padding6!)),
+        //       prefixIcon: Padding(
+        //         padding: const EdgeInsets.all(18),
+        //         child: SvgPicture.asset("assets/svgs/search_icon.svg"),
+        //       ),
+        //       filled: true,
+        //       fillColor: scaffoldColor),
+        // ),
         actions: [],
         leading: null,
       ),

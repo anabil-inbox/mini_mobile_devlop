@@ -8,14 +8,14 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:logger/logger.dart';
 
 class StoreView extends StatelessWidget {
   const StoreView({Key? key}) : super(key: key);
-  static ProductViewModel productViewModel = Get.find<ProductViewModel>();
+  // static ProductViewModel productViewModel = Get.put<ProductViewModel>(ProductViewModel());
 
   @override
   Widget build(BuildContext context) {
-    screenUtil(context);
     screenUtil(context);
     return Scaffold(
       appBar: CustomAppBarWidget(
@@ -27,9 +27,10 @@ class StoreView extends StatelessWidget {
         ),
       ),
       body: GetBuilder<ProductViewModel>(
+        init: ProductViewModel(),
         initState: (_) async {
           WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-            await productViewModel.getMyAllProduct();
+            await _.controller?.getMyAllProduct();
           });
         },
         builder: (productViewModel) {
@@ -53,9 +54,12 @@ class StoreView extends StatelessWidget {
                     mainAxisSpacing: sizeW10!,
                     crossAxisSpacing: sizeH10!,
                     childAspectRatio: (sizeW165! / sizeH160!)),
-                itemBuilder: (context, index) => StoreItemWidget(
+                itemBuilder: (context, index) {
+                  Logger().w(productViewModel.productItems[index].toJson());
+                  return StoreItemWidget(
                   productItem: productViewModel.productItems[index],
-                ),
+                );
+                },
               ),
             );
           }

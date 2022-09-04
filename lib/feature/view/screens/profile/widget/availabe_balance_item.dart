@@ -24,7 +24,7 @@ class AvailableBalanceItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
         SizedBox(height: sizeH16,),
-        Text("$points" , style: textStyleBigPrimaryText(),),
+        Text("$points" , style:points.contains("-") ? textStyleBigPrimaryText()?.copyWith(color: errorColor): textStyleBigPrimaryText(),),
         SizedBox(height: sizeH2,),
         Text("$availableBalance" , style: mediumHintTextStyle(),),
         SizedBox(height: sizeH16,),

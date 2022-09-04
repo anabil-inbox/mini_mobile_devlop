@@ -40,6 +40,11 @@ class RegisterUserForm extends GetWidget<AuthViewModle> {
                 child: GetBuilder<AuthViewModle>(
                   init: AuthViewModle(),
                   initState: (_) {},
+                  dispose: (_) {
+                    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                      _.controller?.clearAllControllers();
+                    });
+                  },
                   builder: (_) {
                     return Container(
                       height: sizeH60,

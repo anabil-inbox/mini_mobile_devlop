@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inbox_clients/feature/model/store/product_item.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -35,7 +36,7 @@ class StoreItemWidget extends StatelessWidget {
               width: sizeW95,
               url: productItem.productGallery!.isEmpty
                   ? "https://www.celladorales.com/wp-content/uploads/2016/12/ShippingBox_sq.jpg"
-                  : productItem.productGallery![0],
+                  :productItem.productGallery![0]["type"] == "Image" ? ConstanceNetwork.imageUrl +  productItem.productGallery![0]["attachment"]:null,
               fit: BoxFit.cover),
           SizedBox(
             height: sizeH10,

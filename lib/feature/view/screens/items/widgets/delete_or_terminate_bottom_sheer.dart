@@ -37,6 +37,7 @@ class DeleteOrTirmnateBottomSheet extends StatelessWidget {
           } else {
             Get.bottomSheet(
                 RecallBoxProcessSheet(
+                  isFirstPickUp: itemViewModle.operationsBox!.firstPickup!  && enterdTask.id == LocalConstance.pickupId,
                   boxes: [itemViewModle.operationsBox!],
                   box: itemViewModle.operationsBox,
                   task: enterdTask,
@@ -63,6 +64,7 @@ class DeleteOrTirmnateBottomSheet extends StatelessWidget {
           } else {
             Get.bottomSheet(
                 RecallBoxProcessSheet(
+                  isFirstPickUp: itemViewModle.operationsBox!.firstPickup! && enterdTask.id == LocalConstance.pickupId,
                   boxes: [box],
                   box: box,
                   task: enterdTask,

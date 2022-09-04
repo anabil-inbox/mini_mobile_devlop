@@ -11,12 +11,27 @@ class OrderHelper {
   var log = Logger();
 
   Future<Set<OrderSales>> getCustomerBoxess(
-      {required int pageSize, required int page}) async {
+      {required int pageSize, required int page ,String? searchValue}) async {
+    Map<String , dynamic> map = {
+      // "${ConstanceNetwork.page}": "$page",
+      // "${ConstanceNetwork.pageSize}": "$pageSize",
+     // "${ConstanceNetwork.idKey}": "$searchValue",
+    };
+    if(searchValue != null && searchValue.toString().isNotEmpty){
+      map = {
+        "${ConstanceNetwork.page}": "$page",
+        "${ConstanceNetwork.pageSize}": "$pageSize",
+         "${ConstanceNetwork.idKey}": "$searchValue",
+      };
+    }else{
+      map = {
+        "${ConstanceNetwork.page}": "$page",
+        "${ConstanceNetwork.pageSize}": "$pageSize",
+        // "${ConstanceNetwork.idKey}": "$searchValue",
+      };
+    }
     var appResponse = await OrderApi.getInstance.getMyOrders(
-        queryParameters: {
-          "${ConstanceNetwork.page}": "$page",
-          "${ConstanceNetwork.pageSize}": "$pageSize"
-        },
+        queryParameters: map,
         url: "${ConstanceNetwork.getMyOrddersEndPoint}",
         header: ConstanceNetwork.header(4));
     if (appResponse.status?.success == true) {

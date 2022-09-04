@@ -21,64 +21,74 @@ class Balance extends StatelessWidget {
       builder: (_) {
         return Container(
           padding:
-              EdgeInsets.symmetric(horizontal: sizeW15!, vertical: sizeH13!),
+              EdgeInsets.symmetric(/*horizontal: sizeW15!,*/ vertical: sizeH13!),
           decoration: BoxDecoration(
             color: colorTextWhite,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
             children: [
-              CustomTextView(
-                txt: tr.boxes,
-                textStyle: textStyleNormal()?.copyWith(color: colorBlack),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: sizeW15!,),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomTextView(
+                      txt: tr.boxes,
+                      textStyle: textStyleNormal()?.copyWith(color: colorBlack),
+                    ),
+                    SizedBox(height: sizeH13),
+                    Row(
+                      children: [
+                        CustomTextView(
+                          txt: tr.total,
+                          textStyle: textStyleNormal(),
+                        ),
+                        const Spacer(),
+                        CustomTextView(
+                          txt: getPriceWithFormate(
+                              price: homeViewModel.operationTask.total ?? 0),
+                          textStyle: textStyleMeduimPrimaryBold(),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: sizeH14),
+                    Row(
+                      children: [
+                        CustomTextView(
+                          txt: tr.paid,
+                          textStyle: textStyleNormal(),
+                        ),
+                        const Spacer(),
+                        CustomTextView(
+                          txt: getPriceWithFormate(
+                              price: homeViewModel.operationTask.totalPaid ?? 0),
+                          textStyle: textStyleMeduimPrimaryBold(),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: sizeH14),
+                    Row(
+                      children: [
+                        CustomTextView(
+                          txt: tr.amount_due,
+                          textStyle: textStyleNormal(),
+                        ),
+                        const Spacer(),
+                        CustomTextView(
+                          txt: getPriceWithFormate(
+                              price: homeViewModel.operationTask.totalDue ?? 0),
+                          textStyle: textStyleMeduimPrimaryBold(),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: sizeH22),
+                  ],
+                ),
               ),
-              SizedBox(height: sizeH13),
-              Row(
-                children: [
-                  CustomTextView(
-                    txt: tr.total,
-                    textStyle: textStyleNormal(),
-                  ),
-                  const Spacer(),
-                  CustomTextView(
-                    txt: getPriceWithFormate(
-                        price: homeViewModel.operationTask.total ?? 0),
-                    textStyle: textStyleMeduimPrimaryBold(),
-                  ),
-                ],
-              ),
-              SizedBox(height: sizeH14),
-              Row(
-                children: [
-                  CustomTextView(
-                    txt: tr.paid,
-                    textStyle: textStyleNormal(),
-                  ),
-                  const Spacer(),
-                  CustomTextView(
-                    txt: getPriceWithFormate(
-                        price: homeViewModel.operationTask.totalPaid ?? 0),
-                    textStyle: textStyleMeduimPrimaryBold(),
-                  ),
-                ],
-              ),
-              SizedBox(height: sizeH14),
-              Row(
-                children: [
-                  CustomTextView(
-                    txt: tr.amount_due,
-                    textStyle: textStyleNormal(),
-                  ),
-                  const Spacer(),
-                  CustomTextView(
-                    txt: getPriceWithFormate(
-                        price: homeViewModel.operationTask.totalDue ?? 0),
-                    textStyle: textStyleMeduimPrimaryBold(),
-                  ),
-                ],
-              ),
-              SizedBox(height: sizeH22),
-              const PaymentWidget(
+
+               PaymentWidget(
+                homeViewModel:homeViewModel,
                 isRecivedOrderPayment: true,
               ),
             ],

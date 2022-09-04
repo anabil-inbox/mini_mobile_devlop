@@ -14,6 +14,7 @@ class AuthApi {
   //todo this is for login request
   Future<AppResponse> loginRequest({var url, var header, var body}) async {
     try {
+
       var response = await DioManagerClass.getInstance
           .dioPostMethod(url: url, body: body, header: header);
       await SharedPref.instance.setCurrentUserData(response.toString());
@@ -21,7 +22,6 @@ class AuthApi {
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
-
       return AppResponse.fromJson(message);
     }
   }
@@ -70,8 +70,10 @@ class AuthApi {
     try {
       var response = await DioManagerClass.getInstance
           .dioPostMethod(url: url, body: body, header: header);
-          
-      SharedPref.instance.setCurrentUserData(response.toString());
+
+      if(AppResponse.fromJson(json.decode(response.toString())).status != null && AppResponse.fromJson(json.decode(response.toString())).status!.success!) {
+        SharedPref.instance.setCurrentUserData(response.toString());
+      }
       return AppResponse.fromJson(json.decode(response.toString()));
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());

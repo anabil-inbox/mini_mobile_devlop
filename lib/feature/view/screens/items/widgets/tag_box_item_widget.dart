@@ -65,7 +65,11 @@ class TagBoxItemWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
-                  controller: logic.tdTag,
+                   controller: logic.tdTag,
+                  // onChanged: (_){
+                  //   logic.tdTag.text = _;
+                  //   logic.update();
+                  // },
                   decoration: InputDecoration(
                       focusColor: colorTrans,
                       focusedBorder: InputBorder.none,

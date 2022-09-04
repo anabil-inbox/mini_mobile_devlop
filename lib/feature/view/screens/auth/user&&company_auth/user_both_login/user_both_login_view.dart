@@ -19,10 +19,11 @@ import 'package:inbox_clients/util/sh_util.dart';
 class UserBothLoginScreen extends StatelessWidget {
   const UserBothLoginScreen({Key? key}) : super(key: key);
 
+  AuthViewModle get authViewModel => Get.put(AuthViewModle());
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    Get.put(AuthViewModle());
+
     // Future.delayed(Duration(seconds: 1)).then((value) {
     //   Get.to(() => CompanyVerficationCodeScreen(
     //       id:"id",
@@ -65,6 +66,7 @@ class UserBothLoginScreen extends StatelessWidget {
                   child: SeconderyFormButton(
                     buttonText: "${tr.login_as_company}",
                     onClicked: () {
+                      authViewModel.clearAllControllers();
                       Get.to(() => CompanyBothLoginScreen());
                     },
                   ),
@@ -77,6 +79,7 @@ class UserBothLoginScreen extends StatelessWidget {
             splashColor: colorTrans,
             highlightColor: colorTrans,
             onTap: () {
+              authViewModel.clearAllControllers();
               Get.to(() => UserRegisterScreen());
             },
             child: RichText(

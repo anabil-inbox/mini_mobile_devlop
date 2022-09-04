@@ -52,6 +52,7 @@ class CompanyBothLoginScreen extends GetWidget<AuthViewModle> {
             child: SeconderyFormButton(
               buttonText: "${tr.login_as_user}",
               onClicked: (){
+                Get.put(AuthViewModle()).clearAllControllers();
                 Get.to(() => UserBothLoginScreen());
               },
             ),
@@ -61,7 +62,7 @@ class CompanyBothLoginScreen extends GetWidget<AuthViewModle> {
             splashColor: colorTrans,
             highlightColor: colorTrans,
             onTap: (){
-              Get.put(AuthViewModle());
+              Get.put(AuthViewModle()).clearAllControllers();
               Get.to(() => RegisterCompanyScreen());
             },
             child: RichText(

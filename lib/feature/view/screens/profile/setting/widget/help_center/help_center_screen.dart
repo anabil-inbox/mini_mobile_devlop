@@ -122,7 +122,7 @@ class HelpCenterScreen extends StatelessWidget {
                                 keyboardType: TextInputType.text,
                                 onSubmitted: (_) {},
                                 onChange: (value) {},
-                                customValid: emailValid,
+                                // customValid: emailValid,
                                 isSmallPadding: false,
                                 isSmallPaddingWidth: true,
                                 fillColor: colorBackground,

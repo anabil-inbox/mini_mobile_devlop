@@ -120,6 +120,23 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                                 //   await controller.getAddressFromLatLong(LatLng(position.latitude , position.longitude));
                                 // }
                                 // if(controller.userAreaZone!.numbers!.contains(controller.tdZoneNumber.text.toString())) {
+
+                                var zone = "";
+                                if(controller.tdZoneNumber.text.toString().isNotEmpty){
+                                  List<AreaZone>? areaZones = ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting())).areaZones;
+                                  if(areaZones != null && areaZones.isNotEmpty){}
+                                  areaZones?.forEach((element) {
+                                    if(element.numbers != null && element.numbers!.contains(controller.tdZoneNumber.text.toString())){
+                                      zone = element.areaZone.toString();
+                                    }else{
+                                      zone = controller.tdZone.text ;
+                                    }
+                                  });
+                                  // areaZones?.where((element) => element.numbers != null && element.numbers!.contains(controller.tdZoneNumber.text.toString())).first .areaZone.;
+                                }else{
+                                 zone = controller.tdZone.text ;
+                                }
+
                                   controller.addNewAddress(Address(
                                   addressTitle: controller.tdTitle.text,
                                   isPrimaryAddress:
@@ -127,8 +144,7 @@ class AddAddressScreen extends GetWidget<ProfileViewModle> {
                                           ? 1
                                           : 0,
                                   zoneNumber: controller.tdZoneNumber.text.toString()/*??""*/,
-                                  zone:controller.tdZoneNumber.text.toString().isNotEmpty? ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting()))
-                                      .areaZones?.firstWhere((element) => element.numbers!.contains(controller.tdZoneNumber.text.toString())).areaZone??""/*controller.userAreaZone?.id ?? ""*/:"",
+                                  zone:zone/*controller.userAreaZone?.id ?? ""*//*:""*/,
                                   streat: controller.tdStreet.text,
                                   extraDetails: controller.tdExtraDetailes.text,
                                   buildingNo: controller.tdBuildingNo.text,

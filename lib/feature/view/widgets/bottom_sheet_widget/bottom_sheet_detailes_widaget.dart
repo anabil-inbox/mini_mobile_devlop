@@ -6,6 +6,7 @@ import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
+import 'package:logger/logger.dart';
 
 class BottomSheetDetaielsWidget extends StatelessWidget {
   const BottomSheetDetaielsWidget(
@@ -18,6 +19,7 @@ class BottomSheetDetaielsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    Logger().w(media);
     return SingleChildScrollView(
       child: Container(
         decoration: BoxDecoration(
@@ -54,18 +56,30 @@ class BottomSheetDetaielsWidget extends StatelessWidget {
                         child: PageView.builder(
                           itemCount: getPageCount(array: media),
                           itemBuilder: (context, index) {
-                            return isVideo(path: media[index])
+                            return isVideo(path: media[index]) &&
+                                    media[index].toString().isNotEmpty
                                 ? VideoPlayer(
                                     videoUrl: "${media[index]}",
                                   )
-                                : imageNetwork(
-                                    url:
-                                        "${ConstanceNetwork.imageUrl}${media[index]}");
-                          
+                                : isYoutube(path: media[index]) &&
+                                        media[index].toString().isNotEmpty
+                                    ? InkWell(
+                                        onTap: () {
+                                          Logger().e(media[index]);
+                                          openBrowser(media[index]);
+                                        },
+                                        child: Container(
+                                            color: colorBlack,
+                                            padding: EdgeInsets.all(sizeW120!),
+                                            child: imageNetwork(
+                                                url: "https://imagedelivery.net/AtkJu2wCmOwcp9lTOSgupQ/4b0c7d91-e80b-458d-99ce-cb327f67fc00/public",
+                                                )))
+                                    : imageNetwork(
+                                        url:
+                                            "${ConstanceNetwork.imageUrl}${media[index]}");
                           },
                         ),
                       ),
-                      
                     ],
                   ),
             SizedBox(

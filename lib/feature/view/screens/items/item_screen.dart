@@ -5,6 +5,7 @@ import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/delete_or_terminate_bottom_sheer.dart';
 import 'package:inbox_clients/feature/view/screens/items/widgets/empty_body_box_item.dart';
+import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/btn_action_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/items_widget.dart';
 import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/recent_item_widget.dart';
@@ -13,6 +14,7 @@ import 'package:inbox_clients/feature/view/widgets/appbar/widget/back_btn_widget
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/giveaway_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
@@ -36,7 +38,7 @@ class ItemScreen extends StatefulWidget {
       : super(key: key);
 
   ItemViewModle get itemViewModle => Get.put(ItemViewModle(), permanent: true);
-  HomeViewModel get homeViewModel => Get.put(HomeViewModel(), permanent: true);
+   HomeViewModel get homeViewModel => Get.put(HomeViewModel(), permanent: true);
   final Box box;
   final Function()? getBoxDataMethod;
   final bool isEnabeld;
@@ -47,6 +49,7 @@ class ItemScreen extends StatefulWidget {
 
 class _ItemScreenState extends State<ItemScreen> {
   ItemViewModle itemViewModle = Get.find<ItemViewModle>();
+  HomeViewModel get homeViewModel => Get.find<HomeViewModel>();
 
   @override
   initState() {
@@ -56,7 +59,7 @@ class _ItemScreenState extends State<ItemScreen> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       // await widget.getBoxDataMethod!();
       // Get.delete<ItemViewModle>();
-      await itemViewModle.getBoxBySerial(serial: widget.box.serialNo ?? "");
+      await itemViewModle.getBoxBySerial(serial:"${widget.box.serialNo != null && widget.box.serialNo!.isNotEmpty ? widget.box.serialNo :widget.box.id ??""}" );
     });
   }
 
@@ -84,6 +87,7 @@ class _ItemScreenState extends State<ItemScreen> {
   //todo this for item titles
   Widget get headItemWidget => Row(
         children: [
+          // if(itemViewModle.operationsBox!.allowed! /*&& itemViewModle.operationsBox?.storageStatus == LocalConstance.boxAtHome*/)
           TextButton(
               onPressed: () {
                 itemViewModle.showAddItemBottomSheet(box: widget.box);
@@ -364,6 +368,10 @@ class _ItemScreenState extends State<ItemScreen> {
           });
         },
         builder: (logic) {
+          // homeViewModel.tasks.forEach((element) {
+          //   Logger().w("${element.toJson() } \n${LocalConstance.giveawayId} \n${itemViewModle.operationsBox?.storageStatus}");
+          // });
+
           if (logic.isLoading) {
             return Center(
               child: CircularProgressIndicator(),
@@ -441,8 +449,9 @@ class _ItemScreenState extends State<ItemScreen> {
                   (itemViewModle.operationsBox?.allowed ?? false)
                       ? BtnActionWidget(
                           isGaveAway:
-                              (itemViewModle.operationsBox?.storageStatus == LocalConstance.giveawayId &&
-                                  itemViewModle.operationsBox?.storageStatus != LocalConstance.boxAtHome),
+                              (/*itemViewModle.operationsBox?.storageStatus == LocalConstance.giveawayId  &&*/
+                                  /*itemViewModle.operationsBox?.storageStatus != LocalConstance.boxAtHome &&*/
+                                  widget.homeViewModel.tasks.where((element) => element.id == LocalConstance.giveawayId).isEmpty),
                           boxStatus: itemViewModle.operationsBox!.storageStatus ?? "",
                           redBtnText: widget.box.storageStatus == LocalConstance.boxAtHome
                               ? "${tr.pickup}"
@@ -452,7 +461,15 @@ class _ItemScreenState extends State<ItemScreen> {
                           onRedBtnClick: onRedBtnClick,
                           onDeleteBox: onDeleteBoxClick,
                         )
-                      : const SizedBox(),
+                      : itemViewModle.operationsBox?.saleOrder != null && itemViewModle.operationsBox!.saleOrder!.isNotEmpty ?PrimaryButton(textButton: tr.order_details,
+                      isLoading: false,
+                      onClicked: (){
+                        Get.off(() => OrderDetailesScreen(
+                          orderId: "${itemViewModle.operationsBox?.saleOrder.toString()}",
+                          isFromPayment: false,
+                        ));
+                      },
+                      isExpanded: true):const SizedBox(),
                   SizedBox(
                     height: sizeH10,
                   ),
@@ -485,6 +502,7 @@ class _ItemScreenState extends State<ItemScreen> {
       Get.bottomSheet(
           RecallBoxProcessSheet(
             boxes: [],
+            isFirstPickUp: itemViewModle.operationsBox != null ?itemViewModle.operationsBox?.firstPickup :widget.box.firstPickup ,
             box: itemViewModle.operationsBox ?? widget.box,
             task: enterdTask,
           ),
@@ -492,13 +510,27 @@ class _ItemScreenState extends State<ItemScreen> {
     } else {
       final Task enterdTask =
           widget.homeViewModel.searchTaskById(taskId: LocalConstance.recallId);
+
+
       Get.bottomSheet(
           RecallBoxProcessSheet(
-            boxes: [],
             box: itemViewModle.operationsBox ?? widget.box,
+            boxes: [],
             task: enterdTask,
+            isFirstPickUp: itemViewModle.operationsBox != null ?itemViewModle.operationsBox?.firstPickup :widget.box.firstPickup,
           ),
-          isScrollControlled: true);
+          isScrollControlled: true)
+          .whenComplete(
+              () => homeViewModel.selectedAddres = null);
+
+      // Get.bottomSheet(
+      //     RecallBoxProcessSheet(
+      //       boxes: [],
+      //       isFirstPickUp: itemViewModle.operationsBox != null ?itemViewModle.operationsBox?.firstPickup :widget.box.firstPickup ,
+      //       box: itemViewModle.operationsBox ?? widget.box,
+      //       task: enterdTask,
+      //     ),
+      //     isScrollControlled: true);
     }
   }
 

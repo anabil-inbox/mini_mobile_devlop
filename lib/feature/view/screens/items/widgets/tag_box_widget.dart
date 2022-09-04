@@ -27,7 +27,7 @@ class TagBoxWidget extends StatelessWidget {
           autoRemove: false,
           initState: (_) {
             Set<String> localSet = {};
-            if (itemViewModle.operationsBox != null) {
+            if (itemViewModle.operationsBox != null && itemViewModle.operationsBox!.tags != null) {
               for (var item in itemViewModle.operationsBox!.tags!) {
                 localSet.add(item.tag!);
               }
@@ -39,7 +39,11 @@ class TagBoxWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
-                  controller: logic.tdTag,
+                   controller: logic.tdTag,
+                  // onChanged: (_){
+                  //   logic.tdTag.text = _;
+                  //   logic.update();
+                  // },
                   decoration: InputDecoration(
                       focusColor: colorTrans,
                       focusedBorder: InputBorder.none,

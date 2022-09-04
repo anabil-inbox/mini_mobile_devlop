@@ -7,6 +7,7 @@ import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance.dart';
 
 import '../../../../../../../util/app_shaerd_data.dart';
 
@@ -34,14 +35,18 @@ class ShowHeaderSelection extends StatelessWidget {
             height: sizeW50,
             width: sizeW40,
             url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
-            fit: BoxFit.cover
+            fit: BoxFit.contain
         ): SvgPicture.asset("assets/svgs/folder_icon.svg"),
         SizedBox(
           width: sizeW5,
         ),
-        Text(
-          "$storageName",
-          style: textStyleNormalBlack(),
+        SizedBox(
+          width: MediaQuery.of(context).size.width / 4,
+          child: Text(
+            "$storageName",
+            maxLines: Constance.maxLineTwo,
+            style: textStyleNormalBlack(),
+          ),
         ),
         const Spacer(),
         quantityOrSpace.trim().isNotEmpty

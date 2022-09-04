@@ -87,6 +87,7 @@ class CheckInBoxWidget extends StatelessWidget {
               return TextFormField(
                 controller: itemViewModle.tdName,
                 decoration: InputDecoration(
+                  label: Text(tr.box_name),
                     focusColor: colorTrans,
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: colorBorderContainer),

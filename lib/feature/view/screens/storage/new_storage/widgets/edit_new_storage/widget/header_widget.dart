@@ -37,7 +37,7 @@ class HeaderWidget extends StatelessWidget {
         Flexible(
           child: FittedBox(
             child: Text(
-              "${orderItem.itemName}",
+              "${orderItem.itemName ?? orderItem.item?.replaceAll("_in", "")}",
               style: textStyleNormalBlack(),
             ),
           ),
@@ -48,7 +48,7 @@ class HeaderWidget extends StatelessWidget {
         ),
         Flexible(
           child: QuantityEditWidget(
-            value: orderItem.quantity!.toInt(),
+            value: (orderItem.quantity??0.0).toInt(),
             orderItem:orderItem,
             increasingFunction: () {
                viewModel.increaseQuantity(index);

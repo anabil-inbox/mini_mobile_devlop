@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
@@ -20,6 +21,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
 
   final String type;
   final _formKey = GlobalKey<FormState>();
+  AuthViewModle authViewModle = Get.put(AuthViewModle());
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,11 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                 ? GetBuilder<AuthViewModle>(
                     init: AuthViewModle(),
                     initState: (_) {},
+                    dispose: (_) {
+                      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                        _.controller?.clearAllControllers();
+                      });
+                    },
                     builder: (_) {
                       return Container(
                         color: colorTextWhite,
@@ -59,9 +66,9 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                                           "${ConstanceNetwork.imageUrl}${controller.defCountry.flag}",
                                       width: 36,
                                       height: 26),
-                                           SizedBox(
-                            width: sizeW5,
-                          ),
+                              SizedBox(
+                                width: sizeW5,
+                              ),
                               VerticalDivider(),
                               GetBuilder<AuthViewModle>(
                                 init: AuthViewModle(),
@@ -85,7 +92,7 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                                   },
                                   controller: controller.tdMobileNumber,
                                   validator: (value) {
-                                   return phoneVaild(value.toString());
+                                    return phoneVaild(value.toString());
                                   },
                                   keyboardType: TextInputType.number,
                                 ),
@@ -117,7 +124,8 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                       )
                     : const SizedBox(),
             SizedBox(height: sizeH28),
-            !(GetUtils.isNull(SharedPref.instance.getCurrentUserData().id??null))
+            !(GetUtils.isNull(
+                    SharedPref.instance.getCurrentUserData().id ?? null))
                 ? Row(
                     children: [
                       GetBuilder<AuthViewModle>(
@@ -137,7 +145,8 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                                       mobile: controller.tdMobileNumber.text,
                                       udid: controller.identifier,
                                       deviceType: controller.deviceType,
-                                      fcm: "${SharedPref.instance.getFCMToken()}",
+                                      fcm:
+                                          "${SharedPref.instance.getFCMToken()}",
                                     ));
                                   } else if (type ==
                                       "${ConstanceNetwork.companyType}") {
@@ -160,7 +169,8 @@ class SharedLoginForm extends GetWidget<AuthViewModle> {
                           onPressed: () {
                             controller.logInWithTouchId();
                           },
-                          icon:SvgPicture.asset("assets/svgs/finger_pinter.svg"))
+                          icon:
+                              SvgPicture.asset("assets/svgs/finger_pinter.svg"))
                     ],
                   )
                 : GetBuilder<AuthViewModle>(

@@ -42,4 +42,6 @@ abstract class Constance {
   static double  showCaseRecBorder = 20;
   static bool  showCaseShowArrow = true;
   static bool  showCaseDisableAnimation = false;
+
+  static String appleImage = "https://imagedelivery.net/AtkJu2wCmOwcp9lTOSgupQ/097c3115-6c81-4933-6e67-5968b1e0af00/public";
 }

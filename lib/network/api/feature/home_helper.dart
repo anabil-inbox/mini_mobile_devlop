@@ -20,6 +20,7 @@ class HomeHelper {
         url: "${ConstanceNetwork.getCustomerBoxessEndPoint}",
         header: ConstanceNetwork.header(4));
     if (appResponse.status?.success == true) {
+      // Logger().e(appResponse.toJson());
       List data = appResponse.data["Storages"];
       return data.map((e) => Box.fromJson(e)).toList();
     } else {

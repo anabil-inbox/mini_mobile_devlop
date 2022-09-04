@@ -38,6 +38,7 @@ import 'package:inbox_clients/local_database/model/cart_model.dart';
 import 'package:inbox_clients/network/api/feature/order_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
+import 'package:inbox_clients/network/firebase/firebase_utils.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -139,7 +140,7 @@ class StorageViewModel extends BaseController {
 
   // for quantity items counter
   int quantity = 1;
-  int numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ??1);
+  int numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ?? 1);
   num balance = 0;
 
   // Set<StorageFeatures>? selectedStorageFeaturesArray = {};
@@ -206,50 +207,44 @@ class StorageViewModel extends BaseController {
   }
 
   moveToIntro() {
-    if(!SharedPref.instance.getFirstStorageKey()){
-      ShowCaseWidget.of(showCaseBuildContext).startShowCase([
-        orderStepShowKey,
-        storageCategoriesShowKey,
-      ]);
+    if (!SharedPref.instance.getFirstStorageKey()) {
+      // ShowCaseWidget.of(showCaseBuildContext).startShowCase([
+      //   orderStepShowKey,
+      //   storageCategoriesShowKey,
+      // ]);
     }
   }
 
   void showQtyShowCase() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      if(!SharedPref.instance.getFirstQtyKey()){
-        ShowCaseWidget.of(showCaseBuildContext).startShowCase([
-          qtyShowCaseKey,
-          subscriptionsShowCaseKey,
-          durationsShowCaseKey,
-          featuresShowCaseKey,
-        ]);
+      if (!SharedPref.instance.getFirstQtyKey()) {
+        // ShowCaseWidget.of(showCaseBuildContext).startShowCase([
+        //   qtyShowCaseKey,
+        //   subscriptionsShowCaseKey,
+        //   durationsShowCaseKey,
+        //   featuresShowCaseKey,
+        // ]);
       }
     });
-
   }
 
-  void showAddressAndDateShowCase()
-  {
+  void showAddressAndDateShowCase() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      if(!SharedPref.instance.getFirstAddressAndDateKey()){
-        ShowCaseWidget.of(showCaseBuildContext).startShowCase([
-          dateTimeShowCaseKey,
-          addressShowCaseKey
-        ]);
+      if (!SharedPref.instance.getFirstAddressAndDateKey()) {
+        // ShowCaseWidget.of(showCaseBuildContext)
+        //     .startShowCase([dateTimeShowCaseKey, addressShowCaseKey]);
       }
     });
   }
 
-  void showPaymentShowCase()
-  {
+  void showPaymentShowCase() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      if(!SharedPref.instance.getFirstPaymentKey()){
-        ShowCaseWidget.of(showCaseBuildContext).startShowCase([
-          paymentCaseKey
-        ]);
+      if (!SharedPref.instance.getFirstPaymentKey()) {
+        // ShowCaseWidget.of(showCaseBuildContext).startShowCase([paymentCaseKey]);
       }
     });
   }
+
   void setContext(context) {
     showCaseBuildContext = context;
     // update();
@@ -373,7 +368,7 @@ class StorageViewModel extends BaseController {
 
   void minasDaysDurations(
       {required StorageCategoriesData storageCategoriesData}) {
-    if (numberOfDays != (SharedPref.instance.getAppSettings()?.minDays ??1)) {
+    if (numberOfDays != (SharedPref.instance.getAppSettings()?.minDays ?? 1)) {
       numberOfDays--;
       if (storageCategoriesData.storageCategoryType ==
           ConstanceNetwork.itemCategoryType) {
@@ -407,7 +402,7 @@ class StorageViewModel extends BaseController {
 
   void minuesDaysPriceCage(
       {required StorageCategoriesData storageCategoriesData}) {
-    if (numberOfDays != (SharedPref.instance.getAppSettings()?.minDays ??1)) {
+    if (numberOfDays != (SharedPref.instance.getAppSettings()?.minDays ?? 1)) {
       numberOfDays--;
     }
     getSmallBalanceForCage(
@@ -534,8 +529,43 @@ class StorageViewModel extends BaseController {
         if (isFromOrderEdit!) {
           orderViewModel!.addItemToList(newStorageCategoriesData);
         } else {
-          await Future.delayed(Duration(seconds: 0)).then((value) =>
-              {userStorageCategoriesData.add(newStorageCategoriesData)});
+          await Future.delayed(Duration(seconds: 0)).then((value) {
+            if (userStorageCategoriesData.isNotEmpty) {
+              for (var element in userStorageCategoriesData.toList()) {
+                // Logger().d(
+                //     "tr_${element.name == newStorageCategoriesData.name && element.selectedDuration == newStorageCategoriesData.selectedDuration}" /*&&
+                //     element.storageFeatures == newStorageCategoriesData.storageFeatures*/
+                //     );
+                // Logger()
+                //     .d("tr_${element.name == newStorageCategoriesData.name}");
+                // Logger().d(
+                //     "tr_${element.selectedDuration == newStorageCategoriesData.selectedDuration}");
+                // Logger().d(element.quantity == newStorageCategoriesData.quantity);
+
+                if (element.name == newStorageCategoriesData.name &&
+                        element.selectedDuration ==
+                            newStorageCategoriesData
+                                .selectedDuration  && element.numberOfDays ==
+                    newStorageCategoriesData
+                        .numberOfDays/*&&
+                    element.quantity == newStorageCategoriesData.quantity*/ /*&&
+                    element.storageFeatures == newStorageCategoriesData.storageFeatures*/
+                    ) {
+                  element.quantity = element.quantity! + newStorageCategoriesData.quantity!;
+                  if(element.numberOfDays! != newStorageCategoriesData.numberOfDays!) {
+                    element.numberOfDays = element.numberOfDays! + newStorageCategoriesData.numberOfDays!;
+                  }
+                  element.userPrice = element.userPrice! + newStorageCategoriesData.userPrice!;
+                } else {
+                  if (!userStorageCategoriesData
+                      .contains(newStorageCategoriesData))
+                    userStorageCategoriesData.add(newStorageCategoriesData);
+                }
+              }
+            } else {
+              userStorageCategoriesData.add(newStorageCategoriesData);
+            }
+          });
         }
       }
     }
@@ -548,7 +578,7 @@ class StorageViewModel extends BaseController {
     selectedDuration = "Daily";
     selectedFeaures.clear();
     quantity = 1;
-    numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ??1);
+    numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ?? 1);
     isNeedingAdviser = false;
     tdX.clear();
     tdY.clear();
@@ -653,7 +683,7 @@ class StorageViewModel extends BaseController {
       selectedDuration = "Daily";
       selectedFeaures.clear();
       quantity = 1;
-      numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ??1);
+      numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ?? 1);
       balance = 0;
       tdX.clear();
       tdY.clear();
@@ -805,7 +835,7 @@ class StorageViewModel extends BaseController {
     selectedDuration = "Daily";
     selectedFeaures.clear();
     quantity = 1;
-    numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ??1);
+    numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ?? 1);
     balance = 0;
     tdX.clear();
     tdY.clear();
@@ -858,25 +888,25 @@ class StorageViewModel extends BaseController {
 
   Future<bool> checkSpaceDiloag(
       {required Quantity quantity, required String message}) async {
-    bool complete = false;
-    await Get.defaultDialog(
-        titlePadding: EdgeInsets.all(0),
-        title: "${/*tr.amount_of_vacant_boxes_not_enough*/ ""}",
-        middleText: "$message",
-        actions: [
-          TextButton(
-              onPressed: () {
-                Get.back();
-                complete = true;
-              },
-              child: Text("${tr.ok}")),
-          TextButton(
-              onPressed: () {
-                Get.back();
-                complete = false;
-              },
-              child: Text("${tr.cancle}")),
-        ]);
+    bool complete = /*false*/ true;
+    // await Get.defaultDialog(
+    //     titlePadding: EdgeInsets.all(0),
+    //     title: "${ /*tr.amount_of_vacant_boxes_not_enough*/ ""}",
+    //     middleText: "$message",
+    //     actions: [
+    //       TextButton(
+    //           onPressed: () {
+    //             Get.back();
+    //             complete = true;
+    //           },
+    //           child: Text("${tr.ok}")),
+    //       TextButton(
+    //           onPressed: () {
+    //             Get.back();
+    //             complete = false;
+    //           },
+    //           child: Text("${tr.cancle}")),
+    //     ]);
 
     return complete;
   }
@@ -887,161 +917,166 @@ class StorageViewModel extends BaseController {
 
   Future<void> addNewStorage(
       {String? paymentId, bool? isFromBankTransfer = false}) async {
-    try {
-      //still this layer will complete when you complete order // refer to =>
-      Get.put(MyOrderViewModle());
-      List<OrderItem> orderItems = [];
-      userStorageCategoriesData.forEach((element) {
-        OrderItem localOrderItem = OrderItem();
-        if (element.storageCategoryType == ConstanceNetwork.itemCategoryType) {
-          element.localBulk?.endStorageItem.forEach((innerElement) {
-            localOrderItem.itemCode = innerElement.name;
-            localOrderItem.deliveryDate = selectedDateTime.toString();
-            localOrderItem.subscription = element.selectedDuration;
-            localOrderItem.qty = innerElement.quantity;
-            localOrderItem.subscriptionDuration = element.numberOfDays;
-            localOrderItem.groupId = element.groupId;
-            // localOrderItem.itemParent = 0;
-            localOrderItem.storageType = element.storageCategoryType;
-            localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
-
-            if (element.selectedDuration ==
-                ConstanceNetwork.dailyDurationType) {
-              localOrderItem.subscriptionPrice =
-                  num.parse(innerElement.price ?? "0");
-            } else if (element.selectedDuration ==
-                ConstanceNetwork.montlyDurationType) {
-              localOrderItem.subscriptionPrice =
-                  num.parse(innerElement.monthlyPrice ?? "0");
-            } else {
-              localOrderItem.subscriptionPrice =
-                  num.parse(innerElement.yearlyPrice ?? "0");
-            }
-
-            // localOrderItem.subscriptionPrice = element.pricePerDay;
-
-            // localOrderItem.subscriptionPrice = element.userPrice! /
-            //     element.numberOfDays! /
-            //     innerElement.quantity!;
-            Logger().i("${localOrderItem.toJson()}");
-            print("${orderItems.length}");
-            // localOrderItem.from = selectedDay!.from;
-            // localOrderItem.to = selectedDay!.to;
-            // localOrderItem.spacex = tdX.text;
-            // localOrderItem.spacey = tdY.text;
-            orderItems.add(localOrderItem);
-            localOrderItem = OrderItem();
-            print("${orderItems.length}");
-          });
-          if (!GetUtils.isNull(element.localBulk!.optionStorageItem)) {
-            localOrderItem.itemCode =
-                element.localBulk!.optionStorageItem!.name;
-            localOrderItem.deliveryDate = selectedDateTime.toString();
-            localOrderItem.subscription = element.selectedDuration;
-            localOrderItem.qty = 1;
-            localOrderItem.subscriptionDuration = element.numberOfDays;
-            localOrderItem.groupId = element.groupId;
-            localOrderItem.storageType = element.storageCategoryType;
-            localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
-            localOrderItem.itemParent = 0;
-            orderItems.add(localOrderItem);
-            localOrderItem = OrderItem();
-          }
-        } else {
-          localOrderItem.itemCode = element.selectedItem!.name;
-          localOrderItem.qty = element.quantity;
+    // try {
+    //still this layer will complete when you complete order // refer to =>
+    Get.put(MyOrderViewModle());
+    List<OrderItem> orderItems = [];
+    userStorageCategoriesData.forEach((element) {
+      OrderItem localOrderItem = OrderItem();
+      if (element.storageCategoryType == ConstanceNetwork.itemCategoryType) {
+        element.localBulk?.endStorageItem.forEach((innerElement) {
+          localOrderItem.itemCode = innerElement.name;
           localOrderItem.deliveryDate = selectedDateTime.toString();
           localOrderItem.subscription = element.selectedDuration;
+          localOrderItem.qty = innerElement.quantity;
           localOrderItem.subscriptionDuration = element.numberOfDays;
           localOrderItem.groupId = element.groupId;
+          // localOrderItem.itemParent = 0;
           localOrderItem.storageType = element.storageCategoryType;
           localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
-          localOrderItem.itemParent = 0;
-          localOrderItem.subscriptionPrice =
-              element.userPrice! / element.numberOfDays! / element.quantity!;
+
+          if (element.selectedDuration == ConstanceNetwork.dailyDurationType) {
+            localOrderItem.subscriptionPrice =
+                num.parse(innerElement.price ?? "0");
+          } else if (element.selectedDuration ==
+              ConstanceNetwork.montlyDurationType) {
+            localOrderItem.subscriptionPrice =
+                num.parse(innerElement.monthlyPrice ?? "0");
+          } else {
+            localOrderItem.subscriptionPrice =
+                num.parse(innerElement.yearlyPrice ?? "0");
+          }
+
+          // localOrderItem.subscriptionPrice = element.pricePerDay;
+
+          // localOrderItem.subscriptionPrice = element.userPrice! /
+          //     element.numberOfDays! /
+          //     innerElement.quantity!;
+          Logger().i("${localOrderItem.toJson()}");
+          print("${orderItems.length}");
           // localOrderItem.from = selectedDay!.from;
           // localOrderItem.to = selectedDay!.to;
           // localOrderItem.spacex = tdX.text;
           // localOrderItem.spacey = tdY.text;
           orderItems.add(localOrderItem);
           localOrderItem = OrderItem();
+          print("${orderItems.length}");
+        });
+        if (!GetUtils.isNull(element.localBulk!.optionStorageItem)) {
+          localOrderItem.itemCode = element.localBulk!.optionStorageItem!.name;
+          localOrderItem.deliveryDate = selectedDateTime.toString();
+          localOrderItem.subscription = element.selectedDuration;
+          localOrderItem.qty = 1;
+          localOrderItem.subscriptionDuration = element.numberOfDays;
+          localOrderItem.groupId = element.groupId;
+          localOrderItem.storageType = element.storageCategoryType;
+          localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
+          localOrderItem.itemParent = 0;
+          orderItems.add(localOrderItem);
+          localOrderItem = OrderItem();
         }
-      });
-      isLoading = true;
-      update();
-      // Map<String, dynamic> map = {};
-      // map["order[0]"] = jsonEncode(orderItems);
-      // map["type[0]"] = "New Storage_sv";
-      // map["address[0]"] = selectedAddress!.id;
-
-      Map<String, dynamic> map = {};
-      if (isFromBankTransfer!) {
-        map = {
-          "shipping_address": "${selectedAddress?.id}",
-          "items_list": jsonEncode(orderItems),
-          "order_to": "${selectedDay?.from}",
-          "coupon_code": "",
-          "points": isAccept ? profileViewModle.myPoints.totalPoints : 0,
-          "payment_method": "${selectedPaymentMethod?.id}",
-          "payment_id": "$paymentId",
-          "order_from": "${selectedDay?.to}",
-          "order_time": "${selectedDay?.from}/${selectedDay?.to}",
-          "type": getNewStorageType(
-              storageCategoriesData: userStorageCategoriesData[0]),
-          "image": imageBankTransfer != null
-              ? multiPart.MultipartFile.fromFileSync(imageBankTransfer!.path)
-              : "",
-        };
       } else {
-        map = {
-          "shipping_address": "${selectedAddress?.id}",
-          "items_list": jsonEncode(orderItems),
-          "order_to": "${selectedDay?.from}",
-          "coupon_code": "",
-          "points": isAccept ? profileViewModle.myPoints.totalPoints : 0,
-          "payment_method": "${selectedPaymentMethod?.id}",
-          "payment_id": "$paymentId",
-          "order_from": "${selectedDay?.to}",
-          "order_time": "${selectedDay?.from}/${selectedDay?.to}",
-          "type": getNewStorageType(
-              storageCategoriesData: userStorageCategoriesData[0]),
-        };
+        localOrderItem.itemCode = element.selectedItem!.name;
+        localOrderItem.qty = element.quantity;
+        localOrderItem.deliveryDate = selectedDateTime.toString();
+        localOrderItem.subscription = element.selectedDuration;
+        localOrderItem.subscriptionDuration = element.numberOfDays;
+        localOrderItem.groupId = element.groupId;
+        localOrderItem.storageType = element.storageCategoryType;
+        localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
+        localOrderItem.itemParent = 0;
+        localOrderItem.subscriptionPrice =
+            element.userPrice! / element.numberOfDays! / element.quantity!;
+        // localOrderItem.from = selectedDay!.from;
+        // localOrderItem.to = selectedDay!.to;
+        // localOrderItem.spacex = tdX.text;
+        // localOrderItem.spacey = tdY.text;
+        orderItems.add(localOrderItem);
+        localOrderItem = OrderItem();
       }
-      await StorageFeature.getInstance
-          .addNewStorage(body: map
-              /*   map*/
-              )
-          .then((value) => {
-                if (value.status!.success!)
-                  {
-                    isLoading = false,
-                    update(),
-                    checkDaplication(),
-                    isShowAll = true,
-                    snackSuccess("${tr.success}", "${value.status!.message}"),
-                    selectedPaymentMethod = null,
-                    selectedAddress = null,
-                    selectedDateTime = null,
-                    selectedStore = null,
-                    selectedDay = null,
-                    profileViewModle.getMyPoints(),
-                    homeViewModel.getCustomerBoxes(),
-                    myOrderViewModel.getOrdres(isFromPagination: false),
-                    userStorageCategoriesData.clear(),
-                    Get.offAll(() => OrderDetailesScreen(
-                          orderId: value.data["order_name"],
-                          isFromPayment: true,
-                        )),
-                  }
-                else
-                  {
-                    isLoading = false,
-                    update(),
-                    snackError(
-                        "${tr.error_occurred}", "${value.status!.message}")
-                  }
-              });
-    } catch (e) {}
+    });
+    isLoading = true;
+    update();
+    // Map<String, dynamic> map = {};
+    // map["order[0]"] = jsonEncode(orderItems);
+    // map["type[0]"] = "New Storage_sv";
+    // map["address[0]"] = selectedAddress!.id;
+
+    Map<String, dynamic> map = {};
+    if (isFromBankTransfer!) {
+      map = {
+        "shipping_address": "${selectedAddress?.id}",
+        "items_list": jsonEncode(orderItems),
+        "order_to": "${selectedDay?.to /*from*/}",
+        "coupon_code": "",
+        "points": isAccept ? profileViewModle.myPoints.totalPoints : 0,
+        "payment_method": "${selectedPaymentMethod?.id}",
+        "payment_id": "$paymentId",
+        "order_from": "${selectedDay?.from /*to*/}",
+        "order_time": "${selectedDay?.from}/${selectedDay?.to}",
+        "type": getNewStorageType(
+            storageCategoriesData: userStorageCategoriesData[0]),
+        "image": imageBankTransfer != null
+            ? multiPart.MultipartFile.fromFileSync(imageBankTransfer!.path)
+            : "",
+      };
+    } else {
+      map = {
+        "shipping_address": "${selectedAddress?.id}",
+        "items_list": jsonEncode(orderItems),
+        "order_to": "${selectedDay?.to /*from*/}",
+        "coupon_code": "",
+        "points": isAccept ? profileViewModle.myPoints.totalPoints : 0,
+        "payment_method": "${selectedPaymentMethod?.id}",
+        "payment_id": "$paymentId",
+        "order_from": "${selectedDay?.from /*to*/}",
+        "order_time": "${selectedDay?.from}/${selectedDay?.to}",
+        "type": getNewStorageType(
+            storageCategoriesData: userStorageCategoriesData[0]),
+      };
+    }
+    Logger().wtf(map);
+    await StorageFeature.getInstance
+        .addNewStorage(body: map
+            /*   map*/
+            )
+        .then((value) => {
+              if (value.status!.success!)
+                {
+                  // FirebaseUtils.instance.addNewStorageFail(value.toJson()),
+                  isLoading = false,
+                  update(),
+                  checkDaplication(),
+                  isShowAll = true,
+                  snackSuccess("${tr.success}", "${value.status!.message}"),
+                  selectedPaymentMethod = null,
+                  selectedAddress = null,
+                  selectedDateTime = null,
+                  selectedStore = null,
+                  selectedDay = null,
+                  profileViewModle.getMyPoints(),
+                  homeViewModel.getCustomerBoxes(),
+                  myOrderViewModel.getOrdres(isFromPagination: false),
+                  userStorageCategoriesData.clear(),
+                  Get.offAll(() => OrderDetailesScreen(
+                        orderId: value.data["order_name"],
+                        isFromPayment: true,
+                      )),
+                }
+              else
+                {
+                  isLoading = false,
+                  update(),
+                  // FirebaseUtils.instance.addPaymentFail({"onError":value.status!.message}),
+                  snackError("${tr.error_occurred}", "${value.status!.message}")
+                }
+            })
+        .catchError((onError) {
+      // FirebaseUtils.instance.addPaymentFail({"onError":onError.toString()});
+    });
+    // } catch (e) {
+    //   FirebaseUtils.instance.addPaymentFail({"error":e.toString()});
+    // }
   }
 
   String getNewStorageType(
@@ -1150,6 +1185,7 @@ class StorageViewModel extends BaseController {
     Logger().d(
         "selectedDateTime_${selectedDateTime?.toUtc()} \t :: DateTimeNowToUtc_${DateTime.now().toUtc()} ");
 
+    Logger().w("_selectedDay ${selectedDay?.toJson()}");
     if (GetUtils.isNull(selectedDateTime)) {
       snackError("${tr.error_occurred}", "${tr.you_have_to_select_date}");
       return false;
@@ -1159,14 +1195,20 @@ class StorageViewModel extends BaseController {
     } else if (GetUtils.isNull(selectedDay)) {
       snackError("${tr.error_occurred}", "${tr.you_have_to_select_time}");
       return false;
-    } else if (DateTime.now().toUtc().isAfter(selectedDateTime!
+    }
+    /* else if (DateTime.now().hour > num.parse(selectedDay?.to?.split(":")[0]?? "0")){
+      snackError("${tr.error_occurred}", "${tr.you_should_select_correct_time}");
+      return false;
+    }*/
+    else if (DateTime.now().toUtc().isAfter(selectedDateTime!
         .add(Duration(hours: 12))
         .toUtc() /*DateUtility.convertUtcToLocalDateTimeDT(selectedDateTime!)*/)) {
       Logger().w(DateTime.now()
           .toUtc()
           .isAfter(selectedDateTime!.add(Duration(hours: 12))));
       Logger().w(selectedDateTime.toString());
-      snackError("${tr.error_occurred}", "Invalid Selected Date");
+      snackError("${tr.error_occurred}",
+          "${tr.you_should_select_correct_time /*tr.invalid_selected_date*/}");
       Logger().d(
           "selectedDateTime_${selectedDateTime?.toUtc()} \t :: DateTimeNowToUtc_${DateTime.now().toUtc()} ");
       return false;
@@ -1178,6 +1220,7 @@ class StorageViewModel extends BaseController {
   List<Day>? selctedWorksHours = [];
   DateTime? selectedDateTime;
   Day? selectedDay;
+  Day? selectedDayEdit;
   Store? selectedStore;
   Address? selectedAddress;
 
@@ -1187,11 +1230,21 @@ class StorageViewModel extends BaseController {
       selctedWorksHours = getDayByNumber(selectedDateTime: dt!);
       Logger().i(selctedWorksHours);
       selectedDateTime = DateTime(dt.year, dt.month, dt.day);
+      selectedDay = null;
     }
     update();
   }
 
-  void chooseTimeBottomSheet() {
+  clearNewStorageData(){
+    selctedWorksHours  = null ;
+    selectedDateTime  = null ;
+    selectedDay  = null ;
+    selectedDayEdit  = null ;
+    selectedStore  = null ;
+    selectedAddress  = null ;
+  }
+
+  void chooseTimeBottomSheet({bool? isFromEdit = false}) {
     Get.bottomSheet(
       Container(
         padding: EdgeInsets.symmetric(horizontal: padding16!),
@@ -1209,13 +1262,39 @@ class StorageViewModel extends BaseController {
                 ? Padding(
                     padding: EdgeInsets.only(bottom: padding20!),
                     child: Text(
-                      "${tr.sorry_there_are_no_work_hours}",
+                      "${selectedDateTime == null ? tr.sorry_there_are_no_date : tr.sorry_there_are_no_work_hours}",
                       textAlign: TextAlign.center,
                     ))
                 : ListView(
                     shrinkWrap: true,
                     children: selctedWorksHours!
-                        .map((e) => SelectedHourItem(day: e))
+                        .where((element) {
+                          // Logger().wtf(element.to);
+                          // Logger().wtf("${DateUtility.getToLocalhouersFromUtc(day: element)}");
+                          //  var localhouersFromUtcTR = DateUtility.getToLocalhouersFromUtc(day: element);
+                          //  var split = element.to?.split(":")[0];
+                          // var hour =  num.tryParse(split.toString())!.toInt() > 12 ?num.tryParse(split.toString())!.toInt() -12 :num.tryParse(split.toString())!.toInt();
+                          //  Logger().e(hour);
+                          //  var dateTo = DateTime(DateTime.now().year ,DateTime.now().month , DateTime.now().day , hour);
+                          if (DateTime.now().day == selectedDateTime?.day) {
+                            var day = Day(
+                                from: element.from,
+                                to: "${DateTime.now().hour.toString()}:00",
+                                check: element.check ?? false);
+
+                            return DateTime.now().day ==
+                                    selectedDateTime?.day &&
+                                DateUtility.getToLocalhouersFromUtc(
+                                        day: element)
+                                    .isAfter(
+                                        DateUtility.getToLocalhouersFromUtc(
+                                            day: day));
+                          } else {
+                            return selectedDateTime?.day != null;
+                          }
+                        })
+                        .map((e) =>
+                            SelectedHourItem(day: e, isFromEdit: isFromEdit))
                         .toList(),
                   ),
           ],
@@ -1232,7 +1311,8 @@ class StorageViewModel extends BaseController {
   void deleteCategoreyDataBottomSheet(
       {required StorageCategoriesData storageCategoriesData}) {
     Get.bottomSheet(GlobalBottomSheet(
-      title: tr.want_delete_order,
+      title: tr.want_delete,
+      isDelete: true,
       onOkBtnClick: () {
         userStorageCategoriesData.remove(storageCategoriesData);
         totalBalance -= storageCategoriesData.userPrice ?? 0;
@@ -1321,6 +1401,8 @@ class StorageViewModel extends BaseController {
   void detaielsBottomSheet(
       {required StorageCategoriesData storageCategoriesData,
       required List<String> media}) {
+    media.removeWhere((element) => element.isEmpty);
+    Logger().w(media);
     Get.bottomSheet(
       BottomSheetDetaielsWidget(
         storageCategoriesData: storageCategoriesData,
@@ -1416,12 +1498,14 @@ class StorageViewModel extends BaseController {
   void clearBottomSheetData({bool? isFromOrderEdit = false}) {
     selectedDuration = "Daily";
     quantity = 1;
-    numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ??1);
+    numberOfDays = (SharedPref.instance.getAppSettings()?.minDays ?? 1);
     selectedFeaures.clear();
     lastStorageItem = null;
     balance = 0;
     if (!isFromOrderEdit!) animateToIndex();
   }
+
+  bool isChangeStatus = false;
 
   customerStoragesChangeStatus(var serial,
       {HomeViewModel? homeViewModel, bool isScanDeliverdBox = false}) async {
@@ -1438,6 +1522,7 @@ class StorageViewModel extends BaseController {
         .customerStoragesChangeStatus(body: body)
         .then((value) {
       if (!GetUtils.isNull(value)) {
+        isChangeStatus = value.status!.success!;
         if (value.status!.success!) {
           isChangeStatusLoading = false;
           if (isScanDeliverdBox) {
@@ -1537,6 +1622,16 @@ class StorageViewModel extends BaseController {
     }
 
     price += task.price!;
+    num shivingPrice = 0;
+    if (selectedAddress != null) {
+      for (var item in task.areaZones!) {
+        if (item.id == selectedAddress!.zone) {
+          shivingPrice = (item.price ?? 0);
+        }
+      }
+      Logger().i("price_$price shivingPrice_$shivingPrice");
+      price = price + shivingPrice;
+    }
     return getPriceWithFormate(price: price);
   }
 
@@ -1544,7 +1639,9 @@ class StorageViewModel extends BaseController {
       {required Task task,
       required List<Box> boxess,
       required bool isFromCart,
-      Address? myAddresss}) {
+      Address? myAddresss,
+      required bool isFirstPickUp/*= false*/
+      }) {
     final ApiSettings settings =
         ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()));
     if (isFromCart) {
@@ -1552,9 +1649,12 @@ class StorageViewModel extends BaseController {
     }
     num price = 0.00;
 
+    // if(isFirstPickUp!){
+    //   task.price = 0;
+    // }
     price = task.price! * boxess.length;
 
-    if (selectedAddress != null) {
+    if (selectedAddress != null && (!isFirstPickUp && task.id !=LocalConstance.pickupId)) {
       for (var item in task.areaZones!) {
         if (item.id == selectedAddress?.zone) {
           price += (item.price ?? 0) *
@@ -1566,7 +1666,7 @@ class StorageViewModel extends BaseController {
     }
 
     Logger().i(price);
-    if (isFromCart) {
+    if (isFromCart  ) {
       for (VAS item in task.selectedVas ?? []) {
         price += (item.price ?? 0) * boxess.length;
         print("options_price ${item.price}");
@@ -1577,6 +1677,17 @@ class StorageViewModel extends BaseController {
         print("options_price ${item.price}");
       }
     }
+    // num shivingPrice = 0;
+    // if (selectedAddress != null) {
+    //   for (var item in task.areaZones!) {
+    //     if (item.id == selectedAddress!.zone) {
+    //       shivingPrice = (item.price ?? 0);
+    //     }
+    //   }
+    //   Logger().i("price_$price shivingPrice_$shivingPrice");
+    //   price = price + shivingPrice;
+    // }
+
     return getPriceWithFormate(price: price);
   }
 
@@ -1620,6 +1731,7 @@ class StorageViewModel extends BaseController {
     required List<Box> boxes,
     List<BoxItem>? selectedItems,
     required String beneficiaryId,
+    required bool isFirstPickUp,
     String? paymentId,
   }) async {
     startLoading();
@@ -1715,19 +1827,21 @@ class StorageViewModel extends BaseController {
           boxessSeriales: boxessSeriales,
           beneficiaryNameIn: null));
     }
-    data.add(ApiItem.getApiObjectToSend(
-        itemCode: "shipping_sv",
-        qty: boxes.length,
-        processType: task.id,
-        subscriptionPrice: shivingPrice,
-        selectedDateTime: selectedDateTime,
-        invoices: invoices,
-        groupId: 1,
-        itemParent: 0,
-        itemsChildIn: "",
-        selectedDay: selectedDay,
-        boxessSeriales: boxessSeriales,
-        beneficiaryNameIn: null));
+    if (!isFirstPickUp && shivingPrice > 0) {
+      data.add(ApiItem.getApiObjectToSend(
+          itemCode: "shipping_sv",
+          qty: boxes.length,
+          processType: task.id,
+          subscriptionPrice: shivingPrice,
+          selectedDateTime: selectedDateTime,
+          invoices: invoices,
+          groupId: 1,
+          itemParent: 0,
+          itemsChildIn: "",
+          selectedDay: selectedDay,
+          boxessSeriales: boxessSeriales,
+          beneficiaryNameIn: null));
+    }
 
     for (var item in selectedStringOption) {
       data.add(ApiItem.getApiObjectToSend(
@@ -1765,6 +1879,7 @@ class StorageViewModel extends BaseController {
     mapSalesOrder.add(map);
 
     Map<String, dynamic> newMap = {"sales_order": jsonEncode(mapSalesOrder)};
+    // Logger().i(newMap);
     await OrderHelper.getInstance.newSalesOrder(body: newMap).then((value) {
       Logger().d(value.toJson());
       if (value.status!.success!) {
@@ -1779,6 +1894,7 @@ class StorageViewModel extends BaseController {
     });
 
     cleanAfterSucces();
+    clearNewStorageData();
     if (!isFromCart) {
       Get.close(1);
     }
@@ -1790,8 +1906,10 @@ class StorageViewModel extends BaseController {
     //   await homeViewModel.getBoxBySerial(serial: boxes[0].serialNo ?? "");
     // }
     // homeViewModel.;
+
     await homeViewModel.refreshHome();
     endLoading();
+    checkPromoAppResponse = AppResponse();
   }
 
   // Future<void> giveawayBoxRequest({required Task task , required Box box}) async{
@@ -1835,6 +1953,8 @@ class StorageViewModel extends BaseController {
     required List<CartModel> cartModels,
     required bool isOrderProductPayment,
     StorageViewModel? storageViewModel,
+    required bool isFromEditOrder,
+    Function()? editOrder,
   }) async {
     startLoading();
     try {
@@ -1881,6 +2001,8 @@ class StorageViewModel extends BaseController {
                           beneficiaryId: beneficiaryId,
                           boxes: boxes,
                           task: task,
+                          isFromEditOrder: isFromEditOrder,
+                          editOrderFunc: editOrder,
                           paymentId: value.data[paymentIdKey] == null
                               ? DateTime.now().millisecondsSinceEpoch.toString()
                               : value.data[paymentIdKey],
@@ -1920,11 +2042,13 @@ class StorageViewModel extends BaseController {
   num userUsesPoints = 0;
   final tdCopun = TextEditingController();
 
-  List<dynamic> getPriceWithDiscount({required String oldPrice}) {
+  List<dynamic> getPriceWithDiscount(
+      {required String oldPrice, required bool isFirstPickUp}) {
     num price = num.parse(oldPrice);
     num usesPoints = 0;
     if (!GetUtils.isNull(checkPromoAppResponse)) {
-      if (checkPromoAppResponse!.status!.success!) {
+      if (checkPromoAppResponse!.status != null &&
+          checkPromoAppResponse!.status!.success!) {
         if (checkPromoAppResponse?.data["discount_type"] ==
             LocalConstance.discountPercentag) {
           if ((price - (price * checkPromoAppResponse?.data["amount"] / 100)) >
@@ -1960,13 +2084,16 @@ class StorageViewModel extends BaseController {
         price = 0;
       }
     }
+    if (isFirstPickUp) {
+      price = 0;
+    }
     priceAfterDiscount = price;
     userUsesPoints = profileViewModle.myPoints.totalPoints! - usesPoints;
 
-    Logger().e("MSG_USER_POINTS = $userUsesPoints");
-    Logger().e("MSG_USER_POINTS = $price");
+    // Logger().e("MSG_USER_POINTS = $userUsesPoints");
+    // Logger().e("MSG_USER_POINTS = $price");
 
-    profileViewModle.getMyPoints();
+    if (!isFirstPickUp )  profileViewModle.getMyPoints();
 
     if (price > 0) {
       return [getPriceWithFormate(price: price), usesPoints];
@@ -1982,15 +2109,18 @@ class StorageViewModel extends BaseController {
     num price = 0.00;
     for (var cartItem in cartModel) {
       selectedAddress = cartItem.address;
-
-      price += cartItem.task!.price! * cartItem.box!.length;
-
-      if (selectedAddress != null) {
+      if (cartItem.isFirstPickUp! && cartItem.task?.id ==LocalConstance.pickupId) {
+        cartItem.task?.price = 0.00;
+      }
+      if (cartItem.task!.price! == 0.00) {
+        price += cartItem.task!.price!;
+      } else {
+        price += cartItem.task!.price! * cartItem.box!.length;
+      }
+      if (selectedAddress != null &&   (!cartItem.isFirstPickUp! && cartItem.task?.id !=LocalConstance.pickupId)) {
         for (var item in cartItem.task!.areaZones!) {
           if (item.id == selectedAddress?.zone) {
-            Logger().e((cartItem.box!.length / settings.deliveryFactor!)
-                .toDouble()
-                .ceilToDouble());
+            Logger().e((cartItem.box!.length / settings.deliveryFactor!).toDouble().ceilToDouble());
             price += (item.price ?? 0) *
                 (cartItem.box!.length / settings.deliveryFactor!)
                     .toDouble()
@@ -2003,7 +2133,7 @@ class StorageViewModel extends BaseController {
         price += (item.price ?? 0) * cartItem.box!.length;
         print("options_price ${item.price}");
       }
-      Logger().i(price);
+      // Logger().i(price);
     }
 
     return getPriceWithFormate(price: price);
@@ -2023,7 +2153,33 @@ class StorageViewModel extends BaseController {
         String boxessSeriales = "";
         String itemSeriales = "";
         String invoices = "";
-
+        // String pickupIdSerial = ""; //
+        // List<CartModel> list = [];
+        // Logger().w(cartModels[i].task?.id);
+        // if (cartModels[i].task?.id == LocalConstance.pickupId) {
+        //   cartModels.forEach((element) {
+        //     list.add(element);
+        //   });
+        //   // list.add(cartModels[i]);
+        //
+        //   // if()
+        //   // if(cartModels[i].orderTime  || cartModels[i].task.)
+        // }
+        // if (list.length > 1) {
+        //   for (int j = 0; j < list.length; j ++) {
+        //     list[j].box?.forEach((element) {
+        //       Logger().i(element.serialNo);
+        //       pickupIdSerial = pickupIdSerial + "${element.serialNo},";
+        //     });
+        //     // if(list[i].orderTime == list[i + 1].orderTime) {
+        //     //   pickupIdSerial = "${list[i].},";
+        //     // }
+        //   }
+        // }
+        // if (pickupIdSerial.isNotEmpty) {
+        //   pickupIdSerial =
+        //       pickupIdSerial.substring(0, pickupIdSerial.length - 1);
+        // }
         num shivingPrice = 0;
         Map<String, dynamic> map = {};
         for (var j = 0; j < cartModels[i].box!.length; j++) {
@@ -2091,7 +2247,23 @@ class StorageViewModel extends BaseController {
               selectedDay: selectedDay,
               beneficiaryNameIn: homeViewModel.selctedbeneficiary?.id ?? "",
               boxessSeriales: boxessSeriales));
-        } else {
+        }
+        /*else if(cartModels[i].task?.id == LocalConstance.pickupId) {
+          data.add(ApiItem.getApiObjectToSend(
+              itemCode: cartModels[i].task?.id ?? "",
+              qty: cartModels[i].box!.length,
+              itemsChildIn: */ /*pickupIdSerial*/ /*"",
+              invoices: invoices,
+              subscriptionPrice: cartModels[i].task?.price ?? 0,
+              selectedDateTime: selectedDateTime,
+              groupId: 1,
+              itemParent: 0,
+              processType: cartModels[i].task?.id ?? "",
+              selectedDay: selectedDay,
+              beneficiaryNameIn: homeViewModel.selctedbeneficiary?.id ?? "",
+              boxessSeriales: pickupIdSerial));
+        } */
+        else {
           data.add(ApiItem.getApiObjectToSend(
               itemCode: cartModels[i].task?.id ?? "",
               qty: cartModels[i].box!.length,
@@ -2103,22 +2275,28 @@ class StorageViewModel extends BaseController {
               groupId: 1,
               itemParent: 0,
               selectedDay: selectedDay,
+              boxessSeriales: /*cartModels[i].task?.id == LocalConstance.pickupId
+                  ? pickupIdSerial
+                  :*/
+                  boxessSeriales,
+              beneficiaryNameIn: null));
+        }
+        // Logger().wtf(pickupIdSerial);
+        if (shivingPrice > 0) {
+          data.add(ApiItem.getApiObjectToSend(
+              itemCode: "shipping_sv",
+              qty: cartModels[i].box!.length,
+              subscriptionPrice: shivingPrice,
+              invoices: invoices,
+              itemsChildIn: "",
+              processType: cartModels[i].task?.id ?? "",
+              selectedDateTime: selectedDateTime,
+              groupId: 1,
+              itemParent: 0,
+              selectedDay: selectedDay,
               boxessSeriales: boxessSeriales,
               beneficiaryNameIn: null));
         }
-        data.add(ApiItem.getApiObjectToSend(
-            itemCode: "shipping_sv",
-            qty: cartModels[i].box!.length,
-            subscriptionPrice: shivingPrice,
-            invoices: invoices,
-            itemsChildIn: "",
-            processType: cartModels[i].task?.id ?? "",
-            selectedDateTime: selectedDateTime,
-            groupId: 1,
-            itemParent: 0,
-            selectedDay: selectedDay,
-            boxessSeriales: boxessSeriales,
-            beneficiaryNameIn: null));
 
         for (var item in selectedStringOption) {
           data.add(ApiItem.getApiObjectToSend(
@@ -2146,13 +2324,28 @@ class StorageViewModel extends BaseController {
             ? tdCopun.text
             : "";
         map["order[$i]"] = data;
+        // Logger().wtf("data_: ${map["order[$i]"]} index_ $i");
         map["address[$i]"] = selectedAddress == null
             ? cartModels[i].box![0].address?.id
             : selectedAddress?.id;
         mapSalesOrder.add(map);
+        // if(mapSalesOrder.isEmpty){
+        //
+        // }else {
+        //   mapSalesOrder.forEach((element) {
+        //   if(element["storage_child_in"].toString() == map["order[$i]"]["storage_child_in"]){
+        //
+        //   }else if(element["storage_child_in"].toString().contains(map["order[$i]"]["storage_child_in"])){
+        //     mapSalesOrder.remove(element);
+        //   }
+        //
+        // });
+        // }
+        // Logger().e("__${mapSalesOrder}");
       }
 
       Map<String, dynamic> newMap = {"sales_order": jsonEncode(mapSalesOrder)};
+      Logger().wtf(newMap);
       await OrderHelper.getInstance
           .newSalesOrder(body: newMap)
           .then((value) async {
@@ -2222,7 +2415,8 @@ class StorageViewModel extends BaseController {
           isOrderProductPayment: true,
           isFromNewStorage: false,
           isFromCart: false,
-          cartModels: []);
+          cartModels: [],
+          isFromEditOrder: false);
     } catch (e) {
       printError();
     }
@@ -2239,6 +2433,4 @@ class StorageViewModel extends BaseController {
       update();
     }
   }
-
-
 }

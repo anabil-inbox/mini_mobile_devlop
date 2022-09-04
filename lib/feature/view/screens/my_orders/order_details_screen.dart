@@ -15,6 +15,7 @@ import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:logger/logger.dart';
 
@@ -69,7 +70,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                             orderItem: element,
                           );
                         } else {
-                          return MyOrderBoxItem(orderItem: element);
+                          return MyOrderBoxItem(orderItem: element ,sealOrder:myOrder.newOrderSales);
                         }
                       },
                     )))
@@ -186,6 +187,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                             builder: (build) {
                               return StatusWidget(
                                 status: build.newOrderSales.statusName/*status*/,
+                                statusOriginal: build.newOrderSales.status/*status*/,
                               );
                             },
                           ),
@@ -242,6 +244,8 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                               }
                               return (myOrders.newOrderSales.status ==
                                           LocalConstance.completed ||
+                                  myOrders.newOrderSales.status ==
+                                      LocalConstance.cancelled   ||
                                       isHaveDetailes == false ||
                                       myOrders.newOrderSales.proccessType ==
                                           LocalConstance.productSv ||
@@ -249,7 +253,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                                           LocalConstance
                                               .giveawayId /*||
                                   !myOrders.newOrderSales.hasTasks!*/
-                                  )
+                                          && myOrders.newOrderSales.customerVisit!)
                                   ? const SizedBox()
                                   : PrimaryButton(
                                       textButton: tr.order_details,
@@ -272,10 +276,10 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                           ),
                           Row(
                             children: [
-                              if (myOrders.isAllowToCancel(myOrders.newOrderSales)  ) ...[
+                              if (myOrders.isAllowToCancel(myOrders.newOrderSales)  && !myOrders.newOrderSales.customerVisit!) ...[
                                 Expanded(
                                   child: PrimaryButton(
-                                      textButton: tr.cancle,
+                                      textButton: tr.cancle_order,
                                       isLoading: myOrders.isLoadingCancel,
                                       onClicked: () => _onCancelClick(myOrders),
                                       isExpanded: true),
@@ -285,12 +289,12 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                                   width: sizeW10,
                                 ),
                               ],
-                              if (myOrders.isAllowToEdit(myOrders.newOrderSales)) ...[
+                              if (myOrders.isAllowToEdit(myOrders.newOrderSales) && !myOrders.newOrderSales.customerVisit!) ...[
                                 Expanded(
                                   child: PrimaryButton(
                                       colorBtn: colorBtnGray,
                                       colorText: colorBlack,
-                                      textButton: tr.edit,
+                                      textButton: tr.edit_order,
                                       isLoading: false,
                                       onClicked: () => _onEditClick(myOrders),
                                       isExpanded: true),

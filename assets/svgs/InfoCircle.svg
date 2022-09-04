@@ -1,7 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="18.15" height="18.15" viewBox="0 0 18.15 18.15">
-  <g id="InfoCircle" transform="translate(0.075 0.075)">
-    <path id="Stroke_1" data-name="Stroke 1" d="M8.325,0A8.325,8.325,0,1,1,0,8.325,8.325,8.325,0,0,1,8.325,0Z" transform="translate(0.675 0.675)" fill="none" stroke="#676771" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"/>
-    <path id="Stroke_3" data-name="Stroke 3" d="M.45,0V3.977" transform="translate(8.545 5.584)" fill="none" stroke="#676771" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"/>
-    <path id="Stroke_5" data-name="Stroke 5" d="M.445.45H.454" transform="translate(8.55 11.966)" fill="none" stroke="#676771" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"/>
+  <g id="Info_Circle" data-name="Info Circle" transform="translate(0.75 0.75)">
+    <g id="Group_16798" data-name="Group 16798" transform="translate(-0.675 -0.675)">
+      <g id="InfoCircle">
+        <g id="Group_16797" data-name="Group 16797">
+          <path id="Stroke_1" data-name="Stroke 1" d="M8.325,0A8.325,8.325,0,1,1,0,8.325,8.325,8.325,0,0,1,8.325,0Z" transform="translate(0.675 0.675)" fill="none" stroke="#676771" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"/>
+        </g>
+      </g>
+      <g id="Group_16796" data-name="Group 16796" transform="translate(18 18) rotate(180)">
+        <path id="Stroke_3" data-name="Stroke 3" d="M.45,0V3.977" transform="translate(9.445 9.561) rotate(180)" fill="none" stroke="#676771" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"/>
+        <path id="Stroke_5" data-name="Stroke 5" d="M.445.45H.454" transform="translate(9.45 12.866) rotate(180)" fill="none" stroke="#676771" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"/>
+      </g>
+    </g>
   </g>
 </svg>

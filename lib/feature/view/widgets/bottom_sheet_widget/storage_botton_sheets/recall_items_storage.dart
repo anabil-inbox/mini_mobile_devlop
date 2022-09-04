@@ -15,6 +15,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
 import '../../../screens/auth/terms/terms_view.dart';
@@ -244,6 +245,7 @@ class RecallStorageSheet extends StatelessWidget {
             RecallBoxProcessSheet(
               box: box,
               task: task,
+              isFirstPickUp: box.firstPickup! && task.id == LocalConstance.pickupId,
               boxes: [],
             ),
             isScrollControlled: true);
@@ -271,6 +273,7 @@ class RecallStorageSheet extends StatelessWidget {
           RecallBoxProcessSheet(
             box: box,
             task: task,
+            isFirstPickUp: box.firstPickup! && task.id == LocalConstance.pickupId,
             boxes: [],
           ),
           isScrollControlled: true);

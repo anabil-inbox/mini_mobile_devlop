@@ -25,7 +25,7 @@ class TermsScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         elevation: 1,
-        title: Text( isAboutUs! ? "${tr.about_inbox}" : "${tr.terms_and_conditions}" , style: textStyleAppBarTitle(),),
+        title: Text( isAboutUs! ? "${tr.about_inbox}" : "${tr.terms_and_conditions.replaceAll(isArabicLang() ?"موافق":"Accept our ", "")}" , style: textStyleAppBarTitle(),),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(Get.context!);

@@ -23,7 +23,6 @@ class LVWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    screenUtil(context);
     return GetBuilder<HomeViewModel>(
       init: HomeViewModel(),
       initState: (_) {},
@@ -45,10 +44,8 @@ class LVWidget extends StatelessWidget {
                       focusColor: colorTrans,
                       onTap: () {
                         Get.put(ItemViewModle(), permanent: true);
-                        if (homeViewModel.userBoxess
-                                .toList()[index]
-                                .storageStatus ==
-                            LocalConstance.boxOnTheWay) {
+                        if (homeViewModel.userBoxess.toList()[index].storageStatus == LocalConstance.boxOnTheWay
+                        && !homeViewModel.userBoxess.toList()[index].isPickup!) {
                           Get.bottomSheet(
                               NotifayForNewStorage(
                                   box: homeViewModel.userBoxess.toList()[index],
@@ -77,10 +74,8 @@ class LVWidget extends StatelessWidget {
                         Logger().d(homeViewModel.userBoxess
                             .toList()[index]
                             .toString());
-                        if (homeViewModel.userBoxess
-                                .toList()[index]
-                                .storageStatus ==
-                            LocalConstance.boxOnTheWay) {
+                        if (homeViewModel.userBoxess.toList()[index].storageStatus ==
+                            LocalConstance.boxOnTheWay && !homeViewModel.userBoxess.toList()[index].isPickup!) {
                           Get.bottomSheet(
                               NotifayForNewStorage(
                                   box: homeViewModel.userBoxess.toList()[index],

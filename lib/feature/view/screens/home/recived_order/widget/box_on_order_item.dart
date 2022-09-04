@@ -59,9 +59,9 @@ class _BoxOnOrderItemState extends State<BoxOnOrderItem> {
                     textStyle: textStyleNormal()?.copyWith(color: colorBlack),
                   ),
                 ),
-                if(!widget.hidReceiveBtn! /*&&
+                if(!widget.hidReceiveBtn! &&
                     BoxOnOrderItem.homeViewModel.operationTask.customerScanned != null &&
-                    !BoxOnOrderItem.homeViewModel.operationTask.customerScanned!.contains(widget.boxModel)*/ /*&&
+                    !BoxOnOrderItem.homeViewModel.operationTask.customerScanned!.contains(widget.boxModel) /*&&
                     (BoxOnOrderItem.homeViewModel.operationTask.driverId != null &&
                         BoxOnOrderItem.homeViewModel.operationTask.driverId.toString().isNotEmpty)*/ )
                 Container(

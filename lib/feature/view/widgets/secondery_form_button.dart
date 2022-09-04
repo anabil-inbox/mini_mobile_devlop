@@ -30,7 +30,7 @@ class SeconderyFormButton extends StatelessWidget {
         onPressed:  (){
           onClicked();
         },
-        child: CustomTextView(textStyle:buttonTextStyle ?? textStyleHint()!.copyWith(color: colorHint , fontWeight: FontWeight.bold,fontSize: 15),
+        child: CustomTextView(textStyle:buttonTextStyle ?? textStyleHint()!.copyWith(color: color != null ? colorTextWhite:colorHint , fontWeight: FontWeight.bold,fontSize: 15),
             textAlign:TextAlign.center ,txt:"$buttonText"  ,),
 
         // Text("$buttonText" , style: buttonTextStyle ?? textStyleHint()!.copyWith(color: colorHint , fontWeight: FontWeight.bold,fontSize: 15),),

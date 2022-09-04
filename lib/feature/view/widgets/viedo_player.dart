@@ -11,8 +11,8 @@ import '../../../util/app_shaerd_data.dart';
 
 class VideoPlayer extends StatefulWidget {
   final String? videoUrl;
-
-  const VideoPlayer({Key? key, this.videoUrl}) : super(key: key);
+  final String? assetsPath;
+  const VideoPlayer({Key? key, this.videoUrl, this.assetsPath}) : super(key: key);
 
   @override
   _VideoPlayerState createState() => _VideoPlayerState();
@@ -33,7 +33,11 @@ class _VideoPlayerState extends State<VideoPlayer> {
   }
 
   initVideoPlayer() async {
-    videoPlayerController = VideoPlayerController.network("${ConstanceNetwork.imageUrl}${widget.videoUrl}");
+    if(widget.assetsPath != null) {
+      videoPlayerController = VideoPlayerController.asset("${widget.assetsPath}");
+    }else{
+      videoPlayerController = VideoPlayerController.network("${ConstanceNetwork.imageUrl}${widget.videoUrl}");
+    }
     await videoPlayerController.initialize();
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController,

@@ -17,6 +17,7 @@ class Box {
       this.tags,
       this.items,
       this.allowed = false,
+      this.firstPickup = false,
       this.logSeals,
       this.options,
       this.isPickup,
@@ -33,6 +34,7 @@ class Box {
   List<ItemTag>? tags;
   List<BoxItem>? items;
   bool? isExpanded = false;
+  bool? firstPickup = false;
   List<String>? options;
   Address? address;
   bool? allowed;
@@ -47,7 +49,8 @@ class Box {
         storageName: json["storage_name"] == null ? null : json["storage_name"],
         saleOrder: json["sales_order"] == null ? null : json["sales_order"],
         allowed: json["allowed"] == null ? false : json["allowed"],
-        isPickup: json["is_pickup"],
+    firstPickup: json["first_pickup"] == null ? false : json["first_pickup"],
+        isPickup: json["is_pickup"] == null ? false:json["is_pickup"],
         storageStatus:
             json["storage_status"] == null ? null : json["storage_status"],
         enabled: json["enabled"] == null ? null : json["enabled"],
@@ -78,6 +81,7 @@ class Box {
       return {
         "id": id,
         "serial": serialNo,
+        "first_pickup": firstPickup,
         "storage_name": storageName,
         "sale_order": saleOrder,
         "storage_status": storageStatus,

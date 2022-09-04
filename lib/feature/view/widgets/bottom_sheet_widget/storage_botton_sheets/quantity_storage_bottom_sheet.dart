@@ -108,7 +108,7 @@ class _QuantityStorageBottomSheetState
                       SizedBox(
                         height: sizeH16,
                       ),
-                      Showcase(
+                     /* Showcase(
                         disableAnimation: Constance.showCaseDisableAnimation,
                         shapeBorder: RoundedRectangleBorder(),
                         radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
@@ -117,7 +117,7 @@ class _QuantityStorageBottomSheetState
                         blurValue:Constance.showCaseBluer ,
                         description: tr.qty_btn_show_case,
                         key: builder.qtyShowCaseKey,
-                        child: QuantityWidget(
+                        child:*/ QuantityWidget(
                           value: storageViewModel.quantity,
                           increasingFunction: () {
                             builder.increaseQuantity(
@@ -127,14 +127,14 @@ class _QuantityStorageBottomSheetState
                             builder.minesQuantity(
                                 storageCategoriesData: widget.storageCategoriesData);
                           },
-                          quantityTitle: "${tr.quantity}",
+                          quantityTitle: "${tr.count_of_boxes}",
                           storageCategoriesData: widget.storageCategoriesData,
                         ),
-                      ),
+                      /*),*/
                       SizedBox(
                         height: sizeH16,
                       ),
-                      Showcase(
+                      /*Showcase(
                         disableAnimation: Constance.showCaseDisableAnimation,
                         shapeBorder: RoundedRectangleBorder(),
                         radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
@@ -143,16 +143,16 @@ class _QuantityStorageBottomSheetState
                         blurValue:Constance.showCaseBluer ,
                         description: tr.subscriptions_btn_show_case,
                         key: builder.subscriptionsShowCaseKey,
-                        child: PeriodStorageWidget(
+                        child:*/ PeriodStorageWidget(
                           storageCategoriesData: widget.storageCategoriesData,
                         ),
-                      ),
+                      /*),*/
                       SizedBox(
                         height: sizeH16,
                       ),
                       if (storageViewModel.selectedDuration ==
                           ConstanceNetwork.dailyDurationType)
-                        Showcase(
+                        /*Showcase(
                           disableAnimation: Constance.showCaseDisableAnimation,
                           shapeBorder: RoundedRectangleBorder(),
                           radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
@@ -161,7 +161,7 @@ class _QuantityStorageBottomSheetState
                           blurValue:Constance.showCaseBluer ,
                           description: tr.subscriptions_durations_btn_show_case,
                           key: builder.durationsShowCaseKey,
-                          child: QuantityWidget(
+                          child:*/ QuantityWidget(
                             value: storageViewModel.numberOfDays,
                             increasingFunction: () {
                               builder.increaseDaysDurations(
@@ -173,15 +173,15 @@ class _QuantityStorageBottomSheetState
                             },
                             quantityTitle: "${tr.days}",
                             storageCategoriesData: widget.storageCategoriesData,
-                          ),
-                        )
+                          )
+                        /*,)*/
                       else
                         const SizedBox(),
                       if(widget.storageCategoriesData.storageFeatures != null && widget.storageCategoriesData.storageFeatures!.isNotEmpty)...[
                         SizedBox(
                           height: sizeH16,
                         ),
-                        Showcase(
+                        /*Showcase(
                           disableAnimation: Constance.showCaseDisableAnimation,
                           shapeBorder: RoundedRectangleBorder(),
                           radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
@@ -190,10 +190,10 @@ class _QuantityStorageBottomSheetState
                           blurValue:Constance.showCaseBluer ,
                           description: tr.features_btn_show_case,
                           key: builder.featuresShowCaseKey,
-                          child: OptionWidget(
+                          child:*/ OptionWidget(
                             storageCategoriesData: widget.storageCategoriesData,
                           ),
-                        ),
+                        /*),*/
                       ],
                       SizedBox(
                         height: sizeH16,

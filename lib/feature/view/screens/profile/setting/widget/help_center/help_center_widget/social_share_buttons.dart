@@ -25,7 +25,7 @@ class SocialShareButtons extends StatelessWidget {
               var socialContact = SharedPref.instance.getAppSettings()?.socialContact![index];
               return InkWell(
                 onTap: () {
-                  if(socialContact!.url != null && socialContact.type == "Whatsapp" && socialContact.url!.contains(".com")){
+                  if(socialContact!.url != null && socialContact.type == "Whatsapp" && !socialContact.url!.contains(".com")){
                     askOnWhatsApp(socialContact.url);
                   }else{
                     if(socialContact.url != null )

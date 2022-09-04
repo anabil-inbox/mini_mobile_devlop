@@ -82,6 +82,65 @@ class LocationHelper {
   //   }
   // }
 
+  Future<bool> isDenied()async{
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    LocationPermission permission = await _geolocatorPlatform.checkPermission();
+
+    // Test if location services are enabled.
+    if (!serviceEnabled) {
+      Logger().i("Test_getCurrentPositionPlatform 2");
+      openLocationSettings();
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      Logger().d("Test_getCurrentPositionPlatform serviceEnabled:$serviceEnabled");
+      return false;
+    } else {
+      Logger().i("Test_getCurrentPositionPlatform 7");
+    }
+    permission = await _geolocatorPlatform.checkPermission();
+    if (permission == LocationPermission.denied) {
+      Logger().i("Test_getCurrentPositionPlatform 4");
+
+      permission = await _geolocatorPlatform.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        Logger().d("Test_getCurrentPositionPlatform ${LocationPermission.denied}");
+        return false;
+      }
+    }
+
+    Logger().i("Test_getCurrentPositionPlatform 3 $permission");
+    if (permission == LocationPermission.deniedForever) {
+      Logger().i("Test_getCurrentPositionPlatform 5");
+      permission = await _geolocatorPlatform.requestPermission();
+      // Permissions are denied forever, handle appropriately.
+      Logger().d("Test_getCurrentPositionPlatform ${LocationPermission.deniedForever}");
+      await openLocationSettings();
+      return false;
+    }
+    if (GetUtils.isNull(permission)) {
+      Logger().i("Test_getCurrentPositionPlatform 8");
+      permission = await _geolocatorPlatform.requestPermission();
+      // Permissions are denied forever, handle appropriately.
+      Logger().d("Test_getCurrentPositionPlatform $permission");
+      openLocationSettings();
+      return false;
+    }
+    Logger().i("Test_getCurrentPositionPlatform 6");
+    // /*return*/ Platform.isIOS
+    //     ? await _geolocatorPlatform.getLastKnownPosition() ??
+    //     await Geolocator.getCurrentPosition(timeLimit: null)
+    //     : await Geolocator.getCurrentPosition(
+    //     desiredAccuracy: LocationAccuracy.high,
+    //     forceAndroidLocationManager: false,
+    //     timeLimit: null);
+    return true;
+  }
    openLocationSettings() async {
     final opened = await _geolocatorPlatform.openLocationSettings();
     if (opened) {

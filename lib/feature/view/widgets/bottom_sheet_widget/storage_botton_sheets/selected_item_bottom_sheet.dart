@@ -222,6 +222,7 @@ class SelectedItemBottomSheet extends StatelessWidget {
           items: itemViewModle.listIndexSelected,
           box: box,
           task: enterdTask,
+          isFirstPickUp: box.firstPickup! && enterdTask.id == LocalConstance.pickupId,
           boxes: [box],
           isFetchTask: true,
         ),
@@ -244,6 +245,7 @@ class SelectedItemBottomSheet extends StatelessWidget {
     Get.bottomSheet(
         RecallBoxProcessSheet(
           box: box,
+          isFirstPickUp: box.firstPickup! && enterdTask.id == LocalConstance.pickupId,
           boxes: [box],
           task: enterdTask,
         ),

@@ -26,6 +26,7 @@ class TaskResponse {
       this.taskStatus,
       this.waitingTime = 0.0,
       this.lateFees,
+      this.urlPayment,
       this.items,
       this.waittingFees,
       this.cancellationFees,
@@ -65,11 +66,13 @@ class TaskResponse {
   bool? isRated;
   bool? hasTasks;
   String? driverId;
+  String? urlPayment;
   factory TaskResponse.fromJson(Map<String, dynamic> json,
       {required bool isFromNotification}) {
     if (isFromNotification) {
       return TaskResponse(
         salesOrder: json["sales_order"],
+        urlPayment: json["url"] == null ? null:json["url"],
         isNew: json["is_new"] == "false"
             ? false
             : json["is_new"] == "true"
@@ -139,6 +142,7 @@ class TaskResponse {
       return TaskResponse(
         salesOrder: json["sales_order"],
         isNew: json["is_new"] == null ? null : json["is_new"],
+        urlPayment: json["url"] == null ? null:json["url"],
         hasTimeRequest:
             json["has_time_request"] == null ? null : json["has_time_request"],
         customerId: json["customer_id"],
@@ -202,6 +206,7 @@ class TaskResponse {
         "waiting_time": waitingTime ?? 0.0,
         "child_order": childOrder,
         "total": total,
+        "url": urlPayment,
         "total_paid": totalPaid,
         "total_due": totalDue,
         "payment_method": paymentMethod,

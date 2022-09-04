@@ -28,7 +28,7 @@ class HistoryItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children : [
             SizedBox(height: sizeH10,),
-            Text("$points",style: textStylePrimaryFont(),),
+            Text("$points",style: points.contains("-") ? textStylePrimaryFont()?.copyWith(color: errorColor):textStylePrimaryFont(),),
           ] 
         ),
         leading: Column(

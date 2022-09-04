@@ -13,14 +13,14 @@ class GlobalBottomSheet extends StatelessWidget {
       this.subTitle,
       this.isTwoBtn = true,
       this.onOkBtnClick,
-      this.onCancelBtnClick})
+      this.onCancelBtnClick,  required this.isDelete, })
       : super(key: key);
   final String? title, subTitle;
   final bool? isTwoBtn;
-  final Function()? 
+  final Function()?
   onOkBtnClick,
   onCancelBtnClick;
-
+  final bool isDelete;
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -68,7 +68,7 @@ class GlobalBottomSheet extends StatelessWidget {
                  !isTwoBtn! ? const SizedBox.shrink(): Expanded(
                    child: PrimaryButton(
                        isLoading: false,
-                       textButton: "${tr.cancle}",
+                       textButton:isDelete ?tr.no : "${tr.cancle}",
                        width: double.infinity ,
                        onClicked: onCancelBtnClick??(){},
                        colorBtn: colorBtnGray,
@@ -81,7 +81,7 @@ class GlobalBottomSheet extends StatelessWidget {
                  Expanded(
                    child: PrimaryButton(
                        isLoading: false,
-                       textButton: "${tr.ok}",
+                       textButton:isDelete ? tr.yes :  "${tr.ok}",
                        width: double.infinity ,
                        onClicked: onOkBtnClick??(){},
                        isExpanded: false),

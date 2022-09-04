@@ -54,7 +54,7 @@ class _CompanyVerficationCodeScreenState
   }
 
   initListener() async {
-    authViewModle.startTimerCounter = 60;
+    authViewModle.startTimerCounter = 59;
     authViewModle.startTimer();
     initSmsListener();
     // await SmsAutoFill().listenForCode().then((value) {
@@ -143,21 +143,22 @@ class _CompanyVerficationCodeScreenState
                     ? InkWell(
                   splashColor: colorTrans,
                   highlightColor: colorTrans,
-                  onTap: () {
-                    if (authViewModle.startTimerCounter == 0) {
-                      authViewModle.startTimerCounter = 60;
-                      authViewModle.startTimer();
-                      authViewModle.update();
-                      authViewModle.reSendVerficationCode(
+                  onTap: () async{
+                    // if (authViewModle.startTimerCounter == 0) {
+
+                      await authViewModle.reSendVerficationCode(
                           id: widget.id,
                           udid: authViewModle.identifier,
                            // countryCode: widget.countryCode,
                            // mobileNumber: widget.mobileNumber,
                           target: ConstanceNetwork.emailKey
                       );
-                    } else {
-                      print("msg_Blocked ${authViewModle.startTimerCounter}");
-                    }
+                      authViewModle.startTimerCounter = 59;
+                      authViewModle.startTimer();
+                      authViewModle.update();
+                    // } else {
+                    //   print("msg_Blocked ${authViewModle.startTimerCounter}");
+                    // }
                   },
                   child: RichText(
                     text: TextSpan(
@@ -186,13 +187,13 @@ class _CompanyVerficationCodeScreenState
               SizedBox(
                 height: sizeH190,
               ),
-              authViewModle.isLoading ? ThreeSizeDot() : GetBuilder<
+              authViewModle.isLoading ? ThreeSizeDot(color_1: colorPrimary,color_2: colorPrimary,color_3: colorPrimary,) : GetBuilder<
                   AuthViewModle>(
                 builder: (value) {
                   return Column(
                     children: [
                       value.startTimerCounter != 0 ? Text(
-                        "${tr.resend_code_in} : ${value.startTimerCounter}",
+                        "${tr.resend_code_in}  00 : ${value.startTimerCounter}",
                         style: textStyleHint()!.copyWith(
                             decoration: TextDecoration.none,
                             fontWeight: FontWeight.normal,

@@ -6,6 +6,7 @@ import 'package:inbox_clients/feature/view/screens/auth/auth_user/register/user_
 import 'package:inbox_clients/feature/view/screens/auth/intro_screens/intro_view.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
+import 'package:inbox_clients/feature/view/widgets/viedo_player.dart';
 import 'package:inbox_clients/feature/view_model/splash_view_modle/splash_view_modle.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/sh_util.dart';
@@ -20,12 +21,13 @@ class SplashScreen extends GetWidget<SplashViewModle> {
     screenUtil(context);
     Future.delayed(Duration(seconds: 3), () => moveToIntro());
     return Scaffold(
-        body: Center(child: SvgPicture.asset("assets/svgs/logo_new.svg"/*logo*/)));
+        body: Center(child: /*VideoPlayer(assetsPath: "assets/video/splash.mp4",)*/SvgPicture.asset("assets/svgs/logo_new.svg"/*logo*/)));
   }
 }
 
 moveToIntro() {
   String? state = SharedPref.instance.getUserLoginState();
+  SharedPref.instance.getAppSettings();
   try {
   if (state?.toLowerCase() == "${ConstanceNetwork.userEnterd}") {
     if (SharedPref.instance.getUserType() == "${ConstanceNetwork.userType}") {

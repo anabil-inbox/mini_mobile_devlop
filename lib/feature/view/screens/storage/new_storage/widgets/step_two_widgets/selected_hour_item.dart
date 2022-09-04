@@ -12,9 +12,12 @@ import 'package:inbox_clients/util/date_time_util.dart';
 import '../../../../../../../util/app_shaerd_data.dart';
 
 class SelectedHourItem extends StatelessWidget {
-  SelectedHourItem({Key? key, required this.day}) : super(key: key);
+  SelectedHourItem({Key? key, required this.day, this.isFromEdit = false, this.selectedDateTime, }) : super(key: key);
 
+  final  bool? isFromEdit;
   Day? day;
+  final DateTime? selectedDateTime;
+
   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
 
   @override
@@ -27,12 +30,20 @@ class SelectedHourItem extends StatelessWidget {
 
             SeconderyButtom(
                 isEnable: (day?.check ?? false),
-                textButton: "${DateUtility.getLocalhouersFromUtc(day: day!)}",
+                textButton: "${DateUtility.getLocalhouersFromUtcTR(day: day!)/*DateUtility.getLocalhouersFromUtc(day: day!)*/}",
                 onClicked: day?.check ?? false
                     ? () {
-                        storageViewModel.selectedDay = day;
-                        storageViewModel.update();
-                        Get.back();
+                  if(isFromEdit!){
+                    storageViewModel.selectedDayEdit = day;
+                    storageViewModel.myOrderViewModel.newOrderSales.timeFrom = day?.from ;
+                    storageViewModel.myOrderViewModel.newOrderSales.timeTo = day?.to ;
+                    storageViewModel.update();
+                    Get.back();
+                  }else{
+                    storageViewModel.selectedDay = day;
+                    storageViewModel.update();
+                    Get.back();
+                  }
                       }
                     : (){}),
             PositionedDirectional(

@@ -57,7 +57,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                           onTap: () {
                             Get.to(() => MyWalletScreen());
                           },
-                          trailingTitle: " ${logic.myWallet.balance} QAR",
+                          trailingTitle: " ${logic.myWallet.balance.toString()/*.replaceAll("-", "")*/} QAR",
                           settingTitle: "${tr.my_wallet}",
                           iconPath: "assets/svgs/wallet.svg",
                         ),

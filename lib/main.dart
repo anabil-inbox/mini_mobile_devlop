@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
+// import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/fcm/app_fcm.dart';
@@ -15,16 +18,35 @@ import 'feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'feature/view_model/splash_view_modle/splash_view_modle.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await SharedPref.instance.init();
-  await AppFcm.fcmInstance.init();
-  var bool = await FirebaseUtils.instance.isHideWallet();
-  await SharedPref.instance.setIsHideSubscriptions(bool);
-  portraitOrientation();
-  HttpOverrides.global = MyHttpOverrides();
-  DioManagerClass.getInstance.init();
-  runApp(const AppWidget());
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
+  // await SharedPref.instance.init();
+  // await AppFcm.fcmInstance.init();
+  // var bool = await FirebaseUtils.instance.isHideWallet();
+  // await SharedPref.instance.setIsHideSubscriptions(bool);
+  // portraitOrientation();
+  // HttpOverrides.global = MyHttpOverrides();
+  // DioManagerClass.getInstance.init();
+  // runApp(const AppWidget());
+
+  runZonedGuarded<Future<void>>(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+    await SharedPref.instance.init();
+    await AppFcm.fcmInstance.init();
+    var bool = await FirebaseUtils.instance.isHideWallet();
+    await SharedPref.instance.setIsHideSubscriptions(bool);
+    portraitOrientation();
+    HttpOverrides.global = MyHttpOverrides();
+    DioManagerClass.getInstance.init();
+    // The following lines are the same as previously explained in "Handling uncaught errors"
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+
+
+
+    runApp(const AppWidget());
+  }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 }
 
 // to do this for handShaking Certificate ::

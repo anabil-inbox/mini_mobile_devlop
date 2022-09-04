@@ -228,9 +228,10 @@ class GiveawayBoxProcessSheet extends StatelessWidget {
         } else {
           Get.bottomSheet(
               RecallBoxProcessSheet(
+
                 boxes: [box],
                 box: box,
-                task: interdTask,
+                task: interdTask, isFirstPickUp: box.firstPickup! && interdTask.id == LocalConstance.pickupId,
               ),
               isScrollControlled: true);
         }
@@ -249,6 +250,7 @@ class GiveawayBoxProcessSheet extends StatelessWidget {
         } else {
           Get.bottomSheet(
               RecallBoxProcessSheet(
+                  isFirstPickUp: box.firstPickup! && interdTask.id == LocalConstance.pickupId,
                   box: _homeViewModel.selctedOperationsBoxess.toList()[0],
                   boxes: _homeViewModel.selctedOperationsBoxess.toList(),
                   task: interdTask),

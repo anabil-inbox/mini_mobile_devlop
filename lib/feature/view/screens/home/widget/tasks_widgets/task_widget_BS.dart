@@ -75,13 +75,15 @@ class TaskWidgetBS extends StatelessWidget {
                       ? () {
                           if (task.id == LocalConstance.giveawayId) {
                             Get.bottomSheet(
-                                GiveawayBoxProcessSheet(
-                                  box: homeViewModel.selctedOperationsBoxess
-                                      .toList()[0],
-                                  boxes: homeViewModel.selctedOperationsBoxess
-                                      .toList(),
-                                ),
-                                isScrollControlled: true).whenComplete((){
+                                    GiveawayBoxProcessSheet(
+                                      box: homeViewModel.selctedOperationsBoxess
+                                          .toList()[0],
+                                      boxes: homeViewModel
+                                          .selctedOperationsBoxess
+                                          .toList(),
+                                    ),
+                                    isScrollControlled: true)
+                                .whenComplete(() {
                               storageViewModel.imageBankTransfer = null;
                               storageViewModel.update();
                             });
@@ -104,13 +106,11 @@ class TaskWidgetBS extends StatelessWidget {
                           } else {
                             Get.bottomSheet(
                                     RecallBoxProcessSheet(
-                                        box: homeViewModel
-                                            .selctedOperationsBoxess
-                                            .toList()[0],
-                                        boxes: homeViewModel
-                                            .selctedOperationsBoxess
-                                            .toList(),
-                                        task: task),
+                                      box: homeViewModel.selctedOperationsBoxess.toList()[0],
+                                      boxes: homeViewModel.selctedOperationsBoxess.toList(),
+                                      task: task,
+                                      isFirstPickUp: homeViewModel.selctedOperationsBoxess.toList()[0].firstPickup! && task.id == LocalConstance.pickupId,
+                                    ),
                                     isScrollControlled: true)
                                 .whenComplete(
                                     () => homeViewModel.selectedAddres = null);
@@ -186,4 +186,4 @@ class TaskWidgetBS extends StatelessWidget {
     }
   }
 }
-// if sales Order is == null : enable Operations 
+// if sales Order is == null : enable Operations

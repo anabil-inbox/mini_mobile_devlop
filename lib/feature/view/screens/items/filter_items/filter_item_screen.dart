@@ -168,8 +168,8 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
 
   Widget get btnActionsWidget => widget.isEnable
       ? BtnActionWidget(
-          isGaveAway: itemViewModle.operationsBox?.storageStatus ==
-              LocalConstance.giveawayId,
+          isGaveAway: /*itemViewModle.operationsBox?.storageStatus ==
+              LocalConstance.giveawayId  &&*/ FilterItemScreen.homeViewModel.tasks.where((element) => element.id == LocalConstance.giveawayId).isEmpty,
           boxStatus: itemViewModle.operationsBox?.storageStatus ?? "",
           redBtnText: widget.box.storageStatus == LocalConstance.boxAtHome
               ? "${tr.pickup}"
@@ -185,7 +185,6 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
 
   @override
   Widget build(BuildContext context) {
-    screenUtil(context);
     screenUtil(context);
     return Scaffold(
       appBar: appBar,
@@ -312,6 +311,7 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
       Get.bottomSheet(
           RecallBoxProcessSheet(
             boxes: [],
+            isFirstPickUp:widget.box.firstPickup! && enterdTask.id == LocalConstance.pickupId,
             task: enterdTask,
             box: widget.box,
           ),
@@ -324,6 +324,7 @@ class _FilterItemScreenState extends State<FilterItemScreen> {
       Get.bottomSheet(
           RecallBoxProcessSheet(
             boxes: [],
+            isFirstPickUp: widget.box.firstPickup! && enterdTask.id == LocalConstance.pickupId,
             task: enterdTask,
             box: widget.box,
           ),

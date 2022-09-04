@@ -41,9 +41,8 @@ class AppFcm {
     getTokenFCM();
   }
 
-  ValueNotifier<int> notificationCounterValueNotifer = ValueNotifier(0);
-  MethodChannel platform =
-      MethodChannel('dexterx.dev/flutter_local_notifications_example');
+  ValueNotifier<int> notificationCounterValueNotifier = ValueNotifier(0);//notificationCounterValueNotifier
+  MethodChannel platform = MethodChannel('dexterx.dev/flutter_local_notifications_example');
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -58,6 +57,8 @@ class AppFcm {
 
   void updatePages(RemoteMessage message) async {
     Logger().e(message.data);
+    notificationCounterValueNotifier.value++;
+    // FlutterAppBadger.updateBadgeCount(notificationCounterValueNotifier.value);
     homeViewModel.operationTask =
         TaskResponse.fromJson(message.data, isFromNotification: true);
     homeViewModel.expandableController.expanded = false;
@@ -70,6 +71,12 @@ class AppFcm {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       homeViewModel.operationTask =
           TaskResponse.fromJson(message.data, isFromNotification: true);
+      if (message.data[LocalConstance.id].toString() == LocalConstance.done){
+        homeViewModel.getCustomerBoxes();
+        homeViewModel.refreshHome();
+        Get.offAll(() => HomePageHolder());
+        return;
+      }
       if (message.data["id"] == LocalConstance.signature &&
           message.data["type"] == LocalConstance.onClientSide) {
         homeViewModel.selectedSignatureItemModel.title =
@@ -91,11 +98,20 @@ class AppFcm {
               isNeedFingerprint: true,
             ));
       } else if (message.data["id"] == "4") {
+        homeViewModel.operationTask = TaskResponse.fromJson(message.data, isFromNotification: true);
         storageViewModel.selectedPaymentMethod = PaymentMethod(
             id: homeViewModel.operationTask.paymentMethod,
             name: homeViewModel.operationTask.paymentMethod);
+        homeViewModel.operationTask.urlPayment = message.data[LocalConstance.paymentUrl];
         homeViewModel.update();
         storageViewModel.update();
+
+        // Get.off(() => ReciverOrderScreen(
+        //   homeViewModel,
+        //   paymentUrl: message.data[LocalConstance.paymentUrl],
+        //   isNeedToPayment: true,
+        // ));
+        //
       } else if (message.data[LocalConstance.id] ==
           LocalConstance.orderDoneId) {
         homeViewModel.refreshHome();
@@ -174,8 +190,8 @@ class AppFcm {
       RemoteNotification notification = message.notification!;
       var d = message.data;
       Logger().e(d);
+      Logger().e("notifications_${message.data}");
       jsonDecode(jsonEncode(message.data));
-      Logger().e(message.data);
       if (true) {
         messages = message;
         updatePages(message);
@@ -242,6 +258,14 @@ class AppFcm {
             ));
         return;
       }
+      if (serial[LocalConstance.id].toString() == LocalConstance.done){
+        Get.put(MyOrderViewModle());
+        // Get.off(() => OrderDetailesScreen(
+        //   orderId: serial[LocalConstance.salesOrder],
+        //   isFromPayment: false,
+        // ));
+        return;
+      }
       /*else*/
       if (serial[LocalConstance.id].toString() == LocalConstance.scanBoxId) {
         print("MSG_BUG LocalConstance.scanBoxId $map");
@@ -283,17 +307,17 @@ class AppFcm {
         Get.offAll(() => HomePageHolder());
         return;
       }
-      if (serial[LocalConstance.id].toString() ==
-          LocalConstance.paymentRequiredId) {
-        homeViewModel.operationTask =
-            TaskResponse.fromJson(map, isFromNotification: true);
+      if (serial[LocalConstance.id].toString() == LocalConstance.paymentRequiredId) {
+        homeViewModel.operationTask = TaskResponse.fromJson(map, isFromNotification: true);
         storageViewModel.selectedPaymentMethod = PaymentMethod(
             id: homeViewModel.operationTask.paymentMethod,
             name: homeViewModel.operationTask.paymentMethod);
+        homeViewModel.operationTask.urlPayment = serial[LocalConstance.paymentUrl];
         homeViewModel.update();
         storageViewModel.update();
         Get.off(() => ReciverOrderScreen(
               homeViewModel,
+              paymentUrl: serial[LocalConstance.paymentUrl],
               isNeedToPayment: true,
             ));
 

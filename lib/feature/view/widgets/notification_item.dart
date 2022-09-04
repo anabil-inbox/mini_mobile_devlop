@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:inbox_clients/fcm/app_fcm.dart';
 import 'package:inbox_clients/feature/model/home/notification_data.dart';
+import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -79,6 +81,9 @@ class NotificationItem extends StatelessWidget {
   }
 
   void _onItemClick() {
-    AppFcm.goToOrderPage(notification!.toJson(), isFromTerminate: false);
+    Get.to(() => OrderDetailesScreen(
+      orderId: "${notification!.actionId.toString()}", isFromPayment: false,
+    ));
+    // AppFcm.goToOrderPage(notification!.toJson(), isFromTerminate: false);
   }
 }

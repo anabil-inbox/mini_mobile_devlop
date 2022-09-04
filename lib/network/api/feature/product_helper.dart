@@ -9,7 +9,7 @@ class ProductHelper {
   static final ProductHelper getInstance = ProductHelper._();
   var log = Logger();
 
-  Future getAllProduct({required int pageSize, required int page}) async {
+  Future<List<ProductItem>> getAllProduct({required int pageSize, required int page}) async {
     var appResponse = await ProductApi.getInstance.getMyProducts(
         // queryParameters: {
         //   "${ConstanceNetwork.page}": "$page",
@@ -20,9 +20,9 @@ class ProductHelper {
     if (appResponse.status?.success == true) {
 
       List data = appResponse.data["data"];
-      return /* data */ data.map((e) => ProductItem.fromJson(e)).toSet();
+      return /* data */ data.map((e) => ProductItem.fromJson(e)).toSet().toList();
     } else {
-      return {};
+      return [];
     }
   }
 

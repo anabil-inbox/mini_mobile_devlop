@@ -23,5 +23,8 @@ class FirebaseUtils {
   void addPaymentFail(Map<String, dynamic> value) {
     FirebaseFirestore.instance.collection("payment").doc("fail").collection("list").add(value);
   }//Success
+   void addNewStorageFail(Map<String, dynamic> value) {
+    FirebaseFirestore.instance.collection("new_storage").doc("fail").collection("list").add(value);
+  }//Success
 
 }

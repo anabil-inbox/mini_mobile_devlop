@@ -31,7 +31,7 @@ class StorageSizeType extends StatelessWidget {
             height: sizeH5,
           ),
           Text(
-            "${tr.choose_from_below}",
+            "${tr.choose_from_below} ${storageViewModel.userStorageCategoriesData.isNotEmpty ?  tr.add_more_items : ""}",
             style: smallHintTextStyle(),
           ),
           SizedBox(
@@ -48,7 +48,7 @@ class StorageSizeType extends StatelessWidget {
                       crossAxisCount: (builder.storageCategoriesList.length  == 1 ? 1: 2),
                       mainAxisSpacing: sizeW10!,
                       crossAxisSpacing: sizeH10!,
-                      childAspectRatio: (sizeH320 / sizeH200!)),
+                      childAspectRatio: (sizeH320 / sizeH250!)),
                   itemBuilder: (contxet, index) {
                     return SizeTypeItem(
                       media: [

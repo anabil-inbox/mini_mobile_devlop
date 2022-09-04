@@ -38,6 +38,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/base_controller.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:inbox_clients/util/location_helper.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:inbox_clients/util/string.dart';
 import 'package:logger/logger.dart';
@@ -135,8 +136,14 @@ class ProfileViewModle extends BaseController {
     update();
     FocusScope.of(Get.context!).unfocus();
     try {
+      var json = newAddress.toJson();
+      // if(json["zone_number"] == null || json["zone_number"].toString().isEmpty){
+      //   // json.remove("zone_number");
+      //   json["zone_number"] = "";
+      // }
+      Logger().w(json);
       await ProfileHelper.getInstance
-          .addNewAddress(newAddress.toJson())
+          .addNewAddress(json)
           .then((value) => {
                 Logger().i("${value.status!.message}"),
                 if (value.status!.success!)
@@ -157,7 +164,7 @@ class ProfileViewModle extends BaseController {
                         "${tr.error_occurred}", "${value.status!.message}")
                   }
               });
-      // clearControllers();
+      clearControllers();
     } catch (e) {}
 
     return address;
@@ -207,8 +214,13 @@ class ProfileViewModle extends BaseController {
     isLoading = true;
     update();
     try {
+      var json = address.toJson();
+      if(json["zone_number"] == null || json["zone_number"].toString().isEmpty){
+         json.remove("zone_number");
+        // json["zone_number"] = "";
+      }
       await ProfileHelper.getInstance
-          .editAddress(address.toJson())
+          .editAddress(json)
           .then((value) => {
                 Logger().i("${value.status!.message}"),
                 if (value.status!.success!)
@@ -235,13 +247,14 @@ class ProfileViewModle extends BaseController {
 
   logOutDiloag() {
     Get.bottomSheet(GlobalBottomSheet(
+      
       title: "${tr.are_you_sure_you_want_to_log_out}",
       onOkBtnClick: () {
         logOut();
       },
       onCancelBtnClick: () {
         Get.back();
-      },
+      }, isDelete: false,
     ));
   }
 
@@ -513,6 +526,7 @@ class ProfileViewModle extends BaseController {
   onClickMap(LatLng point) {
     try {
       isSearching = false;
+      currentPostion =point;
       update();
       mark = Marker(
         markerId: MarkerId(point.toString()),
@@ -549,7 +563,7 @@ class ProfileViewModle extends BaseController {
     print("log_msg_in_change_camera_con ${GetUtils.isNull(controller)}");
     createCurrentMarker(LatLng(latitude, longitude));
     await controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(latitude, longitude), zoom: 10)));
+        CameraPosition(target: LatLng(latitude, longitude), zoom: 16)));
     update();
   }
 
@@ -563,33 +577,44 @@ class ProfileViewModle extends BaseController {
         bottomPadding = sizeH100!;
         update();
       }
-    if (status.isDenied) {
-      if (await Permission.speech.isPermanentlyDenied) {
-        openAppSettings();
-      }
-    } else {
-      var position = await GeolocatorPlatform.instance.getCurrentPosition(
-          /*desiredAccuracy: LocationAccuracy.high*/);
-      currentPostion = LatLng(latLng?.latitude ?? position.latitude,
-          latLng?.longitude ?? position.longitude);
-    }
-
-    final Permission location_permission = Permission.location;
-    bool location_status = false;
-    bool ispermanetelydenied = await location_permission.isPermanentlyDenied;
-    if (ispermanetelydenied) {
-      print("denied");
-      await openAppSettings();
-    } else {
-      var location_statu = await location_permission.request();
-      location_status = location_statu.isGranted;
-      if (location_status) {
-        var position = await GeolocatorPlatform.instance.getCurrentPosition(
-            /*desiredAccuracy: LocationAccuracy.high*/);
+    // if (status.isDenied) {
+    //   if (await Permission.speech.isPermanentlyDenied) {
+    //     await openAppSettings();
+    //   }
+    // } else {
+    //   var position = await GeolocatorPlatform.instance.getCurrentPosition(
+    //       /*desiredAccuracy: LocationAccuracy.high*/);
+    //   currentPostion = LatLng(latLng?.latitude ?? position.latitude,
+    //       latLng?.longitude ?? position.longitude);
+    // }
+    //
+    // final Permission location_permission = Permission.location;
+    // bool location_status = false;
+    // bool ispermanetelydenied = await location_permission.isPermanentlyDenied;
+    // if (ispermanetelydenied) {
+    //   print("denied");
+    //   await openAppSettings().then((value) async{
+    //     // if(value){
+    //     //   var location_statu = await location_permission.request();
+    //     //   location_status = location_statu.isGranted;
+    //     //   if (location_status) {
+    //     //     var position = await GeolocatorPlatform.instance.getCurrentPosition(
+    //     //       /*desiredAccuracy: LocationAccuracy.high*/);
+    //     //     currentPostion = LatLng(latLng?.latitude ?? position.latitude,
+    //     //         latLng?.longitude ?? position.longitude);
+    //     //   }
+    //     // }
+    //   });
+    // } else {
+    //   var location_statu = await location_permission.request();
+    //   location_status = location_statu.isGranted;
+    //   if (location_status) {
+        var position = await LocationHelper.instance.getCurrentPosition()/*GeolocatorPlatform.instance.getCurrentPosition(
+            *//*desiredAccuracy: LocationAccuracy.high*//*)*/;
         currentPostion = LatLng(latLng?.latitude ?? position.latitude,
             latLng?.longitude ?? position.longitude);
-      }
-    }
+      // }
+    // }
 
 // You can can also directly ask the permission about its status.
     if (await Permission.location.isRestricted) {
@@ -599,7 +624,7 @@ class ProfileViewModle extends BaseController {
     if (!GetUtils.isNull(currentPostion)) {
       kGooglePlex = CameraPosition(
         target: LatLng(currentPostion!.latitude, currentPostion!.latitude),
-        zoom: 8,
+        zoom: 16,
       );
       latitude = currentPostion!.latitude;
       longitude = currentPostion!.longitude;
@@ -608,7 +633,7 @@ class ProfileViewModle extends BaseController {
     } else {
       kGooglePlex = CameraPosition(
         target: LatLng(25.226247442192594, 51.53212357058872),
-        zoom: 8,
+        zoom: 16,
       );
       print("msg_position_in_else $currentPostion");
       update();
@@ -627,7 +652,7 @@ class ProfileViewModle extends BaseController {
     latitude = position.latitude;
     longitude = position.longitude;
     onClickMap(position);
-    kGooglePlex = CameraPosition(target: position , zoom: 15);
+    kGooglePlex = CameraPosition(target: position , zoom: 16);
     try {
       List<Placemark> placemarks =
           await placemarkFromCoordinates(position.latitude, position.longitude);
@@ -723,10 +748,12 @@ class ProfileViewModle extends BaseController {
           isLoading = false;
           url = value.data["url"].toString();
           Logger().d("url : ${value.data["url"].toString()}");
-          // amountController.clear();
+
           update();
-          Get.off(
-              DepositMoneyToWalletWebView(url: value.data["url"].toString()));
+          if(value.data["url"] != null && value.data["url"].toString().isNotEmpty) {
+            Get.off(DepositMoneyToWalletWebView(url: value.data["url"].toString()) );
+          }
+          // amountController.clear();
         } else {
           isLoading = false;
           // amountController.clear();

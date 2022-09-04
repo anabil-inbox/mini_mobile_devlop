@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -13,11 +14,13 @@ import '../../../../../util/app_shaerd_data.dart';
 import 'add_item_widget.dart';
 
 class ChooseAddMethodWidget extends StatelessWidget {
-  const ChooseAddMethodWidget({Key? key, required this.box , required this.isUpdate}) : super(key: key);
+  const ChooseAddMethodWidget(
+      {Key? key, required this.box, required this.isUpdate}) : super(key: key);
 
   final Box box;
   static ItemViewModle itemViewModle = Get.find<ItemViewModle>();
   final bool isUpdate;
+
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -25,7 +28,7 @@ class ChooseAddMethodWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: padding20!),
       decoration: containerBoxDecoration().copyWith(
           borderRadius:
-              BorderRadius.vertical(top: Radius.circular(padding30!))),
+          BorderRadius.vertical(top: Radius.circular(padding30!))),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -38,18 +41,20 @@ class ChooseAddMethodWidget extends StatelessWidget {
           ),
           SeconderyButtom(
             buttonTextStyle: textSeconderyButtonUnBold(),
-            textButton:tr.add_item,
+            textButton: tr.add_item,
             onClicked: () async {
+              Get.close(1);
               Get.bottomSheet(
                   AddItemWidget(
+                    isFromAddItem:true,
                     boxItem: BoxItem(),
                     isUpdate: isUpdate,
                     box: box,
                   ),
                   isScrollControlled: true).whenComplete(() {
-                    if(isUpdate){
-                      itemViewModle.clearBottomSheetItem();
-                    }
+                // if(isUpdate){
+                itemViewModle.clearBottomSheetItem();
+                // }
               });
             },
             isExpanded: true,
@@ -57,14 +62,33 @@ class ChooseAddMethodWidget extends StatelessWidget {
           SizedBox(
             height: sizeH20,
           ),
-          SeconderyButtom(
-            buttonTextStyle: textSeconderyButtonUnBold(),
-            textButton:tr.add_from_gallery,
-            onClicked: () async {
-              await itemViewModle.getItemImage(serialNo: box.serialNo ?? "");
-            },
-            isExpanded: true,
-          ),
+         SeconderyButtom(
+        buttonTextStyle: textSeconderyButtonUnBold(),
+        textButton: tr.add_from_gallery,
+        onClicked: () async {
+          Get.back();
+          await itemViewModle.getImageBottomSheet(isMultiSelect: true , isFromGallery: true,
+            boxItem: BoxItem(),
+            isUpdate: isUpdate,
+            box: box,);
+          // if (logic.isAllowToShowGallery) {
+          //   Get.bottomSheet(
+          //       AddItemWidget(
+          //         isFromGallery: true,
+          //         boxItem: BoxItem(),
+          //         isUpdate: isUpdate,
+          //         box: box,
+          //       ),
+          //       isScrollControlled: true).whenComplete(() {
+          //     // if(isUpdate){
+          //     logic.clearBottomSheetItem();
+          //     // }
+          //   });
+          // }
+          // await itemViewModle.getItemImage(serialNo: box.serialNo ?? "");
+        },
+        isExpanded: true,
+      ),
           SizedBox(
             height: sizeH20,
           ),

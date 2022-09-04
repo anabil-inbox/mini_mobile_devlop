@@ -35,6 +35,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
     profileViewModle.tdUserEmailEdit.text =
         SharedPref.instance.getCurrentUserData().email ?? "";
     profileViewModle.contactMap.clear();
+    if(SharedPref.instance.getCurrentUserData().contactNumber != null)
     profileViewModle.contactMap =
         SharedPref.instance.getCurrentUserData().contactNumber!.toList();
   }

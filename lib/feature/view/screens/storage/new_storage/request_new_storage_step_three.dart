@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/add_storage_widget/request_new_storage_header.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_three_widgets/payment_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
@@ -97,6 +94,11 @@ class RequestNewStorageStepThree extends StatelessWidget {
                 s.controller?.showPaymentShowCase();
               },
               builder: (logical) {
+                if(logical.isLoading){
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
                 return SizedBox(
                   height: double.infinity,
                   child: Stack(
@@ -119,7 +121,28 @@ class RequestNewStorageStepThree extends StatelessWidget {
                           SizedBox(
                             height: sizeH16,
                           ),
-                          Showcase(
+                          if(storageViewModel.userStorageCategoriesData.isNotEmpty)
+                          InkWell(
+                            onTap: (){
+                              Get.close(2);
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add_circle_outline_rounded , color: colorPrimary,),
+                                SizedBox(width: sizeW5,),
+                                Text(
+                                  "${storageViewModel.userStorageCategoriesData.isNotEmpty ?  tr.add_more_items.replaceAll("...", "") : ""}",
+                                  style: textStyleCardTitlePrice()?.copyWith(color: colorBlack),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: sizeH16,
+                          ),
+                          /*Showcase(
                               disableAnimation: Constance.showCaseDisableAnimation,
                               shapeBorder: RoundedRectangleBorder(),
                               radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
@@ -128,7 +151,7 @@ class RequestNewStorageStepThree extends StatelessWidget {
                               blurValue:Constance.showCaseBluer ,
                               description: tr.payment_btn_show_case,
                               key: logical.paymentCaseKey,
-                              child: PaymentWidget(isRecivedOrderPayment: false)),
+                              child:*/ PaymentWidget(isRecivedOrderPayment: false, )/*)*/,
                           // SizedBox(height: sizeH16),
                           // acceptTerms,
                           if (logical.selectedPaymentMethod?.id ==
@@ -204,7 +227,7 @@ class RequestNewStorageStepThree extends StatelessWidget {
                                               isFromCart: false,
                                               isFromNewStorage: true,
                                               storageViewModel: storageViewModel,
-                                              amount: logic.totalBalance);
+                                              amount: logic.totalBalance, isFromEditOrder: false);
                                           logic.isLoading = false;
                                           logic.update();
                                         }

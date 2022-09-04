@@ -23,7 +23,6 @@ class GVWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    screenUtil(context);
     return Column(
       children: [
         GridView.builder(
@@ -35,7 +34,7 @@ class GVWidget extends StatelessWidget {
               crossAxisCount: 2,
               mainAxisSpacing: sizeW10!,
               crossAxisSpacing: sizeH10!,
-              childAspectRatio: (sizeW165! / sizeH150)),
+              childAspectRatio: (sizeW150! / sizeH150)),
           itemBuilder: (context, index) => 
           
           (homeViewModel.userBoxess
@@ -45,10 +44,8 @@ class GVWidget extends StatelessWidget {
                   onTap: () async {
                     //Get.put(ItemViewModle());
                     Logger().d(homeViewModel.userBoxess.toList()[index].toString());
-                    if (homeViewModel.userBoxess
-                            .toList()[index]
-                            .storageStatus ==
-                        LocalConstance.boxOnTheWay) {
+                    if (homeViewModel.userBoxess.toList()[index].storageStatus ==  LocalConstance.boxOnTheWay &&
+                    !homeViewModel.userBoxess.toList()[index].isPickup!) {
                       Get.bottomSheet(
                           NotifayForNewStorage(
                               box: homeViewModel.userBoxess.toList()[index],
@@ -85,10 +82,8 @@ class GVWidget extends StatelessWidget {
                     //Get.put(ItemViewModle());
                     Logger()
                         .d(homeViewModel.userBoxess.toList()[index].toString());
-                    if (homeViewModel.userBoxess
-                            .toList()[index]
-                            .storageStatus ==
-                        LocalConstance.boxOnTheWay) {
+                    if (homeViewModel.userBoxess.toList()[index].storageStatus ==  LocalConstance.boxOnTheWay &&
+                        !homeViewModel.userBoxess.toList()[index].isPickup!) {
                       Get.bottomSheet(
                           NotifayForNewStorage(
                               box: homeViewModel.userBoxess.toList()[index],

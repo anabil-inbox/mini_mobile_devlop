@@ -42,7 +42,7 @@ class MyOrderAddressWidget extends StatelessWidget {
                   height: sizeH4,
                 ),
                 Text(
-                  newOrderSales?.orderShippingAddress ??
+                  newOrderSales!.orderShippingAddress.toString().isNotEmpty ?newOrderSales?.orderShippingAddress :
                       newOrderSales?.orderWarehouseAddress ?? "",
                   style: textStyleHints()!.copyWith(fontSize: fontSize13),
                 ),

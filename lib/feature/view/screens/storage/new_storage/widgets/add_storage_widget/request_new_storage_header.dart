@@ -24,21 +24,28 @@ class RequestNewStorageHeader extends StatelessWidget {
         children: [
           Column(
             children: [
-              currentLevel == 0
-                  ? SvgPicture.asset("assets/svgs/level_one_orange.svg")//level_one
-                  : currentLevel == 1
+              Column(
+                textDirection: TextDirection.ltr,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  currentLevel == 0
+                      ? SvgPicture.asset("assets/svgs/level_one_orange.svg")//level_one
+                      : currentLevel == 1
                       ? SvgPicture.asset("assets/svgs/level_two_oranage.svg")//level_two
                       : SvgPicture.asset("assets/svgs/level_three_orange.svg"),
+                ],
+              ),
               SizedBox(
                 height: sizeH7,
               ),
               Container(
                 width: MediaQuery.of(context).size.width - sizeW90!,
                 child: Row(
+                  textDirection: TextDirection.ltr,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "${tr.boxes}",
+                      "${tr.type}",
                       style: currentLevel == 0
                           ? TextStyle(color: colorPrimary)
                           : TextStyle(),

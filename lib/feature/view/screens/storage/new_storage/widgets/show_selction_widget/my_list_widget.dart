@@ -47,7 +47,7 @@ class MyListWidget extends StatelessWidget {
                             .asMap()
                             .map((index, value) => MapEntry(
                                   index,
-                                  build.checkCategoreyType(
+                                  build.                                                                                                                                           checkCategoreyType(
                                                   storageCategoreyType: value.storageCategoryType!) ==
                                               ConstanceNetwork.quantityCategoryType ||
                                           build.checkCategoreyType(

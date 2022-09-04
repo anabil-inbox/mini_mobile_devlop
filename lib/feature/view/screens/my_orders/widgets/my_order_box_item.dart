@@ -5,18 +5,22 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
+import 'package:logger/logger.dart';
 
 import 'order_detailes_widgets/option_detailes.dart';
 
 class MyOrderBoxItem extends StatelessWidget {
-  const MyOrderBoxItem({Key? key, required this.orderItem}) : super(key: key);
+  const MyOrderBoxItem({Key? key, required this.orderItem,required this.sealOrder, }) : super(key: key);
 
   final OrderItem orderItem;
+  final OrderSales sealOrder;
 
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    Logger().w(orderItem.storageType);
     return Container(
       margin: EdgeInsets.only(bottom: padding10!),
       padding: EdgeInsets.symmetric(vertical: padding10!),
@@ -24,6 +28,8 @@ class MyOrderBoxItem extends StatelessWidget {
         color: colorBackground,
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -35,10 +41,12 @@ class MyOrderBoxItem extends StatelessWidget {
               SizedBox(
                 width: sizeW10,
               ),
-              SizedBox(width: sizeW200, child: Text(orderItem.item != null ? orderItem.item.toString().replaceAll("_", " ").toString().replaceAll("-", " "): "")),
+              SizedBox(width: sizeW200, child: Text(boxNameHandler())),
+
               const Spacer(),
               Column(
                 children: [
+
                   SizedBox(
                     height: sizeH16,
                   ),
@@ -71,6 +79,23 @@ class MyOrderBoxItem extends StatelessWidget {
               ),
             ],
           ),
+          if(orderItem.storageType?.toLowerCase() == LocalConstance.quantityConst.toLowerCase() /*||
+              orderItem.storageType == LocalConstance.newStorageItemSv ||
+              orderItem.storageType == LocalConstance.newNewStorageSpaceSv*/)...[
+            SizedBox(
+              height: sizeH10,
+            ),
+            Padding(
+              padding:  EdgeInsets.symmetric(horizontal: sizeW12!),
+              child: Row(
+                children: [
+                  Expanded(child: Text("${tr.subscriptions} : ${orderItem.subscriptionType.toString()}")),
+                  Text("(${handlerQtySubscriptions()}${orderItem.subscriptionDuration})")
+                ],
+              ),
+            ),
+          ],
+
           SizedBox(
             height: sizeH10,
           ),
@@ -102,5 +127,12 @@ class MyOrderBoxItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String boxNameHandler() {
+    return "${orderItem.itemName != null && orderItem.itemName.toString().isNotEmpty ? orderItem.itemName : orderItem.item != null ? orderItem.item.toString().replaceAll("_", " ").toString().replaceAll("-", " ") : ""}";
+  }
+  String handlerQtySubscriptions() {
+    return orderItem.subscriptionType.toString() == LocalConstance.dailySubscriptions ?" ${tr.daily} " : "".trim();
   }
 }

@@ -35,6 +35,7 @@ class CartViewModel extends GetxController {
         storageViewModel.selectedPaymentMethod?.id = LocalConstance.cash;
         storageViewModel.selectedAddress = cartList[i].address;
         await storageViewModel.doTaskBoxRequest(
+          isFirstPickUp: false,
           isFromCart: true,
           task: cartList[i].task!,
           boxes: cartList[i].box!,
@@ -43,7 +44,10 @@ class CartViewModel extends GetxController {
         );
         deleteItemCart(cartList[i]);
       }
-      snackSuccess("", tr.checkout_successfully );
+      snackSuccess("", tr.checkout_successfully);
+      cartList.clear();
+      getMyCart();
+      endLoading();
       Get.back();
 
       // List<Map<String, dynamic>> mapSalesOrder = <Map<String, dynamic>>[];
@@ -58,6 +62,7 @@ class CartViewModel extends GetxController {
       // }
     } catch (e) {
       printError();
+      endLoading();
     }
 
     endLoading();
@@ -81,9 +86,16 @@ class CartViewModel extends GetxController {
   }
 
   //todo this for add to cart [local data]
-  Future<void> addToCart(List<Box>? boxes, List<BoxItem>? boxItems, Address? address,
-      Task task, Day day, String title) async {
+  Future<void> addToCart(List<Box>? boxes, List<BoxItem>? boxItems,
+      Address? address, Task task, Day day, String title,
+      {required bool isFirstPickUp}) async {
+
+    Logger().w("$boxes ,\n $boxItems ,\n ${address?.toJson()} ,\n ${task.toJson()} ,\n $isFirstPickUp , \n ${isFirstPickUp && task.id == LocalConstance.pickupId}");
+
     task.selectedVas = storageViewModel.selectedStringOption;
+    if (isFirstPickUp && task.id == LocalConstance.pickupId) {
+      task.price = 0;
+    }
     var cartModel = CartModel(
         userId: SharedPref.instance.getCurrentUserData().id.toString(),
         task: task,
@@ -91,14 +103,22 @@ class CartViewModel extends GetxController {
         boxItem: boxItems,
         orderTime: day,
         address: address,
+        isFirstPickUp: isFirstPickUp && task.id == LocalConstance.pickupId,
         title: "$title");
     cartModel.toJson().remove("id");
-   await CartHelper.instance.addToCart(cartModel).then((value) {
+    if(cartList.isNotEmpty  && cartList.contains(cartModel)){
+      Get.back();
+      snackSuccess(tr.success, tr.success_add_to_cart);
+      getMyCart();
+      return;
+    }
+    await CartHelper.instance.addToCart(cartModel).then((value) {
       if (value >= 1) {
         //todo success state
         Logger().d("addToCart_1${cartModel.toJson()}");
         Get.back();
         snackSuccess(tr.success, tr.success_add_to_cart);
+        getMyCart();
       } else {
         //todo fail state
         Logger().d("addToCart_2${cartModel.toJson()}");
@@ -116,7 +136,7 @@ class CartViewModel extends GetxController {
       address: null,
       orderTime: null,
     );
-   // getMyCart();
+    // getMyCart();
   }
 
   //todo this for delete item from cart [local data]
@@ -143,6 +163,7 @@ class CartViewModel extends GetxController {
         snackSuccess(tr.success, tr.success_update_cart);
         getMyCart();
         update();
+        Get.back();
       } else {
         //todo fail state
         Logger().d("updateCart_2${cartModel.toJson()}");
@@ -156,10 +177,15 @@ class CartViewModel extends GetxController {
   void getMyCart() async {
     await CartHelper.instance.getMyCart().then((List<CartModel> value) {
       //todo success state
-      cartList = value;
-      // for (var item in value) {
-      //   cartList.add(item);
-      //   Logger().d(item.toJson());
+      cartList.clear();
+      // cartList = value;
+      for (var item in value) {
+        if (!cartList.contains(item)) {
+          cartList.add(item);
+        }
+        Logger().d(item.toJson());
+      }
+
       // }
       update();
     }).catchError((onError) {

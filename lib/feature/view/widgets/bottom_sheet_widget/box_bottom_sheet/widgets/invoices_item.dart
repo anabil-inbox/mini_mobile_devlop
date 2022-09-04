@@ -24,37 +24,44 @@ class InvoicesItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ItemViewModle>(
-        init:ItemViewModle(),
+        init: ItemViewModle(),
         builder: (logic) {
-      return logic.isLoadingInvoice ? Center(
-        child: ThreeSizeDot(
-          color_1: colorPrimary,
-          color_2: colorPrimary,
-          color_3: colorPrimary,
-        ),
-      ):Container(
-        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Row(
-          children: [
-            Text(invoices.name ?? ""),
-            Spacer(),
-            Text(
-              getPriceWithFormate(price: invoices.price ?? 0),
-              style: Theme.of(context).textTheme.headline6?.copyWith(
-                  color: colorPrimary,
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontSize16),
-            ),
-            SizedBox(width: sizeW10,),
-            InkWell(
-                onTap: () {
-                  viewModel?.getInvoiceUrl(
-                      invoices.paymentEntryId, operationsBox: operationsBox);
-                },
-                child: Icon(Icons.payment)),
-          ],
-        ),
-      );
-    });
+          return logic.isLoadingInvoice
+              ? Center(
+                  child: ThreeSizeDot(
+                    color_1: colorPrimary,
+                    color_2: colorPrimary,
+                    color_3: colorPrimary,
+                  ),
+                )
+              : Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: Row(
+                    children: [
+                      Text(invoices.name ?? ""),
+                      Spacer(),
+                      Text(
+                        getPriceWithFormate(price: invoices.price ?? 0),
+                        style: Theme.of(context).textTheme.headline6?.copyWith(
+                            color: colorPrimary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontSize16),
+                      ),
+                      if (operationsBox?.saleOrder != null &&
+                          operationsBox!.saleOrder!.isNotEmpty) ...[
+                        SizedBox(
+                          width: sizeW10,
+                        ),
+                        InkWell(
+                            onTap: () {
+                              viewModel?.getInvoiceUrl(invoices.paymentEntryId,
+                                  operationsBox: operationsBox);
+                            },
+                            child: Icon(Icons.payment)),
+                      ],
+                    ],
+                  ),
+                );
+        });
   }
 }

@@ -48,7 +48,7 @@ class MyWalletScreen extends StatelessWidget {
                       height: sizeH20!,
                     ),
                     AvailableBalanceItem(
-                      points: " ${logic.myWallet.balance}",
+                      points: " ${logic.myWallet.balance.toString()}",
                       availableBalance: "${tr.available_balance}",
                     ),
                     SizedBox(
@@ -89,9 +89,8 @@ class MyWalletScreen extends StatelessWidget {
                         itemCount: logic.transaction.length,
                         itemBuilder: (context, index) => HistoryItem(
                           title: "${logic.transaction[index].type}",
-                          date:
-                              '${myFormat.format(logic.transaction[index].date!).toString()}',
-                          points: "${logic.transaction[index].amount}",
+                          date: '${myFormat.format(logic.transaction[index].date!).toString()}',
+                          points: "${logic.transaction[index].amount.toString()/*.replaceAll("-", "")*/}",
                         ),
                       ),
                     ],

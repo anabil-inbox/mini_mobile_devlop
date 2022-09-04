@@ -21,11 +21,11 @@ class UserCompanyLoginScreen extends GetWidget<IntroViewModle> {
       : super(key: key);
 
   final String type;
-
+  AuthViewModle get authViewModel => Get.put(AuthViewModle());
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    Get.put(AuthViewModle());
+
     return type != "${ConstanceNetwork.bothType}" ? Scaffold(
       backgroundColor: colorScaffoldRegistrationBody,
       body: ListView(
@@ -65,8 +65,10 @@ class UserCompanyLoginScreen extends GetWidget<IntroViewModle> {
               onTap: () {
                 if (type == "${ConstanceNetwork.userType}") {
                   Get.off(() => UserRegisterScreen());
+                  authViewModel.clearAllControllers();
                 } else if (type == "${ConstanceNetwork.companyType}") {
                   Get.to(() => RegisterCompanyScreen());
+                  authViewModel.clearAllControllers();
                 } else {
 
                 }

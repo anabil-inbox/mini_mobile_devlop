@@ -126,11 +126,16 @@ class CartHead extends StatelessWidget {
                       Text("${cartModel?.title}"),
                       SizedBox(width: sizeW5),
                       Text(
-                        "${storageViewModel.calculateTaskPriceLotBoxess(task: cartModel!.task!, boxess: cartModel?.box ?? [], isFromCart: true, myAddresss: cartModel?.address)}",
+                        "${storageViewModel.calculateTaskPriceLotBoxess(task: cartModel!.task!, boxess: cartModel?.box ?? [], isFromCart: true, myAddresss: cartModel?.address, isFirstPickUp: cartModel!.isFirstPickUp!)}",
                         style: textStylePrimarySmall(),
                       ),
                     ],
                   ),
+                  if (cartModel?.box != null && cartModel!.box!.isNotEmpty)
+                    Text(
+                      "${cartModel?.box != null && cartModel!.box!.isNotEmpty ? "${cartModel!.box!.first.id}" : ""}",
+                      style: textStylePrimarySmall(),
+                    ),
                   if (cartModel?.address?.addressTitle != null)
                     Text(
                       "${cartModel?.address?.addressTitle}",
@@ -161,7 +166,7 @@ class CartHead extends StatelessWidget {
                 onTap: _deleteCartItem,
                 child: ClipOval(
                   child: SvgPicture.asset(
-                    "assets/svgs/delete_box_widget_orange.svg"/*delete_box_widget*/,
+                    "assets/svgs/delete_box_widget_orange.svg" /*delete_box_widget*/,
                     fit: BoxFit.cover,
                     width: sizeW36,
                   ),
@@ -207,12 +212,14 @@ class CartHead extends StatelessWidget {
         cartViewModel?.update();
         Get.back();
       },
+      isDelete: true,
     ));
   }
 
   void _updateCartItem() {
     Get.bottomSheet(
         RecallBoxProcessSheet(
+          isFirstPickUp: false,
           boxes: cartModel?.box ?? [],
           task: cartModel!.task!,
           box: null,

@@ -59,7 +59,7 @@ class SettingsScreen extends StatelessWidget {
            SizedBox(
             height: sizeH16,
           ),
-          SettingItemNoPadding(settingTitle: "${tr.terms_and_conditions}", onTap: (){
+          SettingItemNoPadding(settingTitle: "${tr.terms_and_conditions.replaceAll(isArabicLang() ?"موافق":"Accept our ", "")}", onTap: (){
             Get.to(() => TermsScreen());
           }),
           SizedBox(

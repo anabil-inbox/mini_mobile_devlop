@@ -80,11 +80,11 @@ class _RequestNewStoragesStepTwoScreenState
                           );
                         },
                       ),
-                      Text("${tr.schedule_pickup}"),
+                      Text("${/*tr.schedule_pickup*/tr.delivery_address}"),
                       SizedBox(
                         height: sizeH10,
                       ),
-                      Showcase(
+                      /*Showcase(
                           disableAnimation: Constance.showCaseDisableAnimation,
                           shapeBorder: RoundedRectangleBorder(),
                           radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
@@ -93,11 +93,11 @@ class _RequestNewStoragesStepTwoScreenState
                           blurValue:Constance.showCaseBluer ,
                           description: tr.date_times_btn_show_case,
                           key: RequestNewStoragesStepTwoScreen.storageViewModel.dateTimeShowCaseKey,
-                          child: SchedulePickup()),
+                          child:*/ SchedulePickup()/*)*/,
                       SizedBox(
                         height: sizeH16,
                       ),
-                      Showcase(
+                      /*Showcase(
                           disableAnimation: Constance.showCaseDisableAnimation,
                           shapeBorder: RoundedRectangleBorder(),
                           radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
@@ -108,7 +108,7 @@ class _RequestNewStoragesStepTwoScreenState
                           // overlayOpacity: 0.3,
                           description: tr.address_btn_show_case,
                           key: RequestNewStoragesStepTwoScreen.storageViewModel.addressShowCaseKey,
-                          child: PickupAddress()),
+                          child:*/ PickupAddress()/*)*/,
                     ],
                   ),
                   PositionedDirectional(

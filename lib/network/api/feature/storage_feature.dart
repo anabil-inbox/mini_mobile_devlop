@@ -4,6 +4,7 @@ import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/api/model/splash.dart';
 import 'package:inbox_clients/network/api/model/storage.dart';
+import 'package:inbox_clients/network/firebase/firebase_utils.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:logger/logger.dart';
 
@@ -88,6 +89,8 @@ class StorageFeature {
         body: body,
         header: ConstanceNetwork.header(4));
     Logger().i("${appResponse.toJson()}");
+    // FirebaseUtils.instance.addNewStorageFail(appResponse.toJson());
+    // FirebaseUtils.instance.addNewStorageFail(body);
     if (appResponse.status?.success == true) {
       return appResponse;
     } else {

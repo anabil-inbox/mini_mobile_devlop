@@ -125,6 +125,20 @@ class StorageCategoriesData {
       return {};
     }
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is StorageCategoriesData &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          id == other.id &&
+          numberOfDays == other.numberOfDays &&
+          selectedDuration == other.selectedDuration/*&&
+          quantity == other.quantity*/;
+
+  @override
+  int get hashCode => name.hashCode ^ id.hashCode ^ quantity.hashCode;
 }
 
 class Item {

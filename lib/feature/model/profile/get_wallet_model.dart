@@ -6,7 +6,7 @@ class GetWallet {
   });
 
   String? id;
-  String? balance;
+  dynamic balance;
   List<Transactions>? transactions;
 
   factory GetWallet.fromJson(Map<String, dynamic> json) => GetWallet(

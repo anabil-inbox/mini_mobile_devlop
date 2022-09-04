@@ -135,6 +135,20 @@ class DateUtility {
       return "";
     }
   }
+  static String convertToLocalDateTimeUnUtcTr(DateTime uTCTime) {
+    try {
+      initializeDateFormatting(isArabicLang() ? 'ar' : 'en');
+      var dateFormat = DateFormat("hh:mm aa",
+          (isArabicLang() ? 'ar' : 'en')); // you can change the format here
+      var utcDate = dateFormat.format(uTCTime); // pass the UTC time here
+      // var localDate = dateFormat.parse(utcDate, true).toLocal().toString();
+      // String createdDate = dateFormat.format(DateTime.parse(utcDate));
+      return utcDate;
+    } catch (e) {
+      print(e);
+      return "";
+    }
+  }
 
   // get Utc Time (Houers And Menites From Day) :
   static String getLocalhouersFromUtc({required Day day}) {
@@ -149,6 +163,29 @@ class DateUtility {
     return "${convertToLocalDateTimeUnUtc(dtFrom)} - ${convertToLocalDateTimeUnUtc(dtTo)}";
   }
 
+
+// get Utc Time (Houers And Menites From Day) :
+  static String getLocalhouersFromUtcTR({required Day day}) {
+    final dtFrom = DateTime(0, 0, 0, int.parse(day.from!.split(":")[0]),
+        int.parse(day.from!.split(":")[1]));
+    final dtTo = DateTime(0, 0, 0, int.parse(day.to!.split(":")[0]),
+        int.parse(day.to!.split(":")[1]));
+
+    // convertToLocalDateTime()
+    convertToLocalDateTimeUnUtcTr(dtFrom);
+    convertToLocalDateTimeUnUtcTr(dtTo);
+    return "${convertToLocalDateTimeUnUtcTr(dtFrom)} - ${convertToLocalDateTimeUnUtcTr(dtTo)}";
+  }
+
+// get Utc Time (Houers And Menites From Day) :
+  static DateTime getToLocalhouersFromUtc({required Day day}) {
+    final dtTo = DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day, int.parse(day.to!.split(":")[0]),
+        int.parse(day.to!.split(":")[1]));
+
+    // convertToLocalDateTime()
+    /*convertToLocalDateTimeUnUtc(dtTo);*/
+    return  DateFormat("yyyy-MM-dd HH:mm a").parse(DateFormat("yyyy-MM-dd HH:mm a").format(dtTo))/*DateTime.parse(convertToLocalDateTimeUnUtc(dtTo))*/;
+  }
 
 
   // ignore: non_constant_identifier_names
@@ -182,7 +219,7 @@ class DateUtility {
     }
   }
 
-  /// to get Date Just From Formate 2021-12-16
+  ///region to get Date Just From Formate 2021-12-16
   /// 
   static DateTime fromStringToDate({required String date}) {
     try {
@@ -219,6 +256,8 @@ class DateUtility {
       return DateTime.now();
     }
   }
+
+  //endregion
 
   String convertUtcToLocalDateTime(DateTime utcDateTime) {
     try {

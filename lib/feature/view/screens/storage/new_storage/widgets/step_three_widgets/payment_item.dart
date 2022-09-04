@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/model/storage/payment.dart';
+import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
@@ -26,7 +27,7 @@ class PaymentItem extends StatelessWidget {
       this.isRecivedOrderPayment = false,
       required this.paymentMethod,
       this.isDisable = false,
-      this.isFromApplicationPayment = false})
+      this.isFromApplicationPayment = false,required this.isFirstPickUp, })
       : super(key: key);
 
   final PaymentMethod paymentMethod;
@@ -37,6 +38,7 @@ class PaymentItem extends StatelessWidget {
       Get.put(ProfileViewModle(), permanent: true);
   final bool? isDisable;
   final bool isRecivedOrderPayment;
+  final bool? isFirstPickUp;
 
   static applePay.Pay _payClient = applePay.Pay.withAssets([
     'applepay.json',
@@ -51,6 +53,11 @@ class PaymentItem extends StatelessWidget {
       init: StorageViewModel(),
       initState: (_) {
         WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+          // if(isFirstPickUp!){
+          //   _.controller?.selectedPaymentMethod =
+          //       PaymentMethod(id: "Cash", image: null, name: "Cash");
+          //   _.controller?.update();
+          // }
           await _payClient.userCanPay().then((value) {
             _isAvailableApplePay = value;
             _.controller?.update();
@@ -71,7 +78,7 @@ class PaymentItem extends StatelessWidget {
             paymentMethod.id == LocalConstance.applePay) {
           return const SizedBox.shrink();
         }
-        if (isDisable!) {
+        if (isDisable! || isFirstPickUp!) {
           WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
             builder.selectedPaymentMethod =
                 PaymentMethod(id: "Cash", image: null, name: "Cash");
@@ -79,7 +86,7 @@ class PaymentItem extends StatelessWidget {
           });
         }
         return InkWell(
-          onTap: isDisable!
+          onTap: isDisable! || isFirstPickUp!
               ? () {}
               : () async {
                   builder.selectedPaymentMethod = paymentMethod;
@@ -93,30 +100,38 @@ class PaymentItem extends StatelessWidget {
                   }
                 },
           child: Container(
+             width: /*builder.selectedPaymentMethod?.id  == LocalConstance.applePay  &&builder.selectedPaymentMethod?.image == Constance.appleImage? MediaQuery.of(context).size.width / 1.9 : */MediaQuery.of(context).size.width /4,
             margin: EdgeInsets.symmetric(horizontal: padding4!),
+            alignment: Alignment.center,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(padding6!),
                 border: Border.all(
-                    width: 0.5,
-                    color: builder.selectedPaymentMethod?.id != paymentMethod.id
+                    width: 2/*0.5*/,
+                    color:builder.selectedPaymentMethod?.id != paymentMethod.id
+                        ? colorContainerGrayLight
+                        : colorPrimary /*builder.selectedPaymentMethod?.id != paymentMethod.id
                         ? colorBorderContainer
-                        : colorTrans),
-                color: builder.selectedPaymentMethod?.id != paymentMethod.id
+                        : colorTrans*/),
+                /*color: builder.selectedPaymentMethod?.id != paymentMethod.id
                     ? colorTextWhite
-                    : colorPrimary),
+                    : colorPrimary*/),
             padding: EdgeInsets.symmetric(
-                vertical: padding9!, horizontal: padding14!),
-            child: Row(
+                vertical: 1/*padding9!*/, horizontal: 1/*padding14!*/),
+            child: Column(
+             mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (paymentMethod.image != null &&
                     paymentMethod.image != "") ...[
-                  imageNetwork(
-                      isPayment: true,
-                      url: ConstanceNetwork.imageUrl +  paymentMethod.image.toString(),
-                      width: sizeW20,
-                      height: sizeH20),
+                  Center(
+                    child: imageNetwork(
+                        isPayment: true,
+                        url:paymentMethod.id == LocalConstance.applePay ? Constance.appleImage: ConstanceNetwork.imageUrl +  paymentMethod.image.toString(),
+                        width: sizeH90,
+                        fit: BoxFit.contain,
+                        height: sizeH60!),
+                  ),
                 ] else ...[
-                  imageNetwork(isPayment: true, width: sizeW20, height: sizeH20)
+                  imageNetwork(isPayment: true, width: sizeH90, height: sizeH60,fit: BoxFit.contain)
                 ],
 
                 // if (paymentMethod.id == LocalConstance.bankCard)
@@ -140,18 +155,20 @@ class PaymentItem extends StatelessWidget {
                 //         ? colorBackground
                 //         : colorHint,
                 //   ),
-
+                if(paymentMethod.id != LocalConstance.applePay)...[
                 SizedBox(
-                  width: sizeW5,
+                  height: sizeW5,
                 ),
+
                 CustomTextView(
-                  txt: "${paymentMethod.name}",
-                  textStyle: builder.selectedPaymentMethod?.id ==
+                  txt:  (paymentMethod.id == LocalConstance.applePay) ? "":"${paymentMethod.name}",
+                  textStyle: /*builder.selectedPaymentMethod?.id ==
                           paymentMethod.id
                       ? textStylebodyWhite()
-                      : textStyleHints()!
-                          .copyWith(fontSize: fontSize14, color: colorHint2),
+                      :*/ textStyleHints()!
+                          .copyWith(fontSize: fontSize14, color: colorBlack/*colorHint2*/),
                 ),
+                ],
               ],
             ),
           ),
@@ -197,9 +214,23 @@ class PaymentItem extends StatelessWidget {
       } else {
         snackError("", "Wallet Balance is not enough");
       }
-    } else if (paymentMethod.name == LocalConstance.bankCard) {
-      await storageViewModel.payApplicationFromPaymentGatewaye(
-          price: homeViewModel.operationTask.totalDue ?? 0);
+    } else if (paymentMethod.name == LocalConstance.bankCard || paymentMethod.name == LocalConstance.creditCard) {
+      if(homeViewModel.operationTask.urlPayment != null && homeViewModel.operationTask.urlPayment!.isNotEmpty){
+        Get.to(PaymentScreen(
+          operationTask: homeViewModel.operationTask,
+          isFromNotifications: true,
+          url: homeViewModel.operationTask.urlPayment,
+          isFromCart: false,
+          isOrderProductPayment: false,
+          cartModels: [],
+          isFromNewStorage: false,
+          paymentId: '',
+        ));
+      }else{
+        await storageViewModel.payApplicationFromPaymentGatewaye(
+            price: homeViewModel.operationTask.totalDue ?? 0);
+      }
+
     } else if (paymentMethod.name == LocalConstance.pointOfSale) {}
   }
 
@@ -211,8 +242,7 @@ class PaymentItem extends StatelessWidget {
       var _paymentItems = [
         applePay.PaymentItem(
           label: 'Total',
-          amount:
-              '${homeViewModel.operationTask.totalDue ?? storageViewModel.totalBalance}',
+          amount: '${homeViewModel.operationTask.totalDue ?? storageViewModel.totalBalance}',
           status: applePay.PaymentItemStatus.final_price,
         )
       ];

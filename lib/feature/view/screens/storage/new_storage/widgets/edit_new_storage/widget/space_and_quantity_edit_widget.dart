@@ -45,13 +45,20 @@ class SpaceAndQuantityEditWidget extends StatelessWidget {
           // SizedBox(
           //   height: sizeH18,
           // ),
-
-          // QuantityWidget(value: orderItem!.quantity!.toInt(),
-          //   mineassingFunction: (){},
-          //   increasingFunction: (){},
-          //   quantityTitle: '',
-          //   storageCategoriesData: (viewModel.newOrderSales.orderItems!.where((element) => element.itemName == "Regular Box").isNotEmpty)?
-          //   storageViewModel.storageCategoriesList[3]:storageViewModel.storageCategoriesList[2],),
+          //
+          // QuantityWidget(
+          //   value: viewModel.numberOfDays,
+          //   increasingFunction: () {
+          //     viewModel.increaseDaysDurations(
+          //         storageCategoriesData: storageViewModel.storageCategoriesData);
+          //   },
+          //   mineassingFunction: () {
+          //     viewModel.minasDaysDurations(
+          //         storageCategoriesData: widget.storageCategoriesData);
+          //   },
+          //   quantityTitle: "${tr.days}",
+          //   storageCategoriesData: widget.storageCategoriesData,
+          // ),
           SizedBox(
             height: sizeH18,
           ),

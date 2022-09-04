@@ -28,7 +28,7 @@ class MyOrderAppBar extends StatelessWidget {
           child: CustomAppBarWidget(
             elevation: 0,
             isCenterTitle: true,
-            titleWidget: MyOrderSearch(),
+            titleWidget: MyOrderSearch(viewModel:logic),
             leadingWidget: IconBtn(
               iconColor: colorTextWhite,
               width: sizeW48,

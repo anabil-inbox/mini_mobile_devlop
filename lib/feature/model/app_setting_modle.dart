@@ -16,12 +16,14 @@ class ApiSettings {
       this.deliveryFactor,
       this.socialContact,
       this.userGuide,
-      this.minDays});
+      this.minDays,
+      this.startsAfter});
 
   String? customerType;
   String? aboutUs;
   String? termOfConditions;
   int? minDays;
+  dynamic startsAfter;
   ContactInfo? contactInfo;
   List<CompanySector>? companySectors;
   List<NotAllowed>? notAllowed;
@@ -38,6 +40,7 @@ class ApiSettings {
       aboutUs: json["about_us"] == null ? "" : json["about_us"],
       termOfConditions: json["term_of_conditions"] ??"",
       minDays: json["min_days"] == null ? 1:json["min_days"],
+      startsAfter: json["starts_after"] == null ? 1:json["starts_after"],
       socialContact: json["social_contact"] == null
           ? null
           : List<SocialContact>.from(
@@ -71,6 +74,7 @@ class ApiSettings {
   Map<String, dynamic> toJson() => {
         "customer_type": customerType,
         "min_days": minDays == null ? null :minDays,
+        "starts_after": startsAfter == null ? null :startsAfter,
         "social_contact": socialContact == null
             ? null
             : List<dynamic>.from(socialContact!.map((x) => x.toJson())),
@@ -195,7 +199,7 @@ class Day {
   factory Day.fromJson(Map<String, dynamic> json) => Day(
       from: json["from"] == null ? null : json["from"],
       to: json["to"] == null ? null : json["to"],
-      check: json["check"],
+      check: json["check"] == null ? null:json["check"],
       delivery: json["delivery"] == null ? null : json["delivery"]);
 
   Map<String, dynamic> toJson() => {

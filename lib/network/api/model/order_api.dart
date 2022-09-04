@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:inbox_clients/network/api/dio_manager/dio_manage_class.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:logger/logger.dart';
 
 import 'app_response.dart';
@@ -134,6 +135,7 @@ class OrderApi {
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());
       Logger().e(message);
+      snackError("", "${message["status"]["message"]}");
       DioManagerClass.getInstance
           .handleNotAuthorized(message["status"]["message"]);
       return AppResponse.fromJson(message ?? {});

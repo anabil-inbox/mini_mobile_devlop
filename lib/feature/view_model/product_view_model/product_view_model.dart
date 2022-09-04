@@ -22,7 +22,11 @@ class ProductViewModel extends GetxController {
         // if(value.items != null && value.items!.isNotEmpty) {
         //  productItems.addAll(value.items!);
         // }
-        productItems.addAll(value);
+        value.forEach((element) {
+          if(!productItems.contains(element))
+            productItems.add/*All*/(element);
+        });
+        // productItems.addAll(value);
         isLoadingProduct = false;
         update();
       }).catchError((onError) {

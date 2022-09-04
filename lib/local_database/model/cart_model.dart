@@ -17,10 +17,12 @@ class CartModel {
   Day? orderTime;
   Address? address;
   String? title;
+  bool? isFirstPickUp;
 
   CartModel(
       {this.id,
       this.userId,
+      this.isFirstPickUp = false,
       required this.task,
       required this.box,
       required this.boxItem,
@@ -35,6 +37,7 @@ class CartModel {
       return CartModel(
           id: jsons["id"] == null ? null : jsons["id"],
           userId: jsons["userId"] == null ? null : jsons["userId"],
+          isFirstPickUp: jsons["isFirstPickUp"] == null ? false : jsons["isFirstPickUp"] == "true" ? true:false,
           address: jsons["address"] == null
               ? null
               : Address.fromJson(json.decode(jsons["address"])),
@@ -46,7 +49,8 @@ class CartModel {
               json.decode(jsons["box"]).map((x) => Box.fromJson(x))),
           // box:jsons["box"] == null ? null: List<Box>.from(json.decode(jsons["box"].map((x) => Box.fromJson(x)))),
           //   box: List<Box>.from(jsons["box"].map((x) => Box.fromJson(x))),
-          boxItem: List<BoxItem>.from(json.decode(jsons["boxItem"]).map((x) => BoxItem.fromJson(x))),
+          boxItem: List<BoxItem>.from(
+              json.decode(jsons["boxItem"]).map((x) => BoxItem.fromJson(x))),
           // boxItem:jsons["boxItem"] == null ? null:List<BoxItem>.from(json.decode(jsons["boxItem"].map((x) => BoxItem.fromJson(x)))) ,
           task: jsons["task"] == null
               ? null
@@ -65,6 +69,7 @@ class CartModel {
           boxItem == null ? null : List<dynamic>.from(boxItem!.map((x) => x))),
       "orderTime": json.encode(orderTime?.toJson() ?? {}),
       "address": json.encode(address?.toJson() ?? {}),
+      "isFirstPickUp": "$isFirstPickUp" ,
       "title": title ?? "",
       "box": json
           .encode(box == null ? null : List<dynamic>.from(box!.map((x) => x))),
@@ -77,4 +82,25 @@ class CartModel {
     //   return {};
     // }
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CartModel &&
+          runtimeType == other.runtimeType &&
+          task == other.task &&
+          title == other.title /*&&*/
+          /*boxItem == other.boxItem &&
+          orderTime == other.orderTime &&
+          address == other.address &&*/
+          /*title == other.title*/;
+
+  @override
+  int get hashCode =>
+      task.hashCode ^
+      box.hashCode ^
+      boxItem.hashCode ^
+      orderTime.hashCode ^
+      address.hashCode ^
+      title.hashCode;
 }

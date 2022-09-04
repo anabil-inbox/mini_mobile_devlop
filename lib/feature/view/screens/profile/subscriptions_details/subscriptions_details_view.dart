@@ -89,6 +89,7 @@ class SubscriptionsDetailsView extends StatelessWidget {
                     ),
                     StatusWidget(
                       status: "${subscriptions?.status}",
+                      statusOriginal: "${subscriptions?.status}",
                       child: TextButton(
                           clipBehavior: Clip.none,
                           style: subscriptions?.status !=
@@ -137,7 +138,7 @@ class SubscriptionsDetailsView extends StatelessWidget {
       onOkBtnClick: () {
         Get.back();
         logic.onTerminateSubscriptions(subscriptions);
-      },
+      }, isDelete: false,
     ));
 
   }

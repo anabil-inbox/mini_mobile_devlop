@@ -30,37 +30,37 @@ class Address {
     dynamic zoneNumber;
 
     factory Address.fromJson(Map<String, dynamic> json) => Address(
-        id: json["id"],
-        title: json["title"],
-        addressTitle: json["address_title"],
-        buildingNo: json["building_no"],
-        unitNo: json["unit_no"],
+        id: json["id"] == null ? null : json["id"],
+        title: json["title"] == null ? null : json["title"],
+        addressTitle: json["address_title"] == null ? null : json["address_title"],
+        buildingNo: json["building_no"] == null ? null : json["building_no"],
+        unitNo: json["unit_no"] == null ? null : json["unit_no"],
         zone: json["zone"] == null ? "":json["zone"],
         // streat: json["streat"],
-        streat: json["street"],
-        geoAddress: json["geo_address"],
+        streat: json["street"] == null ? null : json["street"],
+        geoAddress: json["geo_address"] == null ? null : json["geo_address"],
         zoneNumber: json["zone_number"] == null ? null:json["zone_number"],
-        extraDetails: json["extra_details"],
+        extraDetails: json["extra_details"] == null ? null : json["extra_details"],
         longitude: json["longitude"] == null ? null : json["longitude"].toDouble(),
         latitude: json["latitude"] == null ? null :json["latitude"].toDouble(),
-        isPrimaryAddress: json["is_primary_address"],
+        isPrimaryAddress: json["is_primary_address"] == null ? null : json["is_primary_address"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
-        "address_title": addressTitle,
-        "building_no": buildingNo,
-        "unit_no": unitNo,
+        "id": id == null ? null : id,
+        "address_title": addressTitle == null ? null : addressTitle,
+        "building_no": buildingNo == null ? null : buildingNo,
+        "unit_no": unitNo == null ? null : unitNo,
          "zone": zone == null ? "":zone,
-        "geo_address":geoAddress,
+        "geo_address":geoAddress == null ? null : geoAddress,
         // "streat": streat,
-        "street": streat,
-        "extra_details": extraDetails,
-        "longitude": longitude,
-        "latitude": latitude,
-        "is_primary_address": isPrimaryAddress,
-        "title" : title,
-        "zone_number":zoneNumber
+        "street": streat == null ? null : streat,
+        "extra_details": extraDetails == null ? null : extraDetails,
+        "longitude": longitude == null ? null : longitude,
+        "latitude": latitude == null ? null : latitude,
+        "is_primary_address": isPrimaryAddress == null ? null : isPrimaryAddress,
+        "title" : title == null ? null : title,
+        "zone_number":zoneNumber == null ? null : zoneNumber
     };
 
     @override

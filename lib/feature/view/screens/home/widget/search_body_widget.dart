@@ -16,37 +16,45 @@ class SearchBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          children: [
-            Container(
-              child: imageNetwork(
-                  height: sizeH44,
-                  width: sizeW44,
-                  url: item.itemGallery!.isEmpty ? urlPlacholder :
-                    "${ConstanceNetwork.imageUrl}${(item.itemGallery?[0].attachment ?? urlPlacholder)}"),
-            ),
-            SizedBox(
-              width: sizeW7,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("${item.itemName}"),
-                Text(
-                  date == null ? "" : DateUtility.getChatTime(date.toString()),
-                  style: textStyleHints()!.copyWith(fontSize: fontSize13),
+    return Padding(
+      padding:  EdgeInsets.all(sizeH12!),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(sizeH12!),
+                  child: imageNetwork(
+                      height: sizeH44,
+                      width: sizeW44,
+                      url: item.itemGallery!.isEmpty ? urlPlacholder :
+                        "${ConstanceNetwork.imageUrl}${(item.itemGallery?[0].attachment ?? urlPlacholder)}"),
                 ),
-              ],
-            ),
-          ],
-        ),
-        SizedBox(
-          height: sizeH16,
-        )
-      ],
+              ),
+              SizedBox(
+                width: sizeW7,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("${item.itemName}"),
+                  Text(
+                    date == null ? "" : DateUtility.getChatTime(date.toString()),
+                    style: textStyleHints()!.copyWith(fontSize: fontSize13),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(
+            height: sizeH16,
+          )
+        ],
+      ),
     );
   }
 }

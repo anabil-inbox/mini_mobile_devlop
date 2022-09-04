@@ -26,10 +26,11 @@ class SqlHelper {
    final String orderTimeColumn = "orderTime";
    final String addressColumn = "address";
    final String titleColumn = "title";
+   final String firstPickUpColumn = "isFirstPickUp";
 
   //todo this is db init
   Database? _db;
-  final int dbVersion = 1;
+  final int dbVersion = 2;
   initDataBase() async {
     if (GetUtils.isNull(_db)) {
       _db = await createDatabase();
@@ -72,7 +73,8 @@ class SqlHelper {
     $boxItemColumn Blob NULL,
     $orderTimeColumn Blob NULL,
     $addressColumn Blob NULL,
-    $titleColumn TEXT NULL
+    $titleColumn TEXT NULL,
+    $firstPickUpColumn TEXT NULL
     )
  ''';
   }
@@ -83,13 +85,15 @@ class SqlHelper {
       //todo #[conflictAlgorithm]# to remove duplicate
       var remove = data.toJson();
       remove.remove(id);
-      return _db!.insert(tableName, remove,  conflictAlgorithm: ConflictAlgorithm.replace);
+      return _db!.insert(tableName, remove,  conflictAlgorithm: ConflictAlgorithm.ignore , );
     } catch (e) {
       Logger().d(e);
       snackError(tr.error_occurred, e.toString());
       return -1;
     }
   }
+
+
 
   //todo this for data
   Future<int> updateDataToDatabase(CartModel data) async {
@@ -104,7 +108,7 @@ class SqlHelper {
 
   Future<List<Map<String, Object?>>>? selectAllDataFromDatabase() async {
     try {
-      return await _db!.query(tableName , where:"$userId=?" , whereArgs: ["${SharedPref.instance.getCurrentUserData().id.toString()}"] );
+      return await _db!.query(tableName , where:"$userId=?" , whereArgs: ["${SharedPref.instance.getCurrentUserData().id.toString()}"],/*distinct: true ,groupBy: boxColumn ,*/);
     } catch (e) {
       Logger().d(e);
       throw Exception(e);

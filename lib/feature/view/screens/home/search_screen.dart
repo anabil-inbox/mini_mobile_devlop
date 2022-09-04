@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
@@ -40,22 +41,47 @@ class SearchScreen extends StatelessWidget {
                         width: sizeW20,
                       ),
                       Expanded(
-                          child: CustomTextFormFiled(
-                        icon: Icons.search,
-                        onChange: (p0) {
-                          homeViewModel.searchForBox(searchText: p0);
-                        },
-                        iconSize: 24,
-                        isFill: true,
-                        controller: homeViewModel.tdSearch,
-                        fillColor: scaffoldColor,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: scaffoldColor,
+                              borderRadius: BorderRadius.circular(12)
+                            ),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: sizeW20,
+                            ),
+                            SvgPicture.asset(
+                              "assets/svgs/search_icon.svg",
+                            ),
+                            Expanded(
+                              child: CustomTextFormFiled(
+                                // icon: Icons.search,
+                                onChange: (p0) {
+                                  if (p0.isEmpty) {
+                                    homeViewModel.searchedBoxess.clear();
+                                  } else {
+                                    homeViewModel.searchForBox(searchText: p0);
+                                  }
+                                },
+                                // iconSize: 24,
+                                isFill: true,
+                                isSmallPaddingWidth: true,
+                                controller: homeViewModel.tdSearch,
+                                fillColor: scaffoldColor,
+                              ),
+                            ),
+                          ],
+                        ),
                       )),
                       SizedBox(
                         width: sizeW10,
                       ),
                       TextButton(
                           onPressed: () {
-                            Get.back();
+                            homeViewModel.tdSearch.clear();
+                            homeViewModel.searchedBoxess.clear();
+                            Get.close(1);
                           },
                           child: Text(
                             "${tr.cancle}",

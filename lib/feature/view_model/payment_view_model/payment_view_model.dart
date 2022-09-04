@@ -65,6 +65,7 @@ class PaymentViewModel extends GetxController {
             stroageViewModel.checkOutCart(cartModels: cartModels);
           } else {
             await stroageViewModel.doTaskBoxRequest(
+              isFirstPickUp: false,
                 isFromCart: false,
                 paymentId: paymentId,
                 task: task!,

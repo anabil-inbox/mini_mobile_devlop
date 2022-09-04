@@ -21,7 +21,6 @@ class HomeGVItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    screenUtil(context);
     return Container(
       width: sizeW165,
       height: sizeH150,
@@ -54,6 +53,15 @@ class HomeGVItemWidget extends StatelessWidget {
                 SizedBox(
                   height: sizeH9,
                 ),
+                // CustomTextView(
+                //   txt: "${box.address?.addressTitle ?? tr.unknown_address}",
+                //   maxLine: Constance.maxLineTwo,
+                //   textStyle: textStyleNormal(),
+                //   textAlign: TextAlign.center,
+                // ),
+                // SizedBox(
+                //   height: sizeH9,
+                // ),
                 CustomTextView(
                   txt: "${DateUtility.getChatTime(box.modified.toString())}",
                   maxLine: Constance.maxLineOne,

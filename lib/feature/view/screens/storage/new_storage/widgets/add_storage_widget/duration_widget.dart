@@ -69,7 +69,7 @@ class DurationWidget extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                   vertical: padding9!, horizontal: padding12!),
               child: Text(
-                durationTitle,
+                handleTitle(durationTitle),
                 style: storageViewModel.selectedDuration == durationTitle
                     ? textStylebodyWhite()
                     : textStyleHints()!
@@ -78,5 +78,20 @@ class DurationWidget extends StatelessWidget {
         );
       },
     );
+  }
+
+  String handleTitle(String durationTitle) {
+    // ConstanceNetwork.dailyDurationType
+    // ConstanceNetwork.montlyDurationType
+    // ConstanceNetwork.yearlyDurationType
+    if(isArabicLang() && durationTitle == ConstanceNetwork.dailyDurationType){
+      return "يومي";
+    }else if(isArabicLang() && durationTitle == ConstanceNetwork.montlyDurationType){
+      return "شهري";
+    }else if(isArabicLang() && durationTitle == ConstanceNetwork.yearlyDurationType){
+      return "سنوي";
+    }else {
+      return durationTitle;
+    }
   }
 }

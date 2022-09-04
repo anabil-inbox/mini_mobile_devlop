@@ -53,108 +53,120 @@ class _RequestNewStorageScreenState extends State<RequestNewStorageScreen> {
       builder: Builder(
         builder: (context) {
           RequestNewStorageScreen.storageViewModel.setContext(context);
-          return Scaffold(
-            backgroundColor: scaffoldColor,
-            appBar: CustomAppBarWidget(
-              leadingWidget: GetBuilder<StorageViewModel>(
-                builder: (logic) {
-                  return BackBtnWidget(
-                    onTap: () {
-                      logic.userStorageCategoriesData.clear();
-                      logic.update();
-                      Get.back();
-                    },
+          return WillPopScope(
+            onWillPop: () {
+              RequestNewStorageScreen.storageViewModel.userStorageCategoriesData.clear();
+              RequestNewStorageScreen.storageViewModel.update();
+              // Get.back();
+              return Future.value(true);
+            },
+            child: Scaffold(
+              backgroundColor: scaffoldColor,
+              appBar: CustomAppBarWidget(
+                leadingWidget: GetBuilder<StorageViewModel>(
+                  builder: (logic) {
+                    return BackBtnWidget(
+                      onTap: () {
+                        logic.userStorageCategoriesData.clear();
+                        logic.update();
+                        Get.back();
+                      },
+                    );
+                  },
+                ),
+                isCenterTitle: true,
+                titleWidget: Text(
+                  "${tr.request_new_storage}",
+                  style: textStyleAppBarTitle(),
+                ),
+              ),
+              body: GetBuilder<StorageViewModel>(
+                init: StorageViewModel(),
+                initState: (_) {
+                  WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                    _.controller?.clearNewStorageData();
+                  });
+                },
+                builder: (build) {
+                  return Stack(
+                    children: [
+                      ListView(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        controller:
+                        RequestNewStorageScreen.storageViewModel.myListController,
+                        shrinkWrap: true,
+                        children: [
+                          /*Showcase(
+                            disableAnimation: Constance.showCaseDisableAnimation,
+                            shapeBorder: RoundedRectangleBorder(),
+                            radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
+                            showArrow: Constance.showCaseShowArrow,
+                            overlayPadding: EdgeInsets.all(5),
+                            blurValue:Constance.showCaseBluer ,
+                            description: tr.step_btn_show_case,
+                            key: build.orderStepShowKey,
+                            child:*/ GetBuilder<StorageViewModel>(
+                              builder: (val) {
+                                return RequestNewStorageHeader(
+                                  currentLevel: val.currentLevel,
+                                );
+                              },
+                            ),
+                          /*),*/
+                         /* Showcase(
+                            disableAnimation: Constance.showCaseDisableAnimation,
+                            shapeBorder: RoundedRectangleBorder(),
+                            radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
+                            showArrow: Constance.showCaseShowArrow,
+                            overlayPadding: EdgeInsets.all(5),
+                            blurValue:Constance.showCaseBluer ,
+                            description: tr.categories_btn_show_case,
+                            key: build.storageCategoriesShowKey,
+                            child: */GetBuilder<StorageViewModel>(
+                              builder: (builder) {
+                                return StorageSizeType();
+                              },
+                            /*),*/
+                          ),
+                          SizedBox(
+                            height: sizeH16,
+                          ),
+                          MyListWidget(),
+                          SizedBox(
+                            height: sizeH50,
+                          ),
+                        ],
+                      ),
+                      GetBuilder<StorageViewModel>(
+                        init: StorageViewModel(),
+                        initState: (_) {},
+                        builder: (logical) {
+                          return Positioned(
+                            bottom: padding10,
+                            right: padding20,
+                            left: padding20,
+                            child: PrimaryButton(
+                                textButton: "${tr.next}",
+                                isLoading: false,
+                                colorBtn: logical.userStorageCategoriesData.length > 0
+                                    ? colorPrimary
+                                    : colorUnSelectedWidget,
+                                onClicked: logical.userStorageCategoriesData.length > 0
+                                    ? () {
+                                  RequestNewStorageScreen
+                                      .storageViewModel.currentLevel = 1;
+                                  Get.put(ProfileViewModle());
+                                  Get.to(() => RequestNewStoragesStepTwoScreen());
+                                }
+                                    : () {},
+                                isExpanded: true),
+                          );
+                        },
+                      )
+                    ],
                   );
                 },
               ),
-              isCenterTitle: true,
-              titleWidget: Text(
-                "${tr.request_new_storage}",
-                style: textStyleAppBarTitle(),
-              ),
-            ),
-            body: GetBuilder<StorageViewModel>(
-              init: StorageViewModel(),
-              initState: (_) {},
-              builder: (build) {
-                return Stack(
-                  children: [
-                    ListView(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      controller:
-                      RequestNewStorageScreen.storageViewModel.myListController,
-                      shrinkWrap: true,
-                      children: [
-                        Showcase(
-                          disableAnimation: Constance.showCaseDisableAnimation,
-                          shapeBorder: RoundedRectangleBorder(),
-                          radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
-                          showArrow: Constance.showCaseShowArrow,
-                          overlayPadding: EdgeInsets.all(5),
-                          blurValue:Constance.showCaseBluer ,
-                          description: tr.step_btn_show_case,
-                          key: build.orderStepShowKey,
-                          child: GetBuilder<StorageViewModel>(
-                            builder: (val) {
-                              return RequestNewStorageHeader(
-                                currentLevel: val.currentLevel,
-                              );
-                            },
-                          ),
-                        ),
-                        Showcase(
-                          disableAnimation: Constance.showCaseDisableAnimation,
-                          shapeBorder: RoundedRectangleBorder(),
-                          radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
-                          showArrow: Constance.showCaseShowArrow,
-                          overlayPadding: EdgeInsets.all(5),
-                          blurValue:Constance.showCaseBluer ,
-                          description: tr.categories_btn_show_case,
-                          key: build.storageCategoriesShowKey,
-                          child: GetBuilder<StorageViewModel>(
-                            builder: (builder) {
-                              return StorageSizeType();
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: sizeH16,
-                        ),
-                        MyListWidget(),
-                        SizedBox(
-                          height: sizeH50,
-                        ),
-                      ],
-                    ),
-                    GetBuilder<StorageViewModel>(
-                      init: StorageViewModel(),
-                      initState: (_) {},
-                      builder: (logical) {
-                        return Positioned(
-                          bottom: padding10,
-                          right: padding20,
-                          left: padding20,
-                          child: PrimaryButton(
-                              textButton: "${tr.next}",
-                              isLoading: false,
-                              colorBtn: logical.userStorageCategoriesData.length > 0
-                                  ? colorPrimary
-                                  : colorUnSelectedWidget,
-                              onClicked: logical.userStorageCategoriesData.length > 0
-                                  ? () {
-                                RequestNewStorageScreen
-                                    .storageViewModel.currentLevel = 1;
-                                Get.put(ProfileViewModle());
-                                Get.to(() => RequestNewStoragesStepTwoScreen());
-                              }
-                                  : () {},
-                              isExpanded: true),
-                        );
-                      },
-                    )
-                  ],
-                );
-              },
             ),
           );
         }

@@ -48,7 +48,7 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
       controller.addPageRequestListener((pageKey) async {
         final data = await repo.getCountries(1 + (pageKey ~/ 10), 250);
         if(data.isNotEmpty) {
-          for (var i in data) {
+          for (var i in data.toList()) {
             var contains = listCountry.contains(i);
             if (contains) {
               data.remove(i);

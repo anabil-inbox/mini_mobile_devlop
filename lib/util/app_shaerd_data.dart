@@ -20,12 +20,14 @@ import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_mod
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/splash_view_modle/splash_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
+import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'app_color.dart';
 import 'app_style.dart';
@@ -117,7 +119,7 @@ phoneVaildAlternativeContact(String value) {
 
 emailValid(String val) {
   if (!GetUtils.isEmail(val)) {
-    return messageMatcherEmail;
+    return tr.please_enter_valid_email;
   } else {
     return;
   }
@@ -144,9 +146,26 @@ String getDeviceLang() {
 }
 
 bool isVideo({required String path}) {
-  if (path.toLowerCase().substring(path.lastIndexOf(".")) == ".mp4") {
+  if (path.isEmpty) {
+    return false;
+  } else if (path.toLowerCase().substring(path.lastIndexOf(".")) == ".mp4") {
     return true;
   } else if (path.toLowerCase().substring(path.lastIndexOf(".")) == ".mov") {
+    return true;
+  }/*else if (path.toLowerCase().contains("youtube")){
+    return true;
+  }*/ else {
+    return false;
+  }
+}
+bool isYoutube({required String path}) {
+  if (path.isEmpty) {
+    return false;
+  } else  if (path.toLowerCase().contains("youtube")){
+    return true;
+  }else  if (path.toLowerCase().contains("youtu.be")){
+    return true;
+  }else  if (path.toLowerCase().contains("y2u.be")){
     return true;
   } else {
     return false;
@@ -267,21 +286,25 @@ Widget imageNetwork(
     BoxFit? fit,
     bool isPayment = false}) {
   return CachedNetworkImage(
-    imageBuilder: (context, imageProvider) {
-      return Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: CachedNetworkImageProvider(url != null
-                ? url
-                : isPayment
-                    ? paymentError
-                    : urlUserPlacholder!),
-            fit: fit ?? BoxFit.contain,
-          ),
-        ),
-      );
-    },
-    imageUrl: isPayment ? paymentError : urlUserPlacholder!,
+    // imageBuilder: (context, imageProvider) {
+    //   return Container(
+    //     decoration: BoxDecoration(
+    //       image: DecorationImage(
+    //         image: CachedNetworkImageProvider(url != null
+    //             ? url
+    //             : isPayment
+    //                 ? paymentError
+    //                 : urlUserPlacholder!),
+    //         fit: fit ?? BoxFit.contain,
+    //       ),
+    //     ),
+    //   );
+    // },
+    imageUrl: url != null
+        ? url
+        : isPayment
+            ? paymentError
+            : urlUserPlacholder! /*isPayment ? paymentError : urlUserPlacholder!*/,
     errorWidget: (context, url, error) {
       return CachedNetworkImage(
           imageUrl: isPayment ? paymentError : urlUserPlacholder!,
@@ -289,16 +312,16 @@ Widget imageNetwork(
     },
     width: width ?? 74,
     height: height ?? 74,
-    fit: BoxFit.cover,
+    fit: fit ?? BoxFit.contain,
     placeholder: (context, String? url) {
       return Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-                "assets/gif/loading_shimmer.gif") /* CachedNetworkImageProvider(url ?? urlUserPlacholder!)*/,
-            fit: BoxFit.cover,
-          ),
-        ),
+        // decoration: BoxDecoration(
+        //   image: DecorationImage(
+        //     image: AssetImage(
+        //         "assets/gif/loading_shimmer.gif") /* CachedNetworkImageProvider(url ?? urlUserPlacholder!)*/,
+        //     fit: BoxFit.cover,
+        //   ),
+        // ),
         child: Center(
           child: Container(
               width: 20,
@@ -313,11 +336,11 @@ Widget imageNetwork(
 }
 
 Future<void> askOnWhatsApp(String? phoneNumber) async {
-  if(phoneNumber == null || phoneNumber.isEmpty){
-    return ;
+  if (phoneNumber == null || phoneNumber.isEmpty) {
+    return;
   }
   final u =
-      "https://api.whatsapp.com/send?phone=+972${phoneNumber.toString().replaceFirst(RegExp(r'^0+'), "")}&text=";
+      "https://api.whatsapp.com/send?phone=+${phoneNumber.toString().replaceFirst(RegExp(r'^0+'), "")}&text=";
 
   final uri = Uri.encodeFull(u);
   if (await canLaunch(uri)) {
@@ -335,7 +358,7 @@ Future<void> askOnWhatsApp(String? phoneNumber) async {
     }
   } else {
     final u =
-        "whatsapp://send?phone=+972${phoneNumber.toString().replaceFirst(RegExp(r'^0+'), "")}&text=";
+        "whatsapp://send?phone=+${phoneNumber.toString().replaceFirst(RegExp(r'^0+'), "")}&text=";
 
     final uri = Uri.encodeFull(u);
     try {
@@ -353,21 +376,22 @@ Future<void> askOnWhatsApp(String? phoneNumber) async {
   }
 }
 
-openBrowser(url)async{//openBrowser
-  if(url == null ){
+openBrowser(url) async {
+  //openBrowser
+  if (url == null) {
     return;
   }
   if (await canLaunch(url)) {
     // await launch(url, /*forceSafariVC: false, forceWebView: false*/);
-    await launch(
+    await launchUrlString(
       url,
-      forceSafariVC: true,
-      forceWebView: true,
+      // forceSafariVC: true,
+      // forceWebView: true,
       // statusBarBrightness: Brightness.dark,
     );
   }
-
 }
+
 Future<void> makePhoneCall(String? phone) async {
   try {
     await launch(
@@ -461,8 +485,8 @@ Future<File>? compressImage(File file) async {
 
   Img.Image? images = Img.decodeImage(file.readAsBytesSync());
   Img.Image? smallerImage = Img.copyResize(images!,
-      width: 500,
-      height: 500); // choose the size here, it will maintain aspect ratio
+      width: 1024,
+      height: 800); // choose the size here, it will maintain aspect ratio
 
   var compressedImage = File('$path/img_$rand.jpg')
     ..writeAsBytesSync(Img.encodeJpg(/*image*/ smallerImage, quality: 85));
@@ -687,6 +711,7 @@ Future<DateTime?> dateBiker() async {
     firstDate: DateTime.now(),
     lastDate: DateTime(2030),
     locale: myLocale,
+    // confirmText:
   );
 
   return picker;
@@ -838,12 +863,15 @@ List<PaymentMethod> getPaymentMethod() {
       ApiSettings.fromJson(json.decode(SharedPref.instance.getAppSetting()))
               .paymentMethod ??
           [];
-  var applePay = PaymentMethod(id: "Apple Pay", name: "Apple Pay", image: "");
-  if (!list.contains(applePay)) {
-    if(Platform.isIOS) {
-      list.add(applePay);
-    }
-  }
+  var applePay = PaymentMethod(
+      id: LocalConstance.applePay,
+      name: LocalConstance.applePay,
+      image: Constance.appleImage);
+  // if (!list.contains(applePay)) {
+  //   if (Platform.isIOS) {
+  //     list.add(applePay);
+  //   }
+  // }
   return list;
 }
 

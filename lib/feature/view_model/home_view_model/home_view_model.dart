@@ -25,6 +25,7 @@ import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
 import 'package:inbox_clients/network/api/feature/item_helper.dart';
 import 'package:inbox_clients/network/api/feature/order_helper.dart';
+import 'package:inbox_clients/network/api/feature/splash_feature_helper.dart';
 import 'package:inbox_clients/network/api/feature/storage_feature.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
@@ -100,14 +101,14 @@ class HomeViewModel extends BaseController {
 
   moveToIntro() {
     if(!SharedPref.instance.getFirstHome()){
-      ShowCaseWidget.of(showCaseBuildContext).startShowCase([
-        scanShowKey /*= GlobalKey()*/,
-        cartShowKey /*= GlobalKey()*/,
-        taskShowKey /*= GlobalKey()*/,
-        // switchViewShowKey = GlobalKey(),
-        boxStatusShowKey /*= GlobalKey()*/,
-        addShowKey /*= GlobalKey()*/,
-      ]);
+      // ShowCaseWidget.of(showCaseBuildContext).startShowCase([
+      //   scanShowKey /*= GlobalKey()*/,
+      //   cartShowKey /*= GlobalKey()*/,
+      //   taskShowKey /*= GlobalKey()*/,
+      //   // switchViewShowKey = GlobalKey(),
+      //   boxStatusShowKey /*= GlobalKey()*/,
+      //   addShowKey /*= GlobalKey()*/,
+      // ]);
     }
   }
 
@@ -166,6 +167,7 @@ class HomeViewModel extends BaseController {
       page = 1;
       userBoxess.clear();
       onInit();
+      SplashHelper.getInstance.getAppSettings();
       await Future.delayed(Duration(seconds: 1));
     } catch (e) {
       printError();
@@ -257,6 +259,7 @@ class HomeViewModel extends BaseController {
                       newBox.id = value.id,
                       if (value.id == null)
                         {
+                          Logger().w(value.toJson()),
                           Get.off(() => HomePageHolder()),
                         }
                       else
@@ -274,16 +277,21 @@ class HomeViewModel extends BaseController {
                           update(),
                           await fromAtHome(data.code, storageViewModel,
                               homeViewModel: this),
+                          Logger().w(value.toJson()),
                           Get.off(() => HomePageHolder(
                                 box: value,
-                                isFromScan: true,
+                                isFromScan:value.id != null && storageViewModel.isChangeStatus ? true:false,
                               )),
                           itemViewModle.tdName.text = value.storageName ?? "",
-                          if (isFromAtHome ?? false)
+                          if (isFromAtHome ?? false  )
                             {
-                              await Get.bottomSheet(
-                                  CheckInBoxWidget(box: value, isUpdate: false),
-                                  isScrollControlled: true),
+                            Logger().w(value.toJson()),
+                              if(value.id != null  && storageViewModel.isChangeStatus){
+                                await Get.bottomSheet(
+                                    CheckInBoxWidget(
+                                        box: value, isUpdate: false),
+                                    isScrollControlled: true),
+                              }
                             }
                           else
                             {
@@ -364,11 +372,12 @@ class HomeViewModel extends BaseController {
                           homeViewModel: this),
                       Get.off(() => HomePageHolder(
                             box: value,
-                            isFromScan: true,
+                            isFromScan:value.id != null && storageViewModel.isChangeStatus?true:false,
                           )),
                       itemViewModle.tdName.text = value.storageName ?? "",
-                      if (isFromAtHome ?? false)
+                      if (isFromAtHome ?? false  )
                         {
+                          if(value.id != null && storageViewModel.isChangeStatus)
                           await Get.bottomSheet(
                               CheckInBoxWidget(box: value, isUpdate: false),
                               isScrollControlled: true),
@@ -505,7 +514,9 @@ class HomeViewModel extends BaseController {
     }).then((value) => {
           if (value.status!.success!)
             {
+              Logger().e("${value.toJson()}"),
               box = Box.fromJson(value.data),
+              endLoading(),
             }
           else
             {

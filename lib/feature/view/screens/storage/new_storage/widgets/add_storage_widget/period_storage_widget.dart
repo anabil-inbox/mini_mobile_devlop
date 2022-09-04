@@ -40,7 +40,7 @@ class PeriodStorageWidget extends StatelessWidget {
             height: sizeH5,
           ),
           Text(
-            "${tr.starting_from_pickup_date}",
+            handleStartAfter(),
             style: smallHintTextStyle(),
           ),
           SizedBox(
@@ -92,5 +92,9 @@ class PeriodStorageWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String handleStartAfter() {
+    return "${tr.starting_from_pickup_date}".replaceAll("\${start_after}", SharedPref.instance.getAppSettings()?.startsAfter.toString() ?? "1");
   }
 }

@@ -34,6 +34,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
   @override
   void initState() {
     super.initState();
+    Logger().e(widget.address.toJson());
     profileViewModle.tdTitleEdit.text = widget.address.addressTitle ?? "";
     profileViewModle.tdBuildingNoEdit.text = widget.address.buildingNo ?? "";
      profileViewModle.tdZoneEdit.text = widget.address.zone ?? "";
@@ -82,8 +83,17 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
             WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
               try {
                 var s = ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting()))
-                                  .areaZones?.firstWhere((element) => element.numbers!.contains(_.controller?.tdZoneNumberEdit.text.toString())).areaZone??"";
+                                  .areaZones?.firstWhere((element) {
+                  // Logger().w(element.areaZone);
+                  // Logger().w(_.controller!.tdZoneNumberEdit.text.toString());
+                                    if(widget.address.zone.toString().isNotEmpty){
+                                      Logger().w(element.areaZone);
+                                      return element.areaZone == widget.address.zone;
+                                    }
+                                    return element.numbers!.contains(_.controller?.tdZoneNumberEdit.text.toString());
+                                  }).areaZone??"";
                 if(s.isNotEmpty){
+                  Logger().e("_1 $s _2 ${widget.address.toJson()}");
                   _.controller?.tdZoneEdit.text = s;
                 }
               } catch (e) {
@@ -118,7 +128,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                       height: sizeH10,
                     ),
                     TextFormField(
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.text,
                       controller: controller.tdBuildingNoEdit,
                       onSaved: (newValue) {
                         controller.tdBuildingNoEdit.text = newValue!;
@@ -185,9 +195,9 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                       height: sizeH10,
                     ),
                     TextFormField(
-                        onTap: (){
-                          controller.showZoneNumberBottmSheet(isEdit:true);
-                        },
+                        // onTap: (){
+                        //   controller.showZoneNumberBottmSheet(isEdit:true);
+                        // },
                       onSaved: (newValue) {
                         controller.tdZoneNumberEdit.text = newValue!;
                         controller.update();
@@ -196,10 +206,19 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return '${tr.fill_the_zone_correctly}';
-                        }
+                        }/*else if(SharedPref.instance.getAppSettings()!.areaZones!.isNotEmpty ){
+                          var areaZones = SharedPref.instance.getAppSettings()!.areaZones;
+                          for(int i = 0 ; i < areaZones!.length ; i ++ ){
+                            if(!areaZones[i].numbers!.contains(value.toString())){
+                              return '${tr.fill_the_zone_correctly}';
+                            }
+                            return null;
+                          }
+                        }*/
+                        // return null;
                         return null;
                       },
-                      readOnly: true,
+                      // readOnly: true,
                       keyboardType: TextInputType.numberWithOptions(),
                       decoration: InputDecoration(hintText: "${tr.zone_number}"),
                     ),

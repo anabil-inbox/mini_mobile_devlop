@@ -60,7 +60,7 @@ class SettingItemWithTitle extends StatelessWidget {
                         fit: BoxFit.fill,
                         child: Text(
                           "$trailingTitle",
-                          style: TextStyle(color: colorPrimary),
+                          style: TextStyle(color:trailingTitle.contains("-")?errorColor: colorPrimary),
                         ),
                       ),
                       SizedBox(

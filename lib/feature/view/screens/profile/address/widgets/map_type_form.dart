@@ -6,6 +6,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
+import 'package:inbox_clients/util/location_helper.dart';
 
 import '../map.dart';
 
@@ -41,39 +42,38 @@ class MapTypeForm extends StatelessWidget {
         ),
 
 
-        InkWell(
-          onTap: () {
-            Get.to(() => MapSample());
-          },
-          child: TextFormField(
-            onTap: () {
-              Get.to(() => MapSample());
-            },
-            onSaved: (newValue) {
-              profileViewModle.tdLocation.text = newValue!;
-              profileViewModle.update();
-            },
-            readOnly: true,
-            controller: profileViewModle.tdLocation,
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return '${tr.choose_your_location}';
+        TextFormField(
+          onTap: () async{
+            /*var isDenied = */await LocationHelper.instance.isDenied().then((value) {
+              if(value) {
+                Get.to(() => MapSample());
               }
-              return null;
-            },
-            decoration: InputDecoration(
-                enabled: true,
-                suffixIcon: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Image.asset(
-                    "assets/png/location_orang.png",
-                    width: 10,
-                    height: 10,
-                  ),
+            });
+          },
+          onSaved: (newValue) {
+            profileViewModle.tdLocation.text = newValue!;
+            profileViewModle.update();
+          },
+          readOnly: true,
+          controller: profileViewModle.tdLocation,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return '${tr.choose_your_location}';
+            }
+            return null;
+          },
+          decoration: InputDecoration(
+              enabled: true,
+              suffixIcon: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Image.asset(
+                  "assets/png/location_orang.png",
+                  width: 10,
+                  height: 10,
                 ),
-                suffixStyle: TextStyle(color: Colors.transparent),
-                hintText: "${tr.choose_your_location}"),
-          ),
+              ),
+              suffixStyle: TextStyle(color: Colors.transparent),
+              hintText: "${tr.choose_your_location}"),
         ),
         SizedBox(
           height: sizeH10,
@@ -167,18 +167,18 @@ class MapTypeForm extends StatelessWidget {
         // SizedBox(
         //   height: sizeH10,
         // ),
-        TextFormField(
-          onSaved: (newValue) {
-            profileViewModle.tdUnitNo.text = newValue!;
+        TextField/*Form*/(
+          /*onSaved*/onSubmitted: (newValue) {
+            profileViewModle.tdUnitNo.text = newValue/*!*/;
             profileViewModle.update();
           },
           controller: profileViewModle.tdUnitNo,
-          validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return '${tr.fill_the_title_correctly}';
-            }
-            return null;
-          },
+          // validator: (value) {
+          //   if (value == null || value.trim().isEmpty) {
+          //     return '${tr.fill_the_title_correctly}';
+          //   }
+          //   return null;
+          // },
           decoration: InputDecoration(hintText: "${tr.unit_no}"),
         ),
 

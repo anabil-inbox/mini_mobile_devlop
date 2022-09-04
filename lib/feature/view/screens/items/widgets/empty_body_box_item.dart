@@ -106,7 +106,8 @@ class EmptyBodyBoxItem extends StatelessWidget {
               ),
             ],
           ),
-          PositionedDirectional(
+          // if(itemViewModle.operationsBox!.allowed! /*&& itemViewModle.operationsBox?.storageStatus == LocalConstance.boxAtHome*/)
+            PositionedDirectional(
             bottom: padding32,
             start: 0,
             end: 0,
@@ -144,9 +145,10 @@ class EmptyBodyBoxItem extends StatelessWidget {
                     SizedBox(
                       height: sizeH50,
                     ),
-                    (/*item.operationsBox?.saleOrder == null ||*/ item
-                            .operationsBox!.allowed!)
-                        ? PrimaryButton(
+                    /*item.operationsBox?.saleOrder == null ||*/ /*(item
+                        .operationsBox!.allowed! && item.operationsBox?.storageStatus == LocalConstance.boxAtHome) ? */
+                    item.operationsBox!.allowed!?
+                         PrimaryButton(
                             isExpanded: false,
                             isLoading: false,
                             onClicked: () {
@@ -154,13 +156,14 @@ class EmptyBodyBoxItem extends StatelessWidget {
                                   taskId: LocalConstance.pickupId);
                               Get.bottomSheet(
                                   RecallBoxProcessSheet(
+                                      isFirstPickUp:box!.firstPickup! && interdTask.id == LocalConstance.pickupId,
                                       task: interdTask,
                                       box: itemViewModle.operationsBox ?? box!,
                                       boxes: [box!]),
                                   isScrollControlled: true);
                             },
                             textButton: tr.schedule_pickup,
-                          )
+                          )/*,*/
                         //  Row(
                         //     mainAxisAlignment: MainAxisAlignment.center,
                         //     children: [

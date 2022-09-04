@@ -95,7 +95,17 @@ class NotifayForNewStorage extends StatelessWidget {
                 SizedBox(
                   height: sizeH22,
                 ),
-                Text("Order Summary:"),
+                Text(tr.order_summary),
+                if(box.saleOrder != null)...[
+                  SizedBox(
+                    height: sizeH10,
+                  ),
+                  Text("${box.saleOrder}"),
+                  SizedBox(
+                    height: sizeH10,
+                  ),
+                ],
+                if((GetUtils.isNull(box.options) || box.options!.isEmpty))...[
                 !(GetUtils.isNull(box.options) || box.options!.isEmpty)
                     ? SizedBox(
                         height: sizeH16,
@@ -116,6 +126,7 @@ class NotifayForNewStorage extends StatelessWidget {
                         children: box.options!.map((e) => Text("$e")).toList(),
                       )
                     : const SizedBox(),
+                ],
                 SizedBox(
                   height: sizeH22,
                 ),

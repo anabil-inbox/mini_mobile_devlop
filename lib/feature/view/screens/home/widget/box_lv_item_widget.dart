@@ -17,13 +17,13 @@ class HomeLVItemWidget extends StatelessWidget {
 
   final Box box;
   final bool isEnabeld;
+
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
-    screenUtil(context);
     return Container(
       width: double.infinity,
-      height: sizeH75,
+      // height: sizeH75,
       padding: EdgeInsets.all(padding18!),
       margin: EdgeInsets.only(bottom: sizeH10!),
       decoration: BoxDecoration(
@@ -53,6 +53,17 @@ class HomeLVItemWidget extends StatelessWidget {
                 SizedBox(
                   height: sizeH2,
                 ),
+                // if(box.address?.addressTitle != null)...[
+                //   CustomTextView(
+                //     txt: "${box.address?.addressTitle ?? ""}",
+                //     maxLine: Constance.maxLineOne,
+                //     textStyle: textStyleNormal()?.copyWith(height: 1),
+                //     textAlign: TextAlign.center,
+                //   ),
+                //   SizedBox(
+                //     height: sizeH2,
+                //   ),
+                // ],
                 CustomTextView(
                   txt: "${DateUtility.getChatTime(box.modified.toString())}",
                   maxLine: Constance.maxLineOne,

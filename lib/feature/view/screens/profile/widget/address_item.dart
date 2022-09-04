@@ -21,7 +21,6 @@ class AddressItem extends StatelessWidget {
     screenUtil(context);
     return GetBuilder<ProfileViewModle>(
       builder: (_) {
-        Logger().i(address.geoAddress);
         return Column(
           children: [
             Container(
@@ -143,7 +142,7 @@ class AddressItem extends StatelessWidget {
                                 },
                                 onCancelBtnClick: () {
                                   Get.back();
-                                },
+                                }, isDelete: true,
                               ));
                             },
                             child: SvgPicture.asset("assets/svgs/delete_ornage.svg")/*delete.svg*/),

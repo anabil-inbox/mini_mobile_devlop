@@ -1,6 +1,8 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/fcm/app_fcm.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
@@ -8,6 +10,7 @@ import 'package:inbox_clients/feature/view/screens/my_orders/my_orders_screen.da
 import 'package:inbox_clients/feature/view/screens/notification/notification_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/profile_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/request_new_storage.dart';
+import 'package:inbox_clients/feature/view_model/cart_view_model/cart_view_model.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
@@ -26,9 +29,9 @@ import '../../../../util/app_shaerd_data.dart';
 
 // ignore: must_be_immutable
 class HomePageHolder extends StatefulWidget {
-  HomePageHolder({Key? key, this.box, this.isFromScan}) : super(key: key);
+  HomePageHolder({Key? key, this.box, this.isFromScan  = false}) : super(key: key);
 
-  bool? isFromScan = false;
+  final bool? isFromScan ;
   Box? box;
 
   @override
@@ -48,6 +51,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
   static StorageViewModel get storageViewModel =>
       Get.put(StorageViewModel(), permanent: true);
   static SplashViewModle get splashViewModle => Get.put(SplashViewModle());
+  static CartViewModel get cartViewModel => Get.put(CartViewModel());
   static HomeViewModel get homeViewModle => Get.put(HomeViewModel() , permanent: true);
 
   @override
@@ -75,6 +79,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
       homeViewModle.getCustomerBoxes();
       storageViewModel.getStorageCategories();
       splashViewModle.getAppSetting();
+      cartViewModel.getMyCart();
     });
   }
 
@@ -101,7 +106,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
                   return bnbScreens[logic.currentIndex];
                 }),
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: Showcase/*.withWidget*/(
+            floatingActionButton: /*Showcase*//*.withWidget*//*(
               disableAnimation: Constance.showCaseDisableAnimation,
               shapeBorder: CircleBorder(),
               radius: BorderRadius.all(Radius.circular(40)),
@@ -109,8 +114,8 @@ class _HomePageHolderState extends State<HomePageHolder> {
               overlayPadding: EdgeInsets.all(5),
               blurValue:Constance.showCaseBluer ,
               description: tr.add_btn_show_case,
-              key: homeViewModle.addShowKey /*?? GlobalKey()*/,
-              child: FloatingActionButton(
+              key: homeViewModle.addShowKey *//*?? GlobalKey()*//*,
+              child:*/ FloatingActionButton(
                 backgroundColor: Theme.of(context).primaryColor,
                 onPressed: () {
                   Logger().d(
@@ -127,7 +132,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
                 ),
                 elevation: 2.0,
               ),
-            ),
+            /*),*/
             bottomNavigationBar: GetBuilder<HomeViewModel>(
               init: HomeViewModel(),
               builder: (logic) {
@@ -179,16 +184,30 @@ class _HomePageHolderState extends State<HomePageHolder> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              MaterialButton(
-                                onPressed: () {
-                                  logic.changeTab(2);
+                              ValueListenableBuilder(
+                                valueListenable:AppFcm.fcmInstance.notificationCounterValueNotifier ,builder: (context, value, child) {
+                                  return Badge(
+                                    toAnimate: false,
+                                    elevation: 0,
+                                    shape: BadgeShape.circle,
+                                    badgeColor:value == 0 ?colorTrans: colorPrimary,
+                                    position: BadgePosition(end: 2, bottom: 17),
+                                    badgeContent:value == 0 ? const SizedBox.shrink(): Text('${value}',
+                                      style: TextStyle(color: colorTextWhite),),
+                                    child: MaterialButton(
+                                      onPressed: () {
+                                        logic.changeTab(2);
+                                        AppFcm.fcmInstance.notificationCounterValueNotifier.value = 0;
+                                      },
+                                      minWidth: sizeW48,
+                                      child: logic.currentIndex == 2
+                                          ? SvgPicture.asset(
+                                        "assets/svgs/notification_selected.svg", color: colorPrimary,)
+                                          : SvgPicture.asset(
+                                          "assets/svgs/notification.svg"),
+                                    ),
+                                  );
                                 },
-                                minWidth: sizeW48,
-                                child: logic.currentIndex == 2
-                                    ? SvgPicture.asset(
-                                  "assets/svgs/notification_selected.svg", color: colorPrimary,)
-                                    : SvgPicture.asset(
-                                    "assets/svgs/notification.svg"),
                               ),
                               SizedBox(width: sizeW20),
                               MaterialButton(

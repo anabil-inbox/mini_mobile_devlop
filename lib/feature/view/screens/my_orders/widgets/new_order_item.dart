@@ -35,7 +35,7 @@ class NewOrderItemTask extends StatelessWidget {
                       width: sizeW10,
                     ),
                     Text(
-                      orderItem.item != null ? orderItem.item.toString().replaceAll("_", " ").toString().replaceAll("-", ""): "",
+                      orderItem.itemName != null ? orderItem.itemName.toString().replaceAll("_", " ").toString().replaceAll("-", ""): "",
                       style: textStyleMeduimPrimaryText()!.copyWith(
                         fontSize: fontSize16,
                       ),

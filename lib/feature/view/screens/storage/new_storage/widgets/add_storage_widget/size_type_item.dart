@@ -91,53 +91,53 @@ class SizeTypeItem extends StatelessWidget {
   getWidget() {
     if (storageViewModel.isShowAll) {
       return storageCategoriesData.defaultImage != null ?imageNetwork(
-          height: sizeW50,
-          width: sizeW40,
+          height: sizeH120,
+          width: sizeH120,
           url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
-          fit: BoxFit.cover
+          fit: BoxFit.contain
       ): SvgPicture.asset(ConstanceNetwork.enableFolder);
     } else if (((storageCategoriesData.storageCategoryType ==
             ConstanceNetwork.quantityCategoryType) &&
         storageViewModel.isShowQuantity)) {
       return storageCategoriesData.defaultImage != null ?imageNetwork(
-        height: sizeW50,
-        width: sizeW40,
+        height: sizeH120,
+        width: sizeH120,
         url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
-        fit: BoxFit.cover
+        fit: BoxFit.contain
       ): SvgPicture.asset(ConstanceNetwork.enableFolder);
     } else if (((storageCategoriesData.storageCategoryType ==
             ConstanceNetwork.itemCategoryType) &&
         storageViewModel.isShowItem)) {
       return storageCategoriesData.defaultImage != null ?imageNetwork(
-          height: sizeW50,
-          width: sizeW40,
+          height: sizeH120,
+          width: sizeH120,
           url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
-          fit: BoxFit.cover
+          fit: BoxFit.contain
       ):SvgPicture.asset(
         ConstanceNetwork.enableFolder,
-        width: sizeW50,
-        height: sizeH40,
+        width: sizeH120,
+        height: sizeH120,
       );
     } else if (((storageCategoriesData.storageCategoryType ==
                 ConstanceNetwork.spaceCategoryType ||
             storageCategoriesData.storageCategoryType!.contains("Space")) &&
         storageViewModel.isShowSpaces)) {
       return storageCategoriesData.defaultImage != null ?imageNetwork(
-          height: sizeW50,
-          width: sizeW40,
+          height: sizeH120,
+          width: sizeH120,
           url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
-          fit: BoxFit.cover
+          fit: BoxFit.contain
       ):SvgPicture.asset(
         ConstanceNetwork.enableFolder,
-        width: sizeW50,
-        height: sizeH40,
+        width: sizeH120,
+        height: sizeH120,
       );
     } else {
       isEnable = false;
       return SvgPicture.asset(
         ConstanceNetwork.disableFolder,
-        width: sizeW50,
-        height: sizeH40,
+        width: sizeH120,
+        height: sizeH120,
       );
     }
   }

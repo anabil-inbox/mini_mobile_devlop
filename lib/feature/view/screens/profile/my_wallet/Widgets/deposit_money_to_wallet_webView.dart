@@ -22,7 +22,16 @@ class DepositMoneyToWalletWebView extends StatelessWidget {
           return WebView(
               javascriptMode: JavascriptMode.unrestricted,
               initialUrl: url,
-              onProgress: (i) {},
+              onWebResourceError: (error) {
+                Logger().e(error.toString());
+                Logger().e(error.errorType);
+                Logger().e(error.description);
+                Logger().e(error.errorCode);
+                Logger().e(error.failingUrl);
+                 Get.back();
+              },
+              onProgress: (i) {
+              },
               onPageFinished: (url) {
                 try {
                   if (url.contains("status")) {
@@ -36,6 +45,9 @@ class DepositMoneyToWalletWebView extends StatelessWidget {
                     Logger().e(paymentId);
                     //logic.depositStatus = url.split("status=")[1];
                     logic.depositStatus = queryParameters["status"].toString();
+                    if(logic.depositStatus == "false"){
+                      Get.back();
+                    }
                     Logger().e(logic.depositStatus);
                     //bool result = url.contains("Paid");
                     //todo add action

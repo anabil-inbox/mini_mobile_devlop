@@ -33,6 +33,7 @@ class LocalConstance {
   static String cash = "Cash";
   static String bankTransfer = "Bank Transfer";
   static String bankCard = "Bank Card";
+  static String creditCard = "Credit Card";
   static String pointOfSale = "POS";
   static String wallet = "Wallet";
   static String applePay = "Apple Pay";
@@ -58,6 +59,7 @@ class LocalConstance {
   static String signatureOnDrvier = "7";
   static String signature = "8";
   static String invoice = "101";
+  static String done = "66";
 
   static String id = "id";
   static String salesOrder = "sales_order";
@@ -82,15 +84,25 @@ class LocalConstance {
   static String itemConst = "item";
   static String spaceConst = "space";
 
-  static var inWarehouse;
+  static var inWarehouse = "in warehouse";
 
   static String completed = "Completed";
+  static String cancelled = "Cancelled";
+  static String processing = "To Deliver and Bill";
+
 
   static String productSv = "Product_sv";
 
   static String dailySubscriptions = "Daily";
+  static String monthlySubscriptions = "Monthly" ;
+  static String yearlySubscriptions = "Yearly" ;
 
   static String standardBoxIn = "Standard Box_in";
 
   static int showCaseBluer = 2;
+
+  static String paymentUrl  = "url";
+
+
+
 }

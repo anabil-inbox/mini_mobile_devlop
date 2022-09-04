@@ -89,7 +89,7 @@ class CustomTextFormFiled extends StatelessWidget /*with AppDimen, AppStyle */ {
       // ignore: missing_return
       validator: (String? value) {
         if (value!.isEmpty || value == "") {
-           return messageFiled?.tr;
+           return tr.this_field_is_required;
         } else if (customValid != null) {
           return customValid!(value);
         } else {

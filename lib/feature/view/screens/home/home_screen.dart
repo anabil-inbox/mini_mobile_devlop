@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,7 @@ import 'package:inbox_clients/feature/view/widgets/custom_text_filed.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/empty_state/home_empty_statte.dart';
 import 'package:inbox_clients/feature/view/widgets/icon_btn.dart';
+import 'package:inbox_clients/feature/view_model/cart_view_model/cart_view_model.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -48,7 +50,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 //todo this for search
-  Widget get searchWidget => Container(
+  Widget get searchWidget =>
+      Container(
         height: sizeH50,
         clipBehavior: Clip.hardEdge,
         padding: EdgeInsets.symmetric(horizontal: sizeW13!),
@@ -84,67 +87,87 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
 
-  Widget get appBar => GetBuilder<StorageViewModel>(builder: (logic) {
-        return Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: sizeW20!, vertical: sizeH20!),
-          child: SizedBox(
-             height: sizeH50,
-            child: CustomAppBarWidget(
-              elevation: 0,
-              appBarColor: (HomeScreen.homeViewModle.userBoxess.isEmpty)
-                  ? scaffoldColor
-                  : colorBackground,
-              isCenterTitle: true,
-              titleWidget: searchWidget,
-              leadingWidget: Showcase(
-                disableAnimation: Constance.showCaseDisableAnimation,
-                shapeBorder: RoundedRectangleBorder(),
-                radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
-                showArrow: Constance.showCaseShowArrow,
-                overlayPadding: EdgeInsets.all(5),
-                blurValue:Constance.showCaseBluer ,
-                description: tr.scan_btn_show_case,
-                key: HomeScreen.homeViewModle.scanShowKey/*?? GlobalKey()*/,
-                child: IconBtn(
-                  iconColor: colorTextWhite,
-                  width: sizeW48,
-                  height: sizeH48,
-                  backgroundColor: colorRed,
-                  onPressed: () {
-                    Get.to(() => QrScreen(
-                          index: 0,
-                          storageViewModel: HomeScreen.storageViewModel,
-                        ));
-                  },
-                  borderColor: colorTrans,
-                  icon: "assets/svgs/Scan.svg",
-                ),
-              ),
-              leadingWidth: sizeW48,
-              actionsWidgets: [
-                Showcase(
+  Widget get appBar =>
+      GetBuilder<StorageViewModel>(builder: (logic) {
+        return IntrinsicHeight(
+          child: Padding(
+            padding:
+            EdgeInsets.symmetric(horizontal: sizeW20!, vertical: sizeH20!),
+            child: SizedBox(
+              // height: sizeH50,
+              child: CustomAppBarWidget(
+                elevation: 0,
+                appBarColor: (HomeScreen.homeViewModle.userBoxess.isEmpty)
+                    ? scaffoldColor
+                    : colorBackground,
+                isCenterTitle: true,
+                titleWidget: searchWidget,
+                leadingWidget: /*Showcase(
                   disableAnimation: Constance.showCaseDisableAnimation,
                   shapeBorder: RoundedRectangleBorder(),
-                  radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
+                  radius: BorderRadius.all(
+                      Radius.circular(Constance.showCaseRecBorder)),
                   showArrow: Constance.showCaseShowArrow,
                   overlayPadding: EdgeInsets.all(5),
-                  blurValue:Constance.showCaseBluer ,
-                  description: tr.cart_btn_show_case,
-                  key: HomeScreen.homeViewModle.cartShowKey/*?? GlobalKey()*/,
-                  child: IconBtn(
-                    icon: "assets/svgs/Buy.svg",
-                    iconColor: colorRed,
+                  blurValue: Constance.showCaseBluer,
+                  description: tr.scan_btn_show_case,
+                  key: HomeScreen.homeViewModle.scanShowKey *//*?? GlobalKey()*//*,
+                  child: */IconBtn(
+                    iconColor: colorTextWhite,
                     width: sizeW48,
                     height: sizeH48,
-                    backgroundColor: colorRedTrans,
+                    backgroundColor: colorRed,
                     onPressed: () {
-                      Get.to(() => CartScreen());
+                      Get.to(() =>
+                          QrScreen(
+                            index: 0,
+                            storageViewModel: HomeScreen.storageViewModel,
+                          ));
                     },
                     borderColor: colorTrans,
+                    icon: "assets/svgs/Scan.svg",
                   ),
-                ),
-              ],
+                /*),*/
+                leadingWidth: sizeW48,
+                actionsWidgets: [
+                  /*Showcase(
+                    disableAnimation: Constance.showCaseDisableAnimation,
+                    shapeBorder: RoundedRectangleBorder(),
+                    radius: BorderRadius.all(
+                        Radius.circular(Constance.showCaseRecBorder)),
+                    showArrow: Constance.showCaseShowArrow,
+                    overlayPadding: EdgeInsets.all(5),
+                    blurValue: Constance.showCaseBluer,
+                    description: tr.cart_btn_show_case,
+                    key: HomeScreen.homeViewModle.cartShowKey *//*?? GlobalKey()*//*,
+                    child: */GetBuilder<CartViewModel>(
+                      init: CartViewModel(),
+                        builder: (logic) {
+                          return Badge(
+                            toAnimate: false,
+                            elevation: 0,
+                            shape: BadgeShape.circle,
+                            badgeColor:logic.cartList.length == 0 ?colorTrans: colorPrimary,
+                            position: BadgePosition(start: -4, bottom: -2),
+                            badgeContent:logic.cartList.length == 0 ? const SizedBox.shrink(): Text('${logic.cartList.length}',
+                              style: TextStyle(color: colorTextWhite),),
+                            borderRadius: BorderRadius.circular(8),
+                            child: IconBtn(
+                              icon: "assets/svgs/Buy.svg",
+                              iconColor: colorRed,
+                              width: sizeW48,
+                              height: sizeH48,
+                              backgroundColor: colorRedTrans,
+                              onPressed: () {
+                                Get.to(() => CartScreen());
+                              },
+                              borderColor: colorTrans,
+                            ),
+                          );
+                        }),
+                 /* ),*/
+                ],
+              ),
             ),
           ),
         );
@@ -240,7 +263,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       await HomeScreen.homeViewModle.refreshHome();
                     },
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height,
                       child: SingleChildScrollView(
                         controller: logic.homeScrollcontroller,
                         physics: customScrollViewIOS(),
@@ -251,61 +277,69 @@ class _HomeScreenState extends State<HomeScreen> {
                               return Column(
                                 children: [
                                   SizedBox(
-                                    height:Platform.isIOS ? 160: 150,
+                                    height: Platform.isIOS ? 160 : 150,
                                   ),
-                                  Showcase(
-                                      disableAnimation: Constance.showCaseDisableAnimation,
+                                  /*Showcase(
+                                      disableAnimation: Constance
+                                          .showCaseDisableAnimation,
                                       shapeBorder: RoundedRectangleBorder(),
-                                      radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
+                                      radius: BorderRadius.all(Radius.circular(
+                                          Constance.showCaseRecBorder)),
                                       showArrow: Constance.showCaseShowArrow,
                                       overlayPadding: EdgeInsets.all(5),
-                                      blurValue:Constance.showCaseBluer ,
+                                      blurValue: Constance.showCaseBluer,
                                       description: tr.task_btn_show_case,
-                                      key: HomeScreen.homeViewModle.taskShowKey/*?? GlobalKey()*/,
-                                      child: FilterWidget()),
+                                      key: HomeScreen.homeViewModle
+                                          .taskShowKey *//*?? GlobalKey()*//*,
+                                      child:*/ FilterWidget()/*)*/,
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  Showcase(
-                                    disableAnimation: Constance.showCaseDisableAnimation,
+                                /*  Showcase(
+                                    disableAnimation: Constance
+                                        .showCaseDisableAnimation,
                                     shapeBorder: RoundedRectangleBorder(),
-                                    radius: BorderRadius.all(Radius.circular(Constance.showCaseRecBorder)),
+                                    radius: BorderRadius.all(Radius.circular(
+                                        Constance.showCaseRecBorder)),
                                     showArrow: Constance.showCaseShowArrow,
                                     overlayPadding: EdgeInsets.all(5),
-                                    blurValue:Constance.showCaseBluer ,
+                                    blurValue: Constance.showCaseBluer,
                                     description: tr.status_btn_show_case,
-                                    key: HomeScreen.homeViewModle.boxStatusShowKey /*?? GlobalKey()*/,
-                                    child: FittedBox(
+                                    key: HomeScreen.homeViewModle
+                                        .boxStatusShowKey *//*?? GlobalKey()*//*,
+                                    child:*/ FittedBox(
                                       fit: BoxFit.fill,
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                        CrossAxisAlignment.center,
                                         children: [
                                           InkWell(
                                               onTap: /*onTheWayClick*/ () {},
                                               child: textHintsWidget(
                                                   "${tr.on_the_way}", null)),
-                                          textHintsWidget("${tr.in_warehouse}",
-                                              colorInWarhouse),
                                           textHintsWidget(
                                               "${tr.at_home}", colorAtHome),
                                           textHintsWidget(
                                               tr.pickup, boxColorOrange),
+                                          textHintsWidget("${tr.in_warehouse}",
+                                              colorInWarhouse),
+
                                         ],
                                       ),
                                     ),
-                                  ),
+                                  /*),*/
                                   if (!logic.isListView!) ...[
                                     logic.isLoading
                                         ? DialogLoading()
                                         : GVWidget(),
-                                  ] else ...[
-                                    logic.isLoading
-                                        ? DialogLoading()
-                                        : LVWidget(),
-                                  ],
+                                  ] else
+                                    ...[
+                                      logic.isLoading
+                                          ? DialogLoading()
+                                          : LVWidget(),
+                                    ],
                                 ],
                               );
                             },
@@ -316,7 +350,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Container(
                       width: double.infinity,
-                      height:Platform.isIOS? 135: 120,
+                      height: Platform.isIOS ? 135 : 130,
                       // padding: EdgeInsets.all(padding10!),
                       decoration: BoxDecoration(
                         color: colorBackground,
@@ -336,10 +370,10 @@ class _HomeScreenState extends State<HomeScreen> {
     Get.to(() => SearchScreen());
   }
 
-  // void onTheWayClick() async{
-  //   Get.bottomSheet(
-  //       NotifayForNewStorage(box: Box(),showQrScanner: true,),
-  //       isScrollControlled: true
-  //   );
-  // }
+// void onTheWayClick() async{
+//   Get.bottomSheet(
+//       NotifayForNewStorage(box: Box(),showQrScanner: true,),
+//       isScrollControlled: true
+//   );
+// }
 }

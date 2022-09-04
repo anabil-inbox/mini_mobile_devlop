@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/balance_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/box_need_scanned_item.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/customer_signature_instant_order.dart';
@@ -7,6 +8,7 @@ import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/fet
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_box_instant_order.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_delivered_box.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_products_widget.dart';
+import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/cases_report_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/signature_bottom_sheet.dart';
@@ -29,13 +31,14 @@ class ReciverOrderScreen extends StatefulWidget /*StatelessWidget */ {
       {Key? key,
       this.isNeedToPayment = false,
       this.isNeedSignature = false,
-      this.isNeedFingerprint = false})
+      this.isNeedFingerprint = false, this.paymentUrl, })
       : super(key: key);
 
   final HomeViewModel homeViewModel;
   final bool isNeedToPayment;
   final bool isNeedSignature;
   final bool isNeedFingerprint;
+  final String? paymentUrl;
 
   @override
   State<ReciverOrderScreen> createState() => _ReciverOrderScreenState();
@@ -55,6 +58,17 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       if (widget.isNeedSignature) {
         SignatureBottomSheet.showSignatureBottomSheet();
+      } else if (widget.isNeedToPayment && widget.paymentUrl != null && widget.paymentUrl!.isNotEmpty) {
+        // Get.to(PaymentScreen(
+        //   operationTask:homeViewModel.operationTask,
+        //   isFromNotifications:true,
+        //   url: widget.paymentUrl,
+        //   isFromCart: false,
+        //   isOrderProductPayment: false,
+        //   cartModels: [],
+        //   isFromNewStorage: false,
+        //   paymentId: '',
+        // ));
       } else if (widget.isNeedFingerprint) {
         await widget.homeViewModel.signatureWithTouchId();
       }
@@ -62,11 +76,13 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
       //   Get.bottomSheet(RateBottomSheet(taskResponse:widget.homeViewModel.operationTask ,),isScrollControlled: true);
       // }
     });
-    homeViewModel.showReceivedOrderCase(boxNeedScanShowKey,
-        scanBoxShowKey,
-        scanProductShowKey,
-        priceShowKey,
-        signatureShowKey,);
+    homeViewModel.showReceivedOrderCase(
+      boxNeedScanShowKey,
+      scanBoxShowKey,
+      scanProductShowKey,
+      priceShowKey,
+      signatureShowKey,
+    );
   }
 
   Widget get idVerification => Container(
@@ -206,7 +222,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                     SizedBox(height: sizeH10),
                     if (home.operationTask.processType !=
                         LocalConstance.fetchId) ...[
-                      Showcase(
+                      /*Showcase(
                           disableAnimation: Constance.showCaseDisableAnimation,
                           shapeBorder: RoundedRectangleBorder(),
                           radius: BorderRadius.all(
@@ -215,15 +231,15 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                           overlayPadding: EdgeInsets.all(5),
                           blurValue: Constance.showCaseBluer,
                           description: tr.need_scan_btn_show_case,
-                          key: /*homeViewModel.*/boxNeedScanShowKey,
-                          child: const BoxNeedScannedItem()),
+                           key: *//*homeViewModel.*//* boxNeedScanShowKey,
+                          child:*/ const BoxNeedScannedItem()/*)*/,
                     ] else ...[
                       const FetchedItems(),
                     ],
                     SizedBox(height: sizeH10),
                     if (home.operationTask.processType !=
                         LocalConstance.fetchId) ...[
-                      Showcase(
+                      /*Showcase(
                         disableAnimation: Constance.showCaseDisableAnimation,
                         shapeBorder: RoundedRectangleBorder(),
                         radius: BorderRadius.all(
@@ -232,11 +248,11 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                         overlayPadding: EdgeInsets.all(5),
                         blurValue: Constance.showCaseBluer,
                         description: tr.scan_box_btn_show_case,
-                        key: /*homeViewModel.*/scanBoxShowKey,
-                        child: ScanBoxInstantOrder(
+                        key: *//*homeViewModel.*//* scanBoxShowKey,
+                        child:*/ ScanBoxInstantOrder(
                           homeViewModel: widget.homeViewModel,
                         ),
-                      ),
+                     /* ),*/
                     ],
                     SizedBox(height: sizeH10),
 
@@ -252,7 +268,7 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                     ],
 
                     SizedBox(height: sizeH10),
-                    Showcase(
+                    /*Showcase(
                         disableAnimation: Constance.showCaseDisableAnimation,
                         shapeBorder: RoundedRectangleBorder(),
                         radius: BorderRadius.all(
@@ -261,10 +277,10 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                         overlayPadding: EdgeInsets.all(5),
                         blurValue: Constance.showCaseBluer,
                         description: tr.scan_product_btn_show_case,
-                        key: /*homeViewModel.*/scanProductShowKey,
-                        child: const ScanProducts()),
+                        key: *//*homeViewModel.*//* scanProductShowKey,
+                        child: const*/ ScanProducts()/*)*/,
                     SizedBox(height: sizeH10),
-                    Showcase(
+                   /* Showcase(
                         disableAnimation: Constance.showCaseDisableAnimation,
                         shapeBorder: RoundedRectangleBorder(),
                         radius: BorderRadius.all(
@@ -273,10 +289,10 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                         overlayPadding: EdgeInsets.all(5),
                         blurValue: Constance.showCaseBluer,
                         description: tr.price_btn_show_case,
-                        key: /*homeViewModel.*/priceShowKey,
-                        child: const Balance()),
+                        key: *//*homeViewModel.*//* priceShowKey,
+                        child:*/ const Balance()/*)*/,
                     SizedBox(height: sizeH10),
-                    Showcase(
+                    /*Showcase(
                         disableAnimation: Constance.showCaseDisableAnimation,
                         shapeBorder: RoundedRectangleBorder(),
                         radius: BorderRadius.all(
@@ -285,8 +301,8 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                         overlayPadding: EdgeInsets.all(5),
                         blurValue: Constance.showCaseBluer,
                         description: tr.signature_show_case,
-                        key: /*homeViewModel.*/signatureShowKey,
-                        child: const CustomerSignatureInstantOrder()),
+                        key: *//*homeViewModel.*//* signatureShowKey,
+                        child: */const CustomerSignatureInstantOrder()/*)*/,
                     SizedBox(height: sizeH20),
                   ],
                 ),

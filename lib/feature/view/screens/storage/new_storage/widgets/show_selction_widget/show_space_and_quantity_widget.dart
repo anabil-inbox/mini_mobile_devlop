@@ -6,6 +6,8 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/constance/constance.dart';
 
 import 'show_header_selection.dart';
 
@@ -59,8 +61,33 @@ class ShowSpaceAndQuantityWidget extends StatelessWidget {
                   localBulk: storageCategoriesData.localBulk,
                   storageItem: storageCategoriesData.selectedItem!,
                 ),
+          // SizedBox(
+          //   height: sizeH9,
+          // ),
+          Row(
+            children: [
+              Text(
+                tr.subscriptions + " : ",
+                textAlign: TextAlign.start,
+                style: textStyleNormalBlack(),
+              ),
+              SizedBox(width: sizeW5,),
+              Expanded(
+                child: Text(
+                  storageCategoriesData.selectedDuration.toString() ,
+                  textAlign: TextAlign.start,
+                  style: textStyleNormalBlack(),
+                ),
+              ),
+              Text(
+                "(${handlerQtySubscriptions()}${storageCategoriesData.numberOfDays})",
+                textAlign: TextAlign.start,
+                style: textStyleNormalBlack(),
+              ),
+            ],
+          ),
           SizedBox(
-            height: sizeH9,
+            height: sizeH12,
           ),
           Row(
             children: [
@@ -86,5 +113,9 @@ class ShowSpaceAndQuantityWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String handlerQtySubscriptions() {
+    return storageCategoriesData.selectedDuration.toString() == LocalConstance.dailySubscriptions ?" ${tr.daily} " : "".trim();
   }
 }
