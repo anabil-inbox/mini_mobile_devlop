@@ -115,12 +115,19 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                         width: sizeW7,
                       ),
                       CustomTextView(
-                          txt: logic.calculateTaskPriceLotBoxess(
+                          txt: widget.boxes.length == 0
+                              ? logic.calculateTaskPriceOnceBox(task: widget.task)
+                              : logic.calculateTaskPriceLotBoxess(
                               isFromCart: false,
                               task: widget.task,
                               boxess: widget.boxes,
                               isFirstPickUp: widget.isFirstPickUp! &&
-                                  widget.task.id == LocalConstance.pickupId),
+                                  widget.task.id == LocalConstance.pickupId)/*logic.calculateTaskPriceLotBoxess(
+                              isFromCart: false,
+                              task: widget.task,
+                              boxess: widget.boxes,
+                              isFirstPickUp: widget.isFirstPickUp! &&
+                                  widget.task.id == LocalConstance.pickupId)*/,
                           textAlign: TextAlign.center,
                           textStyle: textStyleAppBarTitle()?.copyWith(
                               fontSize: fontSize14,

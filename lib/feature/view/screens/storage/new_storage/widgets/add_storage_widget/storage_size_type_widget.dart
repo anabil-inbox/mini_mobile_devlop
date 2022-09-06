@@ -5,6 +5,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/font_dimne.dart';
 
 import 'size_type_item.dart';
 
@@ -32,7 +33,7 @@ class StorageSizeType extends StatelessWidget {
           ),
           Text(
             "${tr.choose_from_below} ${storageViewModel.userStorageCategoriesData.isNotEmpty ?  tr.add_more_items : ""}",
-            style: smallHintTextStyle(),
+            style: smallHintTextStyle()?.copyWith(fontSize: fontSize14),
           ),
           SizedBox(
             height: sizeH16,
@@ -48,7 +49,7 @@ class StorageSizeType extends StatelessWidget {
                       crossAxisCount: (builder.storageCategoriesList.length  == 1 ? 1: 2),
                       mainAxisSpacing: sizeW10!,
                       crossAxisSpacing: sizeH10!,
-                      childAspectRatio: (sizeH320 / sizeH250!)),
+                      childAspectRatio: (sizeH320 / sizeH270!)),
                   itemBuilder: (contxet, index) {
                     return SizeTypeItem(
                       media: [

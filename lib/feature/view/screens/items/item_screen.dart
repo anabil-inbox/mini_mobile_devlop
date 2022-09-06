@@ -179,6 +179,11 @@ class _ItemScreenState extends State<ItemScreen> {
         autoRemove: false,
         initState: (_) {
           itemViewModle.operationsBox?.storageName = "";
+          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+            itemViewModle.allowedClear = true;
+            itemViewModle.update();
+          });
+
         },
         builder: (build) {
           if (build.isLoading) {
@@ -461,7 +466,8 @@ class _ItemScreenState extends State<ItemScreen> {
                           onRedBtnClick: onRedBtnClick,
                           onDeleteBox: onDeleteBoxClick,
                         )
-                      : itemViewModle.operationsBox?.saleOrder != null && itemViewModle.operationsBox!.saleOrder!.isNotEmpty ?PrimaryButton(textButton: tr.order_details,
+                      : itemViewModle.operationsBox?.saleOrder != null && itemViewModle.operationsBox!.saleOrder!.isNotEmpty ?
+                      PrimaryButton(textButton: tr.order_details,
                       isLoading: false,
                       onClicked: (){
                         Get.off(() => OrderDetailesScreen(

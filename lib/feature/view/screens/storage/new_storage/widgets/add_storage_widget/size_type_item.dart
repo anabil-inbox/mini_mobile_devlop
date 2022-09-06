@@ -10,6 +10,7 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../../../../util/app_shaerd_data.dart';
@@ -60,7 +61,7 @@ class SizeTypeItem extends StatelessWidget {
                     CustomTextView(
                       txt: storageCategoriesData.storageName,
                       maxLine: Constance.maxLineTwo,
-                      textStyle: textStyleNormalBlack(),
+                      textStyle: textStyleNormalBlack()?.copyWith(fontSize: fontSize14),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -91,8 +92,8 @@ class SizeTypeItem extends StatelessWidget {
   getWidget() {
     if (storageViewModel.isShowAll) {
       return storageCategoriesData.defaultImage != null ?imageNetwork(
-          height: sizeH120,
-          width: sizeH120,
+          height: sizeH90,
+          width: sizeH90,
           url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
           fit: BoxFit.contain
       ): SvgPicture.asset(ConstanceNetwork.enableFolder);
@@ -100,8 +101,8 @@ class SizeTypeItem extends StatelessWidget {
             ConstanceNetwork.quantityCategoryType) &&
         storageViewModel.isShowQuantity)) {
       return storageCategoriesData.defaultImage != null ?imageNetwork(
-        height: sizeH120,
-        width: sizeH120,
+        height: sizeH90,
+        width: sizeH90,
         url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
         fit: BoxFit.contain
       ): SvgPicture.asset(ConstanceNetwork.enableFolder);
@@ -109,35 +110,35 @@ class SizeTypeItem extends StatelessWidget {
             ConstanceNetwork.itemCategoryType) &&
         storageViewModel.isShowItem)) {
       return storageCategoriesData.defaultImage != null ?imageNetwork(
-          height: sizeH120,
-          width: sizeH120,
+          height: sizeH90,
+          width: sizeH90,
           url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
           fit: BoxFit.contain
       ):SvgPicture.asset(
         ConstanceNetwork.enableFolder,
-        width: sizeH120,
-        height: sizeH120,
+        width: sizeH90,
+        height: sizeH90,
       );
     } else if (((storageCategoriesData.storageCategoryType ==
                 ConstanceNetwork.spaceCategoryType ||
             storageCategoriesData.storageCategoryType!.contains("Space")) &&
         storageViewModel.isShowSpaces)) {
       return storageCategoriesData.defaultImage != null ?imageNetwork(
-          height: sizeH120,
-          width: sizeH120,
+          height: sizeH90,
+          width: sizeH90,
           url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
           fit: BoxFit.contain
       ):SvgPicture.asset(
         ConstanceNetwork.enableFolder,
-        width: sizeH120,
-        height: sizeH120,
+        width: sizeH90,
+        height: sizeH90,
       );
     } else {
       isEnable = false;
       return SvgPicture.asset(
         ConstanceNetwork.disableFolder,
-        width: sizeH120,
-        height: sizeH120,
+        width: sizeH90,
+        height: sizeH90,
       );
     }
   }

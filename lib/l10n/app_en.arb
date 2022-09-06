@@ -73,7 +73,7 @@
     "zone":"Zone",
     "zone_number":"Zone Number",
     "street":"Street",
-    "daily":"Daily",
+    "daily":"Days",
     "choose_your_location":"Choose Your Location",
     "extra_details":"additional Details",
     "make_default_address":"Make Default Address",

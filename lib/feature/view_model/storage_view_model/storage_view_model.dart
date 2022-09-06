@@ -544,18 +544,22 @@ class StorageViewModel extends BaseController {
 
                 if (element.name == newStorageCategoriesData.name &&
                         element.selectedDuration ==
+                            newStorageCategoriesData.selectedDuration &&
+                        element.numberOfDays ==
                             newStorageCategoriesData
-                                .selectedDuration  && element.numberOfDays ==
-                    newStorageCategoriesData
-                        .numberOfDays/*&&
+                                .numberOfDays /*&&
                     element.quantity == newStorageCategoriesData.quantity*/ /*&&
                     element.storageFeatures == newStorageCategoriesData.storageFeatures*/
                     ) {
-                  element.quantity = element.quantity! + newStorageCategoriesData.quantity!;
-                  if(element.numberOfDays! != newStorageCategoriesData.numberOfDays!) {
-                    element.numberOfDays = element.numberOfDays! + newStorageCategoriesData.numberOfDays!;
+                  element.quantity =
+                      element.quantity! + newStorageCategoriesData.quantity!;
+                  if (element.numberOfDays! !=
+                      newStorageCategoriesData.numberOfDays!) {
+                    element.numberOfDays = element.numberOfDays! +
+                        newStorageCategoriesData.numberOfDays!;
                   }
-                  element.userPrice = element.userPrice! + newStorageCategoriesData.userPrice!;
+                  element.userPrice =
+                      element.userPrice! + newStorageCategoriesData.userPrice!;
                 } else {
                   if (!userStorageCategoriesData
                       .contains(newStorageCategoriesData))
@@ -972,6 +976,8 @@ class StorageViewModel extends BaseController {
           localOrderItem.storageType = element.storageCategoryType;
           localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
           localOrderItem.itemParent = 0;
+          localOrderItem.from = selectedDay!.from;
+          localOrderItem.to = selectedDay!.to;
           orderItems.add(localOrderItem);
           localOrderItem = OrderItem();
         }
@@ -985,10 +991,9 @@ class StorageViewModel extends BaseController {
         localOrderItem.storageType = element.storageCategoryType;
         localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
         localOrderItem.itemParent = 0;
-        localOrderItem.subscriptionPrice =
-            element.userPrice! / element.numberOfDays! / element.quantity!;
-        // localOrderItem.from = selectedDay!.from;
-        // localOrderItem.to = selectedDay!.to;
+        localOrderItem.subscriptionPrice = element.userPrice! / element.numberOfDays! / element.quantity!;
+        localOrderItem.from = selectedDay!.from;
+        localOrderItem.to = selectedDay!.to;
         // localOrderItem.spacex = tdX.text;
         // localOrderItem.spacey = tdY.text;
         orderItems.add(localOrderItem);
@@ -1235,13 +1240,13 @@ class StorageViewModel extends BaseController {
     update();
   }
 
-  clearNewStorageData(){
-    selctedWorksHours  = null ;
-    selectedDateTime  = null ;
-    selectedDay  = null ;
-    selectedDayEdit  = null ;
-    selectedStore  = null ;
-    selectedAddress  = null ;
+  clearNewStorageData() {
+    selctedWorksHours = null;
+    selectedDateTime = null;
+    selectedDay = null;
+    selectedDayEdit = null;
+    selectedStore = null;
+    selectedAddress = null;
   }
 
   void chooseTimeBottomSheet({bool? isFromEdit = false}) {
@@ -1622,16 +1627,16 @@ class StorageViewModel extends BaseController {
     }
 
     price += task.price!;
-    num shivingPrice = 0;
-    if (selectedAddress != null) {
-      for (var item in task.areaZones!) {
-        if (item.id == selectedAddress!.zone) {
-          shivingPrice = (item.price ?? 0);
-        }
-      }
-      Logger().i("price_$price shivingPrice_$shivingPrice");
-      price = price + shivingPrice;
-    }
+    // num shivingPrice = 0;
+    // if (selectedAddress != null) {
+    //   for (var item in task.areaZones!) {
+    //     if (item.id == selectedAddress!.zone) {
+    //       shivingPrice = (item.price ?? 0);
+    //     }
+    //   }
+    //   Logger().i("price_$price shivingPrice_$shivingPrice");
+    //   price = price + shivingPrice;
+    // }
     return getPriceWithFormate(price: price);
   }
 
@@ -1653,20 +1658,23 @@ class StorageViewModel extends BaseController {
     //   task.price = 0;
     // }
     price = task.price! * boxess.length;
-
-    if (selectedAddress != null && (!isFirstPickUp && task.id !=LocalConstance.pickupId)) {
-      for (var item in task.areaZones!) {
-        if (item.id == selectedAddress?.zone) {
-          price += (item.price ?? 0) *
-              (boxess.length / settings.deliveryFactor!)
-                  .toDouble()
-                  .ceilToDouble();
+    Logger().i("1_$price");
+    if (selectedAddress !=
+        null /*&& (!isFirstPickUp && task.id !=LocalConstance.pickupId)*/) {
+      if((!isFirstPickUp /*&& task.id !=LocalConstance.pickupId*/)) {
+        for (var item in task.areaZones!) {
+          if (item.id == selectedAddress?.zone) {
+            price += (item.price ?? 0) *
+                (boxess.length / settings.deliveryFactor!)
+                    .toDouble()
+                    .ceilToDouble();
+          }
         }
       }
     }
 
-    Logger().i(price);
-    if (isFromCart  ) {
+    Logger().i("2_$price");
+    if (isFromCart) {
       for (VAS item in task.selectedVas ?? []) {
         price += (item.price ?? 0) * boxess.length;
         print("options_price ${item.price}");
@@ -1677,6 +1685,7 @@ class StorageViewModel extends BaseController {
         print("options_price ${item.price}");
       }
     }
+    Logger().i("3_$price");
     // num shivingPrice = 0;
     // if (selectedAddress != null) {
     //   for (var item in task.areaZones!) {
@@ -2093,7 +2102,7 @@ class StorageViewModel extends BaseController {
     // Logger().e("MSG_USER_POINTS = $userUsesPoints");
     // Logger().e("MSG_USER_POINTS = $price");
 
-    if (!isFirstPickUp )  profileViewModle.getMyPoints();
+    if (!isFirstPickUp) profileViewModle.getMyPoints();
 
     if (price > 0) {
       return [getPriceWithFormate(price: price), usesPoints];
@@ -2109,7 +2118,8 @@ class StorageViewModel extends BaseController {
     num price = 0.00;
     for (var cartItem in cartModel) {
       selectedAddress = cartItem.address;
-      if (cartItem.isFirstPickUp! && cartItem.task?.id ==LocalConstance.pickupId) {
+      if (cartItem.isFirstPickUp! &&
+          cartItem.task?.id == LocalConstance.pickupId) {
         cartItem.task?.price = 0.00;
       }
       if (cartItem.task!.price! == 0.00) {
@@ -2117,14 +2127,14 @@ class StorageViewModel extends BaseController {
       } else {
         price += cartItem.task!.price! * cartItem.box!.length;
       }
-      if (selectedAddress != null &&   (!cartItem.isFirstPickUp! && cartItem.task?.id !=LocalConstance.pickupId)) {
-        for (var item in cartItem.task!.areaZones!) {
-          if (item.id == selectedAddress?.zone) {
-            Logger().e((cartItem.box!.length / settings.deliveryFactor!).toDouble().ceilToDouble());
-            price += (item.price ?? 0) *
-                (cartItem.box!.length / settings.deliveryFactor!)
-                    .toDouble()
-                    .ceilToDouble();
+      if (selectedAddress !=
+          null /*&&   (!cartItem.isFirstPickUp! && cartItem.task?.id !=LocalConstance.pickupId)*/) {
+        if ((!cartItem.isFirstPickUp! /*&& cartItem.task?.id != LocalConstance.pickupId*/)) {
+          for (var item in cartItem.task!.areaZones!) {
+            if (item.id == selectedAddress?.zone) {
+              Logger().e((cartItem.box!.length / settings.deliveryFactor!).toDouble().ceilToDouble());
+              price += (item.price ?? 0) *(cartItem.box!.length / settings.deliveryFactor!).toDouble().ceilToDouble();
+            }
           }
         }
       }

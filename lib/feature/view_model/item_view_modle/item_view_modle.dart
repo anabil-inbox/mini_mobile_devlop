@@ -180,11 +180,14 @@ class ItemViewModle extends BaseController {
     getBoxBySerial(serial: serialNo);
   }
 
+  bool allowedClear = true;//allowedClear
   clearBottomSheetItem() {
     images.clear();
     usesBoxItemsTags.clear();
-    tdTag.clear();
-    tdName.clear();
+    if(allowedClear) {
+      tdTag.clear();
+      tdName.clear();
+    }
     itemQuantity = 1;
     // isAllowToShowGallery = false;
     update();
@@ -376,6 +379,8 @@ class ItemViewModle extends BaseController {
             textButton: tr.gallery,
             onClicked: () async {
               if(isFromAddItem!) {
+                allowedClear = false;
+                update();
                 Get.back();
                 Get.back();
               }

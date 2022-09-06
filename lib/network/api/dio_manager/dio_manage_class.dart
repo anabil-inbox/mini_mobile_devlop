@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:inbox_clients/feature/view/screens/auth/user&&company_auth/user_both_login/user_both_login_view.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/sh_util.dart';
@@ -29,10 +30,11 @@ class DioManagerClass {
 
   Future<Response> dioGetMethod(
       {var url, Map<String, dynamic>? header, var queryParameters}) async {
+     if(kDebugMode) {
         print("msg_sendde_url $url");
         print("msg_sendde_header $header");
         print("msg_sendde_queryـParameters ${queryParameters.toString()}");
-
+ }
     return await _dio!.get(url,
         options: Options(headers: header), queryParameters: queryParameters);
   }
@@ -53,9 +55,11 @@ class DioManagerClass {
 
   Future<Response> dioPostFormMethod(
       {var url, Map<String, dynamic>? header, var body}) async {
-    print("msg_request_url : $url");
-    print("msg_request_header : $header");
-    print("msg_request_body : $body");
+    if(kDebugMode) {
+      print("msg_request_url : $url");
+      print("msg_request_header : $header");
+      print("msg_request_body : $body");
+    }
     return await _dio!.post(
       url,
       options: Options(headers: header),

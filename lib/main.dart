@@ -43,8 +43,6 @@ void main() async {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
 
-
-
     runApp(const AppWidget());
   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 }

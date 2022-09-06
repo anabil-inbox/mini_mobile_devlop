@@ -64,6 +64,7 @@ class SearchScreen extends StatelessWidget {
                                     homeViewModel.searchForBox(searchText: p0);
                                   }
                                 },
+                                autoFocus: true,
                                 // iconSize: 24,
                                 isFill: true,
                                 isSmallPaddingWidth: true,

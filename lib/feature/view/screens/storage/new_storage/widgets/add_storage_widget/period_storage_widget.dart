@@ -33,7 +33,7 @@ class PeriodStorageWidget extends StatelessWidget {
             height: sizeH16,
           ),
           Text(
-            "${tr.duration_of_subscription}",
+            "${ (!SharedPref.instance.getIsHideSubscriptions()) ?tr.duration_of_subscription :tr.duration_of_subscription.replaceAll("of Subscription:", "")}",
             style: textStyleNormalBlack(),
           ),
           SizedBox(

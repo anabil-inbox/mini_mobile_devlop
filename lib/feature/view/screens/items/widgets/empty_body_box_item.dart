@@ -5,6 +5,11 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
+import 'package:inbox_clients/feature/model/home/task.dart';
+import 'package:inbox_clients/feature/view/screens/items/widgets/delete_or_terminate_bottom_sheer.dart';
+import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
+import 'package:inbox_clients/feature/view/screens/storage/details_storage/widget/btn_action_widget.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/giveaway_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/storage_botton_sheets/recall_box_process%20.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
@@ -14,6 +19,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../../util/constance.dart';
 import '../../../widgets/custom_text_filed.dart';
@@ -52,6 +58,10 @@ class EmptyBodyBoxItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    Logger().w((itemViewModle.operationsBox?.allowed ?? false));
+    Logger().w( box?.saleOrder != null );
+     Logger().w(  box?.toJson());
+    Logger().w( box?.serialNo != null && box!.serialNo!.isNotEmpty);
     return Padding(
       padding: EdgeInsets.all(0),
       child: Stack(
@@ -145,9 +155,35 @@ class EmptyBodyBoxItem extends StatelessWidget {
                     SizedBox(
                       height: sizeH50,
                     ),
+
+
+                    (itemViewModle.operationsBox?.allowed ?? false)
+                        ? BtnActionWidget(
+                      isGaveAway:
+                      (/*itemViewModle.operationsBox?.storageStatus == LocalConstance.giveawayId  &&*/
+                          /*itemViewModle.operationsBox?.storageStatus != LocalConstance.boxAtHome &&*/
+                          _homeViewModel.tasks.where((element) => element.id == LocalConstance.giveawayId).isEmpty),
+                      boxStatus: itemViewModle.operationsBox!.storageStatus ?? "",
+                      redBtnText: box?.storageStatus == LocalConstance.boxAtHome
+                          ? "${tr.pickup}"
+                          : "${tr.recall}",
+                      onShareBox: onShareBoxClick,
+                      onGrayBtnClick: onGrayBtnClick,
+                      onRedBtnClick: onRedBtnClick,
+                      onDeleteBox: onDeleteBoxClick,
+                    )
+                        : box?.saleOrder != null && box!.saleOrder!.isNotEmpty ?PrimaryButton(textButton: tr.order_details,
+                        isLoading: false,
+                        onClicked: (){
+                          Get.off(() => OrderDetailesScreen(
+                            orderId: "${itemViewModle.operationsBox?.saleOrder.toString()}",
+                            isFromPayment: false,
+                          ));
+                        },
+                        isExpanded: true):const SizedBox(),
                     /*item.operationsBox?.saleOrder == null ||*/ /*(item
                         .operationsBox!.allowed! && item.operationsBox?.storageStatus == LocalConstance.boxAtHome) ? */
-                    item.operationsBox!.allowed!?
+                   /* item.operationsBox!.allowed!?
                          PrimaryButton(
                             isExpanded: false,
                             isLoading: false,
@@ -163,7 +199,7 @@ class EmptyBodyBoxItem extends StatelessWidget {
                                   isScrollControlled: true);
                             },
                             textButton: tr.schedule_pickup,
-                          )/*,*/
+                          )*//*,*/
                         //  Row(
                         //     mainAxisAlignment: MainAxisAlignment.center,
                         //     children: [
@@ -208,7 +244,7 @@ class EmptyBodyBoxItem extends StatelessWidget {
                         //       ),
                         //     ],
                         //   )
-                        : const SizedBox(),
+                        /*: const SizedBox(),*/
                   ],
                 );
               },
@@ -218,4 +254,69 @@ class EmptyBodyBoxItem extends StatelessWidget {
       ),
     );
   }
+
+  onGrayBtnClick() {
+    Get.bottomSheet(
+        GiveawayBoxProcessSheet(
+          box: itemViewModle.operationsBox ?? box!,
+          boxes: [],
+        ),
+        isScrollControlled: true);
+  }
+
+  onRedBtnClick() {
+    if (box?.storageStatus == LocalConstance.boxAtHome) {
+      //todo this if pickup
+      // to do get the Task and Show That VAS ::
+
+      final Task enterdTask =
+      _homeViewModel.searchTaskById(taskId: LocalConstance.pickupId);
+
+      Get.bottomSheet(
+          RecallBoxProcessSheet(
+            boxes: [],
+            isFirstPickUp: itemViewModle.operationsBox != null ?itemViewModle.operationsBox?.firstPickup :box?.firstPickup ,
+            box: itemViewModle.operationsBox ?? box,
+            task: enterdTask,
+          ),
+          isScrollControlled: true);
+    } else {
+      final Task enterdTask =
+      _homeViewModel.searchTaskById(taskId: LocalConstance.recallId);
+
+
+      Get.bottomSheet(
+          RecallBoxProcessSheet(
+            box: itemViewModle.operationsBox ?? box,
+            boxes: [],
+            task: enterdTask,
+            isFirstPickUp: itemViewModle.operationsBox != null ?itemViewModle.operationsBox?.firstPickup :box?.firstPickup,
+          ),
+          isScrollControlled: true)
+          .whenComplete(
+              () => _homeViewModel.selectedAddres = null);
+
+      // Get.bottomSheet(
+      //     RecallBoxProcessSheet(
+      //       boxes: [],
+      //       isFirstPickUp: itemViewModle.operationsBox != null ?itemViewModle.operationsBox?.firstPickup :widget.box.firstPickup ,
+      //       box: itemViewModle.operationsBox ?? widget.box,
+      //       task: enterdTask,
+      //     ),
+      //     isScrollControlled: true);
+    }
+  }
+
+  onDeleteBoxClick() {
+    Get.bottomSheet(
+        DeleteOrTirmnateBottomSheet(
+          box: itemViewModle.operationsBox ?? box!,
+        ),
+        isScrollControlled: true);
+  }
+
+  onShareBoxClick() {
+    itemViewModle.shareBox(box: itemViewModle.operationsBox ?? box!);
+  }
+
 }

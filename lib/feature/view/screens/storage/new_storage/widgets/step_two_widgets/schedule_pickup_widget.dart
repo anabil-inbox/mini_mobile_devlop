@@ -153,9 +153,9 @@ class SchedulePickup extends StatelessWidget {
     try {
       WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
             storageViewModel.selectedDayEdit = getDayByNumber(
-              selectedDateTime: storageViewModel.myOrderViewModel.newOrderSales
-                  .deliveryDate!,
+              selectedDateTime: storageViewModel.myOrderViewModel.newOrderSales.deliveryDate!,
             ).first;
+            Logger().w(storageViewModel.selectedDayEdit?.toJson());
            if (!GetUtils.isNull(storageViewModel.myOrderViewModel) &&
                storageViewModel.myOrderViewModel.newOrderSales.timeTo != null &&
                storageViewModel.myOrderViewModel.newOrderSales.timeTo!.isNotEmpty) {
@@ -168,8 +168,7 @@ class SchedulePickup extends StatelessWidget {
               Logger().w(storageViewModel.selectedDay?.toJson());
            }
           });
-      var localhouersFromUtc =
-              DateUtility.getLocalhouersFromUtc(day: storageViewModel.selectedDayEdit!);
+      var localhouersFromUtc = DateUtility.getLocalhouersFromUtc(day: storageViewModel.selectedDayEdit!);
       return localhouersFromUtc;
     } catch (e) {
       print(e);

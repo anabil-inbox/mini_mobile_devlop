@@ -119,7 +119,7 @@ class AddressItem extends StatelessWidget {
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.75,
                       child: Text(
-                          "${address.geoAddress.toString().isEmpty? ("${address.buildingNo} ${address.unitNo} ${address.zoneNumber} ${address.extraDetails}"):address.geoAddress}"),
+                          "${address.geoAddress.toString().isEmpty? ("${address.streat} ${address.buildingNo} ${address.unitNo} ${address.zoneNumber} ${address.extraDetails}"):address.geoAddress}"),
                     ),
                   ),
                   PositionedDirectional(

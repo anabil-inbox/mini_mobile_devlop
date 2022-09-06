@@ -8,6 +8,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:inbox_clients/util/sh_util.dart';
 
 import 'show_header_selection.dart';
 
@@ -64,31 +65,36 @@ class ShowSpaceAndQuantityWidget extends StatelessWidget {
           // SizedBox(
           //   height: sizeH9,
           // ),
-          Row(
-            children: [
-              Text(
-                tr.subscriptions + " : ",
-                textAlign: TextAlign.start,
-                style: textStyleNormalBlack(),
-              ),
-              SizedBox(width: sizeW5,),
-              Expanded(
-                child: Text(
-                  storageCategoriesData.selectedDuration.toString() ,
+          if(!SharedPref.instance.getIsHideSubscriptions())...[
+            Row(
+              children: [
+                Text(
+                  tr.subscriptions + " : ",
                   textAlign: TextAlign.start,
                   style: textStyleNormalBlack(),
                 ),
-              ),
-              Text(
-                "(${handlerQtySubscriptions()}${storageCategoriesData.numberOfDays})",
-                textAlign: TextAlign.start,
-                style: textStyleNormalBlack(),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: sizeH12,
-          ),
+                SizedBox(width: sizeW5,),
+                Expanded(
+                  child: Text(
+                    storageCategoriesData.selectedDuration.toString() ,
+                    textAlign: TextAlign.start,
+                    style: textStyleNormalBlack(),
+                  ),
+                ),
+                if(storageCategoriesData.selectedDuration.toString() == LocalConstance.dailySubscriptions)...[
+                  Text(
+                    "(${storageCategoriesData.numberOfDays} ${handlerQtySubscriptions()})",
+                    textAlign: TextAlign.start,
+                    style: textStyleNormalBlack(),
+                  ),
+                ]
+              ],
+            ),
+            SizedBox(
+              height: sizeH12,
+            ),
+          ],
+
           Row(
             children: [
               Text(
