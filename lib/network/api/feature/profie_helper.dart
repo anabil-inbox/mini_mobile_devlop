@@ -72,6 +72,18 @@ class ProfileHelper {
     }
   }
 
+  Future<AppResponse> deleteAccount() async {
+    var appResponse = await ProfileApi.getInstance.deleteAccount(
+      url: "${ConstanceNetwork.deleteAccountApi}",
+      header: ConstanceNetwork.header(2),
+    );
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
   Future<AppResponse> editProfile(var body) async {
     var appResponse = await ProfileApi.getInstance.editProfile(
         body: body,

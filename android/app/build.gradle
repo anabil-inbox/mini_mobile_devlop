@@ -28,9 +28,22 @@ apply plugin: 'com.google.firebase.crashlytics'
 //apply plugin: 'com.huawei.agconnect'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('key_store')
+            storePassword 'ahdtech'
+            keyAlias 'ahdtech'
+            keyPassword 'ahdtech'
+        }
+    }
     compileSdkVersion 31
     lintOptions {
         checkReleaseBuilds false
+    }
+    aaptOptions { cruncherEnabled = false }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
@@ -48,8 +61,9 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
                 minifyEnabled true
                 shrinkResources false
+                useProguard true
                 proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-                signingConfig signingConfigs.debug
+                signingConfig signingConfigs.release
                 applicationVariants.all { variant ->
                     variant.outputs.all {
                         def appName = "InboxClient_"

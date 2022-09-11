@@ -85,6 +85,7 @@ class PaymentItem extends StatelessWidget {
             builder.update();
           });
         }
+        Logger().w(ConstanceNetwork.imageUrl +  paymentMethod.image.toString());
         return InkWell(
           onTap: isDisable! || isFirstPickUp!
               ? () {}
@@ -125,7 +126,7 @@ class PaymentItem extends StatelessWidget {
                   Center(
                     child: imageNetwork(
                         isPayment: true,
-                        url:paymentMethod.id == LocalConstance.applePay ? Constance.appleImage: ConstanceNetwork.imageUrl +  paymentMethod.image.toString(),
+                        url:paymentMethod.id == LocalConstance.applePay ? Constance.appleImage: ConstanceNetwork.imageUrl + ""+ paymentMethod.image.toString(),
                         width: sizeH90,
                         fit: BoxFit.contain,
                         height: sizeH60!),

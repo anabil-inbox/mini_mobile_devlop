@@ -3,7 +3,9 @@ import 'package:inbox_clients/util/sh_util.dart';
 
 abstract class ConstanceNetwork {
   ///todo here insert base_url
-  static String imageUrl = "http://inbox.ahdtech.com/".trim();
+  ///old imageUrl http://inbox.ahdtech.com/
+  ///new imageUrl http://mini.inbox.com.qa/
+  static String imageUrl = SharedPref.instance.getAppSettings()!.domain.toString().trim();
 
   // contsanse for Days Constance
   static var sunday = "sunday";
@@ -84,6 +86,8 @@ abstract class ConstanceNetwork {
   static String deleteAdressEndPoint = "inbox_app.api.address.address_del";
 
   static String logOutEndPoint = "inbox_app.api.auth.logout";
+
+  static String deleteAccountApi = "inbox_app.api.auth.delete_account";
 
   static String editProfilEndPoint = "inbox_app.api.auth.edit_profile";
 

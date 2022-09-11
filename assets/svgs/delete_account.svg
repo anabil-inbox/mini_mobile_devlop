@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42">
+  <g id="delete_account" transform="translate(1 1)">
+    <g id="logout_icons_ornage">
+      <rect id="Rectangle-4" width="40" height="40" rx="8" fill="#e02020" stroke="#fff" stroke-width="2"/>
+    </g>
+    <g id="trash-round" transform="translate(10.5 10.5)">
+      <g id="trash-round-2" data-name="trash-round" transform="translate(0.5 0.5)" opacity="0.999">
+        <path id="Path_914" d="M0,3.637H0A3.637,3.637,0,0,1,3.637,0h0A3.637,3.637,0,0,1,7.274,3.637h0" transform="translate(5.363)" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="2"/>
+        <path id="Path_915" d="M13.634,0,12.4,15.274H1.24L0,0" transform="translate(2.182 2.726)" fill="none" stroke="#fff" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2"/>
+        <path id="Line_95" d="M18,.5H0" transform="translate(0 3.137)" fill="none" stroke="#fff" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2"/>
+      </g>
+    </g>
+  </g>
+</svg>

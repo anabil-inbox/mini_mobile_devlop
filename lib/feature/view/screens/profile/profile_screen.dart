@@ -155,6 +155,17 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                           iconPath: "assets/svgs/logout_icons_ornage.svg"/*logout*/,
                         ),
                         SizedBox(
+                          height: sizeH12,
+                        ),
+                        SettingItem(
+                          onTap: () {
+                            controller.deleteAccountDialog();
+                          },
+                          settingTitle: "${tr.delete_account}",
+                          trailingTitle: "",
+                          iconPath: "assets/svgs/delete_account.svg",
+                        ),
+                        SizedBox(
                           height: sizeH100,
                         ),
                       ],

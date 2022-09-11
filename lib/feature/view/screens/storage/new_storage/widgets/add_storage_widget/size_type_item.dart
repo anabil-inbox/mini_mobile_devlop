@@ -90,6 +90,7 @@ class SizeTypeItem extends StatelessWidget {
   }
 
   getWidget() {
+    Logger().w(ConstanceNetwork.imageUrl+""+storageCategoriesData.defaultImage.toString());
     if (storageViewModel.isShowAll) {
       return storageCategoriesData.defaultImage != null ?imageNetwork(
           height: sizeH90,

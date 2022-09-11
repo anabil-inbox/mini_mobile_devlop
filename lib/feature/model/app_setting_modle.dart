@@ -17,6 +17,7 @@ class ApiSettings {
       this.socialContact,
       this.userGuide,
       this.minDays,
+        this.domain,
       this.startsAfter});
 
   String? customerType;
@@ -32,12 +33,14 @@ class ApiSettings {
   List<PaymentMethod>? paymentMethod;
   List<AreaZone>? areaZones;
   num? deliveryFactor;
+  String? domain;
   List<SocialContact>? socialContact;
   List<UserGuide>? userGuide;
 
   factory ApiSettings.fromJson(Map<String, dynamic> json) => ApiSettings(
       customerType: json["customer_type"] ?? "both",
       aboutUs: json["about_us"] == null ? "" : json["about_us"],
+      domain: json["domain"] == null ? "" : json["domain"].toString().contains("http") ?json["domain"] :"http://"+json["domain"],
       termOfConditions: json["term_of_conditions"] ??"",
       minDays: json["min_days"] == null ? 1:json["min_days"],
       startsAfter: json["starts_after"] == null ? 1:json["starts_after"],
@@ -73,6 +76,7 @@ class ApiSettings {
 
   Map<String, dynamic> toJson() => {
         "customer_type": customerType,
+        "domain": domain,
         "min_days": minDays == null ? null :minDays,
         "starts_after": startsAfter == null ? null :startsAfter,
         "social_contact": socialContact == null

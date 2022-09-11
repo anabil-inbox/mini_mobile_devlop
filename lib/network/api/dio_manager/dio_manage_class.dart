@@ -13,11 +13,14 @@ class DioManagerClass {
   DioManagerClass._();
   static final DioManagerClass getInstance = DioManagerClass._();
 
+  /*static*/ final String _baseUrlStage = "http://50.17.152.72/api/method/";
+  /*static*/ final String _baseUrlLive = "http://mini.inbox.com.qa/api/method/";
   Dio? _dio;
   Dio init() {
+
     _dio = Dio(
       BaseOptions(
-        baseUrl: "http://50.17.152.72/api/method/",
+        baseUrl: _baseUrlLive,
         connectTimeout: 2000 * 60,
         receiveTimeout: 2000 * 60,
         sendTimeout: 2000 * 60,

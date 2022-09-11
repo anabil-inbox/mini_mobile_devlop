@@ -687,7 +687,7 @@ class _EditNewStorageViewState extends State<EditNewStorageView> {
           _storageViewModel, _homeViewModel, isNewStorage: true);
     } else
     if ((_storageViewModel.selectedPaymentMethod?.id == Constance.walletId)) {
-      if (num.parse(_profileViewModle.myWallet.balance.toString()) > (logic.totalBalance - logic.initPrice)) {
+      if (num.parse(_profileViewModle.myWallet.balance.toString()) > (logic.totalBalance /*- logic.initPrice*/)) {
         widget.viewModel.editOrderRequest(
             _storageViewModel, _homeViewModel, isNewStorage: true);
       } else {
@@ -707,7 +707,7 @@ class _EditNewStorageViewState extends State<EditNewStorageView> {
                   _storageViewModel, _homeViewModel,
                   isNewStorage: true),
           storageViewModel: _storageViewModel,
-          amount: (logic.totalBalance - logic.initPrice));
+          amount: (logic.totalBalance /*- logic.initPrice*/));
       logic.isLoading = false;
       logic.update();
     }
