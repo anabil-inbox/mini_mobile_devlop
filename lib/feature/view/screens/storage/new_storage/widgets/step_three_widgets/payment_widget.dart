@@ -69,7 +69,7 @@ class PaymentWidget extends StatelessWidget {
                       : false,
                   isRecivedOrderPayment: isRecivedOrderPayment,
                   paymentMethod: e,
-                  isFirstPickUp: false,
+                  isFirstPickUp: false, isApple: false,
                 );
               }).toList(),
             ),
@@ -82,6 +82,7 @@ class PaymentWidget extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 1.14,
               child: PaymentItem(
                 isFirstPickUp: false,
+                isApple:true,
                 isDisable: homeViewModel?.operationTask.totalDue != null && homeViewModel?.operationTask.totalDue == 0 ? true : false,
                 paymentMethod: PaymentMethod(
                     id: LocalConstance.applePay,

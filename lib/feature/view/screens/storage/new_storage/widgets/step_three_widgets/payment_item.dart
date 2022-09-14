@@ -27,9 +27,10 @@ class PaymentItem extends StatelessWidget {
       this.isRecivedOrderPayment = false,
       required this.paymentMethod,
       this.isDisable = false,
-      this.isFromApplicationPayment = false,required this.isFirstPickUp, })
+      this.isFromApplicationPayment = false,required this.isFirstPickUp,required this.isApple, this.price,  })
       : super(key: key);
 
+  final bool isApple;
   final PaymentMethod paymentMethod;
   final bool isFromApplicationPayment;
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
@@ -39,6 +40,7 @@ class PaymentItem extends StatelessWidget {
   final bool? isDisable;
   final bool isRecivedOrderPayment;
   final bool? isFirstPickUp;
+  final dynamic price;
 
   static applePay.Pay _payClient = applePay.Pay.withAssets([
     'applepay.json',
@@ -101,7 +103,7 @@ class PaymentItem extends StatelessWidget {
                   }
                 },
           child: Container(
-             width: /*builder.selectedPaymentMethod?.id  == LocalConstance.applePay  &&builder.selectedPaymentMethod?.image == Constance.appleImage? MediaQuery.of(context).size.width / 1.9 : */MediaQuery.of(context).size.width /4,
+             width: /*isApple? MediaQuery.of(context).size.width / 1.14 : */MediaQuery.of(context).size.width /4,
             margin: EdgeInsets.symmetric(horizontal: padding4!),
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -113,6 +115,7 @@ class PaymentItem extends StatelessWidget {
                         : colorPrimary /*builder.selectedPaymentMethod?.id != paymentMethod.id
                         ? colorBorderContainer
                         : colorTrans*/),
+                color: isApple ? colorBlack:colorTextWhite
                 /*color: builder.selectedPaymentMethod?.id != paymentMethod.id
                     ? colorTextWhite
                     : colorPrimary*/),
@@ -124,12 +127,16 @@ class PaymentItem extends StatelessWidget {
                 if (paymentMethod.image != null &&
                     paymentMethod.image != "") ...[
                   Center(
-                    child: imageNetwork(
-                        isPayment: true,
-                        url:paymentMethod.id == LocalConstance.applePay ? Constance.appleImage: ConstanceNetwork.imageUrl + ""+ paymentMethod.image.toString(),
-                        width: sizeH90,
-                        fit: BoxFit.contain,
-                        height: sizeH60!),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(isApple ?50:0),
+                      clipBehavior: Clip.hardEdge,
+                      child: imageNetwork(
+                          isPayment: true,
+                          url:paymentMethod.id == LocalConstance.applePay ? Constance.appleImage: ConstanceNetwork.imageUrl + ""+ paymentMethod.image.toString(),
+                          width: sizeH90,
+                          fit:BoxFit.contain,
+                          height: sizeH60!),
+                    ),
                   ),
                 ] else ...[
                   imageNetwork(isPayment: true, width: sizeH90, height: sizeH60,fit: BoxFit.contain)
@@ -242,8 +249,8 @@ class PaymentItem extends StatelessWidget {
           "1${paymentMethod.name} , ${homeViewModel.operationTask.totalDue ?? storageViewModel.totalBalance}");
       var _paymentItems = [
         applePay.PaymentItem(
-          label: 'Total',
-          amount: '${homeViewModel.operationTask.totalDue ?? storageViewModel.totalBalance}',
+          label: 'INBOX LOGISTIC',// Total
+          amount: '${price != null ? price:homeViewModel.operationTask.totalDue ?? storageViewModel.totalBalance}',
           status: applePay.PaymentItemStatus.final_price,
         )
       ];

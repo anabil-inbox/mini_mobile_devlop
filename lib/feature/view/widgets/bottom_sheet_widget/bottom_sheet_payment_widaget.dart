@@ -451,7 +451,7 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                                                   .priceAfterDiscount ==
                                               0)
                                       ? true
-                                      : false,
+                                      : false, isApple: false,
                             );
                           }
                           // return PaymentItem(
@@ -471,15 +471,19 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                           isFirstPickUp: widget.isFirstPickUp! &&
                               widget.task.id == LocalConstance.pickupId,
                           isDisable: ((logic.isAccept || logic.isUsingPromo) &&
-                                  BottomSheetPaymentWidget
-                                          .storageViewModle.priceAfterDiscount ==
-                                      0)
-                              ? true
-                              : false,
+                                  BottomSheetPaymentWidget.storageViewModle.priceAfterDiscount == 0) ? true : false,
+                          price: widget.boxes.length == 0
+                              ? logic.calculateTaskPriceOnceBox(task: widget.task)
+                              : logic.calculateTaskPriceLotBoxess(
+                              isFromCart: false,
+                              task: widget.task,
+                              boxess: widget.boxes,
+                              isFirstPickUp: widget.isFirstPickUp! &&
+                                  widget.task.id == LocalConstance.pickupId),
                           paymentMethod: PaymentMethod(
                               id: LocalConstance.applePay,
                               name: LocalConstance.applePay,
-                              image: Constance.appleImage),
+                              image: Constance.appleImage), isApple: true,
                         ),
                       ),
                       SizedBox(
@@ -519,7 +523,7 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                       ),
                     ],
                     // if (handlePrice(logic).replaceAll("QR","").trim() != "0.00" && !BottomSheetPaymentWidget.storageViewModle.isUsingPromo && !widget.isFirstPickUp!/*&& BottomSheetPaymentWidget.profileViewModle.myPoints.totalPoints! > 0*/)
-                      BottomSheetPaymentWidget.profileViewModle.myPoints.totalPoints! > 0
+                    BottomSheetPaymentWidget.profileViewModle.myPoints.totalPoints != null && BottomSheetPaymentWidget.profileViewModle.myPoints.totalPoints! > 0
                           ? myPointsText
                           : const SizedBox(),
                     SizedBox(

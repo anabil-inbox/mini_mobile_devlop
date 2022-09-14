@@ -374,7 +374,7 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
                               ? true
                               : false,
                           paymentMethod: e,
-                          isFirstPickUp: false,
+                          isFirstPickUp: false, isApple: false,
                         );
                       }
                       // return PaymentItem(
@@ -391,19 +391,13 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 1.14,
                     child: PaymentItem(
-                      isDisable: storageViewModle.getPriceWithDiscount(oldPrice: storageViewModle
-                          .calculateTasksCart(
-                          cartModel: cartModels)
-                          .toString()
-                          .split(" ")[0],
-                          isFirstPickUp: false /*getIsFirstPickUp()*/)[0].toString().replaceAll("QR","").trim() == "0.00"
-                          ? true
-                          : false,
+                      isDisable: storageViewModle.getPriceWithDiscount(oldPrice: storageViewModle.calculateTasksCart(cartModel: cartModels).toString().split(" ")[0], isFirstPickUp: false /*getIsFirstPickUp()*/)[0].toString().replaceAll("QR","").trim() == "0.00" ? true : false,
+                      price:storageViewModle.calculateTasksCart(cartModel: cartModels),
                       paymentMethod: PaymentMethod(
                           id: LocalConstance.applePay,
                           name: LocalConstance.applePay,
                           image: Constance.appleImage),
-                      isFirstPickUp: false,
+                      isFirstPickUp: false, isApple: true,
                     ),
                   ),
                 ],

@@ -15,6 +15,7 @@ class ProfileApi {
     try {
       var response = await DioManagerClass.getInstance
           .dioPostMethod(url: url, header: header, body: body);
+      Logger().wtf(json.decode(response.toString()));
       return AppResponse.fromJson(json.decode(response.toString()));
     } on DioError catch (ex) {
       var message = json.decode(ex.response.toString());

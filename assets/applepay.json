@@ -16,7 +16,7 @@
     ],
     "countryCode": "QA",
     "currencyCode": "QAR",
-    "requiredBillingContactFields": null, 
-    "requiredShippingContactFields": null
+    "requiredBillingContactFields": ["emailAddress", "name", "phoneNumber", "postalAddress"],
+    "requiredShippingContactFields": []
   }
 }

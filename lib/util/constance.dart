@@ -43,5 +43,7 @@ abstract class Constance {
   static bool  showCaseShowArrow = true;
   static bool  showCaseDisableAnimation = false;
 
-  static String appleImage = "https://imagedelivery.net/AtkJu2wCmOwcp9lTOSgupQ/097c3115-6c81-4933-6e67-5968b1e0af00/public";
+  // static String appleImage = "https://imagedelivery.net/AtkJu2wCmOwcp9lTOSgupQ/351b52e6-3d19-47eb-1758-999ff57a1500/public";
+  // static String appleImage = "https://imagedelivery.net/AtkJu2wCmOwcp9lTOSgupQ/097c3115-6c81-4933-6e67-5968b1e0af00/public";
+  static String appleImage = "https://imagedelivery.net/AtkJu2wCmOwcp9lTOSgupQ/f8acce76-69b2-4bb6-b999-60e9a8a66200/public";
 }
