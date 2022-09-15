@@ -69,7 +69,7 @@
     "mobile_operator": "Authorized person's Contact number",
     "title":"location name (office / home …)",
     "building_no":"Building no.",
-    "unit_no":"Unit No.",
+    "unit_no":"House or unit number",
     "zone":"Zone",
     "zone_number":"Zone Number",
     "street":"Street",
