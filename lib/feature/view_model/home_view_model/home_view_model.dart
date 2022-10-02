@@ -20,6 +20,7 @@ import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/check_in_box_widget.dart';
 import 'package:inbox_clients/feature/view/screens/home/widget/tasks_widgets/task_widget_BS.dart';
+import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
 import 'package:inbox_clients/feature/view_model/item_view_modle/item_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/network/api/feature/home_helper.dart';
@@ -794,8 +795,8 @@ class HomeViewModel extends BaseController {
     required String paymentId,
     required num extraFees,
     required String reason,
-    bool? isAppPay = false,
-    StorageViewModel? storageViewModel,
+    required bool isAppPay ,
+    StorageViewModel? storageViewModel, bool? isRecivedOrderPayment = false,
   }) async {
     Map<String, dynamic> map = {
       ConstanceNetwork.idKey: salesOrder,
@@ -806,16 +807,57 @@ class HomeViewModel extends BaseController {
       Constance.driverToken: await SharedPref.instance.getDriverToken(),
     };
     startLoading();
-    await OrderHelper.getInstance.applyPayment(body: map).then((value) async {
-      if (value.status!.success! && isAppPay!) {
-        await storageViewModel?.addNewStorage();
-        storageViewModel?.isLoading = false;
-        storageViewModel?.update();
-        endLoading();
-      } else {
-        endLoading();
-      }
-    });
+    if(isAppPay){
+        Logger().wtf("wtf 2");
+        if(!isRecivedOrderPayment!) {
+          await storageViewModel?.addNewStorage();
+        }else{
+          await OrderHelper.getInstance.applyPayment(body: map).then((value) async{
+            Logger().wtf("wtf 1 $isAppPay ${value.status!.success!} ${value.toJson()}");
+            if(value.status!.success!){
+              await getTaskResponse(salersOrder: salesOrder);
+              Get.to(() => ReciverOrderScreen(this));
+              snackSuccess("", value.status!.message);
+              storageViewModel?.isLoading = false;
+              storageViewModel?.update();
+              endLoading();
+            }else {
+              snackError("", value.status!.message);
+              await getTaskResponse(salersOrder: salesOrder);
+              Get.to(() => ReciverOrderScreen(this));
+              storageViewModel?.isLoading = false;
+              storageViewModel?.update();
+              endLoading();
+            }
+          });
+        }
+
+    }else{
+      await OrderHelper.getInstance.applyPayment(body: map).then((value) async {
+        Logger().wtf("wtf 1 $isAppPay ${value.status!.success!} ${value.toJson()}");
+        if (value.status!.success! /*&& isAppPay*/) {
+          Logger().wtf("wtf 2");
+          if(!isRecivedOrderPayment!) {
+            await storageViewModel?.addNewStorage();
+          }
+          // Get.off(() => OrderDetailesScreen(orderId: salesOrder , isFromPayment: false,));
+          await getTaskResponse(salersOrder: salesOrder);
+          Get.to(() => ReciverOrderScreen(this));
+          snackSuccess("", value.status!.message);
+          storageViewModel?.isLoading = false;
+          storageViewModel?.update();
+          endLoading();
+        } else {
+          snackError("", value.status!.message);
+          await getTaskResponse(salersOrder: salesOrder);
+          Get.to(() => ReciverOrderScreen(this));
+          storageViewModel?.isLoading = false;
+          storageViewModel?.update();
+          endLoading();
+        }
+      });
+    }
+
   }
 
   List<NotificationData> listNotifications = [];

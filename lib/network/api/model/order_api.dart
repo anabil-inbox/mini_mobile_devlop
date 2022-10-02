@@ -29,6 +29,7 @@ class OrderApi {
 
   Future<AppResponse> newSalesOrder({var url, var header, var body}) async {
     try {
+      Logger().w(body);
       var response = await DioManagerClass.getInstance
           .dioPostMethod(url: url, header: header, body: body);
       return AppResponse.fromJson(json.decode(response.toString()) ?? {});

@@ -493,6 +493,7 @@ class _EditNewStorageViewState extends State<EditNewStorageView> {
                                   logic.newOrderSales.orderItems!.isNotEmpty) {
                                 var orderItem = logic.newOrderSales.orderItems?.firstWhere((element) =>
                                 element.storageType.toString().isNotEmpty);
+                                Logger().w("osa_${orderItem?.toJson()}");
                                 Get.bottomSheet(
                                     StorageCategoriesBottomSheet(
                                       orderItem: orderItem,

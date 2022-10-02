@@ -50,7 +50,7 @@ var scaffoldColor = Color(0xFFF7F9FB);
 var boxColorGray = Color(0xFFDDDBD7);
 var boxColorOrange = Color(0xFFF9AC19);
 var boxColorRed = Color(0xFFF68620/*E63331*/);
-final Color colorInWarhouse =  Color(0xFF0091FF);
+final Color colorInWarehouse =  Color(0xFF0091FF);//colorInWarehouse
 final Color colorAtHome = Color(0XFF1DCD9F);
 //todo trasparent color
 var transparent = Color(0x00000000);

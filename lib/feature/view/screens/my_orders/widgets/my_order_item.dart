@@ -57,7 +57,8 @@ class MyOrderItem extends StatelessWidget {
                       height: sizeH4,
                     ),
                     Text(
-                      "${orderSales.orderShippingAddress.toString().isNotEmpty ?orderSales.orderShippingAddress : orderSales.orderWarehouseAddress ?? ""}",
+                      "${orderSales.proccessName}",
+                      // "${orderSales.orderShippingAddress.toString().isNotEmpty ?orderSales.orderShippingAddress : orderSales.orderWarehouseAddress ?? ""}",
                       style: textStyleHints()!.copyWith(fontSize: fontSize13),
                     ),
                     SizedBox(

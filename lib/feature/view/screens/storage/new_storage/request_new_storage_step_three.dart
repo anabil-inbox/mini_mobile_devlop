@@ -20,11 +20,15 @@ import 'package:showcaseview/showcaseview.dart';
 
 import 'widgets/show_selction_widget/my_list_widget.dart';
 
-class RequestNewStorageStepThree extends StatelessWidget {
+class RequestNewStorageStepThree extends StatefulWidget {
   const RequestNewStorageStepThree({Key? key}) : super(key: key);
 
-  static ProfileViewModle profileViewModle = Get.find<ProfileViewModle>();
+  @override
+  State<RequestNewStorageStepThree> createState() => _RequestNewStorageStepThreeState();
+}
 
+class _RequestNewStorageStepThreeState extends State<RequestNewStorageStepThree> {
+   static ProfileViewModle profileViewModle = Get.find<ProfileViewModle>();
   Widget get acceptTerms => GetBuilder<StorageViewModel>(
         init: StorageViewModel(),
         builder: (value) {
@@ -67,7 +71,8 @@ class RequestNewStorageStepThree extends StatelessWidget {
         },
       );
 
-  static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+   static StorageViewModel storageViewModel = Get.find<StorageViewModel>();
+  ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -104,9 +109,10 @@ class RequestNewStorageStepThree extends StatelessWidget {
                   child: Stack(
                     children: [
                       ListView(
+                        controller: scrollController,
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         shrinkWrap: true,
-                        primary: true,
+                        // primary: true,
                         children: [
                           GetBuilder<StorageViewModel>(
                             init: StorageViewModel(),
@@ -130,11 +136,13 @@ class RequestNewStorageStepThree extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Icon(Icons.add_circle_outline_rounded , color: colorPrimary,),
+                                Icon(Icons.add_circle_outline_rounded , color: colorInWarehouse,),
                                 SizedBox(width: sizeW5,),
-                                Text(
-                                  "${storageViewModel.userStorageCategoriesData.isNotEmpty ?  tr.add_more_items.replaceAll("...", "") : ""}",
-                                  style: textStyleCardTitlePrice()?.copyWith(color: colorBlack),
+                                Expanded(
+                                  child: Text(
+                                    "${storageViewModel.userStorageCategoriesData.isNotEmpty ?  tr.add_more_items.replaceAll("...", "") : ""}",
+                                    style: textStyleCardTitlePrice()?.copyWith(color: colorInWarehouse , fontSize: fontSize14 ,fontWeight: FontWeight.bold , height: 1),
+                                  ),
                                 ),
                               ],
                             ),
@@ -151,7 +159,12 @@ class RequestNewStorageStepThree extends StatelessWidget {
                               blurValue:Constance.showCaseBluer ,
                               description: tr.payment_btn_show_case,
                               key: logical.paymentCaseKey,
-                              child:*/ PaymentWidget(isRecivedOrderPayment: false, )/*)*/,
+                              child:*/ Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(sizeRadius5!),
+                                border: Border.all(color:GetUtils.isNull(logical.selectedPaymentMethod)? colorPrimary:colorTrans)
+                              ),
+                              child: PaymentWidget(isRecivedOrderPayment: false, ))/*)*/,
                           // SizedBox(height: sizeH16),
                           // acceptTerms,
                           if (logical.selectedPaymentMethod?.id ==
@@ -190,14 +203,13 @@ class RequestNewStorageStepThree extends StatelessWidget {
                                     isLoading: logic.isLoading,
                                     textButton: "${tr.request_box}",
                                     onClicked: () async {
+                                      if(GetUtils.isNull(logic.selectedPaymentMethod)){
+                                        scrollController.jumpTo(scrollController.position.maxScrollExtent);
+                                      }
                                       if (logic.isValiedToSaveStorage()) {
-                                        if (logic.selectedPaymentMethod?.id ==
-                                                    Constance.cashId ||
-                                                logic.selectedPaymentMethod?.id ==
-                                                    Constance
-                                                        .pointOfSaleId /*||
-                                            logic.selectedPaymentMethod?.id == Constance.bankTransferId*/
-                                            ) {
+                                        if (logic.selectedPaymentMethod?.id == Constance.cashId ||
+                                                logic.selectedPaymentMethod?.id == Constance.pointOfSaleId /*||
+                                            logic.selectedPaymentMethod?.id == Constance.bankTransferId*/) {
                                           await logic.addNewStorage();
                                           logic.isLoading = false;
                                           logic.update();
@@ -207,18 +219,13 @@ class RequestNewStorageStepThree extends StatelessWidget {
                                           await logic.addNewStorage(isFromBankTransfer:true);
                                           logic.isLoading = false;
                                           logic.update();
-                                        } else if ((logic.selectedPaymentMethod?.id ==
-                                            Constance.walletId)) {
-                                          if (num.parse(profileViewModle
-                                                  .myWallet.balance
-                                                  .toString()) >
-                                              storageViewModel.totalBalance) {
+                                        } else if ((logic.selectedPaymentMethod?.id == Constance.walletId)) {
+                                          if (num.parse(profileViewModle.myWallet.balance.toString()) > storageViewModel.totalBalance) {
                                             await logic.addNewStorage();
                                             logic.isLoading = false;
                                             logic.update();
                                           } else {
-                                            snackError(
-                                                "", tr.wallet_balance_is_not_enough);
+                                            snackError("", tr.wallet_balance_is_not_enough);
                                           }
                                         } else {
                                           await logic.goToPaymentMethod(

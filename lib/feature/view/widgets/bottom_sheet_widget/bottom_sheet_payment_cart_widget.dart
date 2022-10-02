@@ -58,6 +58,7 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
             ),
             GetBuilder<StorageViewModel>(
               builder: (logic) {
+
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -71,7 +72,10 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
                                   .calculateTasksCart(cartModel: cartModels)
                                   .toString()
                                   .split(" ")[0],
-                              isFirstPickUp: false /*getIsFirstPickUp()*/)[0]
+                              isFirstPickUp: false, task: Task(price: num.tryParse(logic
+                          .calculateTasksCart(cartModel: cartModels)
+                          .toString()
+                          .split(" ")[0].toString())),  /*getIsFirstPickUp()*/)[0]
                           .toString(),
 
                       textStyle: textStyleAppBarTitle()
@@ -154,7 +158,13 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
               ),
               CustomTextView(
                 txt:
-                    "${profileViewModle.myPoints.totalPoints} ${tr.points} = ${profileViewModle.myPoints.totalPoints! * SharedPref.instance.getCurrentUserData().conversionFactor!} QR",
+                    "${profileViewModle.paidPoints(Task(price: num.tryParse(storageViewModle
+                        .calculateTasksCart(cartModel: cartModels)
+                        .toString()
+                        .split(" ")[0].toString())) )/*myPoints.totalPoints*/} ${tr.points} = ${profileViewModle.pointsCalcPrice(Task(price: num.tryParse(storageViewModle
+                        .calculateTasksCart(cartModel: cartModels)
+                        .toString()
+                        .split(" ")[0].toString())) )/*profileViewModle.myPoints.totalPoints! * SharedPref.instance.getCurrentUserData().conversionFactor!*/} QR",
                 textAlign: TextAlign.start,
                 textStyle: textStyleNormal()!
                     .copyWith(color: colorPrimary, fontSize: fontSize14),
@@ -245,7 +255,9 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
                   ),
                   IconBtn(
                     onPressed: () async {
-                      await builder.checkPromo(promoCode: builder.tdCopun.text);
+                      if(builder.tdCopun.text.isNotEmpty) {
+                        await builder.checkPromo(promoCode: builder.tdCopun.text);
+                      }
                     },
                     backgroundColor: builder.checkPromoAppResponse != null &&
                             builder.checkPromoAppResponse!.status != null &&
@@ -353,7 +365,7 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
                           .calculateTasksCart(cartModel: cartModels);
                       Logger().d("${e.name} ${LocalConstance.bankCard}");
                       if (e.name == LocalConstance.bankCard &&
-                          int.tryParse(calculateTasksCart.toString())
+                          num.tryParse(calculateTasksCart.toString())
                                   ?.toInt() ==
                               0) {
                         return const SizedBox.shrink();
@@ -368,7 +380,10 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
                                               .toString()
                                               .split(" ")[0],
                                           isFirstPickUp:
-                                              false /*getIsFirstPickUp()*/)[0]
+                                              false, task: Task(price: num.tryParse(storageViewModle
+                              .calculateTasksCart(cartModel: cartModels)
+                              .toString()
+                              .split(" ")[0].toString())),  /*getIsFirstPickUp()*/)[0]
                                       .toString().replaceAll("QR","").trim()  ==
                                   "0.00"
                               ? true
@@ -391,8 +406,27 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 1.14,
                     child: PaymentItem(
-                      isDisable: storageViewModle.getPriceWithDiscount(oldPrice: storageViewModle.calculateTasksCart(cartModel: cartModels).toString().split(" ")[0], isFirstPickUp: false /*getIsFirstPickUp()*/)[0].toString().replaceAll("QR","").trim() == "0.00" ? true : false,
+                      isDisable: storageViewModle.getPriceWithDiscount(
+                          oldPrice: storageViewModle.calculateTasksCart(cartModel: cartModels).toString().split(" ")[0], isFirstPickUp: false,
+                          task: Task(price: num.tryParse(storageViewModle
+                              .calculateTasksCart(cartModel: cartModels)
+                              .toString()
+                              .split(" ")[0].toString())),  /*getIsFirstPickUp()*/)[0].toString().replaceAll("QR","").trim() == "0.00" ? true : false,
                       price:storageViewModle.calculateTasksCart(cartModel: cartModels),
+                      isDoPossess: true,
+                      doPossess: (){
+                        if (storageViewModle.isAccept || storageViewModle.isUsingPromo) {
+                        if (storageViewModle.priceAfterDiscount > 0) {
+                        if (storageViewModle.selectedPaymentMethod != null) {
+                          storageViewModle.checkOutCart(cartModels: cartModels);
+                        }
+                        }
+                        return;
+                        }
+                        if (storageViewModle.selectedPaymentMethod != null) {
+                          storageViewModle.checkOutCart(cartModels: cartModels);
+                        }
+                      },
                       paymentMethod: PaymentMethod(
                           id: LocalConstance.applePay,
                           name: LocalConstance.applePay,
@@ -405,12 +439,16 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
                 SizedBox(
                   height: sizeH16,
                 ),
-                profileViewModle.myPoints.totalPoints! > 0 && storageViewModle.getPriceWithDiscount(oldPrice: storageViewModle
+                profileViewModle.myPoints.totalPoints != null && profileViewModle.myPoints.totalPoints! >  /*0*/
+                    SharedPref.instance.getAppSettings()!.pointSpentBoundary!.toInt() && storageViewModle.getPriceWithDiscount(oldPrice: storageViewModle
                     .calculateTasksCart(
                     cartModel: cartModels)
                     .toString()
                     .split(" ")[0],
-                    isFirstPickUp: false /*getIsFirstPickUp()*/)[0].toString().replaceAll("QR","").trim() != "0.00"
+                    isFirstPickUp: false, task: Task(price: num.tryParse(storageViewModle
+                        .calculateTasksCart(cartModel: cartModels)
+                        .toString()
+                        .split(" ")[0].toString())),  /*getIsFirstPickUp()*/)[0].toString().replaceAll("QR","").trim() != "0.00"
                     ? acceptTerms
                     : const SizedBox(),
                 SizedBox(
@@ -464,7 +502,10 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
                             .calculateTasksCart(cartModel: cartModels)
                             .toString()
                             .split(" ")[0],
-                        isFirstPickUp: false)[0]
+                        isFirstPickUp: false, task: Task(price: num.tryParse(storageViewModle
+                    .calculateTasksCart(cartModel: cartModels)
+                    .toString()
+                    .split(" ")[0].toString())), )[0]
                     .toString()
                     .split(" ")[0]
                     .toString()),

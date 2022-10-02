@@ -123,7 +123,9 @@ class CartHead extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text("${cartModel?.title}"),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width / 3,
+                          child: Text("${cartModel?.title}")),
                       SizedBox(width: sizeW5),
                       Text(
                         "${storageViewModel.calculateTaskPriceLotBoxess(task: cartModel!.task!, boxess: cartModel?.box ?? [], isFromCart: true, myAddresss: cartModel?.address, isFirstPickUp: cartModel!.isFirstPickUp!)}",

@@ -89,8 +89,9 @@ class CartModel {
       other is CartModel &&
           runtimeType == other.runtimeType &&
           task == other.task &&
-          title == other.title /*&&*/
-          /*boxItem == other.boxItem &&
+          title == other.title &&
+          box?.first.serialNo == other.box?.first.serialNo
+          /* &&
           orderTime == other.orderTime &&
           address == other.address &&*/
           /*title == other.title*/;

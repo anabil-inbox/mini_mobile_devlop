@@ -1015,8 +1015,8 @@ class StorageViewModel extends BaseController {
         "order_to": "${selectedDay?.to /*from*/}",
         "coupon_code": "",
         "points": isAccept ? profileViewModle.myPoints.totalPoints : 0,
-        "payment_method": "${selectedPaymentMethod?.id}",
-        "payment_id": "$paymentId",
+        "payment_method": selectedPaymentMethod?.id == LocalConstance.applePay ?LocalConstance.creditCard : "${selectedPaymentMethod?.id}",
+        "payment_id": paymentId == null ? "${DateTime.now().millisecondsSinceEpoch}":"$paymentId",
         "order_from": "${selectedDay?.from /*to*/}",
         "order_time": "${selectedDay?.from}/${selectedDay?.to}",
         "type": getNewStorageType(
@@ -1032,8 +1032,8 @@ class StorageViewModel extends BaseController {
         "order_to": "${selectedDay?.to /*from*/}",
         "coupon_code": "",
         "points": isAccept ? profileViewModle.myPoints.totalPoints : 0,
-        "payment_method": "${selectedPaymentMethod?.id}",
-        "payment_id": "$paymentId",
+        "payment_method": selectedPaymentMethod?.id == LocalConstance.applePay ?LocalConstance.creditCard : "${selectedPaymentMethod?.id}",
+        "payment_id": paymentId == null ? "${DateTime.now().millisecondsSinceEpoch}":"$paymentId",
         "order_from": "${selectedDay?.from /*to*/}",
         "order_time": "${selectedDay?.from}/${selectedDay?.to}",
         "type": getNewStorageType(
@@ -1658,7 +1658,7 @@ class StorageViewModel extends BaseController {
     //   task.price = 0;
     // }
     price = task.price! * boxess.length;
-    Logger().i("1_$price");
+    // Logger().i("1_$price");
     if (selectedAddress !=
         null /*&& (!isFirstPickUp && task.id !=LocalConstance.pickupId)*/) {
       if((!isFirstPickUp /*&& task.id !=LocalConstance.pickupId*/)) {
@@ -1673,7 +1673,7 @@ class StorageViewModel extends BaseController {
       }
     }
 
-    Logger().i("2_$price");
+    // Logger().i("2_$price");
     if (isFromCart) {
       for (VAS item in task.selectedVas ?? []) {
         price += (item.price ?? 0) * boxess.length;
@@ -1685,7 +1685,7 @@ class StorageViewModel extends BaseController {
         print("options_price ${item.price}");
       }
     }
-    Logger().i("3_$price");
+    // Logger().i("3_$price");
     // num shivingPrice = 0;
     // if (selectedAddress != null) {
     //   for (var item in task.areaZones!) {
@@ -1869,8 +1869,8 @@ class StorageViewModel extends BaseController {
     }
 
     map["type[0]"] = task.id;
-    map["payment_method"] = selectedPaymentMethod?.id ?? "";
-    map["payment_id"] = paymentId ?? "";
+    map["payment_method"] = selectedPaymentMethod?.id == LocalConstance.applePay ? LocalConstance.creditCard: selectedPaymentMethod?.id ?? "";
+    map["payment_id"] = paymentId == null ? "${DateTime.now().millisecondsSinceEpoch}":paymentId ;
     map["points"] = isAccept ? userUsesPoints : 0;
     // map["destroy_status"] = LocalConstance.inWarehouse;
     // if (task.id == LocalConstance.destroyId) {
@@ -2035,6 +2035,9 @@ class StorageViewModel extends BaseController {
 
   Future<void> checkPromo({required String promoCode}) async {
     try {
+      if(tdCopun.text.isEmpty){
+        return;
+      }
       await StorageFeature.getInstance
           .checkPromo(body: {LocalConstance.coupon: promoCode}).then(
         (value) {
@@ -2052,36 +2055,36 @@ class StorageViewModel extends BaseController {
   final tdCopun = TextEditingController();
 
   List<dynamic> getPriceWithDiscount(
-      {required String oldPrice, required bool isFirstPickUp}) {
+      {required String oldPrice, required bool isFirstPickUp  ,required Task? task}) {
     num price = num.parse(oldPrice);
     num usesPoints = 0;
+    Logger().w(task?.price);
     if (!GetUtils.isNull(checkPromoAppResponse)) {
       if (checkPromoAppResponse!.status != null &&
           checkPromoAppResponse!.status!.success!) {
-        if (checkPromoAppResponse?.data["discount_type"] ==
+        Logger().wtf("getPriceWithDiscount_${checkPromoAppResponse?.toJson()}");
+        if (checkPromoAppResponse?.data != null && (checkPromoAppResponse?.data["discount_type"] == null ? null:checkPromoAppResponse?.data["discount_type"]) != null &&
+            (checkPromoAppResponse?.data["discount_type"] == null ? null:checkPromoAppResponse?.data["discount_type"]) ==
             LocalConstance.discountPercentag) {
-          if ((price - (price * checkPromoAppResponse?.data["amount"] / 100)) >
+          if ((price - (price * (checkPromoAppResponse?.data["amount"] == null ? 0:checkPromoAppResponse?.data["amount"]) / 100)) >
               0) {
             price =
-                price - (price * checkPromoAppResponse?.data["amount"] / 100);
+                price - (price * (checkPromoAppResponse?.data["amount"] == null ? 0:checkPromoAppResponse?.data["amount"]) / 100);
           } else {
             price = 0;
           }
         } else {
-          price = price - checkPromoAppResponse?.data["amount"];
+          price = price - (checkPromoAppResponse?.data["amount"] == null ? 0:checkPromoAppResponse?.data["amount"]);
         }
       }
     }
 
     if (isAccept) {
       //
-      if (price -
-              profileViewModle.myPoints.totalPoints! *
-                  SharedPref.instance.getCurrentUserData().conversionFactor! >
-          0) {
+      if (price - profileViewModle.pointsCalcPrice(task!)/*profileViewModle.myPoints.totalPoints! * SharedPref.instance.getCurrentUserData().conversionFactor!*/ > 0) {
         price = price -
-            profileViewModle.myPoints.totalPoints! *
-                SharedPref.instance.getCurrentUserData().conversionFactor!;
+            profileViewModle.pointsCalcPrice(task)/*profileViewModle.myPoints.totalPoints! *
+                SharedPref.instance.getCurrentUserData().conversionFactor!*/;
         userUsesPoints = profileViewModle.myPoints.totalPoints!;
       } else {
         // price = ((price * profileViewModle.myPoints.totalPoints!) - price) /
@@ -2325,8 +2328,8 @@ class StorageViewModel extends BaseController {
         }
 
         map["type[$i]"] = cartModels[i].task?.id;
-        map["payment_method"] = selectedPaymentMethod?.id ?? "";
-        map["payment_id"] = paymentId ?? "";
+        map["payment_method"] = selectedPaymentMethod?.id == LocalConstance.applePay ? LocalConstance.creditCard: selectedPaymentMethod?.id ?? "";
+        map["payment_id"] = paymentId == null ? "${DateTime.now().millisecondsSinceEpoch}":paymentId ;
         map["points"] = isAccept ? userUsesPoints / cartModels.length : 0;
         map["coupon_code"] = (isUsingPromo &&
                 checkPromoAppResponse != null &&

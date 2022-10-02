@@ -75,7 +75,8 @@ dependencies:
   #uni_links: ^0.5.1
   flutter_rating_bar: ^4.0.0
   # flutter_webview_plugin: ^0.4.0
-  pay: ^1.0.6
+#  pay: ^1.0.6
+  pay: ^1.0.11
   showcaseview: ^1.1.7
   flutter_widget_from_html: ^0.8.5
   firebase_crashlytics: ^2.8.1

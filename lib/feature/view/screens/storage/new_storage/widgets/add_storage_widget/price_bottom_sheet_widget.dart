@@ -37,7 +37,7 @@ class PriceBottomSheetWidget extends StatelessWidget {
             height: sizeH10,
           ),
           Text(
-              priceTitle ?? "${tr.price}",
+              priceTitle ?? "${tr.total_price}",
             style: textStyleSkipButton(),
           ),
           FittedBox(

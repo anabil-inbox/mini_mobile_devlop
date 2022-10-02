@@ -1,5 +1,6 @@
 import 'package:inbox_clients/feature/model/language.dart';
 import 'package:inbox_clients/feature/model/storage/payment.dart';
+import 'package:logger/logger.dart';
 
 class ApiSettings {
   ApiSettings(
@@ -18,6 +19,7 @@ class ApiSettings {
       this.userGuide,
       this.minDays,
         this.domain,
+        this.pointSpentBoundary,
       this.startsAfter});
 
   String? customerType;
@@ -33,11 +35,14 @@ class ApiSettings {
   List<PaymentMethod>? paymentMethod;
   List<AreaZone>? areaZones;
   num? deliveryFactor;
+  num? pointSpentBoundary;
   String? domain;
   List<SocialContact>? socialContact;
   List<UserGuide>? userGuide;
 
-  factory ApiSettings.fromJson(Map<String, dynamic> json) => ApiSettings(
+  factory ApiSettings.fromJson(Map<String, dynamic> json) {
+    // Logger().w("point_spent_boundary: ${json["point_spent_boundary"]}");
+    return ApiSettings(
       customerType: json["customer_type"] ?? "both",
       aboutUs: json["about_us"] == null ? "" : json["about_us"],
       domain: json["domain"] == null ? "" : json["domain"].toString().contains("http") ?json["domain"] :"http://"+json["domain"],
@@ -72,10 +77,14 @@ class ApiSettings {
           : WorkingHours.fromJson(json["working_hours"]),
       paymentMethod: (json["payment_method"] == [] || json["payment_method"] == null) ? [] : List<PaymentMethod>.from(json["payment_method"].map((x) => PaymentMethod.fromJson(x))),
       areaZones: json["area_zones"] == null ? null : List<AreaZone>.from(json["area_zones"].map((x) => AreaZone.fromJson(x))),
-      deliveryFactor: json["delivery_factor"] ?? 1);
+      deliveryFactor: json["delivery_factor"] ?? 1,
+      pointSpentBoundary:json["point_spent_boundary"] == null ? 0: json["point_spent_boundary"] ?? 0,
+  );
+  }
 
   Map<String, dynamic> toJson() => {
         "customer_type": customerType,
+        "point_spent_boundary": pointSpentBoundary,
         "domain": domain,
         "min_days": minDays == null ? null :minDays,
         "starts_after": startsAfter == null ? null :startsAfter,

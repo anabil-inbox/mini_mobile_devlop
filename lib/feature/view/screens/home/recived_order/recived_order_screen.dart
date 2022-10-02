@@ -13,6 +13,7 @@ import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/cases_report_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/signature_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/feature/view/widgets/three_size_dot.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/util/app_color.dart';
@@ -191,10 +192,10 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
               focusColor: colorPrimary,
               hoverColor: colorPrimary,
               splashColor: colorPrimary,
-              child: Icon(
-                Icons.call,
+              child: /*Icon(
+                Icons.emergency_outlined,
                 color: colorTextWhite,
-              ) /*SvgPicture.asset("assets/svgs/call_red_fig.svg" )*/,
+              )*/ SvgPicture.asset("assets/svgs/issue_report.svg" ,width:sizeW28 ,color: colorTextWhite,),
             ),
             appBar: CustomAppBarWidget(
               titleWidget: CustomTextView(
@@ -206,6 +207,22 @@ class _ReciverOrderScreenState extends State<ReciverOrderScreen> {
                 onWillPop();
               },
               isCenterTitle: true,
+              actionsWidgets: [
+                SizedBox(width: sizeW10!,),
+                InkWell(
+                  splashColor: colorTrans,
+                  hoverColor: colorTrans,
+                  highlightColor: colorTrans,
+                  onTap: (){
+
+                  },
+                  child: Icon(
+                    Icons.call,
+                    color: colorBlack,
+                  ),
+                ),
+                SizedBox(width: sizeW10!,),
+              ],
             ),
             body: GetBuilder<HomeViewModel>(builder: (home) {
               return Padding(

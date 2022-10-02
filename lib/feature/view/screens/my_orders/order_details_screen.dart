@@ -164,6 +164,8 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
                         child: CircularProgressIndicator(),
                       );
                     }
+                    Logger().w("testShow_isAllowToCancel ${myOrders.isAllowToCancel(myOrders.newOrderSales)}");
+                    Logger().w("testShow_isAllowToEdit ${myOrders.isAllowToEdit(myOrders.newOrderSales)}");
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: padding20!),
                       child: Column(

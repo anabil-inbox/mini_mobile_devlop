@@ -13,6 +13,7 @@ import 'package:inbox_clients/feature/view/screens/home/recived_order/recived_or
 import 'package:inbox_clients/feature/view/screens/home/recived_order/scan_recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
 import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/reschedule_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/signature_bottom_sheet.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/my_order_view_modle/my_order_view_modle.dart';
@@ -42,6 +43,7 @@ class AppFcm {
   }
 
   ValueNotifier<int> notificationCounterValueNotifier = ValueNotifier(0);//notificationCounterValueNotifier
+  ValueNotifier<String> emptyHomeBoxes = ValueNotifier("");//notificationCounterValueNotifier
   MethodChannel platform = MethodChannel('dexterx.dev/flutter_local_notifications_example');
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -116,6 +118,13 @@ class AppFcm {
           LocalConstance.orderDoneId) {
         homeViewModel.refreshHome();
         Get.offAll(() => HomePageHolder());
+        return;
+      }else if(message.data[LocalConstance.id] ==
+          LocalConstance.reschedule){
+        // Get.bottomSheet();
+        Get.bottomSheet(
+            RescheduleSheet(),
+            isScrollControlled: true);
         return;
       } else {
         homeViewModel.selectedSignatureItemModel.title =
@@ -323,7 +332,14 @@ class AppFcm {
 
         return;
       }
-
+       if(serial[LocalConstance.id] ==
+          LocalConstance.reschedule){
+        // Get.bottomSheet();
+        Get.bottomSheet(
+            RescheduleSheet(),
+            isScrollControlled: true);
+        return;
+      }
       if (serial[LocalConstance.id].toString() ==
           LocalConstance.signatureOnDrvier) {
         homeViewModel.operationTask =

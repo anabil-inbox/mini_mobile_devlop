@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:inbox_clients/feature/model/home/Box_modle.dart';
 import 'package:inbox_clients/feature/model/home/beneficiary.dart';
 import 'package:inbox_clients/feature/model/home/notification_data.dart';
@@ -12,15 +13,17 @@ class HomeHelper {
   HomeHelper._();
   static final HomeHelper getInstance = HomeHelper._();
   var log = Logger();
-
+  ValueNotifier<String> emptyHomeBoxes = ValueNotifier("");
   Future<List<Box>> getCustomerBoxess(
       {required int pageSize, required int page}) async {
     var appResponse = await HomeApi.getInstance.getCustomerBoxes(
         queryParameters: {"${ConstanceNetwork.page}": "$page", "${ConstanceNetwork.pageSize}": "$pageSize"},
         url: "${ConstanceNetwork.getCustomerBoxessEndPoint}",
         header: ConstanceNetwork.header(4));
+    Logger().w("getCustomerBoxess: ${appResponse.toJson()}");
     if (appResponse.status?.success == true) {
       // Logger().e(appResponse.toJson());
+      emptyHomeBoxes.value = "${appResponse.status?.message.toString()}";
       List data = appResponse.data["Storages"];
       return data.map((e) => Box.fromJson(e)).toList();
     } else {

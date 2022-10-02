@@ -31,13 +31,15 @@ class StorageSizeType extends StatelessWidget {
           SizedBox(
             height: sizeH5,
           ),
+          // if(storageViewModel.userStorageCategoriesData.isNotEmpty )...[
           Text(
-            "${tr.choose_from_below} ${storageViewModel.userStorageCategoriesData.isNotEmpty ?  tr.add_more_items : ""}",
-            style: smallHintTextStyle()?.copyWith(fontSize: fontSize14),
+            /*${tr.choose_from_below} */"${storageViewModel.userStorageCategoriesData.isNotEmpty ?  tr.add_more_items : ""}",
+            style: smallHintTextStyle()?.copyWith(fontSize: fontSize14 , color: colorInWarehouse , fontWeight: FontWeight.bold),
           ),
           SizedBox(
             height: sizeH16,
           ),
+          // ],
           GetBuilder<StorageViewModel>(
             init: StorageViewModel(),
             builder: (builder) {

@@ -16,6 +16,7 @@ import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/country.dart';
 import 'package:inbox_clients/feature/model/customer_modle.dart';
+import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/profile/cards_model.dart';
 import 'package:inbox_clients/feature/model/profile/get_wallet_model.dart';
 import 'package:inbox_clients/feature/model/profile/log_model.dart';
@@ -1105,4 +1106,33 @@ class ProfileViewModle extends BaseController {
       update();
     }
   }
+
+  num pointsCalcPrice(Task task) {
+    Logger().wtf("pointsCalcPrice1 ${myPoints.totalPoints!}");
+    Logger().wtf("pointsCalcPrice2 ${SharedPref.instance.getAppSettings()!.pointSpentBoundary!}");
+    var pointSpentBoundary =  (myPoints.totalPoints! / SharedPref.instance.getAppSettings()!.pointSpentBoundary!).floor(); // Allowed multiplier
+    Logger().wtf("pointSpentBoundary ${pointSpentBoundary}");
+    var additions = pointSpentBoundary * SharedPref.instance.getAppSettings()!.pointSpentBoundary!; // points
+    Logger().wtf("additions $additions");
+     Logger().w("${(additions * SharedPref.instance.getCurrentUserData().conversionFactor!).isNaN ? 0.0:(additions * SharedPref.instance.getCurrentUserData().conversionFactor!)/*.toInt()*/}");
+    var price = (additions * SharedPref.instance.getCurrentUserData().conversionFactor!).isNaN ? 0.0:(additions * SharedPref.instance.getCurrentUserData().conversionFactor!)/*.toInt()*/; //price
+     if(task.price! >= price) {
+       return price;
+     }else{
+       return task.price!;
+     }
+  }
+
+  num paidPoints(Task task){
+    var pointSpentBoundary =  (myPoints.totalPoints! / SharedPref.instance.getAppSettings()!.pointSpentBoundary!).floor();
+    var additions = pointSpentBoundary * SharedPref.instance.getAppSettings()!.pointSpentBoundary!;
+    var price = (additions * SharedPref.instance.getCurrentUserData().conversionFactor!).isNaN ? 0.0:(additions * SharedPref.instance.getCurrentUserData().conversionFactor!)/*.toInt()*/; //price
+    if(task.price! >= price) {
+      return additions;
+    }else{
+      return (task.price! / SharedPref.instance.getCurrentUserData().conversionFactor!);
+    }
+
+  }
+
 }

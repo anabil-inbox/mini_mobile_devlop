@@ -54,8 +54,8 @@ class PaymentViewModel extends GetxController {
                 salesOrder: homeViewModel.operationTask.salesOrder ?? "",
                 paymentMethod: LocalConstance.bankCard,
                 paymentId: paymentId,
-                extraFees: sendedWattingFeesOrCancellation,
-                reason: sendedWattingFeesOrCancellationReson);
+                extraFees: /*sendedWattingFeesOrCancellation*/0,
+                reason: sendedWattingFeesOrCancellationReson, isAppPay: false);
 
             Get.back();
           } else if (isFromNewStorage && paymentId.isNotEmpty) {

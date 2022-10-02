@@ -56,7 +56,7 @@ class AddMoneyBottomSheet extends StatelessWidget {
                     ),
                     SizedBox(height: sizeH20),
                     PrimaryButton(
-                        textButton: txtADD!,
+                        textButton: tr.add,
                         isLoading: logic.isLoading,
                         onClicked: () {
                           logic.depositMoneyToWallet();

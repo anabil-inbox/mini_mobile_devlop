@@ -12,6 +12,7 @@ class OrderSales {
       this.deliveryDate,
       this.status,
       this.orderItems,
+        this.proccessName,
       this.isRated = false,
       this.driverId,
       this.hasTasks = false,
@@ -38,6 +39,7 @@ class OrderSales {
   String? timeFrom;
   String? timeTo;
   String? proccessType;
+  String? proccessName;
   String? paymentMethod;
   List<OrderItem>? orderItems;
   List<String>? boxes;
@@ -52,6 +54,7 @@ class OrderSales {
         orderId: json["order_id"] ?? "",
         customerId: json["customer_id"] ?? "",
         proccessType: json["process"] ?? "",
+        proccessName: json["process_name"] ?? "",
         orderType: json["order_type"] ?? "",
         timeFrom: json["time_from"] == null ? null : json["time_from"],
         timeTo: json["time_to"] == null ? null : json["time_to"],
@@ -89,6 +92,7 @@ class OrderSales {
         "order_type": orderType,
         "payment_method": paymentMethod,
         "process": proccessType,
+        "process_name": proccessName,
         "total_price": totalPrice,
         "discount_amount": discountAmount,
         "order_shipping_address": orderShippingAddress,

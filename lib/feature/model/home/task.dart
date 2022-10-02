@@ -46,6 +46,26 @@ class Task {
 
   @override
   int get hashCode => id.hashCode;
+
+  Task copyWith({
+    String? id,
+    String? task,
+    String? taskName,
+    num? price,
+    List<AreaZone>? areaZones,
+    List<VAS>? vas,
+    List<VAS>? selectedVas,
+  }) {
+    return Task(
+      id: id ?? this.id,
+      task: task ?? this.task,
+      taskName: taskName ?? this.taskName,
+      price: price ?? this.price,
+      areaZones: areaZones ?? this.areaZones,
+      vas: vas ?? this.vas,
+      selectedVas: selectedVas ?? this.selectedVas,
+    );
+  }
 }
 
 class VAS {

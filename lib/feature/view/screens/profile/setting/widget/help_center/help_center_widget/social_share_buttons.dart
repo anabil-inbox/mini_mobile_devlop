@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/sh_util.dart';
+import 'package:logger/logger.dart';
 
 
 import '../../../../../../../../util/app_shaerd_data.dart';
@@ -23,6 +24,8 @@ class SocialShareButtons extends StatelessWidget {
             itemCount: SharedPref.instance.getAppSettings()!.socialContact!.length,
             itemBuilder: (BuildContext context, int index) {
               var socialContact = SharedPref.instance.getAppSettings()?.socialContact![index];
+              // Logger().w(socialContact?.toJson());
+
               return InkWell(
                 onTap: () {
                   if(socialContact!.url != null && socialContact.type == "Whatsapp" && !socialContact.url!.contains(".com")){

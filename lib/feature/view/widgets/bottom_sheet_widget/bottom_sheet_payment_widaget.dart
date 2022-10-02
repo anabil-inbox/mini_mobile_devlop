@@ -104,7 +104,7 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                           ?.copyWith(fontSize: fontSize28, color: colorPrimary),
                     ),
                     if ((BottomSheetPaymentWidget.storageViewModle.isAccept &&
-                            BottomSheetPaymentWidget.storageViewModle.priceAfterDiscount > 0) ||
+                            BottomSheetPaymentWidget.storageViewModle.priceAfterDiscount >= 0) ||
                         /*BottomSheetPaymentWidget.storageViewModle.isUsingPromo*/
                         (BottomSheetPaymentWidget.storageViewModle.checkPromoAppResponse != null &&
                             BottomSheetPaymentWidget.storageViewModle.checkPromoAppResponse!.status != null &&
@@ -116,18 +116,22 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                       ),
                       CustomTextView(
                           txt: widget.boxes.length == 0
-                              ? logic.calculateTaskPriceOnceBox(task: widget.task)
+                              ? logic.calculateTaskPriceOnceBox(
+                                  task: widget.task)
                               : logic.calculateTaskPriceLotBoxess(
+                                  isFromCart: false,
+                                  task: widget.task,
+                                  boxess: widget.boxes,
+                                  isFirstPickUp: widget.isFirstPickUp! &&
+                                      widget.task.id ==
+                                          LocalConstance
+                                              .pickupId) /*logic.calculateTaskPriceLotBoxess(
                               isFromCart: false,
                               task: widget.task,
                               boxess: widget.boxes,
                               isFirstPickUp: widget.isFirstPickUp! &&
-                                  widget.task.id == LocalConstance.pickupId)/*logic.calculateTaskPriceLotBoxess(
-                              isFromCart: false,
-                              task: widget.task,
-                              boxess: widget.boxes,
-                              isFirstPickUp: widget.isFirstPickUp! &&
-                                  widget.task.id == LocalConstance.pickupId)*/,
+                                  widget.task.id == LocalConstance.pickupId)*/
+                          ,
                           textAlign: TextAlign.center,
                           textStyle: textStyleAppBarTitle()?.copyWith(
                               fontSize: fontSize14,
@@ -155,15 +159,15 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
 
   Widget get myPointsText => GetBuilder<StorageViewModel>(
         builder: (value) {
-          Logger().e(
-              "CONVERCATION FACTOR ${SharedPref.instance.getCurrentUserData().conversionFactor}");
+          Logger().e("CONVERCATION FACTOR ${SharedPref.instance.getCurrentUserData().conversionFactor}"
+              "pointSpentBoundary: ${SharedPref.instance.getAppSettings()!.pointSpentBoundary}");
           return Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               InkWell(
                 onTap: () {
-                  if (handlePrice(value).replaceAll("QR","").trim() == "0.00" && value.isUsingPromo){
+                  if (handlePrice(value).replaceAll("QR", "").trim() == "0.00" && value.isUsingPromo && !value.isAccept) {
                     return;
                   }
                   value.isAccept = !value.isAccept;
@@ -190,7 +194,8 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
               ),
               CustomTextView(
                 txt:
-                    "${BottomSheetPaymentWidget.profileViewModle.myPoints.totalPoints} ${tr.points} = ${BottomSheetPaymentWidget.profileViewModle.myPoints.totalPoints! * SharedPref.instance.getCurrentUserData().conversionFactor!} QR",
+                    "${BottomSheetPaymentWidget.profileViewModle.paidPoints( widget.task.copyWith(price:widget.task.price! * (widget.boxes.isEmpty ? 1 : widget.boxes.length) ))/*myPoints.totalPoints*/} ${tr.points} = ${BottomSheetPaymentWidget.profileViewModle.pointsCalcPrice( widget.task.copyWith(price:widget.task.price! * (widget.boxes.isEmpty ? 1 : widget.boxes.length) ))} QR",
+                //${BottomSheetPaymentWidget.profileViewModle.myPoints.totalPoints! * SharedPref.instance.getCurrentUserData().conversionFactor!}
                 textAlign: TextAlign.start,
                 textStyle: textStyleNormal()!
                     .copyWith(color: colorPrimary, fontSize: fontSize14),
@@ -210,9 +215,11 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                 children: [
                   InkWell(
                     onTap: () {
-                      if (builder.isUsingPromo) {
-                        BottomSheetPaymentWidget.storageViewModle.tdCopun.clear();
-                        BottomSheetPaymentWidget.storageViewModle.checkPromoAppResponse?.status?.success = false;
+                      if (builder.isUsingPromo ) {
+                        BottomSheetPaymentWidget.storageViewModle.tdCopun
+                            .clear();
+                        BottomSheetPaymentWidget.storageViewModle
+                            .checkPromoAppResponse?.status?.success = false;
                       }
                       builder.isUsingPromo = !builder.isUsingPromo;
                       builder.update();
@@ -250,17 +257,21 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                         controller:
                             BottomSheetPaymentWidget.storageViewModle.tdCopun,
                         onSubmitted: (value) async {
-                          await BottomSheetPaymentWidget.storageViewModle
-                              .checkPromo(promoCode: value);
-
+                          if(BottomSheetPaymentWidget.storageViewModle.tdCopun.text.isNotEmpty) {
+                            await BottomSheetPaymentWidget.storageViewModle
+                                .checkPromo(promoCode: value);
+                          }
                         },
                         textInputAction: TextInputAction.go,
                         decoration: InputDecoration(
                             suffixIcon: builder.checkPromoAppResponse != null
                                 ? Padding(
                                     padding: EdgeInsets.all(padding12!),
-                                    child: builder.checkPromoAppResponse!.status != null &&
-                                            builder.checkPromoAppResponse!.status!.success!
+                                    child: builder.checkPromoAppResponse!
+                                                    .status !=
+                                                null &&
+                                            builder.checkPromoAppResponse!
+                                                .status!.success!
                                         ? SvgPicture.asset(
                                             "assets/svgs/icon_big_check.svg")
                                         : SvgPicture.asset(
@@ -328,21 +339,24 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
     screenUtil(context);
     Logger().w(widget.task.toJson());
     Logger().w(widget.isFirstPickUp);
-    Logger().w(!widget.isFirstPickUp! && widget.task.id != LocalConstance.pickupId);
+    Logger()
+        .w(!widget.isFirstPickUp! && widget.task.id != LocalConstance.pickupId);
     Logger().w(BottomSheetPaymentWidget.profileViewModle.myPoints.totalPoints);
     Logger().w(((BottomSheetPaymentWidget.storageViewModle.isAccept &&
-        BottomSheetPaymentWidget.storageViewModle.priceAfterDiscount > 0) ||
+            BottomSheetPaymentWidget.storageViewModle.priceAfterDiscount > 0) ||
         /*BottomSheetPaymentWidget.storageViewModle.isUsingPromo*/
-        (BottomSheetPaymentWidget.storageViewModle.checkPromoAppResponse != null &&
-            BottomSheetPaymentWidget.storageViewModle.checkPromoAppResponse!.status != null &&
-            BottomSheetPaymentWidget.storageViewModle.checkPromoAppResponse!.status!.success!) ||
-        (widget.isFirstPickUp! &&
-            widget.task.id == LocalConstance.pickupId)));
+        (BottomSheetPaymentWidget.storageViewModle.checkPromoAppResponse !=
+                null &&
+            BottomSheetPaymentWidget
+                    .storageViewModle.checkPromoAppResponse!.status !=
+                null &&
+            BottomSheetPaymentWidget
+                .storageViewModle.checkPromoAppResponse!.status!.success!) ||
+        (widget.isFirstPickUp! && widget.task.id == LocalConstance.pickupId)));
     return GetBuilder<StorageViewModel>(
         init: StorageViewModel(),
         builder: (logic) {
-
-          Logger().w("handlePrice_${handlePrice(logic)}");
+          // Logger().w("handlePrice_${handlePrice(logic)}");
           return SingleChildScrollView(
             child: Container(
               decoration: BoxDecoration(
@@ -451,7 +465,8 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                                                   .priceAfterDiscount ==
                                               0)
                                       ? true
-                                      : false, isApple: false,
+                                      : false,
+                              isApple: false,
                             );
                           }
                           // return PaymentItem(
@@ -466,24 +481,100 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                     ),
                     if (Platform.isIOS) ...[
                       SizedBox(
-                        width: MediaQuery.of(context).size.width /1.13,
+                        width: MediaQuery.of(context).size.width / 1.13,
                         child: PaymentItem(
                           isFirstPickUp: widget.isFirstPickUp! &&
                               widget.task.id == LocalConstance.pickupId,
+                          doPossess: () {
+                            if (BottomSheetPaymentWidget.storageViewModle.isAccept ||
+                                BottomSheetPaymentWidget.storageViewModle.isUsingPromo) {
+                              if (BottomSheetPaymentWidget.storageViewModle.priceAfterDiscount > 0) {
+                                if (BottomSheetPaymentWidget.storageViewModle.selectedPaymentMethod?.id != null) {
+                                  if (widget.boxes.length > 0) {
+                                    BottomSheetPaymentWidget.storageViewModle
+                                        .doTaskBoxRequest(
+                                            isFirstPickUp:
+                                                widget.isFirstPickUp! &&
+                                                    widget.task.id ==
+                                                        LocalConstance.pickupId,
+                                            isFromCart: false,
+                                            task: widget.task,
+                                            boxes: widget.boxes,
+                                            selectedItems: widget.items,
+                                            beneficiaryId:
+                                                widget.beneficiaryId);
+                                  } else {
+                                    BottomSheetPaymentWidget.storageViewModle
+                                        .doTaskBoxRequest(
+                                            isFirstPickUp:
+                                                widget.isFirstPickUp! &&
+                                                    widget.task.id ==
+                                                        LocalConstance.pickupId,
+                                            isFromCart: false,
+                                            task: widget.task,
+                                            boxes: [widget.box],
+                                            selectedItems: widget.items,
+                                            beneficiaryId:
+                                                widget.beneficiaryId);
+                                  }
+                                }
+                              }
+                              return;
+                            }
+                        if (BottomSheetPaymentWidget.storageViewModle.selectedPaymentMethod?.id != null) {
+                          if (widget.boxes.length > 0) {
+                            BottomSheetPaymentWidget.storageViewModle
+                                .doTaskBoxRequest(
+                                isFirstPickUp:
+                                widget.isFirstPickUp! &&
+                                    widget.task.id ==
+                                        LocalConstance.pickupId,
+                                isFromCart: false,
+                                task: widget.task,
+                                boxes: widget.boxes,
+                                selectedItems: widget.items,
+                                beneficiaryId:
+                                widget.beneficiaryId);
+                          } else {
+                            BottomSheetPaymentWidget.storageViewModle
+                                .doTaskBoxRequest(
+                                isFirstPickUp:
+                                widget.isFirstPickUp! &&
+                                    widget.task.id ==
+                                        LocalConstance.pickupId,
+                                isFromCart: false,
+                                task: widget.task,
+                                boxes: [widget.box],
+                                selectedItems: widget.items,
+                                beneficiaryId:
+                                widget.beneficiaryId);
+                          }
+                        }
+
+
+                          },
+                          isDoPossess: true,
                           isDisable: ((logic.isAccept || logic.isUsingPromo) &&
-                                  BottomSheetPaymentWidget.storageViewModle.priceAfterDiscount == 0) ? true : false,
+                                  BottomSheetPaymentWidget.storageViewModle
+                                          .priceAfterDiscount ==
+                                      0)
+                              ? true
+                              : false,
                           price: widget.boxes.length == 0
-                              ? logic.calculateTaskPriceOnceBox(task: widget.task)
+                              ? logic.calculateTaskPriceOnceBox(
+                                  task: widget.task)
                               : logic.calculateTaskPriceLotBoxess(
-                              isFromCart: false,
-                              task: widget.task,
-                              boxess: widget.boxes,
-                              isFirstPickUp: widget.isFirstPickUp! &&
-                                  widget.task.id == LocalConstance.pickupId),
+                                  isFromCart: false,
+                                  task: widget.task,
+                                  boxess: widget.boxes,
+                                  isFirstPickUp: widget.isFirstPickUp! &&
+                                      widget.task.id ==
+                                          LocalConstance.pickupId),
                           paymentMethod: PaymentMethod(
                               id: LocalConstance.applePay,
                               name: LocalConstance.applePay,
-                              image: Constance.appleImage), isApple: true,
+                              image: Constance.appleImage),
+                          isApple: true,
                         ),
                       ),
                       SizedBox(
@@ -523,9 +614,11 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                       ),
                     ],
                     // if (handlePrice(logic).replaceAll("QR","").trim() != "0.00" && !BottomSheetPaymentWidget.storageViewModle.isUsingPromo && !widget.isFirstPickUp!/*&& BottomSheetPaymentWidget.profileViewModle.myPoints.totalPoints! > 0*/)
-                    BottomSheetPaymentWidget.profileViewModle.myPoints.totalPoints != null && BottomSheetPaymentWidget.profileViewModle.myPoints.totalPoints! > 0
-                          ? myPointsText
-                          : const SizedBox(),
+                    BottomSheetPaymentWidget.profileViewModle.myPoints.totalPoints != null &&
+                            BottomSheetPaymentWidget.profileViewModle.myPoints.totalPoints! > /*0*/
+                                SharedPref.instance.getAppSettings()!.pointSpentBoundary!.toInt()
+                        ? myPointsText
+                        : const SizedBox(),
                     SizedBox(
                       height: sizeH16,
                     ),
@@ -654,10 +747,8 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
       }
       return;
     }
-    if (BottomSheetPaymentWidget.storageViewModle.selectedPaymentMethod?.id !=
-        null) {
-      if (BottomSheetPaymentWidget.storageViewModle.selectedPaymentMethod?.id ==
-              Constance.cashId ||
+    if (BottomSheetPaymentWidget.storageViewModle.selectedPaymentMethod?.id != null) {
+      if (BottomSheetPaymentWidget.storageViewModle.selectedPaymentMethod?.id == Constance.cashId ||
           BottomSheetPaymentWidget.storageViewModle.selectedPaymentMethod?.id ==
               Constance.bankTransferId ||
           BottomSheetPaymentWidget.storageViewModle.selectedPaymentMethod?.id ==
@@ -754,7 +845,8 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
   String handlePrice(StorageViewModel logic) {
     return (BottomSheetPaymentWidget.storageViewModle.isAccept ||
             BottomSheetPaymentWidget.storageViewModle.isUsingPromo ||
-            (widget.isFirstPickUp! && widget.task.id == LocalConstance.pickupId))
+            (widget.isFirstPickUp! &&
+                widget.task.id == LocalConstance.pickupId))
         ? BottomSheetPaymentWidget.storageViewModle
             .getPriceWithDiscount(
                 isFirstPickUp: widget.isFirstPickUp! &&
@@ -765,9 +857,10 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                             widget.task.id == LocalConstance.pickupId,
                         isFromCart: false,
                         task: widget.task,
-                        boxess: widget.boxes.isEmpty ?[widget.box] :widget.boxes)
+                        boxess:
+                            widget.boxes.isEmpty ? [widget.box] : widget.boxes)
                     .toString()
-                    .split(" ")[0])[0]
+                    .split(" ")[0], task: widget.task.copyWith(price:widget.task.price! * (widget.boxes.isEmpty ? 1 : widget.boxes.length) ) , )[0]
             .toString()
         : widget.boxes.length == 0
             ? logic.calculateTaskPriceOnceBox(task: widget.task)

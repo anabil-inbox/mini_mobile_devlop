@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
+import 'package:inbox_clients/feature/view/widgets/three_size_dot.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -86,7 +87,7 @@ class Balance extends StatelessWidget {
                   ],
                 ),
               ),
-
+              _.isLoading ?  ThreeSizeDot(color_3: colorPrimary,color_2:colorPrimary ,color_1:colorPrimary ,):
                PaymentWidget(
                 homeViewModel:homeViewModel,
                 isRecivedOrderPayment: true,

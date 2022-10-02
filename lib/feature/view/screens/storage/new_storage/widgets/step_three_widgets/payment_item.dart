@@ -16,6 +16,7 @@ import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:logger/logger.dart';
+import 'package:pay/pay.dart';
 
 import '../../../../../../../util/app_shaerd_data.dart';
 import '../../../../../../view_model/profile_view_modle/profile_view_modle.dart';
@@ -27,9 +28,11 @@ class PaymentItem extends StatelessWidget {
       this.isRecivedOrderPayment = false,
       required this.paymentMethod,
       this.isDisable = false,
-      this.isFromApplicationPayment = false,required this.isFirstPickUp,required this.isApple, this.price,  })
+      this.isFromApplicationPayment = false,required this.isFirstPickUp,required this.isApple, this.price,this.doPossess, this.isDoPossess = false,   })
       : super(key: key);
 
+  final  Function()? doPossess;//doPossess
+  final  bool? isDoPossess;
   final bool isApple;
   final PaymentMethod paymentMethod;
   final bool isFromApplicationPayment;
@@ -87,7 +90,7 @@ class PaymentItem extends StatelessWidget {
             builder.update();
           });
         }
-        Logger().w(ConstanceNetwork.imageUrl +  paymentMethod.image.toString());
+        // Logger().w(ConstanceNetwork.imageUrl +  paymentMethod.image.toString());
         return InkWell(
           onTap: isDisable! || isFirstPickUp!
               ? () {}
@@ -102,8 +105,28 @@ class PaymentItem extends StatelessWidget {
                     _applePayHandler();
                   }
                 },
-          child: Container(
-             width: /*isApple? MediaQuery.of(context).size.width / 1.14 : */MediaQuery.of(context).size.width /4,
+          child:/*isApple ?
+          ApplePayButton(
+            paymentConfigurationAsset: 'applepay.json',
+            paymentItems: [
+              applePay.PaymentItem(
+                type: applePay.PaymentItemType.total,
+                label: 'INBOX LOGISTIC',// Total
+                amount: '${price != null  ? price : homeViewModel.operationTask.totalDue != null &&  homeViewModel.operationTask.totalDue! > 0 ? homeViewModel.operationTask.totalDue: storageViewModel.totalBalance}',
+                status: applePay.PaymentItemStatus.final_price,
+              )
+            ],
+            style: ApplePayButtonStyle.black,
+            type: ApplePayButtonType.buy,
+
+            margin: const EdgeInsets.only(top: 15.0),
+            onPaymentResult: onApplePayResult,
+            loadingIndicator: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+              :*/ Container(
+             width: /*isApple? MediaQuery.of(context).size.width / 1.14 :*/ MediaQuery.of(context).size.width /4,
             margin: EdgeInsets.symmetric(horizontal: padding4!),
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -133,8 +156,8 @@ class PaymentItem extends StatelessWidget {
                       child: imageNetwork(
                           isPayment: true,
                           url:paymentMethod.id == LocalConstance.applePay ? Constance.appleImage: ConstanceNetwork.imageUrl + ""+ paymentMethod.image.toString(),
-                          width: sizeH90,
-                          fit:BoxFit.contain,
+                          width:isApple ? MediaQuery.of(context).size.width / 1.6 : sizeH90,
+                          fit: isApple ? BoxFit.fill:BoxFit.contain,
                           height: sizeH60!),
                     ),
                   ),
@@ -214,11 +237,12 @@ class PaymentItem extends StatelessWidget {
       if ((num.tryParse(profileViewModle.myWallet.balance.toString()) ?? 0) >
           (homeViewModel.operationTask.totalDue ?? 0)) {
         homeViewModel.applyPayment(
+            isRecivedOrderPayment:isRecivedOrderPayment,
             salesOrder: homeViewModel.operationTask.salesOrder ?? "",
             paymentMethod: paymentMethod.name ?? "",
             paymentId: "",
-            extraFees: sendedWattingFeesOrCancellation,
-            reason: sendedWattingFeesOrCancellationReson);
+            extraFees: 0/*sendedWattingFeesOrCancellation*/,
+            reason: sendedWattingFeesOrCancellationReson, isAppPay: false);
       } else {
         snackError("", "Wallet Balance is not enough");
       }
@@ -230,8 +254,19 @@ class PaymentItem extends StatelessWidget {
           url: homeViewModel.operationTask.urlPayment,
           isFromCart: false,
           isOrderProductPayment: false,
+          isFromOrderDetails:isRecivedOrderPayment,
           cartModels: [],
           isFromNewStorage: false,
+          doFunctions:()async{
+            await homeViewModel.applyPayment(
+                isRecivedOrderPayment:isRecivedOrderPayment,
+                salesOrder: homeViewModel.operationTask.salesOrder ?? "",
+                paymentMethod: paymentMethod.name ?? "",
+                paymentId: "",
+                extraFees: 0/*sendedWattingFeesOrCancellation*/,
+                reason: sendedWattingFeesOrCancellationReson, isAppPay: false);
+            // Get.back();
+          },
           paymentId: '',
         ));
       }else{
@@ -246,15 +281,19 @@ class PaymentItem extends StatelessWidget {
     if (paymentMethod.name == LocalConstance.applePay) {
       //todo this for apple pay actions
       Logger().d(
-          "1${paymentMethod.name} , ${homeViewModel.operationTask.totalDue ?? storageViewModel.totalBalance}");
+          "1${paymentMethod.name} , ${homeViewModel.operationTask.totalDue ?? storageViewModel.totalBalance} , ${storageViewModel.totalBalance}");
       var _paymentItems = [
         applePay.PaymentItem(
+          type: applePay.PaymentItemType.total,
           label: 'INBOX LOGISTIC',// Total
-          amount: '${price != null ? price:homeViewModel.operationTask.totalDue ?? storageViewModel.totalBalance}',
+          amount: '${price != null  ? price : homeViewModel.operationTask.totalDue != null &&  homeViewModel.operationTask.totalDue! > 0 ? homeViewModel.operationTask.totalDue: storageViewModel.totalBalance}',
           status: applePay.PaymentItemStatus.final_price,
         )
       ];
       bool userCanPay = await _payClient.userCanPay();
+
+    Logger().w("userCanPay_ $userCanPay");
+
       num sendedWattingFeesOrCancellation = -1;
       String sendedWattingFeesOrCancellationReson = "";
 
@@ -268,35 +307,50 @@ class PaymentItem extends StatelessWidget {
         sendedWattingFeesOrCancellationReson = "cancellation";
       }
       // if (userCanPay) {
-      _payClient.showPaymentSelector(paymentItems: _paymentItems).then((value) {
-        Logger().d("paymentApple: => $value");
-        FirebaseUtils.instance.addPaymentSuccess(value);
-        if (value["token"] != null) {
-          homeViewModel.applyPayment(
-              salesOrder: homeViewModel.operationTask.salesOrder ?? "",
-              paymentMethod: paymentMethod.name ?? "",
-              paymentId: value["transactionId"],
-              isAppPay: true,
-              storageViewModel: storageViewModel,
-              extraFees: sendedWattingFeesOrCancellation,
-              reason: sendedWattingFeesOrCancellationReson);
-        } else {
-          FirebaseUtils.instance.addPaymentFail({
-            ...value,
-            "else": "token == null",
-          });
-          snackError("", "Credit Balance is not enough");
-        }
-      }).catchError((onError) {
-        Logger().d("paymentApple: => $onError");
-        FirebaseUtils.instance
-            .addPaymentFail({"onError": "${onError.toString()}"});
+      _payClient.userCanPay(applePay.PayProvider.apple_pay).then((values) {
+
+        _payClient.showPaymentSelector(paymentItems: _paymentItems , provider: applePay.PayProvider.apple_pay).then((value) {
+          Logger().d("paymentApple: => $value");
+          FirebaseUtils.instance.addPaymentSuccess(value);
+          if (value["token"] != null || value["transactionIdentifier"] != null ) {
+            Logger().d("paymentApple:1 => $value  ${isDoPossess! && doPossess != null}" );
+            if(isDoPossess! && doPossess != null){
+              doPossess!();
+            }else {
+
+              homeViewModel.applyPayment(
+                  isRecivedOrderPayment:isRecivedOrderPayment,
+                  salesOrder: homeViewModel.operationTask.salesOrder ?? "",
+                  paymentMethod: LocalConstance.creditCard/*paymentMethod.name ?? ""*/ ,
+                  paymentId: value["transactionId"] != null ? value["transactionId"] : "${DateTime.now().millisecondsSinceEpoch.toString()}",
+                  isAppPay: true,
+                  storageViewModel: storageViewModel,
+                  extraFees: 0/*sendedWattingFeesOrCancellation*/,
+                  reason: sendedWattingFeesOrCancellationReson);
+            }
+          } else {
+            FirebaseUtils.instance.addPaymentFail({
+              ...value,
+              "else": "token == null",
+            });
+            snackError("", "Credit Balance is not enough");
+          }
+        }).catchError((onError) {
+          Logger().d("paymentApple: => $onError");
+          FirebaseUtils.instance
+              .addPaymentFail({"onError": "${onError.toString()}"});
+        });
       });
+
       // } else {
       //   Logger().e("paymentApple is: => $userCanPay");
       //   snackError("", "Apple Pay is not available");
       // }
     }
+  }
+
+  void onApplePayResult(Map<String, dynamic> result) {
+    Logger().w(result);
   }
 }
 // watting fees > 0 watting fees::

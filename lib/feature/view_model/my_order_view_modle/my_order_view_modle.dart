@@ -116,10 +116,16 @@ class MyOrderViewModle extends BaseController {
     /// allow if box not at the home
     /// newNewStorageSpaceSv
     /// newStorageItemSv
+    // Logger().w("__${newOrderSales.status?.toLowerCase() !=
+    //     LocalConstance.completed
+    //         .toLowerCase()
+    // }");
+    // Logger().w("__${!newOrderSales.isCancelled!}");
     if (newOrderSales.proccessType?.toLowerCase() ==
         LocalConstance.newStorageSv.toLowerCase()) {
       /// [newStorageSv]
       ///if status != completed  && order boxes not contain at home
+
       if (newOrderSales.status?.toLowerCase() !=
               LocalConstance.completed
                   .toLowerCase()  && /*!*/!newOrderSales.isCancelled!/* &&

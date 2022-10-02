@@ -40,10 +40,11 @@ class PaymentScreen extends StatelessWidget {
     this.boxIdInvoice,
     this.operationsBox,
     this.isFromEditOrder = false,
-    this.editOrderFunc ,
+    this.editOrderFunc,
     this.isFromNotifications = false,
     this.operationTask,
-
+    this.isFromOrderDetails = false,
+    this.doFunctions,
   }) : super(key: key);
 
   final String? url, orderId;
@@ -61,11 +62,14 @@ class PaymentScreen extends StatelessWidget {
   final String? boxIdInvoice;
   final Box? operationsBox;
   final bool? isFromEditOrder;
-  final  Function()? editOrderFunc;
-  final  bool? isFromNotifications;
+  final Function()? editOrderFunc;
+  final bool? isFromNotifications;
   final TaskResponse? operationTask;
+  final bool? isFromOrderDetails;
+  final Function()? doFunctions;
 
-      ItemViewModle get itemViewModel => Get.put<ItemViewModle>(ItemViewModle());
+  ItemViewModle get itemViewModel => Get.put<ItemViewModle>(ItemViewModle());
+
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -81,35 +85,52 @@ class PaymentScreen extends StatelessWidget {
               initialUrl: url,
               onProgress: (i) {},
               onWebResourceError: (error) {
-                Logger().e(error);
+                Logger().e(error.domain);
+                Logger().e(error.description);
+                Logger().e(error.failingUrl);
+                Logger().e(error.errorCode);
+                Logger().e(error.errorType);
                 Get.back();
               },
               onPageFinished: (url) async {
-                 try {
+                try {
                   Logger().i("onPageFinished : url $url");
                   // String paymentId = url.split("=")[1].split("&")[0];
                   // Logger().e(paymentId);
                   // payment.paymentId = paymentId;
-                  if(url.toString().contains("false")){
+                  if (url.toString().contains("false")) {
                     Get.back();
                     return;
                   }
 
-                  if(isFromNotifications!){
+                  if (isFromNotifications!) {
                     if (url.toString().contains("true")) {
                       Map<String, dynamic> map = {
-                        ConstanceNetwork.idKey: operationTask?.salesOrder.toString(),
-                        ConstanceNetwork.paymentMethodKey: operationTask?.paymentMethod.toString(),
+                        ConstanceNetwork.idKey:
+                            operationTask?.salesOrder.toString(),
+                        ConstanceNetwork.paymentMethodKey:
+                            operationTask?.paymentMethod.toString(),
                         ConstanceNetwork.paymentIdKey: paymentId,
-                        ConstanceNetwork.extraFeesKey: operationTask!.waittingFees! + operationTask!.cancellationFees!,
+                        ConstanceNetwork.extraFeesKey:
+                            operationTask!.waittingFees! +
+                                operationTask!.cancellationFees!,
                         ConstanceNetwork.reasonKey: "",
-                        Constance.driverToken: await SharedPref.instance.getDriverToken(),
+                        Constance.driverToken:
+                            await SharedPref.instance.getDriverToken(),
                       };
                       Logger().wtf("applyPayment_$map");
-                      await OrderHelper.getInstance.applyPayment(body: map)
+                      await OrderHelper.getInstance
+                          .applyPayment(body: map)
                           .then((value) {
                         Get.back();
                       });
+                      return;
+                    }
+                  }
+
+                  if (isFromOrderDetails!) {
+                    if (url.toString().contains("true")) {
+                      doFunctions!();
                       return;
                     }
                   }
@@ -119,7 +140,7 @@ class PaymentScreen extends StatelessWidget {
                       //todo here we will get all cards and go back
                       Get.back(result: true);
                     }
-                  }else if(isFromEditOrder!){
+                  } else if (isFromEditOrder!) {
                     if (url.toString().contains("true")) {
                       //todo here we will get all cards and go back
                       editOrderFunc!();
@@ -133,9 +154,11 @@ class PaymentScreen extends StatelessWidget {
                               body: {LocalConstance.id: boxIdInvoice});
                       if (appResponse.status!.success!) {
                         Get.back();
-                        snackSuccess("", appResponse.status?.message.toString());
-                        if(operationsBox != null){
-                          itemViewModel.getBoxBySerial(serial: operationsBox!.serialNo.toString());
+                        snackSuccess(
+                            "", appResponse.status?.message.toString());
+                        if (operationsBox != null) {
+                          itemViewModel.getBoxBySerial(
+                              serial: operationsBox!.serialNo.toString());
                         }
                       } else {
                         snackError("", appResponse.status?.message.toString());
@@ -145,10 +168,13 @@ class PaymentScreen extends StatelessWidget {
                     if (url.toString().contains("status") &&
                         !url.toString().contains("false"))
                       myOrderViewModel?.applyCancel(orderId);
-                    myOrderViewModel?.getOrderDetaile(orderId: myOrderViewModel!.newOrderSales.orderId.toString());
-                    myOrderViewModel?.newOrderSales.status = LocalConstance.cancelled;
+                    myOrderViewModel?.getOrderDetaile(
+                        orderId:
+                            myOrderViewModel!.newOrderSales.orderId.toString());
+                    myOrderViewModel?.newOrderSales.status =
+                        LocalConstance.cancelled;
                   } else {
-                    if(isFromCancel){
+                    if (isFromCancel) {
                       return;
                     }
                     if (url.toString().contains("status") &&

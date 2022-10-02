@@ -79,10 +79,11 @@ class PaymentWidget extends StatelessWidget {
               height: sizeH16,
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width / 1.14,
+              width: MediaQuery.of(context).size.width / 1.17,
               child: PaymentItem(
                 isFirstPickUp: false,
                 isApple:true,
+                isRecivedOrderPayment: isRecivedOrderPayment,
                 isDisable: homeViewModel?.operationTask.totalDue != null && homeViewModel?.operationTask.totalDue == 0 ? true : false,
                 paymentMethod: PaymentMethod(
                     id: LocalConstance.applePay,
