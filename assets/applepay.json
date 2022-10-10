@@ -10,23 +10,11 @@
       "EMV"
     ],
     "supportedNetworks": [
-      "amex",
-      "cartesBancaires",
-      "chinaUnionPay",
-      "eftpos",
-      "electron",
-      "elo",
-      "girocard",
-      "interac",
-      "jcb",
-      "mada",
-      "mir",
-      "privateLabel",
-      "vPay",
-      "visa",
-      "discover",
-      "masterCard",
-      "maestro"
+      "amex", "cartesBancaires", "chinaUnionPay",
+      "eftpos", "electron", "elo",
+      "girocard", "interac", "jcb", "mada", "mir",
+      "privateLabel", "vPay", "visa",
+      "discover", "masterCard", "maestro"
     ],
 
     "countryCode": "QA",
@@ -34,14 +22,12 @@
     "requiredBillingContactFields": ["postalAddress"],
     "requiredShippingContactFields": ["postalAddress", "name",  "phone", "email"],
     "shippingMethods": [
-
       {
         "label": "Free Shipping",
         "detail": "Arrives in 5 to 7 days",
         "amount": "0.00",
         "identifier": "FreeShip"
       }
-
     ]
   }
 }

@@ -20,7 +20,7 @@ class QrScreen extends StatelessWidget {
       this.isFromAtHome = false,
       required this.storageViewModel,
       this.index = 0,
-      this.code})
+      this.code, this.isForSeal = false, })
       : super(key: key);
 
   final String? code;
@@ -29,6 +29,7 @@ class QrScreen extends StatelessWidget {
   static HomeViewModel homeViewModel = Get.find<HomeViewModel>();
   GlobalKey<FormState> qrKey = GlobalKey<FormState>();
   final int index;
+  final bool? isForSeal;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +54,7 @@ class QrScreen extends StatelessWidget {
             onQRViewCreated: (controller) => homeViewModel.onQRViewCreated(
                 controller,
                 isFromAtHome: isFromAtHome,
+                isForSeal: isForSeal,
                 index: index,
                 storageViewModel: storageViewModel),
             overlay: QrScannerOverlayShape(

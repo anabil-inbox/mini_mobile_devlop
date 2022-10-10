@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inbox_clients/feature/core/spacerd_color.dart';
+import 'package:inbox_clients/feature/model/respons/task_response.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/schedule_pickup_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
@@ -11,19 +12,24 @@ import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
+import 'package:inbox_clients/util/date_time_util.dart';
+import 'package:logger/logger.dart';
 
 
 class RescheduleSheet extends StatelessWidget {
   const RescheduleSheet({
-    Key? key,
+    Key? key, required this.operationTask,
   }) : super(key: key);
+
+  final TaskResponse operationTask;
+
 
   Widget  actionBtn(StorageViewModel logic) =>
       Container(
         margin: EdgeInsets.symmetric(horizontal: sizeW10!),
         child: PrimaryButton(
             isExpanded: true,
-            isLoading: false,
+            isLoading: logic.isLoading,
             onClicked: ()=> onClick(logic),
             textButton: "${tr.ok}"),
       );
@@ -71,7 +77,7 @@ class RescheduleSheet extends StatelessWidget {
                 ),
                 Padding(
                   padding:  EdgeInsets.symmetric(horizontal:sizeW12! ),
-                  child: CustomTextView(txt: "Note",textStyle: textStyleTitleBold(),),
+                  child: CustomTextView(txt: tr.schedule_required,textStyle: textStyleTitleBold(),),
                 ),
                 SizedBox(
                   height: sizeH16,
@@ -107,7 +113,7 @@ class RescheduleSheet extends StatelessWidget {
                 ),
                 Padding(
                   padding:  EdgeInsets.symmetric(horizontal:sizeW12! ),
-                  child: CustomTextView(txt: "Note",textStyle: textStyleNormal(),),
+                  child: CustomTextView(txt: tr.your_order_have_to_be_rescheduled.toString().replaceAll("\$service_name", "${operationTask.processType}"),textStyle: textStyleNormal(),),
                 ),
                 SizedBox(
                   height: sizeH16,
@@ -131,10 +137,19 @@ class RescheduleSheet extends StatelessWidget {
     if(GetUtils.isNull(logic.selectedDateTime)){
       return;
     }
-
     if(GetUtils.isNull(logic.selectedDay)){
       return;
     }
-    Get.back();
+    if(GetUtils.isNull(operationTask.driverId)){
+      return;
+    }
+    if(GetUtils.isNull(operationTask.salesOrder)){
+      return;
+    }
+    logic.onTaskReschedule(operationTask , logic.selectedDateTime , DateUtility.getLocalhouersFromUtc(day: logic.selectedDay!) );
+    // Get.back();
   }//end
+
+///Users/osama/flutter_sdk/flutter_ten/.pub-cache/hosted/pub.dartlang.org/pay_ios-1.0.7/ios/Classes/PaymentHandler.swift
+
 }

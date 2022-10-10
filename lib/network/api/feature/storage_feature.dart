@@ -164,4 +164,17 @@ class StorageFeature {
     }
   }
 
+  Future<AppResponse> onTaskReschedule({var body}) async{
+    var appResponse = await StorageModel.getInstance.onTaskReschedule(
+        url: "${ConstanceNetwork.confirmScheduleApi}",
+        body: body,
+        header: ConstanceNetwork.header(4));
+    Logger().i("${appResponse.toJson()}");
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
 }

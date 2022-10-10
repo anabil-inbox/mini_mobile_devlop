@@ -14,6 +14,7 @@ import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/inside_box/invoices.dart';
 import 'package:inbox_clients/feature/model/my_order/api_item.dart';
 import 'package:inbox_clients/feature/model/my_order/order_sales.dart' as OS;
+import 'package:inbox_clients/feature/model/respons/task_response.dart' as taskResponse;
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
 import 'package:inbox_clients/feature/model/storage/order_item.dart';
 import 'package:inbox_clients/feature/model/storage/payment.dart';
@@ -2445,5 +2446,35 @@ class StorageViewModel extends BaseController {
       imageBankTransfer = File(image.path.toString());
       update();
     }
+  }
+
+  Future<void> onTaskReschedule(taskResponse.TaskResponse operationTask, DateTime? selectedDateTime, String localHoursFromUtc) async{
+    startLoading();
+    var date = "${selectedDateTime?.year}-${selectedDateTime?.month}-${selectedDateTime?.day}";
+    var time = localHoursFromUtc;
+    var driverId = operationTask.driverId;
+    var orderId = operationTask.salesOrder;
+    Map<String , dynamic> map = {
+      ConstanceNetwork.orderIdKey : orderId,
+      ConstanceNetwork.dateKey : date,
+      ConstanceNetwork.timeKey : time,
+      ConstanceNetwork.driverId : driverId,
+
+    };
+    await StorageFeature.getInstance.onTaskReschedule(body:map).then((value){
+      if(value.status!.success!){
+       snackSuccess("", value.status?.message.toString());
+        endLoading();
+        Get.back();
+      }else{
+        snackError("", value.status?.message.toString());
+        endLoading();
+        // Get.back();
+      }
+    }).catchError((onError){
+      Logger().w(onError);
+      endLoading();
+    });
+
   }
 }

@@ -11,6 +11,8 @@ import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/recived_order_screen.dart';
 import 'package:inbox_clients/feature/view/screens/home/recived_order/scan_recived_order_screen.dart';
+import 'package:inbox_clients/feature/view/screens/home/recived_order/widget/scan_products_widget.dart';
+import 'package:inbox_clients/feature/view/screens/items/qr_screen.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
 import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/reschedule_bottom_sheet.dart';
@@ -119,11 +121,17 @@ class AppFcm {
         homeViewModel.refreshHome();
         Get.offAll(() => HomePageHolder());
         return;
-      }else if(message.data[LocalConstance.id] ==
-          LocalConstance.reschedule){
+      }else if(message.data[LocalConstance.id] == LocalConstance.reschedule){
         // Get.bottomSheet();
+        homeViewModel.operationTask = TaskResponse.fromJson(message.data, isFromNotification: true);
+        storageViewModel.selectedPaymentMethod = PaymentMethod(
+            id: homeViewModel.operationTask.paymentMethod,
+            name: homeViewModel.operationTask.paymentMethod);
+        homeViewModel.operationTask.urlPayment = message.data[LocalConstance.paymentUrl];
+        homeViewModel.update();
+        storageViewModel.update();
         Get.bottomSheet(
-            RescheduleSheet(),
+            RescheduleSheet(operationTask:homeViewModel.operationTask),
             isScrollControlled: true);
         return;
       } else {
@@ -332,12 +340,39 @@ class AppFcm {
 
         return;
       }
-       if(serial[LocalConstance.id] ==
-          LocalConstance.reschedule){
+       if(serial[LocalConstance.id] == LocalConstance.reschedule){
         // Get.bottomSheet();
+         homeViewModel.operationTask =
+             TaskResponse.fromJson(map, isFromNotification: true);
+
+         storageViewModel.selectedPaymentMethod = PaymentMethod(
+           id: homeViewModel.operationTask.paymentMethod,
+           name: homeViewModel.operationTask.paymentMethod,
+         );
+
+         storageViewModel.update();
+         homeViewModel.update();
         Get.bottomSheet(
-            RescheduleSheet(),
+            RescheduleSheet(operationTask: homeViewModel.operationTask,),
             isScrollControlled: true);
+        return;
+      }
+       if(serial[LocalConstance.id] == LocalConstance.scanSeal){
+        // Get.bottomSheet();
+         homeViewModel.operationTask =
+             TaskResponse.fromJson(map, isFromNotification: true);
+
+         storageViewModel.selectedPaymentMethod = PaymentMethod(
+           id: homeViewModel.operationTask.paymentMethod,
+           name: homeViewModel.operationTask.paymentMethod,
+         );
+
+         storageViewModel.update();
+         homeViewModel.update();
+         Get.to(QrScreen(storageViewModel: storageViewModel , isFromAtHome: true, isForSeal:true));
+        // Get.bottomSheet(
+        //     RescheduleSheet(operationTask: homeViewModel.operationTask,),
+        //     isScrollControlled: true);
         return;
       }
       if (serial[LocalConstance.id].toString() ==

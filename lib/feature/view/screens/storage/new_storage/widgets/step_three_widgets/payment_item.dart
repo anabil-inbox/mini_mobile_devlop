@@ -8,6 +8,7 @@ import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/storage_view_model/storage_view_model.dart';
 import 'package:inbox_clients/network/firebase/firebase_utils.dart';
+import 'package:inbox_clients/network/utils/apple_pay_sqeaur.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
@@ -16,11 +17,12 @@ import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:logger/logger.dart';
-import 'package:pay/pay.dart';
+import 'package:mad_pay/mad_pay.dart' as applePay;
+// import 'package:pay/pay.dart';
 
 import '../../../../../../../util/app_shaerd_data.dart';
 import '../../../../../../view_model/profile_view_modle/profile_view_modle.dart';
-import 'package:pay/pay.dart' as applePay;
+// import 'package:pay/pay.dart' as applePay;
 
 class PaymentItem extends StatelessWidget {
   const PaymentItem(
@@ -45,10 +47,10 @@ class PaymentItem extends StatelessWidget {
   final bool? isFirstPickUp;
   final dynamic price;
 
-  static applePay.Pay _payClient = applePay.Pay.withAssets([
-    'applepay.json',
-    // 'default_payment_profile_google_pay.json'
-  ]);
+  // static applePay.Pay _payClient = applePay.Pay.withAssets([
+  //   'applepay.json',
+  //   // 'default_payment_profile_google_pay.json'
+  // ]);
 
   static bool _isAvailableApplePay = true; //available
   @override
@@ -63,10 +65,11 @@ class PaymentItem extends StatelessWidget {
           //       PaymentMethod(id: "Cash", image: null, name: "Cash");
           //   _.controller?.update();
           // }
-          await _payClient.userCanPay().then((value) {
-            _isAvailableApplePay = value;
-            _.controller?.update();
-          });
+          // await _payClient.userCanPay().then((value) {
+          //   _isAvailableApplePay = value;
+          //   _.controller?.update();
+          // });
+          await ApplePaySquare.instance.initSquarePayment();
         });
       },
       builder: (builder) {
@@ -125,7 +128,7 @@ class PaymentItem extends StatelessWidget {
               child: CircularProgressIndicator(),
             ),
           )
-              :*/ Container(
+              : */Container(
              width: /*isApple? MediaQuery.of(context).size.width / 1.14 :*/ MediaQuery.of(context).size.width /4,
             margin: EdgeInsets.symmetric(horizontal: padding4!),
             alignment: Alignment.center,
@@ -282,17 +285,16 @@ class PaymentItem extends StatelessWidget {
       //todo this for apple pay actions
       Logger().d(
           "1${paymentMethod.name} , ${homeViewModel.operationTask.totalDue ?? storageViewModel.totalBalance} , ${storageViewModel.totalBalance}");
-      var _paymentItems = [
-        applePay.PaymentItem(
-          type: applePay.PaymentItemType.total,
-          label: 'INBOX LOGISTIC',// Total
-          amount: '${price != null  ? price : homeViewModel.operationTask.totalDue != null &&  homeViewModel.operationTask.totalDue! > 0 ? homeViewModel.operationTask.totalDue: storageViewModel.totalBalance}',
-          status: applePay.PaymentItemStatus.final_price,
-        )
-      ];
-      bool userCanPay = await _payClient.userCanPay();
-
-    Logger().w("userCanPay_ $userCanPay");
+    //   var _paymentItems = [
+    //     applePay.PaymentItem(
+    //       type: applePay.PaymentItemType.total,
+    //       label: 'INBOX LOGISTIC',// Total
+    //       amount: '${price != null  ? price : homeViewModel.operationTask.totalDue != null &&  homeViewModel.operationTask.totalDue! > 0 ? homeViewModel.operationTask.totalDue: storageViewModel.totalBalance}',
+    //       status: applePay.PaymentItemStatus.final_price,
+    //     )
+    //   ];
+    //   bool userCanPay = await _payClient.userCanPay();
+    // Logger().w("userCanPay_ $userCanPay");
 
       num sendedWattingFeesOrCancellation = -1;
       String sendedWattingFeesOrCancellationReson = "";
@@ -307,40 +309,128 @@ class PaymentItem extends StatelessWidget {
         sendedWattingFeesOrCancellationReson = "cancellation";
       }
       // if (userCanPay) {
-      _payClient.userCanPay(applePay.PayProvider.apple_pay).then((values) {
+      // _payClient.userCanPay(applePay.PayProvider.apple_pay).then((values) {
+      //
+      //   _payClient.showPaymentSelector(paymentItems: _paymentItems , provider: applePay.PayProvider.apple_pay).then((value) {
+      //     Logger().d("paymentApple: => $value");
+      //     FirebaseUtils.instance.addPaymentSuccess(value);
+      //     if (value["token"] != null || value["transactionIdentifier"] != null ) {
+      //       Logger().d("paymentApple:1 => $value  ${isDoPossess! && doPossess != null}" );
+      //       if(isDoPossess! && doPossess != null){
+      //         doPossess!();
+      //       }else {
+      //
+      //         homeViewModel.applyPayment(
+      //             isRecivedOrderPayment:isRecivedOrderPayment,
+      //             salesOrder: homeViewModel.operationTask.salesOrder ?? "",
+      //             paymentMethod: LocalConstance.creditCard/*paymentMethod.name ?? ""*/ ,
+      //             paymentId: value["transactionId"] != null ? value["transactionId"] : "${DateTime.now().millisecondsSinceEpoch.toString()}",
+      //             isAppPay: true,
+      //             storageViewModel: storageViewModel,
+      //             extraFees: 0/*sendedWattingFeesOrCancellation*/,
+      //             reason: sendedWattingFeesOrCancellationReson);
+      //       }
+      //     } else {
+      //       FirebaseUtils.instance.addPaymentFail({
+      //         ...value,
+      //         "else": "token == null",
+      //       });
+      //       snackError("", "Credit Balance is not enough");
+      //     }
+      //   }).catchError((onError) {
+      //     Logger().d("paymentApple: => $onError");
+      //     FirebaseUtils.instance
+      //         .addPaymentFail({"onError": "${onError.toString()}"});
+      //   });
+      // });
 
-        _payClient.showPaymentSelector(paymentItems: _paymentItems , provider: applePay.PayProvider.apple_pay).then((value) {
-          Logger().d("paymentApple: => $value");
-          FirebaseUtils.instance.addPaymentSuccess(value);
-          if (value["token"] != null || value["transactionIdentifier"] != null ) {
-            Logger().d("paymentApple:1 => $value  ${isDoPossess! && doPossess != null}" );
-            if(isDoPossess! && doPossess != null){
-              doPossess!();
-            }else {
+      final applePay.MadPay pay = applePay.MadPay();
 
-              homeViewModel.applyPayment(
-                  isRecivedOrderPayment:isRecivedOrderPayment,
-                  salesOrder: homeViewModel.operationTask.salesOrder ?? "",
-                  paymentMethod: LocalConstance.creditCard/*paymentMethod.name ?? ""*/ ,
-                  paymentId: value["transactionId"] != null ? value["transactionId"] : "${DateTime.now().millisecondsSinceEpoch.toString()}",
-                  isAppPay: true,
-                  storageViewModel: storageViewModel,
-                  extraFees: 0/*sendedWattingFeesOrCancellation*/,
-                  reason: sendedWattingFeesOrCancellationReson);
-            }
-          } else {
-            FirebaseUtils.instance.addPaymentFail({
-              ...value,
-              "else": "token == null",
-            });
-            snackError("", "Credit Balance is not enough");
-          }
-        }).catchError((onError) {
-          Logger().d("paymentApple: => $onError");
-          FirebaseUtils.instance
-              .addPaymentFail({"onError": "${onError.toString()}"});
-        });
+      // To find out if payment is available on this device
+      await pay.checkPayments();
+
+      // If you need to check if user has at least one active card
+      await pay.checkActiveCard(
+        paymentNetworks: <applePay.PaymentNetwork>[
+          applePay.PaymentNetwork.visa,
+          applePay.PaymentNetwork.mastercard,
+          applePay.PaymentNetwork.amex,
+          applePay.PaymentNetwork.maestro,
+          applePay.PaymentNetwork.discover,
+          applePay.PaymentNetwork.mada,
+          applePay.PaymentNetwork.vpay,
+        ],
+      );
+
+      // To pay with Apple Pay or Google Pay
+      var response = await pay.processingPayment(
+          applePay.PaymentRequest(
+            google: applePay.GoogleParameters(
+              gatewayName: 'Your Gateway',
+              gatewayMerchantId: 'Your id',
+              merchantId: 'example_id',
+            ),
+            apple: applePay.AppleParameters(
+              merchantIdentifier: 'merchant.inbox.mini',
+            ),
+            currencyCode: 'QAR',
+            countryCode: 'QA',
+            paymentItems: <applePay.PaymentItem>[
+              applePay.PaymentItem(name: 'Inbox Logistic', price: (price != null  ? price : homeViewModel.operationTask.totalDue != null &&  homeViewModel.operationTask.totalDue! > 0 ? homeViewModel.operationTask.totalDue: storageViewModel.totalBalance).toDouble(),),
+              // applePay.PaymentItem(name: 'Trousers', price: 15.24),
+            ],
+            paymentNetworks: <applePay.PaymentNetwork>[
+              applePay.PaymentNetwork.visa,
+              applePay.PaymentNetwork.mastercard,
+              applePay.PaymentNetwork.amex,
+              applePay.PaymentNetwork.maestro,
+              applePay.PaymentNetwork.discover,
+              applePay.PaymentNetwork.mada,
+              applePay.PaymentNetwork.vpay,
+            ],
+          )
+      ).catchError((onError){
+        Logger().d("paymentApple: => $onError");
+        FirebaseUtils.instance
+            .addPaymentFail({"onError": "${onError.toString()}"});
       });
+
+      FirebaseUtils.instance.addPaymentSuccess({"data":response?.rawData});
+      if(response?.token != null){
+        if(isDoPossess! && doPossess != null){
+          doPossess!();
+        }else {
+
+          homeViewModel.applyPayment(
+              isRecivedOrderPayment:isRecivedOrderPayment,
+              salesOrder: homeViewModel.operationTask.salesOrder ?? "",
+              paymentMethod: LocalConstance.creditCard/*paymentMethod.name ?? ""*/ ,
+              paymentId: /*value["transactionId"] != null ? value["transactionId"] :*/ "${DateTime.now().millisecondsSinceEpoch.toString()}",
+              isAppPay: true,
+              storageViewModel: storageViewModel,
+              extraFees: 0/*sendedWattingFeesOrCancellation*/,
+              reason: sendedWattingFeesOrCancellationReson);
+        }
+      }
+      // ApplePaySquare.instance.onStartApplePay(
+      //     price != null  ? price : homeViewModel.operationTask.totalDue != null &&  homeViewModel.operationTask.totalDue! > 0 ? homeViewModel.operationTask.totalDue: storageViewModel.totalBalance,
+      //         (){
+      //             if(isDoPossess! && doPossess != null){
+      //               doPossess!();
+      //             }else {
+      //
+      //               homeViewModel.applyPayment(
+      //                   isRecivedOrderPayment:isRecivedOrderPayment,
+      //                   salesOrder: homeViewModel.operationTask.salesOrder ?? "",
+      //                   paymentMethod: LocalConstance.creditCard/*paymentMethod.name ?? ""*/ ,
+      //                   paymentId: /*value["transactionId"] != null ? value["transactionId"] :*/ "${DateTime.now().millisecondsSinceEpoch.toString()}",
+      //                   isAppPay: true,
+      //                   storageViewModel: storageViewModel,
+      //                   extraFees: 0/*sendedWattingFeesOrCancellation*/,
+      //                   reason: sendedWattingFeesOrCancellationReson);
+      //             }
+      //
+      //         });
 
       // } else {
       //   Logger().e("paymentApple is: => $userCanPay");
@@ -349,9 +439,9 @@ class PaymentItem extends StatelessWidget {
     }
   }
 
-  void onApplePayResult(Map<String, dynamic> result) {
-    Logger().w(result);
-  }
+  // void onApplePayResult(Map<String, dynamic> result) {
+  //   Logger().w(result);
+  // }
 }
 // watting fees > 0 watting fees::
 // canclation fees > 0 canclation::

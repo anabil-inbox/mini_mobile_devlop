@@ -6,7 +6,7 @@
 	<string>development</string>
 	<key>com.apple.developer.in-app-payments</key>
 	<array>
-		<string>merchant.com.inbox.clients.inboxClients</string>
+		<string>merchant.inbox.mini</string>
 	</array>
 	<key>com.apple.developer.pass-type-identifiers</key>
 	<array>

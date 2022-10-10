@@ -320,7 +320,9 @@
     "status": "Status",
     "order_summary": "Order Summary:",
     "this_field_is_required": "This field is required",
-    "notification": "Notification"
+    "notification": "Notification",
+    "your_order_have_to_be_rescheduled": "Please choose a new date for your $service_name order",
+    "schedule_required": "Schedule Required"
 
 
 }

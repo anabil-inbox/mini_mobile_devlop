@@ -321,5 +321,7 @@
   "status": "الحالة",
   "order_summary": "ملخص الطلب:",
   "this_field_is_required": "هذا الحقل مطلوب",
-  "notification": "الاشعارات"
+  "notification": "الاشعارات",
+  "your_order_have_to_be_rescheduled": "الرجاء اختيار تاريخ جديد لطلب service_name$",
+  "schedule_required": "الجدولة مطلوبة"
 }

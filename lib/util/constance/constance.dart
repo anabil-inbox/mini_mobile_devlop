@@ -61,6 +61,7 @@ class LocalConstance {
   static String invoice = "101";
   static String done = "66";
   static String reschedule = "99";
+  static String scanSeal = "112";
 
   static String id = "id";
   static String salesOrder = "sales_order";

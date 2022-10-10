@@ -117,6 +117,18 @@ class HomeHelper {
     }
   }
 
+  Future<AppResponse> scanSealApi({var body}) async {
+      var appResponse = await HomeApi.getInstance.scanSealApi(
+        queryParameters: body,
+        url: "${ConstanceNetwork.scanSealApi}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
 
   Future<List<CasesData>> getCases() async {
     var appResponse = await HomeApi.getInstance.getCases(

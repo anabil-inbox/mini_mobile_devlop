@@ -137,8 +137,8 @@ abstract class ConstanceNetwork {
 
   static String paymentEndPoint = "inbox_app.api.get_payment_url.get_payment_url";
       // "inbox_app.api.get_payment_url.get_skip_cash_settings";
-  static String applyPaymentEndPoint =
-      "inbox_app.api.sales_order.submit_payment";
+  static String applyPaymentEndPoint = "inbox_app.api.sales_order.submit_payment";
+  static String confirmScheduleApi = "inbox_app.api.sales_order.confirm_schedule";
 
   //product end point
   static String allOrder = "inbox_app.api.product.get_products";
@@ -171,8 +171,8 @@ abstract class ConstanceNetwork {
       "inbox_app.api.subscription.terminate_subscription";
 
   // this for get Task Response:
-  static String getCurrentTaskResponeEndPoint =
-      "inbox_app.api.sales_order.get_order_details";
+  static String getCurrentTaskResponeEndPoint = "inbox_app.api.sales_order.get_order_details";
+  static String scanSealApi = "inbox_app.api.customer_storages.scan_seal";
   static String getCasesApi = "inbox_app.api.service_center.get_cases";
   static String createEmergencyCasesApi =
       "inbox_app.api.service_center.create_emer_report"; //
@@ -234,6 +234,8 @@ abstract class ConstanceNetwork {
   static var tagsKey = "tags";
 
   static var dataKey = "data";
+  static var dateKey = "date";
+  static var timeKey = "time";
   static var deliveryDateKey = "delivery_date";
 
   static var imageKey = "Image";
@@ -262,6 +264,7 @@ abstract class ConstanceNetwork {
   static var notesKey = "notes";
 
   static var driverIdKey = "driver";
+  static var driverId = "driver_id";
 
   static var salesOrderKey = "sales_order";
 
@@ -275,6 +278,10 @@ abstract class ConstanceNetwork {
 
   static var itemsKey = "items"; //small
   static var paymentEntryKey = "payment_entry"; //small
+
+
+  static var taskId = "task_id";
+
 
   static Map<String, String> header(int typeToken) {
     Map<String, String> headers = {};

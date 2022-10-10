@@ -69,7 +69,6 @@ class HomeViewModel extends BaseController {
 
   late BuildContext showCaseBuildContext;
 
-
   ///this for home screen
   var addShowKey = GlobalKey();
   var scanShowKey = GlobalKey();
@@ -101,7 +100,7 @@ class HomeViewModel extends BaseController {
   }
 
   moveToIntro() {
-    if(!SharedPref.instance.getFirstHome()){
+    if (!SharedPref.instance.getFirstHome()) {
       // ShowCaseWidget.of(showCaseBuildContext).startShowCase([
       //   scanShowKey /*= GlobalKey()*/,
       //   cartShowKey /*= GlobalKey()*/,
@@ -113,10 +112,14 @@ class HomeViewModel extends BaseController {
     }
   }
 
-  showReceivedOrderCase(GlobalKey<State<StatefulWidget>> boxNeedScanShowKey, GlobalKey<State<StatefulWidget>> scanBoxShowKey, GlobalKey<State<StatefulWidget>> scanProductShowKey,
-      GlobalKey<State<StatefulWidget>> priceShowKey, GlobalKey<State<StatefulWidget>> signatureShowKey) {
+  showReceivedOrderCase(
+      GlobalKey<State<StatefulWidget>> boxNeedScanShowKey,
+      GlobalKey<State<StatefulWidget>> scanBoxShowKey,
+      GlobalKey<State<StatefulWidget>> scanProductShowKey,
+      GlobalKey<State<StatefulWidget>> priceShowKey,
+      GlobalKey<State<StatefulWidget>> signatureShowKey) {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      if(!SharedPref.instance.getFirstReceivedOrderKey()){
+      if (!SharedPref.instance.getFirstReceivedOrderKey()) {
         ShowCaseWidget.of(showCaseBuildContext).startShowCase([
           boxNeedScanShowKey,
           scanBoxShowKey,
@@ -144,6 +147,7 @@ class HomeViewModel extends BaseController {
     // signatureShowKey.currentState?.dispose();
     super.onClose();
   }
+
   void setContext(context) {
     showCaseBuildContext = context;
     // update();
@@ -228,7 +232,8 @@ class HomeViewModel extends BaseController {
   onQRViewCreated(QRViewController controller,
       {bool? isFromAtHome = false,
       required StorageViewModel storageViewModel,
-      int index = 0}) {
+      int index = 0,
+      bool? isForSeal = false}) {
     Box newBox = Box();
     try {
       int i = 0;
@@ -248,11 +253,15 @@ class HomeViewModel extends BaseController {
               "${userBoxess.toList()[index].serialNo} || ${data.code.toString().replaceAll("http://", "")}");
           if (userBoxess.toList()[index].serialNo !=
                   data.code.toString().replaceAll("http://", "") &&
-              isFromAtHome!) {
+              isFromAtHome! && !isForSeal!) {
             snackError(tr.error_occurred, tr.box_serial_invalid);
             endLoading();
             Get.back();
           } else {
+            if (isForSeal!) {
+              await scanSealApi(data.code.toString().replaceAll("http://", ""));
+              return;
+            }
             await getBoxBySerial(
                     serial: data.code.toString().replaceAll("http://", ""))
                 .then((value) async => {
@@ -281,18 +290,23 @@ class HomeViewModel extends BaseController {
                           Logger().w(value.toJson()),
                           Get.off(() => HomePageHolder(
                                 box: value,
-                                isFromScan:value.id != null && storageViewModel.isChangeStatus ? true:false,
+                                isFromScan: value.id != null &&
+                                        storageViewModel.isChangeStatus
+                                    ? true
+                                    : false,
                               )),
                           itemViewModle.tdName.text = value.storageName ?? "",
-                          if (isFromAtHome ?? false  )
+                          if (isFromAtHome ?? false)
                             {
-                            Logger().w(value.toJson()),
-                              if(value.id != null  && storageViewModel.isChangeStatus){
-                                await Get.bottomSheet(
-                                    CheckInBoxWidget(
-                                        box: value, isUpdate: false),
-                                    isScrollControlled: true),
-                              }
+                              Logger().w(value.toJson()),
+                              if (value.id != null &&
+                                  storageViewModel.isChangeStatus)
+                                {
+                                  await Get.bottomSheet(
+                                      CheckInBoxWidget(
+                                          box: value, isUpdate: false),
+                                      isScrollControlled: true),
+                                }
                             }
                           else
                             {
@@ -373,15 +387,19 @@ class HomeViewModel extends BaseController {
                           homeViewModel: this),
                       Get.off(() => HomePageHolder(
                             box: value,
-                            isFromScan:value.id != null && storageViewModel.isChangeStatus?true:false,
+                            isFromScan: value.id != null &&
+                                    storageViewModel.isChangeStatus
+                                ? true
+                                : false,
                           )),
                       itemViewModle.tdName.text = value.storageName ?? "",
-                      if (isFromAtHome ?? false  )
+                      if (isFromAtHome ?? false)
                         {
-                          if(value.id != null && storageViewModel.isChangeStatus)
-                          await Get.bottomSheet(
-                              CheckInBoxWidget(box: value, isUpdate: false),
-                              isScrollControlled: true),
+                          if (value.id != null &&
+                              storageViewModel.isChangeStatus)
+                            await Get.bottomSheet(
+                                CheckInBoxWidget(box: value, isUpdate: false),
+                                isScrollControlled: true),
                         }
                       else
                         {
@@ -459,7 +477,7 @@ class HomeViewModel extends BaseController {
       print("mess_7_$e");
       endLoading();
     }
-     endLoading();
+    endLoading();
   }
 
   createQrOrderConfirm(
@@ -529,7 +547,6 @@ class HomeViewModel extends BaseController {
   }
 
   //
-
 
   // to start work with user And Store Address ::
   Address? selectedAddres;
@@ -795,8 +812,9 @@ class HomeViewModel extends BaseController {
     required String paymentId,
     required num extraFees,
     required String reason,
-    required bool isAppPay ,
-    StorageViewModel? storageViewModel, bool? isRecivedOrderPayment = false,
+    required bool isAppPay,
+    StorageViewModel? storageViewModel,
+    bool? isRecivedOrderPayment = false,
   }) async {
     Map<String, dynamic> map = {
       ConstanceNetwork.idKey: salesOrder,
@@ -807,37 +825,40 @@ class HomeViewModel extends BaseController {
       Constance.driverToken: await SharedPref.instance.getDriverToken(),
     };
     startLoading();
-    if(isAppPay){
-        Logger().wtf("wtf 2");
-        if(!isRecivedOrderPayment!) {
-          await storageViewModel?.addNewStorage();
-        }else{
-          await OrderHelper.getInstance.applyPayment(body: map).then((value) async{
-            Logger().wtf("wtf 1 $isAppPay ${value.status!.success!} ${value.toJson()}");
-            if(value.status!.success!){
-              await getTaskResponse(salersOrder: salesOrder);
-              Get.to(() => ReciverOrderScreen(this));
-              snackSuccess("", value.status!.message);
-              storageViewModel?.isLoading = false;
-              storageViewModel?.update();
-              endLoading();
-            }else {
-              snackError("", value.status!.message);
-              await getTaskResponse(salersOrder: salesOrder);
-              Get.to(() => ReciverOrderScreen(this));
-              storageViewModel?.isLoading = false;
-              storageViewModel?.update();
-              endLoading();
-            }
-          });
-        }
-
-    }else{
+    if (isAppPay) {
+      Logger().wtf("wtf 2");
+      if (!isRecivedOrderPayment!) {
+        await storageViewModel?.addNewStorage();
+      } else {
+        await OrderHelper.getInstance
+            .applyPayment(body: map)
+            .then((value) async {
+          Logger().wtf(
+              "wtf 1 $isAppPay ${value.status!.success!} ${value.toJson()}");
+          if (value.status!.success!) {
+            await getTaskResponse(salersOrder: salesOrder);
+            Get.to(() => ReciverOrderScreen(this));
+            snackSuccess("", value.status!.message);
+            storageViewModel?.isLoading = false;
+            storageViewModel?.update();
+            endLoading();
+          } else {
+            snackError("", value.status!.message);
+            await getTaskResponse(salersOrder: salesOrder);
+            Get.to(() => ReciverOrderScreen(this));
+            storageViewModel?.isLoading = false;
+            storageViewModel?.update();
+            endLoading();
+          }
+        });
+      }
+    } else {
       await OrderHelper.getInstance.applyPayment(body: map).then((value) async {
-        Logger().wtf("wtf 1 $isAppPay ${value.status!.success!} ${value.toJson()}");
+        Logger()
+            .wtf("wtf 1 $isAppPay ${value.status!.success!} ${value.toJson()}");
         if (value.status!.success! /*&& isAppPay*/) {
           Logger().wtf("wtf 2");
-          if(!isRecivedOrderPayment!) {
+          if (!isRecivedOrderPayment!) {
             await storageViewModel?.addNewStorage();
           }
           // Get.off(() => OrderDetailesScreen(orderId: salesOrder , isFromPayment: false,));
@@ -857,7 +878,6 @@ class HomeViewModel extends BaseController {
         }
       });
     }
-
   }
 
   List<NotificationData> listNotifications = [];
@@ -934,12 +954,16 @@ class HomeViewModel extends BaseController {
 
   void casesReport(
       TaskResponse? taskResponse, TextEditingController noteController) async {
-    if (noteController.text.isEmpty &&  casesSelectedDataList.isEmpty) {
+    if (noteController.text.isEmpty && casesSelectedDataList.isEmpty) {
       return;
     }
 
     Map<String, dynamic> map = {
-      ConstanceNetwork.emergencyCaseKey: !GetUtils.isNull(casesSelectedDataList) && casesSelectedDataList.isNotEmpty ?   casesSelectedDataList.first.name.toString()  :"",
+      ConstanceNetwork.emergencyCaseKey:
+          !GetUtils.isNull(casesSelectedDataList) &&
+                  casesSelectedDataList.isNotEmpty
+              ? casesSelectedDataList.first.name.toString()
+              : "",
       ConstanceNetwork.notesKey: "${noteController.text.toString()}",
       ConstanceNetwork.salesOrderKey: "${taskResponse?.salesOrder}",
     };
@@ -975,5 +999,29 @@ class HomeViewModel extends BaseController {
       casesSelectedDataList.add(casesData);
       update();
     }
+  }
+
+  scanSealApi(String seal) async {
+    isLoading = true;
+    update();
+    await HomeHelper.getInstance
+        .scanSealApi(body: {"seal": seal}).then((value) {
+          Logger().w(value.toJson());
+      if (value.status!.success!) {
+        Get.back();
+        snackSuccess("", value.status?.message ?? "");
+        isLoading = false;
+        update();
+      } else {
+        Get.back();
+        snackError("", value.status?.message ?? "");
+        isLoading = false;
+        update();
+      }
+    }).catchError((onError){
+      isLoading = false;
+      update();
+      Get.back();
+    });
   }
 }
