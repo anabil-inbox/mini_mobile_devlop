@@ -1,5 +1,6 @@
 import 'package:inbox_clients/feature/model/language.dart';
 import 'package:inbox_clients/feature/model/storage/payment.dart';
+import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:logger/logger.dart';
 
 class ApiSettings {
@@ -18,12 +19,14 @@ class ApiSettings {
       this.socialContact,
       this.userGuide,
       this.minDays,
-        this.domain,
-        this.pointSpentBoundary,
+      this.domain,
+      this.currency,
+      this.pointSpentBoundary,
       this.startsAfter});
 
   String? customerType;
   String? aboutUs;
+  String? currency;
   String? termOfConditions;
   int? minDays;
   dynamic startsAfter;
@@ -44,11 +47,16 @@ class ApiSettings {
     // Logger().w("point_spent_boundary: ${json["point_spent_boundary"]}");
     return ApiSettings(
       customerType: json["customer_type"] ?? "both",
+      currency: json["currency"]  == null ? isArabicLang()?"ريال": "QR" :json["currency"],
       aboutUs: json["about_us"] == null ? "" : json["about_us"],
-      domain: json["domain"] == null ? "" : json["domain"].toString().contains("http") ?json["domain"] :"http://"+json["domain"],
-      termOfConditions: json["term_of_conditions"] ??"",
-      minDays: json["min_days"] == null ? 1:json["min_days"],
-      startsAfter: json["starts_after"] == null ? 1:json["starts_after"],
+      domain: json["domain"] == null
+          ? ""
+          : json["domain"].toString().contains("http")
+              ? json["domain"]
+              : "http://" + json["domain"],
+      termOfConditions: json["term_of_conditions"] ?? "",
+      minDays: json["min_days"] == null ? 1 : json["min_days"],
+      startsAfter: json["starts_after"] == null ? 1 : json["starts_after"],
       socialContact: json["social_contact"] == null
           ? null
           : List<SocialContact>.from(
@@ -60,7 +68,8 @@ class ApiSettings {
       contactInfo: json["contact_info"] == null
           ? null
           : ContactInfo.fromJson(json["contact_info"]),
-      companySectors: (json["company_sectors"] == [] || json["company_sectors"] == null)
+      companySectors: (json["company_sectors"] == [] ||
+              json["company_sectors"] == null)
           ? []
           : List<CompanySector>.from(
               json["company_sectors"].map((x) => CompanySector.fromJson(x))),
@@ -75,19 +84,29 @@ class ApiSettings {
       workingHours: json["working_hours"] == null
           ? null
           : WorkingHours.fromJson(json["working_hours"]),
-      paymentMethod: (json["payment_method"] == [] || json["payment_method"] == null) ? [] : List<PaymentMethod>.from(json["payment_method"].map((x) => PaymentMethod.fromJson(x))),
-      areaZones: json["area_zones"] == null ? null : List<AreaZone>.from(json["area_zones"].map((x) => AreaZone.fromJson(x))),
+      paymentMethod:
+          (json["payment_method"] == [] || json["payment_method"] == null)
+              ? []
+              : List<PaymentMethod>.from(
+                  json["payment_method"].map((x) => PaymentMethod.fromJson(x))),
+      areaZones: json["area_zones"] == null
+          ? null
+          : List<AreaZone>.from(
+              json["area_zones"].map((x) => AreaZone.fromJson(x))),
       deliveryFactor: json["delivery_factor"] ?? 1,
-      pointSpentBoundary:json["point_spent_boundary"] == null ? 0: json["point_spent_boundary"] ?? 0,
-  );
+      pointSpentBoundary: json["point_spent_boundary"] == null
+          ? 0
+          : json["point_spent_boundary"] ?? 0,
+    );
   }
 
   Map<String, dynamic> toJson() => {
         "customer_type": customerType,
         "point_spent_boundary": pointSpentBoundary,
         "domain": domain,
-        "min_days": minDays == null ? null :minDays,
-        "starts_after": startsAfter == null ? null :startsAfter,
+        "currency": currency,
+        "min_days": minDays == null ? null : minDays,
+        "starts_after": startsAfter == null ? null : startsAfter,
         "social_contact": socialContact == null
             ? null
             : List<dynamic>.from(socialContact!.map((x) => x.toJson())),
@@ -212,7 +231,7 @@ class Day {
   factory Day.fromJson(Map<String, dynamic> json) => Day(
       from: json["from"] == null ? null : json["from"],
       to: json["to"] == null ? null : json["to"],
-      check: json["check"] == null ? null:json["check"],
+      check: json["check"] == null ? null : json["check"],
       delivery: json["delivery"] == null ? null : json["delivery"]);
 
   Map<String, dynamic> toJson() => {
@@ -286,16 +305,16 @@ class SocialContact {
   String? image;
 
   factory SocialContact.fromJson(Map<String, dynamic> json) => SocialContact(
-    type: json["type"] == null ? null : json["type"],
-    url: json["url"] == null ? null : json["url"],
-    image: json["image"] == null ? null : json["image"],
-  );
+        type: json["type"] == null ? null : json["type"],
+        url: json["url"] == null ? null : json["url"],
+        image: json["image"] == null ? null : json["image"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "type": type == null ? null : type,
-    "url": url == null ? null : url,
-    "image": image == null ? null : image,
-  };
+        "type": type == null ? null : type,
+        "url": url == null ? null : url,
+        "image": image == null ? null : image,
+      };
 }
 
 class UserGuide {
@@ -310,14 +329,14 @@ class UserGuide {
   String? video;
 
   factory UserGuide.fromJson(Map<String, dynamic> json) => UserGuide(
-    title: json["title"] == null ? null : json["title"],
-    text: json["text"] == null ? null : json["text"],
-    video: json["video"] == null ? null : json["video"],
-  );
+        title: json["title"] == null ? null : json["title"],
+        text: json["text"] == null ? null : json["text"],
+        video: json["video"] == null ? null : json["video"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "title": title == null ? null : title,
-    "text": text == null ? null : text,
-    "video": video == null ? null : video,
-  };
+        "title": title == null ? null : title,
+        "text": text == null ? null : text,
+        "video": video == null ? null : video,
+      };
 }

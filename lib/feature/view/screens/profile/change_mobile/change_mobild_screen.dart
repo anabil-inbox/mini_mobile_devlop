@@ -72,9 +72,9 @@ class ChangeMobileScreen extends StatelessWidget {
                                         );
                                       },
                                     ),
-                                         SizedBox(
-                            width: sizeW5,
-                          ),
+                                    SizedBox(
+                                      width: sizeW5,
+                                    ),
                                     VerticalDivider(),
                                     SizedBox(
                                       width: sizeW10,
@@ -89,11 +89,11 @@ class ChangeMobileScreen extends StatelessWidget {
                                           logic.update();
                                         },
                                         decoration: InputDecoration(
-                                         counterText: "",
+                                          counterText: "",
                                         ),
                                         controller: logic.tdMobileNumber,
                                         validator: (value) {
-                                         return phoneVaild(value.toString());
+                                          return phoneVaild(value.toString());
                                         },
                                         keyboardType: TextInputType.number,
                                       ),

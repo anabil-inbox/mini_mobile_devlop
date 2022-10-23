@@ -14,6 +14,7 @@ class SharedPref {
   final String languageKey = "language";
   final String isShowKey = "loading";
   final String isHideKey = "hide";
+  final String isDeleteKey = "delete";
   final String currentUser = "currentUser";
   final String loginKey = "login";
   final String fcmKey = "fcm";
@@ -141,6 +142,14 @@ class SharedPref {
 
   bool getIsHideSubscriptions() {
     return _prefs?.getBool("$isHideKey") ?? false;
+  }
+
+  setIsHideDeleteAccount(bool? hide) async {
+    _prefs?.setBool("$isDeleteKey", hide!);
+  }
+
+  bool getIsHideDeleteAccount() {
+    return _prefs?.getBool("$isDeleteKey") ?? false;
   }
 
   //   setBoxesList({required List<Box> boxes}) {

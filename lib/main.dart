@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:path/path.dart';
 
 // import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,6 +17,8 @@ import 'package:inbox_clients/network/firebase/firebase_utils.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'feature/view_model/auht_view_modle/auth_view_modle.dart';
 import 'feature/view_model/splash_view_modle/splash_view_modle.dart';
@@ -37,13 +42,24 @@ void main() async {
     await SharedPref.instance.init();
     await AppFcm.fcmInstance.init();
     var bool = await FirebaseUtils.instance.isHideWallet();
+    var hideDelete = await FirebaseUtils.instance.isHideDelete();
     await SharedPref.instance.setIsHideSubscriptions(bool);
+    await SharedPref.instance.setIsHideDeleteAccount(hideDelete);
     portraitOrientation();
     HttpOverrides.global = MyHttpOverrides();
     DioManagerClass.getInstance.init();
     // The following lines are the same as previously explained in "Handling uncaught errors"
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-
+///var url = "https://www.tottus.cl/static/img/productos/20104355_2.jpg"; // <-- 1
+//     var response = await get(url); // <--2
+//     var documentDirectory = await getApplicationDocumentsDirectory();
+//     var firstPath = documentDirectory.path + "/images";
+//     var filePathAndName = documentDirectory.path + '/images/pic.jpg';
+//     //comment out the next three lines to prevent the image from being saved
+//     //to the device to show that it's coming from the internet
+//     await Directory(firstPath).create(recursive: true); // <-- 1
+//     File file2 = new File(filePathAndName);             // <-- 2
+//     file2.writeAsBytesSync(response.bodyBytes);
     runApp(const AppWidget());
   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 }

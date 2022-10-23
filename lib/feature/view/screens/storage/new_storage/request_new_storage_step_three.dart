@@ -140,7 +140,7 @@ class _RequestNewStorageStepThreeState extends State<RequestNewStorageStepThree>
                                 SizedBox(width: sizeW5,),
                                 Expanded(
                                   child: Text(
-                                    "${storageViewModel.userStorageCategoriesData.isNotEmpty ?  tr.add_more_items.replaceAll("...", "") : ""}",
+                                    "${storageViewModel.userStorageCategoriesData.isNotEmpty ?  tr.add_more_items.replaceAll("...", "").replaceAll("أو اضغط التالي للاستمرار", "").replaceAll(" or click Next to continue", "") : ""}",
                                     style: textStyleCardTitlePrice()?.copyWith(color: colorInWarehouse , fontSize: fontSize14 ,fontWeight: FontWeight.bold , height: 1),
                                   ),
                                 ),

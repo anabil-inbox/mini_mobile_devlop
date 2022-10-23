@@ -24,10 +24,10 @@ class PickupAddressItem extends StatelessWidget {
     String fullAddress = "";
     if (address.streat != null) {
       fullAddress =
-          "${address.buildingNo ?? ""} ,  ${address.unitNo ?? ""} , ${address.zone ?? ""} , ${address.streat ?? ""}";
+          "BN.${address.buildingNo ?? ""} - UN.${address.unitNo ?? ""} - St.${address.streat ?? ""}";
     } else {
       fullAddress =
-          "${address.buildingNo ?? ""} ,  ${address.unitNo ?? ""} , ${address.zone ?? ""}";
+          "BN.${address.buildingNo ?? ""} - UN.${address.unitNo ?? ""} ";
     }
 
     return Expanded(

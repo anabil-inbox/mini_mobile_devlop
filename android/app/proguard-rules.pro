@@ -20,6 +20,8 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-keep class * extends com.google.protobuf.GeneratedMessageLite { *; } #- for google pay
+
 -keep class androidx.lifecycle.DefaultLifecycleObserver
 #Flutter Wrapper
 -keep class io.flutter.app.** { *; }

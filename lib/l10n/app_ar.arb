@@ -15,6 +15,7 @@
   "company_name": "اسم الشركة",
   "type":"النوع",
   "daily":"يوم",
+  "daily_subscriptions":"يومي",
   "your_email_address": "بريدك الالكتروني",
   "your_email_address_operator": "البريد الالكتروني المعتمد",
   "mobile_operator": "ادارة التقارير",

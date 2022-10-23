@@ -163,37 +163,37 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                     SizedBox(
                       height: sizeH10,
                     ),
-                    TextFormField(
-                      onSaved: (newValue) {
-                        controller.tdZoneEdit.text = newValue!;
-                        controller.update();
-                      },
-                      onTap: (){
-                        controller.showZoneBottmSheet(isEdit:true);
-                      },
-                       readOnly: true,
-                      controller: controller.tdZoneEdit,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '${tr.fill_the_zone_correctly}';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(hintText:/* ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting()))
-                          .areaZones?.firstWhere((element) => element.numbers!.contains(controller.tdZoneNumberEdit.text.toString())).areaZone??*/"${tr.zone}" , suffixIcon: InkWell(
-                        onTap: (){
-                          controller.showZoneBottmSheet(isEdit:true);
-                        },
-                        child: Padding(
-                            padding: EdgeInsets.all(padding6!),
-                            child: SvgPicture.asset("assets/svgs/down_arrow.svg"),
-                          ),
-                      ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: sizeH10,
-                    ),
+                    // TextFormField(
+                    //   onSaved: (newValue) {
+                    //     controller.tdZoneEdit.text = newValue!;
+                    //     controller.update();
+                    //   },
+                    //   onTap: (){
+                    //     controller.showZoneBottmSheet(isEdit:true);
+                    //   },
+                    //    readOnly: true,
+                    //   controller: controller.tdZoneEdit,
+                    //   validator: (value) {
+                    //     if (value == null || value.isEmpty) {
+                    //       return '${tr.fill_the_zone_correctly}';
+                    //     }
+                    //     return null;
+                    //   },
+                    //   decoration: InputDecoration(hintText:/* ApiSettings.fromJson(jsonDecode(SharedPref.instance.getAppSetting()))
+                    //       .areaZones?.firstWhere((element) => element.numbers!.contains(controller.tdZoneNumberEdit.text.toString())).areaZone??*/"${tr.zone}" , suffixIcon: InkWell(
+                    //     onTap: (){
+                    //       controller.showZoneBottmSheet(isEdit:true);
+                    //     },
+                    //     child: Padding(
+                    //         padding: EdgeInsets.all(padding6!),
+                    //         child: SvgPicture.asset("assets/svgs/down_arrow.svg"),
+                    //       ),
+                    //   ),
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: sizeH10,
+                    // ),
                     TextFormField(
                         // onTap: (){
                         //   controller.showZoneNumberBottmSheet(isEdit:true);

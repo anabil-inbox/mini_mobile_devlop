@@ -36,7 +36,7 @@ class ShowHeaderSelection extends StatelessWidget {
             width: sizeW40,
             url: ConstanceNetwork.imageUrl + storageCategoriesData.defaultImage.toString(),
             fit: BoxFit.contain
-        ): SvgPicture.asset("assets/svgs/folder_icon.svg"),
+        ):  SvgPicture.asset("assets/svgs/box_in_ware_house.svg" , width: sizeW40,),
         SizedBox(
           width: sizeW5,
         ),

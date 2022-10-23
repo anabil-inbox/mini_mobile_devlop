@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_core/get_core.dart';
@@ -53,15 +55,17 @@ class HomeGVItemWidget extends StatelessWidget {
                 SizedBox(
                   height: sizeH9,
                 ),
-                // CustomTextView(
-                //   txt: "${box.address?.addressTitle ?? tr.unknown_address}",
-                //   maxLine: Constance.maxLineTwo,
-                //   textStyle: textStyleNormal(),
-                //   textAlign: TextAlign.center,
-                // ),
-                // SizedBox(
-                //   height: sizeH9,
-                // ),
+                if(box.saleOrder != null && box.saleOrder.toString().isNotEmpty)...[
+                  CustomTextView(
+                    txt: "${box.saleOrder ?? ""}",
+                    maxLine: Constance.maxLineTwo,
+                    textStyle: textStyleNormal(),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: sizeH9,
+                  ),
+                ],
                 CustomTextView(
                   txt: "${DateUtility.getChatTime(box.modified.toString())}",
                   maxLine: Constance.maxLineOne,

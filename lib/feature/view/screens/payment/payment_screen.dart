@@ -73,6 +73,8 @@ class PaymentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
+    url?.replaceAll("http:", "https:");
+
     return Scaffold(
         appBar: CustomAppBarWidget(
           titleWidget: const SizedBox.shrink(),
@@ -82,7 +84,7 @@ class PaymentScreen extends StatelessWidget {
           builder: (payment) {
             return WebView(
               javascriptMode: JavascriptMode.unrestricted,
-              initialUrl: url,
+              initialUrl:!url!.contains("http") && url!.isNotEmpty ? "https://$url": url,
               onProgress: (i) {},
               onWebResourceError: (error) {
                 Logger().e(error.domain);

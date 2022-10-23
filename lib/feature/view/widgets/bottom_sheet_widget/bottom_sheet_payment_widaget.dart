@@ -466,7 +466,7 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                                               0)
                                       ? true
                                       : false,
-                              isApple: false,
+                              isApple: false, isGoggle: false,
                             );
                           }
                           // return PaymentItem(
@@ -724,6 +724,7 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
           snackError("${tr.error_occurred}",
               "${tr.you_have_to_select_payment_method}");
         }
+
       } else {
         if (widget.boxes.length > 0) {
           BottomSheetPaymentWidget.storageViewModle.doTaskBoxRequest(

@@ -46,4 +46,5 @@ abstract class Constance {
   // static String appleImage = "https://imagedelivery.net/AtkJu2wCmOwcp9lTOSgupQ/351b52e6-3d19-47eb-1758-999ff57a1500/public";
   // static String appleImage = "https://imagedelivery.net/AtkJu2wCmOwcp9lTOSgupQ/097c3115-6c81-4933-6e67-5968b1e0af00/public";
   static String appleImage = "https://imagedelivery.net/AtkJu2wCmOwcp9lTOSgupQ/30e33b4a-2ef2-4cce-c085-4f158f060200/public";
+  static String googleImage = "https://imagedelivery.net/AtkJu2wCmOwcp9lTOSgupQ/d69077f4-3e4f-48b9-d81b-5efaf1248100/public";
 }

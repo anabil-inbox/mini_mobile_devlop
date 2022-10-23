@@ -1903,6 +1903,7 @@ class StorageViewModel extends BaseController {
       }
     });
 
+
     cleanAfterSucces();
     clearNewStorageData();
     if (!isFromCart) {

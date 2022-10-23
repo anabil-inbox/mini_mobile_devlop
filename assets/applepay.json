@@ -1,7 +1,7 @@
 {
   "provider": "apple_pay",
   "data": {
-    "merchantIdentifier": "merchant.com.inbox.clients.inboxClients",
+    "merchantIdentifier": "merchant.inbox.mini",
     "displayName": "INBOX LOGISTIC",
     "merchantCapabilities": [
       "3DS",
@@ -19,15 +19,8 @@
 
     "countryCode": "QA",
     "currencyCode": "QAR",
-    "requiredBillingContactFields": ["postalAddress"],
-    "requiredShippingContactFields": ["postalAddress", "name",  "phone", "email"],
-    "shippingMethods": [
-      {
-        "label": "Free Shipping",
-        "detail": "Arrives in 5 to 7 days",
-        "amount": "0.00",
-        "identifier": "FreeShip"
-      }
-    ]
+    "requiredBillingContactFields": null,
+    "requiredShippingContactFields": null,
+    "shippingMethods":null
   }
 }

@@ -42,7 +42,7 @@ class MyOrderBoxItem extends StatelessWidget {
               SizedBox(
                 width: sizeW10,
               ),
-              SvgPicture.asset("assets/svgs/folder_icon.svg"),
+               SvgPicture.asset("assets/svgs/box_in_ware_house.svg" , width: sizeW40,),
               SizedBox(
                 width: sizeW10,
               ),

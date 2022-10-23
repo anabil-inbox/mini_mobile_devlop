@@ -155,6 +155,7 @@ class HomeViewModel extends BaseController {
 
   Future<void> getCustomerBoxes() async {
     if (!isLoadingPagination) {
+      userBoxess.clear();
       startLoading();
     }
     await HomeHelper.getInstance
@@ -256,6 +257,7 @@ class HomeViewModel extends BaseController {
               isFromAtHome! && !isForSeal!) {
             snackError(tr.error_occurred, tr.box_serial_invalid);
             endLoading();
+
             Get.back();
           } else {
             if (isForSeal!) {
@@ -1013,7 +1015,7 @@ class HomeViewModel extends BaseController {
         isLoading = false;
         update();
       } else {
-        Get.back();
+        // Get.back();
         snackError("", value.status?.message ?? "");
         isLoading = false;
         update();
@@ -1021,7 +1023,7 @@ class HomeViewModel extends BaseController {
     }).catchError((onError){
       isLoading = false;
       update();
-      Get.back();
+      // Get.back();
     });
   }
 }

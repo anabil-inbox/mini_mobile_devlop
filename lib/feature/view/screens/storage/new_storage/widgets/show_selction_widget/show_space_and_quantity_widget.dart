@@ -76,7 +76,7 @@ class ShowSpaceAndQuantityWidget extends StatelessWidget {
                 SizedBox(width: sizeW5,),
                 Expanded(
                   child: Text(
-                    storageCategoriesData.selectedDuration.toString() ,
+                    storageCategoriesData.selectedDuration.toString() == LocalConstance.dailySubscriptions ?tr.daily_subscriptions :"" ,
                     textAlign: TextAlign.start,
                     style: textStyleNormalBlack(),
                   ),

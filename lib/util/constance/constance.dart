@@ -37,6 +37,7 @@ class LocalConstance {
   static String pointOfSale = "POS";
   static String wallet = "Wallet";
   static String applePay = "Apple Pay";
+  static String googlePay = "Google Pay";
   static String application = "application";
 
   // to add here Map Types:

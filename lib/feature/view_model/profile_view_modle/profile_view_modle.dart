@@ -364,6 +364,7 @@ class ProfileViewModle extends BaseController {
                   ],
                 ))
             : Container(
+                margin: EdgeInsets.only(top: sizeH32!),
                 decoration: BoxDecoration(
                     color: colorBackground,
                     borderRadius: BorderRadius.vertical(
@@ -382,14 +383,16 @@ class ProfileViewModle extends BaseController {
                     SizedBox(
                       height: sizeH20,
                     ),
-                    ListView(
-                      shrinkWrap: true,
-                      children: areaZone
-                          .map((e) => AreaZoneWidget(
-                                areaZone: e,
-                                isEdit: isEdit!,
-                              ))
-                          .toList(),
+                    Expanded(
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: areaZone
+                            .map((e) => AreaZoneWidget(
+                                  areaZone: e,
+                                  isEdit: isEdit!,
+                                ))
+                            .toList(),
+                      ),
                     ),
                   ],
                 ),

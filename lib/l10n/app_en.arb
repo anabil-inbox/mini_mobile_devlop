@@ -74,6 +74,7 @@
     "zone_number":"Zone Number",
     "street":"Street",
     "daily":"Days",
+    "daily_subscriptions":"Daily",
     "delete_account": "Delete Account",
     "choose_your_location":"Choose Your Location",
     "extra_details":"additional Details",

@@ -1,4 +1,7 @@
-import 'package:alt_sms_autofill/alt_sms_autofill.dart';
+// import 'package:alt_sms_autofill/alt_sms_autofill.dart';
+import 'dart:io';
+
+import 'package:android_sms_retriever/android_sms_retriever.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -13,6 +16,7 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 import 'package:logger/logger.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+// import 'package:smart_auth/smart_auth.dart';
 // import 'package:sms_autofill/sms_autofill.dart';
 
 import '../widget/header_code_verfication_widget.dart';
@@ -39,7 +43,7 @@ class _CompanyVerficationCodeScreenState
     extends State<CompanyVerficationCodeScreen> {
 
   final AuthViewModle authViewModle = Get.put<AuthViewModle>(AuthViewModle());
-
+  // final smartAuth = SmartAuth();
   @override
   void initState() {
     // Get.lazyPut(() => AuthViewModle());
@@ -53,19 +57,41 @@ class _CompanyVerficationCodeScreenState
 
   }
 
+  // void getAppSignature() async {
+  //   final res = await smartAuth.getAppSignature();
+  //   debugPrint('Signature: $res');
+  // }
+  // void getSmsCode() async {
+  //   final res = await smartAuth.getSmsCode();
+  //   debugPrint('SMS: ${res.code}');
+  //   if (res.succeed) {
+  //     debugPrint('SMS: ${res.code}');
+  //     if(res.code != null && res.code!.length > 33) {
+  //       authViewModle.tdPinCode.text = res.code!.substring(33);
+  //       authViewModle.update();
+  //     }
+  //   } else {
+  //     debugPrint('SMS Failure:');
+  //   }
+  // }
+
   initListener() async {
     authViewModle.startTimerCounter = 59;
     authViewModle.startTimer();
+    if(Platform.isAndroid) {
+      String? appSignature = await AndroidSmsRetriever.getAppSignature();
+      Logger().w(appSignature);
+      // getAppSignature();
+      // getSmsCode();
+      String? message = await AndroidSmsRetriever.listenForSms();
+      Logger().w(message);
+      if (message != null && message.length > 33) {
+        authViewModle.tdPinCode.text = message.substring(33);
+        authViewModle.update();
+      }
+    }
     initSmsListener();
-    // await SmsAutoFill().listenForCode().then((value) {
-    //
-    // });
-    // listenForCode();
-    // // var signatures = await SmsAutoFill().getAppSignature;
-    // await SmsAutoFill().getAppSignature.then((signature) {
-    //   //  signatures = signature;
-    //   Logger().d("signature_$signature");
-    // });
+
   }
 
   // String _commingSms = 'Unknown';
@@ -73,7 +99,7 @@ class _CompanyVerficationCodeScreenState
   Future<void> initSmsListener() async {
     String? commingSms;
     try {
-      commingSms = await AltSmsAutofill().listenForSms;
+      // commingSms = await AltSmsAutofill().listenForSms;
     } on PlatformException {
       commingSms = 'Failed to get Sms.';
     }
@@ -99,7 +125,9 @@ class _CompanyVerficationCodeScreenState
   @override
   void dispose() {
     // SmsAutoFill().unregisterListener();
-    AltSmsAutofill().unregisterListener();
+    // AltSmsAutofill().unregisterListener();
+    // smartAuth.removeSmsListener();
+    AndroidSmsRetriever.stopSmsListener();
     super.dispose();
     // cancel();
   }

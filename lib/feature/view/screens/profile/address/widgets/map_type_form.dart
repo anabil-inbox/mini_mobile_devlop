@@ -78,95 +78,96 @@ class MapTypeForm extends StatelessWidget {
         SizedBox(
           height: sizeH10,
         ),
-        TextFormField(
-          onTap: () {
-            profileViewModle.showZoneBottmSheet();
-          },
-          readOnly: true,
-          onSaved: (newValue) {
-            profileViewModle.tdZone.text = newValue!;
-            profileViewModle.update();
-          },
-          controller: profileViewModle.tdZone,
-          validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return '${tr.fill_the_zone_correctly}';
-            }
-            return null;
-          },
-          decoration: InputDecoration(
-              suffixIcon: InkWell(
-                onTap: (){
-                  profileViewModle.showZoneBottmSheet();
-                },
-                child: Padding(
-                  padding: EdgeInsets.all(padding6!),
-                  child: SvgPicture.asset("assets/svgs/down_arrow.svg"),
-                ),
-              ),
-              hintText: "${tr.zone}"),
-        ),
-        SizedBox(
-          height: sizeH10,
-        ),
         // TextFormField(
-        //   onTap: (){
-        //     // if(profileViewModle.tdZone.text.isNotEmpty) {
-        //       profileViewModle.showZoneNumberBottmSheet();
-        //     // }
+        //   onTap: () {
+        //     profileViewModle.showZoneBottmSheet();
         //   },
+        //   readOnly: true,
         //   onSaved: (newValue) {
-        //     profileViewModle.tdZoneNumber.text = newValue!;
+        //     profileViewModle.tdZone.text = newValue!;
         //     profileViewModle.update();
         //   },
-        //   controller: profileViewModle.tdZoneNumber,
-        //   // readOnly: true,
+        //   controller: profileViewModle.tdZone,
         //   validator: (value) {
         //     if (value == null || value.trim().isEmpty) {
         //       return '${tr.fill_the_zone_correctly}';
         //     }
         //     return null;
         //   },
-        //   keyboardType: TextInputType.numberWithOptions(),
-        //   decoration: InputDecoration(hintText: "${tr.zone_number}" , ),
+        //   decoration: InputDecoration(
+        //       suffixIcon: InkWell(
+        //         onTap: (){
+        //           profileViewModle.showZoneBottmSheet();
+        //         },
+        //         child: Padding(
+        //           padding: EdgeInsets.all(padding6!),
+        //           child: SvgPicture.asset("assets/svgs/down_arrow.svg"),
+        //         ),
+        //       ),
+        //       hintText: "${tr.zone}"),
         // ),
+
         // SizedBox(
         //   height: sizeH10,
         // ),
-        // TextFormField(
-        //   onSaved: (newValue) {
-        //     profileViewModle.tdStreet.text = newValue!;
-        //     profileViewModle.update();
-        //   },
-        //   controller: profileViewModle.tdStreet,
-        //   validator: (value) {
-        //     if (value == null || value.trim().isEmpty) {
-        //       return '${tr.fill_the_title_correctly}';
-        //     }
-        //     return null;
-        //   },
-        //   decoration: InputDecoration(hintText: "${tr.street}"),
-        // ),
-        // SizedBox(
-        //   height: sizeH10,
-        // ),
-        // TextFormField(
-        //   onSaved: (newValue) {
-        //     profileViewModle.tdBuildingNo.text = newValue!;
-        //     profileViewModle.update();
-        //   },
-        //   controller: profileViewModle.tdBuildingNo,
-        //   validator: (value) {
-        //     if (value == null || value.trim().isEmpty) {
-        //       return '${tr.fill_the_title_correctly}';
-        //     }
-        //     return null;
-        //   },
-        //   decoration: InputDecoration(hintText: "${tr.building_no}"),
-        // ),
-        // SizedBox(
-        //   height: sizeH10,
-        // ),
+        TextFormField(
+          onTap: (){
+            // if(profileViewModle.tdZone.text.isNotEmpty) {
+              profileViewModle.showZoneNumberBottmSheet();
+            // }
+          },
+          onSaved: (newValue) {
+            profileViewModle.tdZoneNumber.text = newValue!;
+            profileViewModle.update();
+          },
+          controller: profileViewModle.tdZoneNumber,
+          // readOnly: true,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return '${tr.fill_the_zone_correctly}';
+            }
+            return null;
+          },
+          keyboardType: TextInputType.numberWithOptions(),
+          decoration: InputDecoration(hintText: "${tr.zone_number}" , ),
+        ),
+        SizedBox(
+          height: sizeH10,
+        ),
+        TextFormField(
+          onSaved: (newValue) {
+            profileViewModle.tdStreet.text = newValue!;
+            profileViewModle.update();
+          },
+          controller: profileViewModle.tdStreet,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return '${tr.fill_the_title_correctly}';
+            }
+            return null;
+          },
+          decoration: InputDecoration(hintText: "${tr.street}"),
+        ),
+        SizedBox(
+          height: sizeH10,
+        ),
+        TextFormField(
+          onSaved: (newValue) {
+            profileViewModle.tdBuildingNo.text = newValue!;
+            profileViewModle.update();
+          },
+          controller: profileViewModle.tdBuildingNo,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return '${tr.fill_the_title_correctly}';
+            }
+            return null;
+          },
+          decoration: InputDecoration(hintText: "${tr.building_no}"),
+        ),
+        SizedBox(
+          height: sizeH10,
+        ),
         TextField/*Form*/(
           /*onSaved*/onSubmitted: (newValue) {
             profileViewModle.tdUnitNo.text = newValue/*!*/;
@@ -182,6 +183,17 @@ class MapTypeForm extends StatelessWidget {
           decoration: InputDecoration(hintText: "${tr.unit_no}"),
         ),
 
+        SizedBox(
+          height: sizeH10,
+        ),
+        TextFormField(
+          onSaved: (newValue) {
+            profileViewModle.tdExtraDetailes.text = newValue!;
+            profileViewModle.update();
+          },
+          controller: profileViewModle.tdExtraDetailes,
+          decoration: InputDecoration(hintText: "${tr.extra_details}"),
+        ),
         SizedBox(
           height: sizeH10,
         ),

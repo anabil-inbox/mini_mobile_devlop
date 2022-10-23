@@ -157,6 +157,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                         SizedBox(
                           height: sizeH12,
                         ),
+                        if (!SharedPref.instance.getIsHideDeleteAccount()) ...[
                         SettingItem(
                           onTap: () {
                             controller.deleteAccountDialog();
@@ -165,6 +166,7 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                           trailingTitle: "",
                           iconPath: "assets/svgs/delete_account.svg",
                         ),
+                        ],
                         SizedBox(
                           height: sizeH100,
                         ),

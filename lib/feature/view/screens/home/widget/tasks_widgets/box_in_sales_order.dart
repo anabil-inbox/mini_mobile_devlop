@@ -65,7 +65,7 @@ class BoxInSalesOrder extends StatelessWidget {
                 ),
                 Stack(
                   children: [
-                    SvgPicture.asset("assets/svgs/folder_icon.svg"),
+                     SvgPicture.asset("assets/svgs/box_in_ware_house.svg" , width: sizeW40,),
                     PositionedDirectional(
                         top: padding4,
                         end: padding4,

@@ -53,17 +53,17 @@ class HomeLVItemWidget extends StatelessWidget {
                 SizedBox(
                   height: sizeH2,
                 ),
-                // if(box.address?.addressTitle != null)...[
-                //   CustomTextView(
-                //     txt: "${box.address?.addressTitle ?? ""}",
-                //     maxLine: Constance.maxLineOne,
-                //     textStyle: textStyleNormal()?.copyWith(height: 1),
-                //     textAlign: TextAlign.center,
-                //   ),
-                //   SizedBox(
-                //     height: sizeH2,
-                //   ),
-                // ],
+                if(box.saleOrder != null)...[
+                  CustomTextView(
+                    txt: "${box.saleOrder ?? ""}",
+                    maxLine: Constance.maxLineOne,
+                    textStyle: textStyleNormal()?.copyWith(height: 1),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: sizeH2,
+                  ),
+                ],
                 CustomTextView(
                   txt: "${DateUtility.getChatTime(box.modified.toString())}",
                   maxLine: Constance.maxLineOne,

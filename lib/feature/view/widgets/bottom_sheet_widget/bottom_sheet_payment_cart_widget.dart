@@ -389,7 +389,7 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
                               ? true
                               : false,
                           paymentMethod: e,
-                          isFirstPickUp: false, isApple: false,
+                          isFirstPickUp: false, isApple: false, isGoggle: false,
                         );
                       }
                       // return PaymentItem(

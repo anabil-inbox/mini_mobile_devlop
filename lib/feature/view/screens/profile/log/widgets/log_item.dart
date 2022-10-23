@@ -28,7 +28,7 @@ class LogItem extends StatelessWidget {
           ),
           // Row(
           //   children: [
-          //     SvgPicture.asset("assets/svgs/folder_icon.svg"),
+          //      SvgPicture.asset("assets/svgs/box_in_ware_house.svg" , width: sizeW40,),
           //     SizedBox(
           //       width: sizeW7,
           //     ),

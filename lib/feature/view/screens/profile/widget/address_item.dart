@@ -21,6 +21,9 @@ class AddressItem extends StatelessWidget {
     screenUtil(context);
     return GetBuilder<ProfileViewModle>(
       builder: (_) {
+        // Logger().d("${address.geoAddress.toString().isEmpty? ("${address.streat} ${address.buildingNo} ${address.unitNo} ${address.zoneNumber} ${address.extraDetails}"):address.geoAddress}");
+        // Logger().d("${address.geoAddress.toString()}");
+        // Logger().d("${("${address.streat} ${address.buildingNo} ${address.unitNo} ${address.zoneNumber} ${address.extraDetails}")}");
         return Column(
           children: [
             Container(
@@ -119,7 +122,7 @@ class AddressItem extends StatelessWidget {
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.75,
                       child: Text(
-                          "${address.geoAddress.toString().isEmpty? ("${address.streat} ${address.buildingNo} ${address.unitNo} ${address.zoneNumber} ${address.extraDetails}"):address.geoAddress}"),
+                          "${address.geoAddress.toString().isEmpty? ("St.${address.streat} - BN.${address.buildingNo} - UN.${address.unitNo} - ZN.${address.zoneNumber} - EXD.${address.extraDetails}"):address.geoAddress}"),
                     ),
                   ),
                   PositionedDirectional(

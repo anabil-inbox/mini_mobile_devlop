@@ -13,8 +13,8 @@ class DioManagerClass {
   DioManagerClass._();
   static final DioManagerClass getInstance = DioManagerClass._();
 
-  /*static*/ final String _baseUrlStage = "http://50.17.152.72/api/method/";
-  /*static*/ final String _baseUrlLive = "http://mini.inbox.com.qa/api/method/";
+  /*static*/ final String _baseUrlStage = "https://50.17.152.72/api/method/";
+  /*static*/ final String _baseUrlLive = "https://mini.inbox.com.qa/api/method/";
   Dio? _dio;
   Dio init() {
 
@@ -76,6 +76,7 @@ class DioManagerClass {
       Map<String, dynamic>? body}) async {
     return await _dio!.put(url, options: Options(headers: header), data: body);
   }
+
 
   Future<Response> dioDeleteMethod(
       {var url,

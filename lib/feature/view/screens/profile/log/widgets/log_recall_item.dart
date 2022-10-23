@@ -25,7 +25,7 @@ class LogRecallItem extends StatelessWidget {
           SizedBox(
             height: sizeH22,
           ),
-          SvgPicture.asset("assets/svgs/folder_icon.svg"),
+           SvgPicture.asset("assets/svgs/box_in_ware_house.svg" , width: sizeW40,),
           SizedBox(
             height: sizeH12,
           ),
