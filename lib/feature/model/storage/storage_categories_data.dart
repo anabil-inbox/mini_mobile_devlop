@@ -18,6 +18,7 @@ class StorageCategoriesData {
       this.image,
       this.video,
       this.description,
+      this.descriptionAr,
       this.selectedDuration,
       this.userPrice,
       this.quantity,
@@ -44,6 +45,7 @@ class StorageCategoriesData {
   String? image;
   String? video;
   String? description;
+  String? descriptionAr;
   num? userPrice;
   int? quantity = 1;
   int? groupId;
@@ -81,6 +83,7 @@ class StorageCategoriesData {
         image: json["image"] == null ? null : json["image"],
         groupId: json["group_id"] == null ? null : json["group_id"],
         description: json["description"] == null ? null : json["description"],
+        descriptionAr: json["description_ar"] == null ? null : json["description_ar"],
         storageFeatures: json["storage_features"] == null
             ? null
             : List<StorageFeatures>.from(json["storage_features"]
@@ -114,6 +117,7 @@ class StorageCategoriesData {
         "image": image,
         "video": video,
         "description": description,
+        "description_ar": descriptionAr,
         "group_id": groupId,
         "storage_features":
             List<dynamic>.from(storageFeatures!.map((x) => x.toJson())),

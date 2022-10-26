@@ -88,7 +88,7 @@ class BottomSheetDetaielsWidget extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: sizeH30!),
               child:
-                  CustomTextView(txt: storageCategoriesData.description ?? ""),
+                  CustomTextView(txt:isArabicLang() ?storageCategoriesData.descriptionAr ?? "" : storageCategoriesData.description ?? ""),
             ),
             SizedBox(
               height: sizeH20,

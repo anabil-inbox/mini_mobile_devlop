@@ -294,16 +294,19 @@ abstract class ConstanceNetwork {
     } else if (typeToken == 1) {
       headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
+        'Language': Get.locale.toString().split("_")[0],
       };
     } else if (typeToken == 2) {
       headers = {
         'Authorization':
             'Bearer ${SharedPref.instance.getUserToken().toString()}',
+        'Language': Get.locale.toString().split("_")[0],
       };
     } else if (typeToken == 3) {
       headers = {
         //  'Authorization': '${SharedPref.instance.getToken().toString()}',
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Language': Get.locale.toString().split("_")[0],
       };
     } else if (typeToken == 4) {
       print(

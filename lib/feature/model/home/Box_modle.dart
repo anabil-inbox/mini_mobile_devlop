@@ -12,6 +12,7 @@ class Box {
       this.storageName,
       this.saleOrder,
       this.storageStatus,
+      this.storageStatusLabel,
       this.enabled,
       this.modified,
       this.tags,
@@ -29,6 +30,7 @@ class Box {
   String? storageName;
   String? saleOrder;
   String? storageStatus;
+  String? storageStatusLabel;
   int? enabled;
   DateTime? modified;
   List<ItemTag>? tags;
@@ -51,8 +53,8 @@ class Box {
         allowed: json["allowed"] == null ? false : json["allowed"],
     firstPickup: json["first_pickup"] == null ? false : json["first_pickup"],
         isPickup: json["is_pickup"] == null ? false:json["is_pickup"],
-        storageStatus:
-            json["storage_status"] == null ? null : json["storage_status"],
+        storageStatus: json["storage_status"] == null ? null : json["storage_status"],
+        storageStatusLabel: json["storage_status_label"] == null ? null : json["storage_status_label"],
         enabled: json["enabled"] == null ? null : json["enabled"],
         modified:
             json["modified"] == null ? null : DateTime.parse(json["modified"]),
@@ -85,6 +87,7 @@ class Box {
         "storage_name": storageName,
         "sale_order": saleOrder,
         "storage_status": storageStatus,
+        "storage_status_label": storageStatusLabel,
         "enabled": enabled,
         "is_pickup": isPickup,
         "modified": modified?.toIso8601String(),

@@ -70,7 +70,7 @@ class NotifayForNewStorage extends StatelessWidget {
                   height: sizeH2,
                 ),
                 Text(
-                  "${box.storageStatus}",
+                  "${box.storageStatusLabel ?? ""}",
                   style: textStyleHints()!.copyWith(fontSize: fontSize13),
                 ),
                 SizedBox(
