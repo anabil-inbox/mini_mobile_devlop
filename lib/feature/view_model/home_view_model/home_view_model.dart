@@ -579,6 +579,7 @@ class HomeViewModel extends BaseController {
 
   getTasks() async {
     await StorageFeature.getInstance.getTasks().then((value) => {
+          tasks.clear(),
           for (var item in value)
             {
               if (/* item.id != LocalConstance.fetchId && */

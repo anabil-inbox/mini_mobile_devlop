@@ -739,13 +739,13 @@ class ProfileViewModle extends BaseController {
                     .contains(place.administrativeArea.toString()))
                 .areaZone ??
             "";
-        tdZoneNumber.text = ApiSettings.fromJson(
-                    jsonDecode(SharedPref.instance.getAppSetting()))
-                .areaZones
-                ?.firstWhere((element) => element.areaZone!
-                    .contains(place.administrativeArea.toString()))
-                .numbers
-                ?.first ??
+        // tdZoneNumber.text = ApiSettings.fromJson(
+        //             jsonDecode(SharedPref.instance.getAppSetting()))
+        //         .areaZones
+        //         ?.firstWhere((element) => element.areaZone!
+        //             .contains(place.administrativeArea.toString()))
+        //         .numbers
+        //         ?.first ??
             "";
       } catch (e) {
         print(e);

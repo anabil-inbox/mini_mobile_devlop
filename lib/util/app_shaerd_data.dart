@@ -16,6 +16,7 @@ import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart';
 import 'package:inbox_clients/feature/view/screens/auth/intro_screens/widget/language_item_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
 import 'package:inbox_clients/feature/view_model/intro_view_modle/intro_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/feature/view_model/splash_view_modle/splash_view_modle.dart';
@@ -592,7 +593,10 @@ void changeLanguageBottomSheet({required bool isFromINtro}) {
                       SharedPref.instance
                           .setAppLanguage(Locale(controller.selectedLang!));
                       Get.back();
-                      SplashViewModle().getAppSetting();
+                      // Get.put(SplashViewModle()).getAppSetting();
+                      // Get.put(HomeViewModel()).getTasks();
+                      // Get.put(SplashViewModle()).update();
+                      // SplashViewModle().getAppSetting();
                       controller.update();
                     } catch (e) {}
                   },
@@ -655,15 +659,17 @@ void changeLanguageBottomSheet({required bool isFromINtro}) {
               PrimaryButton(
                   isLoading: false,
                   textButton: "${tr.select}",
-                  onClicked: () {
+                  onClicked: () async{
                     try {
                       controller.selectedLang =
                           controller.temproreySelectedLang;
                       updateLanguage(Locale(controller.selectedLang!));
-                      SharedPref.instance
+                      await SharedPref.instance
                           .setAppLanguage(Locale(controller.selectedLang!));
+                     /*await*/ Get.put(HomeViewModel()).getTasks();
                       Get.back();
                       SplashViewModle().getAppSetting();
+
                       controller.update();
                     } catch (e) {}
                   },
