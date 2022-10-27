@@ -354,81 +354,92 @@ class MyOrderViewModle extends BaseController {
       ConstanceNetwork.orderIdKey: newOrderSales.orderId
     };
     try {
-      isLoadingCancel = true;
-      update();
-      await OrderHelper.getInstance.cancelOrder(body: map).then((value) {
-            if (value.status != null &&
-                value.status!.success! &&
-                value.data != null) {
-              //todo success with payment url
-              /// id , fees , url
-              ///
-              var orderId = value.data["id"];
-              var orderFees = value.data["fees"];
-              var orderUrl = value.data["url"];
-              if (orderUrl != null && orderUrl.toString().isNotEmpty) {
-                // snackSuccess("", "${value.status!.message.toString()}");
-                homeViewModel.getCustomerBoxes();
-                getOrdres(isFromPagination: false);
-                getOrderDetaile(orderId: newOrderSales.orderId.toString());
-                isLoadingCancel = false;
-                update();
-                Get.bottomSheet(
-                    GlobalBottomSheet(
-                      title: tr.must_fees,
-                      
-                      isTwoBtn: true,
-                      onCancelBtnClick: () => Get.back(),
-                      onOkBtnClick: () {
-                        Logger().w(orderUrl);
-                        if(orderUrl != null && orderUrl.toString().isNotEmpty){
-                          Get.to(
-                            PaymentScreen(
-                              isFromCart: false,
-                              url: orderUrl,
-                              cartModels: [],
-                              isFromNewStorage: false,
-                              paymentId: '',
-                              isOrderProductPayment: false,
-                              isFromCancel: true,
-                              orderId: orderId,
-                              myOrderViewModel: this,
-                            ),
-                          );
-                        }
-                      }, isDelete: false,
-                    ),
-                    isScrollControlled: true);
-                return;
-              }else{
-                snackSuccess("", "${value.status!.message.toString()}");
-                homeViewModel.getCustomerBoxes();
-                getOrdres(isFromPagination: false);
-                getOrderDetaile(orderId: newOrderSales.orderId.toString());
-                isLoadingCancel = false;
-                newOrderSales.status = LocalConstance.cancelled;
-                update();
-              }
+      Get.bottomSheet(
+          GlobalBottomSheet(
+            title: SharedPref.instance.getAppSettings()?.cancelMsg ??"",
+            isTwoBtn: true,
+            onCancelBtnClick: () => Get.back(),
+            onOkBtnClick: () async{
+              Get.back();
+              isLoadingCancel = true;
+              update();
+              await OrderHelper.getInstance.cancelOrder(body: map).then((value) {
+                if (value.status != null &&
+                    value.status!.success! &&
+                    value.data != null) {
+                  //todo success with payment url
+                  /// id , fees , url
+                  ///
+                  var orderId = value.data["id"];
+                  var orderFees = value.data["fees"];
+                  var orderUrl = value.data["url"];
+                  if (orderUrl != null && orderUrl.toString().isNotEmpty) {
+                    // snackSuccess("", "${value.status!.message.toString()}");
+                    homeViewModel.getCustomerBoxes();
+                    getOrdres(isFromPagination: false);
+                    getOrderDetaile(orderId: newOrderSales.orderId.toString());
+                    isLoadingCancel = false;
+                    update();
+                    Get.bottomSheet(
+                        GlobalBottomSheet(
+                          title: tr.must_fees,
 
-              isLoadingCancel = false;
-              update();
-            } else if (value.status != null && value.status!.success!) {
-              //todo success with out payment url
-              /// we need request home page request and wallet and subscriptions
-              snackSuccess("", "${value.status!.message.toString()}");
-              homeViewModel.getCustomerBoxes();
-              getOrdres(isFromPagination: false);
-              getOrderDetaile(orderId: newOrderSales.orderId.toString());
-              isLoadingCancel = false;
-              newOrderSales.status = LocalConstance.cancelled;
-              update();
-            } else {
-              //todo error handler
-              snackError("", "${value.status!.message.toString()}");
-              isLoadingCancel = false;
-              update();
-            }
-          });
+                          isTwoBtn: true,
+                          onCancelBtnClick: () => Get.back(),
+                          onOkBtnClick: () {
+                            Logger().w(orderUrl);
+                            if(orderUrl != null && orderUrl.toString().isNotEmpty){
+                              Get.to(
+                                PaymentScreen(
+                                  isFromCart: false,
+                                  url: orderUrl,
+                                  cartModels: [],
+                                  isFromNewStorage: false,
+                                  paymentId: '',
+                                  isOrderProductPayment: false,
+                                  isFromCancel: true,
+                                  orderId: orderId,
+                                  myOrderViewModel: this,
+                                ),
+                              );
+                            }
+                          }, isDelete: false,
+                        ),
+                        isScrollControlled: true);
+                    return;
+                  }else{
+                    snackSuccess("", "${value.status!.message.toString()}");
+                    homeViewModel.getCustomerBoxes();
+                    getOrdres(isFromPagination: false);
+                    getOrderDetaile(orderId: newOrderSales.orderId.toString());
+                    isLoadingCancel = false;
+                    newOrderSales.status = LocalConstance.cancelled;
+                    update();
+                  }
+
+                  isLoadingCancel = false;
+                  update();
+                } else if (value.status != null && value.status!.success!) {
+                  //todo success with out payment url
+                  /// we need request home page request and wallet and subscriptions
+                  snackSuccess("", "${value.status!.message.toString()}");
+                  homeViewModel.getCustomerBoxes();
+                  getOrdres(isFromPagination: false);
+                  getOrderDetaile(orderId: newOrderSales.orderId.toString());
+                  isLoadingCancel = false;
+                  newOrderSales.status = LocalConstance.cancelled;
+                  update();
+                } else {
+                  //todo error handler
+                  snackError("", "${value.status!.message.toString()}");
+                  isLoadingCancel = false;
+                  update();
+                }
+              });
+            }, isDelete: false,
+          ),
+          isScrollControlled: true);
+
     } catch (e) {
       snackError("", "${tr.error_occurred}");
       isLoadingCancel = false;

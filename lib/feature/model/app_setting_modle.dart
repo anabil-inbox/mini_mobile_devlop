@@ -4,6 +4,8 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:logger/logger.dart';
 
 class ApiSettings {
+
+
   ApiSettings(
       {this.customerType,
       this.aboutUs,
@@ -21,6 +23,7 @@ class ApiSettings {
       this.minDays,
       this.domain,
       this.currency,
+        this.cancelMsg,
       this.pointSpentBoundary,
       this.startsAfter});
 
@@ -28,6 +31,7 @@ class ApiSettings {
   String? aboutUs;
   String? currency;
   String? termOfConditions;
+  String? cancelMsg;//cancel_msg
   int? minDays;
   dynamic startsAfter;
   ContactInfo? contactInfo;
@@ -47,6 +51,7 @@ class ApiSettings {
     // Logger().w("point_spent_boundary: ${json["point_spent_boundary"]}");
     return ApiSettings(
       customerType: json["customer_type"] ?? "both",
+      cancelMsg: json["cancel_msg"] == null ? "":json["cancel_msg"],
       currency: json["currency"]  == null ? isArabicLang()?"ريال": "QR" :json["currency"],
       aboutUs: json["about_us"] == null ? "" : json["about_us"],
       domain: json["domain"] == null
@@ -104,6 +109,7 @@ class ApiSettings {
         "customer_type": customerType,
         "point_spent_boundary": pointSpentBoundary,
         "domain": domain,
+        "cancel_msg": cancelMsg,
         "currency": currency,
         "min_days": minDays == null ? null : minDays,
         "starts_after": startsAfter == null ? null : startsAfter,
