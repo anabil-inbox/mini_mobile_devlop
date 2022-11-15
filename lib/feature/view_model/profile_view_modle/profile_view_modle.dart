@@ -19,6 +19,7 @@ import 'package:inbox_clients/feature/model/customer_modle.dart';
 import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/profile/cards_model.dart';
 import 'package:inbox_clients/feature/model/profile/get_wallet_model.dart';
+import 'package:inbox_clients/feature/model/profile/invoices_model.dart';
 import 'package:inbox_clients/feature/model/profile/log_model.dart';
 import 'package:inbox_clients/feature/model/profile/my_point_model.dart';
 import 'package:inbox_clients/feature/model/subscription_data.dart';
@@ -42,6 +43,7 @@ import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:inbox_clients/util/location_helper.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:inbox_clients/util/string.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -68,6 +70,9 @@ class ProfileViewModle extends BaseController {
 
   String? urlCard;
   CardsData? cardsData;
+
+  List<InvoicesData> invoicesList = [];
+  List<String> invoicesSelectedId = [];
 
 //to do fot address textEditting Controllers ;
   TextEditingController tdTitle = TextEditingController();
@@ -286,7 +291,8 @@ class ProfileViewModle extends BaseController {
     } catch (e) {}
   }
 
-  deleteAccountDialog() {//deleteAccountDialog
+  deleteAccountDialog() {
+    //deleteAccountDialog
     Get.bottomSheet(GlobalBottomSheet(
       title: "${tr.are_you_sure_you_want_to_delete_account}",
       onOkBtnClick: () {
@@ -298,6 +304,7 @@ class ProfileViewModle extends BaseController {
       isDelete: false,
     ));
   }
+
   deleteAccount() async {
     isLoading = true;
     update();
@@ -746,7 +753,7 @@ class ProfileViewModle extends BaseController {
         //             .contains(place.administrativeArea.toString()))
         //         .numbers
         //         ?.first ??
-            "";
+        "";
       } catch (e) {
         print(e);
       }
@@ -1112,30 +1119,186 @@ class ProfileViewModle extends BaseController {
 
   num pointsCalcPrice(Task task) {
     Logger().wtf("pointsCalcPrice1 ${myPoints.totalPoints!}");
-    Logger().wtf("pointsCalcPrice2 ${SharedPref.instance.getAppSettings()!.pointSpentBoundary!}");
-    var pointSpentBoundary =  (myPoints.totalPoints! / SharedPref.instance.getAppSettings()!.pointSpentBoundary!).floor(); // Allowed multiplier
+    Logger().wtf(
+        "pointsCalcPrice2 ${SharedPref.instance.getAppSettings()!.pointSpentBoundary!}");
+    var pointSpentBoundary = (myPoints.totalPoints! /
+            SharedPref.instance.getAppSettings()!.pointSpentBoundary!)
+        .floor(); // Allowed multiplier
     Logger().wtf("pointSpentBoundary ${pointSpentBoundary}");
-    var additions = pointSpentBoundary * SharedPref.instance.getAppSettings()!.pointSpentBoundary!; // points
+    var additions = pointSpentBoundary *
+        SharedPref.instance.getAppSettings()!.pointSpentBoundary!; // points
     Logger().wtf("additions $additions");
-     Logger().w("${(additions * SharedPref.instance.getCurrentUserData().conversionFactor!).isNaN ? 0.0:(additions * SharedPref.instance.getCurrentUserData().conversionFactor!)/*.toInt()*/}");
-    var price = (additions * SharedPref.instance.getCurrentUserData().conversionFactor!).isNaN ? 0.0:(additions * SharedPref.instance.getCurrentUserData().conversionFactor!)/*.toInt()*/; //price
-     if(task.price! >= price) {
-       return price;
-     }else{
-       return task.price!;
-     }
-  }
-
-  num paidPoints(Task task){
-    var pointSpentBoundary =  (myPoints.totalPoints! / SharedPref.instance.getAppSettings()!.pointSpentBoundary!).floor();
-    var additions = pointSpentBoundary * SharedPref.instance.getAppSettings()!.pointSpentBoundary!;
-    var price = (additions * SharedPref.instance.getCurrentUserData().conversionFactor!).isNaN ? 0.0:(additions * SharedPref.instance.getCurrentUserData().conversionFactor!)/*.toInt()*/; //price
-    if(task.price! >= price) {
-      return additions;
-    }else{
-      return (task.price! / SharedPref.instance.getCurrentUserData().conversionFactor!);
+    Logger().w(
+        "${(additions * SharedPref.instance.getCurrentUserData().conversionFactor!).isNaN ? 0.0 : (additions * SharedPref.instance.getCurrentUserData().conversionFactor!) /*.toInt()*/}");
+    var price =
+        (additions * SharedPref.instance.getCurrentUserData().conversionFactor!)
+                .isNaN
+            ? 0.0
+            : (additions *
+                SharedPref.instance
+                    .getCurrentUserData()
+                    .conversionFactor!) /*.toInt()*/; //price
+    if (task.price! >= price) {
+      return price;
+    } else {
+      return task.price!;
     }
-
   }
 
+  num paidPoints(Task task) {
+    var pointSpentBoundary = (myPoints.totalPoints! /
+            SharedPref.instance.getAppSettings()!.pointSpentBoundary!)
+        .floor();
+    var additions = pointSpentBoundary *
+        SharedPref.instance.getAppSettings()!.pointSpentBoundary!;
+    var price =
+        (additions * SharedPref.instance.getCurrentUserData().conversionFactor!)
+                .isNaN
+            ? 0.0
+            : (additions *
+                SharedPref.instance
+                    .getCurrentUserData()
+                    .conversionFactor!) /*.toInt()*/; //price
+    if (task.price! >= price) {
+      return additions;
+    } else {
+      return (task.price! /
+          SharedPref.instance.getCurrentUserData().conversionFactor!);
+    }
+  }
+
+  //this for My Bill
+  Future<void> getMyBills() async {
+    startLoading();
+    invoicesList.clear();
+    try {
+      await ProfileHelper.getInstance.getMyBill().then((value) {
+        invoicesList = value;
+        endLoading();
+      });
+    } catch (e) {
+      printError();
+      endLoading();
+      Logger().e(e);
+    }
+  }
+
+  String getTotalInvoicePrice() {
+    try {
+      if (invoicesList.isNotEmpty) {
+        List<dynamic> prices = [];
+        invoicesList.forEach((element) {
+          if (invoicesSelectedId.contains(element.paymentEntryId)) {
+            prices.add(element.total);
+          }
+        });
+        return formatStringWithCurrency(
+            prices.reduce((value, element) => value + element).toString(), "");
+      } else {
+        return formatStringWithCurrency("0.0", "");
+      }
+    } catch (e) {
+      print(e);
+      return formatStringWithCurrency("0.0", "");
+    }
+  }
+
+  String getTotalInvoiceSubPrice(List<Invoice> invoicesListSub) {
+    try {
+      if (invoicesListSub.isNotEmpty) {
+        List<dynamic> prices = [];
+        invoicesListSub.forEach((element) {
+          if (invoicesSelectedId.contains(element.paymentEntryId)) {
+            prices.add(element.total);
+          }
+        });
+        return formatStringWithCurrency(
+            prices.reduce((value, element) => value + element).toString(), "");
+      } else {
+        return formatStringWithCurrency("0.0", "");
+      }
+    } catch (e) {
+      print(e);
+      return formatStringWithCurrency("0.0", "");
+    }
+  }
+
+  void addAllToSelectedBills() {
+    if(invoicesSelectedId.isNotEmpty &&  invoicesSelectedId.length != invoicesList.length){
+      invoicesSelectedId.clear();
+    }
+    invoicesList.forEach((element) {
+      if (!invoicesSelectedId.contains(element.paymentEntryId!)) {
+        invoicesSelectedId.add(element.paymentEntryId!);
+      } else {
+        invoicesSelectedId.remove(element.paymentEntryId!);
+      }
+    });
+    update();
+  }
+
+  void getInvoiceUrlPayment([List<Invoice>? list]) async {
+    Map<String, dynamic> map = {
+      "${ConstanceNetwork.amountKey}": "${(list!= null && list.isNotEmpty ?getTotalInvoiceSubPrice(list) :getTotalInvoicePrice()) .replaceAll("QR","" ).replaceAll("ريال", "")}",
+      "task_process": "other",
+      "date": "${DateFormat("yyyy-MM-dd").format(DateTime.now())}"
+    };
+    try {
+      startLoading();
+      await StorageFeature.getInstance.payment(body: map).then((value) {
+        if (!GetUtils.isNull(value.data)) {
+          endLoading();
+          url = value.data["url"].toString();
+          Logger().d("url : ${value.data["url"].toString()}");
+
+          update();
+          if (value.data["url"] != null &&
+              value.data["url"].toString().isNotEmpty) {
+            Get.off(DepositMoneyToWalletWebView(
+                url: value.data["url"].toString(),
+                isFromInvoice: true,
+                isFromSub: list!= null && list.isNotEmpty));
+
+          }
+        } else {
+          endLoading();
+        }
+      }).catchError((onError) {
+        Logger().d(onError.toString());
+        endLoading();
+      });
+    } on Exception catch (e) {
+      Logger().d(e.toString());
+      endLoading();
+    }
+  }
+
+  void applyInvoicesPayment() async {
+    startLoading();
+
+    Map<String, dynamic> map = {
+      "invoices": invoicesSelectedId,
+    };
+    try {
+      await ProfileHelper.getInstance.applyInvoicesPayment(map).then((value) {
+        if (!GetUtils.isNull(value.data)) {
+          endLoading();
+          getMyBills();
+          snackSuccess("$txtSuccess", "$txtSuccess");
+          Get.back();
+          update();
+        } else {
+          endLoading();
+          snackError("$txtError", "$txtError");
+          update();
+        }
+      }).catchError((onError) {
+        Logger().d(onError.toString());
+        endLoading();
+      });
+    } on Exception catch (e) {
+      Logger().d(e.toString());
+      endLoading();
+    }
+  }
 }

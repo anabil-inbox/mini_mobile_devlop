@@ -1,6 +1,7 @@
 import 'package:get/utils.dart';
 import 'package:inbox_clients/feature/model/profile/cards_model.dart';
 import 'package:inbox_clients/feature/model/profile/get_wallet_model.dart';
+import 'package:inbox_clients/feature/model/profile/invoices_model.dart';
 import 'package:inbox_clients/feature/model/profile/log_model.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/api/model/profile_api.dart';
@@ -10,6 +11,7 @@ import 'package:logger/logger.dart';
 
 class ProfileHelper {
   ProfileHelper._();
+
   static final ProfileHelper getInstance = ProfileHelper._();
   var log = Logger();
 
@@ -139,6 +141,18 @@ class ProfileHelper {
     }
   }
 
+  Future<AppResponse> applyInvoicesPayment(Map<String, dynamic> body) async {
+    var appResponse = await ProfileApi.getInstance.applyInvoicesPayment(
+        body: body,
+        url: "${ConstanceNetwork.applyInvoicesPaymentEndPoint}",
+        header: ConstanceNetwork.header(4));
+    if (appResponse.status?.success == true) {
+      return appResponse;
+    } else {
+      return appResponse;
+    }
+  }
+
   Future<AppResponse> getMyPoints() async {
     var appResponse = await ProfileApi.getInstance.getMyPoints(
         url: "${ConstanceNetwork.myPointsEndPoint}",
@@ -204,6 +218,19 @@ class ProfileHelper {
       return CardsData.fromJson(appResponse.data);
     } else {
       return CardsData.fromJson(appResponse.data ?? {});
+    }
+  }
+
+  Future<List<InvoicesData>> getMyBill() async {
+    var appResponse = await ProfileApi.getInstance.getMyBill(
+        url: "${ConstanceNetwork.subscriptionGetInvoicesEndPoint}",
+        header: ConstanceNetwork.header(4));
+    Logger().w(appResponse.toJson());
+    if (appResponse.status?.success == true) {
+      List data = appResponse.data;
+      return data.map((e) => InvoicesData.fromJson(e)).toList();
+    } else {
+      return <InvoicesData>[];
     }
   }
 }

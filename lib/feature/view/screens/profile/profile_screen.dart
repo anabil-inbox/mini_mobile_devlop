@@ -3,6 +3,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:inbox_clients/feature/view/screens/profile/invoice/invoice_view.dart';
 import 'package:inbox_clients/feature/view/screens/profile/log/log_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/my_rewareds/my_rewards_screen.dart';
 import 'package:inbox_clients/feature/view/screens/profile/payment_card/payment_card_screen.dart';
@@ -108,6 +109,20 @@ class ProfileScreen extends GetWidget<ProfileViewModle> {
                             trailingTitle: "",
                             iconPath: "assets/svgs/payment_card.svg",
                           ),
+                        // ],
+
+                        SizedBox(
+                          height: sizeH12,
+                        ),
+                        SettingItem(
+                          onTap: () {
+                            Get.to(() => InvoiceView());
+                          },
+                          settingTitle: "${tr.invoice}",
+                          trailingTitle: "",
+                          size:sizeH24,
+                          iconPath: "assets/svgs/invoice.svg",
+                        ),
                         // ],
 
                         SizedBox(

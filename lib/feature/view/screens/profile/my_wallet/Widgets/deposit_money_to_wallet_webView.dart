@@ -9,9 +9,11 @@ import '../../../../../../util/app_shaerd_data.dart';
 class DepositMoneyToWalletWebView extends StatelessWidget {
   const DepositMoneyToWalletWebView({
     Key? key,
-    this.url,
+    this.url, this.isFromInvoice = false, this.isFromSub = false,
   }) : super(key: key);
   final String? url;
+  final bool? isFromInvoice;
+  final bool? isFromSub;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,12 @@ class DepositMoneyToWalletWebView extends StatelessWidget {
                     }
                     Logger().e(logic.depositStatus);
                     //bool result = url.contains("Paid");
+                    if(isFromInvoice! && queryParameters["status"].toString().contains("true")){
+                       logic.applyInvoicesPayment();
+                       if(isFromSub!){
+                         Get.back();
+                       }
+                    }
                     //todo add action
                     if (queryParameters["status"].toString().contains("true"))
                       logic.checkDeposit();

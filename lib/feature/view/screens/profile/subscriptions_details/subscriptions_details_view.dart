@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inbox_clients/feature/model/profile/invoices_model.dart';
 import 'package:inbox_clients/feature/model/subscription_data.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/widgets/my_order_time_widget.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/widgets/status_widget.dart';
+import 'package:inbox_clients/feature/view/screens/profile/invoice/widget/my_invoices_item.dart';
 import 'package:inbox_clients/feature/view/widgets/appbar/custom_app_bar_widget.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/feature/view/widgets/primary_button.dart';
+import 'package:inbox_clients/feature/view/widgets/secondery_button.dart';
 import 'package:inbox_clients/feature/view_model/profile_view_modle/profile_view_modle.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:logger/logger.dart';
 
 import '../../../widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
 
@@ -44,7 +48,7 @@ class SubscriptionsDetailsView extends StatelessWidget {
       );
     return const SizedBox.shrink();
   }
-
+  ProfileViewModle get viewModel => Get.put(ProfileViewModle());
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -66,7 +70,11 @@ class SubscriptionsDetailsView extends StatelessWidget {
           style: textStyleAppBarTitle(),
         ),
         isCenterTitle: true,
-        onBackBtnClick: () => Get.back(),
+        onBackBtnClick: () {
+          viewModel.invoicesSelectedId.clear();
+          viewModel.update();
+          Get.back();
+        },
       ),
       body: GetBuilder<ProfileViewModle>(
         builder: (myOrders) {
@@ -119,6 +127,31 @@ class SubscriptionsDetailsView extends StatelessWidget {
                       height: sizeH10,
                     ),
                     bodyOrderDetailes,
+                    if(subscriptions!.invoices != null && subscriptions!.invoices!.isNotEmpty)...[
+                      SizedBox(
+                        height: sizeH10,
+                      ),
+                      ListView.separated(
+                        // padding: EdgeInsets.only(
+                        //     left: sizeW10!, top: sizeH20!, right: sizeW10!),
+                        itemCount: subscriptions!.invoices!.length,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          return MyInvoicesItem(
+                            invoices: InvoicesData(name:subscriptions!.invoices![index].name ,total:subscriptions!.invoices![index].total ,paymentEntryId:subscriptions!.invoices![index].paymentEntryId ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return Divider();
+                        },
+                      ),
+                      SizedBox(
+                        height: sizeH10,
+                      ),
+                      PrimaryButton(
+                        colorBtn: colorBtnGray,colorText:colorBlack,textButton: "${tr.ok} (${myOrders.getTotalInvoiceSubPrice(subscriptions!.invoices!)})", onClicked: onClicked, isExpanded: true, isLoading: myOrders.isLoading,)
+                    ],
+
                   ],
                 ),
               ),
@@ -141,5 +174,11 @@ class SubscriptionsDetailsView extends StatelessWidget {
       }, isDelete: false,
     ));
 
+  }
+
+  onClicked() {
+    if(viewModel.invoicesSelectedId.isNotEmpty) {
+      viewModel.getInvoiceUrlPayment(subscriptions!.invoices!);
+    }
   }
 }

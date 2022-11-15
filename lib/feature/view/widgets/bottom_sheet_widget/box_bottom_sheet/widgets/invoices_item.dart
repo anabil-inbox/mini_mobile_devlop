@@ -26,7 +26,7 @@ class InvoicesItem extends StatelessWidget {
     return GetBuilder<ItemViewModle>(
         init: ItemViewModle(),
         builder: (logic) {
-          return logic.isLoadingInvoice
+          return logic.isLoadingInvoice && logic.paymentEntryId ==invoices.paymentEntryId
               ? Center(
                   child: ThreeSizeDot(
                     color_1: colorPrimary,
@@ -47,8 +47,8 @@ class InvoicesItem extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: fontSize16),
                       ),
-                      if (operationsBox?.saleOrder != null &&
-                          operationsBox!.saleOrder!.isNotEmpty) ...[
+                      // if (operationsBox?.saleOrder != null &&
+                      //     operationsBox!.saleOrder!.isNotEmpty) ...[
                         SizedBox(
                           width: sizeW10,
                         ),
@@ -58,7 +58,7 @@ class InvoicesItem extends StatelessWidget {
                                   operationsBox: operationsBox);
                             },
                             child: Icon(Icons.payment)),
-                      ],
+                      // ],
                     ],
                   ),
                 );

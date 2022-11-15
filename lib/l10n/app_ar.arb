@@ -324,5 +324,7 @@
   "this_field_is_required": "هذا الحقل مطلوب",
   "notification": "الاشعارات",
   "your_order_have_to_be_rescheduled": "الرجاء اختيار تاريخ جديد لطلب service_name$",
-  "schedule_required": "الجدولة مطلوبة"
+  "schedule_required": "الجدولة مطلوبة",
+  "invoice": "فواتيري",
+  "no_bills_yet": "لا توجد فواتير حتى الآن"
 }

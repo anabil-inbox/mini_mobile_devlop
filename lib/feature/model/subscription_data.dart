@@ -6,6 +6,7 @@ class SubscriptionData {
     this.endDate,
     this.storageType,
     this.plans,
+    this.invoices
   });
 
   String? id;
@@ -14,6 +15,7 @@ class SubscriptionData {
   DateTime? endDate;
   String? storageType;
   List<PlanElement>? plans;
+  List<Invoice>? invoices;
 
   factory SubscriptionData.fromJson(Map<String, dynamic> json) => SubscriptionData(
     id:json["id"] == null ? null: json["id"],
@@ -22,6 +24,7 @@ class SubscriptionData {
     endDate:json["end_date"] == null ? null: DateTime.parse(json["end_date"]),
     storageType:json["storage_type"] == null ? null: json["storage_type"],
     plans:json["plans"] == null ? null: List<PlanElement>.from(json["plans"].map((x) => PlanElement.fromJson(x))),
+    invoices: json["invoices"] == null ? null : List<Invoice>.from(json["invoices"].map((x) => Invoice.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -31,6 +34,7 @@ class SubscriptionData {
     "end_date":endDate == null ? null: "${endDate!.year.toString().padLeft(4, '0')}-${endDate!.month.toString().padLeft(2, '0')}-${endDate!.day.toString().padLeft(2, '0')}",
     "storage_type":storageType == null ? null: storageType == null ? null : storageType,
     "plans":plans == null ? null: List<dynamic>.from(plans!.map((x) => x.toJson())),
+    "invoices": invoices == null ? null : List<dynamic>.from(invoices!.map((x) => x.toJson())),
   };
 }
 
@@ -51,6 +55,30 @@ class PlanElement {
   Map<String, dynamic> toJson() => {
     "plan":plan == null ? null: plan,
     "qty":qty == null ? null: qty,
+  };
+}
+
+class Invoice {
+  Invoice({
+    this.name,
+    this.total,
+    this.paymentEntryId,
+  });
+
+  String? name;
+  dynamic total;
+  String? paymentEntryId;
+
+  factory Invoice.fromJson(Map<String, dynamic> json) => Invoice(
+    name: json["name"] == null ? null : json["name"],
+    total: json["total"] == null ? null : json["total"],
+    paymentEntryId: json["payment_entry_id"] == null ? null : json["payment_entry_id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name == null ? null : name,
+    "total": total == null ? null : total,
+    "payment_entry_id": paymentEntryId == null ? null : paymentEntryId,
   };
 }
 

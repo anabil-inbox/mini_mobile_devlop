@@ -96,6 +96,7 @@ abstract class ConstanceNetwork {
   static String depositMoneyEndPoint = "inbox_app.api.wallet.get_deposit_url";
 
   static String checkDepositEndPoint = "inbox_app.api.wallet.check_payment";
+  static String applyInvoicesPaymentEndPoint = "inbox_app.api.subscription.apply_invoices_payment";
 
   static String editProfilCompanyEndPoint =
       "inbox_app.api.auth.company_edit_profile";
@@ -165,10 +166,9 @@ abstract class ConstanceNetwork {
   static String editOrderApi ="inbox_app.api.sales_order.edit_order";
 
   // this for subscriptions
-  static String getSubscriptionsEndPoint =
-      "inbox_app.api.subscription.get_subscriptions";
-  static String terminateSubscriptionsEndPoint =
-      "inbox_app.api.subscription.terminate_subscription";
+  static String getSubscriptionsEndPoint = "inbox_app.api.subscription.get_subscriptions";
+  static String terminateSubscriptionsEndPoint = "inbox_app.api.subscription.terminate_subscription";
+  static String subscriptionGetInvoicesEndPoint = "inbox_app.api.subscription.get_invoices";
 
   // this for get Task Response:
   static String getCurrentTaskResponeEndPoint = "inbox_app.api.sales_order.get_order_details";

@@ -41,6 +41,8 @@ class ItemViewModle extends BaseController {
   //to update Get Home View Modle and Update Oprations Box ::
   final HomeViewModel homeViewModel = Get.find<HomeViewModel>();
 
+  String? paymentEntryId;
+
   ItemViewModle._();
 
   factory ItemViewModle() => ItemViewModle._();
@@ -704,6 +706,7 @@ class ItemViewModle extends BaseController {
   Future<void> getInvoiceUrl(String? paymentEntryId,
       {Box? operationsBox}) async {
     isLoadingInvoice = true;
+    this.paymentEntryId = paymentEntryId;
     update();
     var boxId = paymentEntryId;
     var appResponse = await OrderHelper.getInstance

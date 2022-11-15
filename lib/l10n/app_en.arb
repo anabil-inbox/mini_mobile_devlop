@@ -268,6 +268,7 @@
     "note_review": "Enter your note",
     "report_an_emergency": "Report An Emergency",
     "no_history_yet": "No history yet",
+    "no_bills_yet": "No bills yet",
     "no_cards_yet": "No cards yet",
     "confirmed": "confirmed",
     "you_can_scan_confirmed_button": "You can scan box or click on confirmed button",
@@ -323,7 +324,7 @@
     "this_field_is_required": "This field is required",
     "notification": "Notification",
     "your_order_have_to_be_rescheduled": "Please choose a new date for your $service_name order",
-    "schedule_required": "Schedule Required"
-
+    "schedule_required": "Schedule Required",
+    "invoice": "my bills"
 
 }

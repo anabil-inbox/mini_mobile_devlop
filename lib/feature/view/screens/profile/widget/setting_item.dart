@@ -6,18 +6,20 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import '../../../../../util/app_shaerd_data.dart';
 
 class SettingItem extends StatelessWidget {
-  const SettingItem(
-      {Key? key,
-      required this.iconPath,
-      required this.settingTitle,
-      required this.trailingTitle,
-      required this.onTap})
-      : super(key: key);
+  const SettingItem({
+    Key? key,
+    required this.iconPath,
+    required this.settingTitle,
+    required this.trailingTitle,
+    required this.onTap,
+    this.size,
+  }) : super(key: key);
 
   final String settingTitle;
   final String trailingTitle;
   final String iconPath;
   final Function onTap;
+  final double? size;
 
   @override
   Widget build(BuildContext context) {
@@ -36,23 +38,33 @@ class SettingItem extends StatelessWidget {
               ? Padding(
                   padding: EdgeInsets.symmetric(horizontal: sizeH4!),
                   child: CircleAvatar(
-                    child: SvgPicture.asset("$iconPath",),
+                    backgroundColor: colorTextWhite,
+                    child: size != null
+                        ? SvgPicture.asset(
+                            "$iconPath",
+                            height: size,
+                          )
+                        : SvgPicture.asset(
+                            "$iconPath",
+                          ),
                   ),
                 )
               : const SizedBox(),
           contentPadding: EdgeInsets.all(0),
           trailing: Container(
-           // color: colorBlack,
+            // color: colorBlack,
             width: sizeW100,
             height: sizeH100,
             child: Row(
               children: [
-                 const Spacer(),
+                const Spacer(),
                 Icon(
                   Icons.arrow_forward_ios,
                   size: 16,
                 ),
-                SizedBox(width: sizeW10,)
+                SizedBox(
+                  width: sizeW10,
+                )
               ],
             ),
           )),
