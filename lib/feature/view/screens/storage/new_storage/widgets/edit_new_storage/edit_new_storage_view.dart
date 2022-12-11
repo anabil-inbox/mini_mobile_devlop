@@ -152,8 +152,7 @@ class _EditNewStorageViewState extends State<EditNewStorageView> {
                                     element.id != null &&
                                         element.id!.toLowerCase() ==
                                             widget.newOrderSales
-                                                .orderShippingAddress!
-                                                .toLowerCase());
+                                                .orderShippingAddress?.toLowerCase());
                                 _storageViewModel.selectedAddress = address;
                                 _storageViewModel.update();
                               } catch (e) {

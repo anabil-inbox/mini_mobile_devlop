@@ -14,6 +14,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
+import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
 import 'package:inbox_clients/network/firebase/firbase_clinte.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/constance.dart';
@@ -71,14 +72,14 @@ class MapViewModel extends GetxController {
   // }
 
   onMapCreated(GoogleMapController controllerMap,
-      {required var salesOrderId}) async {
+      {required var salesOrderId, required OrderSales newOrderSales}) async {
     if (!controller!.isCompleted) {
       controller?.complete(controllerMap);
     }
     mapController = controllerMap;
     //todo here we use two method first for me and another for the user
     //todo me = driver
-    await getMyCurrentPosition();
+    await getMyCurrentPosition(newOrderSales:newOrderSales);
     getStreamLocation(salesOrderId);
     // getUserMarkers(salesOrder: salesOrder);
     Future.delayed(const Duration(seconds: 0)).then((value) async {
@@ -275,15 +276,28 @@ class MapViewModel extends GetxController {
     update();
   }
 
-  getMyCurrentPosition() async {
-    await LocationHelper.instance
-        .getCurrentPosition()
-        .then((Position value) async {
-      myLatLng = LatLng(value.latitude, value.longitude);
-      //if we need we can make animate for camera
-      await getMyCurrentMarkers();
-      update();
-    });
+  getMyCurrentPosition({required OrderSales newOrderSales}) async {
+    if(newOrderSales.orderShippingAddressLatLang != null &&
+        newOrderSales.orderShippingAddressLatLang?.latitude != null &&
+        newOrderSales.orderShippingAddressLatLang?.longitude != null )
+      {
+        double latitude = newOrderSales.orderShippingAddressLatLang!.latitude!;
+        double longitude = newOrderSales.orderShippingAddressLatLang!.longitude!;
+        myLatLng = LatLng(latitude , longitude);
+        await getMyCurrentMarkers();
+        update();
+      }else{
+      ///todo stop get my current locations
+      // await LocationHelper.instance
+      //     .getCurrentPosition()
+      //     .then((Position value) async {
+      //   myLatLng = LatLng(value.latitude, value.longitude);
+      //   //if we need we can make animate for camera
+      //   await getMyCurrentMarkers();
+      //   update();
+      // });
+    }
+
   }
 
   // to do for stream Location
@@ -294,7 +308,7 @@ class MapViewModel extends GetxController {
   }
 
   updateDriverLocations(TrackModel trackModel){
-    Logger().d(trackModel.toJson());
+    // Logger().d(trackModel.toJson());
     if( trackModel.serialOrderDriverLocation != null)
       customerLatLng = trackModel.serialOrderDriverLocation!;
     if(trackModel.serialOrderData != null)

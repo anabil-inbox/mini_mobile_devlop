@@ -1,4 +1,6 @@
+import 'package:inbox_clients/feature/model/address_modle.dart';
 import 'package:inbox_clients/util/sh_util.dart';
+import 'package:logger/logger.dart';
 
 class OrderSales {
   OrderSales(
@@ -8,6 +10,7 @@ class OrderSales {
       this.proccessType,
       this.totalPrice,
       this.orderShippingAddress,
+      this.orderShippingAddressLatLang,
       this.orderWarehouseAddress,
       this.deliveryDate,
       this.status,
@@ -31,6 +34,7 @@ class OrderSales {
   String? orderType;
   num? totalPrice;
   num? discountAmount;
+  Address? orderShippingAddressLatLang;
   String? orderShippingAddress;
   dynamic orderWarehouseAddress;
   DateTime? deliveryDate;
@@ -50,7 +54,8 @@ class OrderSales {
   bool? hasTasks;
   String? driverId;
 
-  factory OrderSales.fromJson(Map<String, dynamic> json) => OrderSales(
+  factory OrderSales.fromJson(Map<String, dynamic> json) {
+    return OrderSales(
         orderId: json["order_id"] ?? "",
         customerId: json["customer_id"] ?? "",
         proccessType: json["process"] ?? "",
@@ -63,7 +68,8 @@ class OrderSales {
         totalPrice: json["total_price"] ?? "",
         discountAmount:
             json["discount_amount"] == null ? null : json["discount_amount"],
-        orderShippingAddress: json["order_shipping_address"] ?? "",
+        orderShippingAddress: json["order_shipping_address"] != null && json["order_shipping_address"] is String? json["order_shipping_address"] :json["order_shipping_address"] != null ? json["order_shipping_address"]["address_title"]:"",
+        orderShippingAddressLatLang: json["order_shipping_address"] != null && json["order_shipping_address"] is! String? Address.fromJson(json["order_shipping_address"]) :null,
         orderWarehouseAddress: json["order_warehouse_address"] ?? "",
         deliveryDate: DateTime.parse(json["delivery_date"]),
         status: json["status"] ?? "",
@@ -83,27 +89,29 @@ class OrderSales {
             ? []
             : List<String>.from(json["boxes"].map((x) => x.toString())),
       );
+  }
 
   Map<String, dynamic> toJson() => {
-        "order_id": orderId,
-        "customer_id": customerId,
+        "order_id": orderId == null ? null:orderId,
+        "customer_id": customerId == null ? null:customerId,
         "time_from": timeFrom ?? "",
         "time_to": timeTo ?? "",
-        "order_type": orderType,
-        "payment_method": paymentMethod,
-        "process": proccessType,
-        "process_name": proccessName,
-        "total_price": totalPrice,
-        "discount_amount": discountAmount,
-        "order_shipping_address": orderShippingAddress,
-        "order_warehouse_address": orderWarehouseAddress,
+        "order_type": orderType == null ? null:orderType,
+        "payment_method": paymentMethod == null ? null:paymentMethod,
+        "process": proccessType == null ? null:proccessType,
+        "process_name": proccessName == null ? null:proccessName,
+        "total_price": totalPrice == null ? null:totalPrice,
+        "discount_amount": discountAmount == null ? null:discountAmount,
+        "order_shipping_address": orderShippingAddress == null ? null:orderShippingAddress,
+        "order_shipping_address": orderShippingAddressLatLang == null ? null:orderShippingAddressLatLang?.toJson(),
+        "order_warehouse_address": orderWarehouseAddress == null ? null:orderWarehouseAddress,
         "is_rated": isRated == null ? null : isRated,
         "editable": editable == null ? null : editable,
         "is_cancelled": isCancelled == null ? null : isCancelled,
         "customer_visit": customerVisit == null ? null : customerVisit,
         "has_tasks": hasTasks == null ? null : hasTasks,
         "driver_id": driverId == null ? null : driverId,
-        "delivery_date":
+        "delivery_date":deliveryDate == null ? null:
             "${deliveryDate?.year.toString().padLeft(4, '0')}-${deliveryDate?.month.toString().padLeft(2, '0')}-${deliveryDate?.day.toString().padLeft(2, '0')}",
         "status": status ?? null,
         "status_name": statusName ?? null,

@@ -45,10 +45,12 @@ class PaymentScreen extends StatelessWidget {
     this.operationTask,
     this.isFromOrderDetails = false,
     this.doFunctions,
+    this.isFromApplePay = false
   }) : super(key: key);
 
   final String? url, orderId;
   final String paymentId;
+  final  bool? isFromApplePay;
   final bool isFromNewStorage, isFromCancel;
   final bool? isFromAddCard;
   final Task? task;
@@ -103,6 +105,12 @@ class PaymentScreen extends StatelessWidget {
                   if (url.toString().contains("false")) {
                     Get.back();
                     return;
+                  }
+                  if(isFromApplePay!){
+                    if (url.toString().contains("status") &&
+                        !url.toString().contains("false")){
+                      doFunctions!();
+                    }
                   }
 
                   if (isFromNotifications!) {

@@ -402,39 +402,39 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
                 SizedBox(
                   height: sizeH16,
                 ),
-                // if (Platform.isIOS) ...[
-                //   SizedBox(
-                //     width: MediaQuery.of(context).size.width / 1.14,
-                //     child: PaymentItem(
-                //       isDisable: storageViewModle.getPriceWithDiscount(
-                //           oldPrice: storageViewModle.calculateTasksCart(cartModel: cartModels).toString().split(" ")[0], isFirstPickUp: false,
-                //           task: Task(price: num.tryParse(storageViewModle
-                //               .calculateTasksCart(cartModel: cartModels)
-                //               .toString()
-                //               .split(" ")[0].toString())),  /*getIsFirstPickUp()*/)[0].toString().replaceAll("QR","").trim() == "0.00" ? true : false,
-                //       price:storageViewModle.calculateTasksCart(cartModel: cartModels),
-                //       isDoPossess: true,
-                //       doPossess: (){
-                //         if (storageViewModle.isAccept || storageViewModle.isUsingPromo) {
-                //         if (storageViewModle.priceAfterDiscount > 0) {
-                //         if (storageViewModle.selectedPaymentMethod != null) {
-                //           storageViewModle.checkOutCart(cartModels: cartModels);
-                //         }
-                //         }
-                //         return;
-                //         }
-                //         if (storageViewModle.selectedPaymentMethod != null) {
-                //           storageViewModle.checkOutCart(cartModels: cartModels);
-                //         }
-                //       },
-                //       paymentMethod: PaymentMethod(
-                //           id: LocalConstance.applePay,
-                //           name: LocalConstance.applePay,
-                //           image: Constance.appleImage),
-                //       isFirstPickUp: false, isApple: true,
-                //     ),
-                //   ),
-                // ],
+                if (Platform.isIOS) ...[
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 1.14,
+                    child: PaymentItem(
+                      isDisable: storageViewModle.getPriceWithDiscount(
+                          oldPrice: storageViewModle.calculateTasksCart(cartModel: cartModels).toString().split(" ")[0], isFirstPickUp: false,
+                          task: Task(price: num.tryParse(storageViewModle
+                              .calculateTasksCart(cartModel: cartModels)
+                              .toString()
+                              .split(" ")[0].toString())),  /*getIsFirstPickUp()*/)[0].toString().replaceAll("QR","").trim() == "0.00" ? true : false,
+                      price:storageViewModle.calculateTasksCart(cartModel: cartModels),
+                      isDoPossess: true,
+                      doPossess: (){
+                        if (storageViewModle.isAccept || storageViewModle.isUsingPromo) {
+                        if (storageViewModle.priceAfterDiscount > 0) {
+                        if (storageViewModle.selectedPaymentMethod != null) {
+                          storageViewModle.checkOutCart(cartModels: cartModels);
+                        }
+                        }
+                        return;
+                        }
+                        if (storageViewModle.selectedPaymentMethod != null) {
+                          storageViewModle.checkOutCart(cartModels: cartModels);
+                        }
+                      },
+                      paymentMethod: PaymentMethod(
+                          id: LocalConstance.applePay,
+                          name: LocalConstance.applePay,
+                          image: Constance.appleImage),
+                      isFirstPickUp: false, isApple: true, isGoggle: false,
+                    ),
+                  ),
+                ],
                 // // promoCode,
                 // SizedBox(
                 //   height: sizeH16,

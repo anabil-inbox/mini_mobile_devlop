@@ -7,6 +7,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../view_model/map_view_model/map_view_model.dart';
 
@@ -59,7 +60,7 @@ class MyOrderAddressWidget extends StatelessWidget {
 
   void _onAddressClick() async{
     Get.put(MapViewModel());
-    Get.bottomSheet(MapBottomSheet(salesOrder: newOrderSales!.orderId.toString()),
+    Get.bottomSheet(MapBottomSheet(salesOrder: newOrderSales!.orderId.toString() , newOrderSales:newOrderSales!),
         enableDrag: true,
         isScrollControlled: true,
         clipBehavior: Clip.hardEdge);

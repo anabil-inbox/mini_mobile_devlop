@@ -14,7 +14,8 @@ import 'package:inbox_clients/feature/model/home/task.dart';
 import 'package:inbox_clients/feature/model/inside_box/invoices.dart';
 import 'package:inbox_clients/feature/model/my_order/api_item.dart';
 import 'package:inbox_clients/feature/model/my_order/order_sales.dart' as OS;
-import 'package:inbox_clients/feature/model/respons/task_response.dart' as taskResponse;
+import 'package:inbox_clients/feature/model/respons/task_response.dart'
+    as taskResponse;
 import 'package:inbox_clients/feature/model/storage/local_bulk_modle.dart';
 import 'package:inbox_clients/feature/model/storage/order_item.dart';
 import 'package:inbox_clients/feature/model/storage/payment.dart';
@@ -992,7 +993,8 @@ class StorageViewModel extends BaseController {
         localOrderItem.storageType = element.storageCategoryType;
         localOrderItem.needAdviser = element.needAdviser! ? 1 : 0;
         localOrderItem.itemParent = 0;
-        localOrderItem.subscriptionPrice = element.userPrice! / element.numberOfDays! / element.quantity!;
+        localOrderItem.subscriptionPrice =
+            element.userPrice! / element.numberOfDays! / element.quantity!;
         localOrderItem.from = selectedDay!.from;
         localOrderItem.to = selectedDay!.to;
         // localOrderItem.spacex = tdX.text;
@@ -1016,8 +1018,12 @@ class StorageViewModel extends BaseController {
         "order_to": "${selectedDay?.to /*from*/}",
         "coupon_code": "",
         "points": isAccept ? profileViewModle.myPoints.totalPoints : 0,
-        "payment_method": selectedPaymentMethod?.id == LocalConstance.applePay ?LocalConstance.creditCard : "${selectedPaymentMethod?.id}",
-        "payment_id": paymentId == null ? "${DateTime.now().millisecondsSinceEpoch}":"$paymentId",
+        "payment_method": selectedPaymentMethod?.id == LocalConstance.applePay
+            ? LocalConstance.creditCard
+            : "${selectedPaymentMethod?.id}",
+        "payment_id": paymentId == null
+            ? "${DateTime.now().millisecondsSinceEpoch}"
+            : "$paymentId",
         "order_from": "${selectedDay?.from /*to*/}",
         "order_time": "${selectedDay?.from}/${selectedDay?.to}",
         "type": getNewStorageType(
@@ -1033,8 +1039,12 @@ class StorageViewModel extends BaseController {
         "order_to": "${selectedDay?.to /*from*/}",
         "coupon_code": "",
         "points": isAccept ? profileViewModle.myPoints.totalPoints : 0,
-        "payment_method": selectedPaymentMethod?.id == LocalConstance.applePay ?LocalConstance.creditCard : "${selectedPaymentMethod?.id}",
-        "payment_id": paymentId == null ? "${DateTime.now().millisecondsSinceEpoch}":"$paymentId",
+        "payment_method": selectedPaymentMethod?.id == LocalConstance.applePay
+            ? LocalConstance.creditCard
+            : "${selectedPaymentMethod?.id}",
+        "payment_id": paymentId == null
+            ? "${DateTime.now().millisecondsSinceEpoch}"
+            : "$paymentId",
         "order_from": "${selectedDay?.from /*to*/}",
         "order_time": "${selectedDay?.from}/${selectedDay?.to}",
         "type": getNewStorageType(
@@ -1662,7 +1672,7 @@ class StorageViewModel extends BaseController {
     // Logger().i("1_$price");
     if (selectedAddress !=
         null /*&& (!isFirstPickUp && task.id !=LocalConstance.pickupId)*/) {
-      if((!isFirstPickUp /*&& task.id !=LocalConstance.pickupId*/)) {
+      if ((!isFirstPickUp /*&& task.id !=LocalConstance.pickupId*/)) {
         for (var item in task.areaZones!) {
           if (item.id == selectedAddress?.zone) {
             price += (item.price ?? 0) *
@@ -1870,8 +1880,12 @@ class StorageViewModel extends BaseController {
     }
 
     map["type[0]"] = task.id;
-    map["payment_method"] = selectedPaymentMethod?.id == LocalConstance.applePay ? LocalConstance.creditCard: selectedPaymentMethod?.id ?? "";
-    map["payment_id"] = paymentId == null ? "${DateTime.now().millisecondsSinceEpoch}":paymentId ;
+    map["payment_method"] = selectedPaymentMethod?.id == LocalConstance.applePay
+        ? LocalConstance.creditCard
+        : selectedPaymentMethod?.id ?? "";
+    map["payment_id"] = paymentId == null
+        ? "${DateTime.now().millisecondsSinceEpoch}"
+        : paymentId;
     map["points"] = isAccept ? userUsesPoints : 0;
     // map["destroy_status"] = LocalConstance.inWarehouse;
     // if (task.id == LocalConstance.destroyId) {
@@ -1902,7 +1916,6 @@ class StorageViewModel extends BaseController {
         snackError("${tr.error_occurred}", value.status!.message!);
       }
     });
-
 
     cleanAfterSucces();
     clearNewStorageData();
@@ -2037,7 +2050,7 @@ class StorageViewModel extends BaseController {
 
   Future<void> checkPromo({required String promoCode}) async {
     try {
-      if(tdCopun.text.isEmpty){
+      if (tdCopun.text.isEmpty) {
         return;
       }
       await StorageFeature.getInstance
@@ -2057,7 +2070,9 @@ class StorageViewModel extends BaseController {
   final tdCopun = TextEditingController();
 
   List<dynamic> getPriceWithDiscount(
-      {required String oldPrice, required bool isFirstPickUp  ,required Task? task}) {
+      {required String oldPrice,
+      required bool isFirstPickUp,
+      required Task? task}) {
     num price = num.parse(oldPrice);
     num usesPoints = 0;
     Logger().w(task?.price);
@@ -2065,28 +2080,51 @@ class StorageViewModel extends BaseController {
       if (checkPromoAppResponse!.status != null &&
           checkPromoAppResponse!.status!.success!) {
         Logger().wtf("getPriceWithDiscount_${checkPromoAppResponse?.toJson()}");
-        if (checkPromoAppResponse?.data != null && (checkPromoAppResponse?.data["discount_type"] == null ? null:checkPromoAppResponse?.data["discount_type"]) != null &&
-            (checkPromoAppResponse?.data["discount_type"] == null ? null:checkPromoAppResponse?.data["discount_type"]) ==
-            LocalConstance.discountPercentag) {
-          if ((price - (price * (checkPromoAppResponse?.data["amount"] == null ? 0:checkPromoAppResponse?.data["amount"]) / 100)) >
+        if (checkPromoAppResponse?.data != null &&
+            (checkPromoAppResponse?.data["discount_type"] == null
+                    ? null
+                    : checkPromoAppResponse?.data["discount_type"]) !=
+                null &&
+            (checkPromoAppResponse?.data["discount_type"] == null
+                    ? null
+                    : checkPromoAppResponse?.data["discount_type"]) ==
+                LocalConstance.discountPercentag) {
+          if ((price -
+                  (price *
+                      (checkPromoAppResponse?.data["amount"] == null
+                          ? 0
+                          : checkPromoAppResponse?.data["amount"]) /
+                      100)) >
               0) {
-            price =
-                price - (price * (checkPromoAppResponse?.data["amount"] == null ? 0:checkPromoAppResponse?.data["amount"]) / 100);
+            price = price -
+                (price *
+                    (checkPromoAppResponse?.data["amount"] == null
+                        ? 0
+                        : checkPromoAppResponse?.data["amount"]) /
+                    100);
           } else {
             price = 0;
           }
         } else {
-          price = price - (checkPromoAppResponse?.data["amount"] == null ? 0:checkPromoAppResponse?.data["amount"]);
+          price = price -
+              (checkPromoAppResponse?.data["amount"] == null
+                  ? 0
+                  : checkPromoAppResponse?.data["amount"]);
         }
       }
     }
 
     if (isAccept) {
       //
-      if (price - profileViewModle.pointsCalcPrice(task!)/*profileViewModle.myPoints.totalPoints! * SharedPref.instance.getCurrentUserData().conversionFactor!*/ > 0) {
+      if (price -
+              profileViewModle.pointsCalcPrice(
+                  task!) /*profileViewModle.myPoints.totalPoints! * SharedPref.instance.getCurrentUserData().conversionFactor!*/ >
+          0) {
         price = price -
-            profileViewModle.pointsCalcPrice(task)/*profileViewModle.myPoints.totalPoints! *
-                SharedPref.instance.getCurrentUserData().conversionFactor!*/;
+                profileViewModle.pointsCalcPrice(
+                    task) /*profileViewModle.myPoints.totalPoints! *
+                SharedPref.instance.getCurrentUserData().conversionFactor!*/
+            ;
         userUsesPoints = profileViewModle.myPoints.totalPoints!;
       } else {
         // price = ((price * profileViewModle.myPoints.totalPoints!) - price) /
@@ -2134,11 +2172,17 @@ class StorageViewModel extends BaseController {
       }
       if (selectedAddress !=
           null /*&&   (!cartItem.isFirstPickUp! && cartItem.task?.id !=LocalConstance.pickupId)*/) {
-        if ((!cartItem.isFirstPickUp! /*&& cartItem.task?.id != LocalConstance.pickupId*/)) {
+        if ((!cartItem
+            .isFirstPickUp! /*&& cartItem.task?.id != LocalConstance.pickupId*/)) {
           for (var item in cartItem.task!.areaZones!) {
             if (item.id == selectedAddress?.zone) {
-              Logger().e((cartItem.box!.length / settings.deliveryFactor!).toDouble().ceilToDouble());
-              price += (item.price ?? 0) *(cartItem.box!.length / settings.deliveryFactor!).toDouble().ceilToDouble();
+              Logger().e((cartItem.box!.length / settings.deliveryFactor!)
+                  .toDouble()
+                  .ceilToDouble());
+              price += (item.price ?? 0) *
+                  (cartItem.box!.length / settings.deliveryFactor!)
+                      .toDouble()
+                      .ceilToDouble();
             }
           }
         }
@@ -2330,8 +2374,13 @@ class StorageViewModel extends BaseController {
         }
 
         map["type[$i]"] = cartModels[i].task?.id;
-        map["payment_method"] = selectedPaymentMethod?.id == LocalConstance.applePay ? LocalConstance.creditCard: selectedPaymentMethod?.id ?? "";
-        map["payment_id"] = paymentId == null ? "${DateTime.now().millisecondsSinceEpoch}":paymentId ;
+        map["payment_method"] =
+            selectedPaymentMethod?.id == LocalConstance.applePay
+                ? LocalConstance.creditCard
+                : selectedPaymentMethod?.id ?? "";
+        map["payment_id"] = paymentId == null
+            ? "${DateTime.now().millisecondsSinceEpoch}"
+            : paymentId;
         map["points"] = isAccept ? userUsesPoints / cartModels.length : 0;
         map["coupon_code"] = (isUsingPromo &&
                 checkPromoAppResponse != null &&
@@ -2405,6 +2454,53 @@ class StorageViewModel extends BaseController {
     }
   }
 
+  Future<void> applySkipCashPayment({
+    required dynamic amount,
+    required Function() function,
+    required bool isRecivedOrderPayment,
+    required PaymentMethod paymentMethod,
+    required String sendedWattingFeesOrCancellationReson,
+  }) async {
+    try {
+      await StorageFeature.getInstance.applySkipCashPayment(body: {
+        ConstanceNetwork.amountKey: amount,
+      }).then((value) {
+        if (value.status!.success!) {
+          if(value.data["payment_url"] != null && value.data["payment_url"].toString().isNotEmpty)
+          Get.to(PaymentScreen(
+                    operationTask: homeViewModel.operationTask,
+                    isFromNotifications: false,
+                    url: value.data["payment_url"],
+                    isFromApplePay:true,
+                    isFromCart: false,
+                    isOrderProductPayment: false,
+                    isFromOrderDetails: isRecivedOrderPayment,
+                    cartModels: [],
+                    isFromNewStorage: false,
+                    doFunctions: () async {
+                      function();
+                      // await homeViewModel.applyPayment(
+                      //     isRecivedOrderPayment: isRecivedOrderPayment,
+                      //     salesOrder: homeViewModel.operationTask.salesOrder ?? "",
+                      //     paymentMethod: paymentMethod.name ?? "",
+                      //     paymentId: "",
+                      //     extraFees: 0 /*sendedWattingFeesOrCancellation*/,
+                      //     reason: sendedWattingFeesOrCancellationReson,
+                      //     isAppPay: false);
+                      // Get.back();
+                    },
+                    paymentId: '',
+                  ));
+        } else {
+          Get.back();
+          snackError('', value.status?.message);
+        }
+      });
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
   Future<void> payApplicationFromWallet(
       {required num price, required String newSalesOrderId}) async {
     try {
@@ -2449,33 +2545,33 @@ class StorageViewModel extends BaseController {
     }
   }
 
-  Future<void> onTaskReschedule(taskResponse.TaskResponse operationTask, DateTime? selectedDateTime, String localHoursFromUtc) async{
+  Future<void> onTaskReschedule(taskResponse.TaskResponse operationTask,
+      DateTime? selectedDateTime, String localHoursFromUtc) async {
     startLoading();
-    var date = "${selectedDateTime?.year}-${selectedDateTime?.month}-${selectedDateTime?.day}";
+    var date =
+        "${selectedDateTime?.year}-${selectedDateTime?.month}-${selectedDateTime?.day}";
     var time = localHoursFromUtc;
     var driverId = operationTask.driverId;
     var orderId = operationTask.salesOrder;
-    Map<String , dynamic> map = {
-      ConstanceNetwork.orderIdKey : orderId,
-      ConstanceNetwork.dateKey : date,
-      ConstanceNetwork.timeKey : time,
-      ConstanceNetwork.driverId : driverId,
-
+    Map<String, dynamic> map = {
+      ConstanceNetwork.orderIdKey: orderId,
+      ConstanceNetwork.dateKey: date,
+      ConstanceNetwork.timeKey: time,
+      ConstanceNetwork.driverId: driverId,
     };
-    await StorageFeature.getInstance.onTaskReschedule(body:map).then((value){
-      if(value.status!.success!){
-       snackSuccess("", value.status?.message.toString());
+    await StorageFeature.getInstance.onTaskReschedule(body: map).then((value) {
+      if (value.status!.success!) {
+        snackSuccess("", value.status?.message.toString());
         endLoading();
         Get.back();
-      }else{
+      } else {
         snackError("", value.status?.message.toString());
         endLoading();
         // Get.back();
       }
-    }).catchError((onError){
+    }).catchError((onError) {
       Logger().w(onError);
       endLoading();
     });
-
   }
 }

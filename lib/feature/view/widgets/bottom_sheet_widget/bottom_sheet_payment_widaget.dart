@@ -479,108 +479,108 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                     SizedBox(
                       height: sizeH16,
                     ),
-                    // if (Platform.isIOS) ...[
-                    //   SizedBox(
-                    //     width: MediaQuery.of(context).size.width / 1.13,
-                    //     child: PaymentItem(
-                    //       isFirstPickUp: widget.isFirstPickUp! &&
-                    //           widget.task.id == LocalConstance.pickupId,
-                    //       doPossess: () {
-                    //         if (BottomSheetPaymentWidget.storageViewModle.isAccept ||
-                    //             BottomSheetPaymentWidget.storageViewModle.isUsingPromo) {
-                    //           if (BottomSheetPaymentWidget.storageViewModle.priceAfterDiscount > 0) {
-                    //             if (BottomSheetPaymentWidget.storageViewModle.selectedPaymentMethod?.id != null) {
-                    //               if (widget.boxes.length > 0) {
-                    //                 BottomSheetPaymentWidget.storageViewModle
-                    //                     .doTaskBoxRequest(
-                    //                         isFirstPickUp:
-                    //                             widget.isFirstPickUp! &&
-                    //                                 widget.task.id ==
-                    //                                     LocalConstance.pickupId,
-                    //                         isFromCart: false,
-                    //                         task: widget.task,
-                    //                         boxes: widget.boxes,
-                    //                         selectedItems: widget.items,
-                    //                         beneficiaryId:
-                    //                             widget.beneficiaryId);
-                    //               } else {
-                    //                 BottomSheetPaymentWidget.storageViewModle
-                    //                     .doTaskBoxRequest(
-                    //                         isFirstPickUp:
-                    //                             widget.isFirstPickUp! &&
-                    //                                 widget.task.id ==
-                    //                                     LocalConstance.pickupId,
-                    //                         isFromCart: false,
-                    //                         task: widget.task,
-                    //                         boxes: [widget.box],
-                    //                         selectedItems: widget.items,
-                    //                         beneficiaryId:
-                    //                             widget.beneficiaryId);
-                    //               }
-                    //             }
-                    //           }
-                    //           return;
-                    //         }
-                    //     if (BottomSheetPaymentWidget.storageViewModle.selectedPaymentMethod?.id != null) {
-                    //       if (widget.boxes.length > 0) {
-                    //         BottomSheetPaymentWidget.storageViewModle
-                    //             .doTaskBoxRequest(
-                    //             isFirstPickUp:
-                    //             widget.isFirstPickUp! &&
-                    //                 widget.task.id ==
-                    //                     LocalConstance.pickupId,
-                    //             isFromCart: false,
-                    //             task: widget.task,
-                    //             boxes: widget.boxes,
-                    //             selectedItems: widget.items,
-                    //             beneficiaryId:
-                    //             widget.beneficiaryId);
-                    //       } else {
-                    //         BottomSheetPaymentWidget.storageViewModle
-                    //             .doTaskBoxRequest(
-                    //             isFirstPickUp:
-                    //             widget.isFirstPickUp! &&
-                    //                 widget.task.id ==
-                    //                     LocalConstance.pickupId,
-                    //             isFromCart: false,
-                    //             task: widget.task,
-                    //             boxes: [widget.box],
-                    //             selectedItems: widget.items,
-                    //             beneficiaryId:
-                    //             widget.beneficiaryId);
-                    //       }
-                    //     }
-                    //
-                    //
-                    //       },
-                    //       isDoPossess: true,
-                    //       isDisable: ((logic.isAccept || logic.isUsingPromo) &&
-                    //               BottomSheetPaymentWidget.storageViewModle
-                    //                       .priceAfterDiscount ==
-                    //                   0)
-                    //           ? true
-                    //           : false,
-                    //       price: widget.boxes.length == 0
-                    //           ? logic.calculateTaskPriceOnceBox(
-                    //               task: widget.task)
-                    //           : logic.calculateTaskPriceLotBoxess(
-                    //               isFromCart: false,
-                    //               task: widget.task,
-                    //               boxess: widget.boxes,
-                    //               isFirstPickUp: widget.isFirstPickUp! &&
-                    //                   widget.task.id ==
-                    //                       LocalConstance.pickupId),
-                    //       paymentMethod: PaymentMethod(
-                    //           id: LocalConstance.applePay,
-                    //           name: LocalConstance.applePay,
-                    //           image: Constance.appleImage),
-                    //       isApple: true,
-                    //     ),
-                    //   ),
-                    //   SizedBox(
-                    //     height: sizeH16,
-                    //   ),
-                    // ],
+                    if (Platform.isIOS) ...[
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.13,
+                        child: PaymentItem(
+                          isFirstPickUp: widget.isFirstPickUp! &&
+                              widget.task.id == LocalConstance.pickupId,
+                          doPossess: () {
+                            if (BottomSheetPaymentWidget.storageViewModle.isAccept ||
+                                BottomSheetPaymentWidget.storageViewModle.isUsingPromo) {
+                              if (BottomSheetPaymentWidget.storageViewModle.priceAfterDiscount > 0) {
+                                if (BottomSheetPaymentWidget.storageViewModle.selectedPaymentMethod?.id != null) {
+                                  if (widget.boxes.length > 0) {
+                                    BottomSheetPaymentWidget.storageViewModle
+                                        .doTaskBoxRequest(
+                                            isFirstPickUp:
+                                                widget.isFirstPickUp! &&
+                                                    widget.task.id ==
+                                                        LocalConstance.pickupId,
+                                            isFromCart: false,
+                                            task: widget.task,
+                                            boxes: widget.boxes,
+                                            selectedItems: widget.items,
+                                            beneficiaryId:
+                                                widget.beneficiaryId);
+                                  } else {
+                                    BottomSheetPaymentWidget.storageViewModle
+                                        .doTaskBoxRequest(
+                                            isFirstPickUp:
+                                                widget.isFirstPickUp! &&
+                                                    widget.task.id ==
+                                                        LocalConstance.pickupId,
+                                            isFromCart: false,
+                                            task: widget.task,
+                                            boxes: [widget.box],
+                                            selectedItems: widget.items,
+                                            beneficiaryId:
+                                                widget.beneficiaryId);
+                                  }
+                                }
+                              }
+                              return;
+                            }
+                        if (BottomSheetPaymentWidget.storageViewModle.selectedPaymentMethod?.id != null) {
+                          if (widget.boxes.length > 0) {
+                            BottomSheetPaymentWidget.storageViewModle
+                                .doTaskBoxRequest(
+                                isFirstPickUp:
+                                widget.isFirstPickUp! &&
+                                    widget.task.id ==
+                                        LocalConstance.pickupId,
+                                isFromCart: false,
+                                task: widget.task,
+                                boxes: widget.boxes,
+                                selectedItems: widget.items,
+                                beneficiaryId:
+                                widget.beneficiaryId);
+                          } else {
+                            BottomSheetPaymentWidget.storageViewModle
+                                .doTaskBoxRequest(
+                                isFirstPickUp:
+                                widget.isFirstPickUp! &&
+                                    widget.task.id ==
+                                        LocalConstance.pickupId,
+                                isFromCart: false,
+                                task: widget.task,
+                                boxes: [widget.box],
+                                selectedItems: widget.items,
+                                beneficiaryId:
+                                widget.beneficiaryId);
+                          }
+                        }
+
+
+                          },
+                          isDoPossess: true,
+                          isDisable: ((logic.isAccept || logic.isUsingPromo) &&
+                                  BottomSheetPaymentWidget.storageViewModle
+                                          .priceAfterDiscount ==
+                                      0)
+                              ? true
+                              : false,
+                          price: widget.boxes.length == 0
+                              ? logic.calculateTaskPriceOnceBox(
+                                  task: widget.task)
+                              : logic.calculateTaskPriceLotBoxess(
+                                  isFromCart: false,
+                                  task: widget.task,
+                                  boxess: widget.boxes,
+                                  isFirstPickUp: widget.isFirstPickUp! &&
+                                      widget.task.id ==
+                                          LocalConstance.pickupId),
+                          paymentMethod: PaymentMethod(
+                              id: LocalConstance.applePay,
+                              name: LocalConstance.applePay,
+                              image: Constance.appleImage),
+                          isApple: true, isGoggle: false,
+                        ),
+                      ),
+                      SizedBox(
+                        height: sizeH16,
+                      ),
+                    ],
                     if (logic.selectedPaymentMethod?.id ==
                         Constance.bankTransferId) ...[
                       SizedBox(
