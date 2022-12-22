@@ -24,6 +24,8 @@ class PaymentViewModel extends GetxController {
   num sendedWattingFeesOrCancellation = -1;
   String sendedWattingFeesOrCancellationReson = "";
 
+  bool isApplePaid = false;
+
   void readResponse({
     required bool isFromNewStorage,
     Task? task,

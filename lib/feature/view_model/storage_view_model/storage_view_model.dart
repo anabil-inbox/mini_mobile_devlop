@@ -24,6 +24,7 @@ import 'package:inbox_clients/feature/model/storage/storage_categories_data.dart
 import 'package:inbox_clients/feature/model/storage/store_modle.dart';
 import 'package:inbox_clients/feature/view/screens/home/home_page_holder.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
+import 'package:inbox_clients/feature/view/screens/payment/payment_apple_screen.dart';
 import 'package:inbox_clients/feature/view/screens/payment/payment_screen.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_two_widgets/selected_hour_item.dart';
 import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/bottom_sheet_detailes_widaget.dart';
@@ -2467,7 +2468,7 @@ class StorageViewModel extends BaseController {
       }).then((value) {
         if (value.status!.success!) {
           if(value.data["payment_url"] != null && value.data["payment_url"].toString().isNotEmpty)
-          Get.to(PaymentScreen(
+          Get.to(PaymentAppleScreen(
                     operationTask: homeViewModel.operationTask,
                     isFromNotifications: false,
                     url: value.data["payment_url"],

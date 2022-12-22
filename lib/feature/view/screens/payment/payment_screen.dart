@@ -108,7 +108,7 @@ class PaymentScreen extends StatelessWidget {
                   }
                   if(isFromApplePay!){
                     if (url.toString().contains("status") &&
-                        !url.toString().contains("false")){
+                        url.toString().contains("true")){
                       doFunctions!();
                     }
                   }
