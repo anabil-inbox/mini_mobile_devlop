@@ -171,6 +171,7 @@ abstract class ConstanceNetwork {
   static String getSubscriptionsEndPoint = "inbox_app.api.subscription.get_subscriptions";
   static String terminateSubscriptionsEndPoint = "inbox_app.api.subscription.terminate_subscription";
   static String subscriptionGetInvoicesEndPoint = "inbox_app.api.subscription.get_invoices";
+  static String getInvoiceDetailsEndPoint = "inbox_app.api.subscription.get_invoice_details?id=";
 
   // this for get Task Response:
   static String getCurrentTaskResponeEndPoint = "inbox_app.api.sales_order.get_order_details";

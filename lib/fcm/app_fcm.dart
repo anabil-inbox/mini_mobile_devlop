@@ -259,7 +259,7 @@ class AppFcm {
 
   static void goToOrderPage(Map<String, dynamic> map,
       {required bool isFromTerminate}) {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       storageViewModel.selectedPaymentMethod = PaymentMethod(
         id: homeViewModel.operationTask.paymentMethod,
         name: homeViewModel.operationTask.paymentMethod,

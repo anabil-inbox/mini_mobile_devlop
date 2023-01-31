@@ -47,9 +47,12 @@ import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../model/profile/invoices_details_data.dart';
+
 class ProfileViewModle extends BaseController {
   bool isAccepteDefoltLocation = true;
   bool isLoading = false;
+  bool invoicesDetailsLoading = false;
   bool isDeleteting = false;
 
   int selectedIndexLanguage = -1;
@@ -73,6 +76,8 @@ class ProfileViewModle extends BaseController {
 
   List<InvoicesData> invoicesList = [];
   List<String> invoicesSelectedId = [];
+
+  InvoicesDetailsData invoicesDetailsData = InvoicesDetailsData();
 
 //to do fot address textEditting Controllers ;
   TextEditingController tdTitle = TextEditingController();
@@ -1179,6 +1184,30 @@ class ProfileViewModle extends BaseController {
     } catch (e) {
       printError();
       endLoading();
+      Logger().e(e);
+    }
+  }
+
+
+  //this for My Bill details
+  Future<void> getInvoiceDetails(var id) async {
+    invoicesDetailsLoading = true;
+    update();
+
+    try {
+      await ProfileHelper.getInstance.getInvoiceDetails(id).then((value) {
+        invoicesDetailsData =  InvoicesDetailsData();
+        invoicesDetailsData =  value;
+        Logger().d(value.toJson());
+        invoicesDetailsLoading = false;
+        update();
+
+      });
+    } catch (e) {
+      printError();
+      invoicesDetailsLoading = false;
+      update();
+
       Logger().e(e);
     }
   }

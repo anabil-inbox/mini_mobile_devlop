@@ -9,6 +9,8 @@ import 'package:inbox_clients/network/utils/constance_netwoek.dart';
 import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 
+import '../../../feature/model/profile/invoices_details_data.dart';
+
 class ProfileHelper {
   ProfileHelper._();
 
@@ -231,6 +233,18 @@ class ProfileHelper {
       return data.map((e) => InvoicesData.fromJson(e)).toList();
     } else {
       return <InvoicesData>[];
+    }
+  }
+
+  Future<InvoicesDetailsData> getInvoiceDetails(var id) async {
+    var appResponse = await ProfileApi.getInstance.getInvoiceDetails(
+        url: "${ConstanceNetwork.getInvoiceDetailsEndPoint}$id",
+        header: ConstanceNetwork.header(4));
+    Logger().w(appResponse.toJson());
+    if (appResponse.status?.success == true) {
+      return InvoicesDetailsData.fromJson(appResponse.data);
+    } else {
+      return InvoicesDetailsData.fromJson({});
     }
   }
 }

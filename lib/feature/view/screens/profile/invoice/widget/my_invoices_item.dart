@@ -11,6 +11,8 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/font_dimne.dart';
 
+import '../../../../widgets/bottom_sheet_widget/box_bottom_sheet/widgets/invoices_bottom_sheet_details.dart';
+
 // ignore: must_be_immutable
 class MyInvoicesItem extends StatelessWidget {
   /*const*/ MyInvoicesItem({
@@ -33,7 +35,7 @@ class MyInvoicesItem extends StatelessWidget {
               ),
             )
           : InkWell(
-              onTap: () => _onItemClick(logic),
+              onTap: () => _showInvDetails(logic ,invoices),
               child: Container(
                 // margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 color: colorTextWhite,
@@ -58,14 +60,20 @@ class MyInvoicesItem extends StatelessWidget {
                     ),
                     if (logic.invoicesSelectedId
                         .contains(invoices.paymentEntryId)) ...[
-                      Icon(
-                        Icons.check_box,
-                        color: colorPrimary,
+                      InkWell(
+                        onTap: () => _onItemClick(logic),
+                        child: Icon(
+                          Icons.check_box,
+                          color: colorPrimary,
+                        ),
                       ),
                     ] else ...[
-                      Icon(
-                        Icons.check_box_outline_blank,
-                        color: colorHint3,
+                      InkWell(
+                        onTap: () => _onItemClick(logic),
+                        child: Icon(
+                          Icons.check_box_outline_blank,
+                          color: colorHint3,
+                        ),
                       ),
                     ],
                   ],
@@ -85,5 +93,10 @@ class MyInvoicesItem extends StatelessWidget {
       logic.invoicesSelectedId.add(invoices.paymentEntryId!);
       logic.update();
     }
+  }
+
+  //todo here we need to show invoice details
+  _showInvDetails(ProfileViewModle logic, InvoicesData invoices) {
+    Get.bottomSheet(InvoicesDetailsBottomSheet(invoices:invoices) ,isScrollControlled: true);
   }
 }

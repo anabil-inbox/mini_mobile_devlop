@@ -4,14 +4,18 @@ import 'package:get/get.dart';
 import 'package:inbox_clients/fcm/app_fcm.dart';
 import 'package:inbox_clients/feature/model/home/notification_data.dart';
 import 'package:inbox_clients/feature/view/screens/my_orders/order_details_screen.dart';
+import 'package:inbox_clients/feature/view/widgets/bottom_sheet_widget/box_bottom_sheet/widgets/invoices_bottom_sheet_details.dart';
 import 'package:inbox_clients/feature/view/widgets/custome_text_view.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
+import 'package:logger/logger.dart';
 
 import '../../../util/app_shaerd_data.dart';
+import '../../../util/constance/constance.dart';
 import '../../../util/date_time_util.dart';
+import '../../model/profile/invoices_model.dart';
 
 class NotificationItem extends StatelessWidget {
   const NotificationItem({
@@ -81,9 +85,17 @@ class NotificationItem extends StatelessWidget {
   }
 
   void _onItemClick() {
-    Get.to(() => OrderDetailesScreen(
-      orderId: "${notification!.actionId.toString()}", isFromPayment: false,
-    ));
+    Logger().w(notification?.toJson());
+    if(notification?.action == LocalConstance.salesInvoiceActionKey){
+      var nameAndId = notification?.actionId;
+      Get.bottomSheet(InvoicesDetailsBottomSheet(invoices: InvoicesData(name:nameAndId , paymentEntryId: nameAndId )));
+    }else{
+      Get.to(() => OrderDetailesScreen(
+        orderId: "${notification!.actionId.toString()}", isFromPayment: false,
+      ));
+    }
+
+
     // AppFcm.goToOrderPage(notification!.toJson(), isFromTerminate: false);
   }
 }

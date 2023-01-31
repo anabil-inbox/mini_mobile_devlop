@@ -78,6 +78,7 @@ class MyOrderViewModle extends BaseController {
   Future<void> getOrderDetaile({required String orderId}) async {
     isLoading = true;
     update();
+    newOrderSales = OrderSales();
     try {
       await OrderHelper.getInstance.getOrderDetaile(body: {
         Constance.orderId: orderId,
@@ -87,6 +88,7 @@ class MyOrderViewModle extends BaseController {
         if(value.status!= null) {
           newOrderSales = value;
         }else{
+          newOrderSales = OrderSales();
           // newOrderSales.status = LocalConstance.cancelled;
         }
         isLoading = false;
