@@ -166,7 +166,7 @@ class AuthViewModle extends GetxController {
     isLoading = true;
     update();
     FocusScope.of(Get.context!).unfocus();
-    await AuthHelper.getInstance.loginUser(user!.toJson()).then((value) => {
+    await AuthHelper.getInstance.loginUser(user!.toJson()).then((value) async => {
           if (value.status!.success!)
             {
               Logger().d(value.data[ConstanceNetwork.customerKey]),

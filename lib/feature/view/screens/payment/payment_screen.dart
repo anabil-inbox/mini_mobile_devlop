@@ -87,6 +87,7 @@ class PaymentScreen extends StatelessWidget {
             return WebView(
               javascriptMode: JavascriptMode.unrestricted,
               initialUrl:!url!.contains("http") && url!.isNotEmpty ? "https://$url": url,
+              allowsInlineMediaPlayback: true,
               onProgress: (i) {},
               onWebResourceError: (error) {
                 Logger().e(error.domain);
@@ -98,6 +99,11 @@ class PaymentScreen extends StatelessWidget {
               },
               onPageFinished: (url) async {
                 try {
+
+
+                  // payment.payController?.currentUrl().then((value) {
+                  // Logger().w("currentUrl : $value");
+                  // });
                   Logger().i("onPageFinished : url $url");
                   // String paymentId = url.split("=")[1].split("&")[0];
                   // Logger().e(paymentId);

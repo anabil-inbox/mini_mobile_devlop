@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -13,6 +15,7 @@ import 'package:inbox_clients/util/sh_util.dart';
 
 import '../../../../../util/app_shaerd_data.dart';
 
+
 class SplashScreen extends GetWidget<SplashViewModle> {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -25,9 +28,10 @@ class SplashScreen extends GetWidget<SplashViewModle> {
   }
 }
 
-moveToIntro() {
+moveToIntro() async{
   String? state = SharedPref.instance.getUserLoginState();
   SharedPref.instance.getAppSettings();
+  await FirebaseAuth.instance.signInAnonymously();
   try {
   if (state?.toLowerCase() == "${ConstanceNetwork.userEnterd}") {
     if (SharedPref.instance.getUserType() == "${ConstanceNetwork.userType}") {

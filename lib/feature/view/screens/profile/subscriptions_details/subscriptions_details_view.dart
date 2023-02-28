@@ -17,7 +17,12 @@ import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 import 'package:logger/logger.dart';
 
+import '../../../../../util/font_dimne.dart';
+import '../../../../view_model/home_view_model/home_view_model.dart';
+import '../../../../view_model/item_view_modle/item_view_modle.dart';
 import '../../../widgets/bottom_sheet_widget/gloable_bottom_sheet.dart';
+import '../../items/item_screen.dart';
+import '../../items/widgets/notifay_for_new_storage.dart';
 
 class SubscriptionsDetailsView extends StatelessWidget {
   const SubscriptionsDetailsView({
@@ -26,6 +31,8 @@ class SubscriptionsDetailsView extends StatelessWidget {
   }) : super(key: key);
 
   final SubscriptionData? subscriptions;
+  HomeViewModel get homeViewModel =>  Get.find<HomeViewModel>();
+  ItemViewModle get itemViewModle =>  Get.find<ItemViewModle>();
 
   Widget get bodyOrderDetailes {
     //to do this when The Status Is An Task :
@@ -36,19 +43,67 @@ class SubscriptionsDetailsView extends StatelessWidget {
         itemCount: subscriptions?.plans?.length,
         itemBuilder: (context, index) {
           var plan = subscriptions?.plans?[index];
-          return Container(
+          return InkWell(
+            onTap: (){
+              var firstWhere = homeViewModel.userBoxess.toList().firstWhere((element) => element.id == subscriptions?.serialNo);
+              var index =homeViewModel.userBoxess.toList().indexOf(firstWhere);
+              if (homeViewModel.userBoxess.toList()[index].storageStatus ==  LocalConstance.boxOnTheWay &&
+                  !homeViewModel.userBoxess.toList()[index].isPickup!) {
+                Get.bottomSheet(
+                    NotifayForNewStorage(
+                        box: homeViewModel.userBoxess.toList()[index],
+                        showQrScanner: true,
+                        index: index),
+                    isScrollControlled: true);
+                homeViewModel.update();
+              } else {
+                Get.to(() => ItemScreen(
+                  box: homeViewModel.userBoxess.toList()[index],
+                  getBoxDataMethod: () async {
+                    await itemViewModle.getBoxBySerial(
+                        serial: homeViewModel.userBoxess
+                            .toList()[index]
+                            .serialNo!);
+                  },
+                ));
+                homeViewModel.update();
+                itemViewModle.update();
+              }
+            },
+            child: Container(
               width: double.infinity,
               padding: EdgeInsets.all(sizeRadius16!),
               margin: EdgeInsets.only(bottom: sizeH10!),
               decoration: BoxDecoration(
                   color: colorBackground,
                   borderRadius: BorderRadius.circular(padding6!)),
-              child: Text("${plan?.plan != null ? plan?.plan.toString().replaceAll("_", " ").toString().replaceAll("-", " "): ""}"));
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                      "${plan?.plan != null ? plan?.plan.toString().replaceAll("_", " ").toString().replaceAll("-", " ") : ""}"),
+                  SizedBox(
+                    height: sizeH12,
+                  ),
+                  Text(
+                    "${tr.box_name} : ${subscriptions?.serialNo ?? ""}",
+                    style: Theme.of(context).textTheme.headline6?.copyWith(
+                        color: colorInWarehouse,
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSize14),
+                  ),
+                ],
+              ),
+            ),
+          );
         },
       );
     return const SizedBox.shrink();
   }
+
   ProfileViewModle get viewModel => Get.put(ProfileViewModle());
+
   @override
   Widget build(BuildContext context) {
     screenUtil(context);
@@ -56,11 +111,13 @@ class SubscriptionsDetailsView extends StatelessWidget {
       bottomSheet: GetBuilder<ProfileViewModle>(builder: (logic) {
         return Padding(
           padding: const EdgeInsets.all(16.0),
-          child: subscriptions?.status  != LocalConstance.subscriptionActive ? const SizedBox.shrink() : PrimaryButton(
-              textButton: tr.terminate,
-              isLoading: logic.isLoading,
-              onClicked: () => _onTerminateClick(logic),
-              isExpanded: true),
+          child: subscriptions?.status != LocalConstance.subscriptionActive
+              ? const SizedBox.shrink()
+              : PrimaryButton(
+                  textButton: tr.terminate,
+                  isLoading: logic.isLoading,
+                  onClicked: () => _onTerminateClick(logic),
+                  isExpanded: true),
         );
       }),
       appBar: CustomAppBarWidget(
@@ -127,7 +184,55 @@ class SubscriptionsDetailsView extends StatelessWidget {
                       height: sizeH10,
                     ),
                     bodyOrderDetailes,
-                    if(subscriptions!.invoices != null && subscriptions!.invoices!.isNotEmpty)...[
+
+                    if((subscriptions!.paidInvoices != null &&
+                        subscriptions!.paidInvoices!.isNotEmpty))...[
+                      SizedBox(
+                        height: sizeH10,
+                      ),
+                      Row(
+                        children: [
+                          Text(tr.paid_invoices ,textAlign: TextAlign.start,),
+                        ],
+                      ),
+                      SizedBox(
+                        height: sizeH10,
+                      ),
+                      ListView.separated(
+                        // padding: EdgeInsets.only(
+                        //     left: sizeW10!, top: sizeH20!, right: sizeW10!),
+                        itemCount: subscriptions!.paidInvoices!.length,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          return MyInvoicesItem(
+                            isPadInv:true,
+                            invoices: InvoicesData(
+                                name: subscriptions!.paidInvoices![index].name,
+                                total: subscriptions!.paidInvoices![index].total,
+                                paymentEntryId: subscriptions!
+                                    .paidInvoices![index].paymentEntryId),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return Divider();
+                        },
+                      ),
+                      SizedBox(
+                        height: sizeH10,
+                      ),
+                    ],
+
+                    if (subscriptions!.invoices != null &&
+                        subscriptions!.invoices!.isNotEmpty) ...[
+                      SizedBox(
+                        height: sizeH10,
+                      ),
+
+                      Row(
+                        children: [
+                          Text(tr.unpaid_invoices ,textAlign: TextAlign.start,),
+                        ],
+                      ),
                       SizedBox(
                         height: sizeH10,
                       ),
@@ -138,7 +243,11 @@ class SubscriptionsDetailsView extends StatelessWidget {
                         shrinkWrap: true,
                         itemBuilder: (BuildContext context, int index) {
                           return MyInvoicesItem(
-                            invoices: InvoicesData(name:subscriptions!.invoices![index].name ,total:subscriptions!.invoices![index].total ,paymentEntryId:subscriptions!.invoices![index].paymentEntryId ),
+                            invoices: InvoicesData(
+                                name: subscriptions!.invoices![index].name,
+                                total: subscriptions!.invoices![index].total,
+                                paymentEntryId: subscriptions!
+                                    .invoices![index].paymentEntryId),
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) {
@@ -149,9 +258,15 @@ class SubscriptionsDetailsView extends StatelessWidget {
                         height: sizeH10,
                       ),
                       PrimaryButton(
-                        colorBtn: colorBtnGray,colorText:colorBlack,textButton: "${tr.ok} (${myOrders.getTotalInvoiceSubPrice(subscriptions!.invoices!)})", onClicked: onClicked, isExpanded: true, isLoading: myOrders.isLoading,)
+                        colorBtn: colorBtnGray,
+                        colorText: colorBlack,
+                        textButton:
+                            "${tr.ok} (${myOrders.getTotalInvoiceSubPrice(subscriptions!.invoices!)})",
+                        onClicked: onClicked,
+                        isExpanded: true,
+                        isLoading: myOrders.isLoading,
+                      )
                     ],
-
                   ],
                 ),
               ),
@@ -167,17 +282,17 @@ class SubscriptionsDetailsView extends StatelessWidget {
       title: tr.subscriptions_terminate,
       subTitle: tr.subscriptions_terminate_message,
       isTwoBtn: true,
-      onCancelBtnClick: ()=> Get.back(),
+      onCancelBtnClick: () => Get.back(),
       onOkBtnClick: () {
         Get.back();
         logic.onTerminateSubscriptions(subscriptions);
-      }, isDelete: false,
+      },
+      isDelete: false,
     ));
-
   }
 
   onClicked() {
-    if(viewModel.invoicesSelectedId.isNotEmpty) {
+    if (viewModel.invoicesSelectedId.isNotEmpty) {
       viewModel.getInvoiceUrlPayment(subscriptions!.invoices!);
     }
   }

@@ -489,7 +489,7 @@ class PaymentItem extends StatelessWidget {
               isRecivedOrderPayment:isRecivedOrderPayment,
               salesOrder: homeViewModel.operationTask.salesOrder ?? "",
               paymentMethod: LocalConstance.creditCard/*paymentMethod.name ?? ""*/ ,
-              paymentId: /*value["transactionId"] != null ? value["transactionId"] :*/ "${DateTime.now().millisecondsSinceEpoch.toString()}",
+              paymentId:storageViewModel.skipCachePaymentId.isNotEmpty ?storageViewModel.skipCachePaymentId : /*value["transactionId"] != null ? value["transactionId"] :*/ "${DateTime.now().millisecondsSinceEpoch.toString()}",
               isAppPay: true,
               storageViewModel: storageViewModel,
               extraFees: 0/*sendedWattingFeesOrCancellation*/,

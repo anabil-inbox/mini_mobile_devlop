@@ -1,9 +1,11 @@
 name: inbox_clients
 description: A new Flutter project.
 
+
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -15,8 +17,9 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.4+6
+version: 1.0.5+9
 #todo flutterten clean && flutterten pub get && flutterten build apk --target-platform=android-arm --release
+#todo flutterten create . && flutterten clean && flutterten pub get && flutterten build apk --target-platform=android-arm --release
 environment:
   sdk: ">=2.12.0 <3.0.0"
   #flutter: ">=2.5.0"
@@ -49,6 +52,7 @@ dependencies:
   pin_code_fields: ^7.3.0
   firebase_core: ^1.10.0
   firebase_messaging: ^11.2.11
+  firebase_auth: ^3.3.2
   flutter_local_notifications: ^9.1.5 #9.0.3 #9.5.3+1 #9.1.5
   local_auth: ^1.1.8
   grouped_list: ^4.1.0
@@ -67,7 +71,8 @@ dependencies:
   #firebase_crashlytics: ^2.4.5
   sqflite: ^2.0.2
   path_provider: ^2.0.8
-  webview_flutter: ^3.0.0
+#  webview_flutter: ^3.0.0
+  webview_flutter: ^3.0.4
   #  permission_handler: ^8.3.0
   permission_handler: ^10.2.0
   expandable: ^5.0.1
@@ -96,6 +101,7 @@ dependencies:
 #  sms_retriever: ^1.0.0
 dependency_overrides:
   firebase_core_platform_interface: 4.5.1
+#  firebase_auth_platform_interface: ^5.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -104,6 +110,9 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
+
+
+
 
 flutter:
   generate: true

@@ -418,13 +418,13 @@ class BottomSheetPaymentCartWidget extends StatelessWidget {
                         if (storageViewModle.isAccept || storageViewModle.isUsingPromo) {
                         if (storageViewModle.priceAfterDiscount > 0) {
                         if (storageViewModle.selectedPaymentMethod != null) {
-                          storageViewModle.checkOutCart(cartModels: cartModels);
+                          storageViewModle.checkOutCart(cartModels: cartModels ,paymentId: storageViewModle.skipCachePaymentId.isNotEmpty ?storageViewModle.skipCachePaymentId :null,);
                         }
                         }
                         return;
                         }
                         if (storageViewModle.selectedPaymentMethod != null) {
-                          storageViewModle.checkOutCart(cartModels: cartModels);
+                          storageViewModle.checkOutCart(cartModels: cartModels ,paymentId: storageViewModle.skipCachePaymentId.isNotEmpty ?storageViewModle.skipCachePaymentId :null,);
                         }
                       },
                       paymentMethod: PaymentMethod(

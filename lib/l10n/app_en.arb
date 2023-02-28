@@ -326,8 +326,14 @@
     "your_order_have_to_be_rescheduled": "Please choose a new date for your $service_name order",
     "schedule_required": "Schedule Required",
     "invoice": "my bills",
+    "invoice_date": "Invoice Date",
     "total_days": "Total Days",
     "open_order": "Go to Order",
+    "from": "From",
+    "to": "To",
+    "total_cost": "Total cost",
+    "paid_invoices": "Paid Invoices",
+    "unpaid_invoices": "Un Paid Invoices",
     "no_details_for_this_invoice": "There are no details for this invoice"
 
 

@@ -437,6 +437,7 @@ class HomeViewModel extends BaseController {
           SnackBar(content: Text(tr.no_permission)),
         );
       }
+      ctrl.resumeCamera();
     } catch (e) {
       Logger().e("$e");
     }
@@ -459,6 +460,11 @@ class HomeViewModel extends BaseController {
     try {
       int i = 0;
       print("mess_3");
+      if (Platform.isAndroid) {
+        controller.pauseCamera();
+      } else if (Platform.isIOS) {
+        controller.resumeCamera();
+      }
       controller.scannedDataStream.listen((scanData) {
         result = scanData;
         print("mess_4");

@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:inbox_clients/feature/model/storage/payment.dart';
 import 'package:inbox_clients/feature/view/screens/storage/new_storage/widgets/step_three_widgets/payment_item.dart';
 import 'package:inbox_clients/feature/view_model/home_view_model/home_view_model.dart';
+import 'package:inbox_clients/network/firebase/firebase_utils.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
 
-class PaymentWidget extends StatelessWidget {
+class PaymentWidget extends StatefulWidget {
   const PaymentWidget({
     Key? key,
     required this.isRecivedOrderPayment,
@@ -19,6 +20,34 @@ class PaymentWidget extends StatelessWidget {
 
   final bool isRecivedOrderPayment;
   final HomeViewModel? homeViewModel;
+
+  @override
+  State<PaymentWidget> createState() => _PaymentWidgetState();
+}
+
+class _PaymentWidgetState extends State<PaymentWidget> {
+
+
+  bool isHideApplePay = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      handleHideApplePay();
+    });
+  }
+
+  void handleHideApplePay() {
+    FirebaseUtils.instance.isHideApplePay().then((value) {
+      isHideApplePay = value;
+      setState(() {
+
+      });
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,56 +92,66 @@ class PaymentWidget extends StatelessWidget {
               crossAxisAlignment: WrapCrossAlignment.start,
               children: getPaymentMethod().map((e) {
                 return PaymentItem(
-                  isDisable: homeViewModel?.operationTask.totalDue != null &&
-                          homeViewModel?.operationTask.totalDue == 0
+                  isDisable: widget.homeViewModel?.operationTask.totalDue !=
+                      null &&
+                      widget.homeViewModel?.operationTask.totalDue == 0
                       ? true
                       : false,
-                  isRecivedOrderPayment: isRecivedOrderPayment,
+                  isRecivedOrderPayment: widget.isRecivedOrderPayment,
                   paymentMethod: e,
-                  isFirstPickUp: false, isApple: false, isGoggle: false,
+                  isFirstPickUp: false,
+                  isApple: false,
+                  isGoggle: false,
                 );
               }).toList(),
             ),
           ),
-          if (Platform.isIOS) ...[
+          if (Platform.isIOS && !isHideApplePay) ...[
             SizedBox(
               height: sizeH16,
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width / 1.17,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width / 1.17,
               child: PaymentItem(
                 isFirstPickUp: false,
-                isApple:true,
-                isRecivedOrderPayment: isRecivedOrderPayment,
-                isDisable: homeViewModel?.operationTask.totalDue != null && homeViewModel?.operationTask.totalDue == 0 ? true : false,
+                isApple: true,
+                isRecivedOrderPayment: widget.isRecivedOrderPayment,
+                isDisable: widget.homeViewModel?.operationTask.totalDue !=
+                    null && widget.homeViewModel?.operationTask.totalDue == 0
+                    ? true
+                    : false,
                 paymentMethod: PaymentMethod(
                     id: LocalConstance.applePay,
                     name: LocalConstance.applePay,
-                    image: Constance.appleImage), isGoggle: false,
+                    image: Constance.appleImage),
+                isGoggle: false,
               ),
             ),
 
           ],
-        // if (Platform.isAndroid) ...[
-        //     SizedBox(
-        //       height: sizeH16,
-        //     ),
-        //     SizedBox(
-        //       width: MediaQuery.of(context).size.width / 1.17,
-        //       child: PaymentItem(
-        //         isFirstPickUp: false,
-        //         isApple:true,
-        //         isGoggle:true,
-        //         isRecivedOrderPayment: isRecivedOrderPayment,
-        //         isDisable: homeViewModel?.operationTask.totalDue != null && homeViewModel?.operationTask.totalDue == 0 ? true : false,
-        //         paymentMethod: PaymentMethod(
-        //             id: LocalConstance.googlePay,
-        //             name: LocalConstance.googlePay,
-        //             image: Constance.googleImage),
-        //       ),
-        //     ),
-        //
-        //   ],
+          // if (Platform.isAndroid) ...[
+          //     SizedBox(
+          //       height: sizeH16,
+          //     ),
+          //     SizedBox(
+          //       width: MediaQuery.of(context).size.width / 1.17,
+          //       child: PaymentItem(
+          //         isFirstPickUp: false,
+          //         isApple:true,
+          //         isGoggle:true,
+          //         isRecivedOrderPayment: isRecivedOrderPayment,
+          //         isDisable: homeViewModel?.operationTask.totalDue != null && homeViewModel?.operationTask.totalDue == 0 ? true : false,
+          //         paymentMethod: PaymentMethod(
+          //             id: LocalConstance.googlePay,
+          //             name: LocalConstance.googlePay,
+          //             image: Constance.googleImage),
+          //       ),
+          //     ),
+          //
+          //   ],
           SizedBox(
             height: sizeH25,
           ),

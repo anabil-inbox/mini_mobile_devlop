@@ -59,7 +59,7 @@ class MyOrderAddressWidget extends StatelessWidget {
   }
 
   void _onAddressClick() async{
-    Get.put(MapViewModel());
+    Get.put(MapViewModel())..getMyCurrentMarkers()..getStreamLocation(newOrderSales!.orderId.toString());
     Get.bottomSheet(MapBottomSheet(salesOrder: newOrderSales!.orderId.toString() , newOrderSales:newOrderSales!),
         enableDrag: true,
         isScrollControlled: true,

@@ -80,10 +80,34 @@ class _RequestNewStorageScreenState extends State<RequestNewStorageScreen> {
                   style: textStyleAppBarTitle(),
                 ),
               ),
+              floatingActionButton:  GetBuilder<StorageViewModel>(
+                init: StorageViewModel(),
+                initState: (_) {},
+                builder: (logical) {
+                  return Padding(
+                    padding: EdgeInsetsDirectional.only(start: sizeW36!),
+                    child: PrimaryButton(
+                        textButton: "${tr.next}",
+                        isLoading: false,
+                        colorBtn: logical.userStorageCategoriesData.length > 0
+                            ? colorPrimary
+                            : colorUnSelectedWidget,
+                        onClicked: logical.userStorageCategoriesData.length > 0
+                            ? () {
+                          RequestNewStorageScreen
+                              .storageViewModel.currentLevel = 1;
+                          Get.put(ProfileViewModle());
+                          Get.to(() => RequestNewStoragesStepTwoScreen());
+                        }
+                            : () {},
+                        isExpanded: true),
+                  );
+                },
+              ),
               body: GetBuilder<StorageViewModel>(
                 init: StorageViewModel(),
                 initState: (_) {
-                  WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                     _.controller?.clearNewStorageData();
                   });
                 },
@@ -137,32 +161,32 @@ class _RequestNewStorageScreenState extends State<RequestNewStorageScreen> {
                           ),
                         ],
                       ),
-                      GetBuilder<StorageViewModel>(
-                        init: StorageViewModel(),
-                        initState: (_) {},
-                        builder: (logical) {
-                          return Positioned(
-                            bottom: padding10,
-                            right: padding20,
-                            left: padding20,
-                            child: PrimaryButton(
-                                textButton: "${tr.next}",
-                                isLoading: false,
-                                colorBtn: logical.userStorageCategoriesData.length > 0
-                                    ? colorPrimary
-                                    : colorUnSelectedWidget,
-                                onClicked: logical.userStorageCategoriesData.length > 0
-                                    ? () {
-                                  RequestNewStorageScreen
-                                      .storageViewModel.currentLevel = 1;
-                                  Get.put(ProfileViewModle());
-                                  Get.to(() => RequestNewStoragesStepTwoScreen());
-                                }
-                                    : () {},
-                                isExpanded: true),
-                          );
-                        },
-                      )
+                      // GetBuilder<StorageViewModel>(
+                      //   init: StorageViewModel(),
+                      //   initState: (_) {},
+                      //   builder: (logical) {
+                      //     return Positioned(
+                      //       bottom: padding10,
+                      //       right: padding20,
+                      //       left: padding20,
+                      //       child: PrimaryButton(
+                      //           textButton: "${tr.next}",
+                      //           isLoading: false,
+                      //           colorBtn: logical.userStorageCategoriesData.length > 0
+                      //               ? colorPrimary
+                      //               : colorUnSelectedWidget,
+                      //           onClicked: logical.userStorageCategoriesData.length > 0
+                      //               ? () {
+                      //             RequestNewStorageScreen
+                      //                 .storageViewModel.currentLevel = 1;
+                      //             Get.put(ProfileViewModle());
+                      //             Get.to(() => RequestNewStoragesStepTwoScreen());
+                      //           }
+                      //               : () {},
+                      //           isExpanded: true),
+                      //     );
+                      //   },
+                      // )
                     ],
                   );
                 },

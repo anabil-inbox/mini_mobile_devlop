@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inbox_clients/feature/model/app_setting_modle.dart';
 import 'package:inbox_clients/feature/model/my_order/order_sales.dart';
+import 'package:inbox_clients/network/firebase/driver_modle.dart';
 import 'package:inbox_clients/network/firebase/firbase_clinte.dart';
 import 'package:inbox_clients/util/app_color.dart';
 import 'package:inbox_clients/util/constance.dart';
@@ -28,6 +29,7 @@ import 'package:logger/logger.dart';
 import '../../../network/firebase/sales_order.dart';
 import '../../../network/firebase/track_model.dart';
 import '../../../network/utils/constance_netwoek.dart';
+import '../../../util/constance/constance.dart';
 
 class MapViewModel extends GetxController {
   Completer<GoogleMapController>? controller = Completer();
@@ -79,8 +81,16 @@ class MapViewModel extends GetxController {
     mapController = controllerMap;
     //todo here we use two method first for me and another for the user
     //todo me = driver
-    await getMyCurrentPosition(newOrderSales:newOrderSales);
-    getStreamLocation(salesOrderId);
+    if (newOrderSales.status == LocalConstance.cancelled ||
+        newOrderSales.status == LocalConstance.completed) {
+      await getMyCurrentPosition(newOrderSales: newOrderSales);
+    }
+    // await getMyCurrentPosition(newOrderSales:newOrderSales);
+    // getMyCurrentMarkers();
+    if (newOrderSales.status != LocalConstance.cancelled &&
+        newOrderSales.status != LocalConstance.completed){
+      getStreamLocation(salesOrderId);
+  }
     // getUserMarkers(salesOrder: salesOrder);
     Future.delayed(const Duration(seconds: 0)).then((value) async {
       await foucCameraOnUsers(
@@ -89,6 +99,20 @@ class MapViewModel extends GetxController {
           myLatLng,
           customerLatLng);
     });
+
+    // Future.delayed(const Duration(seconds: 4)).then((value) async{
+    //
+    //   getStreamLocation(salesOrderId);
+    //   await getMyCurrentPosition(newOrderSales:newOrderSales);
+    //   update();
+    //   await foucCameraOnUsers(
+    //       /*controllerMap*/
+    //       mapController!,
+    //       myLatLng,
+    //       customerLatLng);
+    //
+    // });
+    update();
   }
 
   onMapTaped(LatLng argument) {}
@@ -142,6 +166,7 @@ class MapViewModel extends GetxController {
     paintImage(
         canvas: canvas,
         rect: Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
+        fit: BoxFit.cover,
         image: imageFI.image);
 
     //convert canvas as PNG bytes
@@ -181,15 +206,15 @@ class MapViewModel extends GetxController {
   }
 
   getUserMarkers(
-    {required SalesOrder salesOrder}
+    {required SalesOrder salesOrder, Driver? serialOrderDriverData}
     ) async {
     // markers.clear();
-    if(markers.isNotEmpty){
-        markers.removeWhere((element) => element.markerId.value == salesOrder.customerId);
+    if(markers.isNotEmpty && markers.contains(MarkerId("${serialOrderDriverData?.id??"" }"))){
+        markers.removeWhere((element) => element.markerId.value == serialOrderDriverData?.id);
         update();
     }
     final Marker marker = Marker(
-      markerId: MarkerId("${salesOrder.customerId}"),
+      markerId: MarkerId("${salesOrder.customerId }"),
       icon: await _getMarkerImageFromUrl(
           salesOrder.customerImage == null
               ? Constance.defoultImageMarker
@@ -198,7 +223,7 @@ class MapViewModel extends GetxController {
           color: colorTrans),
       position: customerLatLng,
       infoWindow: InfoWindow(
-        title: salesOrder.customerId,
+        title: serialOrderDriverData?.driverName??"",
         onTap: () {
           Logger().d("");
         },
@@ -304,15 +329,18 @@ class MapViewModel extends GetxController {
 
   getStreamLocation(var salesOrderId) async {
     FirebaseClint.instance.getTrackLocation(SharedPref.instance.getCurrentUserData().id,
-        salesOrderId , this).listen((event) { });
+        salesOrderId , this).listen((event) {
+    });
   }
 
   updateDriverLocations(TrackModel trackModel){
-    // Logger().d(trackModel.toJson());
+     // Logger().i(trackModel.toJson());
+     // Logger().i(trackModel.serialOrderDriverLocation != null);
+     // Logger().i(trackModel.serialOrderData != null);
     if( trackModel.serialOrderDriverLocation != null)
       customerLatLng = trackModel.serialOrderDriverLocation!;
     if(trackModel.serialOrderData != null)
-      getUserMarkers(salesOrder: trackModel.serialOrderData!);
+      getUserMarkers(salesOrder: trackModel.serialOrderData! ,serialOrderDriverData:trackModel.serialOrderDriverData);
     update();
   }
 

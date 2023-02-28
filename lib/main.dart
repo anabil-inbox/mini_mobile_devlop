@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 
@@ -41,6 +42,9 @@ void main() async {
     await Firebase.initializeApp();
     await SharedPref.instance.init();
     await AppFcm.fcmInstance.init();
+    if(Platform.isAndroid) {
+      await FirebaseAuth.instance.signInAnonymously();
+    }
     var bool = await FirebaseUtils.instance.isHideWallet();
     var hideDelete = await FirebaseUtils.instance.isHideDelete();
     await SharedPref.instance.setIsHideSubscriptions(bool);

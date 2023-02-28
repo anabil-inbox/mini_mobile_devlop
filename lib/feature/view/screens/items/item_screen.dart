@@ -24,6 +24,7 @@ import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
 import '../../widgets/custom_text_filed.dart';
@@ -38,7 +39,8 @@ class ItemScreen extends StatefulWidget {
       : super(key: key);
 
   ItemViewModle get itemViewModle => Get.put(ItemViewModle(), permanent: true);
-   HomeViewModel get homeViewModel => Get.put(HomeViewModel(), permanent: true);
+
+  HomeViewModel get homeViewModel => Get.put(HomeViewModel(), permanent: true);
   final Box box;
   final Function()? getBoxDataMethod;
   final bool isEnabeld;
@@ -49,6 +51,7 @@ class ItemScreen extends StatefulWidget {
 
 class _ItemScreenState extends State<ItemScreen> {
   ItemViewModle itemViewModle = Get.find<ItemViewModle>();
+
   HomeViewModel get homeViewModel => Get.find<HomeViewModel>();
 
   @override
@@ -59,7 +62,9 @@ class _ItemScreenState extends State<ItemScreen> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       // await widget.getBoxDataMethod!();
       // Get.delete<ItemViewModle>();
-      await itemViewModle.getBoxBySerial(serial:"${widget.box.serialNo != null && widget.box.serialNo!.isNotEmpty ? widget.box.serialNo :widget.box.id ??""}" );
+      await itemViewModle.getBoxBySerial(
+          serial:
+              "${widget.box.serialNo != null && widget.box.serialNo!.isNotEmpty ? widget.box.serialNo : widget.box.id ?? ""}");
     });
   }
 
@@ -95,7 +100,7 @@ class _ItemScreenState extends State<ItemScreen> {
               child: Row(
                 children: [
                   SvgPicture.asset(
-                    "assets/svgs/add_icons_orange.svg"/*red_add.svg*/,
+                    "assets/svgs/add_icons_orange.svg" /*red_add.svg*/,
                   ),
                   SizedBox(
                     width: sizeW5,
@@ -141,7 +146,8 @@ class _ItemScreenState extends State<ItemScreen> {
                     isUpdate: true);
               }
             },
-            icon: SvgPicture.asset("assets/svgs/update_icon_orange.svg")/*update*/),
+            icon: SvgPicture.asset(
+                "assets/svgs/update_icon_orange.svg") /*update*/),
         (widget.box.storageStatus == LocalConstance.boxAtHome ||
                 itemViewModle.operationsBox?.storageStatus ==
                     LocalConstance.boxAtHome ||
@@ -183,7 +189,6 @@ class _ItemScreenState extends State<ItemScreen> {
             itemViewModle.allowedClear = true;
             itemViewModle.update();
           });
-
         },
         builder: (build) {
           if (build.isLoading) {
@@ -366,7 +371,7 @@ class _ItemScreenState extends State<ItemScreen> {
       body: GetBuilder<ItemViewModle>(
         autoRemove: false,
         initState: (_) async {
-          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
             await itemViewModle.getBoxBySerial(
                 serial: widget.box.serialNo ?? "");
             //itemViewModle.update();
@@ -426,7 +431,7 @@ class _ItemScreenState extends State<ItemScreen> {
                             highlightColor: colorTrans,
                             onPressed: () {
                               itemViewModle.showInvoicesBottomSheet(
-                                  operationsBox:itemViewModle.operationsBox,
+                                  operationsBox: itemViewModle.operationsBox,
                                   invoices:
                                       itemViewModle.operationsBox!.invoices ??
                                           []);
@@ -439,6 +444,59 @@ class _ItemScreenState extends State<ItemScreen> {
                       ]
                     ],
                   ),
+                  if(itemViewModle.operationsBox != null && itemViewModle.operationsBox!.subscription != null)...[
+                    SizedBox(
+                      height: sizeH20,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(sizeRadius16!),
+                      margin: EdgeInsets.only(bottom: sizeH10!),
+                      decoration: BoxDecoration(
+                          color: colorBackground,
+                          borderRadius: BorderRadius.circular(padding6!)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text("${tr.subscriptions} : " , textAlign: TextAlign.start,),
+                              Text("${itemViewModle.operationsBox!.subscription!.id}" , textAlign: TextAlign.start,),
+                            ],
+                          ),
+                          SizedBox(
+                            height: sizeH20,
+                          ),
+                          Text("${tr.duration_of_subscription} :"),
+                          SizedBox(
+                            height: sizeH12,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text("${tr.from} : ${DateFormat("yyyy-MM-dd").format(itemViewModle.operationsBox!.subscription!.startDate!)}  -  " , textAlign: TextAlign.center,),
+                              Text("${tr.to} : ${DateFormat("yyyy-MM-dd").format(itemViewModle.operationsBox!.subscription!.latestInvoice!)}  " , textAlign: TextAlign.center,),
+                            ],
+                          ),
+                          SizedBox(
+                            height: sizeH20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text("${tr.total_cost} :"),
+                              Text("${formatStringWithCurrency(itemViewModle.operationsBox!.subscription!.total, "")}"),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                   SizedBox(
                     height: sizeH20,
                   ),
@@ -456,9 +514,15 @@ class _ItemScreenState extends State<ItemScreen> {
                           isGaveAway:
                               (/*itemViewModle.operationsBox?.storageStatus == LocalConstance.giveawayId  &&*/
                                   /*itemViewModle.operationsBox?.storageStatus != LocalConstance.boxAtHome &&*/
-                                  widget.homeViewModel.tasks.where((element) => element.id == LocalConstance.giveawayId).isEmpty),
-                          boxStatus: itemViewModle.operationsBox!.storageStatus ?? "",
-                          redBtnText: widget.box.storageStatus == LocalConstance.boxAtHome
+                                  widget.homeViewModel.tasks
+                                      .where((element) =>
+                                          element.id ==
+                                          LocalConstance.giveawayId)
+                                      .isEmpty),
+                          boxStatus:
+                              itemViewModle.operationsBox!.storageStatus ?? "",
+                          redBtnText: widget.box.storageStatus ==
+                                  LocalConstance.boxAtHome
                               ? "${tr.pickup}"
                               : "${tr.recall}",
                           onShareBox: onShareBoxClick,
@@ -466,16 +530,20 @@ class _ItemScreenState extends State<ItemScreen> {
                           onRedBtnClick: onRedBtnClick,
                           onDeleteBox: onDeleteBoxClick,
                         )
-                      : itemViewModle.operationsBox?.saleOrder != null && itemViewModle.operationsBox!.saleOrder!.isNotEmpty ?
-                      PrimaryButton(textButton: tr.order_details,
-                      isLoading: false,
-                      onClicked: (){
-                        Get.off(() => OrderDetailesScreen(
-                          orderId: "${itemViewModle.operationsBox?.saleOrder.toString()}",
-                          isFromPayment: false,
-                        ));
-                      },
-                      isExpanded: true):const SizedBox(),
+                      : itemViewModle.operationsBox?.saleOrder != null &&
+                              itemViewModle.operationsBox!.saleOrder!.isNotEmpty
+                          ? PrimaryButton(
+                              textButton: tr.order_details,
+                              isLoading: false,
+                              onClicked: () {
+                                Get.off(() => OrderDetailesScreen(
+                                      orderId:
+                                          "${itemViewModle.operationsBox?.saleOrder.toString()}",
+                                      isFromPayment: false,
+                                    ));
+                              },
+                              isExpanded: true)
+                          : const SizedBox(),
                   SizedBox(
                     height: sizeH10,
                   ),
@@ -508,7 +576,9 @@ class _ItemScreenState extends State<ItemScreen> {
       Get.bottomSheet(
           RecallBoxProcessSheet(
             boxes: [],
-            isFirstPickUp: itemViewModle.operationsBox != null ?itemViewModle.operationsBox?.firstPickup :widget.box.firstPickup ,
+            isFirstPickUp: itemViewModle.operationsBox != null
+                ? itemViewModle.operationsBox?.firstPickup
+                : widget.box.firstPickup,
             box: itemViewModle.operationsBox ?? widget.box,
             task: enterdTask,
           ),
@@ -517,17 +587,17 @@ class _ItemScreenState extends State<ItemScreen> {
       final Task enterdTask =
           widget.homeViewModel.searchTaskById(taskId: LocalConstance.recallId);
 
-
       Get.bottomSheet(
-          RecallBoxProcessSheet(
-            box: itemViewModle.operationsBox ?? widget.box,
-            boxes: [],
-            task: enterdTask,
-            isFirstPickUp: itemViewModle.operationsBox != null ?itemViewModle.operationsBox?.firstPickup :widget.box.firstPickup,
-          ),
-          isScrollControlled: true)
-          .whenComplete(
-              () => homeViewModel.selectedAddres = null);
+              RecallBoxProcessSheet(
+                box: itemViewModle.operationsBox ?? widget.box,
+                boxes: [],
+                task: enterdTask,
+                isFirstPickUp: itemViewModle.operationsBox != null
+                    ? itemViewModle.operationsBox?.firstPickup
+                    : widget.box.firstPickup,
+              ),
+              isScrollControlled: true)
+          .whenComplete(() => homeViewModel.selectedAddres = null);
 
       // Get.bottomSheet(
       //     RecallBoxProcessSheet(

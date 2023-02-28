@@ -275,6 +275,7 @@ class _CompanyVerficationCodeScreenState
               autoFocus: true,
               controller: controller,
               enablePinAutofill: true,
+              keyboardType: TextInputType.numberWithOptions(),
               // useExternalAutoFillGroup: true,
               // onAutoFillDisposeAction: true,
               // useExternalAutoFillGroup: true,

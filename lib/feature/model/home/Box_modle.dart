@@ -23,6 +23,7 @@ class Box {
       this.options,
       this.isPickup,
       this.invoices,
+      this.subscription,
       this.address});
 
   String? id;
@@ -43,7 +44,7 @@ class Box {
   bool? isPickup;
   List<Seal>? logSeals;
   List<Invoices>? invoices;
-
+  SubscriptionBoxData? subscription;
 
   factory Box.fromJson(Map<String, dynamic> json) => Box(
         id: json["id"] == null ? null : json["id"],
@@ -51,15 +52,22 @@ class Box {
         storageName: json["storage_name"] == null ? null : json["storage_name"],
         saleOrder: json["sales_order"] == null ? null : json["sales_order"],
         allowed: json["allowed"] == null ? false : json["allowed"],
-    firstPickup: json["first_pickup"] == null ? false : json["first_pickup"],
-        isPickup: json["is_pickup"] == null ? false:json["is_pickup"],
-        storageStatus: json["storage_status"] == null ? null : json["storage_status"],
-        storageStatusLabel: json["storage_status_label"] == null ? null : json["storage_status_label"],
+        firstPickup:
+            json["first_pickup"] == null ? false : json["first_pickup"],
+        isPickup: json["is_pickup"] == null ? false : json["is_pickup"],
+        storageStatus:
+            json["storage_status"] == null ? null : json["storage_status"],
+        storageStatusLabel: json["storage_status_label"] == null
+            ? null
+            : json["storage_status_label"],
         enabled: json["enabled"] == null ? null : json["enabled"],
         modified:
             json["modified"] == null ? null : DateTime.parse(json["modified"]),
         address:
             json["address"] == null ? null : Address.fromJson(json["address"]),
+        subscription: json["subscription"] == null
+            ? null
+            : SubscriptionBoxData.fromJson(json["subscription"]),
         logSeals: json["seals_log"] == null
             ? null
             : List<Seal>.from(json["seals_log"].map((x) => Seal.fromJson(x))),
@@ -69,10 +77,10 @@ class Box {
         tags: json["tags"] == null
             ? null
             : List<ItemTag>.from(json["tags"].map((x) => ItemTag.fromJson(x))),
-
         invoices: json["invoices"] == null
             ? null
-            : List<Invoices>.from(json["invoices"].map((x) => Invoices.fromJson(x))),    
+            : List<Invoices>.from(
+                json["invoices"].map((x) => Invoices.fromJson(x))),
         items: json["items"] == null
             ? null
             : List<BoxItem>.from(json["items"].map((x) => BoxItem.fromJson(x))),
@@ -83,6 +91,7 @@ class Box {
       return {
         "id": id,
         "serial": serialNo,
+        "subscription": subscription == null ? null : subscription?.toJson(),
         "first_pickup": firstPickup,
         "storage_name": storageName,
         "sale_order": saleOrder,
@@ -117,7 +126,7 @@ class Box {
 
   @override
   String toString() {
-    return 'Box{id: $id, serialNo: $serialNo, storageName: $storageName, saleOrder: $saleOrder, storageStatus: $storageStatus, enabled: $enabled, modified: $modified, tags: $tags, items: $items, isExpanded: $isExpanded, options: $options, address: $address}';
+    return 'Box{id: $id, serialNo: $serialNo, storageName: $storageName, saleOrder: $saleOrder, storageStatus: $storageStatus, storageStatusLabel: $storageStatusLabel, enabled: $enabled, modified: $modified, tags: $tags, items: $items, isExpanded: $isExpanded, firstPickup: $firstPickup, options: $options, address: $address, allowed: $allowed, isPickup: $isPickup, logSeals: $logSeals, invoices: $invoices, subscription: $subscription}';
   }
 }
 
@@ -139,6 +148,7 @@ class BoxItem {
   String? createdAt;
   List<Attachment>? itemGallery;
   List<ItemTag>? itemTags;
+
   // List<String>? selectedImages = [];
 
   factory BoxItem.fromJson(Map<String, dynamic> json) {
@@ -251,5 +261,56 @@ class ItemTag {
   Map<String, dynamic> toJson() => {
         "tag": tag == null ? null : tag,
         "enabled": enabled == null ? 0 : enabled,
+      };
+}
+
+class SubscriptionBoxData {
+  SubscriptionBoxData({
+    this.id,
+    this.startDate,
+    this.totalDays,
+    this.latestInvoice,
+    this.totalPaid,
+    this.totalDue,
+    this.total,
+    this.serialNo,
+  });
+
+  String? id;
+  DateTime? startDate;
+  int? totalDays;
+  DateTime? latestInvoice;
+  dynamic totalPaid;
+  dynamic totalDue;
+  dynamic total;
+  String? serialNo;
+
+  factory SubscriptionBoxData.fromJson(Map<String, dynamic> json) =>
+      SubscriptionBoxData(
+        id: json["id"],
+        startDate: json["start_date"] == null
+            ? null
+            : DateTime.parse(json["start_date"]),
+        totalDays: json["total_days"],
+        latestInvoice: json["latest_invoice"] == null
+            ? null
+            : DateTime.parse(json["latest_invoice"]),
+        totalPaid: json["total_paid"] == null ? null : json["total_paid"],
+        totalDue: json["total_due"] == null ? null : json["total_due"],
+        total: json["total"] == null ? null : json["total"],
+        serialNo: json["serial_no"] == null ? null : json["serial_no"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "start_date":
+            "${startDate!.year.toString().padLeft(4, '0')}-${startDate!.month.toString().padLeft(2, '0')}-${startDate!.day.toString().padLeft(2, '0')}",
+        "total_days": totalDays,
+        "latest_invoice":
+            "${latestInvoice!.year.toString().padLeft(4, '0')}-${latestInvoice!.month.toString().padLeft(2, '0')}-${latestInvoice!.day.toString().padLeft(2, '0')}",
+        "total_paid": totalPaid == null ? null : totalPaid,
+        "total_due": totalDue == null ? null : totalDue,
+        "total": total == null ? null : total,
+        "serial_no": serialNo == null ? null : serialNo,
       };
 }

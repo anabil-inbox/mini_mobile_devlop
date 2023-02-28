@@ -326,8 +326,14 @@
   "your_order_have_to_be_rescheduled": "الرجاء اختيار تاريخ جديد لطلب service_name$",
   "schedule_required": "الجدولة مطلوبة",
   "invoice": "فواتيري",
+  "invoice_date": "تاريخ الفاتورة",
   "no_bills_yet": "لا توجد فواتير حتى الآن",
   "total_days": "مجموع الايام",
   "open_order": "اذهب الى التطلب",
+  "from": "من",
+  "to": "الى",
+  "total_cost": "التكلفة الإجمالية",
+  "paid_invoices": "الفواتير المدفوعة",
+  "unpaid_invoices": "فواتير غير مدفوعة",
   "no_details_for_this_invoice": "لا يوجد تفاصيل لهذه الفاتورة "
 }

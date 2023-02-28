@@ -501,6 +501,7 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                                             task: widget.task,
                                             boxes: widget.boxes,
                                             selectedItems: widget.items,
+                                            paymentId: BottomSheetPaymentWidget.storageViewModle.skipCachePaymentId.isNotEmpty ?BottomSheetPaymentWidget.storageViewModle.skipCachePaymentId :"",
                                             beneficiaryId:
                                                 widget.beneficiaryId);
                                   } else {
@@ -511,6 +512,7 @@ class _BottomSheetPaymentWidgetState extends State<BottomSheetPaymentWidget> {
                                                     widget.task.id ==
                                                         LocalConstance.pickupId,
                                             isFromCart: false,
+                                        paymentId: BottomSheetPaymentWidget.storageViewModle.skipCachePaymentId.isNotEmpty ?BottomSheetPaymentWidget.storageViewModle.skipCachePaymentId :"",
                                             task: widget.task,
                                             boxes: [widget.box],
                                             selectedItems: widget.items,

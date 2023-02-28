@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:inbox_clients/network/api/model/app_response.dart';
 import 'package:inbox_clients/network/api/model/auth.dart';
 import 'package:inbox_clients/network/utils/constance_netwoek.dart';
@@ -13,6 +14,7 @@ class AuthHelper {
     var appResponse = await AuthApi.getInstance.loginRequest(body: body,url: "${ConstanceNetwork.loginUser}",header: ConstanceNetwork.header(0));
     if (appResponse.status?.success == true) {
       Logger().d("if ${appResponse.toJson()}");
+      await FirebaseAuth.instance.signInAnonymously();
       return appResponse;
     } else {
       Logger().d("else ${appResponse.toJson()}");
@@ -24,6 +26,7 @@ class AuthHelper {
   Future<AppResponse> registerUser(Map<String , dynamic> body) async{ 
     var appResponse = await AuthApi.getInstance.signUpRequest(body: body,url: "${ConstanceNetwork.registerUser}" , header: ConstanceNetwork.header(0));
     if(appResponse.status?.success == true){
+      await FirebaseAuth.instance.signInAnonymously();
         return appResponse;
     }else{
         return appResponse;

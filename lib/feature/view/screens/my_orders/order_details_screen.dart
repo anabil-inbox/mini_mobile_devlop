@@ -22,6 +22,7 @@ import 'package:logger/logger.dart';
 import '../../../../util/app_shaerd_data.dart';
 import '../../../model/my_order/order_sales.dart';
 import '../../../model/storage/payment.dart';
+import '../../../view_model/map_view_model/map_view_model.dart';
 import '../../widgets/bottom_sheet_widget/rate_bottom_sheet.dart';
 import 'widgets/my_order_time_widget.dart';
 import 'widgets/status_widget.dart';
@@ -94,7 +95,7 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await OrderDetailesScreen.myOrderViewModle
           .getOrderDetaile(orderId: widget.orderId);
       OrderDetailesScreen.myOrderViewModle.update();
@@ -112,6 +113,15 @@ class _OrderDetailesScreenState extends State<OrderDetailesScreen> {
               orderSales: OrderDetailesScreen.myOrderViewModle.newOrderSales,
             ),
             isScrollControlled: true);
+      }
+      if(OrderDetailesScreen.myOrderViewModle.newOrderSales.status !=
+          LocalConstance.completed && OrderDetailesScreen.myOrderViewModle.newOrderSales.status !=
+          LocalConstance.cancelled) {
+        Get.put(MapViewModel()) ..getMyCurrentPosition(newOrderSales: OrderDetailesScreen.myOrderViewModle.newOrderSales)
+          ..getMyCurrentMarkers()
+          ..getStreamLocation(
+              OrderDetailesScreen.myOrderViewModle.newOrderSales.orderId
+                  .toString());
       }
     });
     //Get.put(MapViewModel()).getStreamLocation(OrderDetailesScreen.myOrderViewModle.newOrderSales);

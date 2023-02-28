@@ -2455,6 +2455,7 @@ class StorageViewModel extends BaseController {
     }
   }
 
+  String skipCachePaymentId = "";
   Future<void> applySkipCashPayment({
     required dynamic amount,
     required Function() function,
@@ -2467,11 +2468,14 @@ class StorageViewModel extends BaseController {
         ConstanceNetwork.amountKey: amount,
       }).then((value) {
         if (value.status!.success!) {
-          if(value.data["payment_url"] != null && value.data["payment_url"].toString().isNotEmpty)
-          Get.to(PaymentAppleScreen(
+          if(value.data["payment_url"] != null && value.data["payment_url"].toString().isNotEmpty) {
+            skipCachePaymentId = "${value.data["id"]}";
+            update();
+            Get.to(PaymentAppleScreen(
                     operationTask: homeViewModel.operationTask,
                     isFromNotifications: false,
                     url: value.data["payment_url"],
+
                     isFromApplePay:true,
                     isFromCart: false,
                     isOrderProductPayment: false,
@@ -2490,8 +2494,9 @@ class StorageViewModel extends BaseController {
                       //     isAppPay: false);
                       // Get.back();
                     },
-                    paymentId: '',
+                    paymentId: value.data["id"],
                   ));
+          }
         } else {
           Get.back();
           snackError('', value.status?.message);

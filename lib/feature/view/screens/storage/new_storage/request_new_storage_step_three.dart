@@ -75,6 +75,16 @@ class _RequestNewStorageStepThreeState extends State<RequestNewStorageStepThree>
   ScrollController scrollController = ScrollController();
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      scrollController.jumpTo(scrollController.position.maxScrollExtent);
+    });
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     screenUtil(context);
     return ShowCaseWidget(
@@ -87,6 +97,56 @@ class _RequestNewStorageStepThreeState extends State<RequestNewStorageStepThree>
           storageViewModel.setContext(context);
           return Scaffold(
             backgroundColor: scaffoldColor,
+            floatingActionButton: GetBuilder<StorageViewModel>(
+              builder: (logic) {
+                return Padding(
+                  padding: EdgeInsetsDirectional.only(start: sizeW36!),
+                  child: PrimaryButton(
+                    isExpanded: true,
+                    isLoading: logic.isLoading,
+                    textButton: "${tr.request_box}",
+                    onClicked: () async {
+                      if(GetUtils.isNull(logic.selectedPaymentMethod)){
+                        scrollController.jumpTo(scrollController.position.maxScrollExtent);
+                      }
+                      if (logic.isValiedToSaveStorage()) {
+                        if (logic.selectedPaymentMethod?.id == Constance.cashId ||
+                            logic.selectedPaymentMethod?.id == Constance.pointOfSaleId /*||
+                                      logic.selectedPaymentMethod?.id == Constance.bankTransferId*/) {
+                          await logic.addNewStorage();
+                          logic.isLoading = false;
+                          logic.update();
+                        } else if (logic.selectedPaymentMethod?.id ==
+                            Constance.bankTransferId) {
+                          //todo here i will check if user upload or select image i will allow to send request
+                          await logic.addNewStorage(isFromBankTransfer:true);
+                          logic.isLoading = false;
+                          logic.update();
+                        } else if ((logic.selectedPaymentMethod?.id == Constance.walletId)) {
+                          if (num.parse(profileViewModle.myWallet.balance.toString()) > storageViewModel.totalBalance) {
+                            await logic.addNewStorage();
+                            logic.isLoading = false;
+                            logic.update();
+                          } else {
+                            snackError("", tr.wallet_balance_is_not_enough);
+                          }
+                        } else {
+                          await logic.goToPaymentMethod(
+                              cartModels: [],
+                              isOrderProductPayment: false,
+                              isFromCart: false,
+                              isFromNewStorage: true,
+                              storageViewModel: storageViewModel,
+                              amount: logic.totalBalance, isFromEditOrder: false);
+                          logic.isLoading = false;
+                          logic.update();
+                        }
+                      }
+                    },
+                  ),
+                );
+              },
+            ),
             appBar: CustomAppBarWidget(
               isCenterTitle: true,
               titleWidget: Text(
@@ -185,64 +245,64 @@ class _RequestNewStorageStepThreeState extends State<RequestNewStorageStepThree>
                             ),
                           ],
                           SizedBox(
-                            height: sizeH100,
+                            height: sizeH114,
                           ),
                         ],
                       ),
 
-                      PositionedDirectional(
-                          bottom: padding32,
-                          start: padding20,
-                          end: padding20,
-                          child: Container(
-                              width: sizeW150,
-                              child: GetBuilder<StorageViewModel>(
-                                builder: (logic) {
-                                  return PrimaryButton(
-                                    isExpanded: false,
-                                    isLoading: logic.isLoading,
-                                    textButton: "${tr.request_box}",
-                                    onClicked: () async {
-                                      if(GetUtils.isNull(logic.selectedPaymentMethod)){
-                                        scrollController.jumpTo(scrollController.position.maxScrollExtent);
-                                      }
-                                      if (logic.isValiedToSaveStorage()) {
-                                        if (logic.selectedPaymentMethod?.id == Constance.cashId ||
-                                                logic.selectedPaymentMethod?.id == Constance.pointOfSaleId /*||
-                                            logic.selectedPaymentMethod?.id == Constance.bankTransferId*/) {
-                                          await logic.addNewStorage();
-                                          logic.isLoading = false;
-                                          logic.update();
-                                        } else if (logic.selectedPaymentMethod?.id ==
-                                            Constance.bankTransferId) {
-                                          //todo here i will check if user upload or select image i will allow to send request
-                                          await logic.addNewStorage(isFromBankTransfer:true);
-                                          logic.isLoading = false;
-                                          logic.update();
-                                        } else if ((logic.selectedPaymentMethod?.id == Constance.walletId)) {
-                                          if (num.parse(profileViewModle.myWallet.balance.toString()) > storageViewModel.totalBalance) {
-                                            await logic.addNewStorage();
-                                            logic.isLoading = false;
-                                            logic.update();
-                                          } else {
-                                            snackError("", tr.wallet_balance_is_not_enough);
-                                          }
-                                        } else {
-                                          await logic.goToPaymentMethod(
-                                              cartModels: [],
-                                              isOrderProductPayment: false,
-                                              isFromCart: false,
-                                              isFromNewStorage: true,
-                                              storageViewModel: storageViewModel,
-                                              amount: logic.totalBalance, isFromEditOrder: false);
-                                          logic.isLoading = false;
-                                          logic.update();
-                                        }
-                                      }
-                                    },
-                                  );
-                                },
-                              ))),
+                      // PositionedDirectional(
+                      //     bottom: padding32,
+                      //     start: padding20,
+                      //     end: padding20,
+                      //     child: Container(
+                      //         width: sizeW150,
+                      //         child: GetBuilder<StorageViewModel>(
+                      //           builder: (logic) {
+                      //             return PrimaryButton(
+                      //               isExpanded: false,
+                      //               isLoading: logic.isLoading,
+                      //               textButton: "${tr.request_box}",
+                      //               onClicked: () async {
+                      //                 if(GetUtils.isNull(logic.selectedPaymentMethod)){
+                      //                   scrollController.jumpTo(scrollController.position.maxScrollExtent);
+                      //                 }
+                      //                 if (logic.isValiedToSaveStorage()) {
+                      //                   if (logic.selectedPaymentMethod?.id == Constance.cashId ||
+                      //                           logic.selectedPaymentMethod?.id == Constance.pointOfSaleId /*||
+                      //                       logic.selectedPaymentMethod?.id == Constance.bankTransferId*/) {
+                      //                     await logic.addNewStorage();
+                      //                     logic.isLoading = false;
+                      //                     logic.update();
+                      //                   } else if (logic.selectedPaymentMethod?.id ==
+                      //                       Constance.bankTransferId) {
+                      //                     //todo here i will check if user upload or select image i will allow to send request
+                      //                     await logic.addNewStorage(isFromBankTransfer:true);
+                      //                     logic.isLoading = false;
+                      //                     logic.update();
+                      //                   } else if ((logic.selectedPaymentMethod?.id == Constance.walletId)) {
+                      //                     if (num.parse(profileViewModle.myWallet.balance.toString()) > storageViewModel.totalBalance) {
+                      //                       await logic.addNewStorage();
+                      //                       logic.isLoading = false;
+                      //                       logic.update();
+                      //                     } else {
+                      //                       snackError("", tr.wallet_balance_is_not_enough);
+                      //                     }
+                      //                   } else {
+                      //                     await logic.goToPaymentMethod(
+                      //                         cartModels: [],
+                      //                         isOrderProductPayment: false,
+                      //                         isFromCart: false,
+                      //                         isFromNewStorage: true,
+                      //                         storageViewModel: storageViewModel,
+                      //                         amount: logic.totalBalance, isFromEditOrder: false);
+                      //                     logic.isLoading = false;
+                      //                     logic.update();
+                      //                   }
+                      //                 }
+                      //               },
+                      //             );
+                      //           },
+                      //         ))),
                       // PositionedDirectional(
                       //     bottom: padding32,
                       //     end: padding40,

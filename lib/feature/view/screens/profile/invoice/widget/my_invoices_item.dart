@@ -18,9 +18,11 @@ class MyInvoicesItem extends StatelessWidget {
   /*const*/ MyInvoicesItem({
     Key? key,
     required this.invoices,
+    this.isPadInv = false,
   }) : super(key: key);
 
   final InvoicesData invoices;
+  final bool? isPadInv;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class MyInvoicesItem extends StatelessWidget {
               ),
             )
           : InkWell(
-              onTap: () => _showInvDetails(logic ,invoices),
+              onTap: () => isPadInv! ? () {} : _showInvDetails(logic, invoices),
               child: Container(
                 // margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 color: colorTextWhite,
@@ -58,23 +60,25 @@ class MyInvoicesItem extends StatelessWidget {
                     SizedBox(
                       width: sizeW10,
                     ),
-                    if (logic.invoicesSelectedId
-                        .contains(invoices.paymentEntryId)) ...[
-                      InkWell(
-                        onTap: () => _onItemClick(logic),
-                        child: Icon(
-                          Icons.check_box,
-                          color: colorPrimary,
+                    if (!isPadInv!) ...[
+                      if (logic.invoicesSelectedId
+                          .contains(invoices.paymentEntryId)) ...[
+                        InkWell(
+                          onTap: () => _onItemClick(logic),
+                          child: Icon(
+                            Icons.check_box,
+                            color: colorPrimary,
+                          ),
                         ),
-                      ),
-                    ] else ...[
-                      InkWell(
-                        onTap: () => _onItemClick(logic),
-                        child: Icon(
-                          Icons.check_box_outline_blank,
-                          color: colorHint3,
+                      ] else ...[
+                        InkWell(
+                          onTap: () => _onItemClick(logic),
+                          child: Icon(
+                            Icons.check_box_outline_blank,
+                            color: colorHint3,
+                          ),
                         ),
-                      ),
+                      ],
                     ],
                   ],
                 ),
@@ -85,7 +89,8 @@ class MyInvoicesItem extends StatelessWidget {
 
   void _onItemClick(ProfileViewModle logic) {
     ///todo here we need remove item from list
-    if (logic.invoicesSelectedId.isNotEmpty && logic.invoicesSelectedId.contains(invoices.paymentEntryId)) {
+    if (logic.invoicesSelectedId.isNotEmpty &&
+        logic.invoicesSelectedId.contains(invoices.paymentEntryId)) {
       logic.invoicesSelectedId.remove(invoices.paymentEntryId);
       logic.update();
     } else {
@@ -97,6 +102,7 @@ class MyInvoicesItem extends StatelessWidget {
 
   //todo here we need to show invoice details
   _showInvDetails(ProfileViewModle logic, InvoicesData invoices) {
-    Get.bottomSheet(InvoicesDetailsBottomSheet(invoices:invoices) ,isScrollControlled: true);
+    Get.bottomSheet(InvoicesDetailsBottomSheet(invoices: invoices),
+        isScrollControlled: true);
   }
 }

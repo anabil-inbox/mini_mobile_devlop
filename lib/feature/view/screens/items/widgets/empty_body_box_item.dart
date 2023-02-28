@@ -19,6 +19,7 @@ import 'package:inbox_clients/util/app_dimen.dart';
 import 'package:inbox_clients/util/app_shaerd_data.dart';
 import 'package:inbox_clients/util/app_style.dart';
 import 'package:inbox_clients/util/constance/constance.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../../util/constance.dart';
@@ -114,6 +115,62 @@ class EmptyBodyBoxItem extends StatelessWidget {
                   ]
                 ],
               ),
+
+              if(itemViewModle.operationsBox != null && itemViewModle.operationsBox!.subscription != null)...[
+                SizedBox(
+                  height: sizeH20,
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(sizeRadius16!),
+                  margin: EdgeInsets.only(bottom: sizeH10!),
+                  decoration: BoxDecoration(
+                      color: colorBackground,
+                      borderRadius: BorderRadius.circular(padding6!)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("${tr.subscriptions} : " , textAlign: TextAlign.start,),
+                          Text("${itemViewModle.operationsBox!.subscription!.id}" , textAlign: TextAlign.start,),
+                        ],
+                      ),
+                      SizedBox(
+                        height: sizeH20,
+                      ),
+                      Text("${tr.duration_of_subscription} :"),
+                      SizedBox(
+                        height: sizeH12,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("${tr.from} : ${DateFormat("yyyy-MM-dd").format(itemViewModle.operationsBox!.subscription!.startDate!)}  -  " , textAlign: TextAlign.center,),
+                          Text("${tr.to} : ${DateFormat("yyyy-MM-dd").format(itemViewModle.operationsBox!.subscription!.latestInvoice!)}  " , textAlign: TextAlign.center,),
+                        ],
+                      ),
+                      SizedBox(
+                        height: sizeH20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("${tr.total_cost} :"),
+                          Text("${formatStringWithCurrency(itemViewModle.operationsBox!.subscription!.total, "")}"),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+
+
             ],
           ),
           // if(itemViewModle.operationsBox!.allowed! /*&& itemViewModle.operationsBox?.storageStatus == LocalConstance.boxAtHome*/)
@@ -126,6 +183,7 @@ class EmptyBodyBoxItem extends StatelessWidget {
                 if (item.operationsBox == null) {
                   return const SizedBox();
                 }
+                Logger().w("test_${(itemViewModle.operationsBox?.allowed ?? false)}");
                 return Column(
                   children: [
                     FloatingActionButton(

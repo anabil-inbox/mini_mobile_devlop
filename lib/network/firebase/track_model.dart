@@ -19,7 +19,7 @@ class TrackModel {
 
   factory TrackModel.fromJson(dynamic json) {
     try {
-      Logger().d("TrackModel_ $json");
+      // Logger().d("TrackModel_ $json");
       if (json == null) {
         return TrackModel(
           serialOrderData: null,
