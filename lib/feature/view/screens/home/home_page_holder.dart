@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -25,6 +26,7 @@ import 'package:inbox_clients/util/sh_util.dart';
 import 'package:logger/logger.dart';
 import 'package:showcaseview/showcaseview.dart';
 
+import '../../../../network/firebase/firebase_utils.dart';
 import '../../../../util/app_shaerd_data.dart';
 
 // ignore: must_be_immutable
@@ -57,13 +59,16 @@ class _HomePageHolderState extends State<HomePageHolder> {
   @override
   void initState() {
     super.initState();
+
     Get.put(StorageViewModel(), permanent: true);
     Get.put(HomeViewModel(), permanent: true);
     Get.put(ItemViewModle(), permanent: true);
     Get.put(ProfileViewModle() , permanent: true);
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       // Get.put(ItemViewModle());
+      // if(Platform.isAndroid) {
+      handleFirebaseOperations();
       if (!GetUtils.isNull(SharedPref.instance.getCurrentUserData()) &&
           !GetUtils.isNull(SharedPref.instance.getCurrentUserData().id))
         await SqlHelper.instance.initDataBase();
@@ -81,6 +86,16 @@ class _HomePageHolderState extends State<HomePageHolder> {
       splashViewModle.getAppSetting();
       cartViewModel.getMyCart();
     });
+  }
+
+  Future<void> handleFirebaseOperations() async {
+      // if(Platform.isAndroid) {
+    await FirebaseAuth.instance.signInAnonymously();
+    // }
+    var bool = await FirebaseUtils.instance.isHideWallet();
+    var hideDelete = await FirebaseUtils.instance.isHideDelete();
+    await SharedPref.instance.setIsHideSubscriptions(bool);
+    await SharedPref.instance.setIsHideDeleteAccount(hideDelete);
   }
 
 

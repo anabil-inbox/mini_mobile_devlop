@@ -238,7 +238,7 @@ class _CompanyVerficationCodeScreenState
                               target: ConstanceNetwork.userType ==
                                   "${widget.type}"
                                   ? ConstanceNetwork.smsKey//"sms"
-                                  : ConstanceNetwork.emailKey,//"eamil"
+                                  : ConstanceNetwork.emailKey,//"email"
                               mobileNumber: widget.mobileNumber,
                               udid: value.identifier,
                             );

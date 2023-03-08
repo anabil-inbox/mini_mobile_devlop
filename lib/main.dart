@@ -42,13 +42,7 @@ void main() async {
     await Firebase.initializeApp();
     await SharedPref.instance.init();
     await AppFcm.fcmInstance.init();
-    if(Platform.isAndroid) {
-      await FirebaseAuth.instance.signInAnonymously();
-    }
-    var bool = await FirebaseUtils.instance.isHideWallet();
-    var hideDelete = await FirebaseUtils.instance.isHideDelete();
-    await SharedPref.instance.setIsHideSubscriptions(bool);
-    await SharedPref.instance.setIsHideDeleteAccount(hideDelete);
+
     portraitOrientation();
     HttpOverrides.global = MyHttpOverrides();
     DioManagerClass.getInstance.init();
