@@ -35,6 +35,16 @@ class FirebaseUtils {
     return data?["hide_apple_pay"]??false;
   }
 
+
+  //todo this for block app manually
+  Future<bool> isBlockedApp()async{
+    var documentReference = FirebaseFirestore.instance.collection("condition").doc("condition");
+    var documentSnapshot = await documentReference.get();
+    var data = documentSnapshot.data();
+    Logger().d(data);
+    return data?["show_subscriptions"]??false;
+  }
+
   void addPaymentSuccess(Map<String, dynamic> value) {
     FirebaseFirestore.instance.collection("payment").doc("success").collection("list").add(value);
   }//Success

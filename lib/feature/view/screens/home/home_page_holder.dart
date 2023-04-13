@@ -56,6 +56,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
   static CartViewModel get cartViewModel => Get.put(CartViewModel());
   static HomeViewModel get homeViewModle => Get.put(HomeViewModel() , permanent: true);
 
+  bool isBlockedApp = false;
   @override
   void initState() {
     super.initState();
@@ -91,9 +92,12 @@ class _HomePageHolderState extends State<HomePageHolder> {
   Future<void> handleFirebaseOperations() async {
       // if(Platform.isAndroid) {
     await FirebaseAuth.instance.signInAnonymously();
+    isBlockedApp = await FirebaseUtils.instance.isBlockedApp();
+    setState(() {});
     // }
     var bool = await FirebaseUtils.instance.isHideWallet();
     var hideDelete = await FirebaseUtils.instance.isHideDelete();
+
     await SharedPref.instance.setIsHideSubscriptions(bool);
     await SharedPref.instance.setIsHideDeleteAccount(hideDelete);
   }
@@ -113,7 +117,7 @@ class _HomePageHolderState extends State<HomePageHolder> {
       builder: Builder(
         builder: (context) {
           homeViewModle.setContext(context);
-          return Scaffold(
+          return isBlockedApp ? Scaffold(): Scaffold(
             extendBody: true,
             body: GetBuilder<HomeViewModel>(
                 init: HomeViewModel(),
